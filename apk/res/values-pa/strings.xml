@@ -32,7 +32,7 @@
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ਐਪਾਂ ਕੋਲ ਪਹੁੰਚ ਹੈ"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ਐਪ ਕੋਲ ਪਹੁੰਚ ਹੈ"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ਕੋਈ ਨਹੀਂ"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"ਇੰਦਰਾਜ ਸੰਬੰਧੀ ਵੇਰਵੇ"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"ਐਂਟਰੀ ਸੰਬੰਧੀ ਵੇਰਵੇ"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"ਹਾਲੀਆ ਪਹੁੰਚ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"ਹਾਲ ਹੀ ਵਿੱਚ ਕਿਸੇ ਵੀ ਐਪ ਨੇ Health Connect ਤੱਕ ਪਹੁੰਚ ਨਹੀਂ ਕੀਤੀ"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"ਸਾਰੀਆਂ ਹਾਲੀਆ ਪਹੁੰਚ ਦੇਖੋ"</string>
@@ -67,7 +67,7 @@
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਪੜ੍ਹ ਸਕਦੀਆਂ ਹਨ"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਸੰਪਾਦਨ ਕਰ ਸਕਦੀਆਂ ਹਨ"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"ਅਕਿਰਿਆਸ਼ੀਲ ਐਪਾਂ"</string>
-    <string name="inactive_apps_message" msgid="4666501359079362486">"ਇਹ ਐਪਾਂ ਹੁਣ <xliff:g id="DATA_TYPE">%s</xliff:g> ਨਹੀਂ ਲਿਖ ਸਕਦੀਆਂ ਹਨ, ਪਰ ਹਾਲੇ ਵੀ ਇਨ੍ਹਾਂ ਨੇ Health Connect ਵਿੱਚ ਡਾਟਾ ਸਟੋਰ ਕੀਤਾ ਹੋਇਆ ਹੈ"</string>
+    <string name="inactive_apps_message" msgid="4666501359079362486">"ਇਹ ਐਪਾਂ ਹੁਣ <xliff:g id="DATA_TYPE">%s</xliff:g> ਦੇ ਡਾਟੇ ਦਾ ਸੰਪਾਦਨ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ, ਪਰ ਹਾਲੇ ਵੀ ਇਨ੍ਹਾਂ ਨੇ Health Connect ਵਿੱਚ ਡਾਟਾ ਸਟੋਰ ਕੀਤਾ ਹੋਇਆ ਹੈ"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"ਐਪਾਂ ਹੁਣ <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ਸੰਬੰਧੀ ਡਾਟਾ ਪੜ੍ਹ ਜਾਂ ਉਸਦਾ ਸੰਪਾਦਨ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ ਅਤੇ Health Connect ਵਿੱਚ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ਸੰਬੰਧੀ ਕੋਈ ਡਾਟਾ ਸਟੋਰ ਨਹੀਂ ਹੈ"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"ਇਸ ਡਾਟਾ ਵਿੱਚ ਕਿਰਿਆਸ਼ੀਲ ਸਮਾਂ, ਕਸਰਤ ਦੀ ਕਿਸਮ, ਲੈਪ, ਕਸਰਤ ਕਿੰਨੀ ਵਾਰ ਦੁਹਰਾਈ ਗਈ, ਸੈਸ਼ਨ ਜਾਂ ਤੈਰਾਕੀ ਦੇ ਸਟ੍ਰੋਕਾਂ ਵਰਗੀ ਜਾਣਕਾਰੀ ਸ਼ਾਮਲ ਹੈ"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ਇਸ ਡਾਟਾ ਵਿੱਚ ਨੀਂਦ ਦੇ ਪੜਾਅ ਅਤੇ ਨੀਂਦ ਸੰਬੰਧੀ ਸੈਸ਼ਨਾਂ ਵਰਗੀ ਜਾਣਕਾਰੀ ਸ਼ਾਮਲ ਹੈ"</string>

@@ -36,7 +36,7 @@
     <string name="recent_access_header" msgid="7623497371790225888">"Nedavni dostop"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Nobena aplikacija ni nedavno dostopala do storitve Health Connect."</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Pokaži vse nedavne dostope"</string>
-    <string name="recent_access_screen_description" msgid="331101209889185402">"Oglejte si, katere aplikacije do dostopale do vaših podatkov v zadnjih 24 urah."</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"Oglejte si, katere aplikacije so dostopale do vaših podatkov v zadnjih 24 urah."</string>
     <string name="today_header" msgid="1006837293203834373">"Danes"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Včeraj"</string>
     <string name="read_data_access_label" msgid="7145747310980361968">"Branje: %s"</string>
@@ -59,7 +59,7 @@
     <string name="manage_data_section" msgid="5859629270946511903">"Upravljanje podatkov"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Izvoz podatkov"</string>
     <string name="delete_all_data_button" msgid="7238755635416521487">"Izbriši vse podatke"</string>
-    <string name="no_categories" msgid="2636778482437506241">"V aplikaciji Health Connect nimate nobenih podatkov."</string>
+    <string name="no_categories" msgid="2636778482437506241">"V storitvi Health Connect nimate nobenih podatkov."</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Vaši podatki"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"Prednost aplikacije"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"Izbriši podatke za »<xliff:g id="CATEGORY">%s</xliff:g>«"</string>
@@ -137,10 +137,10 @@
     <string name="body_water_mass_lowercase_label" msgid="9196249948631920955">"masa vode v telesu"</string>
     <string name="body_water_mass_read_content_description" msgid="1468266374858854184">"Branje mase vode v telesu"</string>
     <string name="body_water_mass_write_content_description" msgid="8485284654932647383">"Zapisovanje mase vode v telesu"</string>
-    <string name="bone_mass_uppercase_label" msgid="6815438946872228501">"Skeletna masa"</string>
-    <string name="bone_mass_lowercase_label" msgid="5127378263122564055">"skeletna masa"</string>
-    <string name="bone_mass_read_content_description" msgid="8401070346821477225">"Branje skeletne mase"</string>
-    <string name="bone_mass_write_content_description" msgid="8711285422751587975">"Zapisovanje skeletne mase"</string>
+    <string name="bone_mass_uppercase_label" msgid="6815438946872228501">"Kostna masa"</string>
+    <string name="bone_mass_lowercase_label" msgid="5127378263122564055">"kostna masa"</string>
+    <string name="bone_mass_read_content_description" msgid="8401070346821477225">"Branje kostne mase"</string>
+    <string name="bone_mass_write_content_description" msgid="8711285422751587975">"Zapisovanje kostne mase"</string>
     <string name="height_uppercase_label" msgid="6839543632311723181">"Višina"</string>
     <string name="height_lowercase_label" msgid="6232582306436492752">"višina"</string>
     <string name="height_read_content_description" msgid="7107217731605127715">"Branje višine"</string>

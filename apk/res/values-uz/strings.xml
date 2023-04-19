@@ -238,7 +238,7 @@
     <string name="request_permissions_cancel" msgid="1787483997235365393">"Bekor qilish"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Ruxsat"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Hammasiga ruxsat berish"</string>
-    <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Rad etish"</string>
+    <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Ruxsat berilmasin"</string>
     <string name="request_permissions_header_desc" msgid="5561173070722750153">"Ilova qanday axborotlarni oʻqishi yoki Health Connectga yozishi mumkinligini tanlang."</string>
     <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Agar siz oʻqishga ruxsat bersangiz, bu ilova yangi maʼlumotlar va oxirgi 30 kunlik maʼlumotlarni oʻqiy oladi"</string>
     <string name="request_permissions_header_title" msgid="4264236128614363479">"<xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectga ulanishiga ruxsat berilsinmi?"</string>

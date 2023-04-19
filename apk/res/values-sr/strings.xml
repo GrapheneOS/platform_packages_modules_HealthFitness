@@ -36,7 +36,7 @@
     <string name="recent_access_header" msgid="7623497371790225888">"Недавни приступ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Ниједна апликација није недавно приступила Повезивању здравља"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Прикажи сав недавни приступ"</string>
-    <string name="recent_access_screen_description" msgid="331101209889185402">"Погледајте које апликацију су приступиле подацима у последња 24 сата"</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"Погледајте које апликације су приступиле подацима у последња 24 сата"</string>
     <string name="today_header" msgid="1006837293203834373">"Данас"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Јуче"</string>
     <string name="read_data_access_label" msgid="7145747310980361968">"Читање: %s"</string>
@@ -61,7 +61,7 @@
     <string name="delete_all_data_button" msgid="7238755635416521487">"Избриши све податке"</string>
     <string name="no_categories" msgid="2636778482437506241">"Немате никакве податке у Повезивању здравља"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Подаци"</string>
-    <string name="app_priority_button" msgid="3126133977893705098">"Приоритет апликација"</string>
+    <string name="app_priority_button" msgid="3126133977893705098">"Приоритетна апликација"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"Избриши податке из категорије <xliff:g id="CATEGORY">%s</xliff:g>"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Све апликације"</string>
     <string name="can_read" msgid="4568261079308309564">"Може да чита податке типа: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
@@ -278,7 +278,7 @@
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"Податке које делите са апликацијом <xliff:g id="APP_NAME">%1$s</xliff:g> регулише њена политика приватности"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Да бисте управљали другим дозволама за Android којима ова апликација може да приступа, идите у Подешавања, па додирните Апликације"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Прочитајте политику приватности"</string>
-    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Приступ у последња 24 сата"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Приступљено у последња 24 сата"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Приступ апликацијама"</string>
     <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
     <skip />
@@ -659,7 +659,7 @@
     <!-- no translation found for units_cancel (5947097690625771995) -->
     <skip />
     <string name="units_title" msgid="6504086463237869339">"Јединице"</string>
-    <string name="set_units_label" msgid="6566059089772896105">"Подесите јединице података"</string>
+    <string name="set_units_label" msgid="6566059089772896105">"Подеси јединице података"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"Раздаљина"</string>
     <string name="height_unit_title" msgid="5461594609577078049">"Висина"</string>
     <string name="weight_unit_title" msgid="7405186541678939987">"Тежина"</string>

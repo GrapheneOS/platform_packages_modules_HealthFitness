@@ -133,7 +133,7 @@
     <string name="body_fat_lowercase_label" msgid="4090686510477176498">"gordura corporal"</string>
     <string name="body_fat_read_content_description" msgid="801664410906939146">"Ler informações de gordura corporal"</string>
     <string name="body_fat_write_content_description" msgid="4863558071904720577">"Gravar gordura corporal"</string>
-    <string name="body_water_mass_uppercase_label" msgid="7839393299147916863">"Massa de água corporal"</string>
+    <string name="body_water_mass_uppercase_label" msgid="7839393299147916863">"Água corporal"</string>
     <string name="body_water_mass_lowercase_label" msgid="9196249948631920955">"massa de água corporal"</string>
     <string name="body_water_mass_read_content_description" msgid="1468266374858854184">"Ler informações de massa de água corporal"</string>
     <string name="body_water_mass_write_content_description" msgid="8485284654932647383">"Gravar massa de água corporal"</string>

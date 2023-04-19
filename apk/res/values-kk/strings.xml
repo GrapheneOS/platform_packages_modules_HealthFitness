@@ -291,7 +291,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect неліктен қолданба рұқсаттарын өшіреді?"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Қолданба уақытша тоқтатылса немесе Google Play-ден өшірілсе, Health Connect оның рұқсаттарын автоматты түрде өшіреді.\n\nЯғни қолданба бұдан кейін Health Connect-те сақталған деректерді пайдалана алмайды. Егер бұл қолданбада бұрын жазылған дерек болса, ол белсенді емес қолданбалар тізімінде көрсетіледі."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Түсінікті"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect қолданбасымен бастау"</string>
+    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect қолданбасымен танысу"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect денсаулық және фитнес деректерін сақтап, телефонда әртүрлі қолданбаны синхрондаудың қарапайым жолын ұсынады."</string>
     <string name="share_data" msgid="3481932156368883946">"Деректерді қолданбалармен бөлісу"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Әр қолданба оқи алатын немесе Health Connect қолданбасына жаза алатын деректерді таңдауға болады."</string>
