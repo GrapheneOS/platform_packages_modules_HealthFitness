@@ -56,6 +56,7 @@ import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
+import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -77,6 +78,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.InternalExternalRecordConverter;
+import android.health.connect.migration.HealthConnectMigrationUiState;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
@@ -1361,6 +1363,51 @@ public class HealthConnectManager {
     public void updateDataDownloadState(@DataDownloadState int downloadState) {
         try {
             mService.updateDataDownloadState(downloadState);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Asynchronously returns the current UI state of Health Connect as it goes through the
+     * Data-Migration process. In case there was an error reading the data on the disk the error
+     * will be returned in the callback.
+     *
+     * <p>See also {@link HealthConnectMigrationUiState} object describing the HealthConnect UI
+     * state.
+     *
+     * @param executor The {@link Executor} on which to invoke the callback.
+     * @param callback The callback which will receive the current {@link
+     *     HealthConnectMigrationUiState} or the {@link HealthConnectException}.
+     * @hide
+     */
+    @UserHandleAware
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    @NonNull
+    public void getHealthConnectMigrationUiState(
+            @NonNull Executor executor,
+            @NonNull
+                    OutcomeReceiver<HealthConnectMigrationUiState, HealthConnectException>
+                            callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.getHealthConnectMigrationUiState(
+                    new IGetHealthConnectMigrationUiStateCallback.Stub() {
+                        @Override
+                        public void onResult(HealthConnectMigrationUiState migrationUiState) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(migrationUiState));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
+                        }
+                    });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

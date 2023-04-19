@@ -134,7 +134,7 @@ public class MigrationStateChangeJobTest {
         when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
                 .thenReturn(Instant.now().minusMillis(mockElapsedTime).toString());
         MigrationStateChangeJob.executeMigrationPauseJob(mContext);
-        verifyStateChange(MIGRATION_STATE_ALLOWED);
+        verifyStateChange(MIGRATION_STATE_ALLOWED, true);
     }
 
     /** Expected behavior: No changes to the state */
@@ -175,7 +175,7 @@ public class MigrationStateChangeJobTest {
         when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
                 .thenReturn(Instant.now().minusMillis(mockElapsedTime).toString());
         MigrationStateChangeJob.executeMigrationCompletionJob(mContext);
-        verifyStateChange(MIGRATION_STATE_COMPLETE);
+        verifyStateChange(MIGRATION_STATE_COMPLETE, true);
     }
 
     /** Expected behavior: No changes to the state */
@@ -193,7 +193,7 @@ public class MigrationStateChangeJobTest {
         setStartTime_expired_nonIdleState();
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
         MigrationStateChangeJob.executeMigrationCompletionJob(mContext);
-        verifyStateChange(MIGRATION_STATE_COMPLETE);
+        verifyStateChange(MIGRATION_STATE_COMPLETE, true);
     }
 
     /** Expected behavior: No changes to the state */
@@ -213,7 +213,7 @@ public class MigrationStateChangeJobTest {
         when(mMigrationStateManager.getMigrationState())
                 .thenReturn(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         MigrationStateChangeJob.executeMigrationCompletionJob(mContext);
-        verifyStateChange(MIGRATION_STATE_COMPLETE);
+        verifyStateChange(MIGRATION_STATE_COMPLETE, true);
     }
 
     /** Expected behavior: No changes to the state */
@@ -233,7 +233,7 @@ public class MigrationStateChangeJobTest {
         when(mMigrationStateManager.getMigrationState())
                 .thenReturn(MIGRATION_STATE_MODULE_UPGRADE_REQUIRED);
         MigrationStateChangeJob.executeMigrationCompletionJob(mContext);
-        verifyStateChange(MIGRATION_STATE_COMPLETE);
+        verifyStateChange(MIGRATION_STATE_COMPLETE, true);
     }
 
     /** Expected behavior: No changes to the state */
@@ -252,7 +252,7 @@ public class MigrationStateChangeJobTest {
         setStartTimeAfterAllowedStateTimeout();
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
         MigrationStateChangeJob.executeMigrationCompletionJob(mContext);
-        verifyStateChange(MIGRATION_STATE_COMPLETE);
+        verifyStateChange(MIGRATION_STATE_COMPLETE, true);
     }
 
     /** Expected behavior: No changes to the state */
@@ -272,7 +272,7 @@ public class MigrationStateChangeJobTest {
         setStartTimeAfterAllowedStateTimeout();
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_IN_PROGRESS);
         MigrationStateChangeJob.executeMigrationCompletionJob(mContext);
-        verifyStateChange(MIGRATION_STATE_COMPLETE);
+        verifyStateChange(MIGRATION_STATE_COMPLETE, true);
     }
 
     /** Expected behavior: No changes to the state */
@@ -290,8 +290,9 @@ public class MigrationStateChangeJobTest {
         verify(mMigrationStateManager, never()).updateMigrationState(any(Context.class), anyInt());
     }
 
-    private void verifyStateChange(int state) {
-        verify(mMigrationStateManager).updateMigrationState(eq(mContext), eq(state));
+    private void verifyStateChange(int state, boolean timeoutReached) {
+        verify(mMigrationStateManager)
+                .updateMigrationState(eq(mContext), eq(state), eq(timeoutReached));
     }
 
     private void setStartTime_notExpired_nonIdleState() {
