@@ -48,6 +48,7 @@ import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
+import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -75,6 +76,7 @@ public class HealthConnectServiceImplTest {
     @Mock private MigrationCleaner mMigrationCleaner;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private MigrationStateManager mMigrationStateManager;
+    @Mock private MigrationUiStateManager mMigrationUiStateManager;
     @Mock private Context mContext;
     @Mock private Context mServiceContext;
     @Mock private PreferenceHelper mPreferenceHelper;
@@ -112,6 +114,7 @@ public class HealthConnectServiceImplTest {
                         mMigrationCleaner,
                         mFirstGrantTimeManager,
                         mMigrationStateManager,
+                        mMigrationUiStateManager,
                         mServiceContext);
     }
 
