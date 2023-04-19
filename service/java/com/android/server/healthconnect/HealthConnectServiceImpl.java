@@ -69,6 +69,7 @@ import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
+import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -94,6 +95,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.health.connect.internal.datatypes.utils.RecordTypePermissionCategoryMapper;
+import android.health.connect.migration.HealthConnectMigrationUiState;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
@@ -122,6 +124,7 @@ import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.migration.DataMigrationManager;
 import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
+import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -199,6 +202,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final DataPermissionEnforcer mDataPermissionEnforcer;
 
     private final AppOpsManagerLocal mAppOpsManagerLocal;
+    private final MigrationUiStateManager mMigrationUiStateManager;
+
     private volatile UserHandle mCurrentForegroundUser;
 
     HealthConnectServiceImpl(
@@ -207,6 +212,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MigrationCleaner migrationCleaner,
             FirstGrantTimeManager firstGrantTimeManager,
             MigrationStateManager migrationStateManager,
+            MigrationUiStateManager migrationUiStateManager,
             Context context) {
         mTransactionManager = transactionManager;
         mPermissionHelper = permissionHelper;
@@ -219,8 +225,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mAppOpsManagerLocal = LocalManagerRegistry.getManager(AppOpsManagerLocal.class);
         mBackupRestore =
                 new BackupRestore(mFirstGrantTimeManager, mMigrationStateManager, mContext);
-
+        mMigrationUiStateManager = migrationUiStateManager;
         migrationCleaner.attachTo(migrationStateManager);
+        mMigrationUiStateManager.attachTo(migrationStateManager);
     }
 
     public void onUserSwitching(UserHandle currentForegroundUser) {
@@ -1695,6 +1702,65 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    /**
+     * @see HealthConnectManager#getHealthConnectMigrationUiState
+     */
+    @Override
+    public void getHealthConnectMigrationUiState(
+            @NonNull IGetHealthConnectMigrationUiStateCallback callback) {
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        enforceIsForegroundUser(getCallingUserHandle());
+                        mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+
+                        try {
+                            callback.onResult(
+                                    new HealthConnectMigrationUiState(
+                                            mMigrationUiStateManager
+                                                    .getHealthConnectMigrationUiState()));
+                        } catch (RemoteException remoteException) {
+                            Log.e(
+                                    TAG,
+                                    "HealthConnectMigrationUiState could not be sent to the"
+                                            + " caller.",
+                                    remoteException);
+                        }
+                    } catch (SecurityException securityException) {
+                        try {
+                            callback.onError(
+                                    new HealthConnectExceptionParcel(
+                                            new HealthConnectException(
+                                                    HealthConnectException.ERROR_SECURITY,
+                                                    securityException.getMessage())));
+                        } catch (RemoteException remoteException) {
+                            Log.e(
+                                    TAG,
+                                    "Exception for HealthConnectMigrationUiState could not be sent"
+                                            + " to the caller.",
+                                    remoteException);
+                        }
+                    } catch (RuntimeException e) {
+                        // exception getting the state from the disk
+                        try {
+                            callback.onError(
+                                    new HealthConnectExceptionParcel(
+                                            new HealthConnectException(
+                                                    HealthConnectException.ERROR_IO,
+                                                    e.getMessage())));
+                        } catch (RemoteException remoteException) {
+                            Log.e(
+                                    TAG,
+                                    "Exception for HealthConnectMigrationUiState could not be sent"
+                                            + " to the caller.",
+                                    remoteException);
+                        }
+                    }
+                });
+    }
+
     private void tryAcquireApiCallQuota(
             int uid,
             @QuotaCategory.Type int quotaCategory,
@@ -1807,7 +1873,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     /** Finds the UID of the {@code packageName} in the given {@code context}. */
     private int getPackageUid(@NonNull Context context, @NonNull String packageName) {
         try {
-            return context.getPackageManager().getPackageUid(packageName, /*flags=*/ 0);
+            return context.getPackageManager().getPackageUid(packageName, /* flags= */ 0);
         } catch (PackageManager.NameNotFoundException e) {
             return Process.INVALID_UID;
         }
