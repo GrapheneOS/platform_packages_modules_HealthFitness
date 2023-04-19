@@ -275,20 +275,14 @@ public class AggregateTableRequest {
     }
 
     private static String getSqlCommandFor(@AggregationType.AggregateOperationType int type) {
-        switch (type) {
-            case MAX:
-                return "MAX";
-            case MIN:
-                return "MIN";
-            case AVG:
-                return "AVG";
-            case SUM:
-                return "SUM";
-            case COUNT:
-                return "COUNT";
-            default:
-                return null;
-        }
+        return switch (type) {
+            case MAX -> "MAX";
+            case MIN -> "MIN";
+            case AVG -> "AVG";
+            case SUM -> "SUM";
+            case COUNT -> "COUNT";
+            default -> null;
+        };
     }
 
     private String appendAggregateCommand(StringBuilder builder, boolean isMetadata) {

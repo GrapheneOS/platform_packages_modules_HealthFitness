@@ -65,9 +65,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectInsertRecords");
         assertThat(data.size()).isAtLeast(2);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.INSERT_DATA);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(1).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.INSERT_DATA);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.SUCCESS);
         assertThat(atom.getErrorCode()).isEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -79,9 +80,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectInsertRecordsError");
         assertThat(data.size()).isAtLeast(2);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.INSERT_DATA);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(1).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.INSERT_DATA);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.ERROR);
         assertThat(atom.getErrorCode()).isNotEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -90,14 +92,14 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
     }
 
     public void testUpdateRecords() throws Exception {
-
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectUpdateRecords");
 
         assertThat(data.size()).isAtLeast(3);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.UPDATE_DATA);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(2).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.UPDATE_DATA);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.SUCCESS);
         assertThat(atom.getErrorCode()).isEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -106,14 +108,14 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
     }
 
     public void testUpdateRecordsError() throws Exception {
-
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectUpdateRecordsError");
 
         assertThat(data.size()).isAtLeast(3);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.UPDATE_DATA);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(2).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.UPDATE_DATA);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.ERROR);
         assertThat(atom.getErrorCode()).isNotEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -125,23 +127,32 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectDeleteRecords");
         assertThat(data.size()).isAtLeast(3);
-        HealthConnectApiCalled atom =
-                data.get(2).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.DELETE_DATA);
-        assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.SUCCESS);
-        assertThat(atom.getErrorCode()).isEqualTo(0);
-        assertThat(atom.getDurationMillis()).isAtLeast(0);
-        assertThat(atom.getNumberOfRecords()).isEqualTo(2);
-        assertThat(atom.getRateLimit()).isEqualTo(RateLimit.NOT_USED);
+        int deletedRecords = 0;
+        for (StatsLog.EventMetricData datum : data) {
+            HealthConnectApiCalled atom =
+                    datum.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
+
+            if (atom.getApiMethod().equals(ApiMethod.DELETE_DATA)
+                    && atom.getNumberOfRecords() == 1) {
+                deletedRecords++;
+                assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.SUCCESS);
+                assertThat(atom.getErrorCode()).isEqualTo(0);
+                assertThat(atom.getDurationMillis()).isAtLeast(0);
+                assertThat(atom.getRateLimit()).isEqualTo(RateLimit.NOT_USED);
+            }
+        }
+        assertThat(deletedRecords).isAtLeast(2);
     }
 
     public void testDeleteRecordsError() throws Exception {
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectDeleteRecordsError");
         assertThat(data.size()).isAtLeast(3);
+        StatsLog.EventMetricData event =
+                getEventForApiMethod(data, ApiMethod.DELETE_DATA, ApiStatus.ERROR);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(2).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.DELETE_DATA);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.ERROR);
         assertThat(atom.getErrorCode()).isNotEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -152,9 +163,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectReadRecords");
         assertThat(data.size()).isAtLeast(3);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.READ_DATA);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(2).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.READ_DATA);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.SUCCESS);
         assertThat(atom.getErrorCode()).isEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -166,9 +178,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectReadRecordsError");
         assertThat(data.size()).isAtLeast(2);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.READ_DATA);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(1).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.READ_DATA);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.ERROR);
         assertThat(atom.getErrorCode()).isNotEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -179,9 +192,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectGetChangeLogToken");
         assertThat(data.size()).isAtLeast(2);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.GET_CHANGES_TOKEN);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(1).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.GET_CHANGES_TOKEN);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.SUCCESS);
         assertThat(atom.getErrorCode()).isEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -193,9 +207,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectGetChangeLogTokenError");
         assertThat(data.size()).isAtLeast(2);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.GET_CHANGES_TOKEN);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(1).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.GET_CHANGES_TOKEN);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.ERROR);
         assertThat(atom.getErrorCode()).isNotEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -207,9 +222,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectGetChangeLogs");
         assertThat(data.size()).isAtLeast(5);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.GET_CHANGES);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(4).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.GET_CHANGES);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.SUCCESS);
         assertThat(atom.getErrorCode()).isEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -221,9 +237,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectGetChangeLogsError");
         assertThat(data.size()).isAtLeast(2);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.GET_CHANGES);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(1).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.GET_CHANGES);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.ERROR);
         assertThat(atom.getErrorCode()).isNotEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -234,9 +251,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectAggregatedData");
         assertThat(data.size()).isAtLeast(2);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.READ_AGGREGATED_DATA);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(1).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.READ_AGGREGATED_DATA);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.SUCCESS);
         assertThat(atom.getErrorCode()).isEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -248,9 +266,10 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         List<StatsLog.EventMetricData> data =
                 uploadAtomConfigAndTriggerTest("testHealthConnectAggregatedDataError");
         assertThat(data.size()).isAtLeast(2);
+        StatsLog.EventMetricData event = getEventForApiMethod(data, ApiMethod.READ_AGGREGATED_DATA);
+        assertThat(event).isNotNull();
         HealthConnectApiCalled atom =
-                data.get(1).getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
-        assertThat(atom.getApiMethod()).isEqualTo(ApiMethod.READ_AGGREGATED_DATA);
+                event.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
         assertThat(atom.getApiStatus()).isEqualTo(ApiStatus.ERROR);
         assertThat(atom.getErrorCode()).isNotEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
@@ -271,5 +290,31 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         ApiExtensionAtoms.registerAllExtensions(registry);
 
         return ReportUtils.getEventMetricDataList(getDevice(), registry);
+    }
+
+    private StatsLog.EventMetricData getEventForApiMethod(
+            List<StatsLog.EventMetricData> data, ApiMethod apiMethod, ApiStatus status) {
+        for (StatsLog.EventMetricData datum : data) {
+            HealthConnectApiCalled atom =
+                    datum.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
+
+            if (atom.getApiMethod().equals(apiMethod) && atom.getApiStatus().equals(status)) {
+                return datum;
+            }
+        }
+        return null;
+    }
+
+    private StatsLog.EventMetricData getEventForApiMethod(
+            List<StatsLog.EventMetricData> data, ApiMethod apiMethod) {
+        for (StatsLog.EventMetricData datum : data) {
+            HealthConnectApiCalled atom =
+                    datum.getAtom().getExtension(ApiExtensionAtoms.healthConnectApiCalled);
+
+            if (atom.getApiMethod().equals(apiMethod)) {
+                return datum;
+            }
+        }
+        return null;
     }
 }

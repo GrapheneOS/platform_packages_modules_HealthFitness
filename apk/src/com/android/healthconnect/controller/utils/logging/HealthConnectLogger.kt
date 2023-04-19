@@ -15,8 +15,8 @@
  */
 package com.android.healthconnect.controller.utils.logging
 
-import android.health.HealthFitnessStatsLog
-import android.health.HealthFitnessStatsLog.*
+import com.android.healthconnect.controller.HealthFitnessUiStatsLog
+import com.android.healthconnect.controller.HealthFitnessUiStatsLog.*
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -38,18 +38,18 @@ class HealthConnectLogger @Inject constructor() {
 
     /** Logs the impression of a page. */
     fun logPageImpression() {
-        HealthFitnessStatsLog.write(HEALTH_CONNECT_UI_IMPRESSION, pageName.impressionId)
+        HealthFitnessUiStatsLog.write(HEALTH_CONNECT_UI_IMPRESSION, pageName.impressionId)
     }
 
     /** Logs the impression of an element. */
     fun logImpression(element: ElementName) {
-        HealthFitnessStatsLog.write(
+        HealthFitnessUiStatsLog.write(
             HEALTH_CONNECT_UI_IMPRESSION, pageName.impressionId, element.impressionId)
     }
 
     /** Logs the interaction with an element. */
     fun logInteraction(element: ElementName, action: UIAction = UIAction.ACTION_CLICK) {
-        HealthFitnessStatsLog.write(
+        HealthFitnessUiStatsLog.write(
             HEALTH_CONNECT_UI_INTERACTION, pageName.interactionId, element.interactionId, action.id)
     }
 }
