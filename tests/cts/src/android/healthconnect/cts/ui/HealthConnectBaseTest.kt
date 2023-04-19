@@ -18,7 +18,6 @@ package android.healthconnect.cts.ui
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.healthconnect.cts.lib.UiTestUtils.skipOnboarding
 import androidx.test.core.app.ApplicationProvider
 import com.android.compatibility.common.util.SystemUtil.runShellCommandOrThrow
 import org.junit.Assume
@@ -35,8 +34,6 @@ open class HealthConnectBaseTest {
         runShellCommandOrThrow("cmd statusbar collapse")
 
         unlockDevice()
-
-        skipOnboarding(context)
     }
 
     private fun unlockDevice() {
