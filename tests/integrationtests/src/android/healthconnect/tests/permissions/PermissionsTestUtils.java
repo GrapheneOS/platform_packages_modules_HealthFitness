@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package android.healthconnect.tests.withmanagepermissions;
+package android.healthconnect.tests.permissions;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assume.assumeTrue;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
-import android.health.connect.HealthPermissions;
 import android.health.connect.migration.MigrationException;
 import android.os.OutcomeReceiver;
 import android.util.Log;
@@ -38,25 +35,6 @@ import java.util.concurrent.TimeUnit;
 
 public class PermissionsTestUtils {
     private static final String TAG = "HCPermissionsTestUtils";
-
-    /**
-     * Skips test if the test app doesn't hold {@link HealthPermissions.MANAGE_HEALTH_PERMISSIONS}.
-     * Should be called from the test or test setup methods.
-     *
-     * <p>{@link HealthPermissions.MANAGE_HEALTH_PERMISSIONS} is protected at signature level, and
-     * should be granted automatically if it's possible to hold. This method simply check if test
-     * package holds the permission.
-     */
-    public static void assumeHoldManageHealthPermissionsPermission(Context context) {
-        assumeTrue(
-                "Skipping test - test cannot hold "
-                        + HealthPermissions.MANAGE_HEALTH_PERMISSIONS
-                        + " for the build-under-test. This is likely because the build uses "
-                        + "mainline prebuilts and therefore does not have a compatible signature "
-                        + "with this test app. See the test class Javadoc for more info.",
-                context.checkSelfPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
-                        == PackageManager.PERMISSION_GRANTED);
-    }
 
     public static void startMigration() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();

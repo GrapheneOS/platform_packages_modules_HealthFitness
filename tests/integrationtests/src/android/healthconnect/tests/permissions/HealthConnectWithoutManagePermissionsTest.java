@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.tests.withoutmanagepermissions;
+package android.healthconnect.tests.permissions;
 
 import static org.junit.Assert.fail;
 
@@ -37,7 +37,7 @@ import org.junit.runner.RunWith;
  * expected for holders of the permission, please see {@link
  * android.healthconnect.tests.withmanagepermissions.HealthConnectWithManagePermissionsTest}.
  *
- * <p><b>Build/Install/Run:</b> {@code atest HealthConnectWithoutManagePermissionsIntegrationTests}.
+ * <p><b>Build/Install/Run:</b> {@code atest HealthFitnessIntegrationTests}.
  */
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectWithoutManagePermissionsTest {
