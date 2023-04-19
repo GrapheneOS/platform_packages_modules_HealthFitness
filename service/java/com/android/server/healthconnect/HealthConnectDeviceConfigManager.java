@@ -36,6 +36,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class HealthConnectDeviceConfigManager implements DeviceConfig.OnPropertiesChangedListener {
     public static final String EXERCISE_ROUTE_FEATURE_FLAG = "exercise_routes_enable";
+    public static final String ENABLE_RATE_LIMITER_FLAG = "enable_rate_limiter";
     private static final String MAX_READ_REQUESTS_PER_24H_FOREGROUND_FLAG =
             "max_read_requests_per_24h_foreground";
     private static final String MAX_READ_REQUESTS_PER_24H_BACKGROUND_FLAG =
@@ -59,6 +60,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     public static final String SESSION_DATATYPE_FEATURE_FLAG = "session_types_enable";
 
     public static final boolean EXERCISE_ROUTE_DEFAULT_FLAG_VALUE = true;
+    public static final boolean ENABLE_RATE_LIMITER_DEFAULT_FLAG_VALUE = true;
     public static final int QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE = 1000;
     public static final int QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE = 5000;
     public static final int QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE = 300;
@@ -113,6 +115,13 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
             mLock.readLock().unlock();
         }
     }
+
+    @GuardedBy("mLock")
+    private boolean mRateLimiterEnabled =
+            DeviceConfig.getBoolean(
+                    DeviceConfig.NAMESPACE_HEALTH_FITNESS,
+                    ENABLE_RATE_LIMITER_FLAG,
+                    ENABLE_RATE_LIMITER_DEFAULT_FLAG_VALUE);
 
     /** Returns if operations with sessions datatypes are enabled. */
     public boolean isSessionDatatypeFeatureEnabled() {
@@ -190,6 +199,12 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                         RECORD_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE));
         RateLimiter.updateApiCallQuotaMap(quotaBucketToMaxApiCallQuotaMap);
         RateLimiter.updateMemoryQuotaMap(quotaBucketToMaxMemoryQuotaMap);
+        mLock.readLock().lock();
+        try {
+            RateLimiter.updateEnableRateLimiterFlag(mRateLimiterEnabled);
+        } finally {
+            mLock.readLock().unlock();
+        }
     }
 
     @Override
@@ -218,6 +233,17 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                             properties.getBoolean(
                                     SESSION_DATATYPE_FEATURE_FLAG,
                                     SESSION_DATATYPE_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(ENABLE_RATE_LIMITER_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mRateLimiterEnabled =
+                            properties.getBoolean(
+                                    ENABLE_RATE_LIMITER_FLAG,
+                                    ENABLE_RATE_LIMITER_DEFAULT_FLAG_VALUE);
+                    RateLimiter.updateEnableRateLimiterFlag(mRateLimiterEnabled);
                 } finally {
                     mLock.writeLock().unlock();
                 }

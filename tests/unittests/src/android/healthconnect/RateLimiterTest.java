@@ -91,6 +91,7 @@ public class RateLimiterTest {
                 HealthConnectDeviceConfigManager.RECORD_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE);
         RateLimiter.updateApiCallQuotaMap(quotaBucketToMaxApiCallQuotaMap);
         RateLimiter.updateMemoryQuotaMap(quotaBucketToMaxMemoryQuotaMap);
+        RateLimiter.updateEnableRateLimiterFlag(true);
     }
 
     @Test
