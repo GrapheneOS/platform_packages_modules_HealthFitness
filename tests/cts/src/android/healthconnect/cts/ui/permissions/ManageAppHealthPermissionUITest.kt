@@ -17,7 +17,6 @@
 package android.healthconnect.cts.ui.permissions
 
 import android.content.pm.PackageManager
-import android.health.connect.HealthPermissions
 import android.health.connect.HealthPermissions.READ_HEIGHT
 import android.health.connect.HealthPermissions.WRITE_BODY_FAT
 import android.health.connect.HealthPermissions.WRITE_HEIGHT
@@ -33,7 +32,6 @@ import androidx.test.uiautomator.By
 import com.google.common.truth.Truth.assertThat
 import java.lang.Exception
 import org.junit.After
-import org.junit.Ignore
 import org.junit.Test
 
 class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
@@ -48,7 +46,6 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @Ignore("TODO(b/265789268): Fix flake")
     fun grantPermission_updatesAppPermissions() {
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         context.launchMainActivity {
@@ -60,8 +57,6 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @Ignore(
-        "TODO(b/265789268): Fix flaky assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)")
     fun revokePermission_updatesAppPermissions() {
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         context.launchMainActivity {
@@ -75,8 +70,6 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @Ignore(
-        "TODO(b/265789268): Fix flaky assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEIGHT)")
     fun revokeAllPermissions_revokesAllAppPermissions() {
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
@@ -92,7 +85,6 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @Ignore("TODO(b/265789268): Fix flaky cannot find 'Remove all permissions?' view")
     fun revokeAllPermissions_allowsUserToDeleteAppData() {
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
@@ -128,8 +120,7 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     @After
     fun tearDown() {
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
-        revokePermissionViaPackageManager(
-            context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
         navigateBackToHomeScreen()
     }
 }
