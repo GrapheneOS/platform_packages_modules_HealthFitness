@@ -91,7 +91,7 @@ public class HeartRateRecordInternal
                         buildMetaData(), getStartTime(), getEndTime(), getExternalSamples())
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override
@@ -121,7 +121,8 @@ public class HeartRateRecordInternal
             heartRateRecords.add(
                     new HeartRateRecord.HeartRateSample(
                             heartRateSample.getBeatsPerMinute(),
-                            Instant.ofEpochMilli(heartRateSample.getEpochMillis())));
+                            Instant.ofEpochMilli(heartRateSample.getEpochMillis()),
+                            true));
         }
 
         return heartRateRecords;

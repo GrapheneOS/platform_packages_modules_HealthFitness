@@ -92,7 +92,7 @@ public final class BloodPressureRecordInternal extends InstantRecordInternal<Blo
                         Pressure.fromMillimetersOfMercury(getDiastolic()),
                         getBodyPosition())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

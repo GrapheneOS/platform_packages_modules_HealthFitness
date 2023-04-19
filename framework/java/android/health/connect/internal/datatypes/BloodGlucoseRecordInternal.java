@@ -92,7 +92,7 @@ public final class BloodGlucoseRecordInternal extends InstantRecordInternal<Bloo
                         getRelationToMeal(),
                         getMealType())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

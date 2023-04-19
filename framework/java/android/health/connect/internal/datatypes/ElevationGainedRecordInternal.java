@@ -52,7 +52,7 @@ public final class ElevationGainedRecordInternal
                         Length.fromMeters(getElevation()))
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

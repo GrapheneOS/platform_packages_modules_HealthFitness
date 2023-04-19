@@ -39,13 +39,15 @@ public final class OvulationTestRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param result Result of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private OvulationTestRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @OvulationTestResult.OvulationTestResults int result) {
-        super(metadata, time, zoneOffset);
+            @OvulationTestResult.OvulationTestResults int result,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
@@ -167,11 +169,20 @@ public final class OvulationTestRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link OvulationTestRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public OvulationTestRecord buildWithoutValidation() {
+            return new OvulationTestRecord(mMetadata, mTime, mZoneOffset, mResult, true);
+        }
+
+        /**
          * @return Object of {@link OvulationTestRecord}
          */
         @NonNull
         public OvulationTestRecord build() {
-            return new OvulationTestRecord(mMetadata, mTime, mZoneOffset, mResult);
+            return new OvulationTestRecord(mMetadata, mTime, mZoneOffset, mResult, false);
         }
     }
 

@@ -20,6 +20,7 @@ import android.annotation.FloatRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.units.Length;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.ExerciseRouteInternal;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -160,6 +161,7 @@ public final class ExerciseRoute implements Parcelable {
          *     uncertainty, in [Length] unit. Must be non-negative value.
          * @param altitude An altitude of a location represented as a float, in [Length] unit above
          *     sea level.
+         * @param skipValidation Boolean flag to skip validation of record values.
          * @see ExerciseRoute
          */
         private Location(
@@ -168,33 +170,24 @@ public final class ExerciseRoute implements Parcelable {
                 @FloatRange(from = MIN_LONGITUDE, to = MAX_LONGITUDE) double longitude,
                 @Nullable Length horizontalAccuracy,
                 @Nullable Length verticalAccuracy,
-                @Nullable Length altitude) {
+                @Nullable Length altitude,
+                boolean skipValidation) {
             Objects.requireNonNull(time);
 
-            if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE) {
-                throw new IllegalArgumentException(
-                        "Latitude must be in range from "
-                                + MIN_LATITUDE
-                                + " to "
-                                + MAX_LATITUDE
-                                + ".");
-            }
+            if (!skipValidation) {
+                ValidationUtils.requireInRange(latitude, MIN_LATITUDE, MAX_LATITUDE, "Latitude");
+                ValidationUtils.requireInRange(
+                        longitude, MIN_LONGITUDE, MAX_LONGITUDE, "Longitude");
 
-            if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
-                throw new IllegalArgumentException(
-                        "Longitude must be in range from "
-                                + MIN_LONGITUDE
-                                + " to "
-                                + MAX_LONGITUDE
-                                + ".");
-            }
+                if (horizontalAccuracy != null) {
+                    ValidationUtils.requireNonNegative(
+                            horizontalAccuracy.getInMeters(), "Horizontal accuracy");
+                }
 
-            if (horizontalAccuracy != null && horizontalAccuracy.getInMeters() < 0) {
-                throw new IllegalArgumentException("Horizontal accuracy must be non-negative");
-            }
-
-            if (verticalAccuracy != null && verticalAccuracy.getInMeters() < 0) {
-                throw new IllegalArgumentException("Vertical accuracy must be non-negative");
+                if (verticalAccuracy != null && verticalAccuracy.getInMeters() < 0) {
+                    ValidationUtils.requireNonNegative(
+                            verticalAccuracy.getInMeters(), "Vertical accuracy");
+                }
             }
 
             mTime = time;
@@ -368,6 +361,22 @@ public final class ExerciseRoute implements Parcelable {
                 return this;
             }
 
+            /**
+             * @return Object of {@link Location} without validating the values.
+             * @hide
+             */
+            @NonNull
+            public Location buildWithoutValidation() {
+                return new Location(
+                        mTime,
+                        mLatitude,
+                        mLongitude,
+                        mHorizontalAccuracy,
+                        mVerticalAccuracy,
+                        mAltitude,
+                        true);
+            }
+
             /** Builds {@link Location} */
             @NonNull
             public Location build() {
@@ -377,7 +386,8 @@ public final class ExerciseRoute implements Parcelable {
                         mLongitude,
                         mHorizontalAccuracy,
                         mVerticalAccuracy,
-                        mAltitude);
+                        mAltitude,
+                        false);
             }
         }
     }

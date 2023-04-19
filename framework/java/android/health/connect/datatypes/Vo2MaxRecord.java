@@ -43,14 +43,16 @@ public final class Vo2MaxRecord extends InstantRecord {
      * @param zoneOffset Zone offset of the user when the activity started
      * @param measurementMethod MeasurementMethod of this activity
      * @param vo2MillilitersPerMinuteKilogram Vo2MillilitersPerMinuteKilogram of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private Vo2MaxRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
             @Vo2MaxMeasurementMethod.Vo2MaxMeasurementMethodTypes int measurementMethod,
-            double vo2MillilitersPerMinuteKilogram) {
-        super(metadata, time, zoneOffset);
+            double vo2MillilitersPerMinuteKilogram,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
@@ -58,8 +60,10 @@ public final class Vo2MaxRecord extends InstantRecord {
                 measurementMethod,
                 Vo2MaxMeasurementMethod.VALID_TYPES,
                 Vo2MaxMeasurementMethod.class.getSimpleName());
-        ValidationUtils.requireInRange(
-                vo2MillilitersPerMinuteKilogram, 0.0, 100.0, "vo2MillilitersPerMinuteKilogram");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(
+                    vo2MillilitersPerMinuteKilogram, 0.0, 100.0, "vo2MillilitersPerMinuteKilogram");
+        }
         mMeasurementMethod = measurementMethod;
         mVo2MillilitersPerMinuteKilogram = vo2MillilitersPerMinuteKilogram;
     }
@@ -189,6 +193,21 @@ public final class Vo2MaxRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link Vo2MaxRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public Vo2MaxRecord buildWithoutValidation() {
+            return new Vo2MaxRecord(
+                    mMetadata,
+                    mTime,
+                    mZoneOffset,
+                    mMeasurementMethod,
+                    mVo2MillilitersPerMinuteKilogram,
+                    true);
+        }
+
+        /**
          * @return Object of {@link Vo2MaxRecord}
          */
         @NonNull
@@ -198,7 +217,8 @@ public final class Vo2MaxRecord extends InstantRecord {
                     mTime,
                     mZoneOffset,
                     mMeasurementMethod,
-                    mVo2MillilitersPerMinuteKilogram);
+                    mVo2MillilitersPerMinuteKilogram,
+                    false);
         }
     }
 
