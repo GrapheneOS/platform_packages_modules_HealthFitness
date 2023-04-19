@@ -52,7 +52,7 @@ public final class TotalCaloriesBurnedRecordInternal
                         Energy.fromCalories(getEnergy()))
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

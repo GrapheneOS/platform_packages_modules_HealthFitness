@@ -41,19 +41,23 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param basalMetabolicRate BasalMetabolicRate of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private BasalMetabolicRateRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull Power basalMetabolicRate) {
-        super(metadata, time, zoneOffset);
+            @NonNull Power basalMetabolicRate,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(basalMetabolicRate);
-        ValidationUtils.requireInRange(
-                basalMetabolicRate.getInWatts(), 0.0, 484.259, "basalMetabolicRate");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(
+                    basalMetabolicRate.getInWatts(), 0.0, 484.259, "basalMetabolicRate");
+        }
         mBasalMetabolicRate = basalMetabolicRate;
     }
 
@@ -127,11 +131,22 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link BasalMetabolicRateRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public BasalMetabolicRateRecord buildWithoutValidation() {
+            return new BasalMetabolicRateRecord(
+                    mMetadata, mTime, mZoneOffset, mBasalMetabolicRate, true);
+        }
+
+        /**
          * @return Object of {@link BasalMetabolicRateRecord}
          */
         @NonNull
         public BasalMetabolicRateRecord build() {
-            return new BasalMetabolicRateRecord(mMetadata, mTime, mZoneOffset, mBasalMetabolicRate);
+            return new BasalMetabolicRateRecord(
+                    mMetadata, mTime, mZoneOffset, mBasalMetabolicRate, false);
         }
     }
 

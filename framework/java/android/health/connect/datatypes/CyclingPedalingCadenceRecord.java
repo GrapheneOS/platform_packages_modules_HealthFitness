@@ -38,6 +38,7 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param cyclingPedalingCadenceRecordSamples Samples of recorded CyclingPedalingCadenceRecord
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private CyclingPedalingCadenceRecord(
             @NonNull Metadata metadata,
@@ -45,17 +46,20 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<CyclingPedalingCadenceRecordSample> cyclingPedalingCadenceRecordSamples) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull List<CyclingPedalingCadenceRecordSample> cyclingPedalingCadenceRecordSamples,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(cyclingPedalingCadenceRecordSamples);
-        ValidationUtils.validateSampleStartAndEndTime(
-                startTime,
-                endTime,
-                cyclingPedalingCadenceRecordSamples.stream()
-                        .map(
-                                CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
-                                        ::getTime)
-                        .toList());
+        if (!skipValidation) {
+            ValidationUtils.validateSampleStartAndEndTime(
+                    startTime,
+                    endTime,
+                    cyclingPedalingCadenceRecordSamples.stream()
+                            .map(
+                                    CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
+                                            ::getTime)
+                            .toList());
+        }
         mCyclingPedalingCadenceRecordSamples = cyclingPedalingCadenceRecordSamples;
     }
 
@@ -80,9 +84,24 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
          */
         public CyclingPedalingCadenceRecordSample(
                 double revolutionsPerMinute, @NonNull Instant time) {
+            this(revolutionsPerMinute, time, false);
+        }
+
+        /**
+         * CyclingPedalingCadenceRecord sample for entries of {@link CyclingPedalingCadenceRecord}
+         *
+         * @param revolutionsPerMinute Cycling revolutions per minute.
+         * @param time The point in time when the measurement was taken.
+         * @param skipValidation Boolean flag to skip validation of record values.
+         * @hide
+         */
+        public CyclingPedalingCadenceRecordSample(
+                double revolutionsPerMinute, @NonNull Instant time, boolean skipValidation) {
             Objects.requireNonNull(time);
-            ValidationUtils.requireInRange(
-                    revolutionsPerMinute, 0.0, 10000.0, "revolutionsPerMinute");
+            if (!skipValidation) {
+                ValidationUtils.requireInRange(
+                        revolutionsPerMinute, 0.0, 10000.0, "revolutionsPerMinute");
+            }
             mTime = time;
             mRevolutionsPerMinute = revolutionsPerMinute;
         }
@@ -196,6 +215,22 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link CyclingPedalingCadenceRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public CyclingPedalingCadenceRecord buildWithoutValidation() {
+            return new CyclingPedalingCadenceRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mCyclingPedalingCadenceRecordSamples,
+                    true);
+        }
+
+        /**
          * @return Object of {@link CyclingPedalingCadenceRecord}
          */
         @NonNull
@@ -206,7 +241,8 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mCyclingPedalingCadenceRecordSamples);
+                    mCyclingPedalingCadenceRecordSamples,
+                    false);
         }
     }
 

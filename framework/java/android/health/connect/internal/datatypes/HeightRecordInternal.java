@@ -46,7 +46,7 @@ public final class HeightRecordInternal extends InstantRecordInternal<HeightReco
     public HeightRecord toExternalRecord() {
         return new HeightRecord.Builder(buildMetaData(), getTime(), Length.fromMeters(getHeight()))
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

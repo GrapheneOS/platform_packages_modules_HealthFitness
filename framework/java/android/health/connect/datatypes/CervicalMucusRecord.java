@@ -45,14 +45,16 @@ public final class CervicalMucusRecord extends InstantRecord {
      * @param zoneOffset Zone offset of the user when the activity started
      * @param sensation Sensation of this activity
      * @param appearance Appearance of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private CervicalMucusRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
             @CervicalMucusSensation.CervicalMucusSensations int sensation,
-            @CervicalMucusAppearance.CervicalMucusAppearances int appearance) {
-        super(metadata, time, zoneOffset);
+            @CervicalMucusAppearance.CervicalMucusAppearances int appearance,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
@@ -229,11 +231,22 @@ public final class CervicalMucusRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link CervicalMucusRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public CervicalMucusRecord buildWithoutValidation() {
+            return new CervicalMucusRecord(
+                    mMetadata, mTime, mZoneOffset, mSensation, mAppearance, true);
+        }
+
+        /**
          * @return Object of {@link CervicalMucusRecord}
          */
         @NonNull
         public CervicalMucusRecord build() {
-            return new CervicalMucusRecord(mMetadata, mTime, mZoneOffset, mSensation, mAppearance);
+            return new CervicalMucusRecord(
+                    mMetadata, mTime, mZoneOffset, mSensation, mAppearance, false);
         }
     }
 

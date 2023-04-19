@@ -46,7 +46,7 @@ public final class RespiratoryRateRecordInternal
     public RespiratoryRateRecord toExternalRecord() {
         return new RespiratoryRateRecord.Builder(buildMetaData(), getTime(), getRate())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

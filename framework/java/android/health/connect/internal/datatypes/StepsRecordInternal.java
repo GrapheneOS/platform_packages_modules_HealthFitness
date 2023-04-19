@@ -48,7 +48,7 @@ public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecor
         return new StepsRecord.Builder(buildMetaData(), getStartTime(), getEndTime(), getCount())
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

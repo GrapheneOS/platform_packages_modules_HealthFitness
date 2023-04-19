@@ -56,6 +56,7 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param energy Energy burned during this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private TotalCaloriesBurnedRecord(
             @NonNull Metadata metadata,
@@ -63,15 +64,18 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull Energy energy) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull Energy energy,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(startZoneOffset);
         Objects.requireNonNull(startTime);
         Objects.requireNonNull(endZoneOffset);
         Objects.requireNonNull(energy);
-        ValidationUtils.requireInRange(energy.getInCalories(), 0.0, 1000000000.0, "energy");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(energy.getInCalories(), 0.0, 1000000000.0, "energy");
+        }
         mEnergy = energy;
     }
 
@@ -171,12 +175,34 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link TotalCaloriesBurnedRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public TotalCaloriesBurnedRecord buildWithoutValidation() {
+            return new TotalCaloriesBurnedRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mEnergy,
+                    true);
+        }
+
+        /**
          * @return Object of {@link TotalCaloriesBurnedRecord}
          */
         @NonNull
         public TotalCaloriesBurnedRecord build() {
             return new TotalCaloriesBurnedRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mEnergy);
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mEnergy,
+                    false);
         }
     }
 

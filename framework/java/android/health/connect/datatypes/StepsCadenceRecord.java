@@ -38,6 +38,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param stepsCadenceRecordSamples Samples of recorded StepsCadenceRecord
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private StepsCadenceRecord(
             @NonNull Metadata metadata,
@@ -45,13 +46,18 @@ public final class StepsCadenceRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<StepsCadenceRecordSample> stepsCadenceRecordSamples) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull List<StepsCadenceRecordSample> stepsCadenceRecordSamples,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(stepsCadenceRecordSamples);
-        ValidationUtils.validateSampleStartAndEndTime(
-                startTime,
-                endTime,
-                stepsCadenceRecordSamples.stream().map(StepsCadenceRecordSample::getTime).toList());
+        if (!skipValidation) {
+            ValidationUtils.validateSampleStartAndEndTime(
+                    startTime,
+                    endTime,
+                    stepsCadenceRecordSamples.stream()
+                            .map(StepsCadenceRecordSample::getTime)
+                            .toList());
+        }
         mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
     }
 
@@ -75,8 +81,23 @@ public final class StepsCadenceRecord extends IntervalRecord {
          * @param time The point in time when the measurement was taken.
          */
         public StepsCadenceRecordSample(double rate, @NonNull Instant time) {
+            this(rate, time, false);
+        }
+
+        /**
+         * StepsCadenceRecord sample for entries of {@link StepsCadenceRecord}
+         *
+         * @param rate Rate in steps per minute.
+         * @param time The point in time when the measurement was taken.
+         * @param skipValidation Boolean flag to skip validation of record values.
+         * @hide
+         */
+        public StepsCadenceRecordSample(
+                double rate, @NonNull Instant time, boolean skipValidation) {
             Objects.requireNonNull(time);
-            ValidationUtils.requireInRange(rate, 0.0, 10000.0, "rate");
+            if (!skipValidation) {
+                ValidationUtils.requireInRange(rate, 0.0, 10000.0, "rate");
+            }
             mTime = time;
             mRate = rate;
         }
@@ -184,6 +205,21 @@ public final class StepsCadenceRecord extends IntervalRecord {
             mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
+        /**
+         * @return Object of {@link StepsCadenceRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public StepsCadenceRecord buildWithoutValidation() {
+            return new StepsCadenceRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mStepsCadenceRecordSamples,
+                    true);
+        }
 
         /**
          * @return Object of {@link StepsCadenceRecord}
@@ -196,7 +232,8 @@ public final class StepsCadenceRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mStepsCadenceRecordSamples);
+                    mStepsCadenceRecordSamples,
+                    false);
         }
     }
 

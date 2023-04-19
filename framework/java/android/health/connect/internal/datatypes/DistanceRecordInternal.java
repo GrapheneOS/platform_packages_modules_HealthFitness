@@ -51,7 +51,7 @@ public final class DistanceRecordInternal extends IntervalRecordInternal<Distanc
                         Length.fromMeters(getDistance()))
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

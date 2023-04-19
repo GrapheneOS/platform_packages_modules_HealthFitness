@@ -39,10 +39,16 @@ public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
     private final TimeInterval mInterval;
     private final Length mLength;
 
-    private ExerciseLap(@NonNull TimeInterval interval, @Nullable Length length) {
+    private ExerciseLap(
+            @NonNull TimeInterval interval, @Nullable Length length, boolean skipValidation) {
         Objects.requireNonNull(interval);
-        ValidationUtils.requireInRangeIfExists(
-                length, Length.fromMeters(0.0), Length.fromMeters(MAX_LAP_LENGTH_METRES), "length");
+        if (!skipValidation) {
+            ValidationUtils.requireInRangeIfExists(
+                    length,
+                    Length.fromMeters(0.0),
+                    Length.fromMeters(MAX_LAP_LENGTH_METRES),
+                    "length");
+        }
         mInterval = interval;
         mLength = length;
     }
@@ -128,17 +134,23 @@ public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
         @NonNull
         public ExerciseLap.Builder setLength(@NonNull Length length) {
             Objects.requireNonNull(length);
-            if (length.getInMeters() < 0 || length.getInMeters() > MAX_LAP_LENGTH_METRES) {
-                throw new IllegalArgumentException("Length must be between 0-1000000 metres");
-            }
             mLength = length;
             return this;
+        }
+
+        /**
+         * @return Object of {@link ExerciseLap} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public ExerciseLap buildWithoutValidation() {
+            return new ExerciseLap(mInterval, mLength, true);
         }
 
         /** Builds {@link ExerciseLap} instance. */
         @NonNull
         public ExerciseLap build() {
-            return new ExerciseLap(mInterval, mLength);
+            return new ExerciseLap(mInterval, mLength, false);
         }
     }
 }

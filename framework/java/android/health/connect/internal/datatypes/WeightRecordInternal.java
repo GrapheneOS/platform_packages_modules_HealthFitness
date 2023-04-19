@@ -46,7 +46,7 @@ public final class WeightRecordInternal extends InstantRecordInternal<WeightReco
     public WeightRecord toExternalRecord() {
         return new WeightRecord.Builder(buildMetaData(), getTime(), Mass.fromGrams(getWeight()))
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

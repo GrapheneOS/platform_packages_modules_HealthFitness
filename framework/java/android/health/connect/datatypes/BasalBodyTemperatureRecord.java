@@ -42,6 +42,7 @@ public final class BasalBodyTemperatureRecord extends InstantRecord {
      * @param zoneOffset Zone offset of the user when the activity started
      * @param measurementLocation MeasurementLocation of this activity
      * @param temperature Temperature of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private BasalBodyTemperatureRecord(
             @NonNull Metadata metadata,
@@ -49,13 +50,16 @@ public final class BasalBodyTemperatureRecord extends InstantRecord {
             @NonNull ZoneOffset zoneOffset,
             @BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations
                     int measurementLocation,
-            @NonNull Temperature temperature) {
-        super(metadata, time, zoneOffset);
+            @NonNull Temperature temperature,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(temperature);
-        ValidationUtils.requireInRange(temperature.getInCelsius(), 0.0, 100, "temperature");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(temperature.getInCelsius(), 0.0, 100, "temperature");
+        }
         validateIntDefValue(
                 measurementLocation,
                 BodyTemperatureMeasurementLocation.VALID_TYPES,
@@ -150,12 +154,22 @@ public final class BasalBodyTemperatureRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link BasalBodyTemperatureRecord } without validating the values.
+         * @hide
+         */
+        @NonNull
+        public BasalBodyTemperatureRecord buildWithoutValidation() {
+            return new BasalBodyTemperatureRecord(
+                    mMetadata, mTime, mZoneOffset, mMeasurementLocation, mTemperature, true);
+        }
+
+        /**
          * @return Object of {@link BasalBodyTemperatureRecord}
          */
         @NonNull
         public BasalBodyTemperatureRecord build() {
             return new BasalBodyTemperatureRecord(
-                    mMetadata, mTime, mZoneOffset, mMeasurementLocation, mTemperature);
+                    mMetadata, mTime, mZoneOffset, mMeasurementLocation, mTemperature, false);
         }
     }
 
