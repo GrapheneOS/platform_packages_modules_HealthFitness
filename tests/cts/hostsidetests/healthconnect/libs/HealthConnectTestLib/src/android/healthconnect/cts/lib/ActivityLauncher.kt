@@ -22,7 +22,7 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
 import android.health.connect.HealthConnectManager
 import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_PACKAGE_NAME
-import android.healthconnect.cts.lib.UiTestUtils.skipOnboardingIfAppears
+import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import com.android.compatibility.common.util.SystemUtil
 import com.android.compatibility.common.util.UiAutomatorUtils2.getUiDevice
 
@@ -34,10 +34,7 @@ object ActivityLauncher {
             Intent("android.health.connect.action.HEALTH_HOME_SETTINGS")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        executeBlockAndExit(block) {
-            startActivity(intent)
-            skipOnboardingIfAppears()
-        }
+        executeBlockAndExit(block) { startActivity(intent) }
     }
 
     fun Context.launchDataActivity(block: () -> Unit) {
@@ -45,9 +42,17 @@ object ActivityLauncher {
             Intent("android.health.connect.action.MANAGE_HEALTH_DATA")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        executeBlockAndExit(block) { startActivity(intent) }
+    }
+
+    fun Context.launchManagePermissionActivity(block: () -> Unit) {
+        val intent =
+            Intent("android.health.connect.action.HEALTH_HOME_SETTINGS")
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         executeBlockAndExit(block) {
             startActivity(intent)
-            skipOnboardingIfAppears()
+            clickOnText("App permissions")
         }
     }
 
@@ -67,7 +72,6 @@ object ActivityLauncher {
             SystemUtil.runWithShellPermissionIdentity(
                 {
                     startActivity(intent)
-                    skipOnboardingIfAppears()
                 },
                 GRANT_RUNTIME_PERMISSIONS)
         }
