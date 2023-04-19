@@ -55,14 +55,14 @@
     <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"sledování cyklu"</string>
     <string name="nutrition_category_uppercase" msgid="6665096097987741036">"Výživa"</string>
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"výživa"</string>
-    <string name="browse_data_category" msgid="4813955610391357638">"Procházet data"</string>
-    <string name="manage_data_section" msgid="5859629270946511903">"Spravovat data"</string>
+    <string name="browse_data_category" msgid="4813955610391357638">"Procházení dat"</string>
+    <string name="manage_data_section" msgid="5859629270946511903">"Správa dat"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Export dat"</string>
     <string name="delete_all_data_button" msgid="7238755635416521487">"Smazat všechna data"</string>
     <string name="no_categories" msgid="2636778482437506241">"Ve službě Health Connect nemáte žádná data"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Vaše data"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"Priorita aplikací"</string>
-    <string name="delete_category_data_button" msgid="2324773398768267043">"Smazat data kategorie <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="delete_category_data_button" msgid="2324773398768267043">"Smazat data v kategorii <xliff:g id="CATEGORY">%s</xliff:g>"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Všechny aplikace"</string>
     <string name="can_read" msgid="4568261079308309564">"Možnost číst tento typ dat: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Možnost zapisovat tento typ dat: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
@@ -293,10 +293,10 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Rozumím"</string>
     <string name="onboarding_title" msgid="7930941018430608076">"Začínáme s aplikací Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Služba Health Connect slouží k bezpečnému ukládání údajů o zdraví a kondici, což umožňuje jednoduše synchronizovat různé aplikace v telefonu"</string>
-    <string name="share_data" msgid="3481932156368883946">"Sdílejte data se svými aplikacemi"</string>
-    <string name="share_data_description" msgid="2919871301634375092">"Vyberte, která data mohou jednotlivé aplikace číst nebo zapisovat ve službě Health Connect"</string>
+    <string name="share_data" msgid="3481932156368883946">"Sdílení dat s aplikacemi"</string>
+    <string name="share_data_description" msgid="2919871301634375092">"Můžete si zvolit, které údaje mohou jednotlivé aplikace číst nebo zapisovat ve službě Health Connect"</string>
     <string name="manage_your_settings" msgid="7391184508015127137">"Spravujte nastavení a ochranu soukromí"</string>
-    <string name="manage_your_settings_description" msgid="557943168930365334">"Kdykoli změňte oprávnění aplikací a spravujte data"</string>
+    <string name="manage_your_settings_description" msgid="557943168930365334">"Oprávnění aplikace můžete kdykoliv změnit a data kdykoliv spravovat"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Zpět"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Začít"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Smazat data"</string>
@@ -319,9 +319,9 @@
     <string name="confirming_question_data_type_one_week" msgid="8346031951374422501">"Trvale smazat data typu <xliff:g id="DATA_TYPE">%s</xliff:g> z posledních 7 dní?"</string>
     <string name="confirming_question_data_type_one_month" msgid="7110328687576360400">"Trvale smazat data typu <xliff:g id="DATA_TYPE">%s</xliff:g> z posledních 30 dní?"</string>
     <string name="confirming_question_category_all" msgid="9182430869247761531">"Trvale smazat všechna data kategorie <xliff:g id="CATEGORY">%s</xliff:g>?"</string>
-    <string name="confirming_question_category_one_day" msgid="4886776948515472679">"Trvale smazat data kategorie <xliff:g id="CATEGORY">%s</xliff:g> z posledních 24 hodin?"</string>
-    <string name="confirming_question_category_one_week" msgid="1790565625674277693">"Trvale smazat data kategorie <xliff:g id="CATEGORY">%s</xliff:g> z posledních 7 dní?"</string>
-    <string name="confirming_question_category_one_month" msgid="9181788460112796273">"Trvale smazat data kategorie <xliff:g id="CATEGORY">%s</xliff:g> z posledních 30 dní?"</string>
+    <string name="confirming_question_category_one_day" msgid="4886776948515472679">"Trvale smazat data v kategorii <xliff:g id="CATEGORY">%s</xliff:g> z posledních 24 hodin?"</string>
+    <string name="confirming_question_category_one_week" msgid="1790565625674277693">"Trvale smazat data v kategorii <xliff:g id="CATEGORY">%s</xliff:g> z posledních 7 dní?"</string>
+    <string name="confirming_question_category_one_month" msgid="9181788460112796273">"Trvale smazat data v kategorii <xliff:g id="CATEGORY">%s</xliff:g> z posledních 30 dní?"</string>
     <string name="confirming_question_app_data_all" msgid="4818571921949673097">"Trvale smazat všechna data aplikace <xliff:g id="APP_DATA">%s</xliff:g>?"</string>
     <string name="confirming_question_app_data_one_day" msgid="444028969015975031">"Trvale smazat data aplikace <xliff:g id="APP_DATA">%s</xliff:g> z posledních 24 hodin?"</string>
     <string name="confirming_question_app_data_one_week" msgid="2096555081811730496">"Trvale smazat data aplikace <xliff:g id="APP_DATA">%s</xliff:g> z posledních 7 dní?"</string>

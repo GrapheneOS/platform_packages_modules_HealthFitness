@@ -291,9 +291,9 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Zašto Health Connect uklanja dopuštenja aplikacije"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ako se aplikacija obustavi ili ukloni s Google Playa, Health Connect automatski uklanja njezina dopuštenja.\n\nTo znači da ta aplikacija više ne može pristupati podacima pohranjenim u Health Connectu. Ako je ta aplikacija prethodno bilježila podatke, prikazuje se na popisu neaktivnih aplikacija."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Shvaćam"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Početak upotrebe Health Connecta"</string>
+    <string name="onboarding_title" msgid="7930941018430608076">"Počnite upotrebljavati Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect sprema podatke o vašem zdravlju i sportskim aktivnostima i pruža vam jednostavan način za sinkronizaciju različitih aplikacija na telefonu"</string>
-    <string name="share_data" msgid="3481932156368883946">"Dijeljenje podataka s aplikacijama"</string>
+    <string name="share_data" msgid="3481932156368883946">"Dijelite podatke s aplikacijama"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Odaberite podatke koje svaka aplikacija može čitati ili bilježiti u Health Connectu"</string>
     <string name="manage_your_settings" msgid="7391184508015127137">"Upravljajte postavkama i privatnosti"</string>
     <string name="manage_your_settings_description" msgid="557943168930365334">"Promijenite dopuštenja aplikacije i upravljajte svojim podacima"</string>

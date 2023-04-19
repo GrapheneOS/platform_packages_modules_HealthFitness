@@ -35,7 +35,7 @@
     <string name="entry_details_title" msgid="590184849040247850">"Detalls de l\'entrada"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Accés recent"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Cap aplicació ha accedit a Salut connectada recentment"</string>
-    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Consulta tots els accessos recents"</string>
+    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Mostra tots els accessos recents"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Consulta quines aplicacions han accedit a les teves dades durant les 24 darreres hores"</string>
     <string name="today_header" msgid="1006837293203834373">"Avui"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Ahir"</string>
@@ -386,8 +386,8 @@
     <string name="milliseconds_long" msgid="93246373745977286">"{count,plural, =1{1 mil·lisegon}other{# mil·lisegons}}"</string>
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 rep}other{# rep}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 repetició}other{# repeticions}}"</string>
-    <string name="exercise_segments_header" msgid="2992953017179406012">"Sessions d\'exercici"</string>
-    <string name="exercise_laps_header" msgid="117228630553856372">"Llargs"</string>
+    <string name="exercise_segments_header" msgid="2992953017179406012">"Segments d\'exercici"</string>
+    <string name="exercise_laps_header" msgid="117228630553856372">"Voltes"</string>
     <string name="back_extension" msgid="426518933137440577">"Hiperextensió"</string>
     <string name="badminton" msgid="8839727076522086870">"Bàdminton"</string>
     <string name="barbell_shoulder_press" msgid="3800236222803424251">"Pressió rere clatell amb halters"</string>

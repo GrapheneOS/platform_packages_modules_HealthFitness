@@ -259,12 +259,12 @@
     <string name="connected_apps_section_title" msgid="2415288099612126258">"アクセスが許可されているアプリ"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"アクセスが許可されていないアプリ"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"設定とヘルプ"</string>
-    <string name="disconnect_all_apps" msgid="748945115977534726">"すべてのアプリに対するアクセス権を削除する"</string>
+    <string name="disconnect_all_apps" msgid="748945115977534726">"すべてのアプリに対してアクセス権を削除する"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"読み取りの許可"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"書き込みの許可"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"許可されているアプリはありません"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"許可されていないアプリはありません"</string>
-    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"すべてのアプリに対するアクセス権を削除しますか？"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"すべてのアプリに対してアクセス権を削除しますか？"</string>
     <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
     <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"すべて削除"</string>
@@ -668,7 +668,7 @@
     <string name="distance_unit_kilometers_label" msgid="1361363017122240294">"キロメートル"</string>
     <string name="distance_unit_miles_label" msgid="848850214987608211">"マイル"</string>
     <string name="height_unit_centimeters_label" msgid="4096031670561995574">"センチメートル"</string>
-    <string name="height_unit_feet_label" msgid="3311723678628261399">"フィートとインチ"</string>
+    <string name="height_unit_feet_label" msgid="3311723678628261399">"フィート、インチ"</string>
     <string name="weight_unit_pound_label" msgid="8210663393844989211">"ポンド"</string>
     <string name="weight_unit_kilogram_label" msgid="6623938920860887238">"キログラム"</string>
     <string name="weight_unit_stone_label" msgid="3063787243474847180">"ストーン"</string>

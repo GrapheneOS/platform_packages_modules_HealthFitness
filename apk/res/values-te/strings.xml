@@ -40,7 +40,7 @@
     <string name="today_header" msgid="1006837293203834373">"నేడు"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"నిన్న"</string>
     <string name="read_data_access_label" msgid="7145747310980361968">"ఇవి చదవగలిగింది: %s"</string>
-    <string name="write_data_access_label" msgid="7955988316773000250">"ఇవి రాయగలిగింది: %s"</string>
+    <string name="write_data_access_label" msgid="7955988316773000250">"రాసిన విషయాలు: %s"</string>
     <string name="data_type_separator" msgid="1299848322898210658">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"అనుమతులను మేనేజ్ చేయండి"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"యాక్టివిటీ"</string>
@@ -292,10 +292,10 @@
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Google Play నుండి యాప్ సస్పెండ్ చేయబడినా లేదా తీసివేయబడినా, Health Connect దాని అనుమతులను ఆటోమేటిక్‌గా తీసివేస్తుంది.\n\nయాప్ ఇకపై Health Connectలో స్టోర్ చేసిన డేటాను యాక్సెస్ చేయలేదని దీని అర్థం. ఈ యాప్ మునుపు రాసిన డేటాను కలిగి ఉంటే, అది ఇన్‌యాక్టివ్ యాప్‌ల లిస్ట్‌లో కనిపిస్తుంది."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"అర్థమైంది"</string>
     <string name="onboarding_title" msgid="7930941018430608076">"Health Connectను ప్రారంభించండి"</string>
-    <string name="onboarding_description" msgid="4873129122057931161">"Health Connect మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను స్టోర్ చేస్తుంది, తద్వారా మీరు మీ డేటాని మీరు ఫోన్​లోని విభిన్న యాప్‌లతో సులభంగా సింక్ చేయవచ్చు"</string>
+    <string name="onboarding_description" msgid="4873129122057931161">"Health Connect మీ ఆరోగ్యానికి, ఫిట్‌నెస్‌కు సంబంధించిన డేటాను స్టోర్ చేస్తుంది, తద్వారా మీరు మీ డేటాను ఫోన్​లోని విభిన్న రకాల యాప్‌లతో సులభంగా సింక్ చేయవచ్చు"</string>
     <string name="share_data" msgid="3481932156368883946">"మీ యాప్‌లతో డేటాను షేర్ చేయండి"</string>
-    <string name="share_data_description" msgid="2919871301634375092">"Health Connect కోసం ప్రతి యాప్ చదవగలిగే లేదా రాయగలిగేలా డేటాను ఎంచుకోండి"</string>
-    <string name="manage_your_settings" msgid="7391184508015127137">"మీ సెట్టింగ్‌లు, గోప్యతను మేనేజ్ చేయండి"</string>
+    <string name="share_data_description" msgid="2919871301634375092">"ప్రతి ఒక్క యాప్ Health Connectలో ఏ డేటాను రీడ్‌ చేయాలి లేదా రైట్ చేయాలి అన్నది ఎంచుకోండి"</string>
+    <string name="manage_your_settings" msgid="7391184508015127137">"మీ సెట్టింగ్స్‌ను, గోప్యతను మేనేజ్ చేయండి"</string>
     <string name="manage_your_settings_description" msgid="557943168930365334">"యాప్ అనుమతులను మార్చి, మీ డేటాను ఎప్పుడైనా మేనేజ్ చేయవచ్చు"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"వెనుకకు వెళ్లండి"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"ప్రారంభించండి"</string>

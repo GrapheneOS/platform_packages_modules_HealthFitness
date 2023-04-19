@@ -24,7 +24,7 @@
     <string name="home_subtitle" msgid="1750033322147357163">"Upravljajte podacima o zdravlju i fitnesu na telefonu i kontrolirajte koje aplikacije im mogu pristupiti"</string>
     <string name="data_title" msgid="4456619761533380816">"Podaci i pristup"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Sve kategorije"</string>
-    <string name="see_all_categories" msgid="5599882403901010434">"Prikaži sve kategorije"</string>
+    <string name="see_all_categories" msgid="5599882403901010434">"Prikaz svih kategorija"</string>
     <string name="no_data" msgid="1906986019249068659">"Nema podataka"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Odobrenja za aplikaciju"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Upravljajte aplikacijama i odobrenjima"</string>
@@ -35,7 +35,7 @@
     <string name="entry_details_title" msgid="590184849040247850">"Detalji unosa"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Nedavni pristup"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Nijedna aplikacija nije nedavno pristupila Health Connectu"</string>
-    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Prikaži sve nedavne pristupe"</string>
+    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Prikaz svih nedavnih pristupa"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Pogledajte koje aplikacije su pristupile vašim podacima u posljednja 24 sata"</string>
     <string name="today_header" msgid="1006837293203834373">"Danas"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Jučer"</string>
@@ -256,7 +256,7 @@
     <!-- no translation found for health_permission_header_description (7497601695462373927) -->
     <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Kontrolirajte koje aplikacije mogu pristupiti podacima pohranjenim u Health Connectu. Dodirnite aplikaciju da pregledate podatke kojima ona ima pristup za čitanje ili pisanje."</string>
-    <string name="connected_apps_section_title" msgid="2415288099612126258">"Dozvoljeni pristup"</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"Dozvoljen pristup"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Nedozvoljen pristup"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"Postavke i pomoć"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"Ukloni pristup za sve aplikacije"</string>
@@ -671,7 +671,7 @@
     <string name="height_unit_feet_label" msgid="3311723678628261399">"Stope i inči"</string>
     <string name="weight_unit_pound_label" msgid="8210663393844989211">"Funte"</string>
     <string name="weight_unit_kilogram_label" msgid="6623938920860887238">"Kilogrami"</string>
-    <string name="weight_unit_stone_label" msgid="3063787243474847180">"Kamenovi"</string>
+    <string name="weight_unit_stone_label" msgid="3063787243474847180">"Stone"</string>
     <string name="energy_unit_calorie_label" msgid="3412965811470957296">"Kalorije"</string>
     <string name="energy_unit_kilojoule_label" msgid="6481196724083455110">"Kilodžuli"</string>
     <string name="temperature_unit_celsius_label" msgid="4698347100553808449">"Celzijus"</string>

@@ -666,7 +666,7 @@
     <string name="energy_unit_title" msgid="1714627395963766769">"אנרגיה"</string>
     <string name="temperature_unit_title" msgid="1973985121774654017">"טמפרטורה"</string>
     <string name="distance_unit_kilometers_label" msgid="1361363017122240294">"קילומטרים"</string>
-    <string name="distance_unit_miles_label" msgid="848850214987608211">"מייל"</string>
+    <string name="distance_unit_miles_label" msgid="848850214987608211">"מיילים"</string>
     <string name="height_unit_centimeters_label" msgid="4096031670561995574">"סנטימטרים"</string>
     <string name="height_unit_feet_label" msgid="3311723678628261399">"רגל ואינץ\'"</string>
     <string name="weight_unit_pound_label" msgid="8210663393844989211">"פאונד"</string>

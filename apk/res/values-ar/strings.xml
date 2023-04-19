@@ -33,10 +33,10 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"يملك تطبيق واحد (<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>) الإذن بالوصول."</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ما مِن تطبيقات"</string>
     <string name="entry_details_title" msgid="590184849040247850">"تفاصيل الإدخال"</string>
-    <string name="recent_access_header" msgid="7623497371790225888">"التطبيقات التي وصلت مؤخرًا إلى Health Connect"</string>
+    <string name="recent_access_header" msgid="7623497371790225888">"التطبيقات التي وصلت مؤخرًا إلى البيانات الصحية"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"لم تستخدم أي تطبيقات Health Connect مؤخرًا."</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"الاطّلاع على كل عمليات الوصول الحديثة"</string>
-    <string name="recent_access_screen_description" msgid="331101209889185402">"معرفة التطبيقات التي وصلت إلى بياناتك في آخر 24 ساعة."</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"معرفة التطبيقات التي وصلت إلى بياناتك الصحية في آخر 24 ساعة."</string>
     <string name="today_header" msgid="1006837293203834373">"اليوم"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"أمس"</string>
     <string name="read_data_access_label" msgid="7145747310980361968">"القراءة: %s"</string>
