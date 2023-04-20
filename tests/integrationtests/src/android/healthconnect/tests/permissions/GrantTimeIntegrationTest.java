@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package android.healthconnect.tests.withmanagepermissions;
+package android.healthconnect.tests.permissions;
+
+import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -59,7 +61,6 @@ public class GrantTimeIntegrationTest {
     @Before
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getTargetContext();
-        PermissionsTestUtils.assumeHoldManageHealthPermissionsPermission(mContext);
         mHealthConnectManager = mContext.getSystemService(HealthConnectManager.class);
 
         revokePermissionWithDelay(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
@@ -72,28 +73,26 @@ public class GrantTimeIntegrationTest {
     @Test(expected = NullPointerException.class)
     public void testGrantHealthPermission_nullPackage_throwsNullPointerException()
             throws Exception {
-        mHealthConnectManager.getHealthDataHistoricalAccessStartDate(null);
+        getHealthDataHistoricalAccessStartDate(null);
         fail("Expected NullPointerException due to package name is null.");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGrantHealthPermission_packageNotInstalled_returnsNull() throws Exception {
-        mHealthConnectManager.getHealthDataHistoricalAccessStartDate("android.invalid.package");
+        getHealthDataHistoricalAccessStartDate("android.invalid.package");
         fail("Expected IllegalArgumentException due to package is not installed.");
     }
 
     @Test
     public void testGrantHealthPermission_noPermissionsGranted_returnsNull() throws Exception {
-        Instant grantTime =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         assertThat(grantTime).isNull();
     }
 
     @Test
     public void testGrantHealthPermission_permissionGranted_returnsAdequateTime() throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        Instant grantTime =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         assertStartAccessDateIsAdequate(grantTime);
     }
 
@@ -106,26 +105,23 @@ public class GrantTimeIntegrationTest {
                                 .grantRuntimePermission(
                                         DEFAULT_APP_PACKAGE, DEFAULT_PERM, mContext.getUser()),
                 Manifest.permission.GRANT_RUNTIME_PERMISSIONS);
-        Instant grantTime =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         assertStartAccessDateIsAdequate(grantTime);
     }
 
     @Test
     public void testGrantHealthPermission_permissionGrantedToSharedUser_returnsAdequateTime()
             throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        Instant grantTime =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         assertStartAccessDateIsAdequate(grantTime);
     }
 
     @Test
     public void testGrantHealthPermission_permissionGrantedForSharedUser_returnsAdequateTime()
             throws Exception {
-        mHealthConnectManager.grantHealthPermission(SHARED_USER_APP, DEFAULT_PERM);
-        Instant grantTime =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(SHARED_USER_APP);
+        grantHealthPermission(SHARED_USER_APP, DEFAULT_PERM);
+        Instant grantTime = getHealthDataHistoricalAccessStartDate(SHARED_USER_APP);
         assertThat(grantTime).isNotNull();
         assertThat(grantTime.compareTo(Instant.now())).isLessThan(0);
     }
@@ -133,34 +129,29 @@ public class GrantTimeIntegrationTest {
     @Test
     public void testGrantHealthPermission_twoPermissionsGranted_returnsTheSameTime()
             throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        Instant grantTime =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2);
-        Instant grantTime2 =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2);
+        Instant grantTime2 = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         assertThat(grantTime).isEqualTo(grantTime2);
     }
 
     @Test
     public void testGrantHealthPermission_permissionGrantedAndRevoked_resetGrantTime()
             throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         revokePermissionWithDelay(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        Instant grantTime =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         assertThat(grantTime).isNull();
     }
 
     @Test
     public void testGrantHealthPermission_permissionWasRegranted_timeChanged() throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        Instant grantTime =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         revokePermissionWithDelay(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        Instant grantTime2 =
-                mHealthConnectManager.getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        Instant grantTime2 = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         assertThat(grantTime.isBefore(grantTime2)).isTrue();
     }
 
@@ -173,8 +164,47 @@ public class GrantTimeIntegrationTest {
         assertThat(currentTime.minus(upperBound).isBefore(firstGrantTime)).isTrue();
     }
 
+    private void grantHealthPermission(String packageName, String permName) {
+        try {
+            runWithShellPermissionIdentity(
+                    () -> {
+                        mHealthConnectManager.grantHealthPermission(packageName, permName);
+                    },
+                    MANAGE_HEALTH_PERMISSIONS);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
+    }
+
+    private Instant getHealthDataHistoricalAccessStartDate(String packageName) {
+        try {
+            return runWithShellPermissionIdentity(
+                    () -> mHealthConnectManager.getHealthDataHistoricalAccessStartDate(packageName),
+                    MANAGE_HEALTH_PERMISSIONS);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
+    }
+
     private void revokePermissionWithDelay(String packageName, String permName) throws Exception {
-        mHealthConnectManager.revokeHealthPermission(packageName, permName, "");
+        try {
+            runWithShellPermissionIdentity(
+                    () -> {
+                        mHealthConnectManager.revokeHealthPermission(packageName, permName, "");
+                    },
+                    MANAGE_HEALTH_PERMISSIONS);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
         // Wait some time for callbacks to propagate.
         Thread.sleep(50);
     }

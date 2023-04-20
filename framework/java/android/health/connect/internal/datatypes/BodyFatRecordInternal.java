@@ -47,7 +47,7 @@ public final class BodyFatRecordInternal extends InstantRecordInternal<BodyFatRe
         return new BodyFatRecord.Builder(
                         buildMetaData(), getTime(), Percentage.fromValue(getPercentage()))
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

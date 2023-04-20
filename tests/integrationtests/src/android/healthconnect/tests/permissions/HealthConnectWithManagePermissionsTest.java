@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package android.healthconnect.tests.withmanagepermissions;
+package android.healthconnect.tests.permissions;
+
+import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -54,7 +56,7 @@ import java.util.List;
  * prebuilts</b>. Additionally, this test can run as a presubmit on the main (master) branch where
  * modules are always built from source.
  *
- * <p><b>Build/Install/Run:</b> {@code atest HealthConnectWithManagePermissionsIntegrationTests}.
+ * <p><b>Build/Install/Run:</b> {@code atest HealthFitnessIntegrationTests}.
  */
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectWithManagePermissionsTest {
@@ -73,7 +75,6 @@ public class HealthConnectWithManagePermissionsTest {
     @Before
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getTargetContext();
-        PermissionsTestUtils.assumeHoldManageHealthPermissionsPermission(mContext);
         mHealthConnectManager = mContext.getSystemService(HealthConnectManager.class);
 
         revokePermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
@@ -90,7 +91,7 @@ public class HealthConnectWithManagePermissionsTest {
 
     @Test
     public void testGrantHealthPermission_appHasPermissionDeclared_success() throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
 
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
     }
@@ -98,16 +99,16 @@ public class HealthConnectWithManagePermissionsTest {
     @Test(expected = SecurityException.class)
     public void testGrantHealthPermission_usageIntentNotSupported_throwsIllegalArgumentException()
             throws Exception {
-        mHealthConnectManager.grantHealthPermission(NO_USAGE_INTENT_APP_PACKAGE, DEFAULT_PERM);
+        grantHealthPermission(NO_USAGE_INTENT_APP_PACKAGE, DEFAULT_PERM);
         fail("Expected SecurityException due to undeclared health permissions usage intent.");
     }
 
     @Test
     public void testGrantHealthPermission_permissionAlreadyGranted_success() throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         // Let's regrant it
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
 
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
     }
@@ -115,41 +116,40 @@ public class HealthConnectWithManagePermissionsTest {
     @Test(expected = SecurityException.class)
     public void testGrantHealthPermission_appHasPermissionNotDeclared_throwsSecurityException()
             throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, UNDECLARED_PERM);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, UNDECLARED_PERM);
         fail("Expected SecurityException due permission not being declared by target app.");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGrantHealthPermission_invalidPermission_throwsIllegalArgumentException()
             throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, INVALID_PERM);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, INVALID_PERM);
         fail("Expected IllegalArgumentException due to invalid permission.");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGrantHealthPermission_nonHealthPermission_throwsIllegalArgumentException()
             throws Exception {
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, NON_HEALTH_PERM);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, NON_HEALTH_PERM);
         fail("Expected IllegalArgumentException due to non-health permission.");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGrantHealthPermission_invalidPackageName_throwsIllegalArgumentException()
             throws Exception {
-        mHealthConnectManager.grantHealthPermission(INEXISTENT_APP_PACKAGE, DEFAULT_PERM);
+        grantHealthPermission(INEXISTENT_APP_PACKAGE, DEFAULT_PERM);
         fail("Expected IllegalArgumentException due to invalid package.");
     }
 
     @Test(expected = NullPointerException.class)
     public void testGrantHealthPermission_nullPermission_throwsNPE() throws Exception {
-        mHealthConnectManager.grantHealthPermission(
-                DEFAULT_APP_PACKAGE, /* permissionName= */ null);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, /* permissionName= */ null);
         fail("Expected NullPointerException due to null permission.");
     }
 
     @Test(expected = NullPointerException.class)
     public void testGrantHealthPermission_nullPackageName_throwsNPE() throws Exception {
-        mHealthConnectManager.grantHealthPermission(/* packageName= */ null, DEFAULT_PERM);
+        grantHealthPermission(/* packageName= */ null, DEFAULT_PERM);
         fail("Expected NullPointerException due to null package.");
     }
 
@@ -157,16 +157,14 @@ public class HealthConnectWithManagePermissionsTest {
     public void testRevokeHealthPermission_appHasPermissionGranted_success() throws Exception {
         grantPermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
 
-        mHealthConnectManager.revokeHealthPermission(
-                DEFAULT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
+        revokeHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
 
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
     }
 
     @Test
     public void testRevokeHealthPermission_appHasPermissionNotGranted_success() throws Exception {
-        mHealthConnectManager.revokeHealthPermission(
-                DEFAULT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
+        revokeHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
 
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
     }
@@ -174,46 +172,40 @@ public class HealthConnectWithManagePermissionsTest {
     @Test(expected = IllegalArgumentException.class)
     public void testRevokeHealthPermission_invalidPermission_throwsIllegalArgumentException()
             throws Exception {
-        mHealthConnectManager.revokeHealthPermission(
-                DEFAULT_APP_PACKAGE, INVALID_PERM, /* reason= */ null);
+        revokeHealthPermission(DEFAULT_APP_PACKAGE, INVALID_PERM, /* reason= */ null);
         fail("Expected IllegalArgumentException due to invalid permission.");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testRevokeHealthPermission_nonHealthPermission_throwsIllegalArgumentException()
             throws Exception {
-        mHealthConnectManager.revokeHealthPermission(
-                DEFAULT_APP_PACKAGE, NON_HEALTH_PERM, /* reason= */ null);
+        revokeHealthPermission(DEFAULT_APP_PACKAGE, NON_HEALTH_PERM, /* reason= */ null);
         fail("Expected IllegalArgumentException due to non-health permission.");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testRevokeHealthPermission_invalidPackageName_throwsIllegalArgumentException()
             throws Exception {
-        mHealthConnectManager.revokeHealthPermission(
-                INEXISTENT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
+        revokeHealthPermission(INEXISTENT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
         fail("Expected IllegalArgumentException due to invalid package.");
     }
 
     @Test(expected = NullPointerException.class)
     public void testRevokeHealthPermission_nullPermission_throwsNPE() throws Exception {
-        mHealthConnectManager.revokeHealthPermission(
-                DEFAULT_APP_PACKAGE, /* permissionName= */ null, /* reason= */ null);
+        revokeHealthPermission(DEFAULT_APP_PACKAGE, /* permissionName= */ null, /* reason= */ null);
         fail("Expected NullPointerException due to null permission.");
     }
 
     @Test(expected = NullPointerException.class)
     public void testRevokeHealthPermission_nullPackageName_throwsNPE() throws Exception {
-        mHealthConnectManager.revokeHealthPermission(
-                /* packageName= */ null, DEFAULT_PERM, /* reason= */ null);
+        revokeHealthPermission(/* packageName= */ null, DEFAULT_PERM, /* reason= */ null);
         fail("Expected NullPointerException due to null package.");
     }
 
     @Test
     public void testGetGrantedHealthPermissions_appHasNoPermissionGranted_emptyList()
             throws Exception {
-        List<String> grantedPerms =
-                mHealthConnectManager.getGrantedHealthPermissions(DEFAULT_APP_PACKAGE);
+        List<String> grantedPerms = getGrantedHealthPermissions(DEFAULT_APP_PACKAGE);
 
         assertThat(grantedPerms.size()).isEqualTo(0);
     }
@@ -224,8 +216,7 @@ public class HealthConnectWithManagePermissionsTest {
         grantPermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         grantPermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2);
 
-        List<String> grantedPerms =
-                mHealthConnectManager.getGrantedHealthPermissions(DEFAULT_APP_PACKAGE);
+        List<String> grantedPerms = getGrantedHealthPermissions(DEFAULT_APP_PACKAGE);
 
         assertThat(grantedPerms)
                 .containsExactlyElementsIn(
@@ -235,23 +226,22 @@ public class HealthConnectWithManagePermissionsTest {
     @Test(expected = IllegalArgumentException.class)
     public void testGetGrantedHealthPermissions_invalidPackageName_throwsIllegalArgumentException()
             throws Exception {
-        mHealthConnectManager.getGrantedHealthPermissions(INEXISTENT_APP_PACKAGE);
+        getGrantedHealthPermissions(INEXISTENT_APP_PACKAGE);
         fail("Expected IllegalArgumentException due to invalid package.");
     }
 
     @Test(expected = NullPointerException.class)
     public void testGetGrantedHealthPermissions_nullPackageName_throwsNPE() throws Exception {
-        mHealthConnectManager.getGrantedHealthPermissions(/* packageName= */ null);
+        getGrantedHealthPermissions(/* packageName= */ null);
         fail("Expected NullPointerException due to null package.");
     }
 
     @Test
     public void testRevokeAllHealthPermissions_appHasNoPermissionsGranted_success()
             throws Exception {
-        mHealthConnectManager.revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
+        revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
 
-        assertThat(mHealthConnectManager.getGrantedHealthPermissions(DEFAULT_APP_PACKAGE).size())
-                .isEqualTo(0);
+        assertThat(getGrantedHealthPermissions(DEFAULT_APP_PACKAGE).size()).isEqualTo(0);
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2);
     }
@@ -261,10 +251,9 @@ public class HealthConnectWithManagePermissionsTest {
         grantPermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         grantPermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2);
 
-        mHealthConnectManager.revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
+        revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
 
-        assertThat(mHealthConnectManager.getGrantedHealthPermissions(DEFAULT_APP_PACKAGE).size())
-                .isEqualTo(0);
+        assertThat(getGrantedHealthPermissions(DEFAULT_APP_PACKAGE).size()).isEqualTo(0);
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2);
     }
@@ -272,15 +261,13 @@ public class HealthConnectWithManagePermissionsTest {
     @Test(expected = IllegalArgumentException.class)
     public void testRevokeAllHealthPermissions_invalidPackageName_throwsIllegalArgumentException()
             throws Exception {
-        mHealthConnectManager.revokeAllHealthPermissions(
-                INEXISTENT_APP_PACKAGE, /* reason= */ null);
+        revokeAllHealthPermissions(INEXISTENT_APP_PACKAGE, /* reason= */ null);
         fail("Expected IllegalArgumentException due to invalid package.");
     }
 
     @Test(expected = NullPointerException.class)
     public void testRevokeAllHealthPermissions_nullPackageName_throwsNPE() throws Exception {
-        mHealthConnectManager.revokeAllHealthPermissions(
-                /* packageName= */ null, /* reason= */ null);
+        revokeAllHealthPermissions(/* packageName= */ null, /* reason= */ null);
         fail("Expected NullPointerException due to null package.");
     }
 
@@ -294,7 +281,7 @@ public class HealthConnectWithManagePermissionsTest {
 
         // Grant permission
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, /* reason= */ null);
+        grantHealthPermission(DEFAULT_APP_PACKAGE, /* reason= */ null);
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         PermissionsTestUtils.deleteAllStagedRemoteData();
 
@@ -305,14 +292,12 @@ public class HealthConnectWithManagePermissionsTest {
 
         grantPermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        mHealthConnectManager.revokeHealthPermission(
-                DEFAULT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
+        revokeHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        mHealthConnectManager.revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
+        revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
 
         // getGrantedHealthPermissions
-        assertThat(mHealthConnectManager.getGrantedHealthPermissions(DEFAULT_APP_PACKAGE))
-                .isEmpty();
+        assertThat(getGrantedHealthPermissions(DEFAULT_APP_PACKAGE)).isEmpty();
         runWithShellPermissionIdentity(
                 PermissionsTestUtils::finishMigration,
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
@@ -339,13 +324,74 @@ public class HealthConnectWithManagePermissionsTest {
                 Manifest.permission.REVOKE_RUNTIME_PERMISSIONS);
     }
 
-    private void assertPermGrantedForApp(String packageName, String permName) throws Exception {
+    private void assertPermGrantedForApp(String packageName, String permName) {
         assertThat(mContext.getPackageManager().checkPermission(permName, packageName))
                 .isEqualTo(PackageManager.PERMISSION_GRANTED);
     }
 
-    private void assertPermNotGrantedForApp(String packageName, String permName) throws Exception {
+    private void assertPermNotGrantedForApp(String packageName, String permName) {
         assertThat(mContext.getPackageManager().checkPermission(permName, packageName))
                 .isEqualTo(PackageManager.PERMISSION_DENIED);
+    }
+
+    private void grantHealthPermission(String packageName, String permissionName) {
+        try {
+            runWithShellPermissionIdentity(
+                    () -> {
+                        mHealthConnectManager.grantHealthPermission(packageName, permissionName);
+                    },
+                    MANAGE_HEALTH_PERMISSIONS);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
+    }
+
+    private void revokeHealthPermission(String packageName, String permissionName, String reason) {
+        try {
+            runWithShellPermissionIdentity(
+                    () -> {
+                        mHealthConnectManager.revokeHealthPermission(
+                                packageName, permissionName, reason);
+                    },
+                    MANAGE_HEALTH_PERMISSIONS);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
+    }
+
+    private void revokeAllHealthPermissions(String packageName, String reason) {
+        try {
+            runWithShellPermissionIdentity(
+                    () -> {
+                        mHealthConnectManager.revokeAllHealthPermissions(packageName, reason);
+                    },
+                    MANAGE_HEALTH_PERMISSIONS);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
+    }
+
+    private List<String> getGrantedHealthPermissions(String packageName) {
+        try {
+            return runWithShellPermissionIdentity(
+                    () -> {
+                        return mHealthConnectManager.getGrantedHealthPermissions(packageName);
+                    },
+                    MANAGE_HEALTH_PERMISSIONS);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
     }
 }

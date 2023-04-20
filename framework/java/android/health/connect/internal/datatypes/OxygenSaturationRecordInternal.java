@@ -48,7 +48,7 @@ public final class OxygenSaturationRecordInternal
         return new OxygenSaturationRecord.Builder(
                         buildMetaData(), getTime(), Percentage.fromValue(getPercentage()))
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

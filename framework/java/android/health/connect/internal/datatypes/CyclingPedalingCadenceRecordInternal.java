@@ -62,7 +62,7 @@ public class CyclingPedalingCadenceRecordInternal
                         buildMetaData(), getStartTime(), getEndTime(), getExternalSamples())
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override
@@ -96,7 +96,8 @@ public class CyclingPedalingCadenceRecordInternal
                     new CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample(
                             cyclingPedalingCadenceRecordSample.getRevolutionsPerMinute(),
                             Instant.ofEpochMilli(
-                                    cyclingPedalingCadenceRecordSample.getEpochMillis())));
+                                    cyclingPedalingCadenceRecordSample.getEpochMillis()),
+                            true));
         }
         return cyclingPedalingCadenceRecords;
     }

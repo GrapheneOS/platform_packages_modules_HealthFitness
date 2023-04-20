@@ -59,7 +59,7 @@
     <string name="manage_data_section" msgid="5859629270946511903">"ડેટા મેનેજ કરો"</string>
     <string name="export_data_button" msgid="7783329820434117744">"ડેટાની નિકાસ કરો"</string>
     <string name="delete_all_data_button" msgid="7238755635416521487">"બધો ડેટા ડિલીટ કરો"</string>
-    <string name="no_categories" msgid="2636778482437506241">"તમારે પાસે Health Connectમાં કોઈ ડેટા નથી"</string>
+    <string name="no_categories" msgid="2636778482437506241">"તમારી પાસે Health Connectમાં કોઈ ડેટા નથી"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"તમારો ડેટા"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"ઍપ માટે પ્રાધાન્યતા"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"<xliff:g id="CATEGORY">%s</xliff:g>નો ડેટા ડિલીટ કરો"</string>

@@ -48,7 +48,7 @@ public final class WheelchairPushesRecordInternal
                         buildMetaData(), getStartTime(), getEndTime(), getCount())
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

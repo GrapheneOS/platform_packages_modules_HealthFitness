@@ -26,8 +26,10 @@ import android.healthconnect.cts.lib.ActivityLauncher.launchDataActivity
 import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import android.healthconnect.cts.lib.UiTestUtils.stepsRecordFromTestApp
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
+import android.healthconnect.cts.lib.UiTestUtils.waitNotDisplayed
 import androidx.test.uiautomator.By
 import java.time.Instant
+import java.time.Period.ofDays
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
@@ -92,55 +94,53 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
         }
     }
 
-    // TODO(b/274920669) Fix flaky tests
-    //    @Test
-    //    fun categoriesFragment_deleteAllData() {
-    //        val records: List<Record> =
-    // listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(100))))
-    //        insertRecords(records)
-    //
-    //        context.launchDataActivity {
-    //            waitDisplayed(By.text("Activity"))
-    //
-    //            clickOnText("Delete all data")
-    //            clickOnText("Delete all data")
-    //            clickOnText("Next")
-    //            clickOnText("Delete")
-    //            clickOnText("Done")
-    //        }
-    //
-    //        context.launchDataActivity { waitNotDisplayed(By.text("Activity")) }
-    //    }
-    //
-    //    @Test
-    //    fun categoriesFragment_withDataOlderThanRange_deletesAllDataInRange_showsCategory() {
-    //        insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(20)))))
-    //
-    //        context.launchDataActivity {
-    //            waitDisplayed(By.text("Activity"))
-    //
-    //            clickOnText("Delete all data")
-    //            clickOnText("Delete last 7 days")
-    //            clickOnText("Next")
-    //            clickOnText("Delete")
-    //            clickOnText("Done")
-    //
-    //            waitDisplayed(By.text("Activity"))
-    //        }
-    //    }
-    //
-    //    @Test
-    //    fun categoriesFragment_withNoDataBeforeRange_deletesAllDataInRange_removesCategory() {
-    //        insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(20)))))
-    //
-    //        context.launchDataActivity {
-    //            clickOnText("Delete all data")
-    //            clickOnText("Delete last 30 days")
-    //            clickOnText("Next")
-    //            clickOnText("Delete")
-    //            clickOnText("Done")
-    //
-    //            waitNotDisplayed(By.text("Activity"))
-    //        }
-    //    }
+    @Test
+    fun categoriesFragment_deleteAllData() {
+        val records: List<Record> = listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(100))))
+        insertRecords(records)
+
+        context.launchDataActivity {
+            waitDisplayed(By.text("Activity"))
+
+            clickOnText("Delete all data")
+            clickOnText("Delete all data")
+            clickOnText("Next")
+            clickOnText("Delete")
+            clickOnText("Done")
+        }
+
+        context.launchDataActivity { waitNotDisplayed(By.text("Activity")) }
+    }
+
+    @Test
+    fun categoriesFragment_withDataOlderThanRange_deletesAllDataInRange_showsCategory() {
+        insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(20)))))
+
+        context.launchDataActivity {
+            waitDisplayed(By.text("Activity"))
+
+            clickOnText("Delete all data")
+            clickOnText("Delete last 7 days")
+            clickOnText("Next")
+            clickOnText("Delete")
+            clickOnText("Done")
+
+            waitDisplayed(By.text("Activity"))
+        }
+    }
+
+    @Test
+    fun categoriesFragment_withNoDataBeforeRange_deletesAllDataInRange_removesCategory() {
+        insertRecords(listOf(stepsRecordFromTestApp(Instant.now().minus(ofDays(20)))))
+
+        context.launchDataActivity {
+            clickOnText("Delete all data")
+            clickOnText("Delete last 30 days")
+            clickOnText("Next")
+            clickOnText("Delete")
+            clickOnText("Done")
+
+            waitNotDisplayed(By.text("Activity"))
+        }
+    }
 }

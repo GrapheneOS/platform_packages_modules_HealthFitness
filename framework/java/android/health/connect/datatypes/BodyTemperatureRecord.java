@@ -43,6 +43,7 @@ public final class BodyTemperatureRecord extends InstantRecord {
      * @param zoneOffset Zone offset of the user when the activity started
      * @param measurementLocation MeasurementLocation of this activity
      * @param temperature Temperature of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private BodyTemperatureRecord(
             @NonNull Metadata metadata,
@@ -50,8 +51,9 @@ public final class BodyTemperatureRecord extends InstantRecord {
             @NonNull ZoneOffset zoneOffset,
             @BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations
                     int measurementLocation,
-            @NonNull Temperature temperature) {
-        super(metadata, time, zoneOffset);
+            @NonNull Temperature temperature,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
@@ -60,7 +62,9 @@ public final class BodyTemperatureRecord extends InstantRecord {
                 measurementLocation,
                 BodyTemperatureMeasurementLocation.VALID_TYPES,
                 BodyTemperatureMeasurementLocation.class.getSimpleName());
-        ValidationUtils.requireInRange(temperature.getInCelsius(), 0.0, 100, "temperature");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(temperature.getInCelsius(), 0.0, 100, "temperature");
+        }
         mMeasurementLocation = measurementLocation;
         mTemperature = temperature;
     }
@@ -150,12 +154,22 @@ public final class BodyTemperatureRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link BodyTemperatureRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public BodyTemperatureRecord buildWithoutValidation() {
+            return new BodyTemperatureRecord(
+                    mMetadata, mTime, mZoneOffset, mMeasurementLocation, mTemperature, true);
+        }
+
+        /**
          * @return Object of {@link BodyTemperatureRecord}
          */
         @NonNull
         public BodyTemperatureRecord build() {
             return new BodyTemperatureRecord(
-                    mMetadata, mTime, mZoneOffset, mMeasurementLocation, mTemperature);
+                    mMetadata, mTime, mZoneOffset, mMeasurementLocation, mTemperature, false);
         }
     }
 

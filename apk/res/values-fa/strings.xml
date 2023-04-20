@@ -28,7 +28,7 @@
     <string name="no_data" msgid="1906986019249068659">"داده‌ای وجود ندارد"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"اجازه‌های برنامه"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"مدیریت برنامه‌ها و اجازه‌ها"</string>
-    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> برنامه از مجموع <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> برنامه دسترسی دارد"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"‫<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> برنامه از <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> برنامه دسترسی دارد"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> برنامه دسترسی دارد"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> برنامه دسترسی دارد"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"هیچ‌کدام"</string>
@@ -40,7 +40,7 @@
     <string name="today_header" msgid="1006837293203834373">"امروز"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"دیروز"</string>
     <string name="read_data_access_label" msgid="7145747310980361968">"خوانده شد: %s"</string>
-    <string name="write_data_access_label" msgid="7955988316773000250">"نوشته شد: %s"</string>
+    <string name="write_data_access_label" msgid="7955988316773000250">"دسترسی نوشتن: %s"</string>
     <string name="data_type_separator" msgid="1299848322898210658">"، "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"مدیریت اجازه‌ها"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"فعالیت"</string>

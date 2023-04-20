@@ -24,6 +24,8 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_P
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED;
 
 import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_TIMEOUT_REACHED_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.IN_PROGRESS_TIMEOUT_REACHED_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.MAX_START_MIGRATION_CALLS_ALLOWED;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
@@ -36,6 +38,8 @@ import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK
 import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK_UNCONFIGURED_PACKAGE_ONE;
 import static com.android.server.healthconnect.migration.MigrationTestUtils.PERMISSIONS_TO_CHECK;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -80,6 +84,7 @@ import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /** Test class for the MigrationStateManager class. */
 @RunWith(AndroidJUnit4.class)
@@ -782,6 +787,48 @@ public class MigrationStateManagerTest {
                 .insertOrReplacePreference(eq(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY), any());
     }
 
+    @Test
+    public void testDoesMigrationHandleInfoIntent_returnsFalse_whenDisabledPackage() {
+        configureMigrationAwarePackage();
+        configureMigratorDisabledPackage();
+        setMigrationState(MIGRATION_STATE_ALLOWED);
+        assertFalse(mMigrationStateManager.doesMigratorHandleInfoIntent(mContext));
+    }
+
+    @Test
+    public void testDoesMigrationHandleInfoIntent_returnsTrue_whenEnabledPackage() {
+        configureMigrationAwarePackage();
+        configureMigratorEnabledPackage();
+        setMigrationState(MIGRATION_STATE_ALLOWED);
+        assertTrue(mMigrationStateManager.doesMigratorHandleInfoIntent(mContext));
+    }
+
+    @Test
+    public void testHasInProgressStateTimedOut_returnsTrue_whenTrue() {
+        when(mPreferenceHelper.getPreference(eq(IN_PROGRESS_TIMEOUT_REACHED_KEY)))
+                .thenReturn(String.valueOf(true));
+        assertTrue(mMigrationStateManager.hasInProgressStateTimedOut());
+    }
+
+    @Test
+    public void testHasInProgressStateTimedOut_returnsFalse_whenNotSet() {
+        when(mPreferenceHelper.getPreference(eq(IN_PROGRESS_TIMEOUT_REACHED_KEY))).thenReturn(null);
+        assertFalse(mMigrationStateManager.hasInProgressStateTimedOut());
+    }
+
+    @Test
+    public void testHasIdleStateTimedOut_returnsTrue_whenTrue() {
+        when(mPreferenceHelper.getPreference(eq(IDLE_TIMEOUT_REACHED_KEY)))
+                .thenReturn(String.valueOf(true));
+        assertTrue(mMigrationStateManager.hasIdleStateTimedOut());
+    }
+
+    @Test
+    public void testHasIdleStateTimedOut_returnsFalse_whenNotSet() {
+        when(mPreferenceHelper.getPreference(eq(IDLE_TIMEOUT_REACHED_KEY))).thenReturn(null);
+        assertFalse(mMigrationStateManager.hasIdleStateTimedOut());
+    }
+
     private void setMigrationState(int state) {
         when(mPreferenceHelper.getPreference(eq(MIGRATION_STATE_PREFERENCE_KEY)))
                 .thenReturn(String.valueOf(state));
@@ -815,6 +862,17 @@ public class MigrationStateManagerTest {
 
     private void configureNoMigratorPackage() {
         when(mContext.getString(anyInt())).thenReturn(MOCK_UNCONFIGURED_PACKAGE_ONE);
+    }
+
+    private void configureMigratorDisabledPackage() {
+        List<ResolveInfo> enabledComponents = new ArrayList<ResolveInfo>();
+        when(mPackageManager.queryIntentActivities(any(), any())).thenReturn(enabledComponents);
+    }
+
+    private void configureMigratorEnabledPackage() {
+        List<ResolveInfo> enabledComponents = new ArrayList<ResolveInfo>();
+        enabledComponents.add(new ResolveInfo());
+        when(mPackageManager.queryIntentActivities(any(), any())).thenReturn(enabledComponents);
     }
 
     private void verifyStateChange(int state) {

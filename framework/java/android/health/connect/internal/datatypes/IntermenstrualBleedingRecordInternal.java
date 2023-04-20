@@ -38,6 +38,6 @@ public final class IntermenstrualBleedingRecordInternal
     public IntermenstrualBleedingRecord toExternalRecord() {
         return new IntermenstrualBleedingRecord.Builder(buildMetaData(), getTime())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 }

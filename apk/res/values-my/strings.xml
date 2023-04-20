@@ -105,7 +105,7 @@
     <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"တက်ပြီးသည့် တိုက်အထပ်"</string>
     <string name="floors_climbed_read_content_description" msgid="4730764877684911752">"တက်ပြီးသည့် တိုက်အထပ်ကို ဖတ်ရန်"</string>
     <string name="floors_climbed_write_content_description" msgid="3480340610185615655">"တက်ပြီးသည့် တိုက်အထပ်ကို ရေးရန်"</string>
-    <string name="power_uppercase_label" msgid="8027219480901448660">"ပါဝါ"</string>
+    <string name="power_uppercase_label" msgid="8027219480901448660">"စွမ်းအင်"</string>
     <string name="power_lowercase_label" msgid="3893286148577044369">"ပါဝါ"</string>
     <string name="power_read_content_description" msgid="6821797135406643841">"ပါဝါကို ဖတ်ရန်"</string>
     <string name="power_write_content_description" msgid="8091584558688087392">"ပါဝါကို ရေးရန်"</string>
@@ -197,8 +197,8 @@
     <string name="nutrition_lowercase_label" msgid="4123518952030658702">"အာဟာရ"</string>
     <string name="nutrition_read_content_description" msgid="5820331769605952082">"အာဟာရကို ဖတ်ရန်"</string>
     <string name="nutrition_write_content_description" msgid="6690090231218210367">"အာဟာရကို ရေးရန်"</string>
-    <string name="sleep_uppercase_label" msgid="1458084584315123727">"အိပ်စက်မှု"</string>
-    <string name="sleep_lowercase_label" msgid="7795584924503475035">"အိပ်စက်မှု"</string>
+    <string name="sleep_uppercase_label" msgid="1458084584315123727">"အိပ်စက်ခြင်း"</string>
+    <string name="sleep_lowercase_label" msgid="7795584924503475035">"အိပ်စက်ခြင်း"</string>
     <string name="sleep_read_content_description" msgid="7064608272681424436">"အိပ်စက်မှု ဖတ်ရန်"</string>
     <string name="sleep_write_content_description" msgid="2259414465110376554">"အိပ်စက်မှု ရေးရန်"</string>
     <string name="basal_body_temperature_uppercase_label" msgid="4571393253935677019">"နားနေစဉ် ခန္ဓာကိုယ်အပူချိန်"</string>
@@ -296,9 +296,9 @@
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"အက်ပ်ကို Google Play မှ ဆိုင်းငံ့ (သို့) ဖယ်ရှားလိုက်ပါက Health Connect သည် ၎င်း၏ ခွင့်ပြုချက်များကို အလိုအလျောက် ဖယ်ရှားသည်။\n\nဆိုလိုသည်မှာ အက်ပ်သည် Health Connect တွင် သိမ်းထားသည့် ဒေတာကို မသုံးနိုင်တော့ပါ။ ဤအက်ပ်တွင် ယခင်ရေးသွင်းထားသည့် ဒေတာရှိပါက အသုံးမပြုသော အက်ပ်စာရင်းတွင် ၎င်းကို မြင်ရသည်။"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"ရပြီ"</string>
     <string name="onboarding_title" msgid="7930941018430608076">"Health Connect စတင်အသုံးပြုခြင်း"</string>
-    <string name="onboarding_description" msgid="4873129122057931161">"Health Connect သည် သင့်ဖုန်းပေါ်ရှိ အက်ပ်အမျိုးမျိုး ရိုးရှင်းစွာစင့်ခ်လုပ်နည်းကို ပေးပြီး သင်၏ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို သိမ်းသည်"</string>
+    <string name="onboarding_description" msgid="4873129122057931161">"Health Connect သည် သင်၏ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို သိမ်းပြီး ၎င်းဖြင့် သင့်ဖုန်းပေါ်ရှိ အက်ပ်အမျိုးမျိုးကို ရိုးရှင်းစွာစင့်ခ်လုပ်နိုင်သည်"</string>
     <string name="share_data" msgid="3481932156368883946">"သင့်အက်ပ်များနှင့် ဒေတာမျှဝေရန်"</string>
-    <string name="share_data_description" msgid="2919871301634375092">"Health Connect တွင် အက်ပ်တစ်ခုစီ ဖတ်နိုင် (သို့) ရေးနိုင်သည့် ဒေတာကို သင်ကရွေးနိုင်သည်"</string>
+    <string name="share_data_description" msgid="2919871301634375092">"Health Connect တွင် အက်ပ်တစ်ခုစီက ဖတ်နိုင် (သို့) ရေးနိုင်မည့် ဒေတာကို သင်ရွေးနိုင်သည်"</string>
     <string name="manage_your_settings" msgid="7391184508015127137">"သင့်ဆက်တင်များနှင့် ကိုယ်ရေးအချက်အလက်လုံခြုံမှုကို စီမံရန်"</string>
     <string name="manage_your_settings_description" msgid="557943168930365334">"အက်ပ်ခွင့်ပြုချက်များပြောင်းပြီး သင့်ဒေတာကို အချိန်မရွေးစီမံနိုင်သည်"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"နောက်သို့"</string>
@@ -726,7 +726,7 @@
     <string name="no_results" msgid="4007426147286897998">"ရလဒ်များ မရှိပါ"</string>
     <string name="help" msgid="6028777453152686162">"အကူအညီ"</string>
     <string name="request_route_header_title" msgid="6599707039845646714">"<xliff:g id="APP_NAME">%1$s</xliff:g> အား Health Connect တွင် ဤလေ့ကျင့်ခန်း ပုံမှန်အစီအစဉ်ကို ဝင်ကြည့်ခွင့်ပြုမလား။"</string>
-    <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"ဤအက်ပ်သည် ပုံမှန်အစီအစဉ်တွင် ယခင်က သင်သွားထားသော တည်နေရာကို ဖတ်နိုင်ပါမည်"</string>
+    <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"ဤအက်ပ်သည် လမ်းကြောင်းပေါ်ရှိ ယခင်က သင်သွားထားသော တည်နေရာကို ဖတ်နိုင်ပါမည်"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
     <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
     <skip />

@@ -293,7 +293,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Түшүндүм"</string>
     <string name="onboarding_title" msgid="7930941018430608076">"Health Connect\'ти колдонуп баштоо"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect кызматы ден-соолугуңузга жана кыймылдуулугуңузга байланыштуу нерселерди сактап, аларды телефондогу башка колдонмолор менен шайкештештирет."</string>
-    <string name="share_data" msgid="3481932156368883946">"Маалыматты колдонмолор менен бөлүшүү"</string>
+    <string name="share_data" msgid="3481932156368883946">"Колдонмолор менен ар кандай нерселерди бөлүшүү"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Ар бир колдонмо Health Connect кызматында кандай маалыматты окуп, сактай ала турганын тандайсыз"</string>
     <string name="manage_your_settings" msgid="7391184508015127137">"Параметрлерди жана купуялыкты тескөө"</string>
     <string name="manage_your_settings_description" msgid="557943168930365334">"Колдонмонун уруксаттарын каалаган убакта өзгөртүп, алардагы нерселерди тескейсиз"</string>

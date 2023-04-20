@@ -19,8 +19,10 @@ package com.android.server.healthconnect.migration;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_ALLOWED;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 
+import static com.android.server.healthconnect.migration.MigrationBroadcastScheduler.MIGRATION_BROADCAST_NAMESPACE;
 import static com.android.server.healthconnect.migration.MigrationConstants.COUNT_MIGRATION_STATE_ALLOWED;
 import static com.android.server.healthconnect.migration.MigrationConstants.COUNT_MIGRATION_STATE_IN_PROGRESS;
+import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STATE_CHANGE_NAMESPACE;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -28,7 +30,6 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import android.app.job.JobInfo;
@@ -38,6 +39,8 @@ import android.content.Context;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -47,6 +50,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.Spy;
+import org.mockito.quality.Strictness;
+import org.mockito.stubbing.Answer;
 import org.mockito.verification.VerificationMode;
 
 import java.util.Objects;
@@ -58,6 +63,7 @@ public class MigrationBroadcastSchedulingTest {
     @Mock private Context mContext;
     @Mock private JobScheduler mJobScheduler;
     @Mock private MigrationStateManager mMigrationStateManager;
+    @Mock private PreferenceHelper mPreferenceHelper;
 
     @Spy
     private MigrationBroadcastScheduler mMigrationBroadcastScheduler =
@@ -73,16 +79,42 @@ public class MigrationBroadcastSchedulingTest {
         mStaticMockSession =
                 ExtendedMockito.mockitoSession()
                         .mockStatic(MigrationStateManager.class)
+                        .mockStatic(PreferenceHelper.class)
+                        .mockStatic(HealthConnectThreadScheduler.class)
+                        .strictness(Strictness.LENIENT)
                         .startMocking();
 
         MockitoAnnotations.initMocks(this);
 
         when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
+        when(mJobScheduler.forNamespace(MIGRATION_BROADCAST_NAMESPACE)).thenReturn(mJobScheduler);
     }
 
     @After
     public void tearDown() {
         mStaticMockSession.finishMocking();
+    }
+
+    @Test
+    public void testPrescheduleNewJobs_updateMigrationState_newJobsScheduled() {
+        when(MigrationStateManager.initializeInstance(anyInt())).thenCallRealMethod();
+        when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
+        when(mJobScheduler.forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE))
+                .thenReturn(mJobScheduler);
+        ExtendedMockito.doAnswer(
+                        (Answer<Void>)
+                                invocationOnMock -> {
+                                    Runnable task = invocationOnMock.getArgument(0);
+                                    task.run();
+                                    return null;
+                                })
+                .when(() -> HealthConnectThreadScheduler.scheduleInternalTask(any()));
+
+        MigrationStateManager migrationStateManager = MigrationStateManager.initializeInstance(0);
+        migrationStateManager.setMigrationBroadcastScheduler(mMigrationBroadcastScheduler);
+        migrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_IN_PROGRESS);
+
+        verify(mMigrationBroadcastScheduler, times(1)).scheduleNewJobs(any());
     }
 
     @Test
@@ -219,9 +251,10 @@ public class MigrationBroadcastSchedulingTest {
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
 
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
-        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verify(mJobScheduler, times(2)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(2));
     }
 
@@ -235,9 +268,10 @@ public class MigrationBroadcastSchedulingTest {
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
 
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
-        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verify(mJobScheduler, times(2)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(2));
     }
 
@@ -251,10 +285,11 @@ public class MigrationBroadcastSchedulingTest {
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
 
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancelAll();
         verifyNonPeriodicJobSchedulerInvocation(
                 COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
-        verify(mJobScheduler, times(COUNT_MIGRATION_STATE_ALLOWED)).cancel(anyInt());
+        verify(mJobScheduler, times(2)).cancelAll();
         verifyNonPeriodicJobSchedulerInvocation(
                 COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(2));
     }
@@ -267,11 +302,12 @@ public class MigrationBroadcastSchedulingTest {
                 .thenReturn(mIntervalGreaterThanMinPeriod);
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
         when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
                 .thenReturn(mIntervalLessThanMinPeriod);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
-        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verify(mJobScheduler, times(2)).cancelAll();
         verifyNonPeriodicJobSchedulerInvocation(
                 COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
     }
@@ -284,11 +320,12 @@ public class MigrationBroadcastSchedulingTest {
                 .thenReturn(mIntervalGreaterThanMinPeriod);
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
         when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
                 .thenReturn(mMinPeriodMillis);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
-        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verify(mJobScheduler, times(2)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
     }
 
@@ -301,11 +338,12 @@ public class MigrationBroadcastSchedulingTest {
                 .thenReturn(mMinPeriodMillis);
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
         when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
                 .thenReturn(mIntervalGreaterThanMinPeriod);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
-        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verify(mJobScheduler, times(2)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
     }
 
@@ -317,11 +355,12 @@ public class MigrationBroadcastSchedulingTest {
                 .thenReturn(mMinPeriodMillis);
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
         when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
                 .thenReturn(mIntervalLessThanMinPeriod);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
-        verify(mJobScheduler, times(1)).cancel(anyInt());
+        verify(mJobScheduler, times(2)).cancelAll();
         verifyNonPeriodicJobSchedulerInvocation(
                 COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
     }
@@ -335,12 +374,13 @@ public class MigrationBroadcastSchedulingTest {
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
 
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancelAll();
         verifyNonPeriodicJobSchedulerInvocation(
                 COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
         when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
                 .thenReturn(mIntervalGreaterThanMinPeriod);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
-        verify(mJobScheduler, times(COUNT_MIGRATION_STATE_ALLOWED)).cancel(anyInt());
+        verify(mJobScheduler, times(2)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mIntervalGreaterThanMinPeriod, times(1));
     }
 
@@ -353,17 +393,18 @@ public class MigrationBroadcastSchedulingTest {
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_SUCCESS);
 
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
+        verify(mJobScheduler, times(1)).cancelAll();
         verifyNonPeriodicJobSchedulerInvocation(
                 COUNT_MIGRATION_STATE_ALLOWED, mIntervalLessThanMinPeriod, times(1));
         when(mMigrationBroadcastScheduler.getRequiredInterval(MIGRATION_STATE_ALLOWED))
                 .thenReturn(mMinPeriodMillis);
         mMigrationBroadcastScheduler.scheduleNewJobs(mContext);
-        verify(mJobScheduler, times(COUNT_MIGRATION_STATE_ALLOWED)).cancel(anyInt());
+        verify(mJobScheduler, times(2)).cancelAll();
         verifyPeriodicJobSchedulerInvocation(mMinPeriodMillis, times(1));
     }
 
     @Test
-    public void testScheduling_schedulingFails_noFurtherScheduling() throws Exception {
+    public void testScheduling_schedulingFails_noFurtherScheduling() {
         when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
         when(mJobScheduler.schedule(any(JobInfo.class))).thenReturn(JobScheduler.RESULT_FAILURE);
@@ -377,7 +418,6 @@ public class MigrationBroadcastSchedulingTest {
                                         (Objects.equals(
                                                 jobInfo.getService().getClassName(),
                                                 MigrationBroadcastJobService.class.getName()))));
-        verifyNoMoreInteractions(mJobScheduler);
     }
 
     private void verifyPeriodicJobSchedulerInvocation(
