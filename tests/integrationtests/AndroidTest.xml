@@ -26,14 +26,13 @@
     <option name="not-shardable" value="true"/>
     <target_preparer class="com.android.tradefed.targetprep.suite.SuiteApkInstaller">
         <option name="cleanup-apks" value="true"/>
-        <option name="test-file-name"
-                value="HealthFitnessWithManagePermissionsIntegrationTests.apk"/>
+        <option name="test-file-name" value="HealthFitnessIntegrationTests.apk"/>
         <option name="test-file-name" value="HealthFitnessPermsTestApp.apk"/>
         <option name="test-file-name" value="HCPermsTestAppNoUsageIntent.apk"/>
         <option name="test-file-name" value="HCSharedUserPermsTestApp.apk"/>
     </target_preparer>
     <test class="com.android.tradefed.testtype.AndroidJUnitTest">
-        <option name="package" value="android.healthconnect.tests.withmanagepermissions"/>
+        <option name="package" value="android.healthconnect.integrationtests"/>
         <option name="hidden-api-checks" value="false"/>
     </test>
 </configuration>

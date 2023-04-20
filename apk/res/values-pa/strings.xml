@@ -32,7 +32,7 @@
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ਐਪਾਂ ਕੋਲ ਪਹੁੰਚ ਹੈ"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ਐਪ ਕੋਲ ਪਹੁੰਚ ਹੈ"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ਕੋਈ ਨਹੀਂ"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"ਇੰਦਰਾਜ ਸੰਬੰਧੀ ਵੇਰਵੇ"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"ਐਂਟਰੀ ਸੰਬੰਧੀ ਵੇਰਵੇ"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"ਹਾਲੀਆ ਪਹੁੰਚ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"ਹਾਲ ਹੀ ਵਿੱਚ ਕਿਸੇ ਵੀ ਐਪ ਨੇ Health Connect ਤੱਕ ਪਹੁੰਚ ਨਹੀਂ ਕੀਤੀ"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"ਸਾਰੀਆਂ ਹਾਲੀਆ ਪਹੁੰਚ ਦੇਖੋ"</string>

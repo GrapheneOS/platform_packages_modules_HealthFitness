@@ -47,7 +47,7 @@ public final class OvulationTestRecordInternal extends InstantRecordInternal<Ovu
     public OvulationTestRecord toExternalRecord() {
         return new OvulationTestRecord.Builder(buildMetaData(), getTime(), getResult())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

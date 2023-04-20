@@ -30,8 +30,10 @@ import com.android.server.SystemService;
 import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
 import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
+import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.MigratorPackageChangesReceiver;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
+import com.android.server.healthconnect.migration.notification.MigrationNotificationSender;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -60,6 +62,8 @@ public class HealthConnectManagerService extends SystemService {
     private final UserManager mUserManager;
     private final MigrationBroadcastScheduler mMigrationBroadcastScheduler;
     private UserHandle mCurrentForegroundUser;
+    private MigrationUiStateManager mMigrationUiStateManager;
+    private final MigrationNotificationSender mMigrationNotificationSender;
 
     public HealthConnectManagerService(Context context) {
         super(context);
@@ -95,6 +99,13 @@ public class HealthConnectManagerService extends SystemService {
                         mTransactionManager,
                         MigrationEntityHelper.getInstance(),
                         PriorityMigrationHelper.getInstance());
+        mMigrationNotificationSender = new MigrationNotificationSender(context);
+        mMigrationUiStateManager =
+                new MigrationUiStateManager(
+                        mContext,
+                        mCurrentForegroundUser,
+                        migrationStateManager,
+                        mMigrationNotificationSender);
         mHealthConnectService =
                 new HealthConnectServiceImpl(
                         mTransactionManager,
@@ -102,6 +113,7 @@ public class HealthConnectManagerService extends SystemService {
                         migrationCleaner,
                         firstGrantTimeManager,
                         migrationStateManager,
+                        mMigrationUiStateManager,
                         mContext);
     }
 
@@ -124,10 +136,12 @@ public class HealthConnectManagerService extends SystemService {
         mTransactionManager.onUserSwitching();
         RateLimiter.clearCache();
         HealthConnectThreadScheduler.resetThreadPools();
-        MigrationStateManager.getInitialisedInstance()
-                .onUserSwitching(mContext, to.getUserHandle().getIdentifier());
+        MigrationStateManager migrationStateManager =
+                MigrationStateManager.getInitialisedInstance();
+        migrationStateManager.onUserSwitching(mContext, to.getUserHandle().getIdentifier());
 
         mCurrentForegroundUser = to.getUserHandle();
+
         if (mUserManager.isUserUnlocked(to.getUserHandle())) {
             // The user is already in unlocked state, so we should proceed with our setup right now,
             // as we won't be getting a onUserUnlocked callback
@@ -165,6 +179,12 @@ public class HealthConnectManagerService extends SystemService {
                 new HealthConnectUserContext(mContext, mCurrentForegroundUser));
         mHealthConnectService.onUserSwitching(mCurrentForegroundUser);
         mMigrationBroadcastScheduler.setUserId(mCurrentForegroundUser.getIdentifier());
+        mMigrationUiStateManager =
+                new MigrationUiStateManager(
+                        mContext,
+                        mCurrentForegroundUser,
+                        MigrationStateManager.getInitialisedInstance(),
+                        mMigrationNotificationSender);
         HealthConnectDailyJobs.cancelAllJobs(mContext);
 
         HealthConnectThreadScheduler.scheduleInternalTask(

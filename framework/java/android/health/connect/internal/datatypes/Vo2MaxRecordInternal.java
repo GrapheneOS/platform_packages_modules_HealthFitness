@@ -64,7 +64,7 @@ public final class Vo2MaxRecordInternal extends InstantRecordInternal<Vo2MaxReco
                         getMeasurementMethod(),
                         getVo2MillilitersPerMinuteKilogram())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

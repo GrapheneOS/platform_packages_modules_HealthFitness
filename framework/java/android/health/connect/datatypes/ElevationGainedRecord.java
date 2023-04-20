@@ -55,8 +55,6 @@ public final class ElevationGainedRecord extends IntervalRecord {
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
             Objects.requireNonNull(elevation);
-            ValidationUtils.requireInRange(
-                    elevation.getInMeters(), -1000000.0, 1000000.0, "elevation");
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
@@ -98,12 +96,34 @@ public final class ElevationGainedRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link ElevationGainedRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public ElevationGainedRecord buildWithoutValidation() {
+            return new ElevationGainedRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mElevation,
+                    true);
+        }
+
+        /**
          * @return Object of {@link ElevationGainedRecord}
          */
         @NonNull
         public ElevationGainedRecord build() {
             return new ElevationGainedRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mElevation);
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mElevation,
+                    false);
         }
     }
 
@@ -129,6 +149,7 @@ public final class ElevationGainedRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param elevation Elevation of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private ElevationGainedRecord(
             @NonNull Metadata metadata,
@@ -136,9 +157,14 @@ public final class ElevationGainedRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull Length elevation) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull Length elevation,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(elevation);
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(
+                    elevation.getInMeters(), -1000000.0, 1000000.0, "elevation");
+        }
         mElevation = elevation;
     }
 

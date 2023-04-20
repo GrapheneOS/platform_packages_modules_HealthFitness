@@ -46,7 +46,7 @@ public final class RestingHeartRateRecordInternal
     public RestingHeartRateRecord toExternalRecord() {
         return new RestingHeartRateRecord.Builder(buildMetaData(), getTime(), getBeatsPerMinute())
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

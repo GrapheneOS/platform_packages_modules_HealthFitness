@@ -33,14 +33,14 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> апликација има пристап"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Нема"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Детали на записот"</string>
-    <string name="recent_access_header" msgid="7623497371790225888">"Неодамнешен пристап"</string>
+    <string name="recent_access_header" msgid="7623497371790225888">"Најнов пристап"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Нема апликации што неодамна пристапиле до Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Погледнете ги сите најнови пристапи"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Погледнете кои апликации пристапиле до вашите податоци во изминатите 24 часа"</string>
     <string name="today_header" msgid="1006837293203834373">"Денес"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Вчера"</string>
     <string name="read_data_access_label" msgid="7145747310980361968">"Читај: %s"</string>
-    <string name="write_data_access_label" msgid="7955988316773000250">"Запишувај: %s"</string>
+    <string name="write_data_access_label" msgid="7955988316773000250">"Запишување: %s"</string>
     <string name="data_type_separator" msgid="1299848322898210658">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"Управувајте со дозволите"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"Активност"</string>
@@ -674,8 +674,8 @@
     <string name="weight_unit_stone_label" msgid="3063787243474847180">"Стони"</string>
     <string name="energy_unit_calorie_label" msgid="3412965811470957296">"Калории"</string>
     <string name="energy_unit_kilojoule_label" msgid="6481196724083455110">"Килоџули"</string>
-    <string name="temperature_unit_celsius_label" msgid="4698347100553808449">"Целзиусови"</string>
-    <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Фаренхајтови"</string>
+    <string name="temperature_unit_celsius_label" msgid="4698347100553808449">"Целзиус"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Фаренхајт"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Келвин"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Помош и повратни информации"</string>
     <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->

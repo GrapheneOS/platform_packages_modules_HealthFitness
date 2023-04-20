@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.IntRange;
 import android.annotation.NonNull;
+import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 
 import java.time.Instant;
@@ -39,14 +40,15 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
     private ExerciseSegment(
             @NonNull TimeInterval interval,
             @ExerciseSegmentType.ExerciseSegmentTypes int segmentType,
-            @IntRange(from = 0) int repetitionsCount) {
+            @IntRange(from = 0) int repetitionsCount,
+            boolean skipValidation) {
         Objects.requireNonNull(interval);
         mInterval = interval;
 
         mSegmentType = segmentType;
 
-        if (repetitionsCount < 0) {
-            throw new IllegalArgumentException("Repetitions count must be non-negative.");
+        if (!skipValidation) {
+            ValidationUtils.requireNonNegative(repetitionsCount, "repetitionsCount");
         }
         mRepetitionsCount = repetitionsCount;
     }
@@ -145,12 +147,21 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
         }
 
         /**
+         * @return Object of {@link ExerciseSegment} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public ExerciseSegment buildWithoutValidation() {
+            return new ExerciseSegment(mInterval, mSegmentType, mRepetitionsCount, true);
+        }
+
+        /**
          * Sets the number repetitions to the current segment. Returns {@link ExerciseSegment}
          * instance.
          */
         @NonNull
         public ExerciseSegment build() {
-            return new ExerciseSegment(mInterval, mSegmentType, mRepetitionsCount);
+            return new ExerciseSegment(mInterval, mSegmentType, mRepetitionsCount, false);
         }
     }
 }

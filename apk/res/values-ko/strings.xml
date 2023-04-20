@@ -28,7 +28,7 @@
     <string name="no_data" msgid="1906986019249068659">"데이터 없음"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"앱 권한"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"앱 및 권한 관리"</string>
-    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"앱 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>/<xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>개에 액세스 권한이 있음"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"앱 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>개 중 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>개에 액세스 권한이 있음"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"앱 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>개에 액세스 권한이 있음"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"앱 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>개에 액세스 권한이 있음"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"없음"</string>
@@ -387,7 +387,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1세트}other{#세트}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1세트 반복}other{#세트 반복}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"운동 분류"</string>
-    <string name="exercise_laps_header" msgid="117228630553856372">"왕복 횟수"</string>
+    <string name="exercise_laps_header" msgid="117228630553856372">"랩 타임"</string>
     <string name="back_extension" msgid="426518933137440577">"백 익스텐션"</string>
     <string name="badminton" msgid="8839727076522086870">"배드민턴"</string>
     <string name="barbell_shoulder_press" msgid="3800236222803424251">"바벨 숄더 프레스"</string>

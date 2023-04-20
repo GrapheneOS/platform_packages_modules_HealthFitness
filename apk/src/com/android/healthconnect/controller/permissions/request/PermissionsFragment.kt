@@ -18,7 +18,6 @@
 
 package com.android.healthconnect.controller.permissions.request
 
-import android.health.connect.HealthConnectDataState
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,8 +28,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.migration.DataMigrationState
-import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
@@ -38,10 +35,8 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.children
-import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
-import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
@@ -63,7 +58,6 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
     @Inject lateinit var logger: HealthConnectLogger
 
     private val viewModel: RequestPermissionViewModel by activityViewModels()
-    private val migrationViewModel: MigrationViewModel by activityViewModels()
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private val header: RequestPermissionHeaderPreference? by lazy {
@@ -138,75 +132,6 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
             updateDataList(permissions)
             setupAllowAll()
         }
-        migrationViewModel.migrationState.observe(viewLifecycleOwner) { migrationState ->
-            maybeShowMigrationDialog(migrationState)
-        }
-    }
-
-    private fun maybeShowMigrationDialog(migrationState: @DataMigrationState Int) {
-        when (migrationState) {
-            // TODO (b/273745755) Expose real UI states
-            HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS -> {
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // showMigrationInProgressDialog()
-            }
-            HealthConnectDataState.MIGRATION_STATE_ALLOWED -> {
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // showMigrationPendingDialog()
-            }
-            HealthConnectDataState.MIGRATION_STATE_APP_UPGRADE_REQUIRED -> {
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // showMigrationPendingDialog()
-            }
-            HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED -> {
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // showMigrationPendingDialog()
-            }
-        }
-    }
-
-    private fun showMigrationInProgressDialog() {
-        val message =
-            getString(
-                R.string.migration_in_progress_permissions_dialog_content,
-                viewModel.appMetadata.value?.appName)
-        AlertDialogBuilder(this)
-            .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
-            .setTitle(R.string.migration_in_progress_permissions_dialog_title)
-            .setMessage(message)
-            .setCancelable(false)
-            .setNegativeButton(
-                R.string.migration_in_progress_permissions_dialog_button_got_it,
-                ErrorPageElement.UNKNOWN_ELEMENT) { _, _ ->
-                    requireActivity().finish()
-                }
-            .create()
-            .show()
-    }
-    private fun showMigrationPendingDialog() {
-        val message =
-            getString(
-                R.string.migration_pending_permissions_dialog_content,
-                viewModel.appMetadata.value?.appName)
-        AlertDialogBuilder(this)
-            .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
-            .setTitle(R.string.migration_pending_permissions_dialog_title)
-            .setMessage(message)
-            .setCancelable(false)
-            .setNegativeButton(android.R.string.cancel, ErrorPageElement.UNKNOWN_ELEMENT) { _, _
-                -> // TODO (b/275710425) pressing cancel should be equivalent to denying permissions
-                //                     viewModel.updatePermissions(false)
-                //                    val packageName =
-                // requireActivity().intent.getStringExtra(EXTRA_PACKAGE_NAME).orEmpty()
-                //                    (requireActivity() as
-                // PermissionsActivity).handleResults(viewModel.request(packageName))
-                requireActivity().finish()
-            }
-            .setPositiveButton(
-                R.string.migration_pending_permissions_dialog_button_continue,
-                ErrorPageElement.UNKNOWN_ELEMENT)
-            .create()
-            .show()
     }
 
     private fun setupAllowAll() {

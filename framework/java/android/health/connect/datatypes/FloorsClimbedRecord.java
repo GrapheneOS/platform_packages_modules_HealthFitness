@@ -52,6 +52,7 @@ public final class FloorsClimbedRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param floors Number of floors of this activity. Valid range: 0-1000000.
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private FloorsClimbedRecord(
             @NonNull Metadata metadata,
@@ -59,9 +60,12 @@ public final class FloorsClimbedRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @FloatRange(from = 0f, to = 1000000f) double floors) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
-        ValidationUtils.requireInRange(floors, 0.0, 1000000.0, "floors");
+            @FloatRange(from = 0f, to = 1000000f) double floors,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(floors, 0.0, 1000000.0, "floors");
+        }
         mFloors = floors;
     }
 
@@ -159,12 +163,34 @@ public final class FloorsClimbedRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link FloorsClimbedRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public FloorsClimbedRecord buildWithoutValidation() {
+            return new FloorsClimbedRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mFloors,
+                    true);
+        }
+
+        /**
          * @return Object of {@link FloorsClimbedRecord}
          */
         @NonNull
         public FloorsClimbedRecord build() {
             return new FloorsClimbedRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mFloors);
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mFloors,
+                    false);
         }
     }
 

@@ -35,12 +35,12 @@
     <string name="entry_details_title" msgid="590184849040247850">"Sarreraren xehetasunak"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Datuak atzitu dituzten azkenak"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Ez dago azkenaldian Health Connect atzitu duen aplikaziorik"</string>
-    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Ikusi datuak idatzi eta irakurri dituzten azkenak"</string>
+    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Ikusi datuak atzitu dituzten azkenak"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Ikusi zein aplikaziok atzitu dituzten datuak azken 24 orduetan"</string>
     <string name="today_header" msgid="1006837293203834373">"Gaur"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Atzo"</string>
     <string name="read_data_access_label" msgid="7145747310980361968">"Irakurri %s"</string>
-    <string name="write_data_access_label" msgid="7955988316773000250">"Idatzi %s"</string>
+    <string name="write_data_access_label" msgid="7955988316773000250">"Idatzi: %s"</string>
     <string name="data_type_separator" msgid="1299848322898210658">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"Kudeatu baimenak"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"Jarduerak"</string>
@@ -62,7 +62,7 @@
     <string name="no_categories" msgid="2636778482437506241">"Ez daukazu daturik Health Connect-en"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Zure datuak"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"Aplikazioen lehentasuna"</string>
-    <string name="delete_category_data_button" msgid="2324773398768267043">"Ezabatu \"<xliff:g id="CATEGORY">%s</xliff:g>\" aplikazioko datuak"</string>
+    <string name="delete_category_data_button" msgid="2324773398768267043">"Ezabatu \"<xliff:g id="CATEGORY">%s</xliff:g>\" kategoriako datuak"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Aplikazio guztiak"</string>
     <string name="can_read" msgid="4568261079308309564">"\"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>\" kategoriako datuak irakur ditzaketenak"</string>
     <string name="can_write" msgid="5082414937218423823">"\"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>\" kategoriako datuak idatz ditzaketenak"</string>
@@ -256,8 +256,8 @@
     <!-- no translation found for health_permission_header_description (7497601695462373927) -->
     <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Kontrolatu zein aplikaziok atzi ditzaketen Health Connect-eko datuak. Sakatu aplikazio bat zein datu irakurri edo idatz ditzakeen berrikusteko."</string>
-    <string name="connected_apps_section_title" msgid="2415288099612126258">"Erabiltzeko baimena dutenak"</string>
-    <string name="not_connected_apps_section_title" msgid="452718769894103039">"Atzitzeko baimenik ez dutenak"</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"Atzitzeko baimena dutenak"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"Erabiltzeko baimenik ez dutenak"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"Ezarpenak eta laguntza"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"Kendu sarbidea aplikazio guztiei"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"Hauek irakurtzeko baimena du:"</string>
@@ -387,7 +387,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 errep.}other{# errep.}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 errepikapen}other{# errepikapen}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Ariketa-uneak"</string>
-    <string name="exercise_laps_header" msgid="117228630553856372">"Luzeak"</string>
+    <string name="exercise_laps_header" msgid="117228630553856372">"Itzuliak"</string>
     <string name="back_extension" msgid="426518933137440577">"Bizkarraren luzaketa"</string>
     <string name="badminton" msgid="8839727076522086870">"Badmintona"</string>
     <string name="barbell_shoulder_press" msgid="3800236222803424251">"Sorbalda-bultzada pisuekin"</string>

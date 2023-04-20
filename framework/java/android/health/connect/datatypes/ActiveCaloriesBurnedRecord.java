@@ -57,7 +57,6 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
             Objects.requireNonNull(energy);
-            ValidationUtils.requireInRange(energy.getInCalories(), 0.0, 1000000000.0, "energy");
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
@@ -99,12 +98,34 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link ActiveCaloriesBurnedRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public ActiveCaloriesBurnedRecord buildWithoutValidation() {
+            return new ActiveCaloriesBurnedRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mEnergy,
+                    true);
+        }
+
+        /**
          * @return Object of {@link ActiveCaloriesBurnedRecord}
          */
         @NonNull
         public ActiveCaloriesBurnedRecord build() {
             return new ActiveCaloriesBurnedRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mEnergy);
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mEnergy,
+                    false);
         }
     }
 
@@ -130,6 +151,7 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param energy Energy of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private ActiveCaloriesBurnedRecord(
             @NonNull Metadata metadata,
@@ -137,9 +159,13 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull Energy energy) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull Energy energy,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(energy);
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(energy.getInCalories(), 0.0, 1000000000.0, "energy");
+        }
         mEnergy = energy;
     }
 

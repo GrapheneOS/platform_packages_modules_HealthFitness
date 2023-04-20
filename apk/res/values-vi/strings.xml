@@ -35,7 +35,7 @@
     <string name="entry_details_title" msgid="590184849040247850">"Thông tin nhập"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Lần truy cập gần đây"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Không có ứng dụng nào truy cập vào Health Connect gần đây"</string>
-    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Xem mọi lượt truy cập gần đây"</string>
+    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Xem mọi lần truy cập gần đây"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Xem những ứng dụng nào đã truy cập vào dữ liệu của bạn trong 24 giờ qua"</string>
     <string name="today_header" msgid="1006837293203834373">"Hôm nay"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Hôm qua"</string>

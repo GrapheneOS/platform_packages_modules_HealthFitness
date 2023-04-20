@@ -32,14 +32,16 @@ public final class MenstruationPeriodRecord extends IntervalRecord {
      * @param startZoneOffset Zone offset of the user when the interval started
      * @param endTime End time of this interval
      * @param endZoneOffset Zone offset of the user when the interval finished
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private MenstruationPeriodRecord(
             @NonNull Metadata metadata,
             @NonNull Instant startTime,
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
-            @NonNull ZoneOffset endZoneOffset) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull ZoneOffset endZoneOffset,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
     }
 
     /**
@@ -119,11 +121,21 @@ public final class MenstruationPeriodRecord extends IntervalRecord {
             return this;
         }
 
+        /**
+         * @return Object of {@link MenstruationPeriodRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public MenstruationPeriodRecord buildWithoutValidation() {
+            return new MenstruationPeriodRecord(
+                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, true);
+        }
+
         /** Builds {@link MenstruationPeriodRecord} */
         @NonNull
         public MenstruationPeriodRecord build() {
             return new MenstruationPeriodRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset);
+                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, false);
         }
     }
 

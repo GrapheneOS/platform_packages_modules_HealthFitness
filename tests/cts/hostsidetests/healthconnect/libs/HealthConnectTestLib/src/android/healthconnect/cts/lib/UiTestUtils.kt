@@ -23,6 +23,7 @@ import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.units.Length
+import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
 import android.os.SystemClock
 import android.util.Log
 import androidx.test.uiautomator.By
@@ -43,18 +44,13 @@ import java.util.regex.Pattern
 /** UI testing helper. */
 object UiTestUtils {
 
-    /** The label of the rescan button. */
-    const val RESCAN_BUTTON_LABEL = "Scan device"
-
-    private val WAIT_TIMEOUT = Duration.ofSeconds(4)
+    private val WAIT_TIMEOUT = Duration.ofSeconds(10)
     private val NOT_DISPLAYED_TIMEOUT = Duration.ofMillis(500)
 
     private val TAG = UiTestUtils::class.java.simpleName
 
     private val TEST_DEVICE: Device =
         Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build()
-
-    private val PACKAGE_NAME = "android.healthconnect.cts.ui"
 
     const val TEST_APP_PACKAGE_NAME = "android.healthconnect.cts.app"
 
@@ -72,14 +68,16 @@ object UiTestUtils {
         }
     }
 
-    fun skipOnboardingIfAppears() {
-        try {
-            clickOnText("Get started")
-        } catch (e: Exception) {
+    fun skipOnboarding(context: Context) {
+        context.launchMainActivity {
             try {
-                clickOnText("GET STARTED")
+                clickOnText("Get started")
             } catch (e: Exception) {
-                // No-op if onboarding was not displayed.
+                try {
+                    clickOnText("GET STARTED")
+                } catch (e: Exception) {
+                    // No-op if onboarding was not displayed.
+                }
             }
         }
     }
@@ -87,21 +85,6 @@ object UiTestUtils {
     /** Clicks on [UiObject2] with given [text]. */
     fun clickOnText(string: String) {
         waitDisplayed(By.text(string)) { it.click() }
-    }
-
-    fun deleteAllDataAndNavigateToHomeScreen() {
-        navigateBackToHomeScreen()
-        clickOnText("Data and access")
-        clickOnText("Delete all data")
-        try {
-            clickOnText("Delete all data")
-            clickOnText("Next")
-            clickOnText("Delete")
-            clickOnText("Done")
-        } catch (e: Exception) {
-            // No-op if all data is already deleted and the delete button is disabled.
-        }
-        navigateBackToHomeScreen()
     }
 
     fun navigateBackToHomeScreen() {
@@ -126,6 +109,10 @@ object UiTestUtils {
 
     fun navigateUp() {
         clickOnContentDescription("Navigate up")
+    }
+
+    fun writeText(selector: BySelector, query: String) {
+        waitDisplayed(selector) { it.text = query }
     }
 
     /** Clicks on [UiObject2] with given [string] content description. */
