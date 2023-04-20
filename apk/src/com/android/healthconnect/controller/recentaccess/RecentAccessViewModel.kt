@@ -82,13 +82,17 @@ constructor(
                 .map { connectedAppMetadata -> connectedAppMetadata.appMetadata.packageName }
 
         val clusters = clusterEntries(accessLogs, maxNumEntries, timeSource)
+        val filteredClusters = mutableListOf<RecentAccessEntry>()
         clusters.forEach {
-            if (inactiveApps.contains(it.metadata.packageName) ||
-                !appInfoReader.isAppInstalled(it.metadata.packageName)) {
+            if (inactiveApps.contains(it.metadata.packageName)) {
                 it.isInactive = true
             }
+            if (inactiveApps.contains(it.metadata.packageName) ||
+                appInfoReader.isAppInstalled(it.metadata.packageName)) {
+                filteredClusters.add(it)
+            }
         }
-        return clusters
+        return filteredClusters
     }
 
     private data class DataAccessEntryCluster(
