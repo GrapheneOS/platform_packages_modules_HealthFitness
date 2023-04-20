@@ -1818,7 +1818,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 MigrationEntityHelper.getInstance(),
                 RecordHelperProvider.getInstance(),
                 HealthDataCategoryPriorityHelper.getInstance(),
-                PriorityMigrationHelper.getInstance());
+                PriorityMigrationHelper.getInstance(),
+                ActivityDateHelper.getInstance());
     }
 
     private void enforceCallingPackageBelongsToUid(String packageName, int callingUid) {

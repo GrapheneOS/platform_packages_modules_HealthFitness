@@ -87,15 +87,7 @@ public final class ActivityDateHelper {
 
         List<UpsertTableRequest> upsertTableRequests = new ArrayList<>();
         recordInternals.forEach(
-                (recordInternal) ->
-                        upsertTableRequests.add(
-                                new UpsertTableRequest(
-                                        TABLE_NAME,
-                                        getContentValues(
-                                                recordInternal.getRecordType(),
-                                                ChronoUnit.DAYS.between(
-                                                        LocalDate.EPOCH,
-                                                        recordInternal.getLocalDate())))));
+                (recordInternal) -> upsertTableRequests.add(getUpsertTableRequest(recordInternal)));
 
         transactionManager.insertOrIgnoreOnConflict(upsertTableRequests);
     }
@@ -144,10 +136,7 @@ public final class ActivityDateHelper {
                         epochDays.forEach(
                                 (epochDay) ->
                                         upsertTableRequests.add(
-                                                new UpsertTableRequest(
-                                                        TABLE_NAME,
-                                                        getContentValues(
-                                                                recordTypeId, epochDay)))));
+                                                getUpsertTableRequest(recordTypeId, epochDay))));
 
         transactionManager.runAsTransaction(
                 db -> {
@@ -225,5 +214,17 @@ public final class ActivityDateHelper {
         }
 
         return sActivityDateHelper;
+    }
+
+    /** Creates UpsertTableRequest to insert into activity_date_table table. */
+    public UpsertTableRequest getUpsertTableRequest(int recordTypeId, long epochDays) {
+        return new UpsertTableRequest(TABLE_NAME, getContentValues(recordTypeId, epochDays));
+    }
+
+    /** Creates UpsertTableRequest to insert into activity_date_table table from recordInternal. */
+    public UpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
+        return getUpsertTableRequest(
+                recordInternal.getRecordType(),
+                ChronoUnit.DAYS.between(LocalDate.EPOCH, recordInternal.getLocalDate()));
     }
 }
