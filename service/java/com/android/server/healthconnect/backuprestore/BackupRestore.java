@@ -70,6 +70,7 @@ import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.utils.FilesUtil;
+import com.android.server.healthconnect.utils.RunnableWithThrowable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -671,6 +672,17 @@ public final class BackupRestore {
             File stagedDataDir = getStagedRemoteDataDirectoryForUser(0);
             stagedDataDir.mkdirs();
             return new File(stagedDataDir, name);
+        }
+    }
+
+    /** Execute the task as critical section by holding read lock. */
+    public <E extends Throwable> void runWithStatesReadLock(RunnableWithThrowable<E> task)
+            throws E {
+        mStatesLock.readLock().lock();
+        try {
+            task.run();
+        } finally {
+            mStatesLock.readLock().unlock();
         }
     }
 }
