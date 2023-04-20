@@ -46,7 +46,12 @@ public class ValueColumnAggregationData extends AggregationRecordData {
         double overlapDuration =
                 Math.min(getEndTime(), endTime) - Math.max(getStartTime(), startTime);
 
-        if (intervalDuration <= 0 || overlapDuration <= 0) {
+        // Case: start time equals end time
+        if (intervalDuration == 0) {
+            return mValue;
+        }
+
+        if (intervalDuration < 0 || overlapDuration <= 0) {
             return 0;
         }
 

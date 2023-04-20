@@ -20,8 +20,6 @@ import static android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.READ;
-import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMPLETE;
-import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
@@ -237,7 +235,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
-        throwExceptionIfDataSyncInProgress();
+        throwIllegalStateExceptionIfDataSyncInProgress();
         Trace.traceBegin(TRACE_TAG_GRANT_PERMISSION, TAG_GRANT_PERMISSION);
         mPermissionHelper.grantHealthPermission(packageName, permissionName, user);
         Trace.traceEnd(TRACE_TAG_GRANT_PERMISSION);
@@ -249,21 +247,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull String permissionName,
             @Nullable String reason,
             @NonNull UserHandle user) {
-        throwExceptionIfDataSyncInProgress();
+        throwIllegalStateExceptionIfDataSyncInProgress();
         mPermissionHelper.revokeHealthPermission(packageName, permissionName, reason, user);
     }
 
     @Override
     public void revokeAllHealthPermissions(
             @NonNull String packageName, @Nullable String reason, @NonNull UserHandle user) {
-        throwExceptionIfDataSyncInProgress();
+        throwIllegalStateExceptionIfDataSyncInProgress();
         mPermissionHelper.revokeAllHealthPermissions(packageName, reason, user);
     }
 
     @Override
     public List<String> getGrantedHealthPermissions(
             @NonNull String packageName, @NonNull UserHandle user) {
-        throwExceptionIfDataSyncInProgress();
+        throwIllegalStateExceptionIfDataSyncInProgress();
         Trace.traceBegin(TRACE_TAG_READ_PERMISSION, TAG_READ_PERMISSION);
         List<String> grantedPermissions =
                 mPermissionHelper.getGrantedHealthPermissions(packageName, user);
@@ -274,7 +272,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public long getHistoricalAccessStartDateInMilliseconds(
             @NonNull String packageName, @NonNull UserHandle userHandle) {
-        throwExceptionIfDataSyncInProgress();
+        throwIllegalStateExceptionIfDataSyncInProgress();
         Instant date = mPermissionHelper.getHealthDataStartDateAccess(packageName, userHandle);
         if (date == null) {
             return Constants.DEFAULT_LONG;
@@ -1439,17 +1437,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 pid,
                                 uid,
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
-                        if (mBackupRestore.isRestoreMergingInProgress()) {
-                            throw new MigrationException(
-                                    "Cannot start data migration. Backup and restore in"
-                                            + " progress.",
-                                    MigrationException.ERROR_INTERNAL,
-                                    null);
-                        }
                         enforceShowMigrationInfoIntent(packageName, uid);
-                        mMigrationStateManager.validateStartMigration();
-                        mMigrationStateManager.updateMigrationState(
-                                mContext, MIGRATION_STATE_IN_PROGRESS);
+                        mBackupRestore.runWithStatesReadLock(
+                                () -> {
+                                    if (mBackupRestore.isRestoreMergingInProgress()) {
+                                        throw new MigrationException(
+                                                "Cannot start data migration. Backup and restore in"
+                                                        + " progress.",
+                                                MigrationException.ERROR_INTERNAL,
+                                                null);
+                                    }
+                                    mMigrationStateManager.startMigration(mContext);
+                                });
                         PriorityMigrationHelper.getInstance().populatePreMigrationPriority();
                         callback.onSuccess();
                     } catch (Exception e) {
@@ -1476,9 +1475,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 uid,
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
-                        mMigrationStateManager.validateFinishMigration();
-                        mMigrationStateManager.updateMigrationState(
-                                mContext, MIGRATION_STATE_COMPLETE);
+                        mMigrationStateManager.finishMigration(mContext);
                         AppInfoHelper.getInstance().syncAppInfoRecordTypesUsed();
                         callback.onSuccess();
                     } catch (Exception e) {
@@ -2046,6 +2043,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             throw new HealthConnectException(
                     HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS,
                     "Storage data sync in progress. API calls are blocked");
+        }
+    }
+
+    /**
+     * Throws an IllegalState Exception if data migration or restore is in process. This is only
+     * used by HealthConnect synchronous APIs as {@link HealthConnectException} is lost between
+     * processes on synchronous APIs and can only be returned to the caller for the APIs with a
+     * callback.
+     */
+    private void throwIllegalStateExceptionIfDataSyncInProgress() {
+        if (isDataSyncInProgress()) {
+            throw new IllegalStateException("Storage data sync in progress. API calls are blocked");
         }
     }
 
