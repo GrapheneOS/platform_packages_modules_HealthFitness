@@ -97,5 +97,6 @@ android_test {
     data: [
         ":HealthConnectUITestApp",
         ":HealthConnectUITestApp2",
+        ":UnsupportedTestApp",
     ],
 }
