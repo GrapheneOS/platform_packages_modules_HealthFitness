@@ -20,6 +20,8 @@ import static android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.READ;
+import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMPLETE;
+import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
@@ -1437,18 +1439,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 pid,
                                 uid,
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
+                        if (mBackupRestore.isRestoreMergingInProgress()) {
+                            throw new MigrationException(
+                                    "Cannot start data migration. Backup and restore in"
+                                            + " progress.",
+                                    MigrationException.ERROR_INTERNAL,
+                                    null);
+                        }
                         enforceShowMigrationInfoIntent(packageName, uid);
-                        mBackupRestore.runWithStatesReadLock(
-                                () -> {
-                                    if (mBackupRestore.isRestoreMergingInProgress()) {
-                                        throw new MigrationException(
-                                                "Cannot start data migration. Backup and restore in"
-                                                        + " progress.",
-                                                MigrationException.ERROR_INTERNAL,
-                                                null);
-                                    }
-                                    mMigrationStateManager.startMigration(mContext);
-                                });
+                        mMigrationStateManager.validateStartMigration();
+                        mMigrationStateManager.updateMigrationState(
+                                mContext, MIGRATION_STATE_IN_PROGRESS);
                         PriorityMigrationHelper.getInstance().populatePreMigrationPriority();
                         callback.onSuccess();
                     } catch (Exception e) {
@@ -1475,7 +1476,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 uid,
                                 "Caller does not have " + MIGRATE_HEALTH_CONNECT_DATA);
                         enforceShowMigrationInfoIntent(packageName, uid);
-                        mMigrationStateManager.finishMigration(mContext);
+                        mMigrationStateManager.validateFinishMigration();
+                        mMigrationStateManager.updateMigrationState(
+                                mContext, MIGRATION_STATE_COMPLETE);
                         AppInfoHelper.getInstance().syncAppInfoRecordTypesUsed();
                         callback.onSuccess();
                     } catch (Exception e) {
