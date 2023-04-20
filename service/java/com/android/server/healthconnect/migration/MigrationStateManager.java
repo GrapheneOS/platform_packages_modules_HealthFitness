@@ -278,11 +278,13 @@ public final class MigrationStateManager {
 
     /**
      * Throws {@link IllegalMigrationStateException} if the migration can not be started in the
-     * current state.
+     * current state. If migration can be started, it will change the state to
+     * MIGRATION_STATE_IN_PROGRESS
      */
-    public void validateStartMigration() throws IllegalMigrationStateException {
+    public void startMigration(@NonNull Context context) throws IllegalMigrationStateException {
         synchronized (mLock) {
             validateStartMigrationGuarded();
+            updateMigrationStateGuarded(context, MIGRATION_STATE_IN_PROGRESS, false);
         }
     }
 
@@ -307,15 +309,17 @@ public final class MigrationStateManager {
 
     /**
      * Throws {@link IllegalMigrationStateException} if the migration can not be finished in the
-     * current state.
+     * current state. If migration can be finished, it will change the state to
+     * MIGRATION_STATE_COMPLETE
      */
-    public void validateFinishMigration() throws IllegalMigrationStateException {
+    public void finishMigration(@NonNull Context context) throws IllegalMigrationStateException {
         synchronized (mLock) {
             throwIfMigrationIsComplete();
             if (getMigrationState() != MIGRATION_STATE_IN_PROGRESS
                     && getMigrationState() != MIGRATION_STATE_ALLOWED) {
                 throw new IllegalMigrationStateException("Migration is not started.");
             }
+            updateMigrationStateGuarded(context, MIGRATION_STATE_COMPLETE, false);
         }
     }
 
