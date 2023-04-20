@@ -19,6 +19,7 @@
 package com.android.healthconnect.controller.tests.permissions.request
 
 import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -53,6 +54,7 @@ import com.android.healthconnect.controller.permissions.request.PermissionsActiv
 import com.android.healthconnect.controller.service.HealthPermissionManagerModule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.UNSUPPORTED_TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
 import com.android.healthconnect.controller.tests.utils.whenever
 import com.google.common.truth.Truth.assertThat
@@ -123,6 +125,19 @@ class PermissionsActivityTest {
                 withText(
                     "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"))
             .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun unsupportedApp_returnsCancelled() {
+        val unsupportedAppIntent = Intent.makeMainActivity(ComponentName(context, PermissionsActivity::class.java))
+                .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
+                .putExtra(Intent.EXTRA_PACKAGE_NAME, UNSUPPORTED_TEST_APP_PACKAGE_NAME)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+        val scenario = launchActivityForResult<PermissionsActivity>(unsupportedAppIntent)
+
+        assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
     }
 
     @Test
