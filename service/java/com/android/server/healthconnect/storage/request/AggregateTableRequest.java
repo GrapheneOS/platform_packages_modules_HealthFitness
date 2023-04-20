@@ -66,11 +66,11 @@ public class AggregateTableRequest {
     private final List<String> mColumnNamesToAggregate;
     private final AggregationType<?> mAggregationType;
     private final RecordHelper<?> mRecordHelper;
-    private final Map<Integer, AggregateResult> mAggregateResults = new ArrayMap<>();
+    private final Map<Integer, AggregateResult<?>> mAggregateResults = new ArrayMap<>();
     private final String mTimeColumnName;
     // Additional column used for time filtering. End time for interval records,
     // null for other records.
-    private String mEndTimeColumnName;
+    private final String mEndTimeColumnName;
     private final SqlJoin mSqlJoin;
     private List<Long> mPackageFilters;
     private long mStartTime = DEFAULT_TIME;
@@ -85,7 +85,9 @@ public class AggregateTableRequest {
     private final AggregateParams.PriorityAggregationExtraParams mPriorityParams;
 
     public AggregateTableRequest(
-            AggregateParams params, AggregationType aggregationType, RecordHelper recordHelper) {
+            AggregateParams params,
+            AggregationType<?> aggregationType,
+            RecordHelper<?> recordHelper) {
         mTableName = params.getTableName();
         mColumnNamesToAggregate = params.getColumnsToFetch();
         mTimeColumnName = params.getTimeColumnName();
@@ -397,5 +399,4 @@ public class AggregateTableRequest {
             index++;
         }
     }
-
 }

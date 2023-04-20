@@ -10,37 +10,37 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// limitations under the License
+// limitations under the License.
 
 package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-android_test {
-    name: "HealthFitnessIntegrationTests",
+filegroup {
+    name: "healthconnect-ui-testapp3-srcs",
+    srcs: [
+        "src/**/*.java",
+    ],
+    visibility: [
+        "//packages/modules/HealthFitness:__subpackages__"
+    ],
+}
+
+android_test_helper_app {
+    name: "UnsupportedTestApp",
+
+    libs: [
+        "android.test.base",
+        "android.test.runner",
+    ],
+
+    srcs: [":healthconnect-ui-testapp3-srcs"],
+
     test_suites: [
         "device-tests",
         "general-tests",
-        "mts-healthfitness",
-    ],
-    libs: [
-        "framework-healthfitness.impl",
     ],
 
-    static_libs: [
-        "androidx.test.rules",
-        "compatibility-device-util-axt",
-        "androidx.test.ext.truth",
-    ],
+    sdk_version: "system_current",
 
-    srcs: [
-        ":healthfitness-permissions-testapp-srcs",
-        "src/**/*.java",
-    ],
-    sdk_version: "module_current",
-    data: [
-        ":HealthFitnessPermsTestApp",
-        ":HCPermsTestAppNoUsageIntent",
-        ":HCSharedUserPermsTestApp",
-    ]
 }
