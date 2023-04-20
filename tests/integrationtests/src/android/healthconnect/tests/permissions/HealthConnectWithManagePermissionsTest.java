@@ -22,6 +22,7 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import android.Manifest;
@@ -271,8 +272,6 @@ public class HealthConnectWithManagePermissionsTest {
         fail("Expected NullPointerException due to null package.");
     }
 
-    // TODO(b/273298175): Assert that we are getting exceptions once we are able to throw from
-    // Health Connect synchronous apis.
     @Test
     public void testPermissionApis_migrationInProgress_apisBlocked() throws Exception {
         runWithShellPermissionIdentity(
@@ -281,7 +280,12 @@ public class HealthConnectWithManagePermissionsTest {
 
         // Grant permission
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        grantHealthPermission(DEFAULT_APP_PACKAGE, /* reason= */ null);
+        try {
+            grantHealthPermission(DEFAULT_APP_PACKAGE, /* permissionName= */ null);
+            fail("Expected IllegalStateException for data sync in progress.");
+        } catch (IllegalStateException exception) {
+            assertNotNull(exception);
+        }
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         PermissionsTestUtils.deleteAllStagedRemoteData();
 
@@ -292,12 +296,28 @@ public class HealthConnectWithManagePermissionsTest {
 
         grantPermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        revokeHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
+        try {
+            revokeHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
+            fail("Expected IllegalStateException for data sync in progress.");
+        } catch (IllegalStateException exception) {
+            assertNotNull(exception);
+        }
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
+        try {
+            revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
+            fail("Expected IllegalStateException for data sync in progress.");
+        } catch (IllegalStateException exception) {
+            assertNotNull(exception);
+        }
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
 
         // getGrantedHealthPermissions
-        assertThat(getGrantedHealthPermissions(DEFAULT_APP_PACKAGE)).isEmpty();
+        try {
+            assertThat(getGrantedHealthPermissions(DEFAULT_APP_PACKAGE)).isEmpty();
+            fail("Expected IllegalStateException for data sync in progress.");
+        } catch (IllegalStateException exception) {
+            assertNotNull(exception);
+        }
         runWithShellPermissionIdentity(
                 PermissionsTestUtils::finishMigration,
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
