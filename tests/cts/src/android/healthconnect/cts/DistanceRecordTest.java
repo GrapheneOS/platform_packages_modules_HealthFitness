@@ -46,6 +46,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -66,6 +67,17 @@ public class DistanceRecordTest {
 
     @After
     public void tearDown() throws InterruptedException {
+        TestUtils.verifyDeleteRecords(
+                DistanceRecord.class,
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.EPOCH)
+                        .setEndTime(Instant.now())
+                        .build());
+        TestUtils.deleteAllStagedRemoteData();
+    }
+
+    @BeforeClass
+    public static void setup() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
                 DistanceRecord.class,
                 new TimeInstantRangeFilter.Builder()
@@ -304,6 +316,16 @@ public class DistanceRecordTest {
         List<DistanceRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result).hasSize(recordList.size());
         assertThat(result).containsExactlyElementsIn(recordList);
+    }
+
+    private DistanceRecord getBaseDistanceRecordWithSameStartAndEndTime(double distance) {
+        Instant startInstant = Instant.now();
+        return new DistanceRecord.Builder(
+                        new Metadata.Builder().build(),
+                        startInstant,
+                        startInstant,
+                        Length.fromMeters(distance))
+                .build();
     }
 
     @Test
@@ -561,15 +583,6 @@ public class DistanceRecordTest {
                 .build();
     }
 
-    static DistanceRecord getBaseDistanceRecord(double distance) {
-        return new DistanceRecord.Builder(
-                        new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(1000),
-                        Length.fromMeters(distance))
-                .build();
-    }
-
     static DistanceRecord getBaseDistanceRecord(int days, double distance) {
         Instant startInstant = Instant.now().minus(days, ChronoUnit.DAYS);
         return new DistanceRecord.Builder(
@@ -578,6 +591,25 @@ public class DistanceRecordTest {
                         startInstant.plusMillis(1000),
                         Length.fromMeters(distance))
                 .build();
+    }
+
+    @Test
+    public void testAggregation_DistanceTotal_AtOverlapStartAndEndTime() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        getBaseDistanceRecordWithSameStartAndEndTime(74.0),
+                        getBaseDistanceRecordWithSameStartAndEndTime(100.5));
+        AggregateRecordsResponse<Length> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(DISTANCE_TOTAL)
+                                .build(),
+                        records);
+        assertThat(response.get(DISTANCE_TOTAL).getInMeters()).isEqualTo(174.5);
     }
 
     static DistanceRecord getCompleteDistanceRecord() {
