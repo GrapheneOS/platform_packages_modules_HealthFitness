@@ -27,6 +27,7 @@ import android.util.Log;
 import android.util.Slog;
 
 import com.android.modules.utils.BackgroundThread;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 /**
  * Tracks packages changes (install, update, uninstall, changed) and calls permission classes to
@@ -86,13 +87,13 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
         boolean isPackageRemoved =
                 intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)
                         && !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false);
-
         // If the package was removed, we reset grant time. If the package is present but the health
         // intent support removed we revoke all health permissions and also reset grant time
         // (is done via onPermissionChanged callback)
         if (isPackageRemoved) {
             final int uid = intent.getIntExtra(Intent.EXTRA_UID, /* default value= */ -1);
             mFirstGrantTimeManager.onPackageRemoved(packageName, uid, userHandle);
+            HealthDataCategoryPriorityHelper.getInstance().removeAppFromPriorityList(packageName);
         } else if (isHealthIntentRemoved) {
             // Revoke all health permissions as we don't grant health permissions if permissions
             // usage intent is not supported.

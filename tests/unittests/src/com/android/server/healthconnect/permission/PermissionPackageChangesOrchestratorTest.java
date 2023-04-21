@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.permission;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -25,16 +27,24 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.health.connect.HealthDataCategory;
 import android.net.Uri;
 import android.os.Process;
 import android.os.UserHandle;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
 public class PermissionPackageChangesOrchestratorTest {
     private static final String SELF_PACKAGE_NAME = "com.android.healthconnect.unittests";
@@ -46,15 +56,35 @@ public class PermissionPackageChangesOrchestratorTest {
     @Mock private HealthConnectPermissionHelper mHelper;
     @Mock private HealthPermissionIntentAppsTracker mTracker;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
+    @Mock private TransactionManager mTransactionManager;
+
+    @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
+
+    private MockitoSession mStaticMockSession;
 
     @Before
     public void setUp() throws PackageManager.NameNotFoundException {
+        mStaticMockSession =
+                ExtendedMockito.mockitoSession()
+                        .mockStatic(TransactionManager.class)
+                        .mockStatic(HealthDataCategoryPriorityHelper.class)
+                        .strictness(Strictness.LENIENT)
+                        .startMocking();
         MockitoAnnotations.initMocks(this);
+        when(HealthDataCategoryPriorityHelper.getInstance())
+                .thenReturn(mHealthDataCategoryPriorityHelper);
+        when(TransactionManager.getInitialisedInstance()).thenReturn(mTransactionManager);
+
         mContext = ApplicationProvider.getApplicationContext();
         mCurrentUid = mContext.getPackageManager().getPackageUid(SELF_PACKAGE_NAME, 0);
         mOrchestrator =
                 new PermissionPackageChangesOrchestrator(mTracker, mFirstGrantTimeManager, mHelper);
         setIntentWasRemoved(/* isIntentRemoved= */ false);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        mStaticMockSession.finishMocking();
     }
 
     @Test
@@ -85,6 +115,15 @@ public class PermissionPackageChangesOrchestratorTest {
                 buildPackageIntent(Intent.ACTION_PACKAGE_REMOVED, /* isReplaced= */ false));
         verify(mFirstGrantTimeManager)
                 .onPackageRemoved(eq(SELF_PACKAGE_NAME), eq(mCurrentUid), eq(CURRENT_USER));
+    }
+
+    @Test
+    public void testPackageRemoved_removesFromPriorityList() {
+        mOrchestrator.onReceive(
+                mContext,
+                buildPackageIntent(Intent.ACTION_PACKAGE_REMOVED, /* isReplaced= */ false));
+        assertThat(mHealthDataCategoryPriorityHelper.getPriorityOrder(HealthDataCategory.SLEEP))
+                .isEmpty();
     }
 
     @Test
