@@ -88,7 +88,7 @@ public class HealthDataCategoryPriorityHelper {
         return new CreateTableRequest(TABLE_NAME, getColumnInfo());
     }
 
-    public void appendToPriorityList(
+    public synchronized void appendToPriorityList(
             @NonNull String packageName,
             @HealthDataCategory.Type int dataCategory,
             Context context) {
@@ -133,31 +133,15 @@ public class HealthDataCategoryPriorityHelper {
                 return;
             }
         }
+        removeFromPriorityListInternal(dataCategory, packageName);
+    }
 
-        List<Long> newPriorityList =
-                new ArrayList<>(
-                        getHealthDataCategoryToAppIdPriorityMap()
-                                .getOrDefault(dataCategory, Collections.emptyList()));
-        if (newPriorityList.isEmpty()) {
-            return;
+    /** Removes app from priorityList for all HealthData Categories if the package is uninstalled */
+    public void removeAppFromPriorityList(@NonNull String packageName) {
+        Objects.requireNonNull(packageName);
+        for (Integer dataCategory : getHealthDataCategoryToAppIdPriorityMap().keySet()) {
+            removeFromPriorityListInternal(dataCategory, packageName);
         }
-
-        newPriorityList.remove(AppInfoHelper.getInstance().getAppInfoId(packageName));
-        if (newPriorityList.isEmpty()) {
-            safelyUpdateDBAndUpdateCache(
-                    new DeleteTableRequest(TABLE_NAME)
-                            .setId(HEALTH_DATA_CATEGORY_COLUMN_NAME, String.valueOf(dataCategory)),
-                    dataCategory);
-            return;
-        }
-
-        safelyUpdateDBAndUpdateCache(
-                new UpsertTableRequest(
-                        TABLE_NAME,
-                        getContentValuesFor(dataCategory, newPriorityList),
-                        UNIQUE_COLUMN_INFO),
-                dataCategory,
-                newPriorityList);
     }
 
     /** Returns list of package names based on priority for the input {@link HealthDataCategory} */
@@ -307,5 +291,33 @@ public class HealthDataCategoryPriorityHelper {
         }
 
         return sHealthDataCategoryPriorityHelper;
+    }
+
+    private synchronized void removeFromPriorityListInternal(
+            int dataCategory, @NonNull String packageName) {
+        List<Long> newPriorityList =
+                new ArrayList<>(
+                        getHealthDataCategoryToAppIdPriorityMap()
+                                .getOrDefault(dataCategory, Collections.emptyList()));
+        if (newPriorityList.isEmpty()) {
+            return;
+        }
+
+        newPriorityList.remove(AppInfoHelper.getInstance().getAppInfoId(packageName));
+        if (newPriorityList.isEmpty()) {
+            safelyUpdateDBAndUpdateCache(
+                    new DeleteTableRequest(TABLE_NAME)
+                            .setId(HEALTH_DATA_CATEGORY_COLUMN_NAME, String.valueOf(dataCategory)),
+                    dataCategory);
+            return;
+        }
+
+        safelyUpdateDBAndUpdateCache(
+                new UpsertTableRequest(
+                        TABLE_NAME,
+                        getContentValuesFor(dataCategory, newPriorityList),
+                        UNIQUE_COLUMN_INFO),
+                dataCategory,
+                newPriorityList);
     }
 }
