@@ -16,6 +16,8 @@
 
 package android.healthconnect.cts.logging;
 
+import static android.healthconnect.cts.logging.HostSideTestsUtils.isHardwareSupported;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.cts.statsdatom.lib.AtomTestUtils;
@@ -49,6 +51,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
     protected void setUp() throws Exception {
         super.setUp();
         assertThat(mCtsBuild).isNotNull();
+        assertThat(isHardwareSupported(getDevice())).isTrue();
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
     }
