@@ -26,10 +26,11 @@ import com.android.server.healthconnect.migration.notification.MigrationNotifica
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 public class MigrationNotificationFactoryTest {
 
-    private Context mContext;
+    @Mock private Context mContext;
 
     @Before
     public void setUp() {
