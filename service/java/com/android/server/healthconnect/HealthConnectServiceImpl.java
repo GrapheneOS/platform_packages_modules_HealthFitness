@@ -230,6 +230,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     public void onUserSwitching(UserHandle currentForegroundUser) {
         mCurrentForegroundUser = currentForegroundUser;
+        mBackupRestore.onUserSwitching(currentForegroundUser);
     }
 
     @Override
