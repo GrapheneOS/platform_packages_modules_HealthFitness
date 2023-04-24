@@ -56,6 +56,7 @@ import android.os.ext.SdkExtensions;
 import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
@@ -122,6 +123,14 @@ public final class MigrationStateManager {
         synchronized (sInstanceLock) {
             Objects.requireNonNull(sMigrationStateManager);
             return sMigrationStateManager;
+        }
+    }
+
+    /** Clears all registered {@link StateChangedListener}. Used in testing. */
+    @VisibleForTesting
+    void clearListeners() {
+        synchronized (mLock) {
+            mStateChangedListeners.clear();
         }
     }
 
