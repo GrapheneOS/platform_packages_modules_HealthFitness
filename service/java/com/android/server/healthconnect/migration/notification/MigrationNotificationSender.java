@@ -108,7 +108,7 @@ public final class MigrationNotificationSender {
             // We use the same (tag, id)
             notificationManager.cancel(NOTIFICATION_TAG, FIXED_NOTIFICATION_ID);
         } catch (Throwable e) {
-            Log.w(TAG, "Unable to send system notification", e);
+            Log.w(TAG, "Unable to cancel system notification", e);
         } finally {
             Binder.restoreCallingIdentity(callingId);
         }
@@ -138,6 +138,8 @@ public final class MigrationNotificationSender {
         try {
             notificationManager.createNotificationChannelGroup(group);
             notificationManager.createNotificationChannel(notificationChannel);
+        } catch (Throwable e) {
+            Log.w(TAG, "Unable to create notification channel", e);
         } finally {
             Binder.restoreCallingIdentity(callingId);
         }
