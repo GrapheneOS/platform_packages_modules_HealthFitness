@@ -179,12 +179,8 @@ public class HealthConnectManagerService extends SystemService {
                 new HealthConnectUserContext(mContext, mCurrentForegroundUser));
         mHealthConnectService.onUserSwitching(mCurrentForegroundUser);
         mMigrationBroadcastScheduler.setUserId(mCurrentForegroundUser.getIdentifier());
-        mMigrationUiStateManager =
-                new MigrationUiStateManager(
-                        mContext,
-                        mCurrentForegroundUser,
-                        MigrationStateManager.getInitialisedInstance(),
-                        mMigrationNotificationSender);
+        mMigrationUiStateManager.setUserHandle(mCurrentForegroundUser);
+
         HealthConnectDailyJobs.cancelAllJobs(mContext);
 
         HealthConnectThreadScheduler.scheduleInternalTask(
