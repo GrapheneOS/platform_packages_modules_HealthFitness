@@ -318,12 +318,12 @@ public class DistanceRecordTest {
         assertThat(result).containsExactlyElementsIn(recordList);
     }
 
-    private DistanceRecord getBaseDistanceRecordWithSameStartAndEndTime(double distance) {
-        Instant startInstant = Instant.now();
+    private DistanceRecord getBaseDistanceRecordWithSameStartAndEndTime(
+            double distance, Instant instant) {
         return new DistanceRecord.Builder(
                         new Metadata.Builder().build(),
-                        startInstant,
-                        startInstant,
+                        instant,
+                        instant,
                         Length.fromMeters(distance))
                 .build();
     }
@@ -574,6 +574,26 @@ public class DistanceRecordTest {
                 .build();
     }
 
+    @Test
+    public void testAggregation_DistanceTotal_AtOverlapStartAndEndTime() throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        getBaseDistanceRecordWithSameStartAndEndTime(74.0, Instant.now()),
+                        getBaseDistanceRecordWithSameStartAndEndTime(
+                                100.5, Instant.now().minus(1, ChronoUnit.SECONDS)));
+        AggregateRecordsResponse<Length> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Length>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(DISTANCE_TOTAL)
+                                .build(),
+                        records);
+        assertThat(response.get(DISTANCE_TOTAL).getInMeters()).isEqualTo(174.5);
+    }
+
     static DistanceRecord getBaseDistanceRecord() {
         return new DistanceRecord.Builder(
                         new Metadata.Builder().build(),
@@ -591,25 +611,6 @@ public class DistanceRecordTest {
                         startInstant.plusMillis(1000),
                         Length.fromMeters(distance))
                 .build();
-    }
-
-    @Test
-    public void testAggregation_DistanceTotal_AtOverlapStartAndEndTime() throws Exception {
-        List<Record> records =
-                Arrays.asList(
-                        getBaseDistanceRecordWithSameStartAndEndTime(74.0),
-                        getBaseDistanceRecordWithSameStartAndEndTime(100.5));
-        AggregateRecordsResponse<Length> response =
-                TestUtils.getAggregateResponse(
-                        new AggregateRecordsRequest.Builder<Length>(
-                                        new TimeInstantRangeFilter.Builder()
-                                                .setStartTime(Instant.ofEpochMilli(0))
-                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
-                                                .build())
-                                .addAggregationType(DISTANCE_TOTAL)
-                                .build(),
-                        records);
-        assertThat(response.get(DISTANCE_TOTAL).getInMeters()).isEqualTo(174.5);
     }
 
     static DistanceRecord getCompleteDistanceRecord() {
