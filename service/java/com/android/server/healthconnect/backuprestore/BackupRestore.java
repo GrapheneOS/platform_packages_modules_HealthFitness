@@ -419,6 +419,10 @@ public final class BackupRestore {
         @HealthConnectDataState.DataRestoreError int dataRestoreError = RESTORE_ERROR_NONE;
         String restoreErrorOnDisk =
                 PreferenceHelper.getInstance().getPreference(DATA_RESTORE_ERROR_KEY);
+
+        if (restoreErrorOnDisk == null) {
+            return dataRestoreError;
+        }
         try {
             dataRestoreError = Integer.parseInt(restoreErrorOnDisk);
         } catch (Exception e) {
