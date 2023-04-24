@@ -118,11 +118,13 @@ public class MigrationStateManagerTest {
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
         MigrationStateManager.initializeInstance(DEFAULT_USER_HANDLE.getIdentifier());
         mMigrationStateManager = MigrationStateManager.getInitialisedInstance();
+        mMigrationStateManager.clearListeners();
         mMigrationStateManager.addStateChangedListener(mMockListener::onMigrationStateChanged);
     }
 
     @After
     public void tearDown() {
+        mMigrationStateManager.clearListeners();
         clearInvocations(mPreferenceHelper);
         mStaticMockSession.finishMocking();
     }
