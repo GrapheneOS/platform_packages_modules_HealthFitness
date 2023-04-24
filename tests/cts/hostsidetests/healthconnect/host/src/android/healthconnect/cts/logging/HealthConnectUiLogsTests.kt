@@ -20,6 +20,7 @@ import android.cts.statsdatom.lib.AtomTestUtils
 import android.cts.statsdatom.lib.ConfigUtils
 import android.cts.statsdatom.lib.DeviceUtils
 import android.cts.statsdatom.lib.ReportUtils
+import android.healthconnect.cts.logging.HostSideTestsUtils.isHardwareSupported
 import android.healthfitness.ui.ElementId
 import android.healthfitness.ui.PageId
 import com.android.os.StatsLog
@@ -29,6 +30,7 @@ import com.android.tradefed.testtype.DeviceTestCase
 import com.android.tradefed.testtype.IBuildReceiver
 import com.google.common.truth.Truth.assertThat
 import com.google.protobuf.ExtensionRegistry
+import org.junit.Assume
 
 class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
@@ -43,6 +45,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     override fun setUp() {
         super.setUp()
         assertThat(mCtsBuild).isNotNull()
+        Assume.assumeTrue(isHardwareSupported(device))
         ConfigUtils.removeConfig(device)
         ReportUtils.clearReports(device)
         val pmResult =
