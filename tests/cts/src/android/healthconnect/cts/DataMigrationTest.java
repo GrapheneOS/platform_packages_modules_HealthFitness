@@ -89,6 +89,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +121,14 @@ public class DataMigrationTest {
     private final Executor mOutcomeExecutor = Executors.newSingleThreadExecutor();
     private final Instant mEndTime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
     private final Instant mStartTime = mEndTime.minus(Duration.ofHours(1));
+
+    private final LocalDate mStartDate =
+            LocalDate.ofInstant(
+                    mStartTime, ZoneOffset.systemDefault().getRules().getOffset(mStartTime));
+
+    private final LocalDate mEndDate =
+            LocalDate.ofInstant(
+                    mEndTime, ZoneOffset.systemDefault().getRules().getOffset(mEndTime));
     private Context mTargetContext;
     private HealthConnectManager mManager;
 
@@ -188,7 +198,7 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migrateHeightUsingParcel_heightSaved() {
+    public void migrateHeightUsingParcel_heightSaved() throws InterruptedException {
         final String entityId = "height";
 
         migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, fromMeters(3D)).build());
@@ -198,10 +208,14 @@ public class DataMigrationTest {
         mExpect.that(record).isNotNull();
         mExpect.that(record.getHeight().getInMeters()).isEqualTo(3D);
         mExpect.that(record.getTime()).isEqualTo(mEndTime);
+
+        List<LocalDate> activityDates = TestUtils.getActivityDates(List.of(record.getClass()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mEndDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateHeightUsingSharedMemory_heightSaved() {
+    public void migrateHeightUsingSharedMemory_heightSaved() throws InterruptedException {
         final String entityId = "height";
         int recordsToAdd = DEFAULT_PAGE_SIZE;
 
@@ -231,10 +245,16 @@ public class DataMigrationTest {
 
             mExpect.that(inputHeightRecord.getHeight()).isEqualTo(outputHeightRecord.getHeight());
         }
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        outputRecords.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mEndDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateSteps_stepsSaved() {
+    public void migrateSteps_stepsSaved() throws InterruptedException {
         final String entityId = "steps";
 
         migrate(new StepsRecord.Builder(getMetadata(entityId), mStartTime, mEndTime, 10).build());
@@ -245,10 +265,14 @@ public class DataMigrationTest {
         mExpect.that(record.getCount()).isEqualTo(10);
         mExpect.that(record.getStartTime()).isEqualTo(mStartTime);
         mExpect.that(record.getEndTime()).isEqualTo(mEndTime);
+
+        List<LocalDate> activityDates = TestUtils.getActivityDates(List.of(record.getClass()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
-    public void migratePower_powerSaved() {
+    public void migratePower_powerSaved() throws InterruptedException {
         final String entityId = "power";
 
         migrate(
@@ -276,10 +300,14 @@ public class DataMigrationTest {
 
         mExpect.that(record.getStartTime()).isEqualTo(mStartTime);
         mExpect.that(record.getEndTime()).isEqualTo(mEndTime);
+
+        List<LocalDate> activityDates = TestUtils.getActivityDates(List.of(record.getClass()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateRecord_sameEntityId_notIgnored() {
+    public void migrateRecord_sameEntityId_notIgnored() throws InterruptedException {
         final String entityId = "height";
 
         final Length height1 = fromMeters(3D);
@@ -293,10 +321,18 @@ public class DataMigrationTest {
         final List<HeightRecord> records = getRecords(HeightRecord.class);
         mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
                 .containsExactly(height1, height2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream()
+                                .map(Record::getClass)
+                                .distinct()
+                                .collect(Collectors.toList()));
+        assertThat(activityDates.size()).isAtLeast(1);
     }
 
     @Test
-    public void migrateInstantRecord_noClientIdsAndSameTime_ignored() {
+    public void migrateInstantRecord_noClientIdsAndSameTime_ignored() throws InterruptedException {
         final String entityId1 = "steps1";
         final long steps1 = 1000L;
         migrate(
@@ -313,10 +349,17 @@ public class DataMigrationTest {
 
         final List<StepsRecord> records = getRecords(StepsRecord.class);
         mExpect.that(records.stream().map(StepsRecord::getCount).toList()).containsExactly(steps1);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateInstantRecord_differentClientIdsAndSameTime_notIgnored() {
+    public void migrateInstantRecord_differentClientIdsAndSameTime_notIgnored()
+            throws InterruptedException {
         final String entityId1 = "steps1";
         final long steps1 = 1000L;
         migrate(
@@ -336,10 +379,16 @@ public class DataMigrationTest {
         final List<StepsRecord> records = getRecords(StepsRecord.class);
         mExpect.that(records.stream().map(StepsRecord::getCount).toList())
                 .containsExactly(steps1, steps2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateIntervalRecord_noClientIdsAndSameTime_ignored() {
+    public void migrateIntervalRecord_noClientIdsAndSameTime_ignored() throws InterruptedException {
         final String entityId1 = "height1";
         final Length height1 = fromMeters(1.0);
         migrate(new HeightRecord.Builder(getMetadata(), mEndTime, height1).build(), entityId1);
@@ -353,10 +402,17 @@ public class DataMigrationTest {
         final List<HeightRecord> records = getRecords(HeightRecord.class);
         mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
                 .containsExactly(height1);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mEndDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateIntervalRecord_differentClientIdsAndSameTime_notIgnored() {
+    public void migrateIntervalRecord_differentClientIdsAndSameTime_notIgnored()
+            throws InterruptedException {
         final String entityId1 = "height1";
         final Length height1 = fromMeters(1.0);
         migrate(
@@ -374,11 +430,17 @@ public class DataMigrationTest {
         final List<HeightRecord> records = getRecords(HeightRecord.class);
         mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
                 .containsExactly(height1, height2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mEndDate)).isEqualTo(0);
     }
 
     // Special case for hydration, must not ignore
     @Test
-    public void migrateHydration_noClientIdsAndSameTime_notIgnored() {
+    public void migrateHydration_noClientIdsAndSameTime_notIgnored() throws InterruptedException {
         final String entityId1 = "hydration1";
         final Volume volume1 = Volume.fromLiters(0.2);
         migrate(
@@ -396,11 +458,17 @@ public class DataMigrationTest {
         final List<HydrationRecord> records = getRecords(HydrationRecord.class);
         mExpect.that(records.stream().map(HydrationRecord::getVolume).toList())
                 .containsExactly(volume1, volume2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     // Special case for nutrition, must not ignore
     @Test
-    public void migrateNutrition_noClientIdsAndSameTime_notIgnored() {
+    public void migrateNutrition_noClientIdsAndSameTime_notIgnored() throws InterruptedException {
         final String entityId1 = "nutrition1";
         final Mass protein1 = Mass.fromGrams(1.0);
         migrate(
@@ -422,6 +490,12 @@ public class DataMigrationTest {
         final List<NutritionRecord> records = getRecords(NutritionRecord.class);
         mExpect.that(records.stream().map(NutritionRecord::getProtein).toList())
                 .containsExactly(protein1, protein2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
