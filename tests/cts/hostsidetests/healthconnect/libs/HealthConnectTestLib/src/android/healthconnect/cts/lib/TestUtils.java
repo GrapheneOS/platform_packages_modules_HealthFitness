@@ -82,11 +82,14 @@ public class TestUtils {
     public static final String READ_CHANGE_LOGS_QUERY = "android.healthconnect.cts.readChangeLogs";
     public static final String CHANGE_LOGS_RESPONSE =
             "android.healthconnect.cts.changeLogsResponse";
+    public static final String CHANGE_LOG_TOKEN = "android.healthconnect.cts.changeLogToken";
     public static final String SUCCESS = "android.healthconnect.cts.success";
     public static final String CLIENT_ID = "android.healthconnect.cts.clientId";
     public static final String RECORD_IDS = "android.healthconnect.cts.records";
     public static final String DELETE_RECORDS_QUERY = "android.healthconnect.cts.deleteRecords";
     public static final String UPDATE_RECORDS_QUERY = "android.healthconnect.cts.updateRecords";
+    public static final String GET_CHANGE_LOG_TOKEN_QUERY =
+            "android.healthconnect.cts.getChangeLogToken";
     public static final String INTENT_EXCEPTION = "android.healthconnect.cts.exception";
     private static final long POLLING_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(20);
 
@@ -172,10 +175,20 @@ public class TestUtils {
         return getFromTestApp(testApp, bundle);
     }
 
-    public static Bundle readChangeLogsUsingDataOriginFiltersAs(TestApp testApp) throws Exception {
+    public static Bundle readChangeLogsUsingDataOriginFiltersAs(
+            TestApp testApp, String changeLogToken) throws Exception {
         Bundle bundle = new Bundle();
         bundle.putString(QUERY_TYPE, READ_CHANGE_LOGS_QUERY);
+        bundle.putString(CHANGE_LOG_TOKEN, changeLogToken);
         bundle.putBoolean(READ_USING_DATA_ORIGIN_FILTERS, true);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle getChangeLogTokenAs(TestApp testApp, String pkgName) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, GET_CHANGE_LOG_TOKEN_QUERY);
+        bundle.putString(APP_PKG_NAME_USED_IN_DATA_ORIGIN, pkgName);
 
         return getFromTestApp(testApp, bundle);
     }
