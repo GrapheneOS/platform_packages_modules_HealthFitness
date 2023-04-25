@@ -153,7 +153,8 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
                 adapter = detailsAdapter
             }
         viewModel.loadEntryData(permissionType, entryId)
-        setupMenu(R.menu.data_entries, viewLifecycleOwner, logger) { menuItem ->
+        setupMenu(R.menu.set_data_units_with_send_feedback_and_help, viewLifecycleOwner, logger) {
+            menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_open_units -> {
                     logger.logInteraction(ToolbarElement.TOOLBAR_UNITS_BUTTON)
