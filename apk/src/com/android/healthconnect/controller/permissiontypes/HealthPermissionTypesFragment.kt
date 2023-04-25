@@ -47,10 +47,14 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionTypesElement
+import com.android.healthconnect.controller.utils.logging.ToolbarElement
+import com.android.healthconnect.controller.utils.setupMenu
 import com.android.settingslib.widget.AppHeaderPreference
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Fragment for health permission types. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -70,6 +74,8 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
     init {
         this.setPageName(PageName.PERMISSION_TYPES_PAGE)
     }
+
+    @Inject lateinit var logger: HealthConnectLogger
 
     @HealthDataCategoryInt private var category: Int = 0
 
@@ -125,6 +131,18 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
         mPermissionTypesHeader?.title = getString(category.uppercaseTitle())
         viewModel.loadData(category)
         viewModel.loadAppsWithData(category)
+
+        setupMenu(R.menu.set_data_units_with_send_feedback_and_help, viewLifecycleOwner, logger) {
+            menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_open_units -> {
+                    logger.logImpression(ToolbarElement.TOOLBAR_UNITS_BUTTON)
+                    findNavController().navigate(R.id.action_healthPermissionTypes_to_unitsFragment)
+                    true
+                }
+                else -> false
+            }
+        }
 
         viewModel.permissionTypesData.observe(viewLifecycleOwner) { state ->
             when (state) {
