@@ -93,7 +93,9 @@ public final class ExerciseSessionRecordInternal
     @NonNull
     public ExerciseSessionRecordInternal setRoute(ExerciseRouteInternal route) {
         this.mExerciseRoute = route;
-        this.mHasRoute = true;
+        if (route != null) {
+            this.mHasRoute = true;
+        }
         return this;
     }
 

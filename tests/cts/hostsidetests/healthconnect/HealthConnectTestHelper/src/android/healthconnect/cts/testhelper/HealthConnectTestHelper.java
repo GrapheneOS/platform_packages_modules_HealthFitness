@@ -32,8 +32,11 @@ import static android.healthconnect.cts.lib.TestUtils.READ_RECORD_CLASS_NAME;
 import static android.healthconnect.cts.lib.TestUtils.READ_USING_DATA_ORIGIN_FILTERS;
 import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
+import static android.healthconnect.cts.lib.TestUtils.UPDATE_EXERCISE_ROUTE;
 import static android.healthconnect.cts.lib.TestUtils.UPDATE_RECORDS_QUERY;
+import static android.healthconnect.cts.lib.TestUtils.UPSERT_EXERCISE_ROUTE;
 import static android.healthconnect.cts.lib.TestUtils.getChangeLogs;
+import static android.healthconnect.cts.lib.TestUtils.getExerciseSessionRecord;
 import static android.healthconnect.cts.lib.TestUtils.getTestRecords;
 import static android.healthconnect.cts.lib.TestUtils.insertRecords;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordsAndGetIds;
@@ -51,6 +54,7 @@ import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.lib.TestUtils;
 import android.os.Bundle;
@@ -95,6 +99,12 @@ public class HealthConnectTestHelper extends Activity {
                                     (List<TestUtils.RecordTypeAndRecordIds>)
                                             bundle.getSerializable(RECORD_IDS),
                                     context);
+                    break;
+                case UPDATE_EXERCISE_ROUTE:
+                    returnIntent = updateRouteAs(queryType, context);
+                    break;
+                case UPSERT_EXERCISE_ROUTE:
+                    returnIntent = upsertRouteAs(queryType, context);
                     break;
                 case UPDATE_RECORDS_QUERY:
                     returnIntent =
@@ -237,8 +247,80 @@ public class HealthConnectTestHelper extends Activity {
                                 context);
                 updateRecords((List<Record>) recordsToBeUpdated, context);
             }
+            intent.putExtra(SUCCESS, true);
         } catch (Exception e) {
             intent.putExtra(INTENT_EXCEPTION, e);
+            intent.putExtra(SUCCESS, false);
+        }
+
+        return intent;
+    }
+
+    /**
+     * Method to update the session record to the session without route and put the exception in the
+     * intent if updating the record throws an exception
+     *
+     * @param queryType - specifies the action, here it should be UPDATE_RECORDS_QUERY
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
+    private Intent updateRouteAs(String queryType, Context context) {
+        final Intent intent = new Intent(queryType);
+        try {
+            ExerciseSessionRecord existingSession =
+                    readRecords(
+                                    new ReadRecordsRequestUsingFilters.Builder<>(
+                                                    ExerciseSessionRecord.class)
+                                            .build(),
+                                    context)
+                            .get(0);
+            updateRecords(
+                    List.of(
+                            getExerciseSessionRecord(
+                                    context.getPackageName(),
+                                    Double.parseDouble(
+                                            existingSession.getMetadata().getClientRecordId()),
+                                    false)),
+                    context);
+            intent.putExtra(SUCCESS, true);
+        } catch (Exception e) {
+            intent.putExtra(INTENT_EXCEPTION, e);
+            intent.putExtra(SUCCESS, false);
+        }
+
+        return intent;
+    }
+
+    /**
+     * Method to upsert the session record to the session without route and put the exception in the
+     * intent if updating the record throws an exception
+     *
+     * @param queryType - specifies the action, here it should be UPDATE_RECORDS_QUERY
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
+    private Intent upsertRouteAs(String queryType, Context context) {
+        final Intent intent = new Intent(queryType);
+        try {
+            ExerciseSessionRecord existingSession =
+                    readRecords(
+                                    new ReadRecordsRequestUsingFilters.Builder<>(
+                                                    ExerciseSessionRecord.class)
+                                            .build(),
+                                    context)
+                            .get(0);
+            insertRecords(
+                    List.of(
+                            getExerciseSessionRecord(
+                                    context.getPackageName(),
+                                    Double.parseDouble(
+                                            existingSession.getMetadata().getClientRecordId()),
+                                    false)),
+                    context);
+            intent.putExtra(SUCCESS, true);
+        } catch (Exception e) {
+            intent.putExtra(INTENT_EXCEPTION, e);
+            intent.putExtra(SUCCESS, false);
         }
 
         return intent;
@@ -292,8 +374,10 @@ public class HealthConnectTestHelper extends Activity {
 
                 recordsSize += recordsRead.size();
             }
+            intent.putExtra(SUCCESS, true);
         } catch (Exception e) {
             intent.putExtra(INTENT_EXCEPTION, e);
+            intent.putExtra(SUCCESS, false);
         }
 
         intent.putExtra(READ_RECORDS_SIZE, recordsSize);
