@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
+import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.MenuItem
@@ -35,6 +36,8 @@ import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.deletion.DeletionType
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState
 import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
+import com.android.healthconnect.controller.permissions.shared.HelpAndFeedbackFragment.Companion.APP_INTEGRATION_REQUEST_BUCKET_ID
+import com.android.healthconnect.controller.permissions.shared.HelpAndFeedbackFragment.Companion.FEEDBACK_INTENT_RESULT_CODE
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
@@ -345,7 +348,9 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.sendFeedbackIcon)
             it.summary = resources.getString(R.string.send_feedback_description)
             it.setOnPreferenceClickListener {
-                deviceInfoUtils.openSendFeedbackActivity(requireActivity())
+                val intent = Intent(Intent.ACTION_BUG_REPORT)
+                intent.putExtra("category_tag", APP_INTEGRATION_REQUEST_BUCKET_ID)
+                activity?.startActivityForResult(intent, FEEDBACK_INTENT_RESULT_CODE)
                 true
             }
         }

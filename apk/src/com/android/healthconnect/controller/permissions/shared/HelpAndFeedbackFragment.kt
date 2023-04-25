@@ -52,7 +52,13 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
         const val CHECK_FOR_UPDATES = "check_for_updates"
         private const val SEE_ALL_COMPATIBLE_APPS = "see_all_compatible_apps"
         private const val SEND_FEEDBACK = "send_feedback"
+        const val APP_INTEGRATION_REQUEST_BUCKET_ID =
+            "com.google.android.healthconnect.controller.APP_INTEGRATION_REQUEST"
+        const val USER_INITIATED_FEEDBACK_BUCKET_ID =
+            "com.google.android.healthconnect.controller.USER_INITIATED_FEEDBACK_REPORT"
+        const val FEEDBACK_INTENT_RESULT_CODE = 0
     }
+
     init {
         this.setPageName(PageName.HELP_AND_FEEDBACK_PAGE)
     }
@@ -89,10 +95,8 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
 
         mSendFeedback?.setOnPreferenceClickListener {
             val intent = Intent(Intent.ACTION_BUG_REPORT)
-            intent.putExtra(
-                "category_tag",
-                "com.google.android.healthconnect.controller.APP_INTEGRATION_REQUEST")
-            activity?.startActivityForResult(intent, 0)
+            intent.putExtra("category_tag", APP_INTEGRATION_REQUEST_BUCKET_ID)
+            activity?.startActivityForResult(intent, FEEDBACK_INTENT_RESULT_CODE)
             true
         }
 

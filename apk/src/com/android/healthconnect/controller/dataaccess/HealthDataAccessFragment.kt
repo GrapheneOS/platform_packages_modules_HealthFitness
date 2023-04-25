@@ -42,11 +42,15 @@ import com.android.healthconnect.controller.shared.inactiveapp.InactiveAppPrefer
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.logging.DataAccessElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.healthconnect.controller.utils.setupMenu
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Fragment displaying health data access information. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -65,6 +69,8 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
     init {
         this.setPageName(PageName.DATA_ACCESS_PAGE)
     }
+
+    @Inject lateinit var logger: HealthConnectLogger
 
     private val viewModel: HealthDataAccessViewModel by viewModels()
 
@@ -106,6 +112,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                 arguments?.getSerializable(PERMISSION_TYPE_KEY, HealthPermissionType::class.java)
                     ?: throw IllegalArgumentException("PERMISSION_TYPE_KEY can't be null!")
         }
+
         mCanReadSection?.isVisible = false
         mCanWriteSection?.isVisible = false
         mInactiveSection?.isVisible = false
@@ -175,6 +182,19 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                     setLoading(isLoading = false, animate = false)
                     updateDataAccess(state.appMetadata)
                 }
+            }
+        }
+
+        setupMenu(R.menu.set_data_units_with_send_feedback_and_help, viewLifecycleOwner, logger) {
+            menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_open_units -> {
+                    logger.logImpression(ToolbarElement.TOOLBAR_UNITS_BUTTON)
+                    findNavController()
+                        .navigate(R.id.action_healthDataAccessFragment_to_unitsFragment)
+                    true
+                }
+                else -> false
             }
         }
     }
