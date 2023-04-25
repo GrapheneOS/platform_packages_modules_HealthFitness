@@ -128,6 +128,7 @@ public final class TransactionManager {
         return request.getUUIdsInOrder();
     }
 
+    /** Ignores if a record is already present. */
     public void insertAll(@NonNull List<UpsertTableRequest> requests) throws SQLiteException {
         final SQLiteDatabase db = getWritableDb();
         db.beginTransaction();
