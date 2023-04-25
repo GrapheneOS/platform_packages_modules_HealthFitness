@@ -35,6 +35,7 @@ import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
@@ -68,6 +69,7 @@ public final class DataMigrationManager {
     private final RecordHelperProvider mRecordHelperProvider;
     private final PriorityMigrationHelper mPriorityMigrationHelper;
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
+    private final ActivityDateHelper mActivityDateHelper;
 
     public DataMigrationManager(
             @NonNull Context userContext,
@@ -79,7 +81,8 @@ public final class DataMigrationManager {
             @NonNull MigrationEntityHelper migrationEntityHelper,
             @NonNull RecordHelperProvider recordHelperProvider,
             @NonNull HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
-            @NonNull PriorityMigrationHelper priorityMigrationHelper) {
+            @NonNull PriorityMigrationHelper priorityMigrationHelper,
+            @NonNull ActivityDateHelper activityDateHelper) {
         mUserContext = userContext;
         mTransactionManager = transactionManager;
         mPermissionHelper = permissionHelper;
@@ -90,6 +93,7 @@ public final class DataMigrationManager {
         mRecordHelperProvider = recordHelperProvider;
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mPriorityMigrationHelper = priorityMigrationHelper;
+        mActivityDateHelper = activityDateHelper;
     }
 
     /**
@@ -143,7 +147,11 @@ public final class DataMigrationManager {
     @GuardedBy("sLock")
     private void migrateRecord(
             @NonNull SQLiteDatabase db, @NonNull RecordMigrationPayload payload) {
-        mTransactionManager.insertOrIgnore(db, parseRecord(payload));
+        long recordRowId = mTransactionManager.insertOrIgnore(db, parseRecord(payload));
+        if (recordRowId != -1) {
+            mTransactionManager.insertOrIgnore(
+                    db, mActivityDateHelper.getUpsertTableRequest(payload.getRecordInternal()));
+        }
     }
 
     @NonNull
