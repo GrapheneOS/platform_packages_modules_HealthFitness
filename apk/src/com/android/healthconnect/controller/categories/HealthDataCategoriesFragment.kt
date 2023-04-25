@@ -46,6 +46,8 @@ import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.logging.CategoriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.logging.ToolbarElement
+import com.android.healthconnect.controller.utils.setupMenu
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -143,6 +145,19 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
                 Error -> {
                     setError(true)
                 }
+            }
+        }
+
+        setupMenu(R.menu.set_data_units_with_send_feedback_and_help, viewLifecycleOwner, logger) {
+            menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_open_units -> {
+                    logger.logImpression(ToolbarElement.TOOLBAR_UNITS_BUTTON)
+                    findNavController()
+                        .navigate(R.id.action_dataCategoriesFragment_to_unitsFragment)
+                    true
+                }
+                else -> false
             }
         }
 
