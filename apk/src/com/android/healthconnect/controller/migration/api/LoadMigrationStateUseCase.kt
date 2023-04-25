@@ -15,37 +15,60 @@
  */
 package com.android.healthconnect.controller.migration.api
 
-import android.health.connect.HealthConnectDataState
 import android.health.connect.HealthConnectManager
+import android.health.connect.migration.HealthConnectMigrationUiState
+import android.util.Log
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.migration.DataMigrationState
-import com.android.healthconnect.controller.service.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 
 @Singleton
-class LoadMigrationStateUseCase
-@Inject
-constructor(
-    private val manager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
-) {
+class LoadMigrationStateUseCase @Inject constructor(private val manager: HealthConnectManager) {
 
-    @DataMigrationState
-    suspend operator fun invoke(): Int {
-        return withContext(dispatcher) {
-            val state =
-                suspendCancellableCoroutine<HealthConnectDataState> { continuation ->
-                    manager.getHealthConnectDataState(
-                        Runnable::run, continuation.asOutcomeReceiver())
-                }
+    companion object {
+        private const val TAG = "LoadMigrationState"
 
-            // TODO (b/273745755) Expose real UI states
-            // state.dataMigrationState
-            HealthConnectDataState.MIGRATION_STATE_IDLE
+        private val migrationStateMapping =
+            mapOf(
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_IDLE to MigrationState.IDLE,
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_ALLOWED_MIGRATOR_DISABLED to
+                    MigrationState.ALLOWED_MIGRATOR_DISABLED,
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_ALLOWED_NOT_STARTED to
+                    MigrationState.ALLOWED_NOT_STARTED,
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_ALLOWED_PAUSED to
+                    MigrationState.ALLOWED_PAUSED,
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_ALLOWED_ERROR to
+                    MigrationState.ALLOWED_ERROR,
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_IN_PROGRESS to
+                    MigrationState.IN_PROGRESS,
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_APP_UPGRADE_REQUIRED to
+                    MigrationState.APP_UPGRADE_REQUIRED,
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_MODULE_UPGRADE_REQUIRED to
+                    MigrationState.MODULE_UPGRADE_REQUIRED,
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_COMPLETE to
+                    MigrationState.COMPLETE,
+                HealthConnectMigrationUiState.MIGRATION_UI_STATE_COMPLETE_IDLE to
+                    MigrationState.COMPLETE_IDLE,
+            )
+    }
+    suspend operator fun invoke(): MigrationState {
+        return withContext(Dispatchers.IO) {
+            try {
+                val state =
+                    suspendCancellableCoroutine<HealthConnectMigrationUiState> { continuation ->
+                            manager.getHealthConnectMigrationUiState(
+                                Runnable::run, continuation.asOutcomeReceiver())
+                        }
+                        .healthConnectMigrationUiState
+
+                migrationStateMapping.getOrDefault(state, MigrationState.IDLE)
+            } catch (e: Exception) {
+                Log.e(TAG, "Load error ", e)
+                MigrationState.IDLE
+            }
         }
     }
 }

@@ -15,14 +15,110 @@
  */
 package com.android.healthconnect.controller.migration
 
+import android.app.Activity
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.migration.api.MigrationState
+import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
+import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint(FragmentActivity::class)
 class MigrationActivity : Hilt_MigrationActivity() {
+
+    companion object {
+        fun maybeRedirectToMigrationActivity(
+            activity: Activity,
+            migrationState: MigrationState
+        ): Boolean {
+            val migrationInputNeeded =
+                (migrationState == MigrationState.ALLOWED_PAUSED) ||
+                    (migrationState == MigrationState.ALLOWED_NOT_STARTED) ||
+                    (migrationState == MigrationState.IN_PROGRESS)
+
+            val sharedPreference =
+                activity.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+
+            if (migrationState == MigrationState.MODULE_UPGRADE_REQUIRED) {
+                val moduleUpdateSeen =
+                    sharedPreference.getBoolean(
+                        activity.getString(R.string.module_update_needed_seen), false)
+
+                if (!moduleUpdateSeen) {
+                    activity.startActivity(createMigrationActivityIntent(activity))
+                    activity.finish()
+                    return true
+                }
+            } else if (migrationState == MigrationState.APP_UPGRADE_REQUIRED) {
+                val appUpdateSeen =
+                    sharedPreference.getBoolean(
+                        activity.getString(R.string.app_update_needed_seen), false)
+
+                if (!appUpdateSeen) {
+                    activity.startActivity(createMigrationActivityIntent(activity))
+                    activity.finish()
+                    return true
+                }
+            } else if (migrationInputNeeded) {
+                activity.startActivity(createMigrationActivityIntent(activity))
+                activity.finish()
+                return true
+            }
+
+            return false
+        }
+
+        fun showMigrationPendingDialog(
+            context: Context,
+            message: String,
+            positiveButtonAction: DialogInterface.OnClickListener? = null,
+            negativeButtonAction: DialogInterface.OnClickListener? = null
+        ) {
+            AlertDialogBuilder(context)
+                .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
+                .setTitle(R.string.migration_pending_permissions_dialog_title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setNegativeButton(
+                    android.R.string.cancel, ErrorPageElement.UNKNOWN_ELEMENT, negativeButtonAction)
+                .setPositiveButton(
+                    R.string.migration_pending_permissions_dialog_button_continue,
+                    ErrorPageElement.UNKNOWN_ELEMENT,
+                    positiveButtonAction)
+                .create()
+                .show()
+        }
+
+        fun showMigrationInProgressDialog(
+            context: Context,
+            message: String,
+            negativeButtonAction: DialogInterface.OnClickListener? = null
+        ) {
+            AlertDialogBuilder(context)
+                .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
+                .setTitle(R.string.migration_in_progress_permissions_dialog_title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setNegativeButton(
+                    R.string.migration_in_progress_permissions_dialog_button_got_it,
+                    ErrorPageElement.UNKNOWN_ELEMENT,
+                    negativeButtonAction)
+                .create()
+                .show()
+        }
+
+        private fun createMigrationActivityIntent(context: Context): Intent {
+            return Intent(context, MigrationActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
