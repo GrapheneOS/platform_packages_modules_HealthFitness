@@ -230,6 +230,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     public void onUserSwitching(UserHandle currentForegroundUser) {
         mCurrentForegroundUser = currentForegroundUser;
+        mBackupRestore.onUserSwitching(currentForegroundUser);
     }
 
     @Override
@@ -1637,10 +1638,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * @see HealthConnectManager#getAllBackupFileNames
      */
     @Override
-    public BackupFileNamesSet getAllBackupFileNames(
-            @NonNull UserHandle userHandle, boolean forDeviceToDevice) {
+    public BackupFileNamesSet getAllBackupFileNames(boolean forDeviceToDevice) {
         mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
-        return mBackupRestore.getAllBackupFileNames(userHandle, forDeviceToDevice);
+        return mBackupRestore.getAllBackupFileNames(forDeviceToDevice);
     }
 
     /**
@@ -1777,6 +1777,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
                 });
+    }
+
+    // Reschedule any pending BR timeouts - this might be needed after a device reboot.
+    void schedulePendingBackupRestoreTimeouts() {
+        mBackupRestore.scheduleAllPendingJobs();
+    }
+
+    // Cancel BR timeouts - this might be needed when a user is going into background.
+    void cancelBackupRestoreTimeouts() {
+        mBackupRestore.cancelAllJobs();
     }
 
     private void tryAcquireApiCallQuota(
