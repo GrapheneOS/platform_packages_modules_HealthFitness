@@ -128,6 +128,10 @@ public class HealthConnectManagerService extends SystemService {
 
     @Override
     public void onUserSwitching(@Nullable TargetUser from, @NonNull TargetUser to) {
+        // We need to cancel any pending timers for the foreground user before it goes into the
+        // background.
+        mHealthConnectService.cancelBackupRestoreTimeouts();
+
         HealthConnectThreadScheduler.shutdownThreadPools();
         AppInfoHelper.getInstance().clearCache();
         DeviceInfoHelper.getInstance().clearCache();
@@ -182,6 +186,9 @@ public class HealthConnectManagerService extends SystemService {
         mMigrationUiStateManager.setUserHandle(mCurrentForegroundUser);
 
         HealthConnectDailyJobs.cancelAllJobs(mContext);
+
+        // Try and see whether we were waiting for any BR timeouts
+        mHealthConnectService.schedulePendingBackupRestoreTimeouts();
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
