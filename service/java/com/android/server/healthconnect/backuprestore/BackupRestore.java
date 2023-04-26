@@ -65,6 +65,7 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.text.format.DateUtils;
 import android.util.ArrayMap;
+import android.util.ArraySet;
 import android.util.Log;
 import android.util.Pair;
 import android.util.Slog;
@@ -74,6 +75,8 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
+import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
+import com.android.server.healthconnect.permission.UserGrantTimeState;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
@@ -167,6 +170,9 @@ public final class BackupRestore {
     public static final String DATA_RESTORE_STATE_KEY = "data_restore_state_key";
     // Key for storing the error restoring HC data.
     public static final String DATA_RESTORE_ERROR_KEY = "data_restore_error_key";
+
+    @VisibleForTesting
+    static final String GRANT_TIME_FILE_NAME = "health-permissions-first-grant-times.xml";
 
     private static final String TAG = "HealthConnectBackupRestore";
     private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
@@ -308,7 +314,7 @@ public final class BackupRestore {
         Map<String, ParcelFileDescriptor> pfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
 
-        var backupFilesByFileNames = getBackupFilesByFileNames(userHandle, false);
+        var backupFilesByFileNames = getBackupFilesByFileNames(userHandle);
         pfdsByFileName.forEach(
                 (fileName, pfd) -> {
                     Path sourceFilePath = backupFilesByFileNames.get(fileName).toPath();
@@ -328,21 +334,34 @@ public final class BackupRestore {
     }
 
     /** Get the file names of all the files that are transported during backup / restore. */
-    public BackupFileNamesSet getAllBackupFileNames(
-            @NonNull UserHandle userHandle, boolean forDeviceToDevice) {
-        return new BackupFileNamesSet(
-                getBackupFilesByFileNames(userHandle, !forDeviceToDevice).keySet());
+    public BackupFileNamesSet getAllBackupFileNames(boolean forDeviceToDevice) {
+        ArraySet<String> backupFileNames = new ArraySet<>();
+        if (forDeviceToDevice) {
+            backupFileNames.add(
+                    TransactionManager.getInitialisedInstance().getDatabasePath().getName());
+        }
+        backupFileNames.add(GRANT_TIME_FILE_NAME);
+        return new BackupFileNamesSet(backupFileNames);
     }
 
-    private Map<String, File> getBackupFilesByFileNames(
-            UserHandle userHandle, boolean excludeLargeFiles) {
+    private Map<String, File> getBackupFilesByFileNames(UserHandle userHandle) {
         ArrayMap<String, File> backupFilesByFileNames = new ArrayMap<>();
-        if (!excludeLargeFiles) {
-            File databasePath = TransactionManager.getInitialisedInstance().getDatabasePath();
-            backupFilesByFileNames.put(databasePath.getName(), databasePath);
+
+        File databasePath = TransactionManager.getInitialisedInstance().getDatabasePath();
+        backupFilesByFileNames.put(databasePath.getName(), databasePath);
+
+        File backupDataDir = getBackupDataDirectoryForUser(userHandle.getIdentifier());
+        backupDataDir.mkdirs();
+        File grantTimeFile = new File(backupDataDir, GRANT_TIME_FILE_NAME);
+        try {
+            grantTimeFile.createNewFile();
+            GrantTimeXmlHelper.serializeGrantTimes(
+                    grantTimeFile, mFirstGrantTimeManager.createBackupState(userHandle));
+            backupFilesByFileNames.put(grantTimeFile.getName(), grantTimeFile);
+        } catch (IOException e) {
+            Slog.e(TAG, "Could not create the grant time file for backup.", e);
         }
-        File grantTimeFile = mFirstGrantTimeManager.getFile(userHandle);
-        backupFilesByFileNames.put(grantTimeFile.getName(), grantTimeFile);
+
         return backupFilesByFileNames;
     }
 
@@ -818,8 +837,16 @@ public final class BackupRestore {
      * d2d process.
      */
     private static File getStagedRemoteDataDirectoryForUser(int userId) {
+        return getNamedHcDirectoryForUser("remote_staged", userId);
+    }
+
+    private static File getBackupDataDirectoryForUser(int userId) {
+        return getNamedHcDirectoryForUser("backup", userId);
+    }
+
+    private static File getNamedHcDirectoryForUser(String dirName, int userId) {
         File hcDirectoryForUser = FilesUtil.getDataSystemCeHCDirectoryForUser(userId);
-        return new File(hcDirectoryForUser, "remote_staged");
+        return new File(hcDirectoryForUser, dirName);
     }
 
     @VisibleForTesting
@@ -834,8 +861,20 @@ public final class BackupRestore {
         }
 
         setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS, false);
+        mergeGrantTimes();
         mergeDatabase();
         setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, false);
+    }
+
+    private void mergeGrantTimes() {
+        File restoredGrantTimeFile =
+                new File(
+                        getStagedRemoteDataDirectoryForUser(mContext.getUser().getIdentifier()),
+                        GRANT_TIME_FILE_NAME);
+        UserGrantTimeState userGrantTimeState =
+                GrantTimeXmlHelper.parseGrantTime(restoredGrantTimeFile);
+        mFirstGrantTimeManager.applyAndStageBackupDataForUser(
+                mContext.getUser(), userGrantTimeState);
     }
 
     private void mergeDatabase() {
