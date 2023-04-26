@@ -189,6 +189,8 @@ public final class BackupRestore {
 
     private boolean mActivelyStagingRemoteData = false;
 
+    private volatile UserHandle mCurrentForegroundUser;
+
     public BackupRestore(
             FirstGrantTimeManager firstGrantTimeManager,
             MigrationStateManager migrationStateManager,
@@ -197,6 +199,11 @@ public final class BackupRestore {
         mMigrationStateManager = migrationStateManager;
         mStagedDbContext = new StagedDatabaseContext(context);
         mContext = context;
+        mCurrentForegroundUser = mContext.getUser();
+    }
+
+    public void onUserSwitching(UserHandle currentForegroundUser) {
+        mCurrentForegroundUser = currentForegroundUser;
     }
 
     /**
@@ -576,7 +583,7 @@ public final class BackupRestore {
                         DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY,
                         DATA_DOWNLOAD_TIMEOUT_INTERVAL_MILLIS);
 
-        int userId = mContext.getUser().getIdentifier();
+        int userId = mCurrentForegroundUser.getIdentifier();
         final PersistableBundle extras = new PersistableBundle();
         extras.putInt(EXTRA_USER_ID, userId);
         extras.putString(EXTRA_JOB_NAME_KEY, DATA_DOWNLOAD_TIMEOUT_KEY);
@@ -633,7 +640,7 @@ public final class BackupRestore {
                         DATA_STAGING_TIMEOUT_CANCELLED_KEY,
                         DATA_STAGING_TIMEOUT_INTERVAL_MILLIS);
 
-        int userId = mContext.getUser().getIdentifier();
+        int userId = mCurrentForegroundUser.getIdentifier();
         final PersistableBundle extras = new PersistableBundle();
         extras.putInt(EXTRA_USER_ID, userId);
         extras.putString(EXTRA_JOB_NAME_KEY, DATA_STAGING_TIMEOUT_KEY);
@@ -689,7 +696,7 @@ public final class BackupRestore {
                         DATA_MERGING_TIMEOUT_CANCELLED_KEY,
                         DATA_MERGING_TIMEOUT_INTERVAL_MILLIS);
 
-        int userId = mContext.getUser().getIdentifier();
+        int userId = mCurrentForegroundUser.getIdentifier();
         final PersistableBundle extras = new PersistableBundle();
         extras.putInt(EXTRA_USER_ID, userId);
         extras.putString(EXTRA_JOB_NAME_KEY, DATA_MERGING_TIMEOUT_KEY);
@@ -735,7 +742,7 @@ public final class BackupRestore {
             return;
         }
 
-        int userId = mContext.getUser().getIdentifier();
+        int userId = mCurrentForegroundUser.getIdentifier();
         final PersistableBundle extras = new PersistableBundle();
         extras.putInt(EXTRA_USER_ID, userId);
         extras.putString(EXTRA_JOB_NAME_KEY, DATA_MERGING_RETRY_KEY);
@@ -873,12 +880,12 @@ public final class BackupRestore {
     private void mergeGrantTimes() {
         File restoredGrantTimeFile =
                 new File(
-                        getStagedRemoteDataDirectoryForUser(mContext.getUser().getIdentifier()),
+                        getStagedRemoteDataDirectoryForUser(mCurrentForegroundUser.getIdentifier()),
                         GRANT_TIME_FILE_NAME);
         UserGrantTimeState userGrantTimeState =
                 GrantTimeXmlHelper.parseGrantTime(restoredGrantTimeFile);
         mFirstGrantTimeManager.applyAndStageBackupDataForUser(
-                mContext.getUser(), userGrantTimeState);
+                mCurrentForegroundUser, userGrantTimeState);
     }
 
     private void mergeDatabase() {
