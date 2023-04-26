@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.migration.notification;
 
+import static com.android.server.healthconnect.migration.MigrationConstants.SHOW_NOTIFICATION;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -61,6 +63,9 @@ public final class MigrationNotificationSender {
     /** Sends a notification to the current user based on the notification type. */
     public void sendNotification(
             @MigrationNotificationType int notificationType, @NonNull UserHandle userHandle) {
+        if (!SHOW_NOTIFICATION) {
+            return;
+        }
         createNotificationChannel(userHandle);
         try {
             Notification notification =
