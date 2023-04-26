@@ -18,8 +18,10 @@ package android.healthconnect.cts.testhelper;
 
 import static android.healthconnect.cts.lib.TestUtils.APP_PKG_NAME_USED_IN_DATA_ORIGIN;
 import static android.healthconnect.cts.lib.TestUtils.CHANGE_LOGS_RESPONSE;
+import static android.healthconnect.cts.lib.TestUtils.CHANGE_LOG_TOKEN;
 import static android.healthconnect.cts.lib.TestUtils.CLIENT_ID;
 import static android.healthconnect.cts.lib.TestUtils.DELETE_RECORDS_QUERY;
+import static android.healthconnect.cts.lib.TestUtils.GET_CHANGE_LOG_TOKEN_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORD_QUERY;
 import static android.healthconnect.cts.lib.TestUtils.INTENT_EXCEPTION;
 import static android.healthconnect.cts.lib.TestUtils.QUERY_TYPE;
@@ -31,7 +33,6 @@ import static android.healthconnect.cts.lib.TestUtils.READ_USING_DATA_ORIGIN_FIL
 import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.TestUtils.UPDATE_RECORDS_QUERY;
-import static android.healthconnect.cts.lib.TestUtils.getChangeLogToken;
 import static android.healthconnect.cts.lib.TestUtils.getChangeLogs;
 import static android.healthconnect.cts.lib.TestUtils.getTestRecords;
 import static android.healthconnect.cts.lib.TestUtils.insertRecords;
@@ -119,7 +120,16 @@ public class HealthConnectTestHelper extends Activity {
                                     context);
                     break;
                 case READ_CHANGE_LOGS_QUERY:
-                    returnIntent = readChangeLogsUsingDataOriginFilters(queryType, context);
+                    returnIntent =
+                            readChangeLogsUsingDataOriginFilters(
+                                    queryType, bundle.getString(CHANGE_LOG_TOKEN), context);
+                    break;
+                case GET_CHANGE_LOG_TOKEN_QUERY:
+                    returnIntent =
+                            getChangeLogToken(
+                                    queryType,
+                                    bundle.getString(APP_PKG_NAME_USED_IN_DATA_ORIGIN),
+                                    context);
                     break;
                 default:
                     throw new IllegalStateException(
@@ -190,6 +200,7 @@ public class HealthConnectTestHelper extends Activity {
         }
         try {
             verifyDeleteRecords(recordIdFilters, context);
+            intent.putExtra(SUCCESS, true);
         } catch (Exception e) {
             intent.putExtra(INTENT_EXCEPTION, e);
         }
@@ -354,35 +365,51 @@ public class HealthConnectTestHelper extends Activity {
     }
 
     /**
-     * Method to insert records and then read changeLogs using dataOriginFilters and add the details
-     * in the intent
+     * Method to read changeLogs using dataOriginFilters and add the changeLogToken
      *
      * @param queryType - specifies the action, here it should be
      *     READ_CHANGE_LOGS_USING_DATA_ORIGIN_FILTERS_QUERY
      * @param context - application context
+     * @param changeLogToken - Token corresponding to which changeLogs have to be read
      * @return Intent to send back to the main app which is running the tests
-     * @throws Exception
      */
-    private Intent readChangeLogsUsingDataOriginFilters(String queryType, Context context)
+    private Intent readChangeLogsUsingDataOriginFilters(
+            String queryType, String changeLogToken, Context context) {
+        final Intent intent = new Intent(queryType);
+
+        ChangeLogsRequest changeLogsRequest = new ChangeLogsRequest.Builder(changeLogToken).build();
+
+        try {
+            ChangeLogsResponse response = getChangeLogs(changeLogsRequest, context);
+            intent.putExtra(CHANGE_LOGS_RESPONSE, response);
+        } catch (Exception e) {
+            intent.putExtra(INTENT_EXCEPTION, e);
+        }
+
+        return intent;
+    }
+
+    /**
+     * Method to get changeLogToken for an app
+     *
+     * @param queryType - specifies the action, here it should be GET_CHANGE_LOG_TOKEN_QUERY
+     * @param pkgName - pkgName of the app whose changeLogs we have to read using the returned token
+     * @param context - application context
+     * @return - Intent to send back to the main app which is running the tests
+     */
+    private Intent getChangeLogToken(String queryType, String pkgName, Context context)
             throws Exception {
         final Intent intent = new Intent(queryType);
 
         ChangeLogTokenResponse tokenResponse =
-                getChangeLogToken(
+                TestUtils.getChangeLogToken(
                         new ChangeLogTokenRequest.Builder()
                                 .addDataOriginFilter(
-                                        new DataOrigin.Builder()
-                                                .setPackageName(context.getPackageName())
-                                                .build())
+                                        new DataOrigin.Builder().setPackageName(pkgName).build())
                                 .build(),
                         context);
-        ChangeLogsRequest changeLogsRequest =
-                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
 
-        ChangeLogsResponse response = getChangeLogs(changeLogsRequest, context);
-
-        intent.putExtra(CHANGE_LOGS_RESPONSE, response);
-
+        intent.putExtra(CHANGE_LOG_TOKEN, tokenResponse.getToken());
         return intent;
     }
 }
