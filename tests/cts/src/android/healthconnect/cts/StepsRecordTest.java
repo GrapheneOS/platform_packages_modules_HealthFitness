@@ -89,7 +89,7 @@ public class StepsRecordTest {
 
     @Test
     public void testUpdateStepsRecordToDuplicate() throws InterruptedException {
-        List<Record> records = List.of(getBaseStepsRecord(), getBaseStepsRecord());
+        List<Record> records = List.of(getBaseStepsRecord(), getStepsRecord_minusDays(1));
         records = TestUtils.insertRecords(records);
 
         try {
@@ -546,20 +546,6 @@ public class StepsRecordTest {
         assertThat(result).containsExactlyElementsIn(insertedRecord);
     }
 
-    static void readStepsRecordUsingIds(List<Record> recordList) throws InterruptedException {
-        ReadRecordsRequestUsingIds.Builder<StepsRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
-        for (Record record : recordList) {
-            request.addId(record.getMetadata().getId());
-        }
-        ReadRecordsRequestUsingIds requestUsingIds = request.build();
-        assertThat(requestUsingIds.getRecordType()).isEqualTo(StepsRecord.class);
-        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
-        List<StepsRecord> result = TestUtils.readRecords(requestUsingIds);
-        assertThat(result).hasSize(recordList.size());
-        assertThat(result).containsExactlyElementsIn(recordList);
-    }
-
     @Test
     public void testAggregation_StepsCountTotal() throws Exception {
         List<Record> records =
@@ -968,24 +954,6 @@ public class StepsRecordTest {
                 .build();
     }
 
-    static StepsRecord getStepsRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new StepsRecord.Builder(
-                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 20)
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
     StepsRecord getStepsRecordDuplicateEntry(
             StepsRecord recordToUpdate, StepsRecord duplicateRecord) {
         Metadata metadata = recordToUpdate.getMetadata();
@@ -1002,6 +970,38 @@ public class StepsRecordTest {
                         duplicateRecord.getStartTime(),
                         duplicateRecord.getEndTime(),
                         20)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
+    static void readStepsRecordUsingIds(List<Record> recordList) throws InterruptedException {
+        ReadRecordsRequestUsingIds.Builder<StepsRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
+        for (Record record : recordList) {
+            request.addId(record.getMetadata().getId());
+        }
+        ReadRecordsRequestUsingIds requestUsingIds = request.build();
+        assertThat(requestUsingIds.getRecordType()).isEqualTo(StepsRecord.class);
+        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
+        List<StepsRecord> result = TestUtils.readRecords(requestUsingIds);
+        assertThat(result).hasSize(recordList.size());
+        assertThat(result).containsExactlyElementsIn(recordList);
+    }
+
+    static StepsRecord getStepsRecord_update(Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new StepsRecord.Builder(
+                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 20)
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
