@@ -1779,6 +1779,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    // Reschedule any pending BR timeouts - this might be needed after a device reboot.
+    void schedulePendingBackupRestoreTimeouts() {
+        mBackupRestore.scheduleAllPendingJobs();
+    }
+
+    // Cancel BR timeouts - this might be needed when a user is going into background.
+    void cancelBackupRestoreTimeouts() {
+        mBackupRestore.cancelAllJobs();
+    }
+
     private void tryAcquireApiCallQuota(
             int uid,
             @QuotaCategory.Type int quotaCategory,
