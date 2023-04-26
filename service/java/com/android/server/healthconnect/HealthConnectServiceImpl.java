@@ -149,7 +149,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -230,6 +229,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     public void onUserSwitching(UserHandle currentForegroundUser) {
         mCurrentForegroundUser = currentForegroundUser;
+        mBackupRestore.onUserSwitching(currentForegroundUser);
     }
 
     @Override
@@ -703,14 +703,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         finishDataDeliveryWriteRecords(recordInternals, attributionSource);
                         logRecordTypeSpecificUpsertMetrics(
                                 recordInternals, attributionSource.getPackageName());
-                        // Update activity dates table
-                        HealthConnectThreadScheduler.scheduleInternalTask(
-                                () ->
-                                        ActivityDateHelper.getInstance()
-                                                .reSyncByRecordTypeIds(
-                                                        recordInternals.stream()
-                                                                .map(RecordInternal::getRecordType)
-                                                                .toList()));
                     } catch (SecurityException securityException) {
                         builder.setHealthDataServiceApiStatusError(
                                 HealthConnectException.ERROR_SECURITY);
@@ -1123,8 +1115,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         hasDataManagementPermission(uid, pid)));
         tryAndReturnResult(callback, builder);
         finishDataDeliveryWrite(recordTypeIdsToDelete, attributionSource);
-        HealthConnectThreadScheduler.scheduleInternalTask(
-                () -> postDeleteTasks(recordTypeIdsToDelete));
 
         builder.setNumberOfRecords(numberOfRecordsDeleted)
                 .setDataTypesFromRecordTypes(recordTypeIdsToDelete);
@@ -1637,10 +1627,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * @see HealthConnectManager#getAllBackupFileNames
      */
     @Override
-    public BackupFileNamesSet getAllBackupFileNames(
-            @NonNull UserHandle userHandle, boolean forDeviceToDevice) {
+    public BackupFileNamesSet getAllBackupFileNames(boolean forDeviceToDevice) {
         mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
-        return mBackupRestore.getAllBackupFileNames(userHandle, forDeviceToDevice);
+        return mBackupRestore.getAllBackupFileNames(forDeviceToDevice);
     }
 
     /**
@@ -1777,6 +1766,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
                 });
+    }
+
+    // Reschedule any pending BR timeouts - this might be needed after a device reboot.
+    void schedulePendingBackupRestoreTimeouts() {
+        mBackupRestore.scheduleAllPendingJobs();
+    }
+
+    // Cancel BR timeouts - this might be needed when a user is going into background.
+    void cancelBackupRestoreTimeouts() {
+        mBackupRestore.cancelAllJobs();
     }
 
     private void tryAcquireApiCallQuota(
@@ -2078,16 +2077,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         if (isDataSyncInProgress()) {
             throw new IllegalStateException("Storage data sync in progress. API calls are blocked");
         }
-    }
-
-    private static void postDeleteTasks(List<Integer> recordTypeIdsToDelete) {
-        Trace.traceBegin(TRACE_TAG_DELETE_SUBTASKS, TAG_INSERT.concat("PostDeleteTasks"));
-        if (recordTypeIdsToDelete != null && !recordTypeIdsToDelete.isEmpty()) {
-            AppInfoHelper.getInstance()
-                    .syncAppInfoRecordTypesUsed(new HashSet<>(recordTypeIdsToDelete));
-            ActivityDateHelper.getInstance().reSyncByRecordTypeIds(recordTypeIdsToDelete);
-        }
-        Trace.traceEnd(TRACE_TAG_DELETE_SUBTASKS);
     }
 
     private static void tryAndReturnResult(
