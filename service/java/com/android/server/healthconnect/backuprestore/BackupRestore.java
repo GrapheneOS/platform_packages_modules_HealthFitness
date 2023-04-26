@@ -16,23 +16,34 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_NONE;
+import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_UNKNOWN;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_VERSION_DIFF;
 import static android.health.connect.HealthConnectDataState.RESTORE_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.RESTORE_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectDataState.RESTORE_STATE_PENDING;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_COMPLETE;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
+import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_RETRY;
+import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STATE_UNKNOWN;
 
+import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.EXTRA_JOB_NAME_KEY;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.EXTRA_USER_ID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorBlob;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.app.job.JobInfo;
+import android.app.job.JobParameters;
+import android.app.job.JobScheduler;
+import android.app.job.JobService;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.Cursor;
@@ -47,9 +58,12 @@ import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataException;
 import android.health.connect.restore.StageRemoteDataRequest;
+import android.os.Binder;
 import android.os.ParcelFileDescriptor;
+import android.os.PersistableBundle;
 import android.os.RemoteException;
 import android.os.UserHandle;
+import android.text.format.DateUtils;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.util.Pair;
@@ -57,6 +71,7 @@ import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
@@ -82,6 +97,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -106,6 +122,28 @@ public final class BackupRestore {
     public static final int INTERNAL_RESTORE_STATE_STAGING_DONE = 3;
     public static final int INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS = 4;
     public static final int INTERNAL_RESTORE_STATE_MERGING_DONE = 5;
+
+    @VisibleForTesting
+    static final long DATA_DOWNLOAD_TIMEOUT_INTERVAL_MILLIS = 14 * DateUtils.DAY_IN_MILLIS;
+
+    @VisibleForTesting
+    static final long DATA_STAGING_TIMEOUT_INTERVAL_MILLIS = DateUtils.DAY_IN_MILLIS;
+
+    @VisibleForTesting
+    static final long DATA_MERGING_TIMEOUT_INTERVAL_MILLIS = 5 * DateUtils.DAY_IN_MILLIS;
+
+    @VisibleForTesting static final String DATA_DOWNLOAD_TIMEOUT_KEY = "data_download_timeout_key";
+    @VisibleForTesting static final String DATA_STAGING_TIMEOUT_KEY = "data_staging_timeout_key";
+    @VisibleForTesting static final String DATA_MERGING_TIMEOUT_KEY = "data_merging_timeout_key";
+
+    @VisibleForTesting
+    static final String DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY = "data_download_timeout_cancelled_key";
+
+    @VisibleForTesting
+    static final String DATA_STAGING_TIMEOUT_CANCELLED_KEY = "data_staging_timeout_cancelled_key";
+
+    @VisibleForTesting
+    static final String DATA_MERGING_TIMEOUT_CANCELLED_KEY = "data_merging_timeout_cancelled_key";
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
@@ -393,6 +431,13 @@ public final class BackupRestore {
             PreferenceHelper.getInstance()
                     .insertOrReplacePreference(
                             DATA_RESTORE_STATE_KEY, String.valueOf(dataRestoreState));
+
+            if (dataRestoreState == INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING
+                    || dataRestoreState == INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
+                scheduleStagingTimeoutJob();
+            } else if (dataRestoreState == INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
+                scheduleMergingTimeoutJob();
+            }
         } finally {
             mStatesLock.writeLock().unlock();
         }
@@ -458,6 +503,14 @@ public final class BackupRestore {
             PreferenceHelper.getInstance()
                     .insertOrReplacePreference(
                             DATA_DOWNLOAD_STATE_KEY, String.valueOf(downloadState));
+
+            if (downloadState == DATA_DOWNLOAD_STARTED || downloadState == DATA_DOWNLOAD_RETRY) {
+                PreferenceHelper.getInstance()
+                        .insertOrReplacePreference(
+                                DATA_DOWNLOAD_TIMEOUT_KEY,
+                                Long.toString(Instant.now().toEpochMilli()));
+                scheduleDownloadStateTimeoutJob();
+            }
         } finally {
             mStatesLock.writeLock().unlock();
         }
@@ -470,6 +523,227 @@ public final class BackupRestore {
         PreferenceHelper.getInstance()
                 .insertOrReplacePreference(
                         DATA_RESTORE_ERROR_KEY, String.valueOf(dataRestoreError));
+    }
+
+    /** Schedule timeout for data download state so that we are not stuck in the current state. */
+    private void scheduleDownloadStateTimeoutJob() {
+        @DataDownloadState int currentDownloadState = getDataDownloadState();
+        if (currentDownloadState != DATA_DOWNLOAD_STARTED
+                && currentDownloadState != DATA_DOWNLOAD_RETRY) {
+            Slog.d(
+                    TAG,
+                    "Attempt to schedule download timeout job with state: "
+                            + currentDownloadState);
+            // We are not in the correct state. There's no need to set the timer.
+            return;
+        }
+
+        // We might be here because the device rebooted or the user switched. If a timer was already
+        // going on then we want to continue that timer.
+        long timeout =
+                getRemainingTimeout(
+                        DATA_DOWNLOAD_TIMEOUT_KEY,
+                        DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY,
+                        DATA_DOWNLOAD_TIMEOUT_INTERVAL_MILLIS);
+
+        int userId = mContext.getUser().getIdentifier();
+        final PersistableBundle extras = new PersistableBundle();
+        extras.putInt(EXTRA_USER_ID, userId);
+        extras.putString(EXTRA_JOB_NAME_KEY, DATA_DOWNLOAD_TIMEOUT_KEY);
+        JobInfo.Builder jobInfoBuilder =
+                new JobInfo.Builder(
+                                BackupRestoreJobService.BACKUP_RESTORE_JOB_ID + userId,
+                                new ComponentName(mContext, BackupRestoreJobService.class))
+                        .setExtras(extras)
+                        .setMinimumLatency(timeout)
+                        .setOverrideDeadline(timeout << 1);
+        Slog.i(TAG, "Scheduling download state timeout job with period: " + timeout);
+        BackupRestoreJobService.schedule(mContext, jobInfoBuilder.build(), this);
+
+        // Set the start time
+        PreferenceHelper.getInstance()
+                .insertOrReplacePreference(
+                        DATA_DOWNLOAD_TIMEOUT_KEY, Long.toString(Instant.now().toEpochMilli()));
+    }
+
+    private void executeDownloadStateTimeoutJob() {
+        @DataDownloadState int currentDownloadState = getDataDownloadState();
+        if (currentDownloadState == DATA_DOWNLOAD_STARTED
+                || currentDownloadState == DATA_DOWNLOAD_RETRY) {
+            Slog.i(TAG, "Executing download state timeout job");
+            setDataDownloadState(DATA_DOWNLOAD_FAILED, false);
+            setDataRestoreError(RESTORE_ERROR_FETCHING_DATA);
+            // Remove the remaining timeouts from the disk
+            PreferenceHelper.getInstance()
+                    .insertOrReplacePreference(DATA_DOWNLOAD_TIMEOUT_KEY, "");
+            PreferenceHelper.getInstance()
+                    .insertOrReplacePreference(DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY, "");
+        } else {
+            Slog.i(TAG, "Download state timeout job fired in state: " + currentDownloadState);
+        }
+    }
+
+    /** Schedule timeout for data staging state so that we are not stuck in the current state. */
+    private void scheduleStagingTimeoutJob() {
+        @InternalRestoreState int internalRestoreState = getInternalRestoreState();
+        if (internalRestoreState != INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING
+                && internalRestoreState != INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
+            // We are not in the correct state. There's no need to set the timer.
+            Slog.i(
+                    TAG,
+                    "Attempt to schedule staging timeout job with state: " + internalRestoreState);
+            return;
+        }
+
+        // We might be here because the device rebooted or the user switched. If a timer was already
+        // going on then we want to continue that timer.
+        long timeout =
+                getRemainingTimeout(
+                        DATA_STAGING_TIMEOUT_KEY,
+                        DATA_STAGING_TIMEOUT_CANCELLED_KEY,
+                        DATA_STAGING_TIMEOUT_INTERVAL_MILLIS);
+
+        int userId = mContext.getUser().getIdentifier();
+        final PersistableBundle extras = new PersistableBundle();
+        extras.putInt(EXTRA_USER_ID, userId);
+        extras.putString(EXTRA_JOB_NAME_KEY, DATA_STAGING_TIMEOUT_KEY);
+        JobInfo.Builder jobInfoBuilder =
+                new JobInfo.Builder(
+                                BackupRestoreJobService.BACKUP_RESTORE_JOB_ID + userId,
+                                new ComponentName(mContext, BackupRestoreJobService.class))
+                        .setExtras(extras)
+                        .setMinimumLatency(timeout)
+                        .setOverrideDeadline(timeout << 1);
+        Slog.i(TAG, "Scheduling staging timeout job with period: " + timeout);
+        BackupRestoreJobService.schedule(mContext, jobInfoBuilder.build(), this);
+
+        // Set the start time
+        PreferenceHelper.getInstance()
+                .insertOrReplacePreference(
+                        DATA_STAGING_TIMEOUT_KEY, Long.toString(Instant.now().toEpochMilli()));
+    }
+
+    private void executeStagingTimeoutJob() {
+        @InternalRestoreState int internalRestoreState = getInternalRestoreState();
+        if (internalRestoreState == INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING
+                || internalRestoreState == INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
+            Slog.i(TAG, "Executing staging timeout job");
+            setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, false);
+            setDataRestoreError(RESTORE_ERROR_UNKNOWN);
+            // Remove the remaining timeouts from the disk
+            PreferenceHelper.getInstance()
+                    .insertOrReplacePreference(DATA_STAGING_TIMEOUT_KEY, "");
+            PreferenceHelper.getInstance()
+                    .insertOrReplacePreference(DATA_STAGING_TIMEOUT_CANCELLED_KEY, "");
+        } else {
+            Slog.i(TAG, "Staging timeout job fired in state: " + internalRestoreState);
+        }
+    }
+
+    /** Schedule timeout for data merging state so that we are not stuck in the current state. */
+    private void scheduleMergingTimeoutJob() {
+        @InternalRestoreState int internalRestoreState = getInternalRestoreState();
+        if (internalRestoreState != INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
+            // We are not in the correct state. There's no need to set the timer.
+            Slog.i(
+                    TAG,
+                    "Attempt to schedule merging timeout job with state: " + internalRestoreState);
+            return;
+        }
+
+        // We might be here because the device rebooted or the user switched. If a timer was already
+        // going on then we want to continue that timer.
+        long timeout =
+                getRemainingTimeout(
+                        DATA_MERGING_TIMEOUT_KEY,
+                        DATA_MERGING_TIMEOUT_CANCELLED_KEY,
+                        DATA_MERGING_TIMEOUT_INTERVAL_MILLIS);
+
+        int userId = mContext.getUser().getIdentifier();
+        final PersistableBundle extras = new PersistableBundle();
+        extras.putInt(EXTRA_USER_ID, userId);
+        extras.putString(EXTRA_JOB_NAME_KEY, DATA_MERGING_TIMEOUT_KEY);
+        JobInfo.Builder jobInfoBuilder =
+                new JobInfo.Builder(
+                                BackupRestoreJobService.BACKUP_RESTORE_JOB_ID + userId,
+                                new ComponentName(mContext, BackupRestoreJobService.class))
+                        .setExtras(extras)
+                        .setMinimumLatency(timeout)
+                        .setOverrideDeadline(timeout << 1);
+        Slog.i(TAG, "Scheduling merging timeout job with period: " + timeout);
+        BackupRestoreJobService.schedule(mContext, jobInfoBuilder.build(), this);
+
+        // Set the start time
+        PreferenceHelper.getInstance()
+                .insertOrReplacePreference(
+                        DATA_MERGING_TIMEOUT_KEY, Long.toString(Instant.now().toEpochMilli()));
+    }
+
+    private void executeMergingTimeoutJob() {
+        @InternalRestoreState int internalRestoreState = getInternalRestoreState();
+        if (internalRestoreState == INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
+            Slog.i(TAG, "Executing merging timeout job");
+            setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, false);
+            setDataRestoreError(RESTORE_ERROR_UNKNOWN);
+            // Remove the remaining timeouts from the disk
+            PreferenceHelper.getInstance()
+                    .insertOrReplacePreference(DATA_MERGING_TIMEOUT_KEY, "");
+            PreferenceHelper.getInstance()
+                    .insertOrReplacePreference(DATA_MERGING_TIMEOUT_CANCELLED_KEY, "");
+        } else {
+            Slog.i(TAG, "Merging timeout job fired in state: " + internalRestoreState);
+        }
+    }
+
+    private long getRemainingTimeout(
+            String startTimeKey, String cancelledTimeKey, long stdTimeout) {
+        String startTimeStr = PreferenceHelper.getInstance().getPreference(startTimeKey);
+        if (startTimeStr == null || startTimeStr.trim().isEmpty()) {
+            return stdTimeout;
+        }
+        long currTime = Instant.now().toEpochMilli();
+        String cancelledTimeStr = PreferenceHelper.getInstance().getPreference(cancelledTimeKey);
+        if (cancelledTimeStr == null || cancelledTimeStr.trim().isEmpty()) {
+            return Math.max(0, stdTimeout - (currTime - Long.parseLong(startTimeStr)));
+        }
+        long spentTime = Long.parseLong(cancelledTimeStr) - Long.parseLong(startTimeStr);
+        return Math.max(0, stdTimeout - spentTime);
+    }
+
+    @VisibleForTesting
+    boolean handleJob(PersistableBundle extras) {
+        String jobName = extras.getString(EXTRA_JOB_NAME_KEY);
+        switch (jobName) {
+            case DATA_DOWNLOAD_TIMEOUT_KEY -> executeDownloadStateTimeoutJob();
+            case DATA_STAGING_TIMEOUT_KEY -> executeStagingTimeoutJob();
+            case DATA_MERGING_TIMEOUT_KEY -> executeMergingTimeoutJob();
+            default -> Slog.w(TAG, "Unknown job" + jobName + " delivered.");
+        }
+        // None of the jobs want to reschedule.
+        return false;
+    }
+
+    /** Schedules any pending jobs. */
+    public void scheduleAllPendingJobs() {
+        scheduleDownloadStateTimeoutJob();
+        scheduleStagingTimeoutJob();
+        scheduleMergingTimeoutJob();
+    }
+
+    /** Cancel all the jobs and sets the cancelled time. */
+    public void cancelAllJobs() {
+        BackupRestoreJobService.cancelAllJobs(mContext);
+        setJobCancelledTimeIfExists(DATA_DOWNLOAD_TIMEOUT_KEY, DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY);
+        setJobCancelledTimeIfExists(DATA_STAGING_TIMEOUT_KEY, DATA_STAGING_TIMEOUT_CANCELLED_KEY);
+        setJobCancelledTimeIfExists(DATA_MERGING_TIMEOUT_KEY, DATA_MERGING_TIMEOUT_CANCELLED_KEY);
+    }
+
+    private void setJobCancelledTimeIfExists(String startTimeKey, String cancelTimeKey) {
+        if (PreferenceHelper.getInstance().getPreference(startTimeKey) != null) {
+            PreferenceHelper.getInstance()
+                    .insertOrReplacePreference(
+                            cancelTimeKey, Long.toString(Instant.now().toEpochMilli()));
+        }
     }
 
     /**
@@ -656,6 +930,10 @@ public final class BackupRestore {
         }
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     /**
      * {@link Context} for the staged health connect db.
      *
@@ -683,6 +961,75 @@ public final class BackupRestore {
             task.run();
         } finally {
             mStatesLock.readLock().unlock();
+        }
+    }
+
+    /** Schedules the jobs for {@link BackupRestore} */
+    public static final class BackupRestoreJobService extends JobService {
+        public static final String BACKUP_RESTORE_JOBS_NAMESPACE = "BACKUP_RESTORE_JOBS_NAMESPACE";
+        public static final String EXTRA_USER_ID = "user_id";
+        public static final String EXTRA_JOB_NAME_KEY = "job_name";
+        public static final String EXTRA_JOB_PERIOD = "job_period";
+        private static final int BACKUP_RESTORE_JOB_ID = 1000;
+
+        static BackupRestore sBackupRestore;
+
+        @Override
+        public boolean onStartJob(JobParameters params) {
+            int userId = params.getExtras().getInt(EXTRA_USER_ID, DEFAULT_INT);
+            if (userId != sBackupRestore.getContext().getUser().getIdentifier()) {
+                Slog.w(
+                        TAG,
+                        "Got onStartJob for non active user: "
+                                + userId
+                                + ", but the current active user is: "
+                                + sBackupRestore.getContext().getUser().getIdentifier());
+                return false;
+            }
+
+            String jobName = params.getExtras().getString(EXTRA_JOB_NAME_KEY);
+            if (Objects.isNull(jobName)) {
+                Slog.w(TAG, "Got onStartJob for a nameless job");
+                return false;
+            }
+
+            HealthConnectThreadScheduler.scheduleInternalTask(
+                    () -> jobFinished(params, sBackupRestore.handleJob(params.getExtras())));
+
+            return true;
+        }
+
+        @Override
+        public boolean onStopJob(JobParameters params) {
+            return false;
+        }
+
+        static void schedule(
+                Context context, @NonNull JobInfo jobInfo, BackupRestore backupRestore) {
+            sBackupRestore = backupRestore;
+            final long token = Binder.clearCallingIdentity();
+            try {
+                int result =
+                        Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                                .forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE)
+                                .schedule(jobInfo);
+
+                if (result != JobScheduler.RESULT_SUCCESS) {
+                    Slog.e(
+                            TAG,
+                            "Failed to schedule: " + jobInfo.getExtras().getString(
+                                    EXTRA_JOB_NAME_KEY));
+                }
+            } finally {
+                Binder.restoreCallingIdentity(token);
+            }
+        }
+
+        /** Cancels all jobs for our namespace. */
+        public static void cancelAllJobs(Context context) {
+            Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                    .forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE)
+                    .cancelAll();
         }
     }
 }
