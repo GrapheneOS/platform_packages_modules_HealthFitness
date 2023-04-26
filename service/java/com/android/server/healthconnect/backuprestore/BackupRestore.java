@@ -940,7 +940,8 @@ public final class BackupRestore {
                             mContext,
                             true /* isInsertRequest */,
                             true /* skipPackageNameAndLogs */);
-            TransactionManager.getInitialisedInstance().insertAll(upsertTransactionRequest);
+            TransactionManager.getInitialisedInstance()
+                    .insertAll(upsertTransactionRequest.getUpsertRequests());
 
             token = DEFAULT_LONG;
             if (recordsToMergeAndToken.second != DEFAULT_LONG) {
