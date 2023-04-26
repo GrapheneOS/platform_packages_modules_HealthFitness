@@ -52,7 +52,12 @@ public class GrantTimeXmlHelper {
     private static final String ATTRIBUTE_FIRST_GRANT_TIME = "first-grant-time";
     private static final String ATTRIBUTE_VERSION = "version";
 
-    static void serializeGrantTimes(
+    /** Serializes the grant times into the passed file.
+     *
+     * @param userGrantTimeState the grant times to be serialized.
+     * @param file the file into which the serialized data should be written.
+     */
+    public static void serializeGrantTimes(
             @NonNull File file, @NonNull UserGrantTimeState userGrantTimeState) {
         AtomicFile atomicFile = new AtomicFile(file);
         FileOutputStream outputStream = null;
@@ -74,7 +79,12 @@ public class GrantTimeXmlHelper {
         }
     }
 
-    static UserGrantTimeState parseGrantTime(File file) {
+    /** Parses the passed grant time file to return the grant times.
+     *
+     * @param file the file from which the data should be parsed.
+     * @return the grant times.
+     */
+    public static UserGrantTimeState parseGrantTime(File file) {
         try (FileInputStream inputStream = new AtomicFile(file).openRead()) {
             XmlPullParser parser = Xml.newPullParser();
             parser.setInput(inputStream, /* inputEncoding= */ null);

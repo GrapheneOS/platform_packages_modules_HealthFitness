@@ -28,7 +28,7 @@ import java.util.Map;
  *
  * @hide
  */
-class UserGrantTimeState {
+public class UserGrantTimeState {
     /** Special value for {@link #mVersion} to indicate that no version was read. */
     public static final int NO_VERSION = -1;
 
