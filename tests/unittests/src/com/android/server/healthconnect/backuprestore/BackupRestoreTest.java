@@ -42,6 +42,7 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.INTER
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.verify;
@@ -65,6 +66,7 @@ import androidx.test.runner.AndroidJUnit4;
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
+import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.utils.FilesUtil;
@@ -113,6 +115,7 @@ public class BackupRestoreTest {
                         .mockStatic(PreferenceHelper.class)
                         .mockStatic(TransactionManager.class)
                         .mockStatic(BackupRestore.BackupRestoreJobService.class)
+                        .mockStatic(GrantTimeXmlHelper.class)
                         .strictness(Strictness.LENIENT)
                         .startMocking();
         MockitoAnnotations.initMocks(this);
@@ -147,8 +150,7 @@ public class BackupRestoreTest {
         when(mTransactionManager.getDatabasePath()).thenReturn(dbFile);
         when(mFirstGrantTimeManager.getFile(mUserHandle)).thenReturn(grantTimeFile);
 
-        BackupFileNamesSet backupFileNamesSet =
-                mBackupRestore.getAllBackupFileNames(mUserHandle, true);
+        BackupFileNamesSet backupFileNamesSet = mBackupRestore.getAllBackupFileNames(true);
 
         assertThat(backupFileNamesSet).isNotNull();
         assertThat(backupFileNamesSet.getFileNames()).hasSize(2);
@@ -164,8 +166,7 @@ public class BackupRestoreTest {
         when(mTransactionManager.getDatabasePath()).thenReturn(dbFile);
         when(mFirstGrantTimeManager.getFile(mUserHandle)).thenReturn(grantTimeFile);
 
-        BackupFileNamesSet backupFileNamesSet =
-                mBackupRestore.getAllBackupFileNames(mUserHandle, false);
+        BackupFileNamesSet backupFileNamesSet = mBackupRestore.getAllBackupFileNames(false);
 
         assertThat(backupFileNamesSet).isNotNull();
         assertThat(backupFileNamesSet.getFileNames()).hasSize(1);
@@ -554,6 +555,23 @@ public class BackupRestoreTest {
         verify(mPreferenceHelper).insertOrReplacePreference(eq(DATA_MERGING_TIMEOUT_KEY), eq(""));
         verify(mPreferenceHelper)
                 .insertOrReplacePreference(eq(DATA_MERGING_TIMEOUT_CANCELLED_KEY), eq(""));
+    }
+
+    @Test
+    public void testMerge_mergingOfGrantTimesIsInvoked() {
+        mBackupRestore.merge();
+        verify(mFirstGrantTimeManager).applyAndStageBackupDataForUser(eq(mUserHandle), any());
+    }
+
+    @Test
+    public void testMerge_mergingOfGrantTimes_parsesRestoredGrantTimes() {
+        ArgumentCaptor<File> restoredGrantTimeFileCaptor = ArgumentCaptor.forClass(File.class);
+        mBackupRestore.merge();
+        ExtendedMockito.verify(
+                () -> GrantTimeXmlHelper.parseGrantTime(restoredGrantTimeFileCaptor.capture()));
+        assertThat(restoredGrantTimeFileCaptor.getValue()).isNotNull();
+        assertThat(restoredGrantTimeFileCaptor.getValue().getName())
+                .isEqualTo(GRANT_TIME_FILE_NAME);
     }
 
     private static File createAndGetNonEmptyFile(File dir, String fileName) throws IOException {
