@@ -132,7 +132,10 @@ public final class BackupRestore {
     @VisibleForTesting
     static final long DATA_MERGING_TIMEOUT_INTERVAL_MILLIS = 5 * DateUtils.DAY_IN_MILLIS;
 
+    private static final long DATA_MERGING_RETRY_DELAY_MILLIS = 12 * DateUtils.HOUR_IN_MILLIS;
+
     @VisibleForTesting static final String DATA_DOWNLOAD_TIMEOUT_KEY = "data_download_timeout_key";
+
     @VisibleForTesting static final String DATA_STAGING_TIMEOUT_KEY = "data_staging_timeout_key";
     @VisibleForTesting static final String DATA_MERGING_TIMEOUT_KEY = "data_merging_timeout_key";
 
@@ -144,6 +147,10 @@ public final class BackupRestore {
 
     @VisibleForTesting
     static final String DATA_MERGING_TIMEOUT_CANCELLED_KEY = "data_merging_timeout_cancelled_key";
+
+    @VisibleForTesting static final String DATA_MERGING_RETRY_KEY = "data_merging_retry_key";
+    private static final String DATA_MERGING_RETRY_CANCELLED_KEY =
+            "data_merging_retry_cancelled_key";
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
@@ -695,6 +702,63 @@ public final class BackupRestore {
         }
     }
 
+    private void scheduleRetryMergingJob() {
+        @InternalRestoreState int internalRestoreState = getInternalRestoreState();
+        if (internalRestoreState != INTERNAL_RESTORE_STATE_STAGING_DONE) {
+            // We can do merging only if we are in the STAGING_DONE state.
+            Slog.i(
+                    TAG,
+                    "Attempt to schedule merging retry job with state: " + internalRestoreState);
+            return;
+        }
+
+        int userId = mContext.getUser().getIdentifier();
+        final PersistableBundle extras = new PersistableBundle();
+        extras.putInt(EXTRA_USER_ID, userId);
+        extras.putString(EXTRA_JOB_NAME_KEY, DATA_MERGING_RETRY_KEY);
+
+        // We might be here because the device rebooted or the user switched. If a timer was already
+        // going on then we want to continue that timer.
+        long timeout =
+                getRemainingTimeout(
+                        DATA_MERGING_RETRY_KEY,
+                        DATA_MERGING_RETRY_CANCELLED_KEY,
+                        DATA_MERGING_RETRY_DELAY_MILLIS);
+        JobInfo.Builder jobInfoBuilder =
+                new JobInfo.Builder(
+                                BackupRestoreJobService.BACKUP_RESTORE_JOB_ID + userId,
+                                new ComponentName(mContext, BackupRestoreJobService.class))
+                        .setExtras(extras)
+                        .setMinimumLatency(timeout)
+                        .setOverrideDeadline(timeout << 1);
+        Slog.i(TAG, "Scheduling retry merging job with period: " + timeout);
+        BackupRestoreJobService.schedule(mContext, jobInfoBuilder.build(), this);
+
+        // Set the start time
+        PreferenceHelper.getInstance()
+                .insertOrReplacePreference(
+                        DATA_MERGING_RETRY_KEY,
+                        Long.toString(Instant.now().toEpochMilli()));
+    }
+
+    private void executeRetryMergingJob() {
+        @InternalRestoreState int internalRestoreState = getInternalRestoreState();
+        if (internalRestoreState == INTERNAL_RESTORE_STATE_STAGING_DONE) {
+            Slog.i(TAG, "Retrying merging");
+            merge();
+
+            if (getInternalRestoreState() == INTERNAL_RESTORE_STATE_MERGING_DONE) {
+                // Remove the remaining timeouts from the disk
+                PreferenceHelper.getInstance()
+                        .insertOrReplacePreference(DATA_MERGING_RETRY_KEY, "");
+                PreferenceHelper.getInstance()
+                        .insertOrReplacePreference(DATA_MERGING_RETRY_CANCELLED_KEY, "");
+            }
+        } else {
+            Slog.i(TAG, "Merging retry job fired in state: " + internalRestoreState);
+        }
+    }
+
     private long getRemainingTimeout(
             String startTimeKey, String cancelledTimeKey, long stdTimeout) {
         String startTimeStr = PreferenceHelper.getInstance().getPreference(startTimeKey);
@@ -717,6 +781,7 @@ public final class BackupRestore {
             case DATA_DOWNLOAD_TIMEOUT_KEY -> executeDownloadStateTimeoutJob();
             case DATA_STAGING_TIMEOUT_KEY -> executeStagingTimeoutJob();
             case DATA_MERGING_TIMEOUT_KEY -> executeMergingTimeoutJob();
+            case DATA_MERGING_RETRY_KEY -> executeRetryMergingJob();
             default -> Slog.w(TAG, "Unknown job" + jobName + " delivered.");
         }
         // None of the jobs want to reschedule.
@@ -728,6 +793,7 @@ public final class BackupRestore {
         scheduleDownloadStateTimeoutJob();
         scheduleStagingTimeoutJob();
         scheduleMergingTimeoutJob();
+        scheduleRetryMergingJob();
     }
 
     /** Cancel all the jobs and sets the cancelled time. */
@@ -736,6 +802,7 @@ public final class BackupRestore {
         setJobCancelledTimeIfExists(DATA_DOWNLOAD_TIMEOUT_KEY, DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY);
         setJobCancelledTimeIfExists(DATA_STAGING_TIMEOUT_KEY, DATA_STAGING_TIMEOUT_CANCELLED_KEY);
         setJobCancelledTimeIfExists(DATA_MERGING_TIMEOUT_KEY, DATA_MERGING_TIMEOUT_CANCELLED_KEY);
+        setJobCancelledTimeIfExists(DATA_MERGING_RETRY_KEY, DATA_MERGING_RETRY_CANCELLED_KEY);
     }
 
     private void setJobCancelledTimeIfExists(String startTimeKey, String cancelTimeKey) {
@@ -755,13 +822,14 @@ public final class BackupRestore {
         return new File(hcDirectoryForUser, "remote_staged");
     }
 
-    private void merge() {
+    @VisibleForTesting
+    void merge() {
         if (getInternalRestoreState() >= INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
             return;
         }
 
-        // TODO(b/271078264): Retry after appropriate time.
         if (mMigrationStateManager.isMigrationInProgress()) {
+            scheduleRetryMergingJob();
             return;
         }
 
