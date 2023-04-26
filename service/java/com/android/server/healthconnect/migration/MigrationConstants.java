@@ -62,4 +62,6 @@ public class MigrationConstants {
 
     public static final String IN_PROGRESS_TIMEOUT_REACHED_KEY = "in_progress_timeout_reached_key";
     public static final String IDLE_TIMEOUT_REACHED_KEY = "idle_timeout_reached_key";
+
+    public static final boolean SHOW_NOTIFICATION = false;
 }
