@@ -21,9 +21,6 @@
             app:popUpToInclusive="true"
             app:destination="@id/migrationModuleUpdateNeededFragment"/>
         <action
-            android:id="@+id/action_migrationNavigationFragment_to_migrationMoreSpaceNeededFragment"
-            app:destination="@id/migrationMoreSpaceNeededFragment"/>
-        <action
             android:id="@+id/action_migrationNavigationFragment_to_migrationPausedFragment"
             app:destination="@id/migrationPausedFragment"/>
     </fragment>
@@ -59,14 +56,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/migrationMoreSpaceNeededFragment"
-        android:name="com.android.healthconnect.controller.migration.MoreSpaceNeededFragment">
-        <action
-            android:id="@+id/action_migrationMoreSpaceNeededFragment_to_storageSettingsActivity"
-            app:destination="@id/storageSettingsActivity"/>
-    </fragment>
-
-    <fragment
         android:id="@+id/migrationPausedFragment"
         android:name="com.android.healthconnect.controller.migration.MigrationPausedFragment">
         <action
@@ -85,7 +74,6 @@
         app:action="android.settings.SYSTEM_UPDATE_SETTINGS"
         android:label="systemUpdateActivity"/>
 
-    <!--    TODO (b/275602235) replace with playstore update activity or remove -->
     <activity
         android:id="@+id/updateAppActivity"
         app:action="android.health.connect.action.SHOW_MIGRATION_INFO"
