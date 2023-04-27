@@ -1,15 +1,14 @@
 package com.android.healthconnect.controller.migration
 
-import android.health.connect.HealthConnectDataState
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.migration.api.MigrationState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint(Fragment::class)
@@ -32,24 +31,23 @@ class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
         }
     }
 
-    private fun updateFragment(migrationState: @DataMigrationState Int) {
+    private fun updateFragment(migrationState: MigrationState) {
         when (migrationState) {
-            // TODO (b/273745755) Expose real UI states
-            HealthConnectDataState.MIGRATION_STATE_IDLE -> {
-                // do nothing
+            MigrationState.ALLOWED_NOT_STARTED,
+            MigrationState.ALLOWED_PAUSED -> {
+                showMigrationPausedFragment()
             }
-            HealthConnectDataState.MIGRATION_STATE_ALLOWED -> {
-                // start migration
-                showMoreSpaceNeededFragment()
-            }
-            HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS -> {
-                showInProgressFragment()
-            }
-            HealthConnectDataState.MIGRATION_STATE_APP_UPGRADE_REQUIRED -> {
+            MigrationState.APP_UPGRADE_REQUIRED -> {
                 showAppUpdateRequiredFragment()
             }
-            HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED -> {
+            MigrationState.MODULE_UPGRADE_REQUIRED -> {
                 showModuleUpdateRequiredFragment()
+            }
+            MigrationState.IN_PROGRESS -> {
+                showInProgressFragment()
+            }
+            else -> {
+                // Other states should not lead here
             }
         }
     }
@@ -68,11 +66,6 @@ class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
         findNavController()
             .navigate(
                 R.id.action_migrationNavigationFragment_to_migrationModuleUpdateNeededFragment)
-    }
-
-    private fun showMoreSpaceNeededFragment() {
-        findNavController()
-            .navigate(R.id.action_migrationNavigationFragment_to_migrationMoreSpaceNeededFragment)
     }
 
     private fun showMigrationPausedFragment() {
