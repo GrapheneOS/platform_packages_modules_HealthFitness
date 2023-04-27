@@ -187,9 +187,6 @@ public class HealthConnectManagerService extends SystemService {
 
         HealthConnectDailyJobs.cancelAllJobs(mContext);
 
-        // Try and see whether we were waiting for any BR timeouts
-        mHealthConnectService.schedulePendingBackupRestoreTimeouts();
-
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
