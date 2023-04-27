@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.migration
 
-// TODO (b/273745755) Expose real UI states
-/** Denotes that the annotated [Integer] represents a [DataMigrationState]. */
-@Retention(AnnotationRetention.BINARY)
-@Target(
-    AnnotationTarget.VALUE_PARAMETER,
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.TYPE,
-    AnnotationTarget.FIELD,
-    AnnotationTarget.LOCAL_VARIABLE,
-)
-annotation class DataMigrationState
+package com.android.healthconnect.controller.migration.api
+
+import android.health.connect.HealthConnectException
+import android.health.connect.migration.HealthConnectMigrationUiState
+import android.os.OutcomeReceiver
+import java.util.concurrent.Executor
+
+/** Wrapper for HealthConnectManager migration apis. */
+interface HealthMigrationManager {
+
+    fun getHealthConnectMigrationUiState(
+        executor: Executor,
+        callback: OutcomeReceiver<HealthConnectMigrationUiState, HealthConnectException>
+    )
+}

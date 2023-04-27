@@ -1037,12 +1037,14 @@
     <!-- region Migration pending permissions dialog -->
     <string name="migration_pending_permissions_dialog_title" description="Title of dialog shown to the user when migration is pending and an app is requesting permissions.">Health&#160;Connect integration</string>
     <string name="migration_pending_permissions_dialog_content" description="Content of dialog shown to the user when migration is pending and an app is requesting permissions.">Health&#160;Connect is ready to be integrated with your Android system. If you give <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> access now, some features may not work until integration is complete.</string>
+    <string name="migration_pending_permissions_dialog_content_apps" description="Content of dialog shown to the user when migration is pending and the user is viewing health permissions.">Health&#160;Connect is ready to be integrated with your Android system. If you give apps access now, some features may not work until integration is complete.</string>
     <string name="migration_pending_permissions_dialog_button_continue" description="Button of dialog shown to the user when migration is pending and an app is requesting permissions.">Continue</string>
     <!--  endregion -->
 
     <!-- region Migration in progress permissions dialog -->
     <string name="migration_in_progress_permissions_dialog_title" description="Title of dialog shown to the user when migration is in progress and an app is requesting permissions.">Health&#160;Connect integration in progress</string>
     <string name="migration_in_progress_permissions_dialog_content" description="Content of dialog shown to the user when migration is in progress and an app is requesting permissions.">Health&#160;Connect is being integrated with the Android system.\n\nYou\'ll get a notification when the process is complete and you can use <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> with Health&#160;Connect.</string>
+    <string name="migration_in_progress_permissions_dialog_content_apps" description="Content of dialog shown to the user when migration is in progress and the user is viewing health permissions.">Health&#160;Connect is being integrated with the Android system.\n\nYou\'ll get a notification when the process is complete and you can use Health&#160;Connect.</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" description="Button of dialog shown to the user when migration is in progress and an app is requesting permissions.">Got it</string>
     <!--  endregion -->
 
