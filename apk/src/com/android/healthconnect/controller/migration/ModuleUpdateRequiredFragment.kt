@@ -79,10 +79,18 @@ class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
             val sharedPreferences =
                 requireActivity()
                     .getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
-            sharedPreferences.edit().apply {
-                putBoolean(getString(R.string.module_update_needed_seen), true)
-                apply()
+            val moduleUpdateSeen =
+                sharedPreferences.getBoolean(getString(R.string.module_update_needed_seen), false)
+
+            if (!moduleUpdateSeen) {
+                sharedPreferences.edit().apply {
+                    putBoolean(getString(R.string.module_update_needed_seen), true)
+                    apply()
+                }
+                findNavController()
+                    .navigate(R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen)
             }
+
             requireActivity().finish()
         }
     }
