@@ -36,8 +36,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.ONBOARDING_SHOWN_PREF_KEY
-import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.USER_ACTIVITY_TRACKER
+import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel.SessionWithAttribution
 import com.android.healthconnect.controller.route.RouteRequestActivity
@@ -57,7 +57,6 @@ import java.util.TimeZone
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Matchers.any
 import org.mockito.Mockito
 
 @HiltAndroidTest
@@ -106,7 +105,8 @@ class RouteRequestActivityTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @BindValue
     val viewModel: ExerciseRouteViewModel = Mockito.mock(ExerciseRouteViewModel::class.java)
-
+    @BindValue
+    val migrationViewModel: MigrationViewModel = Mockito.mock(MigrationViewModel::class.java)
     private lateinit var context: Context
 
     @Before
@@ -115,6 +115,8 @@ class RouteRequestActivityTest {
         context = getInstrumentation().context
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
+
+        whenever(migrationViewModel.migrationState).then { MutableLiveData(MigrationState.IDLE) }
     }
 
     @Test
@@ -296,7 +298,7 @@ class RouteRequestActivityTest {
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
-            activity.dialog.findViewById<LinearLayout>(R.id.more_info)?.callOnClick()
+            activity.dialog?.findViewById<LinearLayout>(R.id.more_info)?.callOnClick()
         }
 
         onView(withText("Exercise routes include location information"))
@@ -325,7 +327,7 @@ class RouteRequestActivityTest {
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
-            activity.dialog.findViewById<Button>(R.id.route_dont_allow_button)?.callOnClick()
+            activity.dialog?.findViewById<Button>(R.id.route_dont_allow_button)?.callOnClick()
         }
 
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_CANCELED)
@@ -344,7 +346,7 @@ class RouteRequestActivityTest {
         val scenario = launchActivityForResult<RouteRequestActivity>(startActivityIntent)
 
         scenario.onActivity { activity: RouteRequestActivity ->
-            activity.dialog.findViewById<Button>(R.id.route_allow_button)?.callOnClick()
+            activity.dialog?.findViewById<Button>(R.id.route_allow_button)?.callOnClick()
         }
 
         assertThat(scenario.getResult().getResultCode()).isEqualTo(Activity.RESULT_OK)
