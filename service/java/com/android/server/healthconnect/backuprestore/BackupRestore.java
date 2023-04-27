@@ -203,6 +203,7 @@ public final class BackupRestore {
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
+        Slog.d(TAG, "Performing user switch operations.");
         mCurrentForegroundUser = currentForegroundUser;
         HealthConnectThreadScheduler.scheduleInternalTask(this::scheduleAllJobs);
     }
@@ -216,6 +217,7 @@ public final class BackupRestore {
     public boolean prepForStagingIfNotAlreadyDone() {
         mStatesLock.writeLock().lock();
         try {
+            Slog.d(TAG, "Prepping for staging.");
             setDataDownloadState(DATA_DOWNLOAD_COMPLETE, false /* force */);
             @InternalRestoreState int curDataRestoreState = getInternalRestoreState();
             if (curDataRestoreState >= INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS) {
@@ -263,12 +265,20 @@ public final class BackupRestore {
                                     destinationPath,
                                     StandardCopyOption.REPLACE_EXISTING);
                         } catch (IOException e) {
+                            Slog.e(
+                                    TAG,
+                                    "Failed to get copy to destination: "
+                                            + destination.getName(), e);
                             destination.delete();
                             exceptionsByFileName.put(
                                     fileName,
                                     new HealthConnectException(
                                             HealthConnectException.ERROR_IO, e.getMessage()));
                         } catch (SecurityException e) {
+                            Slog.e(
+                                    TAG,
+                                    "Failed to get copy to destination: "
+                                            + destination.getName(), e);
                             destination.delete();
                             exceptionsByFileName.put(
                                     fileName,
@@ -297,6 +307,7 @@ public final class BackupRestore {
                 if (exceptionsByFileName.isEmpty()) {
                     callback.onResult();
                 } else {
+                    Slog.i(TAG, "Exceptions encountered during staging.");
                     setDataRestoreError(RESTORE_ERROR_FETCHING_DATA);
                     callback.onError(new StageRemoteDataException(exceptionsByFileName));
                 }
@@ -319,6 +330,7 @@ public final class BackupRestore {
     public void getAllDataForBackup(
             @NonNull StageRemoteDataRequest stageRemoteDataRequest,
             @NonNull UserHandle userHandle) {
+        Slog.d(TAG, "Incoming request to get all data for backup");
         Map<String, ParcelFileDescriptor> pfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
 
@@ -543,11 +555,14 @@ public final class BackupRestore {
 
     @VisibleForTesting
     void merge() {
-        if (getInternalRestoreState() >= INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
+        @InternalRestoreState int internalRestoreState = getInternalRestoreState();
+        if (internalRestoreState >= INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
+            Slog.i(TAG, "Not merging as internalRestoreState is " + internalRestoreState);
             return;
         }
 
         if (mMigrationStateManager.isMigrationInProgress()) {
+            Slog.i(TAG, "Not merging as Migration in progress.");
             scheduleRetryMergingJob();
             return;
         }
@@ -555,6 +570,7 @@ public final class BackupRestore {
         int currentDbVersion = TransactionManager.getInitialisedInstance().getDatabaseVersion();
         int stagedDbVersion = getStagedDatabase().getReadableDatabase().getVersion();
         if (currentDbVersion < stagedDbVersion) {
+            Slog.i(TAG, "Module needs upgrade for merging to version " + stagedDbVersion);
             setDataRestoreError(RESTORE_ERROR_VERSION_DIFF);
             return;
         }
@@ -646,7 +662,7 @@ public final class BackupRestore {
         @DataDownloadState int currentDownloadState = getDataDownloadState();
         if (currentDownloadState != DATA_DOWNLOAD_STARTED
                 && currentDownloadState != DATA_DOWNLOAD_RETRY) {
-            Slog.d(
+            Slog.i(
                     TAG,
                     "Attempt to schedule download timeout job with state: "
                             + currentDownloadState);
@@ -871,6 +887,7 @@ public final class BackupRestore {
     private void triggerMergingIfApplicable() {
         HealthConnectThreadScheduler.scheduleInternalTask(() -> {
             if (shouldAttemptMerging()) {
+                Slog.i(TAG, "Attempting merging.");
                 setInternalRestoreState(INTERNAL_RESTORE_STATE_STAGING_DONE, true);
                 merge();
             }
@@ -918,6 +935,7 @@ public final class BackupRestore {
     }
 
     private void mergeGrantTimes() {
+        Slog.i(TAG, "Merging grant times.");
         File restoredGrantTimeFile =
                 new File(
                         getStagedRemoteDataDirectoryForUser(mCurrentForegroundUser.getIdentifier()),
@@ -931,6 +949,7 @@ public final class BackupRestore {
     private void mergeDatabase() {
         synchronized (mMergingLock) {
             if (!mStagedDbContext.getDatabasePath(HealthConnectDatabase.getName()).exists()) {
+                Slog.i(TAG, "No staged db found.");
                 // no db was staged
                 return;
             }
@@ -950,6 +969,7 @@ public final class BackupRestore {
             }
 
             // Delete the staged db as we are done merging.
+            Slog.i(TAG, "Deleting staged db after merging.");
             mStagedDbContext.deleteDatabase(HealthConnectDatabase.getName());
             mStagedDatabase = null;
         }
@@ -966,6 +986,7 @@ public final class BackupRestore {
             if (recordsToMergeAndToken.first.isEmpty()) {
                 break;
             }
+            Slog.d(TAG, "Found record to merge: " + recordsToMergeAndToken.first.getClass());
             // Using null package name for making insertion for two reasons:
             // 1. we don't want to update the logs for this package.
             // 2. we don't want to update the package name in the records as they already have the
@@ -990,6 +1011,7 @@ public final class BackupRestore {
 
         // Passing -1 for startTime and endTime as we don't want to have time based filtering in the
         // final query.
+        Slog.d(TAG, "Deleting table for: " + recordTypeClass);
         DeleteTableRequest deleteTableRequest =
                 recordHelper.getDeleteTableRequest(
                         null, DEFAULT_LONG /* startTime */, DEFAULT_LONG /* endTime */);
