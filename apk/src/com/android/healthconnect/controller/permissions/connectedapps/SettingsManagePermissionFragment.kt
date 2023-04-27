@@ -43,6 +43,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationInProgressDialog
+import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationPendingDialog
+import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.permissions.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
@@ -80,6 +84,7 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
     }
 
     private val viewModel: ConnectedAppsViewModel by viewModels()
+    private val migrationViewModel: MigrationViewModel by viewModels()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -101,6 +106,36 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
                 else -> {
                     dismissLoadingDialog()
                 }
+            }
+        }
+        migrationViewModel.migrationState.observe(viewLifecycleOwner) { migrationState ->
+            maybeShowMigrationDialog(migrationState)
+        }
+    }
+
+    private fun maybeShowMigrationDialog(migrationState: MigrationState) {
+        when (migrationState) {
+            MigrationState.IN_PROGRESS -> {
+                showMigrationInProgressDialog(
+                    requireContext(),
+                    getString(R.string.migration_in_progress_permissions_dialog_content_apps),
+                ) { _, _ ->
+                    requireActivity().finish()
+                }
+            }
+            MigrationState.ALLOWED_PAUSED,
+            MigrationState.ALLOWED_NOT_STARTED,
+            MigrationState.APP_UPGRADE_REQUIRED,
+            MigrationState.MODULE_UPGRADE_REQUIRED -> {
+                showMigrationPendingDialog(
+                    requireContext(),
+                    getString(R.string.migration_pending_permissions_dialog_content_apps),
+                    null) { _, _ ->
+                        requireActivity().finish()
+                    }
+            }
+            else -> {
+                // Show nothing
             }
         }
     }

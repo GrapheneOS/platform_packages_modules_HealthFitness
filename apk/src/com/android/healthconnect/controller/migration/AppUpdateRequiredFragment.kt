@@ -38,10 +38,12 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
         private const val HC_PACKAGE_NAME = "com.google.apps.healthdata"
     }
 
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val onBackPressedCallback =
+        onBackPressedCallback =
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     findNavController()
@@ -80,9 +82,15 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
             val sharedPreferences =
                 requireActivity()
                     .getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
-            sharedPreferences.edit().apply {
-                putBoolean(getString(R.string.app_update_needed_seen), true)
-                apply()
+            val appUpdateSeen =
+                sharedPreferences.getBoolean(getString(R.string.app_update_needed_seen), false)
+            if (!appUpdateSeen) {
+                sharedPreferences.edit().apply {
+                    putBoolean(getString(R.string.app_update_needed_seen), true)
+                    apply()
+                }
+                findNavController()
+                    .navigate(R.id.action_migrationAppUpdateNeededFragment_to_homeScreen)
             }
             requireActivity().finish()
         }
