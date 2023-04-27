@@ -39,22 +39,21 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
 import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_RESULTS
-import android.health.connect.HealthConnectDataState
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.migration.DataMigrationState
+import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationInProgressDialog
+import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationPendingDialog
 import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
-import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
-import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import dagger.hilt.android.AndroidEntryPoint
@@ -143,67 +142,37 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         }
     }
 
-    private fun maybeShowMigrationDialog(migrationState: @DataMigrationState Int) {
+    private fun maybeShowMigrationDialog(migrationState: MigrationState) {
         when (migrationState) {
-            // TODO (b/273745755) Expose real UI states
-            HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS -> {
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // showMigrationInProgressDialog()
+            MigrationState.IN_PROGRESS -> {
+                showMigrationInProgressDialog(
+                    this,
+                    getString(
+                        R.string.migration_in_progress_permissions_dialog_content,
+                        viewModel.appMetadata.value?.appName)) { _, _ ->
+                        finish()
+                    }
             }
-            HealthConnectDataState.MIGRATION_STATE_ALLOWED -> {
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // showMigrationPendingDialog()
-            }
-            HealthConnectDataState.MIGRATION_STATE_APP_UPGRADE_REQUIRED -> {
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // showMigrationPendingDialog()
-            }
-            HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED -> {
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // showMigrationPendingDialog()
-            }
-        }
-    }
-
-    private fun showMigrationPendingDialog() {
-        val message =
-            getString(
-                R.string.migration_pending_permissions_dialog_content,
-                viewModel.appMetadata.value?.appName)
-        AlertDialogBuilder(this)
-            .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
-            .setTitle(R.string.migration_pending_permissions_dialog_title)
-            .setMessage(message)
-            .setCancelable(false)
-            .setNegativeButton(android.R.string.cancel, ErrorPageElement.UNKNOWN_ELEMENT) { _, _ ->
-                viewModel.updatePermissions(false)
-                handleResults(viewModel.request(getPackageNameExtra()))
-                finish()
-            }
-            .setPositiveButton(
-                R.string.migration_pending_permissions_dialog_button_continue,
-                ErrorPageElement.UNKNOWN_ELEMENT)
-            .create()
-            .show()
-    }
-
-    private fun showMigrationInProgressDialog() {
-        val message =
-            getString(
-                R.string.migration_in_progress_permissions_dialog_content,
-                viewModel.appMetadata.value?.appName)
-        AlertDialogBuilder(this)
-            .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
-            .setTitle(R.string.migration_in_progress_permissions_dialog_title)
-            .setMessage(message)
-            .setCancelable(false)
-            .setNegativeButton(
-                R.string.migration_in_progress_permissions_dialog_button_got_it,
-                ErrorPageElement.UNKNOWN_ELEMENT) { _, _ ->
+            MigrationState.ALLOWED_PAUSED,
+            MigrationState.ALLOWED_NOT_STARTED,
+            MigrationState.APP_UPGRADE_REQUIRED,
+            MigrationState.MODULE_UPGRADE_REQUIRED -> {
+                showMigrationPendingDialog(
+                    this,
+                    getString(
+                        R.string.migration_pending_permissions_dialog_content,
+                        viewModel.appMetadata.value?.appName),
+                    null,
+                ) { _, _ ->
+                    viewModel.updatePermissions(false)
+                    handleResults(viewModel.request(getPackageNameExtra()))
                     finish()
                 }
-            .create()
-            .show()
+            }
+            else -> {
+                // Show nothing
+            }
+        }
     }
 
     fun handleResults(results: Map<HealthPermission, PermissionState>) {
