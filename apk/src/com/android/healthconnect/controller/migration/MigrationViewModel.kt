@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.migration.api.LoadMigrationStateUseCase
 import com.android.healthconnect.controller.migration.api.MigrationState
-import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -33,8 +32,8 @@ constructor(
     private val loadMigrationStateUseCase: LoadMigrationStateUseCase,
 ) : ViewModel() {
 
-    private val _migrationState = MutableLiveData<MigrationState>()
-    val migrationState: LiveData<MigrationState>
+    private val _migrationState = MutableLiveData<MigrationFragmentState>()
+    val migrationState: LiveData<MigrationFragmentState>
         get() = _migrationState
 
     init {
@@ -43,11 +42,20 @@ constructor(
 
     private fun loadHealthConnectMigrationUiState() {
         viewModelScope.launch {
-            _migrationState.postValueIfUpdated(loadMigrationStateUseCase.invoke())
+            _migrationState.postValue(
+                MigrationFragmentState.WithData(loadMigrationStateUseCase.invoke()))
         }
     }
 
     suspend fun getCurrentMigrationUiState(): MigrationState {
         return loadMigrationStateUseCase.invoke()
+    }
+
+    sealed class MigrationFragmentState {
+        object Loading : MigrationFragmentState()
+
+        object Error : MigrationFragmentState()
+
+        data class WithData(val migrationState: MigrationState) : MigrationFragmentState()
     }
 }

@@ -104,7 +104,14 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
             }
         }
         migrationViewModel.migrationState.observe(this) { migrationState ->
-            maybeShowMigrationDialog(migrationState)
+            when (migrationState) {
+                is MigrationViewModel.MigrationFragmentState.WithData -> {
+                    maybeShowMigrationDialog(migrationState.migrationState)
+                }
+                else -> {
+                    // do nothing
+                }
+            }
         }
 
         supportFragmentManager
