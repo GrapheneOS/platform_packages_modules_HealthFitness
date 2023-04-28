@@ -31,9 +31,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class DataManagementActivity : Hilt_DataManagementActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (maybeRedirectIntoTwoPaneSettings(this)) {
-            return
-        }
         setContentView(R.layout.activity_data_management)
     }
 
