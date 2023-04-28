@@ -23,13 +23,13 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.WheelchairPushesRecordInternal;
 import android.util.Pair;
 
-import java.time.ZoneOffset;
+import com.android.server.healthconnect.storage.request.AggregateParams;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,19 +51,6 @@ public final class WheelchairPushesRecordHelper
     }
 
     @Override
-    public AggregateResult<?> getAggregateResult(
-            Cursor results, AggregationType<?> aggregationType, double aggregation) {
-        switch (aggregationType.getAggregationTypeIdentifier()) {
-            case WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL:
-                results.moveToFirst();
-                ZoneOffset zoneOffset = getZoneOffset(results);
-                return new AggregateResult<>((long) aggregation).setZoneOffset(zoneOffset);
-            default:
-                return null;
-        }
-    }
-
-    @Override
     @NonNull
     public String getMainTableName() {
         return WHEELCHAIR_PUSHES_RECORD_TABLE_NAME;
@@ -71,7 +58,6 @@ public final class WheelchairPushesRecordHelper
 
     @Override
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
-        List<String> columnNames;
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL:
                 return new AggregateParams(

@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.migration.notification;
 
+import static com.android.server.healthconnect.migration.MigrationConstants.SHOW_NOTIFICATION;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -61,6 +63,9 @@ public final class MigrationNotificationSender {
     /** Sends a notification to the current user based on the notification type. */
     public void sendNotification(
             @MigrationNotificationType int notificationType, @NonNull UserHandle userHandle) {
+        if (!SHOW_NOTIFICATION) {
+            return;
+        }
         createNotificationChannel(userHandle);
         try {
             Notification notification =
@@ -72,6 +77,12 @@ public final class MigrationNotificationSender {
         } catch (MigrationNotificationFactory.IllegalMigrationNotificationStateException ignored) {
             // Do not send any notification
         }
+    }
+
+    /** Cancels all Health Connect notifications. */
+    public void clearNotifications(@NonNull UserHandle userHandle) {
+        NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
+        cancelFromSystem(notificationManager);
     }
 
     /** Returns a {@link NotificationManager} which will send notifications to the given user. */
@@ -91,6 +102,18 @@ public final class MigrationNotificationSender {
             notificationManager.notify(NOTIFICATION_TAG, FIXED_NOTIFICATION_ID, notification);
         } catch (Throwable e) {
             Log.w(TAG, "Unable to send system notification", e);
+        } finally {
+            Binder.restoreCallingIdentity(callingId);
+        }
+    }
+
+    private void cancelFromSystem(@Nullable NotificationManager notificationManager) {
+        final long callingId = Binder.clearCallingIdentity();
+        try {
+            // We use the same (tag, id)
+            notificationManager.cancel(NOTIFICATION_TAG, FIXED_NOTIFICATION_ID);
+        } catch (Throwable e) {
+            Log.w(TAG, "Unable to cancel system notification", e);
         } finally {
             Binder.restoreCallingIdentity(callingId);
         }
@@ -120,6 +143,8 @@ public final class MigrationNotificationSender {
         try {
             notificationManager.createNotificationChannelGroup(group);
             notificationManager.createNotificationChannel(notificationChannel);
+        } catch (Throwable e) {
+            Log.w(TAG, "Unable to create notification channel", e);
         } finally {
             Binder.restoreCallingIdentity(callingId);
         }

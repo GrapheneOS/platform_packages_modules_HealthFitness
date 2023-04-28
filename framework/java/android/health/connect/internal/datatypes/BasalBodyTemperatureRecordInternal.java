@@ -65,7 +65,7 @@ public final class BasalBodyTemperatureRecordInternal
                         getMeasurementLocation(),
                         Temperature.fromCelsius(getTemperature()))
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

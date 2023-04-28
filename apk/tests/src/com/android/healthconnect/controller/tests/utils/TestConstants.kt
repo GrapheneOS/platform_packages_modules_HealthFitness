@@ -63,6 +63,7 @@ fun getMetaData(): Metadata {
 
 const val TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app"
 const val TEST_APP_PACKAGE_NAME_2 = "android.healthconnect.controller.test.app2"
+const val UNSUPPORTED_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app3"
 const val TEST_APP_NAME = "Health Connect test app"
 const val TEST_APP_NAME_2 = "Health Connect test app 2"
 const val TEST_APP_NAME_3 = "Health Connect test app 3"

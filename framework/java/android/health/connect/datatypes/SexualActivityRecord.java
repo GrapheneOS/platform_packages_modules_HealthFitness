@@ -42,13 +42,15 @@ public final class SexualActivityRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param protectionUsed ProtectionUsed of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private SexualActivityRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @SexualActivityProtectionUsed.SexualActivityProtectionUsedTypes int protectionUsed) {
-        super(metadata, time, zoneOffset);
+            @SexualActivityProtectionUsed.SexualActivityProtectionUsedTypes int protectionUsed,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
@@ -155,11 +157,20 @@ public final class SexualActivityRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link SexualActivityRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public SexualActivityRecord buildWithoutValidation() {
+            return new SexualActivityRecord(mMetadata, mTime, mZoneOffset, mProtectionUsed, true);
+        }
+
+        /**
          * @return Object of {@link SexualActivityRecord}
          */
         @NonNull
         public SexualActivityRecord build() {
-            return new SexualActivityRecord(mMetadata, mTime, mZoneOffset, mProtectionUsed);
+            return new SexualActivityRecord(mMetadata, mTime, mZoneOffset, mProtectionUsed, false);
         }
     }
 

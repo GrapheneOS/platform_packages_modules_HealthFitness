@@ -48,6 +48,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.time.ZoneId
 
 @Singleton
 class LoadDataAggregationsUseCase
@@ -137,7 +138,12 @@ constructor(
     }
 
     private fun getTimeFilter(selectedDate: Instant): TimeInstantRangeFilter {
-        val start = selectedDate.truncatedTo(ChronoUnit.DAYS)
+        val start =
+            selectedDate
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
         val end = start.plus(Duration.ofHours(23)).plus(Duration.ofMinutes(59))
         return TimeInstantRangeFilter.Builder().setStartTime(start).setEndTime(end).build()
     }

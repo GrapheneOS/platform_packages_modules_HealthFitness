@@ -35,6 +35,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.PowerRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.ArrayList;

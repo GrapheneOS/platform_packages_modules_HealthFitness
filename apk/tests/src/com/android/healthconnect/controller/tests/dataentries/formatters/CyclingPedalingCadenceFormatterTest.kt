@@ -19,6 +19,7 @@ import android.content.Context
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.CyclingPedalingCadenceFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -48,7 +49,7 @@ class CyclingPedalingCadenceFormatterTest {
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
-        context.setLocale(Locale.US)
+        context.setLocale(Locale.UK)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
         hiltRule.inject()
@@ -90,6 +91,29 @@ class CyclingPedalingCadenceFormatterTest {
 
         assertThat(formatter.formatA11yValue(record, preferences))
             .isEqualTo("from 23 revolutions per minute to 43 revolutions per minute")
+    }
+
+    @Test
+    fun formatRecordDetails_emptySamples_returnsEmptyList() = runBlocking {
+        val record = getRecord(listOf())
+
+        assertThat(formatter.formatRecordDetails(record)).isEmpty()
+    }
+
+    @Test
+    fun formatRecordDetails_multipleSamples_returnsFormattedList() = runBlocking {
+        val record = getRecord(listOf(23.0, 40.0))
+
+        val result = formatter.formatRecordDetails(record)
+        assertThat(result.size).isEqualTo(2)
+        assertThat(result[0])
+            .isEqualTo(
+                FormattedEntry.FormattedSessionDetail(
+                    uuid = "test_id",
+                    header = "07:06",
+                    headerA11y = "07:06",
+                    title = "23 rpm",
+                    titleA11y = "23 revolutions per minute"))
     }
 
     private fun getRecord(samples: List<Double>): CyclingPedalingCadenceRecord {

@@ -107,9 +107,8 @@ public final class AggregationType<T> {
     }
 
     /** @hide */
-    public boolean isSessionPriorityRequest() {
-        return mId == AggregationTypeIdentifier.SLEEP_SESSION_DURATION_TOTAL
-                || mId == AggregationTypeIdentifier.EXERCISE_SESSION_DURATION_TOTAL;
+    public Class<T> getAggregateResultClass() {
+        return mClass;
     }
 
     /**

@@ -29,6 +29,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.ActiveCaloriesBurnedRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
+
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -47,7 +47,7 @@ public final class FloorsClimbedRecordInternal extends IntervalRecordInternal<Fl
                         buildMetaData(), getStartTime(), getEndTime(), getFloors())
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override

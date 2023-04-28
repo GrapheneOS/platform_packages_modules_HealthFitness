@@ -21,42 +21,81 @@ import android.health.connect.datatypes.SpeedRecord.SpeedRecordSample
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
 import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
 import com.android.healthconnect.controller.dataentries.units.DistanceUnit.MILES
 import com.android.healthconnect.controller.dataentries.units.SpeedConverter.convertToDistancePerHour
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Formatter for printing Speed series data. */
 class SpeedFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    EntryFormatter<SpeedRecord>(context) {
+    EntryFormatter<SpeedRecord>(context), SessionDetailsFormatter<SpeedRecord> {
+
+    private val timeFormatter = LocalDateTimeFormatter(context)
+
+    override suspend fun formatRecord(
+        record: SpeedRecord,
+        header: String,
+        headerA11y: String,
+        unitPreferences: UnitPreferences
+    ): FormattedEntry {
+        return FormattedEntry.SeriesDataEntry(
+            uuid = record.metadata.id,
+            header = header,
+            headerA11y = headerA11y,
+            title = formatValue(record, unitPreferences),
+            titleA11y = formatA11yValue(record, unitPreferences),
+            dataType = getDataType(record))
+    }
+
     override suspend fun formatValue(
         record: SpeedRecord,
         unitPreferences: UnitPreferences
     ): String {
-        val res =
-            when (unitPreferences.getDistanceUnit()) {
-                MILES -> R.string.velocity_speed_miles
-                KILOMETERS -> R.string.velocity_speed_km
-            }
-        return formatSample(res, record.samples, unitPreferences)
+        val res = getUnitRes(unitPreferences)
+        return formatRecord(res, record.samples, unitPreferences)
     }
 
     override suspend fun formatA11yValue(
         record: SpeedRecord,
         unitPreferences: UnitPreferences
     ): String {
-        val res =
-            when (unitPreferences.getDistanceUnit()) {
-                MILES -> R.string.velocity_speed_miles_long
-                KILOMETERS -> R.string.velocity_speed_km_long
-            }
-        return formatSample(res, record.samples, unitPreferences)
+        val res = getA11yUnitRes(unitPreferences)
+        return formatRecord(res, record.samples, unitPreferences)
+    }
+
+    override suspend fun formatRecordDetails(record: SpeedRecord): List<FormattedEntry> {
+        return record.samples
+            .sortedBy { it.time }
+            .map { formatSample(record.metadata.id, it, unitPreferences) }
     }
 
     private fun formatSample(
+        id: String,
+        sample: SpeedRecordSample,
+        unitPreferences: UnitPreferences
+    ): FormattedSessionDetail {
+        return FormattedSessionDetail(
+            uuid = id,
+            header = timeFormatter.formatTime(sample.time),
+            headerA11y = timeFormatter.formatTime(sample.time),
+            title =
+                formatSpeedValue(
+                    getUnitRes(unitPreferences), sample.speed.inMetersPerSecond, unitPreferences),
+            titleA11y =
+                formatSpeedValue(
+                    getA11yUnitRes(unitPreferences),
+                    sample.speed.inMetersPerSecond,
+                    unitPreferences))
+    }
+
+    private fun formatRecord(
         @StringRes res: Int,
         samples: List<SpeedRecordSample>,
         unitPreferences: UnitPreferences
@@ -65,7 +104,29 @@ class SpeedFormatter @Inject constructor(@ApplicationContext private val context
             return context.getString(R.string.no_data)
         }
         val averageSpeed = samples.sumOf { it.speed.inMetersPerSecond } / samples.size
-        val speed = convertToDistancePerHour(unitPreferences.getDistanceUnit(), averageSpeed)
-        return MessageFormat.format(context.getString(res), mapOf("value" to speed))
+        return formatSpeedValue(res, averageSpeed, unitPreferences)
+    }
+
+    private fun formatSpeedValue(
+        @StringRes res: Int,
+        speed: Double,
+        unitPreferences: UnitPreferences
+    ): String {
+        val speedWithUnit = convertToDistancePerHour(unitPreferences.getDistanceUnit(), speed)
+        return MessageFormat.format(context.getString(res), mapOf("value" to speedWithUnit))
+    }
+
+    private fun getUnitRes(unitPreferences: UnitPreferences): Int {
+        return when (unitPreferences.getDistanceUnit()) {
+            MILES -> R.string.velocity_speed_miles
+            KILOMETERS -> R.string.velocity_speed_km
+        }
+    }
+
+    private fun getA11yUnitRes(unitPreferences: UnitPreferences): Int {
+        return when (unitPreferences.getDistanceUnit()) {
+            MILES -> R.string.velocity_speed_miles_long
+            KILOMETERS -> R.string.velocity_speed_km_long
+        }
     }
 }

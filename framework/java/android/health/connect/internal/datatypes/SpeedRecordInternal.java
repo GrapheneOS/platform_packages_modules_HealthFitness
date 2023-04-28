@@ -69,7 +69,7 @@ public class SpeedRecordInternal
                         buildMetaData(), getStartTime(), getEndTime(), getExternalSamples())
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 
     @Override
@@ -88,7 +88,8 @@ public class SpeedRecordInternal
             speedRecords.add(
                     new SpeedRecord.SpeedRecordSample(
                             Velocity.fromMetersPerSecond(speedRecordSample.getSpeed()),
-                            Instant.ofEpochMilli(speedRecordSample.getEpochMillis())));
+                            Instant.ofEpochMilli(speedRecordSample.getEpochMillis()),
+                            true));
         }
         return speedRecords;
     }

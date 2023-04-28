@@ -48,6 +48,7 @@ import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
+import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -75,6 +76,7 @@ public class HealthConnectServiceImplTest {
     @Mock private MigrationCleaner mMigrationCleaner;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private MigrationStateManager mMigrationStateManager;
+    @Mock private MigrationUiStateManager mMigrationUiStateManager;
     @Mock private Context mContext;
     @Mock private Context mServiceContext;
     @Mock private PreferenceHelper mPreferenceHelper;
@@ -103,6 +105,7 @@ public class HealthConnectServiceImplTest {
         when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
                 .thenReturn(mAppOpsManagerLocal);
         when(mServiceContext.getPackageManager()).thenReturn(mPackageManager);
+        when(mServiceContext.getUser()).thenReturn(mUserHandle);
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -111,6 +114,7 @@ public class HealthConnectServiceImplTest {
                         mMigrationCleaner,
                         mFirstGrantTimeManager,
                         mMigrationStateManager,
+                        mMigrationUiStateManager,
                         mServiceContext);
     }
 
@@ -185,7 +189,7 @@ public class HealthConnectServiceImplTest {
 
     @Test
     public void testUpdateDataDownloadState_settingValidState_setsState() {
-        mHealthConnectService.updateDataDownloadState(DATA_DOWNLOAD_STARTED, mUserHandle);
+        mHealthConnectService.updateDataDownloadState(DATA_DOWNLOAD_STARTED);
         verify(mPreferenceHelper, times(1))
                 .insertOrReplacePreference(
                         eq(DATA_DOWNLOAD_STATE_KEY), eq(String.valueOf(DATA_DOWNLOAD_STARTED)));

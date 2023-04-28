@@ -49,6 +49,7 @@ import android.util.Pair;
 import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger.Operations;
+import com.android.server.healthconnect.storage.request.AggregateParams;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -137,7 +138,11 @@ public final class ExerciseSessionRecordHelper
                             START_TIME_COLUMN_NAME)
                     .setJoin(
                             ExerciseSegmentRecordHelper.getJoinForDurationAggregation(
-                                    getMainTableName()));
+                                    getMainTableName()))
+                    .setPriorityAggregationExtraParams(
+                            new AggregateParams.PriorityAggregationExtraParams(
+                                    ExerciseSegmentRecordHelper.getStartTimeColumnName(),
+                                    ExerciseSegmentRecordHelper.getEndTimeColumnName()));
         }
         return null;
     }

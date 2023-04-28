@@ -16,18 +16,26 @@
 
 package android.healthconnect;
 
+import static android.health.connect.ratelimiter.RateLimiter.CHUNK_SIZE_LIMIT_IN_BYTES;
+import static android.health.connect.ratelimiter.RateLimiter.RECORD_SIZE_LIMIT_IN_BYTES;
+
 import static org.hamcrest.CoreMatchers.containsString;
 
 import android.health.connect.HealthConnectException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.ratelimiter.RateLimiter.QuotaCategory;
 
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
+
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RateLimiterTest {
     private static final int UID = 1;
@@ -38,6 +46,53 @@ public class RateLimiterTest {
     private static final Duration WINDOW_15M = Duration.ofMinutes(15);
 
     @Rule public ExpectedException exception = ExpectedException.none();
+
+    @Before
+    public void setUp() {
+        Map<Integer, Integer> quotaBucketToMaxApiCallQuotaMap = new HashMap<>();
+        Map<String, Integer> quotaBucketToMaxMemoryQuotaMap = new HashMap<>();
+        quotaBucketToMaxApiCallQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_15M_FOREGROUND,
+                HealthConnectDeviceConfigManager
+                        .QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxApiCallQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_15M_BACKGROUND,
+                HealthConnectDeviceConfigManager
+                        .QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxApiCallQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND,
+                HealthConnectDeviceConfigManager
+                        .QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxApiCallQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND,
+                HealthConnectDeviceConfigManager
+                        .QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxApiCallQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_24H_FOREGROUND,
+                HealthConnectDeviceConfigManager
+                        .QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxApiCallQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_24H_BACKGROUND,
+                HealthConnectDeviceConfigManager
+                        .QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxApiCallQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND,
+                HealthConnectDeviceConfigManager
+                        .QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxApiCallQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND,
+                HealthConnectDeviceConfigManager
+                        .QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxMemoryQuotaMap.put(
+                CHUNK_SIZE_LIMIT_IN_BYTES,
+                HealthConnectDeviceConfigManager.CHUNK_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxMemoryQuotaMap.put(
+                RECORD_SIZE_LIMIT_IN_BYTES,
+                HealthConnectDeviceConfigManager.RECORD_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE);
+        RateLimiter.updateApiCallQuotaMap(quotaBucketToMaxApiCallQuotaMap);
+        RateLimiter.updateMemoryQuotaMap(quotaBucketToMaxMemoryQuotaMap);
+        RateLimiter.updateEnableRateLimiterFlag(true);
+    }
 
     @Test
     public void testTryAcquireApiCallQuota_invalidQuotaCategory() {

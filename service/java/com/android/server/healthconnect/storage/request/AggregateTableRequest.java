@@ -37,7 +37,6 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MergeDataHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.aggregation.PriorityRecordsAggregator;
 import com.android.server.healthconnect.storage.utils.OrderByClause;
@@ -52,7 +51,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A request for {@link TransactionManager} to query the DB for aggregation results
@@ -68,37 +66,36 @@ public class AggregateTableRequest {
     private final List<String> mColumnNamesToAggregate;
     private final AggregationType<?> mAggregationType;
     private final RecordHelper<?> mRecordHelper;
-    private final Map<Integer, AggregateResult> mAggregateResults = new ArrayMap<>();
-    private final Class<?> mAggregateDataType;
+    private final Map<Integer, AggregateResult<?>> mAggregateResults = new ArrayMap<>();
+    private final String mTimeColumnName;
+    // Additional column used for time filtering. End time for interval records,
+    // null for other records.
+    private final String mEndTimeColumnName;
+    private final SqlJoin mSqlJoin;
     private List<Long> mPackageFilters;
     private long mStartTime = DEFAULT_TIME;
     private long mEndTime = DEFAULT_TIME;
     private String mPackageColumnName;
-    private String mTimeColumnName;
-    private SqlJoin mSqlJoin;
     private long mGroupByStart;
     private long mGroupByDelta;
     private String mGroupByColumnName;
     private long mGroupByEnd;
     private int mGroupBySize = 1;
     private List<String> mAdditionalColumnsToFetch;
+    private final AggregateParams.PriorityAggregationExtraParams mPriorityParams;
 
     public AggregateTableRequest(
-            @NonNull String tableName,
-            @NonNull List<String> columnNamesToAggregate,
-            @NonNull AggregationType<?> aggregationType,
-            @NonNull RecordHelper<?> recordHelper,
-            @Nullable Class<?> aggregateDataType) {
-        Objects.requireNonNull(tableName);
-        Objects.requireNonNull(columnNamesToAggregate);
-        Objects.requireNonNull(aggregationType);
-        Objects.requireNonNull(recordHelper);
-
-        mTableName = tableName;
-        mColumnNamesToAggregate = columnNamesToAggregate;
+            AggregateParams params,
+            AggregationType<?> aggregationType,
+            RecordHelper<?> recordHelper) {
+        mTableName = params.getTableName();
+        mColumnNamesToAggregate = params.getColumnsToFetch();
+        mTimeColumnName = params.getTimeColumnName();
         mAggregationType = aggregationType;
         mRecordHelper = recordHelper;
-        mAggregateDataType = aggregateDataType;
+        mSqlJoin = params.getJoin();
+        mPriorityParams = params.getPriorityAggregationExtraParams();
+        mEndTimeColumnName = params.getExtraTimeColumnName();
     }
 
     /**
@@ -138,12 +135,6 @@ public class AggregateTableRequest {
         return aggregateResults;
     }
 
-    /** Returns SQL join class. */
-    public AggregateTableRequest setSqlJoin(SqlJoin sqlJoin) {
-        mSqlJoin = sqlJoin;
-        return this;
-    }
-
     /** Returns SQL statement to get data origins for the aggregation operation */
     public String getCommandToFetchAggregateMetadata() {
         final StringBuilder builder = new StringBuilder("SELECT DISTINCT ");
@@ -157,8 +148,7 @@ public class AggregateTableRequest {
         final StringBuilder builder = new StringBuilder("SELECT ");
         String aggCommand;
         boolean usingPriority =
-                mAggregationType.isSessionPriorityRequest()
-                        || StorageUtils.supportsPriority(
+                StorageUtils.supportsPriority(
                                 mRecordHelper.getRecordIdentifier(),
                                 mAggregationType.getAggregateOperationType())
                         || StorageUtils.isDerivedType(mRecordHelper.getRecordIdentifier());
@@ -197,8 +187,8 @@ public class AggregateTableRequest {
         return this;
     }
 
-    public AggregateTableRequest setTimeFilter(
-            long startTime, long endTime, String timeColumnName) {
+    /** Sets time filter for table request. */
+    public AggregateTableRequest setTimeFilter(long startTime, long endTime) {
         // Return if the params will result in no impact on the query
         if (startTime < 0 || endTime < startTime) {
             return this;
@@ -206,8 +196,6 @@ public class AggregateTableRequest {
 
         mStartTime = startTime;
         mEndTime = endTime;
-        mTimeColumnName = timeColumnName;
-
         return this;
     }
 
@@ -230,14 +218,12 @@ public class AggregateTableRequest {
     }
 
     public void onResultsFetched(Cursor cursor, Cursor metaDataCursor) {
-        if (mAggregationType.isSessionPriorityRequest()) {
-            processSessionPriorityRequest(cursor);
-        } else if (StorageUtils.isDerivedType(mRecordHelper.getRecordIdentifier())) {
+        if (StorageUtils.isDerivedType(mRecordHelper.getRecordIdentifier())) {
             deriveAggregate(cursor);
         } else if (StorageUtils.supportsPriority(
                 mRecordHelper.getRecordIdentifier(),
                 mAggregationType.getAggregateOperationType())) {
-            processDefaultPriorityRequest(cursor);
+            processPriorityRequest(cursor);
         } else {
             processNoPrioritiesRequest(cursor);
         }
@@ -245,45 +231,36 @@ public class AggregateTableRequest {
         updateResultWithDataOriginPackageNames(metaDataCursor);
     }
 
-    private void processSessionPriorityRequest(Cursor cursor) {
+    private void processPriorityRequest(Cursor cursor) {
         List<Long> priorityList =
                 StorageUtils.getAppIdPriorityList(mRecordHelper.getRecordIdentifier());
         PriorityRecordsAggregator aggregator =
                 new PriorityRecordsAggregator(
                         getGroupSplits(),
                         priorityList,
-                        mAggregationType.getAggregationTypeIdentifier());
+                        mAggregationType.getAggregationTypeIdentifier(),
+                        mPriorityParams);
         aggregator.calculateAggregation(cursor);
+        AggregateResult<?> result;
         for (int groupNumber = 0; groupNumber < mGroupBySize; groupNumber++) {
+            if (aggregator.getResultForGroup(groupNumber) == null) {
+                continue;
+            }
+
+            if (mAggregationType.getAggregateResultClass() == Long.class) {
+                result =
+                        new AggregateResult<>(
+                                aggregator.getResultForGroup(groupNumber).longValue());
+            } else {
+                result = new AggregateResult<>(aggregator.getResultForGroup(groupNumber));
+            }
             mAggregateResults.put(
                     groupNumber,
-                    new AggregateResult<>(aggregator.getResultForGroup(groupNumber).longValue())
-                            .setZoneOffset(aggregator.getZoneOffsetForGroup(groupNumber)));
+                    result.setZoneOffset(aggregator.getZoneOffsetForGroup(groupNumber)));
         }
 
         if (Constants.DEBUG) {
             Slog.d(TAG, "Priority aggregation result: " + mAggregateResults);
-        }
-    }
-
-    private void processDefaultPriorityRequest(Cursor cursor) {
-        int index = 0;
-        long groupStartTime = mStartTime;
-        long groupEndTime = getGroupEndTime(groupStartTime);
-        List<Long> priorityList =
-                StorageUtils.getAppIdPriorityList(mRecordHelper.getRecordIdentifier());
-        MergeDataHelper mergeDataHelper =
-                new MergeDataHelper(
-                        cursor, priorityList, mColumnNamesToAggregate.get(0), mAggregateDataType);
-        while (index < mGroupBySize) {
-            // Based on the number of groups calculate aggregate for each group by calling
-            // MergeDataHelper by eliminate duplicate for overlapping time interval
-            double total = mergeDataHelper.readCursor(groupStartTime, groupEndTime);
-            groupStartTime = groupEndTime;
-            groupEndTime = getGroupEndTime(groupStartTime);
-            mAggregateResults.put(
-                    index, mRecordHelper.getAggregateResult(cursor, mAggregationType, total));
-            index++;
         }
     }
 
@@ -300,20 +277,14 @@ public class AggregateTableRequest {
     }
 
     private static String getSqlCommandFor(@AggregationType.AggregateOperationType int type) {
-        switch (type) {
-            case MAX:
-                return "MAX";
-            case MIN:
-                return "MIN";
-            case AVG:
-                return "AVG";
-            case SUM:
-                return "SUM";
-            case COUNT:
-                return "COUNT";
-            default:
-                return null;
-        }
+        return switch (type) {
+            case MAX -> "MAX";
+            case MIN -> "MIN";
+            case AVG -> "AVG";
+            case SUM -> "SUM";
+            case COUNT -> "COUNT";
+            default -> null;
+        };
     }
 
     private String appendAggregateCommand(StringBuilder builder, boolean isMetadata) {
@@ -343,10 +314,7 @@ public class AggregateTableRequest {
             builder.append(mSqlJoin.getJoinCommand());
         }
 
-        WhereClauses whereClauses = new WhereClauses();
-        whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
-        whereClauses.addWhereBetweenTimeClause(mTimeColumnName, mStartTime, mEndTime);
-        builder.append(whereClauses.get(true));
+        builder.append(buildAggregationWhereCondition());
 
         if (useGroupBy) {
             builder.append(" GROUP BY " + GROUP_BY_COLUMN_NAME);
@@ -361,6 +329,22 @@ public class AggregateTableRequest {
         }
 
         return builder.toString();
+    }
+
+    private String buildAggregationWhereCondition() {
+        WhereClauses whereClauses = new WhereClauses();
+        whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
+
+        if (mEndTimeColumnName != null) {
+            // Filter all records which overlap with time filter interval:
+            // recordStartTime < filterEndTime and recordEndTime > filterStartTime
+            whereClauses.addWhereLessThanClause(mTimeColumnName, mEndTime);
+            whereClauses.addWhereGreaterThanClause(mEndTimeColumnName, mStartTime);
+        } else {
+            whereClauses.addWhereBetweenClause(mTimeColumnName, mStartTime, mEndTime);
+        }
+
+        return whereClauses.get(/* withWhereKeyword= */ true);
     }
 
     private void updateResultWithDataOriginPackageNames(Cursor metaDataCursor) {
@@ -389,11 +373,11 @@ public class AggregateTableRequest {
 
     private long getGroupEndTime(long groupStartTime) {
         if (mGroupByColumnName.equals(mRecordHelper.getPeriodGroupByColumnName())) {
-            // Calculate and return endtime for group Aggregation based on period
+            // Calculate and return start time for group Aggregation based on period
             return (Instant.ofEpochMilli(groupStartTime).plus(mGroupByDelta, ChronoUnit.DAYS))
                     .toEpochMilli();
         } else {
-            // Calculate and return endtime for group Aggregation based on duration
+            // Calculate and return end time for group Aggregation based on duration
             return groupStartTime + mGroupByDelta;
         }
     }

@@ -38,10 +38,11 @@ import androidx.preference.Preference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
-import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /** Can't see all your apps fragment for Health Connect. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -51,10 +52,18 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
         const val CHECK_FOR_UPDATES = "check_for_updates"
         private const val SEE_ALL_COMPATIBLE_APPS = "see_all_compatible_apps"
         private const val SEND_FEEDBACK = "send_feedback"
+        const val APP_INTEGRATION_REQUEST_BUCKET_ID =
+            "com.google.android.healthconnect.controller.APP_INTEGRATION_REQUEST"
+        const val USER_INITIATED_FEEDBACK_BUCKET_ID =
+            "com.google.android.healthconnect.controller.USER_INITIATED_FEEDBACK_REPORT"
+        const val FEEDBACK_INTENT_RESULT_CODE = 0
     }
+
     init {
         this.setPageName(PageName.HELP_AND_FEEDBACK_PAGE)
     }
+
+    @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
 
     private val mCheckForUpdates: HealthPreference? by lazy {
         preferenceScreen.findPreference(CHECK_FOR_UPDATES)
@@ -86,8 +95,13 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
 
         mSendFeedback?.setOnPreferenceClickListener {
             val intent = Intent(Intent.ACTION_BUG_REPORT)
-            activity?.startActivityForResult(intent, 0)
+            intent.putExtra("category_tag", APP_INTEGRATION_REQUEST_BUCKET_ID)
+            activity?.startActivityForResult(intent, FEEDBACK_INTENT_RESULT_CODE)
             true
         }
+
+        mSendFeedback?.isVisible = deviceInfoUtils.isSendFeedbackAvailable(requireContext())
+        mCheckForUpdates?.isVisible = deviceInfoUtils.isPlayStoreAvailable(requireContext())
+        mSeeAllCompatibleApps?.isVisible = deviceInfoUtils.isPlayStoreAvailable(requireContext())
     }
 }

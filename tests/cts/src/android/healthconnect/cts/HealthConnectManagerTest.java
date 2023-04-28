@@ -29,14 +29,19 @@ import static android.health.connect.HealthConnectManager.isHealthPermission;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
 import static android.healthconnect.cts.TestUtils.getRecordById;
 import static android.os.ParcelFileDescriptor.MODE_READ_ONLY;
 
+import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
+
 import static com.google.common.truth.Truth.assertThat;
 
+import android.Manifest;
 import android.app.UiAutomation;
 import android.content.Context;
+import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
@@ -45,6 +50,9 @@ import android.health.connect.HealthPermissions;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordTypeInfoResponse;
+import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.BodyFatRecord;
 import android.health.connect.datatypes.DataOrigin;
@@ -74,6 +82,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,8 +93,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.Period;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1411,169 +1423,165 @@ public class HealthConnectManagerTest {
         }
     }
 
-    // TODO(b/274494950): Uncomment this when this bug is fixed as it's blocking the Presubmits.
-    // This is a temporary solution to unblock others until this bug if fixed.
-    //    @Test
-    //    public void testDataApis_migrationInProgress_apisBlocked() throws InterruptedException {
-    //        UiAutomation uiAutomation =
-    // InstrumentationRegistry.getInstrumentation().getUiAutomation();
-    //        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-    //
-    //        runWithShellPermissionIdentity(
-    //                () -> {
-    //                    TestUtils.startMigration();
-    //                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-    //                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
-    //                },
-    //                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-    //
-    //        StepsRecord testRecord = TestUtils.getStepsRecord();
-    //
-    //        try {
-    //            TestUtils.insertRecords(Collections.singletonList(testRecord));
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        try {
-    //            ReadRecordsRequestUsingIds<StepsRecord> request =
-    //                    new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
-    //                            .addId(testRecord.getMetadata().getId())
-    //                            .build();
-    //            TestUtils.readRecords(request);
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        try {
-    //            TestUtils.updateRecords(Collections.singletonList(testRecord));
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        try {
-    //            TestUtils.deleteRecords(Collections.singletonList(testRecord));
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        try {
-    //            TestUtils.getActivityDates(Collections.singletonList(testRecord.getClass()));
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        try {
-    //            uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-    //            TestUtils.getApplicationInfo();
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //            uiAutomation.dropShellPermissionIdentity();
-    //        }
-    //
-    //        try {
-    //            uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-    //
-    //            TestUtils.queryAccessLogs();
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //            uiAutomation.dropShellPermissionIdentity();
-    //        }
-    //
-    //        try {
-    //            uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-    //
-    //            TestUtils.setAutoDeletePeriod(1);
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //            uiAutomation.dropShellPermissionIdentity();
-    //        }
-    //
-    //        try {
-    //            TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build());
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        try {
-    //
-    //            TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(/* token */ "").build());
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        AggregateRecordsRequest<Long> aggregateRecordsRequest =
-    //                new AggregateRecordsRequest.Builder<Long>(
-    //                                new TimeInstantRangeFilter.Builder()
-    //                                        .setStartTime(Instant.now().minus(3, ChronoUnit.DAYS))
-    //                                        .setEndTime(Instant.now())
-    //                                        .build())
-    //                        .addAggregationType(STEPS_COUNT_TOTAL)
-    //                        .build();
-    //
-    //        try {
-    //            TestUtils.getAggregateResponse(
-    //                    aggregateRecordsRequest, Collections.singletonList(testRecord));
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        try {
-    //            TestUtils.getAggregateResponseGroupByDuration(
-    //                    aggregateRecordsRequest, Duration.ofDays(1));
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        try {
-    //            TestUtils.getAggregateResponseGroupByPeriod(aggregateRecordsRequest,
-    // Period.ofDays(1));
-    //            Assert.fail();
-    //        } catch (HealthConnectException exception) {
-    //            assertThat(exception).isNotNull();
-    //            assertThat(exception.getErrorCode())
-    //                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
-    //        }
-    //
-    //        runWithShellPermissionIdentity(
-    //                TestUtils::finishMigration, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-    //    }
+    @Test
+    public void testDataApis_migrationInProgress_apisBlocked() throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+
+        runWithShellPermissionIdentity(
+                () -> {
+                    TestUtils.startMigration();
+                    assertThat(TestUtils.getHealthConnectDataMigrationState())
+                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
+                },
+                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+
+        StepsRecord testRecord = TestUtils.getStepsRecord();
+
+        try {
+            TestUtils.insertRecords(Collections.singletonList(testRecord));
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        try {
+            ReadRecordsRequestUsingIds<StepsRecord> request =
+                    new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                            .addId(testRecord.getMetadata().getId())
+                            .build();
+            TestUtils.readRecords(request);
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        try {
+            TestUtils.updateRecords(Collections.singletonList(testRecord));
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        try {
+            TestUtils.deleteRecords(Collections.singletonList(testRecord));
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        try {
+            TestUtils.getActivityDates(Collections.singletonList(testRecord.getClass()));
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        try {
+            uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+            TestUtils.getApplicationInfo();
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+            uiAutomation.dropShellPermissionIdentity();
+        }
+
+        try {
+            uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+
+            TestUtils.queryAccessLogs();
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+            uiAutomation.dropShellPermissionIdentity();
+        }
+
+        try {
+            uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+
+            TestUtils.setAutoDeletePeriod(1);
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+            uiAutomation.dropShellPermissionIdentity();
+        }
+
+        try {
+            TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build());
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        try {
+
+            TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(/* token */ "").build());
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        AggregateRecordsRequest<Long> aggregateRecordsRequest =
+                new AggregateRecordsRequest.Builder<Long>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.now().minus(3, ChronoUnit.DAYS))
+                                        .setEndTime(Instant.now())
+                                        .build())
+                        .addAggregationType(STEPS_COUNT_TOTAL)
+                        .build();
+
+        try {
+            TestUtils.getAggregateResponse(
+                    aggregateRecordsRequest, Collections.singletonList(testRecord));
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        try {
+            TestUtils.getAggregateResponseGroupByDuration(
+                    aggregateRecordsRequest, Duration.ofDays(1));
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        try {
+            TestUtils.getAggregateResponseGroupByPeriod(aggregateRecordsRequest, Period.ofDays(1));
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
+        runWithShellPermissionIdentity(
+                TestUtils::finishMigration, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    }
 
     @Test
     public void testGetRecordTypeInfo_InsertRecords_correctContributingPackages() throws Exception {
@@ -1615,88 +1623,6 @@ public class HealthConnectManagerTest {
         }
 
         // verify response data is correct.
-        verifyRecordTypeResponse(response, expectedResponseMap);
-
-        // delete first set inserted records.
-        TestUtils.deleteRecords(testRecords);
-
-        // clear out contributing packages.
-        TestUtils.populateAndResetExpectedResponseMap(expectedResponseMap);
-        // delete inserted records.
-
-        // When recordTypes are modified the appInfo also gets updated and this update happens on
-        // a background thread. To ensure the test has the latest values for appInfo, add a wait
-        // time before fetching it.
-        Thread.sleep(500);
-        response = TestUtils.queryAllRecordTypesInfo();
-        // verify that the API still returns all record types with the cts packages as contributing
-        // package. this is because only one of the inserted record for each record type was
-        // deleted.
-        verifyRecordTypeResponse(response, expectedResponseMap);
-    }
-
-    @Test
-    public void testGetRecordTypeInfo_partiallyDeleteInsertedRecords_correctContributingPackages()
-            throws Exception {
-        // Insert a sets of test records for StepRecords, ExerciseSessionRecord, HeartRateRecord,
-        // BasalMetabolicRateRecord.
-        List<Record> testRecords = TestUtils.getTestRecords();
-        TestUtils.insertRecords(testRecords);
-
-        // Populate expected records. This method puts empty lists as contributing packages for all
-        // records.
-        HashMap<Class<? extends Record>, TestUtils.RecordTypeInfoTestResponse> expectedResponseMap =
-                new HashMap<>();
-        TestUtils.populateAndResetExpectedResponseMap(expectedResponseMap);
-        // Populate contributing packages list for expected records by adding the current cts
-        // package.
-        expectedResponseMap.get(StepsRecord.class).getContributingPackages().add(APP_PACKAGE_NAME);
-        expectedResponseMap
-                .get(ExerciseSessionRecord.class)
-                .getContributingPackages()
-                .add(APP_PACKAGE_NAME);
-        expectedResponseMap
-                .get(HeartRateRecord.class)
-                .getContributingPackages()
-                .add(APP_PACKAGE_NAME);
-        expectedResponseMap
-                .get(BasalMetabolicRateRecord.class)
-                .getContributingPackages()
-                .add(APP_PACKAGE_NAME);
-
-        // When recordTypes are modified the appInfo also gets updated and this update happens on
-        // a background thread. To ensure the test has the latest values for appInfo, add a wait
-        // time before fetching it.
-        Thread.sleep(500);
-        // since test records contains the following records
-        Map<Class<? extends Record>, RecordTypeInfoResponse> response =
-                TestUtils.queryAllRecordTypesInfo();
-        if (isEmptyContributingPackagesForAll(response)) {
-            return;
-        }
-        // verify response data is correct.
-        verifyRecordTypeResponse(response, expectedResponseMap);
-
-        // delete 2 of the inserted records.
-        ArrayList<Record> recordsToBeDeleted = new ArrayList<>();
-        for (int itr = 0; itr < testRecords.size() / 2; itr++) {
-            recordsToBeDeleted.add(testRecords.get(itr));
-            expectedResponseMap
-                    .get(testRecords.get(itr).getClass())
-                    .getContributingPackages()
-                    .clear();
-        }
-
-        TestUtils.deleteRecords(recordsToBeDeleted);
-
-        // When recordTypes are modified the appInfo also gets updated and this update happens on
-        // a background thread. To ensure the test has the latest values for appInfo, add a wait
-        // time before fetching it.
-        Thread.sleep(500);
-        response = TestUtils.queryAllRecordTypesInfo();
-        if (isEmptyContributingPackagesForAll(response)) {
-            return;
-        }
         verifyRecordTypeResponse(response, expectedResponseMap);
     }
 

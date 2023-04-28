@@ -23,15 +23,14 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.storage.request.AggregateParams;
 
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,19 +48,6 @@ public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInt
 
     public StepsRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_STEPS);
-    }
-
-    @Override
-    public AggregateResult<?> getAggregateResult(
-            Cursor results, AggregationType<?> aggregationType, double aggregation) {
-        switch (aggregationType.getAggregationTypeIdentifier()) {
-            case STEPS_RECORD_COUNT_TOTAL:
-                results.moveToFirst();
-                ZoneOffset zoneOffset = getZoneOffset(results);
-                return new AggregateResult<>((long) aggregation).setZoneOffset(zoneOffset);
-            default:
-                return null;
-        }
     }
 
     @Override

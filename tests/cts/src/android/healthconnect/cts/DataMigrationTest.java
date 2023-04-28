@@ -30,7 +30,6 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import android.Manifest;
@@ -90,6 +89,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +107,9 @@ public class DataMigrationTest {
     private static final String APP_PACKAGE_NAME = "android.healthconnect.cts.app";
     private static final String APP_PACKAGE_NAME_2 = "android.healthconnect.cts.app2";
     private static final String PACKAGE_NAME_NOT_INSTALLED = "not.installed.package";
+    private static final String INVALID_PERMISSION_1 = "invalid.permission.1";
+    private static final String INVALID_PERMISSION_2 = "invalid.permission.2";
+    private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
     private static final String APP_NAME = "Test App";
     private static final String APP_NAME_NEW = "Test App 2";
 
@@ -117,6 +121,14 @@ public class DataMigrationTest {
     private final Executor mOutcomeExecutor = Executors.newSingleThreadExecutor();
     private final Instant mEndTime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
     private final Instant mStartTime = mEndTime.minus(Duration.ofHours(1));
+
+    private final LocalDate mStartDate =
+            LocalDate.ofInstant(
+                    mStartTime, ZoneOffset.systemDefault().getRules().getOffset(mStartTime));
+
+    private final LocalDate mEndDate =
+            LocalDate.ofInstant(
+                    mEndTime, ZoneOffset.systemDefault().getRules().getOffset(mEndTime));
     private Context mTargetContext;
     private HealthConnectManager mManager;
 
@@ -186,7 +198,7 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migrateHeightUsingParcel_heightSaved() {
+    public void migrateHeightUsingParcel_heightSaved() throws InterruptedException {
         final String entityId = "height";
 
         migrate(new HeightRecord.Builder(getMetadata(entityId), mEndTime, fromMeters(3D)).build());
@@ -196,10 +208,14 @@ public class DataMigrationTest {
         mExpect.that(record).isNotNull();
         mExpect.that(record.getHeight().getInMeters()).isEqualTo(3D);
         mExpect.that(record.getTime()).isEqualTo(mEndTime);
+
+        List<LocalDate> activityDates = TestUtils.getActivityDates(List.of(record.getClass()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mEndDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateHeightUsingSharedMemory_heightSaved() {
+    public void migrateHeightUsingSharedMemory_heightSaved() throws InterruptedException {
         final String entityId = "height";
         int recordsToAdd = DEFAULT_PAGE_SIZE;
 
@@ -229,10 +245,16 @@ public class DataMigrationTest {
 
             mExpect.that(inputHeightRecord.getHeight()).isEqualTo(outputHeightRecord.getHeight());
         }
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        outputRecords.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mEndDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateSteps_stepsSaved() {
+    public void migrateSteps_stepsSaved() throws InterruptedException {
         final String entityId = "steps";
 
         migrate(new StepsRecord.Builder(getMetadata(entityId), mStartTime, mEndTime, 10).build());
@@ -243,10 +265,14 @@ public class DataMigrationTest {
         mExpect.that(record.getCount()).isEqualTo(10);
         mExpect.that(record.getStartTime()).isEqualTo(mStartTime);
         mExpect.that(record.getEndTime()).isEqualTo(mEndTime);
+
+        List<LocalDate> activityDates = TestUtils.getActivityDates(List.of(record.getClass()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
-    public void migratePower_powerSaved() {
+    public void migratePower_powerSaved() throws InterruptedException {
         final String entityId = "power";
 
         migrate(
@@ -274,10 +300,14 @@ public class DataMigrationTest {
 
         mExpect.that(record.getStartTime()).isEqualTo(mStartTime);
         mExpect.that(record.getEndTime()).isEqualTo(mEndTime);
+
+        List<LocalDate> activityDates = TestUtils.getActivityDates(List.of(record.getClass()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateRecord_sameEntityId_notIgnored() {
+    public void migrateRecord_sameEntityId_notIgnored() throws InterruptedException {
         final String entityId = "height";
 
         final Length height1 = fromMeters(3D);
@@ -291,10 +321,18 @@ public class DataMigrationTest {
         final List<HeightRecord> records = getRecords(HeightRecord.class);
         mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
                 .containsExactly(height1, height2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream()
+                                .map(Record::getClass)
+                                .distinct()
+                                .collect(Collectors.toList()));
+        assertThat(activityDates.size()).isAtLeast(1);
     }
 
     @Test
-    public void migrateInstantRecord_noClientIdsAndSameTime_ignored() {
+    public void migrateInstantRecord_noClientIdsAndSameTime_ignored() throws InterruptedException {
         final String entityId1 = "steps1";
         final long steps1 = 1000L;
         migrate(
@@ -311,10 +349,17 @@ public class DataMigrationTest {
 
         final List<StepsRecord> records = getRecords(StepsRecord.class);
         mExpect.that(records.stream().map(StepsRecord::getCount).toList()).containsExactly(steps1);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateInstantRecord_differentClientIdsAndSameTime_notIgnored() {
+    public void migrateInstantRecord_differentClientIdsAndSameTime_notIgnored()
+            throws InterruptedException {
         final String entityId1 = "steps1";
         final long steps1 = 1000L;
         migrate(
@@ -334,10 +379,16 @@ public class DataMigrationTest {
         final List<StepsRecord> records = getRecords(StepsRecord.class);
         mExpect.that(records.stream().map(StepsRecord::getCount).toList())
                 .containsExactly(steps1, steps2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateIntervalRecord_noClientIdsAndSameTime_ignored() {
+    public void migrateIntervalRecord_noClientIdsAndSameTime_ignored() throws InterruptedException {
         final String entityId1 = "height1";
         final Length height1 = fromMeters(1.0);
         migrate(new HeightRecord.Builder(getMetadata(), mEndTime, height1).build(), entityId1);
@@ -351,10 +402,17 @@ public class DataMigrationTest {
         final List<HeightRecord> records = getRecords(HeightRecord.class);
         mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
                 .containsExactly(height1);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mEndDate)).isEqualTo(0);
     }
 
     @Test
-    public void migrateIntervalRecord_differentClientIdsAndSameTime_notIgnored() {
+    public void migrateIntervalRecord_differentClientIdsAndSameTime_notIgnored()
+            throws InterruptedException {
         final String entityId1 = "height1";
         final Length height1 = fromMeters(1.0);
         migrate(
@@ -372,11 +430,17 @@ public class DataMigrationTest {
         final List<HeightRecord> records = getRecords(HeightRecord.class);
         mExpect.that(records.stream().map(HeightRecord::getHeight).toList())
                 .containsExactly(height1, height2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mEndDate)).isEqualTo(0);
     }
 
     // Special case for hydration, must not ignore
     @Test
-    public void migrateHydration_noClientIdsAndSameTime_notIgnored() {
+    public void migrateHydration_noClientIdsAndSameTime_notIgnored() throws InterruptedException {
         final String entityId1 = "hydration1";
         final Volume volume1 = Volume.fromLiters(0.2);
         migrate(
@@ -394,11 +458,17 @@ public class DataMigrationTest {
         final List<HydrationRecord> records = getRecords(HydrationRecord.class);
         mExpect.that(records.stream().map(HydrationRecord::getVolume).toList())
                 .containsExactly(volume1, volume2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     // Special case for nutrition, must not ignore
     @Test
-    public void migrateNutrition_noClientIdsAndSameTime_notIgnored() {
+    public void migrateNutrition_noClientIdsAndSameTime_notIgnored() throws InterruptedException {
         final String entityId1 = "nutrition1";
         final Mass protein1 = Mass.fromGrams(1.0);
         migrate(
@@ -420,11 +490,17 @@ public class DataMigrationTest {
         final List<NutritionRecord> records = getRecords(NutritionRecord.class);
         mExpect.that(records.stream().map(NutritionRecord::getProtein).toList())
                 .containsExactly(protein1, protein2);
+
+        List<LocalDate> activityDates =
+                TestUtils.getActivityDates(
+                        records.stream().map(Record::getClass).collect(Collectors.toList()));
+        assertThat(activityDates.size()).isEqualTo(1);
+        assertThat(activityDates.get(0).compareTo(mStartDate)).isEqualTo(0);
     }
 
     @Test
-    public void migratePermissions_permissionsGranted() {
-        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT);
+    public void migratePermissions_hasValidPermissions_validPermissionsGranted() {
+        revokeHealthPermissions(APP_PACKAGE_NAME);
 
         final String entityId = "permissions";
 
@@ -432,16 +508,20 @@ public class DataMigrationTest {
                 new MigrationEntity(
                         entityId,
                         new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
+                                .addPermission(INVALID_PERMISSION_1)
                                 .addPermission(READ_HEIGHT)
+                                .addPermission(INVALID_PERMISSION_2)
                                 .addPermission(WRITE_HEIGHT)
                                 .build()));
         finishMigration();
-        assertThat(getGrantedAppPermissions()).containsAtLeast(READ_HEIGHT, WRITE_HEIGHT);
+        final List<String> grantedPermissions = getGrantedAppPermissions();
+        mExpect.that(grantedPermissions).containsAtLeast(READ_HEIGHT, WRITE_HEIGHT);
+        mExpect.that(grantedPermissions).containsNoneOf(INVALID_PERMISSION_1, INVALID_PERMISSION_2);
     }
 
     @Test
-    public void migratePermissions_invalidPermission_throwsMigrationException() {
-        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT);
+    public void migratePermissions_allInvalidPermissions_throwsMigrationException() {
+        revokeHealthPermissions(APP_PACKAGE_NAME);
 
         final String entityId = "permissions";
 
@@ -449,14 +529,17 @@ public class DataMigrationTest {
                 new MigrationEntity(
                         entityId,
                         new PermissionMigrationPayload.Builder(APP_PACKAGE_NAME, Instant.now())
-                                .addPermission("invalid.permission")
+                                .addPermission(INVALID_PERMISSION_1)
+                                .addPermission(INVALID_PERMISSION_2)
                                 .build());
         try {
             migrate(entity);
             fail("Expected to fail with MigrationException but didn't");
         } catch (MigrationException e) {
-            assertEquals(MigrationException.ERROR_MIGRATE_ENTITY, e.getErrorCode());
-            assertEquals(entityId, e.getFailedEntityId());
+            mExpect.that(e.getErrorCode()).isEqualTo(MigrationException.ERROR_MIGRATE_ENTITY);
+            mExpect.that(e.getFailedEntityId()).isEqualTo(entityId);
+            mExpect.that(getGrantedAppPermissions())
+                    .containsNoneOf(INVALID_PERMISSION_1, INVALID_PERMISSION_2);
             finishMigration();
         }
     }
@@ -481,8 +564,8 @@ public class DataMigrationTest {
     /** Test priority migration where migration payload have additional apps. */
     @Test
     public void migratePriority_additionalAppsInMigrationPayload_prioritySaved() {
-        revokeAppPermissions(APP_PACKAGE_NAME, READ_HEIGHT, WRITE_HEIGHT);
-        revokeAppPermissions(APP_PACKAGE_NAME_2, READ_HEIGHT, WRITE_HEIGHT);
+        revokeHealthPermissions(APP_PACKAGE_NAME);
+        revokeHealthPermissions(APP_PACKAGE_NAME_2);
 
         String permissionMigrationEntityId1 = "permissionMigration1";
         String permissionMigrationEntityId2 = "permissionMigration2";
@@ -767,16 +850,30 @@ public class DataMigrationTest {
                 "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
     }
 
-    private void revokeAppPermissions(String packageName, String... permissions) {
-        final PackageManager pm = mTargetContext.getPackageManager();
+    private void revokeHealthPermissions(String packageName) {
+        runWithShellPermissionIdentity(() -> revokeHealthPermissionsPrivileged(packageName));
+    }
+
+    private void revokeHealthPermissionsPrivileged(String packageName)
+            throws PackageManager.NameNotFoundException {
+        final PackageManager packageManager = mTargetContext.getPackageManager();
         final UserHandle user = mTargetContext.getUser();
 
-        runWithShellPermissionIdentity(
-                () -> {
-                    for (String permission : permissions) {
-                        pm.revokeRuntimePermission(packageName, permission, user);
-                    }
-                });
+        final PackageInfo packageInfo =
+                packageManager.getPackageInfo(
+                        packageName,
+                        PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
+
+        final String[] permissions = packageInfo.requestedPermissions;
+        if (permissions == null) {
+            return;
+        }
+
+        for (String permission : permissions) {
+            if (permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
+                packageManager.revokeRuntimePermission(packageName, permission, user);
+            }
+        }
     }
 
     private List<String> getGrantedAppPermissions() {

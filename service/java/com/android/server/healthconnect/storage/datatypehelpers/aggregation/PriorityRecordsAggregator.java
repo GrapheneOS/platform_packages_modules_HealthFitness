@@ -16,8 +16,14 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
 
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.DISTANCE_RECORD_DISTANCE_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.ELEVATION_RECORD_ELEVATION_GAINED_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.EXERCISE_SESSION_DURATION_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.SLEEP_SESSION_DURATION_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.STEPS_RECORD_COUNT_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL;
 
 import android.database.Cursor;
 import android.health.connect.Constants;
@@ -26,8 +32,7 @@ import android.util.ArrayMap;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.datatypehelpers.ExerciseSegmentRecordHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.SleepStageRecordHelper;
+import com.android.server.healthconnect.storage.request.AggregateParams;
 
 import java.time.ZoneOffset;
 import java.util.Comparator;
@@ -50,19 +55,22 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
     private final Map<Integer, ZoneOffset> mGroupToFirstZoneOffset;
     private final int mNumberOfGroups;
     private int mCurrentGroup = -1;
-
     private long mLatestPopulatedStart = -1;
     @AggregationType.AggregationTypeIdentifier private final int mAggregationType;
 
     private final TreeSet<AggregationTimestamp> mTimestampsBuffer;
     private final TreeSet<AggregationRecordData> mOpenIntervals;
 
+    private final AggregateParams.PriorityAggregationExtraParams mExtraParams;
+
     public PriorityRecordsAggregator(
             List<Long> groupSplits,
             List<Long> appIdPriorityList,
-            @AggregationType.AggregationTypeIdentifier int aggregationType) {
+            @AggregationType.AggregationTypeIdentifier int aggregationType,
+            AggregateParams.PriorityAggregationExtraParams extraParams) {
         mGroupSplits = groupSplits;
         mAggregationType = aggregationType;
+        mExtraParams = extraParams;
         mAppIdToPriority = new ArrayMap<>();
         for (int i = 0; i < appIdPriorityList.size(); i++) {
             // Add to the map with -index, so app with higher priority has higher value in the map.
@@ -74,9 +82,6 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
         mGroupToFirstZoneOffset = new ArrayMap<>(mNumberOfGroups);
         mOpenIntervals = new TreeSet<>(this);
         mGroupToAggregationResult = new ArrayMap<>(mGroupSplits.size());
-        for (int i = 0; i < mGroupSplits.size() - 1; i++) {
-            mGroupToAggregationResult.put(i, 0.0);
-        }
 
         if (Constants.DEBUG) {
             Slog.d(
@@ -100,7 +105,6 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
                 mCurrentGroup += 1;
             } else if (scanPoint.getType() == AggregationTimestamp.INTERVAL_START) {
                 mOpenIntervals.add(scanPoint.getParentData());
-                recordFirstInGroupZoneOffset(scanPoint.getParentData().getStartTimeZoneOffset());
             } else if (scanPoint.getType() == AggregationTimestamp.INTERVAL_END) {
                 mOpenIntervals.remove(scanPoint.getParentData());
             } else {
@@ -128,7 +132,7 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
         // Add record timestamps to buffer until latest buffer record do not overlap with earliest
         // buffer record.
         long expansionBorder = mTimestampsBuffer.first().getParentData().getEndTime();
-        while (mLatestPopulatedStart < expansionBorder && cursor.moveToNext()) {
+        while (mLatestPopulatedStart <= expansionBorder && cursor.moveToNext()) {
             AggregationRecordData data = readNewDataAndAddToBuffer(cursor);
             mLatestPopulatedStart = data.getStartTime();
         }
@@ -178,29 +182,22 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
     }
 
     private AggregationRecordData createAggregationRecordData() {
-        switch (mAggregationType) {
-            case SLEEP_SESSION_DURATION_TOTAL:
-                return new SessionDurationAggregationData(
-                        SleepStageRecordHelper.getStartTimeColumnName(),
-                        SleepStageRecordHelper.getEndTimeColumnName());
-            case EXERCISE_SESSION_DURATION_TOTAL:
-                return new SessionDurationAggregationData(
-                        ExerciseSegmentRecordHelper.getStartTimeColumnName(),
-                        ExerciseSegmentRecordHelper.getEndTimeColumnName());
-            default:
-                throw new UnsupportedOperationException(
-                        "Priority aggregation do not support type: " + mAggregationType);
-        }
-    }
-
-    private void recordFirstInGroupZoneOffset(ZoneOffset startTimeZoneOffset) {
-        if (mCurrentGroup == -1) {
-            return;
-        }
-
-        if (!mGroupToFirstZoneOffset.containsKey(mCurrentGroup)) {
-            mGroupToFirstZoneOffset.put(mCurrentGroup, startTimeZoneOffset);
-        }
+        return switch (mAggregationType) {
+            case STEPS_RECORD_COUNT_TOTAL,
+                    ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL,
+                    DISTANCE_RECORD_DISTANCE_TOTAL,
+                    ELEVATION_RECORD_ELEVATION_GAINED_TOTAL,
+                    FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL,
+                    WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL -> new ValueColumnAggregationData(
+                    mExtraParams.getColumnToAggregateName(),
+                    mExtraParams.getColumnToAggregateType());
+            case SLEEP_SESSION_DURATION_TOTAL,
+                    EXERCISE_SESSION_DURATION_TOTAL -> new SessionDurationAggregationData(
+                    mExtraParams.getExcludeIntervalStartColumnName(),
+                    mExtraParams.getExcludeIntervalEndColumnName());
+            default -> throw new UnsupportedOperationException(
+                    "Priority aggregation do not support type: " + mAggregationType);
+        };
     }
 
     private void updateAggregationResult(
@@ -221,12 +218,32 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
             return;
         }
 
+        if (!mGroupToAggregationResult.containsKey(mCurrentGroup)) {
+            mGroupToAggregationResult.put(mCurrentGroup, 0.0d);
+        }
+
         mGroupToAggregationResult.put(
                 mCurrentGroup,
                 mGroupToAggregationResult.get(mCurrentGroup)
                         + mOpenIntervals
                                 .last()
                                 .getResultOnInterval(startPoint.getTime(), endPoint.getTime()));
+
+        if (mCurrentGroup >= 0
+                && !mGroupToFirstZoneOffset.containsKey(mCurrentGroup)
+                && !mOpenIntervals.isEmpty()) {
+            mGroupToFirstZoneOffset.put(mCurrentGroup, getZoneOffsetOfEarliestOpenInterval());
+        }
+    }
+
+    private ZoneOffset getZoneOffsetOfEarliestOpenInterval() {
+        AggregationRecordData earliestInterval = mOpenIntervals.first();
+        for (AggregationRecordData data : mOpenIntervals) {
+            if (data.getStartTime() < earliestInterval.getStartTime()) {
+                earliestInterval = data;
+            }
+        }
+        return earliestInterval.getStartTimeZoneOffset();
     }
 
     // Compared aggregation data by data source priority, then by last modified time.

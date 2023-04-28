@@ -37,18 +37,22 @@ public final class LeanBodyMassRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param mass Mass of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private LeanBodyMassRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull Mass mass) {
-        super(metadata, time, zoneOffset);
+            @NonNull Mass mass,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(mass);
-        ValidationUtils.requireInRange(mass.getInGrams(), 0.0, 1000000.0, "mass");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(mass.getInGrams(), 0.0, 1000000.0, "mass");
+        }
         mMass = mass;
     }
     /**
@@ -117,11 +121,20 @@ public final class LeanBodyMassRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link LeanBodyMassRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public LeanBodyMassRecord buildWithoutValidation() {
+            return new LeanBodyMassRecord(mMetadata, mTime, mZoneOffset, mMass, true);
+        }
+
+        /**
          * @return Object of {@link LeanBodyMassRecord}
          */
         @NonNull
         public LeanBodyMassRecord build() {
-            return new LeanBodyMassRecord(mMetadata, mTime, mZoneOffset, mMass);
+            return new LeanBodyMassRecord(mMetadata, mTime, mZoneOffset, mMass, false);
         }
     }
 

@@ -97,7 +97,7 @@ public class ExerciseSegmentInternal {
                         Instant.ofEpochMilli(getEndTime()),
                         getSegmentType())
                 .setRepetitionsCount(getRepetitionsCount())
-                .build();
+                .buildWithoutValidation();
     }
 
     /** Sets segment start time. Returns record with start time set. */

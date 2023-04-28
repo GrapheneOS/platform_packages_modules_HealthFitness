@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts;
 
+import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_ACTIVELY_RECORDED;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 
@@ -84,6 +85,26 @@ public class StepsRecordTest {
     public void testInsertStepsRecord() throws InterruptedException {
         List<Record> records = List.of(getBaseStepsRecord(), getCompleteStepsRecord());
         TestUtils.insertRecords(records);
+    }
+
+    @Test
+    public void testUpdateStepsRecordToDuplicate() throws InterruptedException {
+        List<Record> records = List.of(getBaseStepsRecord(), getStepsRecord_minusDays(1));
+        records = TestUtils.insertRecords(records);
+
+        try {
+            TestUtils.updateRecords(
+                    Collections.singletonList(
+                            getStepsRecordDuplicateEntry(
+                                    (StepsRecord) records.get(1), (StepsRecord) records.get(0))));
+            Assert.fail();
+        } catch (HealthConnectException healthConnectException) {
+            assertThat(healthConnectException.getErrorCode()).isEqualTo(ERROR_INVALID_ARGUMENT);
+            assertThat(healthConnectException.getMessage())
+                    .contains(records.get(0).getMetadata().getId());
+            assertThat(healthConnectException.getMessage())
+                    .contains(records.get(1).getMetadata().getId());
+        }
     }
 
     @Test
@@ -525,20 +546,6 @@ public class StepsRecordTest {
         assertThat(result).containsExactlyElementsIn(insertedRecord);
     }
 
-    private void readStepsRecordUsingIds(List<Record> recordList) throws InterruptedException {
-        ReadRecordsRequestUsingIds.Builder<StepsRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
-        for (Record record : recordList) {
-            request.addId(record.getMetadata().getId());
-        }
-        ReadRecordsRequestUsingIds requestUsingIds = request.build();
-        assertThat(requestUsingIds.getRecordType()).isEqualTo(StepsRecord.class);
-        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
-        List<StepsRecord> result = TestUtils.readRecords(requestUsingIds);
-        assertThat(result).hasSize(recordList.size());
-        assertThat(result).containsExactlyElementsIn(recordList);
-    }
-
     @Test
     public void testAggregation_StepsCountTotal() throws Exception {
         List<Record> records =
@@ -620,6 +627,33 @@ public class StepsRecordTest {
     }
 
     @Test
+    public void testAggregation_recordStartsBeforeAggWindow_returnsRescaledStepsCountInResult()
+            throws Exception {
+        Instant start = Instant.now().minus(1, ChronoUnit.DAYS);
+        List<Record> record =
+                Arrays.asList(
+                        new StepsRecord.Builder(
+                                        new Metadata.Builder().build(),
+                                        start,
+                                        start.plus(1, ChronoUnit.HOURS),
+                                        600)
+                                .build());
+        AggregateRecordsRequest<Long> request =
+                new AggregateRecordsRequest.Builder<Long>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(start.plus(10, ChronoUnit.MINUTES))
+                                        .setEndTime(start.plus(1, ChronoUnit.DAYS))
+                                        .build())
+                        .addAggregationType(STEPS_COUNT_TOTAL)
+                        .build();
+
+        AggregateRecordsResponse<Long> response = TestUtils.getAggregateResponse(request, record);
+        assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(500);
+        assertThat(response.getZoneOffset(STEPS_COUNT_TOTAL))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+    }
+
+    @Test
     public void testStepsCountAggregation_groupBy_Period() throws Exception {
         Instant start = Instant.now().minus(10, ChronoUnit.DAYS);
         Instant end = start.plus(10, ChronoUnit.DAYS);
@@ -641,48 +675,6 @@ public class StepsRecordTest {
                                 .build(),
                         Period.ofDays(1));
         assertThat(responses.size()).isAtLeast(3);
-        for (AggregateRecordsGroupedByPeriodResponse<Long> response : responses) {
-            if (start.toEpochMilli()
-                    < response.getStartTime()
-                            .atZone(ZoneOffset.systemDefault())
-                            .toInstant()
-                            .toEpochMilli()) {
-                Long count = response.get(STEPS_COUNT_TOTAL);
-                ZoneOffset zoneOffset = response.getZoneOffset(STEPS_COUNT_TOTAL);
-
-                if (count == null) {
-                    assertThat(zoneOffset).isNull();
-                } else {
-                    assertThat(zoneOffset).isNotNull();
-                }
-                // skip the check if our request doesn't fall with in the instant time we inserted
-                // the record
-                continue;
-            }
-
-            if (end.toEpochMilli()
-                    > response.getEndTime()
-                            .atZone(ZoneOffset.systemDefault())
-                            .toInstant()
-                            .toEpochMilli()) {
-                Long steps = response.get(STEPS_COUNT_TOTAL);
-                ZoneOffset zoneOffset = response.getZoneOffset(STEPS_COUNT_TOTAL);
-
-                if (steps == null) {
-                    assertThat(zoneOffset).isNull();
-                } else {
-                    assertThat(zoneOffset).isNotNull();
-                }
-                // skip the check if our request doesn't fall with in the instant time we inserted
-                // the record
-                continue;
-            }
-
-            assertThat(response.get(STEPS_COUNT_TOTAL)).isNotNull();
-            assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(4000);
-            assertThat(response.getZoneOffset(STEPS_COUNT_TOTAL))
-                    .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
-        }
     }
 
     @Test
@@ -711,7 +703,8 @@ public class StepsRecordTest {
     }
 
     @Test
-    public void testAggregation_Count_groupBy_Duration_hours() throws Exception {
+    public void testAggregation_insertForEveryHour_returnsAggregateForHourAndHalfHours()
+            throws Exception {
         Instant start = Instant.now().minus(1, ChronoUnit.DAYS);
         Instant end = Instant.now();
         for (int i = 0; i < 10; i++) {
@@ -725,7 +718,7 @@ public class StepsRecordTest {
                                             1000)
                                     .build());
             TestUtils.insertRecords(records);
-            Thread.sleep(1000);
+            Thread.sleep(100);
         }
 
         start = start.plus(30, ChronoUnit.MINUTES);
@@ -742,13 +735,12 @@ public class StepsRecordTest {
         assertThat(responses.size()).isEqualTo(23);
         for (int i = 0; i < responses.size(); i++) {
             AggregateRecordsGroupedByDurationResponse<Long> response = responses.get(i);
-            assertThat(response.get(STEPS_COUNT_TOTAL)).isNotNull();
-            if (i == 0 || i == 9) {
+            if (i > 9) {
+                assertThat(response.get(STEPS_COUNT_TOTAL)).isNull();
+            } else if (i == 9) {
                 assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(500);
-            } else if (i > 0 && i < 9) {
-                assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(1000);
             } else {
-                assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(0);
+                assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(1000);
             }
         }
     }
@@ -857,8 +849,7 @@ public class StepsRecordTest {
             TestUtils.updateRecords(updateRecords);
             Assert.fail("Expected to fail due to invalid records ids.");
         } catch (HealthConnectException exception) {
-            assertThat(exception.getErrorCode())
-                    .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+            assertThat(exception.getErrorCode()).isEqualTo(ERROR_INVALID_ARGUMENT);
         }
 
         // assert the inserted data has not been modified by reading the data.
@@ -963,7 +954,42 @@ public class StepsRecordTest {
                 .build();
     }
 
-    StepsRecord getStepsRecord_update(Record record, String id, String clientRecordId) {
+    StepsRecord getStepsRecordDuplicateEntry(
+            StepsRecord recordToUpdate, StepsRecord duplicateRecord) {
+        Metadata metadata = recordToUpdate.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(metadata.getId())
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new StepsRecord.Builder(
+                        metadataWithId,
+                        duplicateRecord.getStartTime(),
+                        duplicateRecord.getEndTime(),
+                        20)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .build();
+    }
+
+    static void readStepsRecordUsingIds(List<Record> recordList) throws InterruptedException {
+        ReadRecordsRequestUsingIds.Builder<StepsRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
+        for (Record record : recordList) {
+            request.addId(record.getMetadata().getId());
+        }
+        ReadRecordsRequestUsingIds requestUsingIds = request.build();
+        assertThat(requestUsingIds.getRecordType()).isEqualTo(StepsRecord.class);
+        assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
+        List<StepsRecord> result = TestUtils.readRecords(requestUsingIds);
+        assertThat(result).hasSize(recordList.size());
+        assertThat(result).containsExactlyElementsIn(recordList);
+    }
+
+    static StepsRecord getStepsRecord_update(Record record, String id, String clientRecordId) {
         Metadata metadata = record.getMetadata();
         Metadata metadataWithId =
                 new Metadata.Builder()

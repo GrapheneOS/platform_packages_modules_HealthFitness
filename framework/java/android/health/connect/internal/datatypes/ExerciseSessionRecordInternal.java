@@ -175,7 +175,7 @@ public final class ExerciseSessionRecordInternal
         if (getSegments() != null) {
             builder.setSegments(ExerciseSegmentInternal.getExternalSegments(mExerciseSegments));
         }
-        return builder.build();
+        return builder.buildWithoutValidation();
     }
 
     @Override

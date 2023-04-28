@@ -63,8 +63,6 @@ public final class DistanceRecord extends IntervalRecord {
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
             Objects.requireNonNull(distance);
-            ValidationUtils.requireInRange(
-                    distance.getInMeters(), 0.0, 1000000.0, "revolutionsPerMinute");
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
@@ -106,12 +104,34 @@ public final class DistanceRecord extends IntervalRecord {
         }
 
         /**
+         * @return Object of {@link DistanceRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public DistanceRecord buildWithoutValidation() {
+            return new DistanceRecord(
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mDistance,
+                    true);
+        }
+
+        /**
          * @return Object of {@link DistanceRecord}
          */
         @NonNull
         public DistanceRecord build() {
             return new DistanceRecord(
-                    mMetadata, mStartTime, mStartZoneOffset, mEndTime, mEndZoneOffset, mDistance);
+                    mMetadata,
+                    mStartTime,
+                    mStartZoneOffset,
+                    mEndTime,
+                    mEndZoneOffset,
+                    mDistance,
+                    false);
         }
     }
 
@@ -135,6 +155,7 @@ public final class DistanceRecord extends IntervalRecord {
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
      * @param distance Distance of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private DistanceRecord(
             @NonNull Metadata metadata,
@@ -142,9 +163,14 @@ public final class DistanceRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull Length distance) {
-        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset);
+            @NonNull Length distance,
+            boolean skipValidation) {
+        super(metadata, startTime, startZoneOffset, endTime, endZoneOffset, skipValidation);
         Objects.requireNonNull(distance);
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(
+                    distance.getInMeters(), 0.0, 1000000.0, "revolutionsPerMinute");
+        }
         mDistance = distance;
     }
 

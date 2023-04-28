@@ -13,6 +13,7 @@ import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
+import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.IMigrationCallback;
@@ -121,6 +122,16 @@ interface IHealthConnectService {
      * @param callback Callback to receive result of performing this operation
      */
     void deleteUsingFilters(
+        in AttributionSource attributionSource,
+        in DeleteUsingFiltersRequestParcel request,
+        in IEmptyResponseCallback callback);
+
+    /**
+     * @param attributionSource attribution source for the data.
+     * @param request Delete request using the mentioned filters
+     * @param callback Callback to receive result of performing this operation
+     */
+    void deleteUsingFiltersForSelf(
         in AttributionSource attributionSource,
         in DeleteUsingFiltersRequestParcel request,
         in IEmptyResponseCallback callback);
@@ -260,7 +271,7 @@ interface IHealthConnectService {
      *
      * @hide
      */
-    BackupFileNamesSet getAllBackupFileNames(in UserHandle userHandle, in boolean forDeviceToDevice);
+    BackupFileNamesSet getAllBackupFileNames(in boolean forDeviceToDevice);
 
     /**
      * Deletes all previously staged HealthConnect data from the disk.
@@ -280,7 +291,7 @@ interface IHealthConnectService {
      *                      HealthConnectManager#CLOUD_DOWNLOAD_COMPLETE}
      * @hide
      */
-     void updateDataDownloadState(int downloadState, in UserHandle userHandle);
+     void updateDataDownloadState(int downloadState);
 
     /**
      * Asynchronously returns the current state of the Health Connect data as it goes through the Data-Restore and/or the Data-Migration process.
@@ -291,5 +302,16 @@ interface IHealthConnectService {
      *
      * @hide
      */
-    void getHealthConnectDataState(in UserHandle userHandle, in IGetHealthConnectDataStateCallback callback);
+    void getHealthConnectDataState(in IGetHealthConnectDataStateCallback callback);
+
+    /**
+     * Asynchronously returns the current UI state of Health Connect as it goes through the Data-Migration process.
+     *
+     * <p>See also {@link HealthConnectMigrationUiState} object describing the HealthConnect UI state.
+     *
+     * @param callback The callback which will receive the current {@link HealthConnectMigrationUiState}.
+     *
+     * @hide
+     */
+    void getHealthConnectMigrationUiState(in IGetHealthConnectMigrationUiStateCallback callback);
 }

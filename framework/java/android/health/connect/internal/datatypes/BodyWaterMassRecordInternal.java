@@ -52,6 +52,6 @@ public final class BodyWaterMassRecordInternal extends InstantRecordInternal<Bod
         return new BodyWaterMassRecord.Builder(
                         buildMetaData(), getTime(), Mass.fromGrams(getBodyWaterMass()))
                 .setZoneOffset(getZoneOffset())
-                .build();
+                .buildWithoutValidation();
     }
 }

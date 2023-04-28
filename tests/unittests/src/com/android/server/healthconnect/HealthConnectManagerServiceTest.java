@@ -38,16 +38,22 @@ import android.permission.PermissionManager;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.server.SystemService;
 import com.android.server.appop.AppOpsManagerLocal;
+import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.migration.MigrationStateChangeJob;
+import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import com.google.common.truth.Truth;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
 public class HealthConnectManagerServiceTest {
     private static final String HEALTH_CONNECT_DAILY_JOB_NAMESPACE = "HEALTH_CONNECT_DAILY_JOB";
@@ -59,10 +65,18 @@ public class HealthConnectManagerServiceTest {
     @Mock private PackageManager mPackageManager;
     @Mock private PermissionManager mPermissionManager;
     @Mock private AppOpsManagerLocal mAppOpsManagerLocal;
+    @Mock private PreferenceHelper mPreferenceHelper;
+    private MockitoSession mStaticMockSession;
     private HealthConnectManagerService mHealthConnectManagerService;
 
     @Before
     public void setUp() throws PackageManager.NameNotFoundException {
+        mStaticMockSession =
+                ExtendedMockito.mockitoSession()
+                        .mockStatic(PreferenceHelper.class)
+                        .mockStatic(BackupRestore.BackupRestoreJobService.class)
+                        .strictness(Strictness.LENIENT)
+                        .startMocking();
         MockitoAnnotations.initMocks(this);
 
         InstrumentationRegistry.getInstrumentation()
@@ -103,8 +117,14 @@ public class HealthConnectManagerServiceTest {
         when(mContext.createContextAsUser(any(), anyInt())).thenReturn(mContext);
         when(mMockTargetUser.getUserHandle()).thenReturn(UserHandle.CURRENT);
         when(mContext.getApplicationContext()).thenReturn(mContext);
+        when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
 
         mHealthConnectManagerService = new HealthConnectManagerService(mContext);
+    }
+
+    @After
+    public void tearDown() {
+        mStaticMockSession.finishMocking();
     }
 
     @Test
@@ -124,6 +144,9 @@ public class HealthConnectManagerServiceTest {
     public void testUserSwitch() throws Exception {
         when(mUserManager.isUserUnlocked(any())).thenReturn(false);
         mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
+        ExtendedMockito.verify(
+                () ->
+                        BackupRestore.BackupRestoreJobService.cancelAllJobs(eq(mContext)));
         verify(mJobScheduler, times(0)).cancelAll();
         when(mUserManager.isUserUnlocked(any())).thenReturn(true);
         mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);

@@ -70,18 +70,22 @@ public final class WeightRecord extends InstantRecord {
      * @param time Start time of this activity
      * @param zoneOffset Zone offset of the user when the activity started
      * @param weight Weight of this activity
+     * @param skipValidation Boolean flag to skip validation of record values.
      */
     private WeightRecord(
             @NonNull Metadata metadata,
             @NonNull Instant time,
             @NonNull ZoneOffset zoneOffset,
-            @NonNull Mass weight) {
-        super(metadata, time, zoneOffset);
+            @NonNull Mass weight,
+            boolean skipValidation) {
+        super(metadata, time, zoneOffset, skipValidation);
         Objects.requireNonNull(metadata);
         Objects.requireNonNull(time);
         Objects.requireNonNull(zoneOffset);
         Objects.requireNonNull(weight);
-        ValidationUtils.requireInRange(weight.getInGrams(), 0.0, 1000000.0, "weight");
+        if (!skipValidation) {
+            ValidationUtils.requireInRange(weight.getInGrams(), 0.0, 1000000.0, "weight");
+        }
         mWeight = weight;
     }
     /**
@@ -151,11 +155,20 @@ public final class WeightRecord extends InstantRecord {
         }
 
         /**
+         * @return Object of {@link WeightRecord} without validating the values.
+         * @hide
+         */
+        @NonNull
+        public WeightRecord buildWithoutValidation() {
+            return new WeightRecord(mMetadata, mTime, mZoneOffset, mWeight, true);
+        }
+
+        /**
          * @return Object of {@link WeightRecord}
          */
         @NonNull
         public WeightRecord build() {
-            return new WeightRecord(mMetadata, mTime, mZoneOffset, mWeight);
+            return new WeightRecord(mMetadata, mTime, mZoneOffset, mWeight, false);
         }
     }
 
