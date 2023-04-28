@@ -48,6 +48,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -55,6 +56,7 @@ import static org.mockito.Mockito.when;
 
 import android.app.job.JobInfo;
 import android.content.Context;
+import android.content.pm.InstallSourceInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -158,6 +160,18 @@ public class MigrationStateManagerTest {
         verifyStateChange(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
+    }
+
+    /** Expected behavior: No state change. */
+    @Test
+    public void testOnPackageInstalledOrChanged_fromIdleState_migrationUnawareStubPackage()
+            throws PackageManager.NameNotFoundException {
+        setMigrationState(MIGRATION_STATE_IDLE);
+        // configure migration unaware package available
+        configureMigrationUnAwarePackage();
+        configureStubMigratorPackage();
+        mMigrationStateManager.onPackageInstalledOrChanged(mContext, MOCK_CONFIGURED_PACKAGE);
+        verifyNoStateChange();
     }
 
     /** Expected behavior: Move to allowed state. */
@@ -375,6 +389,23 @@ public class MigrationStateManagerTest {
         verifyStateChange(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
+    }
+
+    /** Expected behavior: No state change. */
+    @Test
+    public void testReconcilePackageChangesWithStates_fromIdleState_migrationUnawareStubPackage()
+            throws PackageManager.NameNotFoundException {
+        setMigrationState(MIGRATION_STATE_IDLE);
+        // Configure migration unaware package available
+        configureMigrationUnAwarePackage();
+        configureStubMigratorPackage();
+        ExtendedMockito.doReturn(true)
+                .when(
+                        () ->
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mMigrationStateManager.switchToSetupForUser(mContext);
+        verifyNoStateChange();
     }
 
     /** Expected behavior: No state change */
@@ -860,6 +891,10 @@ public class MigrationStateManagerTest {
                 .when(() -> HexEncoding.encodeToString(any(), anyBoolean()));
         when(mPackageManager.getInstalledPackages(PackageManager.GET_SIGNING_CERTIFICATES))
                 .thenReturn(createPackageInfoArray(MOCK_CONFIGURED_PACKAGE));
+
+        InstallSourceInfo installSourceInfo = mock(InstallSourceInfo.class);
+        when(mPackageManager.getInstallSourceInfo(any())).thenReturn(installSourceInfo);
+        when(installSourceInfo.getInstallingPackageName()).thenReturn(MOCK_CONFIGURED_PACKAGE);
     }
 
     private void configureNoMigratorPackage() {
@@ -875,6 +910,12 @@ public class MigrationStateManagerTest {
         List<ResolveInfo> enabledComponents = new ArrayList<ResolveInfo>();
         enabledComponents.add(new ResolveInfo());
         when(mPackageManager.queryIntentActivities(any(), any())).thenReturn(enabledComponents);
+    }
+
+    private void configureStubMigratorPackage() throws PackageManager.NameNotFoundException {
+        InstallSourceInfo installSourceInfo = mock(InstallSourceInfo.class);
+        when(mPackageManager.getInstallSourceInfo(any())).thenReturn(installSourceInfo);
+        when(installSourceInfo.getInstallingPackageName()).thenReturn(null);
     }
 
     private void verifyStateChange(int state) {
