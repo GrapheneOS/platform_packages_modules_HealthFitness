@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.home
 
 import android.content.Context
 import android.content.Intent
-import android.health.connect.HealthConnectDataState
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -29,8 +28,8 @@ import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.HealthFitnessUiStatsLog.*
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter
-import com.android.healthconnect.controller.migration.DataMigrationState
 import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.permissions.shared.Constants
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
@@ -43,7 +42,6 @@ import com.android.healthconnect.controller.shared.preference.BannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
-import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HomePageElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -108,7 +106,6 @@ class HomeFragment : Hilt_HomeFragment() {
         super.onResume()
         recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
         homeFragmentViewModel.loadConnectedApps()
-        migrationViewModel.loadTimeout(SystemTimeSource)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -128,12 +125,7 @@ class HomeFragment : Hilt_HomeFragment() {
         homeFragmentViewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             updateConnectedApps(connectedApps)
         }
-        migrationViewModel.loadTimeout(SystemTimeSource)
         migrationViewModel.migrationState.observe(viewLifecycleOwner) { showMigrationState(it) }
-
-        migrationViewModel.migrationTimeout.observe(viewLifecycleOwner) {
-            updateMigrationBannerText(it)
-        }
     }
 
     private fun updateMigrationBannerText(duration: Duration) {
@@ -144,32 +136,24 @@ class HomeFragment : Hilt_HomeFragment() {
         migrationBanner?.summary = migrationBannerSummary
     }
 
-    private fun showMigrationState(migrationState: @DataMigrationState Int) {
+    private fun showMigrationState(migrationState: MigrationState) {
         preferenceScreen.removePreferenceRecursively(MIGRATION_BANNER_PREFERENCE_KEY)
 
         when (migrationState) {
-            HealthConnectDataState.MIGRATION_STATE_IDLE -> {
+            MigrationState.MODULE_UPGRADE_REQUIRED,
+            MigrationState.APP_UPGRADE_REQUIRED -> {
+                // TODO (b/265789268) uncomment when CTS tests deflaked
+                //                migrationBanner = getMigrationBanner()
+                //                preferenceScreen.addPreference(migrationBanner)
+            }
+            MigrationState.COMPLETE -> {
+                maybeShowWhatsNewDialog()
+            }
+            MigrationState.ALLOWED_ERROR -> {
+                maybeShowMigrationNotCompleteDialog()
+            }
+            else -> {
                 // show nothing
-            }
-            HealthConnectDataState.MIGRATION_STATE_ALLOWED -> {
-                // show error dialog
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // maybeShowMigrationNotCompleteDialog()
-            }
-            HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS -> {
-                // should not be on this screen
-            }
-            HealthConnectDataState.MIGRATION_STATE_APP_UPGRADE_REQUIRED -> {
-                migrationBanner = getMigrationBanner()
-                preferenceScreen.addPreference(migrationBanner)
-            }
-            HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED -> {
-                migrationBanner = getMigrationBanner()
-                preferenceScreen.addPreference(migrationBanner)
-            }
-            HealthConnectDataState.MIGRATION_STATE_COMPLETE -> {
-                // TODO (b/275853443) Uncomment when CTS fixed
-                // maybeShowWhatsNewDialog()
             }
         }
     }
