@@ -727,8 +727,8 @@
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Health Connect тутум жөндөөлөрүңүз менен интеграцияны уланта алышы үчүн бул жаңыртууну баштаңыз"</string>
     <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Азыр жаңыртуу"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Тутумду жаңыртуу керек"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Улантуудан мурун телефонуңуздун тутумун жаңыртыңыз."</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Эгер телефонуңуздун тутумун жаңырткан болсоңуз, интеграцияны улантуу үчүн телефонуңузду өчүрүп күйгүзүп көрүңүз"</string>
+    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Улантуудан мурун телефонуңуздун системасын жаңыртыңыз."</string>
+    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Эгер телефонуңуздун системасын жаңырткан болсоңуз, интеграцияны улантуу үчүн телефонуңузду өчүрүп күйгүзүп көрүңүз"</string>
     <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Health Connect колдонмосун жаңыртуу керек"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Улантуудан мурун Health Connect колдонмосун эң акыркы версиясына жаңыртыңыз."</string>
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Көбүрөөк орун талап кылынат"</string>
@@ -754,9 +754,13 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Жаңыртууларды карап көрүү"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect интеграциясы"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect Android тутумуңуз менен интеграцияланууга даяр. Эгер <xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна азыр уруксат берсеңиз,айрым функциялар интеграция аягына чыкмайынча иштебей калышы мүмкүн."</string>
+    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
+    <skip />
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Улантуу"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect интеграциясы аткарылууда"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect Android тутуму менен интеграцияланууда.\n\nПроцесс аяктаганда билдирме аласыз жана <xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосун Health Connect менен колдоно аласыз."</string>
+    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Түшүндүм"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect интеграциясы аягына чыккан жок"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Ал кайра жеткиликтүү болгондо билдирме аласыз."</string>
