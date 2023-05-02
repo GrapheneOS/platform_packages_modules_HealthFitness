@@ -289,7 +289,7 @@
     <string name="onboarding_description" msgid="4873129122057931161">"Služba Health Connect slouží k bezpečnému ukládání údajů o zdraví a kondici, což umožňuje jednoduše synchronizovat různé aplikace v telefonu"</string>
     <string name="share_data" msgid="3481932156368883946">"Sdílení dat s aplikacemi"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Můžete si zvolit, které údaje mohou jednotlivé aplikace číst nebo zapisovat ve službě Health Connect"</string>
-    <string name="manage_your_settings" msgid="7391184508015127137">"Spravujte nastavení a ochranu soukromí"</string>
+    <string name="manage_your_settings" msgid="7391184508015127137">"Správa nastavení a ochrany soukromí"</string>
     <string name="manage_your_settings_description" msgid="557943168930365334">"Oprávnění aplikace můžete kdykoliv změnit a data kdykoliv spravovat"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Zpět"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Začít"</string>

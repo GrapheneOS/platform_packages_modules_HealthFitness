@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"అప్‌డేట్‌ల కోసం చెక్ చేయండి"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect ఇంటిగ్రేషన్"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect మీ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవ్వడానికి సిద్ధంగా ఉంది. మీరు ఇప్పుడు <xliff:g id="APP_NAME">%1$s</xliff:g>‌కు యాక్సెస్ ఇస్తే, ఇంటిగ్రేషన్ పూర్తయ్యే వరకు కొన్ని ఫీచర్‌లు పని చేయకపోవచ్చు."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect మీ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవ్వడానికి సిద్ధంగా ఉంది. మీరు ఇప్పుడు ‌యాప్‌లకు యాక్సెస్ ఇస్తే, ఇంటిగ్రేషన్ పూర్తయ్యే వరకు కొన్ని ఫీచర్‌లు పని చేయకపోవచ్చు."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"కొనసాగించండి"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect ఇంటిగ్రేషన్ ప్రోగ్రెస్‌లో ఉంది"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect యాప్ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవుతోంది.\n\nప్రాసెస్ పూర్తయినప్పుడు మీకు నోటిఫికేషన్ వస్తుంది, అలాగే మీరు <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectతో ఉపయోగించవచ్చు."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect యాప్ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవుతోంది.\n\nప్రాసెస్ పూర్తయినప్పుడు మీకు నోటిఫికేషన్ వస్తుంది, మీరు Health Connect యాప్‌ను ఉపయోగించవచ్చు."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"సరే"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect ఇంటిగ్రేషన్ పూర్తి కాలేదు"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"అది మళ్లీ అందుబాటులోకి వచ్చినప్పుడు మీకు నోటిఫికేషన్ వస్తుంది."</string>
