@@ -811,11 +811,15 @@
     <skip />
     <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
     <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
+    <skip />
     <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
     <skip />
