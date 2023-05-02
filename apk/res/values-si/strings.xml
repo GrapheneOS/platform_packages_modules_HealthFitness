@@ -754,9 +754,13 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"යාවත්කාලීන තිබේද පරීක්‍ෂා කරන්න"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect ඒකාබද්ධ කිරීම"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect ඔබේ Android පද්ධතිය සමග ඒකාබද්ධ වීමට සූදානම් වෙයි. ඔබ දැන් <xliff:g id="APP_NAME">%1$s</xliff:g>ට ප්‍රවේශය ලබා දෙන්නේ නම්, ඒකාබද්ධ කිරීම සම්පූර්ණ වන තෙක් සමහර විශේෂාංග ක්‍රියා නොකරයි."</string>
+    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
+    <skip />
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"ඉදිරියට යන්න"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect ඒකාබද්ධ කිරීම සිදු වෙමින් පවතී"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect, Android පද්ධතිය සමග ඒකාබද්ධ වෙමින් පවතී.\n\nක්‍රියාවලිය සම්පූර්ණ වූ විට ඔබට දැනුම්දීමක් ලැබෙන අතර ඔබට Health Connect සමග <xliff:g id="APP_NAME">%1$s</xliff:g> භාවිත කළ හැක."</string>
+    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"තේරුණා"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect ඒකාබද්ධ කිරීම සම්පූර්ණ නොවුණි"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"එය නැවත ලබා ගත හැකි වූ විට ඔබට දැනුම්දීමක් ලැබෙයි."</string>

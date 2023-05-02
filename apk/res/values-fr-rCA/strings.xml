@@ -297,7 +297,7 @@
     <string name="manage_your_settings" msgid="7391184508015127137">"Gérer vos paramètres et votre confidentialité"</string>
     <string name="manage_your_settings_description" msgid="557943168930365334">"Modifiez les autorisations des applications et gérez vos données en tout temps"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Retour"</string>
-    <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Faites vos premiers pas"</string>
+    <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Faire vos premiers pas"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Supprimer les données"</string>
     <string name="time_range_title" msgid="6831605283322600165">"Choisissez les données à supprimer"</string>
     <string name="time_range_next_button" msgid="5849096934896557888">"Suivant"</string>
@@ -810,11 +810,15 @@
     <skip />
     <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
     <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
+    <skip />
     <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
     <skip />

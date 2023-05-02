@@ -754,9 +754,13 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"업데이트 확인"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"헬스 커넥트 통합"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"헬스 커넥트가 Android 시스템과 통합될 준비가 되었습니다. 지금 <xliff:g id="APP_NAME">%1$s</xliff:g> 앱에 액세스 권한을 부여하면 통합이 완료될 때까지 일부 기능이 작동하지 않을 수 있습니다."</string>
+    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
+    <skip />
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"계속"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"헬스 커넥트 통합 진행 중"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"헬스 커넥트가 Android 시스템과 통합 중입니다.\n\n통합이 완료되고 헬스 커넥트와 함께 <xliff:g id="APP_NAME">%1$s</xliff:g> 앱을 사용할 수 있게 되면 알려드립니다."</string>
+    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"확인"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"헬스 커넥트 통합이 완료되지 않음"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"다시 사용할 수 있게 되면 알림이 전송됩니다."</string>
