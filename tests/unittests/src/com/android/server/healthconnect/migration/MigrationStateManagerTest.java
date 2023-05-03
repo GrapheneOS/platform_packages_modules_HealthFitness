@@ -895,7 +895,10 @@ public class MigrationStateManagerTest {
         when(mPackageManager.getPackagesHoldingPermissions(
                         eq(PERMISSIONS_TO_CHECK), argThat(flag -> (flag.getValue() == 0))))
                 .thenReturn(packageInfoArray);
-        MigrationTestUtils.setResolveActivityResult(new ResolveInfo(), mPackageManager);
+        MigrationTestUtils.setResolveActivityResult(
+                new ResolveInfo(),
+                mPackageManager,
+                PackageManager.MATCH_ALL | PackageManager.MATCH_DISABLED_COMPONENTS);
     }
 
     private void configureMigrationUnAwarePackage() throws PackageManager.NameNotFoundException {
