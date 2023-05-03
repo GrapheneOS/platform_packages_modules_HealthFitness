@@ -63,8 +63,8 @@
     <string name="app_priority_button" msgid="3126133977893705098">"ਐਪ ਦੀ ਤਰਜੀਹ"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"<xliff:g id="CATEGORY">%s</xliff:g> ਦਾ ਡਾਟਾ ਮਿਟਾਓ"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"ਸਾਰੀਆਂ ਐਪਾਂ"</string>
-    <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਪੜ੍ਹ ਸਕਦੀਆਂ ਹਨ"</string>
-    <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਸੰਪਾਦਨ ਕਰ ਸਕਦੀਆਂ ਹਨ"</string>
+    <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਨੂੰ ਪੜ੍ਹ ਸਕਦੀਆਂ ਹਨ"</string>
+    <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਦਾ ਸੰਪਾਦਨ ਕਰ ਸਕਦੀਆਂ ਹਨ"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"ਅਕਿਰਿਆਸ਼ੀਲ ਐਪਾਂ"</string>
     <string name="inactive_apps_message" msgid="4666501359079362486">"ਇਹ ਐਪਾਂ ਹੁਣ <xliff:g id="DATA_TYPE">%s</xliff:g> ਦੇ ਡਾਟੇ ਦਾ ਸੰਪਾਦਨ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ, ਪਰ ਹਾਲੇ ਵੀ ਇਨ੍ਹਾਂ ਨੇ Health Connect ਵਿੱਚ ਡਾਟਾ ਸਟੋਰ ਕੀਤਾ ਹੋਇਆ ਹੈ"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"ਐਪਾਂ ਹੁਣ <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ਸੰਬੰਧੀ ਡਾਟਾ ਪੜ੍ਹ ਜਾਂ ਉਸਦਾ ਸੰਪਾਦਨ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ ਅਤੇ Health Connect ਵਿੱਚ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ਸੰਬੰਧੀ ਕੋਈ ਡਾਟਾ ਸਟੋਰ ਨਹੀਂ ਹੈ"</string>
@@ -754,9 +754,13 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"ਅੱਪਡੇਟਾਂ ਲਈ ਜਾਂਚ ਕਰੋ"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect ਏਕੀਕਰਨ"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect ਐਪ, Android ਸਿਸਟਮ ਨਾਲ ਏਕੀਕਰਨ ਕਰਨ ਲਈ ਤਿਆਰ ਹੈ। ਜੇ ਤੁਸੀਂ ਹੁਣ <xliff:g id="APP_NAME">%1$s</xliff:g> ਨੂੰ ਪਹੁੰਚ ਦੇ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਏਕੀਕਰਨ ਪੂਰਾ ਹੋਣ ਤੱਕ ਕੁਝ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਕੰਮ ਨਾ ਕਰਨ।"</string>
+    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
+    <skip />
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"ਜਾਰੀ ਰੱਖੋ"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect ਏਕੀਕਰਨ ਜਾਰੀ ਹੈ"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect ਦਾ Android ਸਿਸਟਮ ਨਾਲ ਏਕੀਕਰਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।\n\nਪ੍ਰਕਿਰਿਆ ਪੂਰੀ ਹੋਣ \'ਤੇ ਤੁਹਾਨੂੰ ਇੱਕ ਸੂਚਨਾ ਮਿਲੇਗੀ ਅਤੇ ਤੁਸੀਂ Health Connect ਨਾਲ <xliff:g id="APP_NAME">%1$s</xliff:g> ਦੀ ਵਰਤੋਂ ਕਰ ਸਕੋਗੇ।"</string>
+    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"ਸਮਝ ਲਿਆ"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect ਏਕੀਕਰਨ ਪੂਰਾ ਨਹੀਂ ਹੋਇਆ"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"ਇਸ ਦੇ ਦੁਬਾਰਾ ਉਪਲਬਧ ਹੋਣ \'ਤੇ ਤੁਹਾਨੂੰ ਇੱਕ ਸੂਚਨਾ ਮਿਲੇਗੀ।"</string>
