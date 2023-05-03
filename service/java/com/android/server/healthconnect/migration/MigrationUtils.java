@@ -122,4 +122,17 @@ public class MigrationUtils {
 
         return HexEncoding.encodeToString(messageDigest.digest(), /* uppercase= */ true);
     }
+
+    /** Checks if the package is stub by checking if its installer source is not set. */
+    public static boolean isPackageStub(Context context, String packageName) {
+        try {
+            return context.getPackageManager()
+                            .getInstallSourceInfo(packageName)
+                            .getInstallingPackageName()
+                    == null;
+        } catch (PackageManager.NameNotFoundException e) {
+            Slog.w(TAG, "Package not found " + packageName);
+        }
+        return false;
+    }
 }
