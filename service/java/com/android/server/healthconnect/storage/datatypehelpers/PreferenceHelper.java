@@ -29,6 +29,7 @@ import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -63,6 +64,13 @@ public final class PreferenceHelper {
                         new UpsertTableRequest(
                                 TABLE_NAME, getContentValues(key, value), UNIQUE_COLUMN_INFO));
         getPreferences().put(key, value);
+    }
+
+    /** Removes key entry from the table */
+    public synchronized void removeKey(String id) {
+        TransactionManager.getInitialisedInstance()
+                .delete(new DeleteTableRequest(TABLE_NAME).setId(KEY_COLUMN_NAME, id));
+        getPreferences().remove(id);
     }
 
     /** Inserts multiple preferences together in a transaction */
