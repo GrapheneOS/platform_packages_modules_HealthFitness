@@ -126,11 +126,17 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectDeviceConfigManager.getInitialisedInstance().updateRateLimiterValues();
     }
 
+    /**
+     * NOTE: Don't put any code that uses DB in onUserSwitching, such code should be part of
+     * switchToSetupForUser which is only called once DB is in usable state.
+     */
     @Override
     public void onUserSwitching(@Nullable TargetUser from, @NonNull TargetUser to) {
-        // We need to cancel any pending timers for the foreground user before it goes into the
-        // background.
-        mHealthConnectService.cancelBackupRestoreTimeouts();
+        if (from != null && mUserManager.isUserUnlocked(from.getUserHandle())) {
+            // We need to cancel any pending timers for the foreground user before it goes into the
+            // background.
+            mHealthConnectService.cancelBackupRestoreTimeouts();
+        }
 
         HealthConnectThreadScheduler.shutdownThreadPools();
         AppInfoHelper.getInstance().clearCache();
