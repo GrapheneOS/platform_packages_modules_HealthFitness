@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.migration;
 
-import static com.android.server.healthconnect.migration.MigrationConstants.EXECUTION_TIME_BUFFER;
-
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +24,8 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.health.connect.HealthConnectManager;
+
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,11 @@ public class MigrationTestUtils {
             "962F386525EE206D5ED146A3433411042E7F91D0C267C9DD08BA4F1F5E350000";
     static final String[] PERMISSIONS_TO_CHECK =
             new String[] {Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA};
-    static final long TIMEOUT_PERIOD_BUFFER = EXECUTION_TIME_BUFFER * 2;
+
+    static long getTimeoutPeriodBuffer() {
+        return HealthConnectDeviceConfigManager.getInitialisedInstance().getExecutionTimeBuffer()
+                * 2;
+    }
 
     static List<ResolveInfo> createResolveInfoList(
             boolean nullActivityInfo, String packageName, String... broadcastReceivers) {
