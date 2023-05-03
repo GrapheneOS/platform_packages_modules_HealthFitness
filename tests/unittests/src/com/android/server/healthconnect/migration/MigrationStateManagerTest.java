@@ -26,7 +26,6 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODU
 import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_TIMEOUT_REACHED_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.IN_PROGRESS_TIMEOUT_REACHED_KEY;
-import static com.android.server.healthconnect.migration.MigrationConstants.MAX_START_MIGRATION_CALLS_ALLOWED;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STARTS_COUNT_KEY;
@@ -53,7 +52,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import android.app.job.JobInfo;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -69,6 +67,7 @@ import android.os.ext.SdkExtensions;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.migration.MigrationStateManager.IllegalMigrationStateException;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
@@ -83,8 +82,10 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /** Test class for the MigrationStateManager class. */
 @RunWith(AndroidJUnit4.class)
@@ -95,11 +96,21 @@ public class MigrationStateManagerTest {
     @Mock private Resources mResources;
     @Mock private PackageInfo mPackageInfo;
     @Mock private SigningInfo mSigningInfo;
-    @Mock private JobInfo mJobInfo;
     @Mock private MockListener mMockListener;
+    @Mock private HealthConnectDeviceConfigManager mHealthConnectDeviceConfigManager;
     private MigrationStateManager mMigrationStateManager;
     private MockitoSession mStaticMockSession;
     private static final UserHandle DEFAULT_USER_HANDLE = UserHandle.of(UserHandle.myUserId());
+    private static final long EXECUTION_TIME_BUFFER_MOCK_VALUE =
+            TimeUnit.MINUTES.toMillis(
+                    HealthConnectDeviceConfigManager
+                            .EXECUTION_TIME_BUFFER_MINUTES_DEFAULT_FLAG_VALUE);
+    private static final Duration NON_IDLE_STATE_TIMEOUT_MOCK_VALUE =
+            Duration.ofDays(
+                    HealthConnectDeviceConfigManager
+                            .NON_IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE);
+    private static final int MAX_START_MIGRATION_CALLS_MOCK_VALUE =
+            HealthConnectDeviceConfigManager.MAX_START_MIGRATION_CALLS_DEFAULT_FLAG_VALUE;
 
     @Before
     public void setUp() {
@@ -108,6 +119,7 @@ public class MigrationStateManagerTest {
                         .mockStatic(PreferenceHelper.class)
                         .mockStatic(MigrationStateChangeJob.class)
                         .mockStatic(HexEncoding.class)
+                        .mockStatic(HealthConnectDeviceConfigManager.class)
                         .strictness(Strictness.LENIENT)
                         .startMocking();
         MockitoAnnotations.initMocks(this);
@@ -116,6 +128,14 @@ public class MigrationStateManagerTest {
         when(mResources.getString(anyInt())).thenReturn(MOCK_CONFIGURED_PACKAGE);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
+        when(HealthConnectDeviceConfigManager.getInitialisedInstance())
+                .thenReturn(mHealthConnectDeviceConfigManager);
+        when(mHealthConnectDeviceConfigManager.getExecutionTimeBuffer())
+                .thenReturn(EXECUTION_TIME_BUFFER_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getNonIdleStateTimeoutPeriod())
+                .thenReturn(NON_IDLE_STATE_TIMEOUT_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getMaxStartMigrationCalls())
+                .thenReturn(MAX_START_MIGRATION_CALLS_MOCK_VALUE);
         MigrationStateManager.initializeInstance(DEFAULT_USER_HANDLE.getIdentifier());
         mMigrationStateManager = MigrationStateManager.getInitialisedInstance();
         mMigrationStateManager.clearListeners();
@@ -555,9 +575,10 @@ public class MigrationStateManagerTest {
 
     @Test
     public void testPauseMigration_maxStartMigrationCountReached_shouldCompleteMigration() {
+        int maxStartMigrationCount = MAX_START_MIGRATION_CALLS_MOCK_VALUE;
         setMigrationState(MIGRATION_STATE_IN_PROGRESS);
         when(mPreferenceHelper.getPreference(eq(MIGRATION_STARTS_COUNT_KEY)))
-                .thenReturn(String.valueOf(MAX_START_MIGRATION_CALLS_ALLOWED));
+                .thenReturn(String.valueOf(maxStartMigrationCount));
         mMigrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_ALLOWED);
         verifyStateChange(MIGRATION_STATE_COMPLETE);
         ExtendedMockito.verify(() -> MigrationStateChangeJob.cancelAllJobs(eq(mContext)));
@@ -565,9 +586,10 @@ public class MigrationStateManagerTest {
 
     @Test
     public void testPauseMigration_maxStartMigrationCountNotReached_shouldNotCompleteMigration() {
+        int maxStartMigrationCount = MAX_START_MIGRATION_CALLS_MOCK_VALUE;
         setMigrationState(MIGRATION_STATE_IN_PROGRESS);
         when(mPreferenceHelper.getPreference(eq(MIGRATION_STARTS_COUNT_KEY)))
-                .thenReturn(String.valueOf(MAX_START_MIGRATION_CALLS_ALLOWED - 1));
+                .thenReturn(String.valueOf(maxStartMigrationCount - 1));
         mMigrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_ALLOWED);
         verifyStateChange(MIGRATION_STATE_ALLOWED);
         verifyCancelAllJobs();
