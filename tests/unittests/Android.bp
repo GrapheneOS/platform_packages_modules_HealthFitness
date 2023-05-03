@@ -49,6 +49,7 @@ android_test {
         "android.test.mock",
         "android.test.runner",
         "framework-sdkextensions",
+        "framework-configinfrastructure",
     ],
     // Test coverage system runs on different devices. Need to
     // compile for all architecture.

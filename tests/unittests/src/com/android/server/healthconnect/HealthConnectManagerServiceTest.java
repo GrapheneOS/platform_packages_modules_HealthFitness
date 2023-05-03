@@ -141,16 +141,16 @@ public class HealthConnectManagerServiceTest {
     }
 
     @Test
-    public void testUserSwitch() throws Exception {
+    public void testUserSwitch() {
         when(mUserManager.isUserUnlocked(any())).thenReturn(false);
         mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.cancelAllJobs(eq(mContext)));
         verify(mJobScheduler, times(0)).cancelAll();
         when(mUserManager.isUserUnlocked(any())).thenReturn(true);
         mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
         verify(mJobScheduler, times(1)).cancelAll();
         verify(mJobScheduler, timeout(5000).times(1)).schedule(any());
+        ExtendedMockito.verify(
+                () ->
+                        BackupRestore.BackupRestoreJobService.cancelAllJobs(eq(mContext)));
     }
 }
