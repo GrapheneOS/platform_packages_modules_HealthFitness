@@ -754,9 +754,13 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Caută actualizări"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integrarea Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect este gata de integrare cu sistemul Android. Dacă permiți acum accesul pentru <xliff:g id="APP_NAME">%1$s</xliff:g>, este posibil ca unele funcții să nu fie disponibile până la finalizarea integrării."</string>
+    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
+    <skip />
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuă"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integrarea Health Connect este în curs"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect se integrează cu sistemul Android.\n\nVei primi o notificare când procesul s-a finalizat și poți folosi <xliff:g id="APP_NAME">%1$s</xliff:g> cu Health Connect."</string>
+    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Integrarea Health Connect nu s-a finalizat"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Vei primi o notificare când integrarea devine din nou disponibilă."</string>

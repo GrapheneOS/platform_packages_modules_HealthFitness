@@ -754,9 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Hlola izibuyekezo"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Ukuhlanganiswa kwe-Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"I-Health Connect isilungele ukuhlanganiswa nesistimu yakho ye-Android. Uma unikeza i-<xliff:g id="APP_NAME">%1$s</xliff:g> manje, ezinye izakhi zingase zingasebenzi kuze kuqedwe ukuhlanganisa."</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"I-Health Connect isilungele ukuhlanganiswa nesistimu yakho ye-Android. Uma unikeza ukufinyelela manje, ezinye izakhi zingase zingasebenzi kuze kuqedwe ukuhlanganisa."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Qhubeka"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Ukuhlanganiswa kwe-Health Connect kuyaqhubeka"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"I-Health Connect ihlanganiswa nesistimu ye-Android.\n\nUzothola isaziso uma inqubo isiqediwe futhi ungasebenzisa i-<xliff:g id="APP_NAME">%1$s</xliff:g> ne-Health Connect."</string>
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"I-Health Connect ihlanganiswa nesistimu ye-Android.\n\nUzothola isaziso uma inqubo isiqediwe futhi ungasebenzisa i-Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Ngiyezwa"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Ukuhlanganiswa kwe-Health Connect akuqedanga"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Uzothola isaziso uma sesitholakala futhi."</string>
