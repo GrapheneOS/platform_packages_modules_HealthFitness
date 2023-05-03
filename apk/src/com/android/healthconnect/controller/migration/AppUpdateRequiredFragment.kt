@@ -35,7 +35,8 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
 
     companion object {
         private const val TAG = "AppUpdateFragment"
-        private const val HC_PACKAGE_NAME = "com.google.apps.healthdata"
+        const val HC_PACKAGE_NAME_CONFIG_NAME =
+            "android:string/config_healthConnectMigratorPackageName"
     }
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
@@ -70,7 +71,9 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
 
         updateButton.setOnClickListener {
             try {
-                val intent = getAppStoreLink(requireContext(), HC_PACKAGE_NAME)
+                val packageName =
+                    getString(resources.getIdentifier(HC_PACKAGE_NAME_CONFIG_NAME, null, null))
+                val intent = getAppStoreLink(requireContext(), packageName)
                 startActivity(intent!!)
             } catch (exception: Exception) {
                 Log.e(TAG, "App store activity does not exist", exception)
