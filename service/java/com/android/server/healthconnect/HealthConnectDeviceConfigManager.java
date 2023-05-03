@@ -23,10 +23,13 @@ import android.health.connect.ratelimiter.RateLimiter.QuotaBucket;
 import android.provider.DeviceConfig;
 
 import com.android.internal.annotations.GuardedBy;
+import com.android.internal.annotations.VisibleForTesting;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -35,7 +38,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @hide
  */
 public class HealthConnectDeviceConfigManager implements DeviceConfig.OnPropertiesChangedListener {
-    public static final String EXERCISE_ROUTE_FEATURE_FLAG = "exercise_routes_enable";
+    private static final String EXERCISE_ROUTE_FEATURE_FLAG = "exercise_routes_enable";
     public static final String ENABLE_RATE_LIMITER_FLAG = "enable_rate_limiter";
     private static final String MAX_READ_REQUESTS_PER_24H_FOREGROUND_FLAG =
             "max_read_requests_per_24h_foreground";
@@ -57,9 +60,45 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     private static final String MAX_WRITE_SINGLE_RECORD_SIZE_FLAG = "max_write_single_record_size";
 
     // Flag to enable/disable sleep and exercise sessions.
-    public static final String SESSION_DATATYPE_FEATURE_FLAG = "session_types_enable";
+    private static final String SESSION_DATATYPE_FEATURE_FLAG = "session_types_enable";
 
-    public static final boolean EXERCISE_ROUTE_DEFAULT_FLAG_VALUE = true;
+    @VisibleForTesting
+    public static final String COUNT_MIGRATION_STATE_IN_PROGRESS_FLAG =
+            "count_migration_state_in_progress";
+
+    @VisibleForTesting
+    public static final String COUNT_MIGRATION_STATE_ALLOWED_FLAG = "count_migration_state_allowed";
+
+    @VisibleForTesting
+    public static final String MAX_START_MIGRATION_CALLS_ALLOWED_FLAG =
+            "max_start_migration_calls_allowed";
+
+    @VisibleForTesting
+    public static final String IDLE_STATE_TIMEOUT_DAYS_FLAG = "idle_state_timeout_days";
+
+    @VisibleForTesting
+    public static final String NON_IDLE_STATE_TIMEOUT_DAYS_FLAG = "non_idle_state_timeout_days";
+
+    @VisibleForTesting
+    public static final String IN_PROGRESS_STATE_TIMEOUT_HOURS_FLAG =
+            "in_progress_state_timeout_hours";
+
+    @VisibleForTesting
+    public static final String EXECUTION_TIME_BUFFER_MINUTES_FLAG = "execution_time_buffer_minutes";
+
+    @VisibleForTesting
+    public static final String MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_FLAG =
+            "migration_completion_job_run_interval_days";
+
+    @VisibleForTesting
+    public static final String MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_FLAG =
+            "migration_pause_job_run_interval_hours";
+
+    @VisibleForTesting
+    public static final String ENABLE_STATE_CHANGE_JOBS_FLAG = "enable_state_change_jobs";
+
+    private static final boolean SESSION_DATATYPE_DEFAULT_FLAG_VALUE = true;
+    private static final boolean EXERCISE_ROUTE_DEFAULT_FLAG_VALUE = true;
     public static final boolean ENABLE_RATE_LIMITER_DEFAULT_FLAG_VALUE = true;
     public static final int QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE = 1000;
     public static final int QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE = 5000;
@@ -68,33 +107,124 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     public static final int CHUNK_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE = 5000000;
     public static final int RECORD_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE = 1000000;
 
-    public static final boolean SESSION_DATATYPE_DEFAULT_FLAG_VALUE = true;
+    @VisibleForTesting
+    public static final int MIGRATION_STATE_IN_PROGRESS_COUNT_DEFAULT_FLAG_VALUE = 5;
+
+    @VisibleForTesting public static final int MIGRATION_STATE_ALLOWED_COUNT_DEFAULT_FLAG_VALUE = 5;
+    @VisibleForTesting public static final int MAX_START_MIGRATION_CALLS_DEFAULT_FLAG_VALUE = 3;
+    @VisibleForTesting public static final int IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE = 120;
+    @VisibleForTesting public static final int NON_IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE = 15;
+
+    @VisibleForTesting
+    public static final int IN_PROGRESS_STATE_TIMEOUT_HOURS_DEFAULT_FLAG_VALUE = 12;
+
+    @VisibleForTesting
+    public static final int EXECUTION_TIME_BUFFER_MINUTES_DEFAULT_FLAG_VALUE = 30;
+
+    @VisibleForTesting
+    public static final int MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_DEFAULT_FLAG_VALUE = 1;
+
+    @VisibleForTesting
+    public static final int MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_DEFAULT_FLAG_VALUE = 4;
+
+    @VisibleForTesting
+    public static final boolean ENABLE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE = true;
 
     private static HealthConnectDeviceConfigManager sDeviceConfigManager;
     private final ReentrantReadWriteLock mLock = new ReentrantReadWriteLock();
+    private static final String HEALTH_FITNESS_NAMESPACE = DeviceConfig.NAMESPACE_HEALTH_FITNESS;
 
     @GuardedBy("mLock")
     private boolean mExerciseRouteEnabled =
             DeviceConfig.getBoolean(
-                    DeviceConfig.NAMESPACE_HEALTH_FITNESS,
+                    HEALTH_FITNESS_NAMESPACE,
                     EXERCISE_ROUTE_FEATURE_FLAG,
                     EXERCISE_ROUTE_DEFAULT_FLAG_VALUE);
 
     @GuardedBy("mLock")
     private boolean mSessionDatatypeEnabled =
             DeviceConfig.getBoolean(
-                    DeviceConfig.NAMESPACE_HEALTH_FITNESS,
+                    HEALTH_FITNESS_NAMESPACE,
                     SESSION_DATATYPE_FEATURE_FLAG,
                     SESSION_DATATYPE_DEFAULT_FLAG_VALUE);
 
+    @GuardedBy("mLock")
+    private int mMigrationStateInProgressCount =
+            DeviceConfig.getInt(
+                    HEALTH_FITNESS_NAMESPACE,
+                    COUNT_MIGRATION_STATE_IN_PROGRESS_FLAG,
+                    MIGRATION_STATE_IN_PROGRESS_COUNT_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private int mMigrationStateAllowedCount =
+            DeviceConfig.getInt(
+                    HEALTH_FITNESS_NAMESPACE,
+                    COUNT_MIGRATION_STATE_ALLOWED_FLAG,
+                    MIGRATION_STATE_ALLOWED_COUNT_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private int mMaxStartMigrationCalls =
+            DeviceConfig.getInt(
+                    HEALTH_FITNESS_NAMESPACE,
+                    MAX_START_MIGRATION_CALLS_ALLOWED_FLAG,
+                    MAX_START_MIGRATION_CALLS_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private int mIdleStateTimeoutPeriod =
+            DeviceConfig.getInt(
+                    HEALTH_FITNESS_NAMESPACE,
+                    IDLE_STATE_TIMEOUT_DAYS_FLAG,
+                    IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private int mNonIdleStateTimeoutPeriod =
+            DeviceConfig.getInt(
+                    HEALTH_FITNESS_NAMESPACE,
+                    NON_IDLE_STATE_TIMEOUT_DAYS_FLAG,
+                    NON_IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private int mInProgressStateTimeoutPeriod =
+            DeviceConfig.getInt(
+                    HEALTH_FITNESS_NAMESPACE,
+                    IN_PROGRESS_STATE_TIMEOUT_HOURS_FLAG,
+                    IN_PROGRESS_STATE_TIMEOUT_HOURS_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private int mExecutionTimeBuffer =
+            DeviceConfig.getInt(
+                    HEALTH_FITNESS_NAMESPACE,
+                    EXECUTION_TIME_BUFFER_MINUTES_FLAG,
+                    EXECUTION_TIME_BUFFER_MINUTES_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private int mMigrationCompletionJobRunInterval =
+            DeviceConfig.getInt(
+                    HEALTH_FITNESS_NAMESPACE,
+                    MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_FLAG,
+                    MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private int mMigrationPauseJobRunInterval =
+            DeviceConfig.getInt(
+                    HEALTH_FITNESS_NAMESPACE,
+                    MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_FLAG,
+                    MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private boolean mEnableStateChangeJob =
+            DeviceConfig.getBoolean(
+                    HEALTH_FITNESS_NAMESPACE,
+                    ENABLE_STATE_CHANGE_JOBS_FLAG,
+                    ENABLE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+
     @NonNull
-    static void initializeInstance(Context context) {
+    @VisibleForTesting(visibility = VisibleForTesting.Visibility.PACKAGE)
+    public static void initializeInstance(Context context) {
         if (sDeviceConfigManager == null) {
             sDeviceConfigManager = new HealthConnectDeviceConfigManager();
             DeviceConfig.addOnPropertiesChangedListener(
-                    DeviceConfig.NAMESPACE_HEALTH_FITNESS,
-                    context.getMainExecutor(),
-                    sDeviceConfigManager);
+                    HEALTH_FITNESS_NAMESPACE, context.getMainExecutor(), sDeviceConfigManager);
         }
     }
 
@@ -128,6 +258,118 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         mLock.readLock().lock();
         try {
             return mSessionDatatypeEnabled;
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Returns the required count for {@link
+     * android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS}.
+     */
+    public int getMigrationStateInProgressCount() {
+        mLock.readLock().lock();
+        try {
+            return mMigrationStateInProgressCount;
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Returns the required count for {@link
+     * android.health.connect.HealthConnectDataState.MIGRATION_STATE_ALLOWED}.
+     */
+    public int getMigrationStateAllowedCount() {
+        mLock.readLock().lock();
+        try {
+            return mMigrationStateAllowedCount;
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns the maximum number of start migration calls allowed. */
+    public int getMaxStartMigrationCalls() {
+        mLock.readLock().lock();
+        try {
+            return mMaxStartMigrationCalls;
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Returns the timeout period of {@link
+     * android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE}.
+     */
+    public Duration getIdleStateTimeoutPeriod() {
+        mLock.readLock().lock();
+        try {
+            return Duration.ofDays(mIdleStateTimeoutPeriod);
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns the timeout period of non-idle migration states. */
+    public Duration getNonIdleStateTimeoutPeriod() {
+        mLock.readLock().lock();
+        try {
+            return Duration.ofDays(mNonIdleStateTimeoutPeriod);
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Returns the timeout period of {@link
+     * android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS}.
+     */
+    public Duration getInProgressStateTimeoutPeriod() {
+        mLock.readLock().lock();
+        try {
+            return Duration.ofHours(mInProgressStateTimeoutPeriod);
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns the time buffer kept to ensure that job execution is not skipped. */
+    public long getExecutionTimeBuffer() {
+        mLock.readLock().lock();
+        try {
+            return TimeUnit.MINUTES.toMillis(mExecutionTimeBuffer);
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns the time interval at which the migration completion job will run periodically. */
+    public long getMigrationCompletionJobRunInterval() {
+        mLock.readLock().lock();
+        try {
+            return TimeUnit.DAYS.toMillis(mMigrationCompletionJobRunInterval);
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns the time interval at which the migration pause job will run periodically. */
+    public long getMigrationPauseJobRunInterval() {
+        mLock.readLock().lock();
+        try {
+            return TimeUnit.HOURS.toMillis(mMigrationPauseJobRunInterval);
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns if state change jobs are enabled. */
+    public boolean getEnableStateChangeJob() {
+        mLock.readLock().lock();
+        try {
+            return mEnableStateChangeJob;
         } finally {
             mLock.readLock().unlock();
         }
@@ -209,7 +451,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
 
     @Override
     public void onPropertiesChanged(DeviceConfig.Properties properties) {
-        if (!properties.getNamespace().equals(DeviceConfig.NAMESPACE_HEALTH_FITNESS)) {
+        if (!properties.getNamespace().equals(HEALTH_FITNESS_NAMESPACE)) {
             return;
         }
         for (String name : properties.getKeyset()) {
@@ -244,6 +486,106 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                                     ENABLE_RATE_LIMITER_FLAG,
                                     ENABLE_RATE_LIMITER_DEFAULT_FLAG_VALUE);
                     RateLimiter.updateEnableRateLimiterFlag(mRateLimiterEnabled);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(COUNT_MIGRATION_STATE_IN_PROGRESS_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mMigrationStateInProgressCount =
+                            properties.getInt(
+                                    COUNT_MIGRATION_STATE_IN_PROGRESS_FLAG,
+                                    MIGRATION_STATE_IN_PROGRESS_COUNT_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(COUNT_MIGRATION_STATE_ALLOWED_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mMigrationStateAllowedCount =
+                            properties.getInt(
+                                    COUNT_MIGRATION_STATE_ALLOWED_FLAG,
+                                    MIGRATION_STATE_ALLOWED_COUNT_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(MAX_START_MIGRATION_CALLS_ALLOWED_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mMaxStartMigrationCalls =
+                            properties.getInt(
+                                    MAX_START_MIGRATION_CALLS_ALLOWED_FLAG,
+                                    MAX_START_MIGRATION_CALLS_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(IDLE_STATE_TIMEOUT_DAYS_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mIdleStateTimeoutPeriod =
+                            properties.getInt(
+                                    IDLE_STATE_TIMEOUT_DAYS_FLAG,
+                                    IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(NON_IDLE_STATE_TIMEOUT_DAYS_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mNonIdleStateTimeoutPeriod =
+                            properties.getInt(
+                                    NON_IDLE_STATE_TIMEOUT_DAYS_FLAG,
+                                    NON_IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(IN_PROGRESS_STATE_TIMEOUT_HOURS_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mInProgressStateTimeoutPeriod =
+                            properties.getInt(
+                                    IN_PROGRESS_STATE_TIMEOUT_HOURS_FLAG,
+                                    IN_PROGRESS_STATE_TIMEOUT_HOURS_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(EXECUTION_TIME_BUFFER_MINUTES_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mExecutionTimeBuffer =
+                            properties.getInt(
+                                    EXECUTION_TIME_BUFFER_MINUTES_FLAG,
+                                    EXECUTION_TIME_BUFFER_MINUTES_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mMigrationCompletionJobRunInterval =
+                            properties.getInt(
+                                    MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_FLAG,
+                                    MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mMigrationPauseJobRunInterval =
+                            properties.getInt(
+                                    MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_FLAG,
+                                    MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(ENABLE_STATE_CHANGE_JOBS_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mEnableStateChangeJob =
+                            properties.getBoolean(
+                                    ENABLE_STATE_CHANGE_JOBS_FLAG,
+                                    ENABLE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
                 } finally {
                     mLock.writeLock().unlock();
                 }
