@@ -384,7 +384,8 @@ public final class MigrationStateManager {
         }
 
         if (migrationState == MIGRATION_STATE_IDLE
-                && hasMigratorPackageKnownSignerSignature(context, packageName)) {
+                && hasMigratorPackageKnownSignerSignature(context, packageName)
+                && !MigrationUtils.isPackageStub(context, packageName)) {
             // apk needs to upgrade
             updateMigrationState(context, MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         }
@@ -543,7 +544,9 @@ public final class MigrationStateManager {
                 return;
             }
 
-            if (existsMigratorPackage(context)) {
+            if (existsMigratorPackage(context)
+                    && !MigrationUtils.isPackageStub(
+                            context, getDataMigratorPackageName(context))) {
                 updateMigrationState(context, MIGRATION_STATE_APP_UPGRADE_REQUIRED);
                 return;
             }
