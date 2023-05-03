@@ -63,8 +63,8 @@
     <string name="app_priority_button" msgid="3126133977893705098">"ਐਪ ਦੀ ਤਰਜੀਹ"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"<xliff:g id="CATEGORY">%s</xliff:g> ਦਾ ਡਾਟਾ ਮਿਟਾਓ"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"ਸਾਰੀਆਂ ਐਪਾਂ"</string>
-    <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਪੜ੍ਹ ਸਕਦੀਆਂ ਹਨ"</string>
-    <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਸੰਪਾਦਨ ਕਰ ਸਕਦੀਆਂ ਹਨ"</string>
+    <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਨੂੰ ਪੜ੍ਹ ਸਕਦੀਆਂ ਹਨ"</string>
+    <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਦਾ ਸੰਪਾਦਨ ਕਰ ਸਕਦੀਆਂ ਹਨ"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"ਅਕਿਰਿਆਸ਼ੀਲ ਐਪਾਂ"</string>
     <string name="inactive_apps_message" msgid="4666501359079362486">"ਇਹ ਐਪਾਂ ਹੁਣ <xliff:g id="DATA_TYPE">%s</xliff:g> ਦੇ ਡਾਟੇ ਦਾ ਸੰਪਾਦਨ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ, ਪਰ ਹਾਲੇ ਵੀ ਇਨ੍ਹਾਂ ਨੇ Health Connect ਵਿੱਚ ਡਾਟਾ ਸਟੋਰ ਕੀਤਾ ਹੋਇਆ ਹੈ"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"ਐਪਾਂ ਹੁਣ <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ਸੰਬੰਧੀ ਡਾਟਾ ਪੜ੍ਹ ਜਾਂ ਉਸਦਾ ਸੰਪਾਦਨ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ ਅਤੇ Health Connect ਵਿੱਚ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ਸੰਬੰਧੀ ਕੋਈ ਡਾਟਾ ਸਟੋਰ ਨਹੀਂ ਹੈ"</string>

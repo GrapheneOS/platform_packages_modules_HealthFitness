@@ -286,7 +286,7 @@
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Si una app está suspendida o ya no está disponible en Google Play, Health Connect le quita automáticamente los permisos.\n\nEsto significa que la app ya no podrá acceder a los datos almacenados en Health Connect. Si la app escribió datos, aparecerá en la lista de apps inactivas."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entendido"</string>
     <string name="onboarding_title" msgid="7930941018430608076">"Comenzar a usar Health Connect"</string>
-    <string name="onboarding_description" msgid="4873129122057931161">"Health Connect almacena tus datos de salud y actividad física, lo que te brinda una manera simple de sincronizar las diferentes apps en tu teléfono"</string>
+    <string name="onboarding_description" msgid="4873129122057931161">"Health Connect almacena tus datos de salud y actividad física, lo que te brinda una manera simple de sincronizar las diferentes apps en tu teléfono."</string>
     <string name="share_data" msgid="3481932156368883946">"Compartir datos con tus apps"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Elige los datos que cada app puede leer o escribir con Health Connect."</string>
     <string name="manage_your_settings" msgid="7391184508015127137">"Administra tu configuración y tu privacidad"</string>

@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Check for updates"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect integration"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect is ready to be integrated with your Android system. If you give <xliff:g id="APP_NAME">%1$s</xliff:g> access now, some features may not work until integration is complete."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect is ready to be integrated with your Android system. If you give apps access now, some features may not work until integration is complete."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continue"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect integration in progress"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect is being integrated with the Android system.\n\nYou\'ll get a notification when the process is complete and you can use <xliff:g id="APP_NAME">%1$s</xliff:g> with Health Connect."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect is being integrated with the Android system.\n\nYou\'ll get a notification when the process is complete and you can use Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Got it"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect integration didn\'t complete"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"You\'ll get a notification when it becomes available again."</string>
