@@ -26,19 +26,13 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODU
 import static com.android.dx.mockito.inline.extended.ExtendedMockito.verify;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_JOB_NAME_KEY;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_USER_ID;
-import static com.android.server.healthconnect.migration.MigrationConstants.ALLOWED_STATE_TIMEOUT_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.CURRENT_STATE_START_TIME_KEY;
-import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_STATE_TIMEOUT_PERIOD;
-import static com.android.server.healthconnect.migration.MigrationConstants.IN_PROGRESS_STATE_TIMEOUT_PERIOD;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
-import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETION_JOB_RUN_INTERVAL;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
-import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_RUN_INTERVAL;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STATE_CHANGE_NAMESPACE;
-import static com.android.server.healthconnect.migration.MigrationConstants.NON_IDLE_STATE_TIMEOUT_PERIOD;
 import static com.android.server.healthconnect.migration.MigrationStateChangeJob.MIN_JOB_ID;
 import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK_CONFIGURED_PACKAGE;
-import static com.android.server.healthconnect.migration.MigrationTestUtils.TIMEOUT_PERIOD_BUFFER;
+import static com.android.server.healthconnect.migration.MigrationTestUtils.getTimeoutPeriodBuffer;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -48,7 +42,6 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -63,6 +56,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.server.healthconnect.HealthConnectDailyService;
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import org.junit.After;
@@ -74,9 +68,11 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(AndroidJUnit4.class)
 public class MigrationStateChangeJobTest {
@@ -86,7 +82,34 @@ public class MigrationStateChangeJobTest {
     @Mock private JobScheduler mJobScheduler;
     @Mock private PersistableBundle mPersistableBundle;
     @Mock private JobInfo mJobInfo;
+    @Mock private HealthConnectDeviceConfigManager mHealthConnectDeviceConfigManager;
     private static final UserHandle DEFAULT_USER_HANDLE = UserHandle.of(UserHandle.myUserId());
+    private static final long EXECUTION_TIME_BUFFER_MOCK_VALUE =
+            TimeUnit.MINUTES.toMillis(
+                    HealthConnectDeviceConfigManager
+                            .EXECUTION_TIME_BUFFER_MINUTES_DEFAULT_FLAG_VALUE);
+    private static final Duration IDLE_STATE_TIMEOUT_MOCK_VALUE =
+            Duration.ofDays(
+                    HealthConnectDeviceConfigManager.IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE);
+    private static final Duration NON_IDLE_STATE_TIMEOUT_MOCK_VALUE =
+            Duration.ofDays(
+                    HealthConnectDeviceConfigManager
+                            .NON_IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE);
+    private static final Duration IN_PROGRESS_STATE_TIMEOUT_MOCK_VALUE =
+            Duration.ofHours(
+                    HealthConnectDeviceConfigManager
+                            .IN_PROGRESS_STATE_TIMEOUT_HOURS_DEFAULT_FLAG_VALUE);
+    private static final boolean ENABLE_STATE_CHANGE_JOB_MOCK_VALUE =
+            HealthConnectDeviceConfigManager.ENABLE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE;
+    private static final long MIGRATION_COMPLETION_JOB_RUN_INTERVAL_MOCK_VALUE =
+            TimeUnit.DAYS.toMillis(
+                    HealthConnectDeviceConfigManager
+                            .MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_DEFAULT_FLAG_VALUE);
+    private static final long MIGRATION_PAUSE_JOB_RUN_INTERVAL_MOCK_VALUE =
+            TimeUnit.HOURS.toMillis(
+                    HealthConnectDeviceConfigManager
+                            .MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_DEFAULT_FLAG_VALUE);
+
     private MockitoSession mStaticMockSession;
 
     @Before
@@ -96,6 +119,7 @@ public class MigrationStateChangeJobTest {
                         .mockStatic(PreferenceHelper.class)
                         .mockStatic(MigrationStateManager.class)
                         .mockStatic(HealthConnectDailyService.class)
+                        .mockStatic(HealthConnectDeviceConfigManager.class)
                         .strictness(Strictness.LENIENT)
                         .startMocking();
         MockitoAnnotations.initMocks(this);
@@ -105,6 +129,22 @@ public class MigrationStateChangeJobTest {
                 .thenReturn(mJobScheduler);
         when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
         when(mContext.getPackageName()).thenReturn(MOCK_CONFIGURED_PACKAGE);
+        when(HealthConnectDeviceConfigManager.getInitialisedInstance())
+                .thenReturn(mHealthConnectDeviceConfigManager);
+        when(mHealthConnectDeviceConfigManager.getExecutionTimeBuffer())
+                .thenReturn(EXECUTION_TIME_BUFFER_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getIdleStateTimeoutPeriod())
+                .thenReturn(IDLE_STATE_TIMEOUT_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getNonIdleStateTimeoutPeriod())
+                .thenReturn(NON_IDLE_STATE_TIMEOUT_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getInProgressStateTimeoutPeriod())
+                .thenReturn(IN_PROGRESS_STATE_TIMEOUT_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getEnableStateChangeJob())
+                .thenReturn(ENABLE_STATE_CHANGE_JOB_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getMigrationCompletionJobRunInterval())
+                .thenReturn(MIGRATION_COMPLETION_JOB_RUN_INTERVAL_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getMigrationPauseJobRunInterval())
+                .thenReturn(MIGRATION_PAUSE_JOB_RUN_INTERVAL_MOCK_VALUE);
     }
 
     @After
@@ -117,7 +157,8 @@ public class MigrationStateChangeJobTest {
     /** Expected behavior: No changes to the state */
     @Test
     public void testExecutePauseJob_timeNotExpired() {
-        long mockElapsedTime = IN_PROGRESS_STATE_TIMEOUT_PERIOD.toMillis() - TIMEOUT_PERIOD_BUFFER;
+        long mockElapsedTime =
+                IN_PROGRESS_STATE_TIMEOUT_MOCK_VALUE.toMillis() - getTimeoutPeriodBuffer();
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_IN_PROGRESS);
         when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
                 .thenReturn(Instant.now().minusMillis(mockElapsedTime).toString());
@@ -129,7 +170,9 @@ public class MigrationStateChangeJobTest {
     @Test
     public void testExecutePauseJob_timeExpired_shouldChangeState() {
         long mockElapsedTime =
-                IN_PROGRESS_STATE_TIMEOUT_PERIOD.plusMillis(TIMEOUT_PERIOD_BUFFER).toMillis();
+                IN_PROGRESS_STATE_TIMEOUT_MOCK_VALUE
+                        .plusMillis(getTimeoutPeriodBuffer())
+                        .toMillis();
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_IN_PROGRESS);
         when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
                 .thenReturn(Instant.now().minusMillis(mockElapsedTime).toString());
@@ -158,7 +201,7 @@ public class MigrationStateChangeJobTest {
     /** Expected behavior: No changes to the state */
     @Test
     public void testExecuteCompleteJob_fromIdleState_timeNotExpired() {
-        long mockElapsedTime = IDLE_STATE_TIMEOUT_PERIOD.toMillis() - TIMEOUT_PERIOD_BUFFER;
+        long mockElapsedTime = IDLE_STATE_TIMEOUT_MOCK_VALUE.toMillis() - getTimeoutPeriodBuffer();
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_IDLE);
         when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
                 .thenReturn(Instant.now().minusMillis(mockElapsedTime).toString());
@@ -170,7 +213,7 @@ public class MigrationStateChangeJobTest {
     @Test
     public void testExecuteCompleteJob_fromIdleState() {
         long mockElapsedTime =
-                IDLE_STATE_TIMEOUT_PERIOD.plusMillis(TIMEOUT_PERIOD_BUFFER).toMillis();
+                IDLE_STATE_TIMEOUT_MOCK_VALUE.plusMillis(getTimeoutPeriodBuffer()).toMillis();
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_IDLE);
         when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
                 .thenReturn(Instant.now().minusMillis(mockElapsedTime).toString());
@@ -296,32 +339,35 @@ public class MigrationStateChangeJobTest {
     }
 
     private void setStartTime_notExpired_nonIdleState() {
-        long mockElapsedTime = NON_IDLE_STATE_TIMEOUT_PERIOD.toMillis() - TIMEOUT_PERIOD_BUFFER;
+        long mockElapsedTime =
+                NON_IDLE_STATE_TIMEOUT_MOCK_VALUE.toMillis() - getTimeoutPeriodBuffer();
         when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
                 .thenReturn(Instant.now().minusMillis(mockElapsedTime).toString());
     }
 
     private void setStartTime_expired_nonIdleState() {
         long mockElapsedTime =
-                NON_IDLE_STATE_TIMEOUT_PERIOD.plusMillis(TIMEOUT_PERIOD_BUFFER).toMillis();
+                NON_IDLE_STATE_TIMEOUT_MOCK_VALUE.plusMillis(getTimeoutPeriodBuffer()).toMillis();
         when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
                 .thenReturn(Instant.now().minusMillis(mockElapsedTime).toString());
     }
 
     private void setStartTimeAfterAllowedStateTimeout() {
         long mockAllowedStateTimeout =
-                NON_IDLE_STATE_TIMEOUT_PERIOD.toMillis() - TIMEOUT_PERIOD_BUFFER;
-        when(mPreferenceHelper.getPreference(eq(ALLOWED_STATE_TIMEOUT_KEY)))
+                NON_IDLE_STATE_TIMEOUT_MOCK_VALUE.toMillis() - getTimeoutPeriodBuffer();
+        when(mMigrationStateManager.getAllowedStateTimeout())
                 .thenReturn(Instant.now().minusMillis(mockAllowedStateTimeout).toString());
     }
 
     private void setStartTimeBeforeAllowedStateTimeout() {
-        when(mPreferenceHelper.getPreference(eq(ALLOWED_STATE_TIMEOUT_KEY)))
-                .thenReturn(Instant.now().plusMillis(TIMEOUT_PERIOD_BUFFER).toString());
+        long timeOutBuffer = getTimeoutPeriodBuffer();
+        when(mMigrationStateManager.getAllowedStateTimeout())
+                .thenReturn(Instant.now().plusMillis(timeOutBuffer).toString());
     }
 
     @Test
     public void testScheduleCompletionJob() {
+        long jobRunInterval = MIGRATION_COMPLETION_JOB_RUN_INTERVAL_MOCK_VALUE;
         MigrationStateChangeJob.scheduleMigrationCompletionJob(
                 mContext, DEFAULT_USER_HANDLE.getIdentifier());
         verify(
@@ -334,11 +380,12 @@ public class MigrationStateChangeJobTest {
                                                 hasExpectedParameters(
                                                         job,
                                                         MIGRATION_COMPLETE_JOB_NAME,
-                                                        MIGRATION_COMPLETION_JOB_RUN_INTERVAL))));
+                                                        jobRunInterval))));
     }
 
     @Test
     public void testSchedulePauseJob() {
+        long jobRunInterval = MIGRATION_PAUSE_JOB_RUN_INTERVAL_MOCK_VALUE;
         MigrationStateChangeJob.scheduleMigrationPauseJob(
                 mContext, DEFAULT_USER_HANDLE.getIdentifier());
         when(mContext.getSystemService(eq(JobScheduler.class))).thenReturn(mJobScheduler);
@@ -353,7 +400,7 @@ public class MigrationStateChangeJobTest {
                                                 hasExpectedParameters(
                                                         job,
                                                         MIGRATION_PAUSE_JOB_NAME,
-                                                        MIGRATION_PAUSE_JOB_RUN_INTERVAL))));
+                                                        jobRunInterval))));
     }
 
     @Test
