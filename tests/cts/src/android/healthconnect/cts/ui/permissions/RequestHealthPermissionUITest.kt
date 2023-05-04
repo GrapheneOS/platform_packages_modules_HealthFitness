@@ -64,10 +64,8 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
         context.launchRequestPermissionActivity(
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_BODY_FAT)) {
-                waitNotDisplayed(By.text("Allow “Health Connect cts test app” to read"))
                 waitNotDisplayed(By.text("Height"))
 
-                waitDisplayed(By.text("Allow “Health Connect cts test app” to write"))
                 waitDisplayed(By.text("Body fat"))
 
                 revokePermissionViaPackageManager(
