@@ -26,7 +26,6 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODU
 import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_TIMEOUT_REACHED_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.IN_PROGRESS_TIMEOUT_REACHED_KEY;
-import static com.android.server.healthconnect.migration.MigrationConstants.MAX_START_MIGRATION_CALLS_ALLOWED;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STARTS_COUNT_KEY;
@@ -48,13 +47,14 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import android.app.job.JobInfo;
 import android.content.Context;
+import android.content.pm.InstallSourceInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -69,6 +69,7 @@ import android.os.ext.SdkExtensions;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.migration.MigrationStateManager.IllegalMigrationStateException;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
@@ -83,8 +84,10 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /** Test class for the MigrationStateManager class. */
 @RunWith(AndroidJUnit4.class)
@@ -95,11 +98,21 @@ public class MigrationStateManagerTest {
     @Mock private Resources mResources;
     @Mock private PackageInfo mPackageInfo;
     @Mock private SigningInfo mSigningInfo;
-    @Mock private JobInfo mJobInfo;
     @Mock private MockListener mMockListener;
+    @Mock private HealthConnectDeviceConfigManager mHealthConnectDeviceConfigManager;
     private MigrationStateManager mMigrationStateManager;
     private MockitoSession mStaticMockSession;
     private static final UserHandle DEFAULT_USER_HANDLE = UserHandle.of(UserHandle.myUserId());
+    private static final long EXECUTION_TIME_BUFFER_MOCK_VALUE =
+            TimeUnit.MINUTES.toMillis(
+                    HealthConnectDeviceConfigManager
+                            .EXECUTION_TIME_BUFFER_MINUTES_DEFAULT_FLAG_VALUE);
+    private static final Duration NON_IDLE_STATE_TIMEOUT_MOCK_VALUE =
+            Duration.ofDays(
+                    HealthConnectDeviceConfigManager
+                            .NON_IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE);
+    private static final int MAX_START_MIGRATION_CALLS_MOCK_VALUE =
+            HealthConnectDeviceConfigManager.MAX_START_MIGRATION_CALLS_DEFAULT_FLAG_VALUE;
 
     @Before
     public void setUp() {
@@ -108,6 +121,7 @@ public class MigrationStateManagerTest {
                         .mockStatic(PreferenceHelper.class)
                         .mockStatic(MigrationStateChangeJob.class)
                         .mockStatic(HexEncoding.class)
+                        .mockStatic(HealthConnectDeviceConfigManager.class)
                         .strictness(Strictness.LENIENT)
                         .startMocking();
         MockitoAnnotations.initMocks(this);
@@ -116,6 +130,14 @@ public class MigrationStateManagerTest {
         when(mResources.getString(anyInt())).thenReturn(MOCK_CONFIGURED_PACKAGE);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
+        when(HealthConnectDeviceConfigManager.getInitialisedInstance())
+                .thenReturn(mHealthConnectDeviceConfigManager);
+        when(mHealthConnectDeviceConfigManager.getExecutionTimeBuffer())
+                .thenReturn(EXECUTION_TIME_BUFFER_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getNonIdleStateTimeoutPeriod())
+                .thenReturn(NON_IDLE_STATE_TIMEOUT_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.getMaxStartMigrationCalls())
+                .thenReturn(MAX_START_MIGRATION_CALLS_MOCK_VALUE);
         MigrationStateManager.initializeInstance(DEFAULT_USER_HANDLE.getIdentifier());
         mMigrationStateManager = MigrationStateManager.getInitialisedInstance();
         mMigrationStateManager.clearListeners();
@@ -158,6 +180,18 @@ public class MigrationStateManagerTest {
         verifyStateChange(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
+    }
+
+    /** Expected behavior: No state change. */
+    @Test
+    public void testOnPackageInstalledOrChanged_fromIdleState_migrationUnawareStubPackage()
+            throws PackageManager.NameNotFoundException {
+        setMigrationState(MIGRATION_STATE_IDLE);
+        // configure migration unaware package available
+        configureMigrationUnAwarePackage();
+        configureStubMigratorPackage();
+        mMigrationStateManager.onPackageInstalledOrChanged(mContext, MOCK_CONFIGURED_PACKAGE);
+        verifyNoStateChange();
     }
 
     /** Expected behavior: Move to allowed state. */
@@ -377,6 +411,23 @@ public class MigrationStateManagerTest {
         verifyScheduleMigrationCompletionJob();
     }
 
+    /** Expected behavior: No state change. */
+    @Test
+    public void testReconcilePackageChangesWithStates_fromIdleState_migrationUnawareStubPackage()
+            throws PackageManager.NameNotFoundException {
+        setMigrationState(MIGRATION_STATE_IDLE);
+        // Configure migration unaware package available
+        configureMigrationUnAwarePackage();
+        configureStubMigratorPackage();
+        ExtendedMockito.doReturn(true)
+                .when(
+                        () ->
+                                MigrationStateChangeJob.existsAStateChangeJob(
+                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mMigrationStateManager.switchToSetupForUser(mContext);
+        verifyNoStateChange();
+    }
+
     /** Expected behavior: No state change */
     @Test
     public void testReconcilePackageChangesWithStates_fromIdleState_noMigratorPackageAvailable() {
@@ -555,9 +606,10 @@ public class MigrationStateManagerTest {
 
     @Test
     public void testPauseMigration_maxStartMigrationCountReached_shouldCompleteMigration() {
+        int maxStartMigrationCount = MAX_START_MIGRATION_CALLS_MOCK_VALUE;
         setMigrationState(MIGRATION_STATE_IN_PROGRESS);
         when(mPreferenceHelper.getPreference(eq(MIGRATION_STARTS_COUNT_KEY)))
-                .thenReturn(String.valueOf(MAX_START_MIGRATION_CALLS_ALLOWED));
+                .thenReturn(String.valueOf(maxStartMigrationCount));
         mMigrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_ALLOWED);
         verifyStateChange(MIGRATION_STATE_COMPLETE);
         ExtendedMockito.verify(() -> MigrationStateChangeJob.cancelAllJobs(eq(mContext)));
@@ -565,9 +617,10 @@ public class MigrationStateManagerTest {
 
     @Test
     public void testPauseMigration_maxStartMigrationCountNotReached_shouldNotCompleteMigration() {
+        int maxStartMigrationCount = MAX_START_MIGRATION_CALLS_MOCK_VALUE;
         setMigrationState(MIGRATION_STATE_IN_PROGRESS);
         when(mPreferenceHelper.getPreference(eq(MIGRATION_STARTS_COUNT_KEY)))
-                .thenReturn(String.valueOf(MAX_START_MIGRATION_CALLS_ALLOWED - 1));
+                .thenReturn(String.valueOf(maxStartMigrationCount - 1));
         mMigrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_ALLOWED);
         verifyStateChange(MIGRATION_STATE_ALLOWED);
         verifyCancelAllJobs();
@@ -860,6 +913,10 @@ public class MigrationStateManagerTest {
                 .when(() -> HexEncoding.encodeToString(any(), anyBoolean()));
         when(mPackageManager.getInstalledPackages(PackageManager.GET_SIGNING_CERTIFICATES))
                 .thenReturn(createPackageInfoArray(MOCK_CONFIGURED_PACKAGE));
+
+        InstallSourceInfo installSourceInfo = mock(InstallSourceInfo.class);
+        when(mPackageManager.getInstallSourceInfo(any())).thenReturn(installSourceInfo);
+        when(installSourceInfo.getInstallingPackageName()).thenReturn(MOCK_CONFIGURED_PACKAGE);
     }
 
     private void configureNoMigratorPackage() {
@@ -875,6 +932,12 @@ public class MigrationStateManagerTest {
         List<ResolveInfo> enabledComponents = new ArrayList<ResolveInfo>();
         enabledComponents.add(new ResolveInfo());
         when(mPackageManager.queryIntentActivities(any(), any())).thenReturn(enabledComponents);
+    }
+
+    private void configureStubMigratorPackage() throws PackageManager.NameNotFoundException {
+        InstallSourceInfo installSourceInfo = mock(InstallSourceInfo.class);
+        when(mPackageManager.getInstallSourceInfo(any())).thenReturn(installSourceInfo);
+        when(installSourceInfo.getInstallingPackageName()).thenReturn(null);
     }
 
     private void verifyStateChange(int state) {
