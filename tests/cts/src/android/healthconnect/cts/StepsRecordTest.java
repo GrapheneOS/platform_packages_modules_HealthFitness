@@ -19,6 +19,7 @@ package android.healthconnect.cts;
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_ACTIVELY_RECORDED;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
+import static android.healthconnect.cts.TestUtils.isHardwareAutomotive;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -50,6 +51,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -381,6 +383,7 @@ public class StepsRecordTest {
 
     @Test
     public void testReadStepsRecord_beforePermissionGrant() throws InterruptedException {
+        Assume.assumeFalse(isHardwareAutomotive());
         List<Record> recordList =
                 Arrays.asList(
                         getStepsRecord_minusDays(45),
