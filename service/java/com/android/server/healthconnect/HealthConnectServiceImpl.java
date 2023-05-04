@@ -229,7 +229,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     public void onUserSwitching(UserHandle currentForegroundUser) {
         mCurrentForegroundUser = currentForegroundUser;
-        mBackupRestore.onUserSwitching(currentForegroundUser);
+        mBackupRestore.setupForUser(currentForegroundUser);
     }
 
     @Override
@@ -1766,11 +1766,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
                 });
-    }
-
-    // Reschedule any pending BR timeouts - this might be needed after a device reboot.
-    void schedulePendingBackupRestoreTimeouts() {
-        mBackupRestore.scheduleAllPendingJobs();
     }
 
     // Cancel BR timeouts - this might be needed when a user is going into background.

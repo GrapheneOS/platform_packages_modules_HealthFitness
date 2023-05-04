@@ -754,9 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Sök efter uppdateringar"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect-integrering"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect kan nu integreras med Android-systemet. Om du ger <xliff:g id="APP_NAME">%1$s</xliff:g> åtkomst nu kanske vissa funktioner inte fungerar förrän integreringen är slutförd."</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect kan nu integreras med Android-systemet. Om du ger appar åtkomst nu kanske vissa funktioner inte fungerar förrän integreringen är slutförd."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Fortsätt"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect-integreringen pågår"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect integreras med Android-systemet.\n\nDu får en avisering när processen är slutförd och du kan använda <xliff:g id="APP_NAME">%1$s</xliff:g> med Health Connect."</string>
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect integreras med Android-systemet.\n\nDu får en avisering när processen är slutförd och du kan använda Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect-integreringen slutfördes inte"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Du får en avisering när den är tillgänglig igen."</string>
