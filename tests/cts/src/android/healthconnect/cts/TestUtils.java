@@ -30,6 +30,8 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
+import static com.android.compatibility.common.util.FeatureUtil.AUTOMOTIVE_FEATURE;
+import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -143,6 +145,10 @@ public class TestUtils {
     public static final Instant SESSION_END_TIME =
             Instant.now().minus(10, ChronoUnit.DAYS).plus(1, ChronoUnit.HOURS);
     private static final String TAG = "HCTestUtils";
+
+    public static boolean isHardwareAutomotive() {
+        return hasSystemFeature(AUTOMOTIVE_FEATURE);
+    }
 
     public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
             throws InterruptedException {
