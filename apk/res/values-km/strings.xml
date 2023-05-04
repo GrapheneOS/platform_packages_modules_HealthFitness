@@ -754,9 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"រក​មើល​កំណែ​ថ្មី"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"ការរួមបញ្ចូល Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"អាចរួមបញ្ចូល Health Connect ជាមួយប្រព័ន្ធ Android របស់អ្នកបានហើយ។ ប្រសិនបើ​អ្នកផ្ដល់សិទ្ធិឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើឥឡូវនេះ មុខងារមួយចំនួន​អាចនឹងមិនដំណើរការទេ រហូតទាល់តែ​ការរួមបញ្ចូលបញ្ចប់។"</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"អាចរួមបញ្ចូល Health Connect ជាមួយប្រព័ន្ធ Android របស់អ្នកបានហើយ។ ប្រសិនបើ​អ្នកផ្ដល់សិទ្ធិចូលប្រើប្រាស់ដល់កម្មវិធីឥឡូវនេះ មុខងារមួយចំនួន​អាចនឹងមិនដំណើរការទេ រហូតទាល់តែ​ការរួមបញ្ចូលបញ្ចប់។"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"បន្ត"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"ការរួមបញ្ចូល Health Connect កំពុងដំណើរការ"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect កំពុងត្រូវបាន​រួមបញ្ចូលជាមួយប្រព័ន្ធ Android។\n\nអ្នកនឹងទទួល​បានការជូនដំណឹង នៅពេល​ដំណើរការនេះបញ្ចប់ ហើយអ្នកអាចប្រើ <xliff:g id="APP_NAME">%1$s</xliff:g> ជាមួយ Health Connect បាន។"</string>
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect កំពុងត្រូវបាន​រួមបញ្ចូលជាមួយប្រព័ន្ធ Android។\n\nអ្នកនឹងទទួល​បានការជូនដំណឹង នៅពេល​ដំណើរការនេះបញ្ចប់ ហើយអ្នកអាចប្រើ Health Connect បាន។"</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"យល់ហើយ"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"ការរួមបញ្ចូល Health Connect មិនបានបញ្ចប់ទេ"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"អ្នកនឹងទទួលបាន​ការជូនដំណឹង នៅពេលអាចផ្ទេរបានម្ដងទៀត។"</string>

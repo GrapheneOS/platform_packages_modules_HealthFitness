@@ -754,9 +754,13 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Rechercher les mises à jour"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Intégration de Santé Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Santé Connect est prête à être intégrée à votre système Android. Si vous accordez l\'accès à <xliff:g id="APP_NAME">%1$s</xliff:g> maintenant, certaines fonctionnalités risquent de ne pas fonctionner jusqu\'à ce que l\'intégration soit terminée."</string>
+    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
+    <skip />
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuer"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Intégration de Santé Connect en cours"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Santé Connect est en cours d\'intégration au système Android.\n\nVous recevrez une notification une fois le processus terminé. Vous pourrez alors utiliser <xliff:g id="APP_NAME">%1$s</xliff:g> avec Santé Connect."</string>
+    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"L\'intégration de Santé Connect n\'a pas abouti"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Vous recevrez une notification lorsqu\'elle sera de nouveau disponible."</string>

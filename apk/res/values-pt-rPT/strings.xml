@@ -61,7 +61,7 @@
     <string name="no_categories" msgid="2636778482437506241">"Não tem dados na Saúde Connect"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Os seus dados"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"Prioridade das apps"</string>
-    <string name="delete_category_data_button" msgid="2324773398768267043">"Apagar dados de <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="delete_category_data_button" msgid="2324773398768267043">"Eliminar dados de <xliff:g id="CATEGORY">%s</xliff:g>"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Todas as apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Pode ler <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Pode escrever <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
@@ -754,9 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Procurar atualizações"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integração da Saúde Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"A Saúde Connect está pronta para ser integrada com o seu sistema Android. Se conceder acesso à app <xliff:g id="APP_NAME">%1$s</xliff:g> agora, algumas funcionalidades podem não funcionar até que a integração esteja concluída."</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"A Saúde Connect está pronta para ser integrada com o seu sistema Android. Se conceder acesso às apps agora, algumas funcionalidades podem não funcionar até que a integração esteja concluída."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuar"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integração da Saúde Connect em curso"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"A Saúde Connect está a ser integrada com o sistema Android.\n\nVai receber uma notificação quando o processo estiver concluído e for possível usar a app <xliff:g id="APP_NAME">%1$s</xliff:g> com a Saúde Connect."</string>
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"A Saúde Connect está a ser integrada com o sistema Android.\n\nVai receber uma notificação quando o processo estiver concluído e for possível usar a Saúde Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"A integração da Saúde Connect não foi concluída"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Vai receber uma notificação quando estiver novamente disponível."</string>
