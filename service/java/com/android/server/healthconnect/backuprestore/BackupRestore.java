@@ -101,6 +101,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -433,7 +434,11 @@ public final class BackupRestore {
     /** Returns the file names of all the staged files. */
     @VisibleForTesting
     public Set<String> getStagedRemoteFileNames(int userId) {
-        return Stream.of(getStagedRemoteDataDirectoryForUser(userId).listFiles())
+        File[] allFiles = getStagedRemoteDataDirectoryForUser(userId).listFiles();
+        if (allFiles == null) {
+            return Collections.emptySet();
+        }
+        return Stream.of(allFiles)
                 .filter(file -> !file.isDirectory())
                 .map(File::getName)
                 .collect(Collectors.toSet());
