@@ -352,6 +352,25 @@ public class BasalMetabolicRateRecordTest {
     }
 
     @Test
+    public void testAggregation_BasalCaloriesBurntTotal_NoRecords() throws Exception {
+        TestUtils.deleteAllStagedRemoteData();
+        List<Record> records = Arrays.asList();
+        AggregateRecordsResponse<Energy> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(
+                                                        Instant.now().minus(10, ChronoUnit.DAYS))
+                                                .setEndTime(Instant.now().minus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(BASAL_CALORIES_TOTAL)
+                                .build(),
+                        records);
+        assertThat(response.get(BASAL_CALORIES_TOTAL)).isNotNull();
+        assertThat(response.get(BASAL_CALORIES_TOTAL).getInCalories()).isEqualTo(0);
+    }
+
+    @Test
     public void testZoneOffsets() {
         final ZoneOffset defaultZoneOffset =
                 ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
