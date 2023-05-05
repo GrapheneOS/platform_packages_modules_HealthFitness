@@ -21,6 +21,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.READ;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
+import static android.health.connect.HealthConnectException.ERROR_SECURITY;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
@@ -100,6 +101,7 @@ import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.ratelimiter.RateLimiter.QuotaCategory;
 import android.health.connect.ratelimiter.RateLimiterException;
 import android.health.connect.restore.BackupFileNamesSet;
+import android.health.connect.restore.StageRemoteDataException;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.os.Binder;
 import android.os.ParcelFileDescriptor;
@@ -347,11 +349,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_SECURITY);
+                        builder.setHealthDataServiceApiStatusError(ERROR_SECURITY);
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
@@ -454,11 +454,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_SECURITY);
+                        builder.setHealthDataServiceApiStatusError(ERROR_SECURITY);
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
@@ -621,11 +619,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_SECURITY);
+                        builder.setHealthDataServiceApiStatusError(ERROR_SECURITY);
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (IllegalStateException illegalStateException) {
                         builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
                         Slog.e(TAG, "IllegalStateException: ", illegalStateException);
@@ -704,10 +700,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         logRecordTypeSpecificUpsertMetrics(
                                 recordInternals, attributionSource.getPackageName());
                     } catch (SecurityException securityException) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_SECURITY);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        builder.setHealthDataServiceApiStatusError(ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
                         Slog.e(TAG, "SqlException: ", sqLiteException);
@@ -783,11 +777,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_SECURITY);
+                        builder.setHealthDataServiceApiStatusError(ERROR_SECURITY);
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
@@ -889,11 +881,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         tryAndThrowException(
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_SECURITY);
+                        builder.setHealthDataServiceApiStatusError(ERROR_SECURITY);
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (IllegalStateException illegalStateException) {
                         builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
                         Slog.e(TAG, "IllegalStateException: ", illegalStateException);
@@ -989,11 +979,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 illegalArgumentException,
                                 HealthConnectException.ERROR_INVALID_ARGUMENT);
                     } catch (SecurityException securityException) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_SECURITY);
+                        builder.setHealthDataServiceApiStatusError(ERROR_SECURITY);
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
@@ -1071,11 +1059,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 illegalArgumentException,
                                 HealthConnectException.ERROR_INVALID_ARGUMENT);
                     } catch (SecurityException securityException) {
-                        builder.setHealthDataServiceApiStatusError(
-                                HealthConnectException.ERROR_SECURITY);
+                        builder.setHealthDataServiceApiStatusError(ERROR_SECURITY);
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         builder.setHealthDataServiceApiStatusError(
                                 healthConnectException.getErrorCode());
@@ -1155,8 +1141,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
@@ -1196,8 +1181,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
@@ -1231,8 +1215,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
@@ -1292,8 +1275,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
@@ -1327,8 +1309,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
@@ -1361,8 +1342,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         callback.onResult(new AccessLogsResponseParcel(accessLogsList));
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
@@ -1411,8 +1391,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 callback, sqLiteException, HealthConnectException.ERROR_IO);
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        tryAndThrowException(
-                                callback, securityException, HealthConnectException.ERROR_SECURITY);
+                        tryAndThrowException(callback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
@@ -1568,48 +1547,63 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull StageRemoteDataRequest stageRemoteDataRequest,
             @NonNull UserHandle userHandle,
             @NonNull IDataStagingFinishedCallback callback) {
-        mDataPermissionEnforcer.enforceAnyOfPermissions(
-                Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA,
-                HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION);
-        final UserHandle callingUserHandle = Binder.getCallingUserHandle();
-
-        if (!mBackupRestore.prepForStagingIfNotAlreadyDone()) {
-            HealthConnectThreadScheduler.scheduleInternalTask(
-                    () -> {
-                        try {
-                            enforceIsForegroundUser(callingUserHandle);
-                            callback.onResult();
-                        } catch (RemoteException e) {
-                            Log.e(TAG, "Restore response could not be sent to the caller.", e);
-                        }
-                    });
-        }
-
         Map<String, ParcelFileDescriptor> origPfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
         Map<String, HealthConnectException> exceptionsByFileName =
                 new ArrayMap<>(origPfdsByFileName.size());
         Map<String, ParcelFileDescriptor> pfdsByFileName =
                 new ArrayMap<>(origPfdsByFileName.size());
-        for (Entry<String, ParcelFileDescriptor> entry : origPfdsByFileName.entrySet()) {
-            try {
-                pfdsByFileName.put(entry.getKey(), entry.getValue().dup());
-            } catch (IOException e) {
-                Slog.e(TAG, "IOException: ", e);
-                exceptionsByFileName.put(
-                        entry.getKey(),
-                        new HealthConnectException(
-                                HealthConnectException.ERROR_IO, e.getMessage()));
-            }
-        }
 
-        HealthConnectThreadScheduler.scheduleInternalTask(
-                () ->
+        try {
+            mDataPermissionEnforcer.enforceAnyOfPermissions(
+                    Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA,
+                    HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION);
+
+            enforceIsForegroundUser(Binder.getCallingUserHandle());
+
+            for (Entry<String, ParcelFileDescriptor> entry : origPfdsByFileName.entrySet()) {
+                try {
+                    pfdsByFileName.put(entry.getKey(), entry.getValue().dup());
+                } catch (IOException e) {
+                    Slog.e(TAG, "IOException: ", e);
+                    exceptionsByFileName.put(
+                            entry.getKey(),
+                            new HealthConnectException(
+                                    HealthConnectException.ERROR_IO, e.getMessage()));
+                }
+            }
+
+            HealthConnectThreadScheduler.scheduleInternalTask(
+                    () -> {
+                        if (!mBackupRestore.prepForStagingIfNotAlreadyDone()) {
+                            try {
+                                callback.onResult();
+                            } catch (RemoteException e) {
+                                Log.e(TAG, "Restore response could not be sent to the caller.", e);
+                            }
+                            return;
+                        }
                         mBackupRestore.stageAllHealthConnectRemoteData(
                                 pfdsByFileName,
                                 exceptionsByFileName,
                                 userHandle.getIdentifier(),
-                                callback));
+                                callback);
+                    });
+        } catch (SecurityException | IllegalStateException e) {
+            Log.e(TAG, "Exception encountered while staging", e);
+            try {
+                @HealthConnectException.ErrorCode int errorCode =
+                        (e instanceof SecurityException) ? ERROR_SECURITY : ERROR_INTERNAL;
+                exceptionsByFileName.put("", new HealthConnectException(
+                        errorCode,
+                        e.getMessage()));
+
+                callback.onError(
+                        new StageRemoteDataException(exceptionsByFileName));
+            } catch (RemoteException remoteException) {
+                Log.e(TAG, "Restore permission response could not be sent to the caller.", e);
+            }
+        }
     }
 
     /**
@@ -1665,47 +1659,63 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      */
     @Override
     public void getHealthConnectDataState(@NonNull IGetHealthConnectDataStateCallback callback) {
-        mDataPermissionEnforcer.enforceAnyOfPermissions(
-                MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
-        final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleInternalTask(
-                () -> {
-                    try {
-                        enforceIsForegroundUser(userHandle);
-                        @HealthConnectDataState.DataRestoreError
-                        int dataRestoreError = mBackupRestore.getDataRestoreError();
-                        @HealthConnectDataState.DataRestoreState
-                        int dataRestoreState = mBackupRestore.getDataRestoreState();
+        try {
+            mDataPermissionEnforcer.enforceAnyOfPermissions(
+                    MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+            final UserHandle userHandle = Binder.getCallingUserHandle();
+            enforceIsForegroundUser(userHandle);
+            HealthConnectThreadScheduler.scheduleInternalTask(
+                    () -> {
+                        try {
+                            @HealthConnectDataState.DataRestoreError
+                            int dataRestoreError = mBackupRestore.getDataRestoreError();
+                            @HealthConnectDataState.DataRestoreState
+                            int dataRestoreState = mBackupRestore.getDataRestoreState();
 
-                        try {
-                            callback.onResult(
-                                    new HealthConnectDataState(
-                                            dataRestoreState,
-                                            dataRestoreError,
-                                            mMigrationStateManager.getMigrationState()));
-                        } catch (RemoteException remoteException) {
-                            Log.e(
-                                    TAG,
-                                    "HealthConnectDataState could not be sent to the caller.",
-                                    remoteException);
+                            try {
+                                callback.onResult(
+                                        new HealthConnectDataState(
+                                                dataRestoreState,
+                                                dataRestoreError,
+                                                mMigrationStateManager.getMigrationState()));
+                            } catch (RemoteException remoteException) {
+                                Log.e(
+                                        TAG,
+                                        "HealthConnectDataState could not be sent to the caller.",
+                                        remoteException);
+                            }
+                        } catch (RuntimeException e) {
+                            // exception getting the state from the disk
+                            try {
+                                callback.onError(
+                                        new HealthConnectExceptionParcel(
+                                                new HealthConnectException(
+                                                        HealthConnectException.ERROR_IO,
+                                                        e.getMessage())));
+                            } catch (RemoteException remoteException) {
+                                Log.e(
+                                        TAG,
+                                        "Exception for getHealthConnectDataState could not be sent"
+                                                + " to the caller.",
+                                        remoteException);
+                            }
                         }
-                    } catch (RuntimeException e) {
-                        // exception getting the state from the disk
-                        try {
-                            callback.onError(
-                                    new HealthConnectExceptionParcel(
-                                            new HealthConnectException(
-                                                    HealthConnectException.ERROR_IO,
-                                                    e.getMessage())));
-                        } catch (RemoteException remoteException) {
-                            Log.e(
-                                    TAG,
-                                    "Exception for getHealthConnectDataState could not be sent to"
-                                            + " the caller.",
-                                    remoteException);
-                        }
-                    }
-                });
+                    });
+        } catch (SecurityException | IllegalStateException e) {
+            Log.e(TAG, "getHealthConnectDataState: Exception encountered", e);
+            @HealthConnectException.ErrorCode int errorCode =
+                    (e instanceof SecurityException) ? ERROR_SECURITY
+                            : ERROR_INTERNAL;
+            try {
+                callback.onError(
+                        new HealthConnectExceptionParcel(
+                                new HealthConnectException(
+                                        errorCode,
+                                        e.getMessage())));
+            } catch (RemoteException remoteException) {
+                Log.e(TAG, "getHealthConnectDataState error could not be sent", e);
+            }
+        }
     }
 
     /**
@@ -1740,7 +1750,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             callback.onError(
                                     new HealthConnectExceptionParcel(
                                             new HealthConnectException(
-                                                    HealthConnectException.ERROR_SECURITY,
+                                                    ERROR_SECURITY,
                                                     securityException.getMessage())));
                         } catch (RemoteException remoteException) {
                             Log.e(
