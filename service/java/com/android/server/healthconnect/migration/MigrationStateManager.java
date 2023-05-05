@@ -670,7 +670,11 @@ public final class MigrationStateManager {
 
     /** Returns whether there exists a package that is aware of migration. */
     public boolean existsMigrationAwarePackage(@NonNull Context context) {
-        List<String> filteredPackages = filterIntent(context, filterPermissions(context));
+        List<String> filteredPackages =
+                filterIntent(
+                        context,
+                        filterPermissions(context),
+                        PackageManager.MATCH_ALL | PackageManager.MATCH_DISABLED_COMPONENTS);
         String dataMigratorPackageName = getDataMigratorPackageName(context);
         List<String> filteredDataMigratorPackageNames =
                 filteredPackages.stream()
@@ -701,7 +705,11 @@ public final class MigrationStateManager {
 
     private boolean isMigrationAware(@NonNull Context context, @NonNull String packageName) {
         List<String> permissionFilteredPackages = filterPermissions(context);
-        List<String> filteredPackages = filterIntent(context, permissionFilteredPackages);
+        List<String> filteredPackages =
+                filterIntent(
+                        context,
+                        permissionFilteredPackages,
+                        PackageManager.MATCH_ALL | PackageManager.MATCH_DISABLED_COMPONENTS);
         int numPackages = filteredPackages.size();
 
         if (numPackages == 0) {
