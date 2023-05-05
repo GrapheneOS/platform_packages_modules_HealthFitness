@@ -21,16 +21,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint(Fragment::class)
 class MigrationInProgressFragment : Hilt_MigrationInProgressFragment() {
+
+    @Inject lateinit var logger: HealthConnectLogger
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        logger.setPageId(PageName.MIGRATION_IN_PROGRESS_PAGE)
         return inflater.inflate(R.layout.migration_in_progress_screen, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logger.logPageImpression()
     }
 }
