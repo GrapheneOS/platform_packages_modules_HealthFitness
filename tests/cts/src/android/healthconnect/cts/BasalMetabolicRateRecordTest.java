@@ -336,8 +336,11 @@ public class BasalMetabolicRateRecordTest {
         assertThat(newResponse.get(BASAL_CALORIES_TOTAL)).isNotNull();
         Energy newEnergy = newResponse.get(BASAL_CALORIES_TOTAL);
         Energy oldEnergy = oldResponse.get(BASAL_CALORIES_TOTAL);
+        assertThat(oldEnergy.getInCalories() / 1000).isWithin(0.1).of(6501.6);
+        assertThat(newEnergy.getInCalories() / 1000).isGreaterThan(6501.6);
         assertThat((double) Math.round(newEnergy.getInCalories() - oldEnergy.getInCalories()))
-                .isEqualTo(46);
+                .isWithin(1)
+                .of(949440);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(BASAL_CALORIES_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
