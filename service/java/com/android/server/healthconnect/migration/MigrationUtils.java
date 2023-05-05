@@ -78,6 +78,21 @@ public class MigrationUtils {
     @NonNull
     public static List<String> filterIntent(
             @NonNull Context context, @NonNull List<String> permissionFilteredPackages) {
+        return filterIntent(context, permissionFilteredPackages, PackageManager.MATCH_ALL);
+    }
+
+    /**
+     * Filters and returns the package names of applications which handle intent {@link
+     * android.health.connect.HealthConnectManager#ACTION_SHOW_MIGRATION_INFO}.
+     *
+     * @param permissionFilteredPackages List of app package names holding permission {@link
+     *     android.Manifest.permission#MIGRATE_HEALTH_CONNECT_DATA}
+     * @param flags Additional option flags to modify the data returned.
+     * @return List of filtered app package names which handle the specified intent action
+     */
+    @NonNull
+    public static List<String> filterIntent(
+            @NonNull Context context, @NonNull List<String> permissionFilteredPackages, int flags) {
         if (android.health.connect.Constants.DEBUG) {
             Slog.d(TAG, "Calling filterIntents()");
         }
@@ -97,8 +112,7 @@ public class MigrationUtils {
             ResolveInfo resolveResult =
                     context.getPackageManager()
                             .resolveActivity(
-                                    intentToCheck,
-                                    PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL));
+                                    intentToCheck, PackageManager.ResolveInfoFlags.of(flags));
 
             if (resolveResult != null) {
                 filteredPackages.add(packageName);
