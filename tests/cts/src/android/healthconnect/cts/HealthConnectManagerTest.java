@@ -864,7 +864,10 @@ public class HealthConnectManagerTest {
     }
 
     @Test
-    public void testStageRemoteData_withoutPermission_throwsSecurityException() throws Exception {
+    public void testStageRemoteData_withoutPermission_errorSecurityReturned() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<Map<String, HealthConnectException>> observedExceptionsByFileName =
+                new AtomicReference<>();
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
@@ -881,26 +884,45 @@ public class HealthConnectManagerTest {
             pfdsByFileName.put(
                     testRestoreFile1.getName(),
                     ParcelFileDescriptor.open(
-                            testRestoreFile1, ParcelFileDescriptor.MODE_READ_ONLY));
+                            testRestoreFile1, ParcelFileDescriptor.MODE_WRITE_ONLY));
             pfdsByFileName.put(
                     testRestoreFile2.getName(),
                     ParcelFileDescriptor.open(
                             testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
             service.stageAllHealthConnectRemoteData(
                     pfdsByFileName,
                     Executors.newSingleThreadExecutor(),
                     new OutcomeReceiver<>() {
                         @Override
-                        public void onResult(Void result) {}
+                        public void onResult(Void unused) {}
 
                         @Override
-                        public void onError(@NonNull StageRemoteDataException error) {}
+                        public void onError(@NonNull StageRemoteDataException error) {
+                            observedExceptionsByFileName.set(error.getExceptionsByFileNames());
+                            latch.countDown();
+                        }
                     });
-        } catch (SecurityException e) {
-            /* pass */
         } catch (IOException e) {
             Log.e(TAG, "Error creating / writing to test files.", e);
         }
+
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(observedExceptionsByFileName.get()).isNotNull();
+        assertThat(observedExceptionsByFileName.get().size()).isEqualTo(1);
+        assertThat(
+                observedExceptionsByFileName.get().entrySet().stream()
+                        .findFirst()
+                        .get()
+                        .getKey())
+                .isEqualTo("");
+        assertThat(
+                observedExceptionsByFileName.get().entrySet().stream()
+                        .findFirst()
+                        .get()
+                        .getValue()
+                        .getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_SECURITY);
 
         deleteAllStagedRemoteData();
     }
@@ -1410,17 +1432,34 @@ public class HealthConnectManagerTest {
     }
 
     @Test
-    public void testGetHealthConnectDataState_withoutPermission_throwsSecurityException() {
+    public void testGetHealthConnectDataState_withoutPermission_returnsSecurityException()
+            throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectException> returnedException =
+                new AtomicReference<>();
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
 
         try {
             service.getHealthConnectDataState(
-                    Executors.newSingleThreadExecutor(), healthConnectDataState -> {});
-        } catch (SecurityException e) {
-            /* pass */
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(HealthConnectDataState healthConnectDataState) {}
+
+                        @Override
+                        public void onError(@NonNull HealthConnectException e) {
+                            returnedException.set(e);
+                            latch.countDown();}
+                    });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+        assertThat(latch.await(10, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(returnedException.get().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_SECURITY);
+        deleteAllStagedRemoteData();
     }
 
     @Test

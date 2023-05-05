@@ -1217,7 +1217,8 @@ public class HealthConnectManager {
 
     /**
      * Stages all HealthConnect remote data and returns any errors in a callback. Errors encountered
-     * for all the files are shared in the provided callback.
+     * for all the files are shared in the provided callback. Any authorization / permissions
+     * related error is reported to the callback with an empty file name.
      *
      * <p>The staged data will later be restored (integrated) into the existing Health Connect data.
      * Any existing data will not be affected by the staged data.
