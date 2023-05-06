@@ -80,4 +80,9 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
     private fun getIntentExtra(): Intent? {
         return intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)
     }
+
+    override fun onResume() {
+        super.onResume()
+        logger.logPageImpression()
+    }
 }
