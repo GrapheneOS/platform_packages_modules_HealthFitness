@@ -21,6 +21,7 @@ import android.content.Context;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.ratelimiter.RateLimiter.QuotaBucket;
 import android.provider.DeviceConfig;
+import android.util.ArraySet;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.internal.annotations.VisibleForTesting;
@@ -29,6 +30,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -38,6 +40,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @hide
  */
 public class HealthConnectDeviceConfigManager implements DeviceConfig.OnPropertiesChangedListener {
+    private static Set<String> sFlagsToTrack = new ArraySet<>();
     private static final String EXERCISE_ROUTE_FEATURE_FLAG = "exercise_routes_enable";
     public static final String ENABLE_RATE_LIMITER_FLAG = "enable_rate_limiter";
     private static final String MAX_READ_REQUESTS_PER_24H_FOREGROUND_FLAG =
@@ -225,6 +228,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
             sDeviceConfigManager = new HealthConnectDeviceConfigManager();
             DeviceConfig.addOnPropertiesChangedListener(
                     HEALTH_FITNESS_NAMESPACE, context.getMainExecutor(), sDeviceConfigManager);
+            addFlagsToTrack();
         }
     }
 
@@ -234,6 +238,23 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         Objects.requireNonNull(sDeviceConfigManager);
 
         return sDeviceConfigManager;
+    }
+
+    /** Adds flags that need to be updated if their values are changed on the server. */
+    private static void addFlagsToTrack() {
+        sFlagsToTrack.add(EXERCISE_ROUTE_FEATURE_FLAG);
+        sFlagsToTrack.add(SESSION_DATATYPE_FEATURE_FLAG);
+        sFlagsToTrack.add(ENABLE_RATE_LIMITER_FLAG);
+        sFlagsToTrack.add(COUNT_MIGRATION_STATE_IN_PROGRESS_FLAG);
+        sFlagsToTrack.add(COUNT_MIGRATION_STATE_ALLOWED_FLAG);
+        sFlagsToTrack.add(MAX_START_MIGRATION_CALLS_ALLOWED_FLAG);
+        sFlagsToTrack.add(IDLE_STATE_TIMEOUT_DAYS_FLAG);
+        sFlagsToTrack.add(NON_IDLE_STATE_TIMEOUT_DAYS_FLAG);
+        sFlagsToTrack.add(IN_PROGRESS_STATE_TIMEOUT_HOURS_FLAG);
+        sFlagsToTrack.add(EXECUTION_TIME_BUFFER_MINUTES_FLAG);
+        sFlagsToTrack.add(MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_FLAG);
+        sFlagsToTrack.add(MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_FLAG);
+        sFlagsToTrack.add(ENABLE_STATE_CHANGE_JOBS_FLAG);
     }
 
     /** Returns if operations with exercise route are enabled. */
@@ -454,11 +475,11 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         if (!properties.getNamespace().equals(HEALTH_FITNESS_NAMESPACE)) {
             return;
         }
-        for (String name : properties.getKeyset()) {
-            if (name == null) {
-                continue;
-            }
 
+        Set<String> changedFlags = new ArraySet<>(properties.getKeyset());
+        changedFlags.retainAll(sFlagsToTrack);
+
+        for (String name : changedFlags) {
             if (name.equals(EXERCISE_ROUTE_FEATURE_FLAG)) {
                 mLock.writeLock().lock();
                 try {
