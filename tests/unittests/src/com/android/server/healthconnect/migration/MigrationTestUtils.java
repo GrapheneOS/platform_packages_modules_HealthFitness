@@ -67,12 +67,17 @@ public class MigrationTestUtils {
     }
 
     static void setResolveActivityResult(ResolveInfo result, PackageManager packageManager) {
+        setResolveActivityResult(result, packageManager, PackageManager.MATCH_ALL);
+    }
+
+    static void setResolveActivityResult(
+            ResolveInfo result, PackageManager packageManager, int flags) {
         when(packageManager.resolveActivity(
                         argThat(
                                 intent ->
                                         (HealthConnectManager.ACTION_SHOW_MIGRATION_INFO.equals(
                                                 intent.getAction()))),
-                        argThat(flag -> (flag.getValue() == PackageManager.MATCH_ALL))))
+                        argThat(flag -> (flag.getValue() == flags))))
                 .thenReturn(result);
     }
 }
