@@ -19,6 +19,9 @@ package com.android.server.healthconnect;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
 
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_RESTORE_STATE_KEY;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_DONE;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -77,12 +80,12 @@ public class HealthConnectServiceImplTest {
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private MigrationStateManager mMigrationStateManager;
     @Mock private MigrationUiStateManager mMigrationUiStateManager;
-    @Mock private Context mContext;
     @Mock private Context mServiceContext;
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private AppOpsManagerLocal mAppOpsManagerLocal;
     @Mock private PackageManager mPackageManager;
 
+    private Context mContext;
     private HealthConnectServiceImpl mHealthConnectService;
     private MockitoSession mStaticMockSession;
     private UserHandle mUserHandle = UserHandle.of(UserHandle.myUserId());
@@ -185,6 +188,70 @@ public class HealthConnectServiceImplTest {
                 mHealthConnectService.getStagedRemoteFileNames(mUserHandle.getIdentifier());
         assertThat(stagedFileNames.size()).isEqualTo(1);
         assertThat(stagedFileNames.contains(testRestoreFile2.getName())).isTrue();
+    }
+
+    // Imitates the state when we are not actively staging but the disk reflects that.
+    // Which means we were interrupted, and therefore we should stage.
+    @Test
+    public void testStageRemoteData_whenStagingProgress_doesStage() throws Exception {
+        File dataDir = mContext.getDataDir();
+        File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+        File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+        assertThat(testRestoreFile1.exists()).isTrue();
+        assertThat(testRestoreFile2.exists()).isTrue();
+
+        Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+        pfdsByFileName.put(
+                testRestoreFile1.getName(),
+                ParcelFileDescriptor.open(testRestoreFile1, ParcelFileDescriptor.MODE_READ_ONLY));
+        pfdsByFileName.put(
+                testRestoreFile2.getName(),
+                ParcelFileDescriptor.open(testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+        when(mPreferenceHelper.getPreference(eq(DATA_RESTORE_STATE_KEY)))
+                .thenReturn(String.valueOf(INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS));
+
+        final IDataStagingFinishedCallback callback = mock(IDataStagingFinishedCallback.class);
+        mHealthConnectService.stageAllHealthConnectRemoteData(
+                new StageRemoteDataRequest(pfdsByFileName), mUserHandle, callback);
+
+        verify(callback, timeout(5000)).onResult();
+        var stagedFileNames =
+                mHealthConnectService.getStagedRemoteFileNames(mUserHandle.getIdentifier());
+        assertThat(stagedFileNames.size()).isEqualTo(2);
+        assertThat(stagedFileNames.contains(testRestoreFile1.getName())).isTrue();
+        assertThat(stagedFileNames.contains(testRestoreFile2.getName())).isTrue();
+    }
+
+    @Test
+    public void testStageRemoteData_whenStagingDone_doesNotStage() throws Exception {
+        File dataDir = mContext.getDataDir();
+        File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+        File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+
+        assertThat(testRestoreFile1.exists()).isTrue();
+        assertThat(testRestoreFile2.exists()).isTrue();
+
+        Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+        pfdsByFileName.put(
+                testRestoreFile1.getName(),
+                ParcelFileDescriptor.open(testRestoreFile1, ParcelFileDescriptor.MODE_READ_ONLY));
+        pfdsByFileName.put(
+                testRestoreFile2.getName(),
+                ParcelFileDescriptor.open(testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+
+        when(mPreferenceHelper.getPreference(eq(DATA_RESTORE_STATE_KEY)))
+                .thenReturn(String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
+
+        final IDataStagingFinishedCallback callback = mock(IDataStagingFinishedCallback.class);
+        mHealthConnectService.stageAllHealthConnectRemoteData(
+                new StageRemoteDataRequest(pfdsByFileName), mUserHandle, callback);
+
+        verify(callback, timeout(5000)).onResult();
+        var stagedFileNames =
+                mHealthConnectService.getStagedRemoteFileNames(mUserHandle.getIdentifier());
+        assertThat(stagedFileNames.size()).isEqualTo(0);
     }
 
     @Test
