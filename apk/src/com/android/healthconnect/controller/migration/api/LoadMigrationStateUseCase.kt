@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.migration.api
 
-import android.health.connect.HealthConnectManager
 import android.health.connect.migration.HealthConnectMigrationUiState
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
@@ -26,7 +25,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 
 @Singleton
-class LoadMigrationStateUseCase @Inject constructor(private val manager: HealthConnectManager) {
+class LoadMigrationStateUseCase @Inject constructor(private val manager: HealthMigrationManager) {
 
     companion object {
         private const val TAG = "LoadMigrationState"
@@ -58,7 +57,7 @@ class LoadMigrationStateUseCase @Inject constructor(private val manager: HealthC
         return withContext(Dispatchers.IO) {
             try {
                 val state =
-                    suspendCancellableCoroutine<HealthConnectMigrationUiState> { continuation ->
+                    suspendCancellableCoroutine { continuation ->
                             manager.getHealthConnectMigrationUiState(
                                 Runnable::run, continuation.asOutcomeReceiver())
                         }
