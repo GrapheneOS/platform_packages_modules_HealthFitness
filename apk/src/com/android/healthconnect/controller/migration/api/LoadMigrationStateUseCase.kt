@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.migration.api
 
+import android.health.connect.HealthConnectDataState
 import android.health.connect.migration.HealthConnectMigrationUiState
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
@@ -53,17 +54,28 @@ class LoadMigrationStateUseCase @Inject constructor(private val manager: HealthM
                     MigrationState.COMPLETE_IDLE,
             )
     }
+
     suspend operator fun invoke(): MigrationState {
         return withContext(Dispatchers.IO) {
             try {
-                val state =
+                // check if module faced an error migrating data and user action is required.
+                val dataRestoreState = suspendCancellableCoroutine { continuation ->
+                    manager.getHealthDataState(Runnable::run, continuation.asOutcomeReceiver())
+                }
+                if (HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED ==
+                    dataRestoreState.dataMigrationState) {
+                    return@withContext MigrationState.MODULE_UPGRADE_REQUIRED
+                }
+
+                // check apk migration state.
+                val migrationState =
                     suspendCancellableCoroutine { continuation ->
                             manager.getHealthConnectMigrationUiState(
                                 Runnable::run, continuation.asOutcomeReceiver())
                         }
                         .healthConnectMigrationUiState
 
-                migrationStateMapping.getOrDefault(state, MigrationState.IDLE)
+                migrationStateMapping.getOrDefault(migrationState, MigrationState.IDLE)
             } catch (e: Exception) {
                 Log.e(TAG, "Load error ", e)
                 MigrationState.IDLE

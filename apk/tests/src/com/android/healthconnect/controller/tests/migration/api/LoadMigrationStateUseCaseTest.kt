@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.tests.migration.api
 
+import android.health.connect.HealthConnectDataState
 import android.health.connect.migration.HealthConnectMigrationUiState.MIGRATION_UI_STATE_ALLOWED_ERROR
 import android.health.connect.migration.HealthConnectMigrationUiState.MIGRATION_UI_STATE_ALLOWED_MIGRATOR_DISABLED
 import android.health.connect.migration.HealthConnectMigrationUiState.MIGRATION_UI_STATE_ALLOWED_NOT_STARTED
@@ -42,7 +43,7 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateIdle_mapsStateToIdle() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_IDLE)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_IDLE)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.IDLE)
     }
@@ -50,7 +51,7 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateAllowedMigratorDisabled_mapsStateToAllowedMigratorDisabled() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_ALLOWED_MIGRATOR_DISABLED)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_ALLOWED_MIGRATOR_DISABLED)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.ALLOWED_MIGRATOR_DISABLED)
     }
@@ -58,7 +59,7 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateAllowedNotStarted_mapsAllowedNotStarted() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_ALLOWED_NOT_STARTED)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_ALLOWED_NOT_STARTED)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.ALLOWED_NOT_STARTED)
     }
@@ -66,7 +67,7 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateAllowedPaused_mapsStateToAllowedPaused() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_ALLOWED_PAUSED)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_ALLOWED_PAUSED)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.ALLOWED_PAUSED)
     }
@@ -74,7 +75,7 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateIdleAllowedError_mapsStateToAllowedError() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_ALLOWED_ERROR)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_ALLOWED_ERROR)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.ALLOWED_ERROR)
     }
@@ -82,7 +83,7 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateInProgress_mapsStateToInProgress() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_IN_PROGRESS)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_IN_PROGRESS)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.IN_PROGRESS)
     }
@@ -90,7 +91,7 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateAppUpgradeRequired_mapsStateToAppUpgradeRequired() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_APP_UPGRADE_REQUIRED)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_APP_UPGRADE_REQUIRED)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.APP_UPGRADE_REQUIRED)
     }
@@ -98,7 +99,7 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateModuleUpgradeRequired_mapsStateToModuleUpgradeRequired() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_MODULE_UPGRADE_REQUIRED)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_MODULE_UPGRADE_REQUIRED)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.MODULE_UPGRADE_REQUIRED)
     }
@@ -106,7 +107,7 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateComplete_mapsStateToComplete() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_COMPLETE)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_COMPLETE)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.COMPLETE)
     }
@@ -114,8 +115,18 @@ class LoadMigrationStateUseCaseTest {
     @Test
     fun invoke_stateCompleteIdle_mapsStateToCompleteIdle() = runTest {
         val useCase = LoadMigrationStateUseCase(migrationManager)
-        migrationManager.setState(MIGRATION_UI_STATE_COMPLETE_IDLE)
+        migrationManager.setMigrationState(MIGRATION_UI_STATE_COMPLETE_IDLE)
 
         assertThat(useCase.invoke()).isEqualTo(MigrationState.COMPLETE_IDLE)
+    }
+
+    @Test
+    fun invoke_dataMigration_restoreErrorVersionDiff_returnsModuleUpgradeRequired() = runTest {
+        val useCase = LoadMigrationStateUseCase(migrationManager)
+        migrationManager.setDataMigrationState(
+            error = HealthConnectDataState.RESTORE_ERROR_VERSION_DIFF,
+            migrationState = HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED)
+
+        assertThat(useCase.invoke()).isEqualTo(MigrationState.MODULE_UPGRADE_REQUIRED)
     }
 }

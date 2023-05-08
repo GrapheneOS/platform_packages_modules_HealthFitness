@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.migration.api
 
+import android.health.connect.HealthConnectDataState
 import android.health.connect.HealthConnectException
 import android.health.connect.migration.HealthConnectMigrationUiState
 import android.os.OutcomeReceiver
@@ -23,6 +24,11 @@ import java.util.concurrent.Executor
 
 /** Wrapper for HealthConnectManager migration apis. */
 interface HealthMigrationManager {
+
+    fun getHealthDataState(
+        executor: Executor,
+        callback: OutcomeReceiver<HealthConnectDataState, HealthConnectException>
+    )
 
     fun getHealthConnectMigrationUiState(
         executor: Executor,

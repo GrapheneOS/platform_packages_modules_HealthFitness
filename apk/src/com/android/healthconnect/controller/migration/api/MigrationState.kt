@@ -16,8 +16,8 @@
 package com.android.healthconnect.controller.migration.api
 
 /**
- * Internal class representing the [HealthConnectMigrationUiState] received from the
- * HealthConnectManager.
+ * Internal class representing the [HealthConnectMigrationUiState] and [HealthConnectDataState]
+ * received from the HealthConnectManager.
  */
 enum class MigrationState {
     IDLE,
