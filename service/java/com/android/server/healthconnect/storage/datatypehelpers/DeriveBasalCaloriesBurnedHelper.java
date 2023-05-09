@@ -36,6 +36,8 @@ import java.util.Objects;
  * @hide
  */
 public final class DeriveBasalCaloriesBurnedHelper {
+    public static final double WATT_TO_CAL_PER_HR = 860;
+    public static final int HOURS_PER_DAY = 24;
     private final Cursor mCursor;
     private final String mColumnName;
 
@@ -58,14 +60,22 @@ public final class DeriveBasalCaloriesBurnedHelper {
         boolean endOfCurrentGroup = false;
         // calculate aggregate for current interval between start and end time by iterating
         // cursor until current time is inside current group interval
+
+        Instant currentStart = currentGroupStartTime;
         while (!endOfCurrentGroup && mCursor.moveToNext()) {
             Instant currentItemTime =
                     Instant.ofEpochMilli(StorageUtils.getCursorLong(mCursor, TIME_COLUMN_NAME));
             if (currentItemTime.isBefore(currentGroupStartTime)) {
                 continue;
             }
+
+            if (currentStart != null && currentStart.isBefore(currentItemTime)) {
+                currentItemTime = currentStart;
+                currentStart = null;
+            }
+
             Instant nextItemTime;
-            double rateOfEnergyBurnPerDay = StorageUtils.getCursorDouble(mCursor, mColumnName);
+            double rateOfEnergyBurntInWatts = StorageUtils.getCursorDouble(mCursor, mColumnName);
             if (mCursor.moveToNext()) {
                 nextItemTime =
                         Instant.ofEpochMilli(StorageUtils.getCursorLong(mCursor, TIME_COLUMN_NAME));
@@ -79,7 +89,8 @@ public final class DeriveBasalCaloriesBurnedHelper {
                 nextItemTime = currentGroupEndTime;
             }
             currentGroupTotal +=
-                    getCurrentIntervalEnergy(rateOfEnergyBurnPerDay, currentItemTime, nextItemTime);
+                    getCurrentIntervalEnergy(
+                            rateOfEnergyBurntInWatts, currentItemTime, nextItemTime);
         }
         return currentGroupTotal;
     }
@@ -100,9 +111,13 @@ public final class DeriveBasalCaloriesBurnedHelper {
     }
 
     private double getCurrentIntervalEnergy(
-            double rateOfEnergyBurnPerDay, Instant currentItemTime, Instant nextItemTime) {
-        return rateOfEnergyBurnPerDay
+            double rateOfEnergyBurntInWatts, Instant currentItemTime, Instant nextItemTime) {
+        return getCalPerDay(rateOfEnergyBurntInWatts)
                 * Duration.between(currentItemTime, nextItemTime).toMillis()
                 / Duration.ofDays(1).toMillis();
+    }
+
+    private double getCalPerDay(double rateOfEnergyBurntInWatt) {
+        return rateOfEnergyBurntInWatt * HOURS_PER_DAY * WATT_TO_CAL_PER_HR;
     }
 }
