@@ -16,9 +16,15 @@
 
 package android.healthconnect.cts;
 
+import static android.health.connect.datatypes.StepsCadenceRecord.STEPS_CADENCE_RATE_AVG;
+import static android.health.connect.datatypes.StepsCadenceRecord.STEPS_CADENCE_RATE_MAX;
+import static android.health.connect.datatypes.StepsCadenceRecord.STEPS_CADENCE_RATE_MIN;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.ReadRecordsRequestUsingFilters;
@@ -29,6 +35,7 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
@@ -46,10 +53,12 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -528,6 +537,46 @@ public class StepsCadenceRecordTest {
         assertThat(stepsRecord.getSamples().get(0).getRate()).isEqualTo(20);
     }
 
+    @Test
+    public void testRateAggregation_getAggregationFromThreerecords_aggResponsesAreCorrect()
+            throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        buildRecordForStepsCadence(120, 100),
+                        buildRecordForStepsCadence(100, 101),
+                        buildRecordForStepsCadence(80, 102));
+        AggregateRecordsResponse<Double> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Double>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(STEPS_CADENCE_RATE_MAX)
+                                .addAggregationType(STEPS_CADENCE_RATE_MIN)
+                                .addAggregationType(STEPS_CADENCE_RATE_AVG)
+                                .build(),
+                        records);
+        checkAggregationResult(STEPS_CADENCE_RATE_MAX, 120, response);
+        checkAggregationResult(STEPS_CADENCE_RATE_MIN, 80, response);
+        checkAggregationResult(STEPS_CADENCE_RATE_AVG, 100, response);
+    }
+
+    private void checkAggregationResult(
+            AggregationType<Double> type,
+            double expectedResult,
+            AggregateRecordsResponse<Double> response) {
+        assertThat(response.get(type)).isNotNull();
+        assertThat(response.get(type)).isEqualTo(expectedResult);
+        assertThat(response.getZoneOffset(type))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        Set<DataOrigin> dataOrigins = response.getDataOrigins(type);
+        assertThat(dataOrigins).hasSize(1);
+        for (DataOrigin itr : dataOrigins) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+    }
+
     StepsCadenceRecord getStepsCadenceRecord_update(
             Record record, String id, String clientRecordId) {
         Metadata metadata = record.getMetadata();
@@ -593,6 +642,11 @@ public class StepsCadenceRecordTest {
     }
 
     private static StepsCadenceRecord getCompleteStepsCadenceRecord() {
+        return buildRecordForStepsCadence(1, 100);
+    }
+
+    private static StepsCadenceRecord buildRecordForStepsCadence(
+            double rate, long millisFromStart) {
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")
@@ -606,7 +660,8 @@ public class StepsCadenceRecordTest {
         testMetadataBuilder.setClientRecordId("SCR" + Math.random());
         testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
         StepsCadenceRecord.StepsCadenceRecordSample stepsCadenceRecord =
-                new StepsCadenceRecord.StepsCadenceRecordSample(1, Instant.now().plusMillis(100));
+                new StepsCadenceRecord.StepsCadenceRecordSample(
+                        rate, Instant.now().plusMillis(millisFromStart));
         ArrayList<StepsCadenceRecord.StepsCadenceRecordSample> stepsCadenceRecords =
                 new ArrayList<>();
         stepsCadenceRecords.add(stepsCadenceRecord);

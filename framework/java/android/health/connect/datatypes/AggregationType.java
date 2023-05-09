@@ -191,7 +191,12 @@ public final class AggregationType<T> {
         int CYCLING_PEDALING_CADENCE_RECORD_RPM_AVG = 75;
         int CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN = 76;
         int CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX = 77;
-
+        int SPEED_RECORD_SPEED_AVG = 78;
+        int SPEED_RECORD_SPEED_MIN = 79;
+        int SPEED_RECORD_SPEED_MAX = 80;
+        int STEPS_CADENCE_RECORD_RATE_AVG = 81;
+        int STEPS_CADENCE_RECORD_RATE_MIN = 82;
+        int STEPS_CADENCE_RECORD_RATE_MAX = 83;
         /**
          * Valid set of values for this IntDef. Update this set when add new type or deprecate
          * existing type.
@@ -271,7 +276,13 @@ public final class AggregationType<T> {
                         HEART_RATE_RECORD_MEASUREMENTS_COUNT,
                         RESTING_HEART_RATE_RECORD_BPM_AVG,
                         SLEEP_SESSION_DURATION_TOTAL,
-                        EXERCISE_SESSION_DURATION_TOTAL);
+                        EXERCISE_SESSION_DURATION_TOTAL,
+                        SPEED_RECORD_SPEED_AVG,
+                        SPEED_RECORD_SPEED_MIN,
+                        SPEED_RECORD_SPEED_MAX,
+                        STEPS_CADENCE_RECORD_RATE_AVG,
+                        STEPS_CADENCE_RECORD_RATE_MIN,
+                        STEPS_CADENCE_RECORD_RATE_MAX);
 
         /** @hide */
         @IntDef({
@@ -346,7 +357,13 @@ public final class AggregationType<T> {
             NUTRITION_RECORD_TRANS_FAT_TOTAL,
             CYCLING_PEDALING_CADENCE_RECORD_RPM_AVG,
             CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN,
-            CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX
+            CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX,
+            SPEED_RECORD_SPEED_AVG,
+            SPEED_RECORD_SPEED_MIN,
+            SPEED_RECORD_SPEED_MAX,
+            STEPS_CADENCE_RECORD_RATE_AVG,
+            STEPS_CADENCE_RECORD_RATE_MIN,
+            STEPS_CADENCE_RECORD_RATE_MAX
         })
         @Retention(RetentionPolicy.SOURCE)
         @interface Id {}

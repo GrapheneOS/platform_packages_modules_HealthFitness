@@ -16,6 +16,10 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.SPEED_RECORD_SPEED_AVG;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.SPEED_RECORD_SPEED_MAX;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.SPEED_RECORD_SPEED_MIN;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
@@ -25,13 +29,18 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.AggregateResult;
+import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -88,6 +97,42 @@ public class SpeedRecordHelper
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
         record.setSamples(speedRecordSampleSet);
+    }
+
+    @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case SPEED_RECORD_SPEED_MAX:
+            case SPEED_RECORD_SPEED_MIN:
+            case SPEED_RECORD_SPEED_AVG:
+                return new AggregateResult<>(
+                                results.getDouble(results.getColumnIndex(SPEED_COLUMN_NAME)))
+                        .setZoneOffset(getZoneOffset(results));
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case SPEED_RECORD_SPEED_MAX:
+            case SPEED_RECORD_SPEED_MIN:
+            case SPEED_RECORD_SPEED_AVG:
+                return new AggregateParams(
+                                SERIES_TABLE_NAME,
+                                Collections.singletonList(SPEED_COLUMN_NAME),
+                                START_TIME_COLUMN_NAME)
+                        .setJoin(
+                                new SqlJoin(
+                                        SERIES_TABLE_NAME,
+                                        TABLE_NAME,
+                                        PARENT_KEY_COLUMN_NAME,
+                                        PRIMARY_COLUMN_NAME));
+            default:
+                return null;
+        }
     }
 
     @Override
