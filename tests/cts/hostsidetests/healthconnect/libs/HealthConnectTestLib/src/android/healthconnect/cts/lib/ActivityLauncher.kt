@@ -23,8 +23,6 @@ import android.content.pm.PackageManager.EXTRA_REQUEST_PERMISSIONS_NAMES
 import android.health.connect.HealthConnectManager
 import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_PACKAGE_NAME
 import android.healthconnect.cts.lib.UiTestUtils.skipOnboardingIfAppears
-import android.healthconnect.cts.lib.UiTestUtils.skipUpgradeNeededDialogIfAppears
-import android.healthconnect.cts.lib.UiTestUtils.skipUpgradeNeededIfAppears
 import com.android.compatibility.common.util.SystemUtil
 import com.android.compatibility.common.util.UiAutomatorUtils2.getUiDevice
 
@@ -39,7 +37,6 @@ object ActivityLauncher {
         executeBlockAndExit(block) {
             startActivity(intent)
             skipOnboardingIfAppears()
-            skipUpgradeNeededIfAppears()
         }
     }
 
@@ -51,7 +48,6 @@ object ActivityLauncher {
         executeBlockAndExit(block) {
             startActivity(intent)
             skipOnboardingIfAppears()
-            skipUpgradeNeededIfAppears()
         }
     }
 
@@ -72,7 +68,6 @@ object ActivityLauncher {
                 {
                     startActivity(intent)
                     skipOnboardingIfAppears()
-                    skipUpgradeNeededDialogIfAppears()
                 },
                 GRANT_RUNTIME_PERMISSIONS)
         }
