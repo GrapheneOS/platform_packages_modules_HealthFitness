@@ -151,6 +151,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -699,6 +700,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         finishDataDeliveryWriteRecords(recordInternals, attributionSource);
                         logRecordTypeSpecificUpsertMetrics(
                                 recordInternals, attributionSource.getPackageName());
+                        // Update activity dates table
+                        HealthConnectThreadScheduler.scheduleInternalTask(
+                                () ->
+                                        ActivityDateHelper.getInstance()
+                                                .reSyncByRecordTypeIds(
+                                                        recordInternals.stream()
+                                                                .map(RecordInternal::getRecordType)
+                                                                .toList()));
                     } catch (SecurityException securityException) {
                         builder.setHealthDataServiceApiStatusError(ERROR_SECURITY);
                         tryAndThrowException(callback, securityException, ERROR_SECURITY);
@@ -1101,6 +1110,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         hasDataManagementPermission(uid, pid)));
         tryAndReturnResult(callback, builder);
         finishDataDeliveryWrite(recordTypeIdsToDelete, attributionSource);
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> postDeleteTasks(recordTypeIdsToDelete));
 
         builder.setNumberOfRecords(numberOfRecordsDeleted)
                 .setDataTypesFromRecordTypes(recordTypeIdsToDelete);
@@ -2082,6 +2093,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         if (isDataSyncInProgress()) {
             throw new IllegalStateException("Storage data sync in progress. API calls are blocked");
         }
+    }
+
+    private static void postDeleteTasks(List<Integer> recordTypeIdsToDelete) {
+        Trace.traceBegin(TRACE_TAG_DELETE_SUBTASKS, TAG_INSERT.concat("PostDeleteTasks"));
+        if (recordTypeIdsToDelete != null && !recordTypeIdsToDelete.isEmpty()) {
+            AppInfoHelper.getInstance()
+                    .syncAppInfoRecordTypesUsed(new HashSet<>(recordTypeIdsToDelete));
+            ActivityDateHelper.getInstance().reSyncByRecordTypeIds(recordTypeIdsToDelete);
+        }
+        Trace.traceEnd(TRACE_TAG_DELETE_SUBTASKS);
     }
 
     private static void tryAndReturnResult(
