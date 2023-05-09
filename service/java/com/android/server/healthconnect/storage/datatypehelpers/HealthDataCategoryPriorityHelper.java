@@ -25,12 +25,15 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.os.UserHandle;
+import android.util.ArraySet;
 import android.util.Pair;
 import android.util.Slog;
 
@@ -47,6 +50,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -120,7 +124,7 @@ public class HealthDataCategoryPriorityHelper {
                 newPriorityOrder);
     }
 
-    public void removeFromPriorityList(
+    public synchronized void removeFromPriorityList(
             @NonNull String packageName,
             @HealthDataCategory.Type int dataCategory,
             HealthConnectPermissionHelper permissionHelper,
@@ -136,8 +140,30 @@ public class HealthDataCategoryPriorityHelper {
         removeFromPriorityListInternal(dataCategory, packageName);
     }
 
+    public synchronized void removeFromPriorityListIfNeeded(
+            @NonNull PackageInfo packageInfo, @NonNull Context context) {
+        Set<Integer> dataCategoryWithPermission = new ArraySet<>();
+        for (int i = 0; i < packageInfo.requestedPermissions.length; i++) {
+            String currPerm = packageInfo.requestedPermissions[i];
+            if (HealthConnectManager.isHealthPermission(context, currPerm)
+                    && ((packageInfo.requestedPermissionsFlags[i]
+                                    & PackageInfo.REQUESTED_PERMISSION_GRANTED)
+                            != 0)) {
+                int dataCategory = HealthPermissions.getHealthDataCategory(currPerm);
+                if (dataCategory != -1) {
+                    dataCategoryWithPermission.add(dataCategory);
+                }
+            }
+        }
+        for (int category : getHealthDataCategoryToAppIdPriorityMap().keySet()) {
+            if (!dataCategoryWithPermission.contains(category)) {
+                removeFromPriorityListInternal(category, packageInfo.packageName);
+            }
+        }
+    }
+
     /** Removes app from priorityList for all HealthData Categories if the package is uninstalled */
-    public void removeAppFromPriorityList(@NonNull String packageName) {
+    public synchronized void removeAppFromPriorityList(@NonNull String packageName) {
         Objects.requireNonNull(packageName);
         for (Integer dataCategory : getHealthDataCategoryToAppIdPriorityMap().keySet()) {
             removeFromPriorityListInternal(dataCategory, packageName);

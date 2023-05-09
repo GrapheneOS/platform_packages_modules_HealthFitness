@@ -29,6 +29,8 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Log;
 
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -193,6 +195,19 @@ public class PackageInfoUtils {
             Log.e(TAG, "NameNotFound exception for " + packageName);
         }
         return uid;
+    }
+
+    void updateHealthDataPriority(@NonNull String[] packageNames, @NonNull UserHandle user) {
+        for (String packageName : packageNames) {
+            PackageInfo info = getPackageInfoWithPermissionsAsUser(packageName, user);
+            if (anyRequestedHealthPermissionGranted(mContext, info)) {
+                HealthDataCategoryPriorityHelper.getInstance()
+                        .removeFromPriorityListIfNeeded(info, mContext);
+            } else {
+                HealthDataCategoryPriorityHelper.getInstance()
+                        .removeAppFromPriorityList(packageName);
+            }
+        }
     }
 
     @NonNull
