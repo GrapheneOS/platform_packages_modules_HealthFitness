@@ -80,30 +80,6 @@ object UiTestUtils {
         }
     }
 
-    fun skipUpgradeNeededIfAppears() {
-        try {
-            clickOnText("Cancel")
-        } catch (e: Exception) {
-            try {
-                clickOnText("CANCEL")
-            } catch (e: Exception) {
-                // No-op if upgrade needed was not displayed.
-            }
-        }
-    }
-
-    fun skipUpgradeNeededDialogIfAppears() {
-        try {
-            clickOnText("Continue")
-        } catch (e: Exception) {
-            try {
-                clickOnText("CONTINUE")
-            } catch (e: Exception) {
-                // No-op if upgrade needed was not displayed.
-            }
-        }
-    }
-
     /** Clicks on [UiObject2] with given [text]. */
     fun clickOnText(string: String) {
         waitDisplayed(By.text(string)) { it.click() }
