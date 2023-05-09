@@ -50,7 +50,12 @@ private fun getAppStoreLink(
     installerPackageName: String?,
     packageName: String
 ): Intent? {
-    val intent = Intent(Intent.ACTION_SHOW_APP_INFO).setPackage(installerPackageName)
+    val intent = Intent(Intent.ACTION_SHOW_APP_INFO)
+    if (installerPackageName != null) {
+        // if we cannot find the installer package name we can still
+        // send the intent which should be handled by one app
+        intent.setPackage(installerPackageName)
+    }
 
     val result = resolveIntent(context, intent)
     if (result != null) {
