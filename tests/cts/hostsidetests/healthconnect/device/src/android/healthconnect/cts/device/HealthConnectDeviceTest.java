@@ -62,7 +62,7 @@ public class HealthConnectDeviceTest {
     static final String TAG = "HealthConnectDeviceTest";
     static final long VERSION_CODE = 1;
 
-    private static final TestApp APP_A_WITH_READ_WRITE_PERMS =
+    static final TestApp APP_A_WITH_READ_WRITE_PERMS =
             new TestApp(
                     "TestAppA",
                     "android.healthconnect.cts.testapp.readWritePerms.A",

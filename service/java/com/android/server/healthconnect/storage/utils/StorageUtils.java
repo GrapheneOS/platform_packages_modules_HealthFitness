@@ -179,9 +179,13 @@ public final class StorageUtils {
         return cursor.getInt(cursor.getColumnIndex(columnName));
     }
 
-    /** Reads integer and converts to true anything apart from 0. */
+    /** Reads integer and converts to false anything apart from 1. */
     public static boolean getIntegerAndConvertToBoolean(Cursor cursor, String columnName) {
-        return cursor.getInt(cursor.getColumnIndex(columnName)) != BOOLEAN_FALSE_VALUE;
+        String value = cursor.getString(cursor.getColumnIndex(columnName));
+        if (value == null || value.isEmpty()) {
+            return false;
+        }
+        return Integer.parseInt(value) == BOOLEAN_TRUE_VALUE;
     }
 
     public static long getCursorLong(Cursor cursor, String columnName) {

@@ -45,7 +45,10 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.os.Trace;
+import android.util.ArrayMap;
 import android.util.Pair;
+
+import androidx.annotation.Nullable;
 
 import com.android.server.healthconnect.storage.request.AggregateParams;
 import com.android.server.healthconnect.storage.request.AggregateTableRequest;
@@ -205,16 +208,21 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setChildTableRequests(getChildTableCreateRequests());
     }
 
+    public UpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
+        return getUpsertTableRequest(recordInternal, null);
+    }
+
     @NonNull
     @SuppressWarnings("unchecked")
-    public UpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
+    public UpsertTableRequest getUpsertTableRequest(
+            RecordInternal<?> recordInternal,
+            ArrayMap<String, Boolean> extraWritePermissionToStateMap) {
         Trace.traceBegin(
                 TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetUpsertTableRequest"));
+        ContentValues upsertValues = getContentValues((T) recordInternal);
+        updateUpsertValuesIfRequired(upsertValues, extraWritePermissionToStateMap);
         UpsertTableRequest upsertTableRequest =
-                new UpsertTableRequest(
-                                getMainTableName(),
-                                getContentValues((T) recordInternal),
-                                UNIQUE_COLUMNS_INFO)
+                new UpsertTableRequest(getMainTableName(), upsertValues, UNIQUE_COLUMNS_INFO)
                         .setRequiresUpdateClause(
                                 new UpsertTableRequest.IRequiresUpdate() {
                                     @Override
@@ -252,9 +260,20 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                                     }
                                 })
                         .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal))
-                        .setHelper(this);
+                        .setHelper(this)
+                        .setExtraWritePermissionsStateMapping(extraWritePermissionToStateMap);
         Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
         return upsertTableRequest;
+    }
+
+    /* Updates upsert content values based on extra permissions state. */
+    protected void updateUpsertValuesIfRequired(
+            @NonNull ContentValues values,
+            @Nullable ArrayMap<String, Boolean> extraWritePermissionToStateMap) {}
+
+    public List<String> getChildTablesToDeleteOnRecordUpsert(
+            ArrayMap<String, Boolean> extraWritePermissionToState) {
+        return getAllChildTables();
     }
 
     @NonNull
@@ -694,14 +713,21 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return columnInfo;
     }
 
-    /** Returns extra permissions required to write given record. */
-    public List<String> checkFlagsAndGetExtraWritePermissions(RecordInternal<?> recordInternal) {
-        return Collections.emptyList();
-    }
+    /** Checks that operation with current record type are supported. */
+    public void checkRecordOperationsAreEnabled(RecordInternal<?> recordInternal) {}
 
     /** Returns permissions required to read extra record data. */
     public List<String> getExtraReadPermissions() {
         return Collections.emptyList();
     }
 
+    /** Returns all extra permissions associated with current record type. */
+    public List<String> getExtraWritePermissions() {
+        return Collections.emptyList();
+    }
+
+    /** Returns extra permissions required to write given record. */
+    public List<String> getRequiredExtraWritePermissions(RecordInternal<?> recordInternal) {
+        return Collections.emptyList();
+    }
 }

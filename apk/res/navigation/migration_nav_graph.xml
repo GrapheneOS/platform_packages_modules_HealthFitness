@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_migrationNavigationFragment_to_migrationPausedFragment"
             app:destination="@id/migrationPausedFragment"/>
+        <action
+            android:id="@+id/action_migrationNavigationFragment_to_homeFragment"
+            app:destination="@id/healthConnectHomeActivity"/>
     </fragment>
     <fragment
         android:id="@+id/migrationInProgressFragment"
@@ -37,8 +40,6 @@
             app:destination="@id/updateAppActivity"/>
         <action
             android:id="@+id/action_migrationAppUpdateNeededFragment_to_homeScreen"
-            app:popUpTo="@id/migrationAppUpdateNeededFragment"
-            app:popUpToInclusive="true"
             app:destination="@id/healthConnectHomeActivity"/>
     </fragment>
 
@@ -50,8 +51,6 @@
             app:destination="@id/systemUpdateActivity"/>
         <action
             android:id="@+id/action_migrationModuleUpdateNeededFragment_to_homeScreen"
-            app:popUpTo="@id/migrationModuleUpdateNeededFragment"
-            app:popUpToInclusive="true"
             app:destination="@id/healthConnectHomeActivity"/>
     </fragment>
 

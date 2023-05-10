@@ -39,6 +39,9 @@ import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.ExerciseRoute;
+import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
@@ -54,6 +57,7 @@ import com.android.cts.install.lib.TestApp;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -88,6 +92,9 @@ public class TestUtils {
     public static final String RECORD_IDS = "android.healthconnect.cts.records";
     public static final String DELETE_RECORDS_QUERY = "android.healthconnect.cts.deleteRecords";
     public static final String UPDATE_RECORDS_QUERY = "android.healthconnect.cts.updateRecords";
+    public static final String UPDATE_EXERCISE_ROUTE = "android.healthconnect.cts.updateRoute";
+
+    public static final String UPSERT_EXERCISE_ROUTE = "android.healthconnect.cts.upsertRoute";
     public static final String GET_CHANGE_LOG_TOKEN_QUERY =
             "android.healthconnect.cts.getChangeLogToken";
     public static final String INTENT_EXCEPTION = "android.healthconnect.cts.exception";
@@ -135,6 +142,18 @@ public class TestUtils {
         bundle.putString(QUERY_TYPE, UPDATE_RECORDS_QUERY);
         bundle.putSerializable(RECORD_IDS, (Serializable) listOfRecordIdsAndClass);
 
+        return getFromTestApp(testAppToUpdateData, bundle);
+    }
+
+    public static Bundle updateRouteAs(TestApp testAppToUpdateData) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, UPDATE_EXERCISE_ROUTE);
+        return getFromTestApp(testAppToUpdateData, bundle);
+    }
+
+    public static Bundle insertSessionNoRouteAs(TestApp testAppToUpdateData) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, UPSERT_EXERCISE_ROUTE);
         return getFromTestApp(testAppToUpdateData, bundle);
     }
 
@@ -236,10 +255,12 @@ public class TestUtils {
         final Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setPackage(testApp.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(INTENT_EXTRA_CALLING_PKG, getContext().getPackageName());
         intent.putExtras(bundleToCreateIntent);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.putExtras(bundleToCreateIntent);
+
         getContext().startActivity(intent);
         if (!latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
             final String errorMessage =
@@ -317,17 +338,42 @@ public class TestUtils {
 
     public static List<Record> getTestRecords(String packageName) {
         double clientId = Math.random();
+        return getTestRecords(packageName, clientId);
+    }
+
+    public static List<Record> getTestRecords(String packageName, Double clientId) {
         return Arrays.asList(
+                getExerciseSessionRecord(packageName, clientId, /* withRoute= */ true),
                 getStepsRecord(packageName, clientId),
                 getHeartRateRecord(packageName, clientId),
                 getBasalMetabolicRateRecord(packageName, clientId));
     }
 
-    public static List<Record> getTestRecords(String packageName, Double clientId) {
-        return Arrays.asList(
-                getStepsRecord(packageName, clientId),
-                getHeartRateRecord(packageName, clientId),
-                getBasalMetabolicRateRecord(packageName, clientId));
+    public static ExerciseSessionRecord getExerciseSessionRecord(
+            String packageName, double clientId, boolean withRoute) {
+        Instant startTime = Instant.now().minusSeconds(3000);
+        Instant endTime = Instant.now();
+        ExerciseSessionRecord.Builder builder =
+                new ExerciseSessionRecord.Builder(
+                                buildSessionMetadata(packageName, clientId),
+                                startTime,
+                                endTime,
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT)
+                        .setEndZoneOffset(ZoneOffset.MAX)
+                        .setStartZoneOffset(ZoneOffset.MIN)
+                        .setNotes("notes")
+                        .setTitle("title");
+
+        if (withRoute) {
+            builder.setRoute(
+                    new ExerciseRoute(
+                            List.of(
+                                    new ExerciseRoute.Location.Builder(startTime, 50., 50.).build(),
+                                    new ExerciseRoute.Location.Builder(
+                                                    startTime.plusSeconds(2), 51., 51.)
+                                            .build())));
+        }
+        return builder.build();
     }
 
     public static StepsRecord getStepsRecord(String packageName, double clientId) {
@@ -583,5 +629,16 @@ public class TestUtils {
                         // TODO(b/241542162): Avoid reflection once TestApi can be called from CTS
                         service.getClass().getMethod("deleteAllStagedRemoteData").invoke(service),
                 "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
+    }
+
+    private static Metadata buildSessionMetadata(String packageName, double clientId) {
+        Device device =
+                new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
+        DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(packageName).build();
+        return new Metadata.Builder()
+                .setDevice(device)
+                .setDataOrigin(dataOrigin)
+                .setClientRecordId(String.valueOf(clientId))
+                .build();
     }
 }

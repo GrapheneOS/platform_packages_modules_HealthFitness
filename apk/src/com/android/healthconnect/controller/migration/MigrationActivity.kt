@@ -32,6 +32,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class MigrationActivity : Hilt_MigrationActivity() {
 
     companion object {
+        const val MIGRATION_COMPLETE_KEY = "migration_complete_key"
+
+        private fun isMigrationComplete(activity: Activity): Boolean {
+            val sharedPreference =
+                activity.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+            return sharedPreference.getBoolean(MIGRATION_COMPLETE_KEY, false)
+        }
+
         fun maybeRedirectToMigrationActivity(
             activity: Activity,
             migrationState: MigrationState

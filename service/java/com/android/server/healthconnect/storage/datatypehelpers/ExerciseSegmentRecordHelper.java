@@ -47,7 +47,7 @@ import java.util.List;
  * @hide
  */
 public class ExerciseSegmentRecordHelper {
-    private static final String EXERCISE_SEGMENT_RECORD_TABLE_NAME = "exercise_segments_table";
+    static final String EXERCISE_SEGMENT_RECORD_TABLE_NAME = "exercise_segments_table";
     private static final String EXERCISE_SEGMENT_START_TIME = "segment_start_time";
     private static final String EXERCISE_SEGMENT_END_TIME = "segment_end_time";
     private static final String EXERCISE_SEGMENT_TYPE = "segment_type";

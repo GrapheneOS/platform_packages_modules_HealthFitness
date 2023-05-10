@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.migration.MigrationActivity
 import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.migration.MigrationViewModel.MigrationFragmentState.WithData
 import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
@@ -38,7 +39,9 @@ class MigrationActivityTest {
 
     @Test
     fun intentLaunchesMigrationActivity() {
-        whenever(viewModel.migrationState).then { MutableLiveData(MigrationState.IN_PROGRESS) }
+        whenever(viewModel.migrationState).then {
+            MutableLiveData(WithData(MigrationState.IN_PROGRESS))
+        }
         val startActivityIntent =
             Intent.makeMainActivity(ComponentName(context, MigrationActivity::class.java))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
