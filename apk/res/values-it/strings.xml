@@ -323,7 +323,7 @@
     <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"Inoltre, rimuovi tutte le autorizzazioni di <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> da Connessione Salute"</string>
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Vuoi eliminare definitivamente tutti i dati relativi a <xliff:g id="DATA_TYPE">%1$s</xliff:g> aggiunti da <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Vuoi eliminare definitivamente questa voce?"</string>
-    <string name="confirming_question_message" msgid="2934249835529079545">"Le app collegate non potranno più accedere a questi dati tramite Connessione Salute"</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"Le app collegate non potranno più accedere a questi dati tramite Connessione Salute."</string>
     <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Questa operazione eliminerà tutte le voci relative alle mestruazioni dal giorno <xliff:g id="START_DATE">%1$s</xliff:g> al giorno <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Elimina"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Indietro"</string>
@@ -731,11 +731,11 @@
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Se hai già aggiornato il sistema del tuo telefono, prova a riavviare il dispositivo per continuare con l\'integrazione"</string>
     <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Aggiornamento Connessione Salute richiesto"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Prima di continuare, aggiorna l\'app Connessione Salute all\'ultima versione."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Più spazio richiesto"</string>
+    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"È necessario più spazio"</string>
     <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Connessione Salute richiede <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> di spazio di archiviazione sul telefono per continuare con l\'integrazione.\n\nLibera un po\' di spazio sul telefono e riprova."</string>
     <string name="try_again_button" msgid="8745496819992160789">"Riprova"</string>
     <string name="free_up_space_button" msgid="4141013808635654695">"Libera spazio"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"Più spazio richiesto"</string>
+    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"È necessario più spazio"</string>
     <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Connessione Salute richiede <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> di spazio di archiviazione sul telefono per continuare con l\'integrazione."</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integrazione in pausa"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"L\'app Connessione Salute è stata chiusa durante l\'integrazione nel sistema Android.\n\nFai clic su Riprendi per riaprire l\'app e continuare a trasferire dati e autorizzazioni."</string>
@@ -748,7 +748,7 @@
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Continua"</string>
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"Riprendi l\'integrazione di Connessione Salute"</string>
     <string name="resume_migration_notification_content" msgid="46172108837648715">"Per mantenere i tuoi dati, completa l\'operazione entro <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Aggiornamento dell\'app necessario"</string>
+    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Aggiornamento app necessario"</string>
     <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> richiede l\'aggiornamento per poter funzionare con Connessione Salute"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Alcune app richiedono l\'aggiornamento per poter funzionare con Connessione Salute"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Verifica disponibilità di aggiornamenti"</string>
@@ -757,7 +757,7 @@
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"L\'app Connessione Salute è pronta per essere integrata nel sistema Android. Se consenti ora l\'accesso alle app, alcune funzionalità potrebbero non essere disponibili fino al completamento dell\'integrazione."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continua"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integrazione di Connessione Salute in corso"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"È in corso l\'integrazione di Connessione Salute nel sistema Android.\n\nRiceverai una notifica una volta completato il processo. Dopodiché potrai usare <xliff:g id="APP_NAME">%1$s</xliff:g> con Connessione Salute."</string>
+    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"È in corso l\'integrazione di Connessione Salute nel sistema Android.\n\nAl termine del processo riceverai una notifica e potrai usare <xliff:g id="APP_NAME">%1$s</xliff:g> con Connessione Salute."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"È in corso l\'integrazione di Connessione Salute nel sistema Android.\n\nAl termine della procedura riceverai una notifica e potrai usare Connessione Salute."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Integrazione di Connessione Salute non completata"</string>
@@ -768,6 +768,6 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Integrazione di Connessione Salute completata"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Apri"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Novità"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Ora puoi accedere a Connessione Salute direttamente dalle tue impostazioni. Disinstalla l\'app Connessione Salute in qualsiasi momento."</string>
+    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Ora puoi accedere a Connessione Salute direttamente dalle impostazioni. Puoi disinstallare l\'app Connessione Salute in qualsiasi momento."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"OK"</string>
 </resources>

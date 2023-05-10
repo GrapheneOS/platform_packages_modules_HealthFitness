@@ -732,7 +732,7 @@
     <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Health Connect আপডেট করা প্রয়োজন"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"চালিয়ে যাওয়ার আগে, Health Connect অ্যাপকে লেটেস্ট ভার্সনে আপডেট করুন।"</string>
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"আরও জায়গা প্রয়োজন"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"ইন্টিগ্রেশন চালিয়ে যাওয়ার জন্য, আপনার ফোনে Health Connect-এর <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> স্টোরেজের জায়গা প্রয়োজন।\n\nআপনার ফোনে কিছুটা জায়গা খালি করে আবার চেষ্টা করুন।"</string>
+    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"ইন্টিগ্রেশন চালিয়ে যেতে, Health Connect-এর জন্য আপনার ফোনের স্টোরেজে <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> জায়গা প্রয়োজন।\n\nআপনার ফোনে কিছুটা জায়গা খালি করে আবার চেষ্টা করুন।"</string>
     <string name="try_again_button" msgid="8745496819992160789">"আবার চেষ্টা করুন"</string>
     <string name="free_up_space_button" msgid="4141013808635654695">"স্টোরেজ খালি করুন"</string>
     <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"আরও জায়গা প্রয়োজন"</string>

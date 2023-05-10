@@ -753,7 +753,7 @@
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Baadhi ya programu zinahitaji kusasishwa ili ziendelee kufanya kazi na programu ya Health Connect"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Angalia masasisho"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Ujumuishaji wa programu ya Health Connect"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Programu ya Health Connect iko tayari kujumuishwa na mfumo wako wa Android. Ukiipa <xliff:g id="APP_NAME">%1$s</xliff:g> uwezo wa kufikia kwa sasa, baadhi ya vipengele huenda visifanye kazi hadi shughuli ya ujumuishaji itakapokamilika."</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Programu ya Health Connect iko tayari kujumuishwa na mfumo wako wa Android. Ukiipa <xliff:g id="APP_NAME">%1$s</xliff:g> uwezo wa kufikia sasa, baadhi ya vipengele huenda visifanye kazi hadi shughuli ya ujumuishaji itakapokamilika."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Programu ya Health Connect iko tayari kusawazishwa na mfumo wako wa Android. Ukiruhusu ufikiaji wa programu sasa, baadhi ya vipengele huenda visifanye kazi hadi usawazishaji utakapokamilika."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Endelea"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Programu ya Health Connect inaendelea kujumuishwa"</string>

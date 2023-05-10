@@ -324,7 +324,7 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"<xliff:g id="APP_DATA">%2$s</xliff:g> ilovasi kiritgan barcha <xliff:g id="DATA_TYPE">%1$s</xliff:g> maʼlumotlari butunlay oʻchirilsinmi?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Bu yozuv butunlay oʻchirib tashlansinmi?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Ulangan ilovalar keyin Health Connect xizmatidan ushbu axborotni ololmaydi"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Bunda <xliff:g id="START_DATE">%1$s</xliff:g> - <xliff:g id="END_DATE">%2$s</xliff:g> sanalari orasidagi hayz qaydlari oʻchirib tashlanadi."</string>
+    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Bunda <xliff:g id="START_DATE">%1$s</xliff:g> dan <xliff:g id="END_DATE">%2$s</xliff:g> gacha boʻlgan hayz qaydlari oʻchirib tashlanadi."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"O‘chirish"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Orqaga"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Tayyor"</string>
@@ -754,16 +754,14 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Yangilanish mavjudligini tekshiring"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect integratsiyasi"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect Android tizimingiz bilan integratsiyaga tayyor. Agar hozir <xliff:g id="APP_NAME">%1$s</xliff:g> ilovasiga ruxsat bersangiz, integratsiya tugamaguncha ayrim funksiyalar ishlamasligi mumkin."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect Android tizimingiz bilan integratsiyaga tayyor. Agar hozir ruxsat bersangiz, integratsiya tugamaguncha ayrim funksiyalar ishlamasligi mumkin."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Davom etish"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect integratsiyasi davom etmoqda"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect ilovasi Android tizimi bilan integratsiya qilinmoqda.\n\nJarayon tamomlangandan keyin sizga bildirishnoma yuboriladi hamda <xliff:g id="APP_NAME">%1$s</xliff:g> ilovasidan Health Connect bilan foydalanishingiz mumkin boʻladi."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect ilovasi Android tizimi bilan integratsiya qilinmoqda.\n\nJarayon tamomlangandan keyin sizga bildirishnoma yuboriladi hamda Health Connect ishlatishingiz mumkin boʻladi."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect integratsiyasi tamomlanmadi"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Qayta ishga tushirilganda sizga bildirishnoma orqali bildiriladi."</string>
+    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Qayta ishga tushirilganda sizga bildirishnoma yuboriladi."</string>
     <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"OK"</string>
     <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Health Connect integratsiyasi tamomlanmadi"</string>
     <string name="migration_not_complete_notification_action" msgid="757041885992445657">"Batafsil"</string>
