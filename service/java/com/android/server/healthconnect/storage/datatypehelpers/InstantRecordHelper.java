@@ -111,7 +111,7 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
 
     final ZoneOffset getZoneOffset(Cursor cursor) {
         ZoneOffset zoneOffset = null;
-        if (cursor.getColumnIndex(ZONE_OFFSET_COLUMN_NAME) != -1) {
+        if (cursor.getCount() > 0 && cursor.getColumnIndex(ZONE_OFFSET_COLUMN_NAME) != -1) {
             zoneOffset =
                     ZoneOffset.ofTotalSeconds(
                             StorageUtils.getCursorInt(cursor, ZONE_OFFSET_COLUMN_NAME));
