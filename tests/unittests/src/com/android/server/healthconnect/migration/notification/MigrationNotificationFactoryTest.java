@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package healthconnect.migration.notification;
+package com.android.server.healthconnect.migration.notification;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import android.content.Context;
+import android.graphics.drawable.Icon;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-
-import com.android.server.healthconnect.migration.notification.MigrationNotificationFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,5 +45,16 @@ public class MigrationNotificationFactoryTest {
             String failMessage = "String resource with name " + s + " cannot be found.";
             assertWithMessage(failMessage).that(fetched).isNotNull();
         }
+    }
+
+    @Test
+    public void testAppIconDrawableExists() {
+        MigrationNotificationFactory factory = new MigrationNotificationFactory(mContext);
+        Icon fetched = factory.getAppIcon();
+        String failMessage =
+                "Drawable resource with name "
+                        + MigrationNotificationFactory.APP_ICON_DRAWABLE_NAME
+                        + " cannot be found.";
+        assertWithMessage(failMessage).that(fetched).isNotNull();
     }
 }
