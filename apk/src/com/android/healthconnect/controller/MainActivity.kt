@@ -22,6 +22,8 @@ import com.android.healthconnect.controller.migration.MigrationActivity.Companio
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
+import com.android.healthconnect.controller.onboarding.OnboardingActivityContract
+import com.android.healthconnect.controller.onboarding.OnboardingActivityContract.Companion.INTENT_RESULT_CANCELLED
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
@@ -35,7 +37,7 @@ class MainActivity : Hilt_MainActivity() {
     @Inject lateinit var logger: HealthConnectLogger
     private val migrationViewModel: MigrationViewModel by viewModels()
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -45,8 +47,8 @@ class MainActivity : Hilt_MainActivity() {
             return
         }
 
-        if (maybeRedirectToOnboardingActivity(this, intent)) {
-            return
+        if (maybeRedirectToOnboardingActivity(this) && savedInstanceState == null) {
+            openOnboardingActivity.launch(1)
         }
 
         val currentMigrationState = runBlocking { migrationViewModel.getCurrentMigrationUiState() }
@@ -85,6 +87,13 @@ class MainActivity : Hilt_MainActivity() {
         }
         return true
     }
+
+    val openOnboardingActivity =
+        registerForActivityResult(OnboardingActivityContract()) { result ->
+            if (result == INTENT_RESULT_CANCELLED) {
+                finish()
+            }
+        }
 
     // TODO (b/270864219): implement interaction logging for the menu button
     //    override fun onMenuOpened(featureId: Int, menu: Menu?): Boolean {

@@ -47,7 +47,7 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
             return
         }
 
-        if (maybeRedirectToOnboardingActivity(this, intent)) {
+        if (maybeRedirectToOnboardingActivity(this)) {
             return
         }
 
