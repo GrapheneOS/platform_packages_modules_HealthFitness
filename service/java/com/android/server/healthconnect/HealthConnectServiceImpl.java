@@ -334,7 +334,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         attributionSource.getPackageName(),
                                         recordInternals,
                                         mContext,
-                                        /* isInsertRequest */ true);
+                                        /* isInsertRequest */ true,
+                                        mDataPermissionEnforcer
+                                                .collectExtraWritePermissionStateMapping(
+                                                        recordInternals, attributionSource));
                         List<String> uuids = mTransactionManager.insertAll(insertRequest);
                         tryAndReturnResult(callback, uuids, builder);
 
@@ -518,6 +521,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
                                                     request.getRecordType(), attributionSource)
                                             || !isInForeground);
+                            if (Constants.DEBUG) {
+                                Slog.d(
+                                        TAG,
+                                        "Enforce self read for package "
+                                                + attributionSource.getPackageName()
+                                                + ":"
+                                                + enforceSelfRead.get());
+                            }
                             tryAcquireApiCallQuota(
                                     uid,
                                     QuotaCategory.QUOTA_CATEGORY_READ,
@@ -603,6 +614,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             // return an empty list
                             if (ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME.equals(
                                     exception.typeName())) {
+                                if (Constants.DEBUG) {
+                                    Slog.d(
+                                            TAG,
+                                            "No app info recorded for "
+                                                    + attributionSource.getPackageName());
+                                }
                                 callback.onResult(
                                         new ReadRecordsResponseParcel(
                                                 new RecordsParcel(new ArrayList<>()),
@@ -694,7 +711,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         attributionSource.getPackageName(),
                                         recordInternals,
                                         mContext,
-                                        /* isInsertRequest */ false);
+                                        /* isInsertRequest */ false,
+                                        mDataPermissionEnforcer
+                                                .collectExtraWritePermissionStateMapping(
+                                                        recordInternals, attributionSource));
                         mTransactionManager.updateAll(request);
                         tryAndReturnResult(callback, builder);
                         finishDataDeliveryWriteRecords(recordInternals, attributionSource);

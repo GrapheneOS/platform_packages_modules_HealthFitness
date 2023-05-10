@@ -23,6 +23,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.util.ArrayMap;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
@@ -44,7 +45,7 @@ public class UpsertTableRequest {
     public static final int TYPE_STRING = 0;
     public static final int TYPE_BLOB = 1;
     private final String mTable;
-    private final ContentValues mContentValues;
+    private ContentValues mContentValues;
     private final List<Pair<String, Integer>> mUniqueColumns;
     private List<UpsertTableRequest> mChildTableRequests = Collections.emptyList();
     private String mParentCol;
@@ -54,6 +55,8 @@ public class UpsertTableRequest {
     private Integer mRecordType;
     private RecordInternal<?> mRecordInternal;
     private RecordHelper<?> mRecordHelper;
+
+    private ArrayMap<String, Boolean> mExtraWritePermissionsStateMapping;
 
     public UpsertTableRequest(@NonNull String table, @NonNull ContentValues contentValues) {
         this(table, contentValues, Collections.emptyList());
@@ -198,6 +201,14 @@ public class UpsertTableRequest {
     }
 
     @NonNull
+    public List<String> getAllChildTablesToDelete() {
+        return mRecordHelper == null
+                ? Collections.emptyList()
+                : mRecordHelper.getChildTablesToDeleteOnRecordUpsert(
+                        mExtraWritePermissionsStateMapping);
+    }
+
+    @NonNull
     public List<String> getAllChildTables() {
         return mRecordHelper == null ? Collections.emptyList() : mRecordHelper.getAllChildTables();
     }
@@ -208,6 +219,12 @@ public class UpsertTableRequest {
 
     public void setRecordInternal(RecordInternal<?> recordInternal) {
         mRecordInternal = recordInternal;
+    }
+
+    public <T extends RecordInternal<?>> UpsertTableRequest setExtraWritePermissionsStateMapping(
+            ArrayMap<String, Boolean> extraWritePermissionsToState) {
+        mExtraWritePermissionsStateMapping = extraWritePermissionsToState;
+        return this;
     }
 
     @Target(ElementType.TYPE_USE)
