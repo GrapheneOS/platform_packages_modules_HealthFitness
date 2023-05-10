@@ -683,7 +683,7 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"מחיקה אוטומטית של נתונים"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{אחרי חודש אחד}one{אחרי # חודשים}two{אחרי חודשיים}other{אחרי # חודשים}}"</string>
     <string name="range_never" msgid="4429478261788361233">"אף פעם"</string>
-    <string name="range_off" msgid="8178520557618184215">"השבתה"</string>
+    <string name="range_off" msgid="8178520557618184215">"מושבתת"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"כשמשנים את ההגדרות האלה, הנתונים הקיימים ב-Health Connect נמחקים כך שישקפו את ההעדפות החדשות"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{למחוק אוטומטית את הנתונים אחרי חודש אחד?}one{למחוק אוטומטית את הנתונים אחרי # חודשים?}two{למחוק אוטומטית את הנתונים אחרי חודשיים?}other{למחוק אוטומטית את הנתונים אחרי # חודשים?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי חודש אחד. ההגדרה הזאת תמחק גם נתונים קיימים מלפני חודש.}one{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי # חודשים. ההגדרה הזאת תמחק גם נתונים קיימים מלפני # חודשים.}two{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי חודשיים. ההגדרה הזאת תמחק גם נתונים קיימים מלפני # חודשים.}other{נתונים חדשים יימחקו מ-Health Connect באופן אוטומטי אחרי # חודשים. ההגדרה הזאת תמחק גם נתונים קיימים מלפני # חודשים.}}"</string>

@@ -251,7 +251,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"Jour sélectionné"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"Jour précédent"</string>
     <string name="default_error" msgid="7966868260616403475">"Un problème est survenu. Veuillez réessayer."</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"Les applis ayant cette autorisation peuvent lire et écrire vos données de santé et de fitness."</string>
+    <string name="health_permission_header_description" msgid="7497601695462373927">"Les applis ayant cette autorisation peuvent lire et écrire vos données de santé et de remise en forme."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Contrôlez les applis autorisées à accéder aux données stockées dans Santé Connect. Appuyez sur une appli pour consulter les données qu\'elle peut lire ou modifier."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Accès autorisé"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Accès non autorisé"</string>
@@ -324,7 +324,7 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Supprimer définitivement toutes les données \"<xliff:g id="DATA_TYPE">%1$s</xliff:g>\" ajoutées par <xliff:g id="APP_DATA">%2$s</xliff:g> ?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Supprimer définitivement cette entrée ?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Les applis connectées ne pourront plus accéder à ces données Santé Connect"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Cela supprimera toutes les données de menstruation du <xliff:g id="START_DATE">%1$s</xliff:g> au <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
+    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Toutes les données de menstruation du <xliff:g id="START_DATE">%1$s</xliff:g> au <xliff:g id="END_DATE">%2$s</xliff:g> seront supprimées."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Supprimer"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Retour"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"OK"</string>
@@ -732,7 +732,7 @@
     <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Mise à jour de Santé Connect requise"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Installez la dernière version de l\'appli Santé Connect avant de continuer."</string>
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Espace insuffisant"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Santé Connect a besoin de <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> d\'espace de stockage sur votre téléphone pour continuer l\'intégration.\n\nLibérez de l\'espace sur votre téléphone, puis réessayez."</string>
+    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Santé Connect a besoin de <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> d\'espace de stockage sur votre téléphone pour que l\'intégration se poursuive.\n\nLibérez de l\'espace sur votre téléphone, puis réessayez."</string>
     <string name="try_again_button" msgid="8745496819992160789">"Réessayer"</string>
     <string name="free_up_space_button" msgid="4141013808635654695">"Libérer de l\'espace"</string>
     <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"Espace insuffisant"</string>
@@ -753,14 +753,12 @@
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Certaines applis doivent être mises à jour pour continuer de fonctionner avec Santé Connect"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Rechercher les mises à jour"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Intégration de Santé Connect"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Santé Connect est prête à être intégrée à votre système Android. Si vous accordez l\'accès à <xliff:g id="APP_NAME">%1$s</xliff:g> maintenant, certaines fonctionnalités risquent de ne pas fonctionner jusqu\'à ce que l\'intégration soit terminée."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Santé Connect est prêt à être intégré à votre système Android. Si vous autorisez <xliff:g id="APP_NAME">%1$s</xliff:g> à y accéder avant que l\'intégration soit terminée, il se peut que vous ne puissiez pas profiter de certaines fonctionnalités."</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Santé Connect est prête à être intégrée à votre système Android. Si vous accordez l\'accès à des applis maintenant, certaines fonctionnalités risquent de ne pas fonctionner jusqu\'à ce que l\'intégration soit terminée."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuer"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Intégration de Santé Connect en cours"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Santé Connect est en cours d\'intégration au système Android.\n\nVous recevrez une notification une fois le processus terminé. Vous pourrez alors utiliser <xliff:g id="APP_NAME">%1$s</xliff:g> avec Santé Connect."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Santé Connect est en cours d\'intégration au système Android.\n\nVous recevrez une notification une fois le processus terminé. Vous pourrez alors utiliser Santé Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"L\'intégration de Santé Connect n\'a pas abouti"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Vous recevrez une notification lorsqu\'elle sera de nouveau disponible."</string>
