@@ -62,7 +62,7 @@
     <string name="no_categories" msgid="2636778482437506241">"Vous n\'avez aucune donnée dans Connexion Santé"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Vos données"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"Priorité des applications"</string>
-    <string name="delete_category_data_button" msgid="2324773398768267043">"Supprimer les données <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="delete_category_data_button" msgid="2324773398768267043">"Supprimer les données « <xliff:g id="CATEGORY">%s</xliff:g> »"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Toutes les applications"</string>
     <string name="can_read" msgid="4568261079308309564">"Autorisation de lecture : <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Autorisation d\'écriture : <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
@@ -655,8 +655,7 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 kilojoule}one{# kilojoule}other{# kilojoules}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1 %}one{# %}other{# %}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 pour cent}one{# pour cent}other{# pour cent}}"</string>
-    <!-- no translation found for units_cancel (5947097690625771995) -->
-    <skip />
+    <string name="units_cancel" msgid="5947097690625771995">"Annuler"</string>
     <string name="units_title" msgid="6504086463237869339">"Unités"</string>
     <string name="set_units_label" msgid="6566059089772896105">"Définir les unités de données"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"Distance"</string>
@@ -695,8 +694,7 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Suppression automatique des données"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Après # mois}one{Après # mois}other{Après # mois}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Jamais"</string>
-    <!-- no translation found for range_off (8178520557618184215) -->
-    <skip />
+    <string name="range_off" msgid="8178520557618184215">"Désactivée"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Lorsque vous modifiez ces paramètres, Connexion santé supprime les données existantes conformément à vos nouvelles préférences"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Supprimer automatiquement les données après # mois?}one{Supprimer automatiquement les données après # mois?}other{Supprimer automatiquement les données après # mois?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Connexion santé supprimera automatiquement les nouvelles données après # mois. Si vous définissez ce paramètre, les données existantes de plus de # mois seront supprimées automatiquement.}one{Connexion santé supprimera automatiquement les nouvelles données après # mois. Si vous définissez ce paramètre, les données existantes de plus de # mois seront supprimées automatiquement.}other{Connexion santé supprimera automatiquement les nouvelles données après # mois. Si vous définissez ce paramètre, les données existantes de plus de # mois seront supprimées automatiquement.}}"</string>
@@ -810,26 +808,22 @@
     <skip />
     <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
     <skip />
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Connexion santé est prête à être intégrée à votre système Android. Si vous accordez l\'accès aux applications dès maintenant, certaines fonctionnalités risquent de ne pas fonctionner jusqu\'à ce que l\'intégration soit terminée."</string>
     <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
     <skip />
     <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
     <skip />
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Connexion santé est en cours d\'intégration au système Android.\n\nVous recevrez une notification une fois que le processus sera terminé et que vous pourrez utiliser Connexion santé."</string>
     <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
     <skip />
-    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
-    <skip />
+    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"L\'intégration de Connexion santé n\'a pas abouti"</string>
     <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
     <skip />
     <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
     <skip />
-    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
-    <skip />
+    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"L\'intégration de Connexion santé n\'a pas abouti"</string>
     <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
     <skip />
     <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->

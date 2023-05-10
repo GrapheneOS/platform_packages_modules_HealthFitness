@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Ստուգել թարմացումների առկայությունը"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect-ի ինտեգրում"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect-ը պատրաստ է ինտեգրման ձեր Android համակարգի հետ։ Եթե հիմա <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածին թույլտվություններ տրամադրեք, որոշ հավելվածներ կարող են չաշխատել, մինչև ինտեգրումը չավարտվի։"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect-ը պատրաստ է ինտեգրման ձեր Android համակարգի հետ։ Եթե հիմա հավելվածներին թույլտվություններ տրամադրեք, որոշ գործառույթներ կարող են չաշխատել, մինչև ինտեգրումը չավարտվի։"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Շարունակել"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect-ի ինտեգրումն ընթացքում է"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect-ն ինտեգրվում է Android համակարգի հետ։\n\nԴուք ծանուցում կստանաք, երբ գործընթացն ավարտվի, և կկարողանաք օգտագործել <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածը Health Connect-ի հետ։"</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect-ն ինտեգրվում է Android համակարգի հետ։\n\nԴուք ծանուցում կստանաք, երբ գործընթացն ավարտվի, և կկարողանաք օգտվել Health Connect-ից։"</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Եղավ"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect-ի ինտեգրումը չի ավարտվել"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Դուք ծանուցում կստանաք, երբ այն նորից հասանելի դառնա։"</string>

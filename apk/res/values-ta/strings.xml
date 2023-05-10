@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"புதுப்பிப்புகளைக் காட்டு"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect ஒருங்கிணைப்பு"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"உங்கள் Android சிஸ்டத்துடன் ஒருங்கிணைக்க Health Connect தயாராக உள்ளது. நீங்கள் இப்போது <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸுக்கான அணுகலை வழங்கினால், ஒருங்கிணைப்பு நிறைவடையும் வரை சில அம்சங்கள் செயல்படாமல் போகக்கூடும்."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"உங்கள் Android சிஸ்டத்துடன் ஒருங்கிணைக்க Health Connect தயாராக உள்ளது. நீங்கள் இப்போது ஆப்ஸுக்கான அணுகலை வழங்கினால், ஒருங்கிணைப்பு நிறைவடையும் வரை சில அம்சங்கள் செயல்படாமல் போகக்கூடும்."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"தொடருங்கள்"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect ஒருங்கிணைப்பு செயலிலுள்ளது"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Android சிஸ்டத்துடன் Health Connect ஆப்ஸ் ஒருங்கிணைக்கப்படுகிறது.\n\nசெயலாக்கம் நிறைவடைந்ததும் அறிவிப்பைப் பெறுவீர்கள். அதன் பிறகு Health Connect ஆப்ஸுடன் <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸைப் பயன்படுத்தலாம்."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Android சிஸ்டத்துடன் Health Connect ஆப்ஸ் ஒருங்கிணைக்கப்படுகிறது.\n\nசெயல்முறை நிறைவடைந்ததும் அறிவிப்பைப் பெறுவீர்கள். அதன் பிறகு Health Connect ஆப்ஸைப் பயன்படுத்தலாம்."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"சரி"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect ஒருங்கிணைப்பு நிறைவடையவில்லை"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"மீண்டும் ஒருங்கிணைப்பு கிடைக்கும்போது அறிவிப்பைப் பெறுவீர்கள்."</string>

@@ -683,7 +683,7 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Eliminación automática de datos"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Después de # mes}other{Después de # meses}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nunca"</string>
-    <string name="range_off" msgid="8178520557618184215">"Desactivar"</string>
+    <string name="range_off" msgid="8178520557618184215">"Desactivado"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Si cambias estos ajustes, Salud conectada eliminará los datos existentes para reflejar tus nuevas preferencias"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{¿Eliminar automáticamente los datos después de # mes?}other{¿Eliminar automáticamente los datos después de # meses?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Salud conectada eliminará automáticamente los datos nuevos después de # mes. También se eliminarán los datos almacenados de hace más de # mes.}other{Salud conectada eliminará automáticamente los datos nuevos después de # meses. También se eliminarán los datos almacenados de hace más de # meses.}}"</string>
@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Buscar actualizaciones"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integración con Salud conectada"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Salud conectada está lista para integrarse con tu sistema Android. Si le das acceso a <xliff:g id="APP_NAME">%1$s</xliff:g> ahora, es posible que algunas funciones no puedan usarse hasta que se haya completado la integración."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Salud conectada está lista para integrarse con tu sistema Android. Si das acceso a las aplicaciones ahora, es posible que algunas funciones no puedan usarse hasta que se haya completado la integración."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuar"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integración de Salud conectada en curso"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Salud conectada se está integrando con el sistema Android.\n\nRecibirás una notificación cuando el proceso se haya completado y puedas usar <xliff:g id="APP_NAME">%1$s</xliff:g> con Salud conectada."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Salud conectada se está integrando con el sistema Android.\n\nRecibirás una notificación cuando el proceso se haya completado y puedas usar Salud conectada."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Entendido"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"No se ha completado la integración con Salud conectada"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Recibirás una notificación cuando vuelva a estar disponible."</string>
