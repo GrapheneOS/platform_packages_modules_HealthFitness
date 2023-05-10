@@ -734,11 +734,11 @@
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Je potřeba víc místa"</string>
     <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect potřebuje <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> místa v telefonu, aby bylo možné pokračovat v integraci.\n\nUvolněte místo a zkuste to znovu."</string>
     <string name="try_again_button" msgid="8745496819992160789">"Zkusit znovu"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Uvolnění místa"</string>
+    <string name="free_up_space_button" msgid="4141013808635654695">"Uvolnit místo"</string>
     <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"Je potřeba víc místa"</string>
     <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Health Connect potřebuje <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> místa v telefonu, aby bylo možné pokračovat v integraci."</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integrace byla pozastavena"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Aplikace Health Connect byla během integrace se systémem Android zavřena.\n\nKliknutím na Pokračovat znovu otevřete aplikaci a budete pokračovat v přenosu dat a oprávnění."</string>
+    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Aplikace Health Connect byla během integrace se systémem Android zavřena.\n\nKliknutím na Pokračovat aplikaci znovu otevřete a budete pokračovat v přenosu dat a oprávnění."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Aby data Health Connect zůstala zachována, proveďte tuto akci do <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"Obnovit"</string>
     <string name="migration_paused_notification_title" msgid="6020271090296330698">"Integrace Health Connect byla pozastavena"</string>
@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Kontrola dostupnosti aktualizací"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integrace Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Služba Health Connect je připravena na integraci se systémem Android. Pokud aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> dáte přístup teď, některé funkce budou k dispozici až po dokončení integrace."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Služba Health Connect je připravena na integraci se systémem Android. Pokud aplikacím dáte přístup teď, některé funkce budou k dispozici až po dokončení integrace."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Pokračovat"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integrace Health Connect probíhá"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect se integruje se systémem Android.\n\nPo dokončení dostanete oznámení a budete moct používat aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> se službou Health Connect."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect se integruje se systémem Android.\n\nPo dokončení dostanete oznámení a budete moct používat službu Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Rozumím"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Integrace Health Connect nebyla dokončena"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Až bude znovu k dispozici, dostanete oznámení."</string>

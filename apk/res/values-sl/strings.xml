@@ -714,7 +714,7 @@
     <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"Kdo vidi te podatke?"</string>
     <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Samo aplikacije, ki jim dovolite dostop do vadbenih poti."</string>
     <string name="request_route_info_access_management_title" msgid="3222594923675464852">"Kako lahko upravljam dostop?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Dostop do vadbenih poti lahko upravljate v nastavitvah za Health Connect."</string>
+    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Dostop aplikacij do vadbenih poti lahko upravljate v nastavitvah za Health Connect."</string>
     <string name="back_button" msgid="780519527385993407">"Nazaj"</string>
     <string name="loading" msgid="2526615755685950317">"Nalaganje …"</string>
     <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integracija je v teku"</string>
@@ -728,7 +728,7 @@
     <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Posodobite zdaj"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebna je posodobitev sistema"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Pred nadaljevanjem posodobite sistem telefona."</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Če ste že posodobili sistem telefona, poskusite znova zagnati telefon, da boste nadaljevali z integracijo."</string>
+    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Če ste že posodobili sistem telefona, poskusite znova zagnati telefon, da boste nadaljevali integracijo."</string>
     <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Posodobiti morate Health Connect"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Pred nadaljevanjem posodobite aplikacijo Health Connect na najnovejšo različico."</string>
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Potrebnega je več prostora"</string>
@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Preverite, ali so na voljo posodobitve"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integracija aplikacije Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Aplikacija Health Connect je pripravljena za integracijo s sistemom Android. Če aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> odobrite dostop zdaj, nekatere funkcije morda ne bodo delovale, dokler integracija ne bo dokončana."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Aplikacija Health Connect je pripravljena za integracijo s sistemom Android. Če aplikacijam odobrite dostop zdaj, nekatere funkcije morda ne bodo delovale, dokler integracija ne bo dokončana."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Nadaljuj"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integracija aplikacije Health Connect je v teku"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Aplikacijo Health Connect bomo integrirali s sistemom Android.\n\nKo bo postopek končan, boste prejeli obvestilo, aplikacijo <xliff:g id="APP_NAME">%1$s</xliff:g> pa boste lahko uporabljali z aplikacijo Health Connect."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect bomo integrirali s sistemom Android.\n\nKo bo postopek končan in boste lahko uporabljali Health Connect, boste prejeli obvestilo."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Razumem"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Integracija aplikacije Health Connect se ni dokončala"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Ko bo znova na voljo, boste prejeli obvestilo."</string>

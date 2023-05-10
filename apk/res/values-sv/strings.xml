@@ -720,7 +720,7 @@
     <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integrering pågår"</string>
     <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect integreras med Android-systemet.\n\nDet kan ta en stund för din data och dina behörigheter att överföras."</string>
     <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Stäng inte appen förrän du får en avisering om att processen är klar."</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect-integreringen pågår"</string>
+    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect- integreringen pågår"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Uppdatering krävs"</string>
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect integreras med Android-systemet så att du kan komma åt det direkt från inställningarna."</string>
     <string name="update_button" msgid="4544529019832009496">"Uppdatera"</string>
@@ -760,7 +760,7 @@
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect integreras med Android-systemet.\n\nDu får en avisering när processen är slutförd och du kan använda <xliff:g id="APP_NAME">%1$s</xliff:g> med Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect integreras med Android-systemet.\n\nDu får en avisering när processen är slutförd och du kan använda Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect-integreringen slutfördes inte"</string>
+    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect- integreringen slutfördes inte"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Du får en avisering när den är tillgänglig igen."</string>
     <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"OK"</string>
     <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Health Connect-integreringen slutfördes inte"</string>
