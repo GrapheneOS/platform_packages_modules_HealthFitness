@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class ExerciseLapRecordHelper {
 
-    private static final String EXERCISE_LAPS_RECORD_TABLE_NAME = "exercise_laps_table";
+    static final String EXERCISE_LAPS_RECORD_TABLE_NAME = "exercise_laps_table";
     private static final String EXERCISE_LAPS_START_TIME = "lap_start_time";
     private static final String EXERCISE_LAPS_END_TIME = "lap_end_time";
     private static final String EXERCISE_LAPS_LENGTH = "lap_length";
