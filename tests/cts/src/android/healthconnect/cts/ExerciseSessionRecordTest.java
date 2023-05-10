@@ -19,6 +19,7 @@ package android.healthconnect.cts;
 import static android.healthconnect.cts.TestUtils.SESSION_END_TIME;
 import static android.healthconnect.cts.TestUtils.SESSION_START_TIME;
 import static android.healthconnect.cts.TestUtils.buildExerciseSession;
+import static android.healthconnect.cts.TestUtils.buildLocationTimePoint;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -162,6 +163,38 @@ public class ExerciseSessionRecordTest {
         assertThat(record.getSegments()).isEqualTo(segmentList);
         assertThat(record.getLaps()).isEqualTo(lapsList);
         assertThat(record.getTitle()).isEqualTo(title);
+    }
+
+    @Test
+    public void testUpdateRecord_updateToRecordWithoutRouteWithWritePerm_routeIsNullAfterUpdate()
+            throws InterruptedException {
+        ExerciseRoute route = TestUtils.buildExerciseRoute();
+        ExerciseSessionRecord record =
+                new ExerciseSessionRecord.Builder(
+                                new Metadata.Builder().build(),
+                                SESSION_START_TIME,
+                                SESSION_END_TIME,
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                        .setRoute(route)
+                        .build();
+        List<Record> recordList = TestUtils.insertRecords(Collections.singletonList(record));
+
+        ReadRecordsRequestUsingIds.Builder<ExerciseSessionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class);
+        request.addId(recordList.get(0).getMetadata().getId());
+
+        ExerciseSessionRecord insertedRecord = TestUtils.readRecords(request.build()).get(0);
+        assertThat(insertedRecord.hasRoute()).isTrue();
+        assertThat(insertedRecord.getRoute()).isNotNull();
+
+        TestUtils.updateRecords(
+                Collections.singletonList(
+                        getExerciseSessionRecord_update(
+                                record, recordList.get(0).getMetadata().getId(), null)));
+
+        insertedRecord = TestUtils.readRecords(request.build()).get(0);
+        assertThat(insertedRecord.hasRoute()).isFalse();
+        assertThat(insertedRecord.getRoute()).isNull();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -614,6 +647,7 @@ public class ExerciseSessionRecordTest {
                         ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
                 .setEndZoneOffset(ZoneOffset.MAX)
                 .setStartZoneOffset(ZoneOffset.MIN)
+                .setRoute(new ExerciseRoute(List.of(buildLocationTimePoint(startTime))))
                 .setNotes("notes")
                 .setTitle("title")
                 .build();

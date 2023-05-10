@@ -16,12 +16,15 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.HealthConnectException.ERROR_UNSUPPORTED_OPERATION;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.EXERCISE_SESSION_DURATION_TOTAL;
 
+import static com.android.server.healthconnect.storage.datatypehelpers.ExerciseLapRecordHelper.EXERCISE_LAPS_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.ExerciseRouteRecordHelper.EXERCISE_ROUTE_RECORD_TABLE_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.SeriesRecordHelper.PARENT_KEY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_FALSE_VALUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_TRUE_VALUE;
@@ -43,8 +46,11 @@ import android.health.connect.internal.datatypes.ExerciseLapInternal;
 import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Pair;
+
+import androidx.annotation.Nullable;
 
 import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger;
@@ -191,6 +197,36 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
+    public List<String> getChildTablesToDeleteOnRecordUpsert(
+            ArrayMap<String, Boolean> extraWritePermissionToState) {
+        ArrayList<String> childTablesToDelete = new ArrayList<>();
+        childTablesToDelete.add(EXERCISE_LAPS_RECORD_TABLE_NAME);
+        childTablesToDelete.add(EXERCISE_SEGMENT_RECORD_TABLE_NAME);
+
+        // If on session update app doesn't have granted write_route, then we leave the route as is.
+        if (canWriteExerciseRoute(extraWritePermissionToState)) {
+            childTablesToDelete.add(EXERCISE_ROUTE_RECORD_TABLE_NAME);
+        }
+        return childTablesToDelete;
+    }
+
+    @Override
+    protected void updateUpsertValuesIfRequired(
+            @NonNull ContentValues values,
+            @Nullable ArrayMap<String, Boolean> extraWritePermissionToStateMap) {
+        if (extraWritePermissionToStateMap == null || extraWritePermissionToStateMap.isEmpty()) {
+            // Use default logic for internal apis flows (apk migration and b&r)
+            return;
+        }
+
+        // If app doesn't have granted write_route, then we ignore input hasRoute
+        // value and use current value if recorded.
+        if (!canWriteExerciseRoute(extraWritePermissionToStateMap)) {
+            values.remove(HAS_ROUTE_COLUMN_NAME);
+        }
+    }
+
+    @Override
     @NonNull
     protected List<Pair<String, String>> getIntervalRecordColumnInfo() {
         return Arrays.asList(
@@ -217,6 +253,13 @@ public final class ExerciseSessionRecordHelper
         }
 
         boolean canReadAnyRoute = extraPermsState.get(READ_EXERCISE_ROUTE);
+        if (!canReadAnyRoute
+                && AppInfoHelper.getInstance().getAppInfoId(packageName) == DEFAULT_LONG) {
+            // If the package doesn't have app info and cannot read any route,
+            // then no route is accessible for it.
+            return Collections.emptyList();
+        }
+
         WhereClauses whereClause =
                 getReadTableWhereClause(
                         request,
@@ -232,15 +275,25 @@ public final class ExerciseSessionRecordHelper
                 .isSessionDatatypeFeatureEnabled();
     }
 
-    /** Returns extra permissions required to write given record. */
     @Override
-    public List<String> checkFlagsAndGetExtraWritePermissions(RecordInternal<?> recordInternal) {
-        ExerciseSessionRecordInternal session = (ExerciseSessionRecordInternal) recordInternal;
+    public void checkRecordOperationsAreEnabled(RecordInternal<?> recordInternal) {
+        super.checkRecordOperationsAreEnabled(recordInternal);
         if (!isRecordOperationsEnabled()) {
             throw new HealthConnectException(
                     ERROR_UNSUPPORTED_OPERATION, "Writing exercise sessions is not supported.");
         }
 
+        ExerciseSessionRecordInternal session = (ExerciseSessionRecordInternal) recordInternal;
+        if (session.getRoute() != null && !isExerciseRouteFeatureEnabled()) {
+            throw new HealthConnectException(
+                    ERROR_UNSUPPORTED_OPERATION, "Writing exercise route is not supported.");
+        }
+    }
+
+    /** Returns extra permissions required to write given record. */
+    @Override
+    public List<String> getRequiredExtraWritePermissions(RecordInternal<?> recordInternal) {
+        ExerciseSessionRecordInternal session = (ExerciseSessionRecordInternal) recordInternal;
         if (session.getRoute() != null) {
             if (!isExerciseRouteFeatureEnabled()) {
                 throw new HealthConnectException(
@@ -255,6 +308,13 @@ public final class ExerciseSessionRecordHelper
     @Override
     public List<String> getExtraReadPermissions() {
         return Collections.singletonList(READ_EXERCISE_ROUTE);
+    }
+
+    public List<String> getExtraWritePermissions() {
+        // If an app has write_route permission, we update existing route.
+        // If app doesn't have this permission and wants to update non-route session data,
+        // we don't change recorded route.
+        return List.of(WRITE_EXERCISE_ROUTE);
     }
 
     @Override
@@ -316,6 +376,11 @@ public final class ExerciseSessionRecordHelper
                 Operations.READ,
                 packageName,
                 getNumberOfRecordsWithExerciseRoutes(recordInternals));
+    }
+
+    private boolean canWriteExerciseRoute(ArrayMap<String, Boolean> extraWritePermissionToState) {
+        return extraWritePermissionToState != null
+                && Boolean.TRUE.equals(extraWritePermissionToState.get(WRITE_EXERCISE_ROUTE));
     }
 
     private int getNumberOfRecordsWithExerciseRoutes(
