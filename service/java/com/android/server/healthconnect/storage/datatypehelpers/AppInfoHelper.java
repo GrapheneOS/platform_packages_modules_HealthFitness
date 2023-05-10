@@ -52,6 +52,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.util.Log;
 import android.util.Pair;
+import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
@@ -238,6 +239,9 @@ public final class AppInfoHelper {
      * @return A list of appinfo ids from the application_info_table.
      */
     public List<Long> getAppInfoIds(List<String> packageNames) {
+        if (DEBUG) {
+            Slog.d(TAG, "App info map: " + mAppInfoMap);
+        }
         if (packageNames == null || packageNames.isEmpty()) {
             return Collections.emptyList();
         }

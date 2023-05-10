@@ -621,7 +621,7 @@ public final class TransactionManager {
             }
         }
 
-        if (request.getChildTableRequests().isEmpty()) {
+        if (request.getAllChildTables().isEmpty()) {
             return;
         }
 
@@ -715,7 +715,7 @@ public final class TransactionManager {
 
     private void deleteChildTableRequest(
             UpsertTableRequest request, long rowId, SQLiteDatabase db) {
-        for (String childTable : request.getAllChildTables()) {
+        for (String childTable : request.getAllChildTablesToDelete()) {
             DeleteTableRequest deleteTableRequest =
                     new DeleteTableRequest(childTable).setId(PARENT_KEY, String.valueOf(rowId));
             db.execSQL(deleteTableRequest.getDeleteCommand());

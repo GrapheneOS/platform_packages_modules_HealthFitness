@@ -110,9 +110,11 @@ public class DataPermissionEnforcer {
             if (!recordTypeIdToExtraPerms.containsKey(recordTypeId)) {
                 recordTypeIdToExtraPerms.put(recordTypeId, new ArraySet<>());
             }
+
+            recordHelper.checkRecordOperationsAreEnabled(recordInternal);
             recordTypeIdToExtraPerms
                     .get(recordTypeId)
-                    .addAll(recordHelper.checkFlagsAndGetExtraWritePermissions(recordInternal));
+                    .addAll(recordHelper.getRequiredExtraWritePermissions(recordInternal));
         }
 
         // Check main write permissions for given recordIds
@@ -158,6 +160,21 @@ public class DataPermissionEnforcer {
         Map<String, Boolean> mapping = new ArrayMap<>();
         for (String permissionName : recordHelper.getExtraReadPermissions()) {
             mapping.put(permissionName, isPermissionGranted(permissionName, attributionSource));
+        }
+        return mapping;
+    }
+
+    public Map<String, Boolean> collectExtraWritePermissionStateMapping(
+            List<RecordInternal<?>> recordInternals, AttributionSource attributionSource) {
+        Map<String, Boolean> mapping = new ArrayMap<>();
+        for (RecordInternal<?> recordInternal : recordInternals) {
+            int recordTypeId = recordInternal.getRecordType();
+            RecordHelper<?> recordHelper =
+                    RecordHelperProvider.getInstance().getRecordHelper(recordTypeId);
+
+            for (String permName : recordHelper.getExtraWritePermissions()) {
+                mapping.put(permName, isPermissionGranted(permName, attributionSource));
+            }
         }
         return mapping;
     }
