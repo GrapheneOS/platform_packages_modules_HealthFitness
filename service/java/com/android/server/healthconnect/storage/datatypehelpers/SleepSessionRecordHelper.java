@@ -149,12 +149,12 @@ public final class SleepSessionRecordHelper
     }
 
     @Override
-    public List<String> checkFlagsAndGetExtraWritePermissions(RecordInternal<?> recordInternal) {
+    public void checkRecordOperationsAreEnabled(RecordInternal<?> recordInternal) {
+        super.checkRecordOperationsAreEnabled(recordInternal);
         if (!isRecordOperationsEnabled()) {
             throw new HealthConnectException(
                     HealthConnectException.ERROR_UNSUPPORTED_OPERATION,
                     "Writing sleep sessions is not supported.");
         }
-        return Collections.emptyList();
     }
 }
