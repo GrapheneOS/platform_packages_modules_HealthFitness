@@ -98,6 +98,8 @@ public class MigrationNotificationFactory {
     private static final String SYSTEM_SETTINGS_FALLBACK_ACTION = "android.settings.SETTINGS";
     private static final Intent FALLBACK_INTENT = new Intent(SYSTEM_SETTINGS_FALLBACK_ACTION);
 
+    @VisibleForTesting static final String APP_ICON_DRAWABLE_NAME = "health_connect_logo";
+
     public MigrationNotificationFactory(@NonNull Context context) {
         mContext = context;
         mResContext = new HealthConnectResourcesContext(mContext);
@@ -197,10 +199,9 @@ public class MigrationNotificationFactory {
                         .setContentText(notificationContent)
                         .setContentIntent(pendingIntent)
                         .setActions(action)
-                        .setOngoing(true)
+                        .setAutoCancel(true)
                         .build();
 
-        notification.flags = Notification.FLAG_NO_CLEAR;
         return notification;
     }
 
@@ -225,10 +226,9 @@ public class MigrationNotificationFactory {
                         .setContentText(notificationContent)
                         .setContentIntent(pendingIntent)
                         .setActions(action)
-                        .setOngoing(true)
+                        .setAutoCancel(true)
                         .build();
 
-        notification.flags = Notification.FLAG_NO_CLEAR;
         return notification;
     }
 
@@ -430,13 +430,13 @@ public class MigrationNotificationFactory {
         return getPendingIntent(intent);
     }
 
-    @NonNull
-    private Icon getAppIcon() {
+    @VisibleForTesting
+    @Nullable
+    Icon getAppIcon() {
         // Caches the first valid appIcon
         if (mAppIcon == null) {
-            mAppIcon = mResContext.getAppIcon();
+            mAppIcon = mResContext.getIconByDrawableName(APP_ICON_DRAWABLE_NAME);
         }
-
         return mAppIcon;
     }
 
