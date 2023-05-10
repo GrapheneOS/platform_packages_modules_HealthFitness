@@ -152,7 +152,14 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         }
 
         migrationViewModel.migrationState.observe(viewLifecycleOwner) { migrationState ->
-            maybeShowMigrationDialog(migrationState)
+            when (migrationState) {
+                is MigrationViewModel.MigrationFragmentState.WithData -> {
+                    maybeShowMigrationDialog(migrationState.migrationState)
+                }
+                else -> {
+                    // do nothing
+                }
+            }
         }
 
         setupHeader()

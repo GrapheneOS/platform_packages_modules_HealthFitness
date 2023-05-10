@@ -36,10 +36,12 @@ object EmbeddingUtils {
         if (!isEmbeddingActivityEnabled(activity)) {
             return false
         }
-        return !isActivityEmbedded(activity) && !isEmbeddedIntent(activity.intent)
+        return activity.isTaskRoot &&
+            !isActivityEmbedded(activity) &&
+            !isEmbeddedIntent(activity.intent)
     }
 
-    private fun isEmbeddedIntent(intent: Intent) : Boolean {
+    private fun isEmbeddedIntent(intent: Intent): Boolean {
         return intent.hasExtra(EXTRA_SETTINGS_EMBEDDED_DEEP_LINK_INTENT_URI)
     }
 
