@@ -56,6 +56,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.migration.MigrationViewModel.MigrationFragmentState.WithData
 import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.ONBOARDING_SHOWN_PREF_KEY
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.USER_ACTIVITY_TRACKER
@@ -110,7 +111,9 @@ class MockedPermissionsActivityTest {
                     TEST_APP_NAME,
                     context.getDrawable(R.drawable.health_connect_logo)))
         }
-        whenever(migrationViewModel.migrationState).then { MutableLiveData(MigrationState.IDLE) }
+        whenever(migrationViewModel.migrationState).then {
+            MutableLiveData(WithData(MigrationState.IDLE))
+        }
         val sharedPreference =
             context.getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()

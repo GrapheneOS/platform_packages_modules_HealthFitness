@@ -125,7 +125,16 @@ class HomeFragment : Hilt_HomeFragment() {
         homeFragmentViewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             updateConnectedApps(connectedApps)
         }
-        migrationViewModel.migrationState.observe(viewLifecycleOwner) { showMigrationState(it) }
+        migrationViewModel.migrationState.observe(viewLifecycleOwner) { migrationState ->
+            when (migrationState) {
+                is MigrationViewModel.MigrationFragmentState.WithData -> {
+                    showMigrationState(migrationState.migrationState)
+                }
+                else -> {
+                    // do nothing
+                }
+            }
+        }
     }
 
     private fun updateMigrationBannerText(duration: Duration) {
@@ -142,9 +151,8 @@ class HomeFragment : Hilt_HomeFragment() {
         when (migrationState) {
             MigrationState.MODULE_UPGRADE_REQUIRED,
             MigrationState.APP_UPGRADE_REQUIRED -> {
-                // TODO (b/265789268) uncomment when CTS tests deflaked
-                //                migrationBanner = getMigrationBanner()
-                //                preferenceScreen.addPreference(migrationBanner)
+                migrationBanner = getMigrationBanner()
+                preferenceScreen.addPreference(migrationBanner)
             }
             MigrationState.COMPLETE -> {
                 maybeShowWhatsNewDialog()
