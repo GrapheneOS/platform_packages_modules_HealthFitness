@@ -88,7 +88,14 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
         viewModel.exerciseSession.observe(this) { session -> setupRequestDialog(session) }
 
         migrationViewModel.migrationState.observe(this) { migrationState ->
-            maybeShowMigrationDialog(migrationState)
+            when (migrationState) {
+                is MigrationViewModel.MigrationFragmentState.WithData -> {
+                    maybeShowMigrationDialog(migrationState.migrationState)
+                }
+                else -> {
+                    // do nothing
+                }
+            }
         }
     }
 
