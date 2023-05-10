@@ -20,7 +20,6 @@ import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeRedirectToMigrationActivity
 import com.android.healthconnect.controller.migration.MigrationViewModel
-import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
@@ -50,8 +49,7 @@ class MainActivity : Hilt_MainActivity() {
             return
         }
 
-        val currentMigrationState: MigrationState
-        runBlocking { currentMigrationState = migrationViewModel.getCurrentMigrationUiState() }
+        val currentMigrationState = runBlocking { migrationViewModel.getCurrentMigrationUiState() }
 
         if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
             return

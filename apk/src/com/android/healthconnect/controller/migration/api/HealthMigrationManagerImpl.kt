@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.migration.api
 
+import android.health.connect.HealthConnectDataState
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.migration.HealthConnectMigrationUiState
@@ -25,6 +26,13 @@ import javax.inject.Inject
 
 class HealthMigrationManagerImpl @Inject constructor(private val manager: HealthConnectManager) :
     HealthMigrationManager {
+
+    override fun getHealthDataState(
+        executor: Executor,
+        callback: OutcomeReceiver<HealthConnectDataState, HealthConnectException>
+    ) {
+        manager.getHealthConnectDataState(executor, callback)
+    }
 
     override fun getHealthConnectMigrationUiState(
         executor: Executor,
