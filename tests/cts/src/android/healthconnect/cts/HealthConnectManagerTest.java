@@ -41,6 +41,8 @@ import static com.google.common.truth.Truth.assertThat;
 import android.Manifest;
 import android.app.UiAutomation;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectDataState;
@@ -74,6 +76,7 @@ import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;
 import android.platform.test.annotations.AppModeFull;
 import android.util.ArrayMap;
+import android.util.ArraySet;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -1834,11 +1837,14 @@ public class HealthConnectManagerTest {
         assertThat(bodyFatRecordsRead).isEmpty();
         assertThat(heightRecordsRead).isEmpty();
 
-        // Step 1: Restore the db with the cts app.
+        // Step 1: prepare the backup data for restore.
+        prepareDataForRestore();
+
+        // Step 2: Restore the db and the grant times.
         restoreBackupData();
         Thread.sleep(TimeUnit.SECONDS.toMillis(10)); // give some time for merge to finish.
 
-        // Step 2: Assert that the restored db (with the service) has the records from the db with
+        // Step 3: Assert that the restored db (with the service) has the records from the db with
         // the cts app.
         heightRecordsRead =
                 TestUtils.readRecords(
@@ -1849,8 +1855,30 @@ public class HealthConnectManagerTest {
                         new ReadRecordsRequestUsingFilters.Builder<>(BodyFatRecord.class).build());
         assertThat(bodyFatRecordsRead.size()).isEqualTo(1);
 
-        TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
-        deleteAllStagedRemoteData();
+        File backupDataDir = getBackupDataDir();
+        SQLiteDatabase db =
+                SQLiteDatabase.openDatabase(
+                        new File(backupDataDir, "healthconnect.db"),
+                        new SQLiteDatabase.OpenParams.Builder().build());
+        Cursor cursor = db.rawQuery("select * from height_record_table", null);
+        ArraySet<Double> heights = new ArraySet<>();
+        while (cursor.moveToNext()) {
+            heights.add(cursor.getDouble(cursor.getColumnIndex("height")));
+        }
+
+        cursor = db.rawQuery("select * from body_fat_record_table", null);
+        ArraySet<Double> bodyFats = new ArraySet<>();
+        while (cursor.moveToNext()) {
+            bodyFats.add(cursor.getDouble(cursor.getColumnIndex("percentage")));
+        }
+
+        for (var heightRecordRead : heightRecordsRead) {
+            assertThat(heights).contains(heightRecordRead.getHeight().getInMeters());
+        }
+
+        for (var bodyFatRecordRead : bodyFatRecordsRead) {
+            assertThat(bodyFats).contains(bodyFatRecordRead.getPercentage().getValue());
+        }
     }
 
     private boolean isEmptyContributingPackagesForAll(
@@ -1884,6 +1912,33 @@ public class HealthConnectManagerTest {
         }
     }
 
+    private File getBackupDataDir() {
+        Context context = ApplicationProvider.getApplicationContext();
+        File backupDataDir = new File(context.getFilesDir(), "backup_data");
+        backupDataDir.mkdirs();
+        return backupDataDir;
+    }
+
+    private void prepareDataForRestore() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        File backupDataDir = getBackupDataDir();
+        try (InputStream in = context.getResources().openRawResource(R.raw.healthconnect);
+             FileOutputStream out =
+                     new FileOutputStream(new File(backupDataDir, "healthconnect.db"))) {
+            FileUtils.copy(in, out);
+            out.getFD().sync();
+        }
+        try (InputStream in = context.getResources()
+                .openRawResource(R.raw.health_permissions_first_grant_times);
+             FileOutputStream out =
+                     new FileOutputStream(
+                             new File(backupDataDir,
+                                     "health-permissions-first-grant-times.xml"))) {
+            FileUtils.copy(in, out);
+            out.getFD().sync();
+        }
+    }
+
     private void restoreBackupData() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
         Context context = ApplicationProvider.getApplicationContext();
@@ -1891,15 +1946,7 @@ public class HealthConnectManagerTest {
         assertThat(service).isNotNull();
 
         try {
-            File backupDataDir = new File(context.getFilesDir(), "backup_data");
-            backupDataDir.mkdirs();
-            try (InputStream in = context.getResources().openRawResource(R.raw.healthconnect);
-                    FileOutputStream out =
-                            new FileOutputStream(new File(backupDataDir, "healthconnect.db"))) {
-                FileUtils.copy(in, out);
-                out.getFD().sync();
-            }
-            File[] filesToRestore = backupDataDir.listFiles();
+            File[] filesToRestore = getBackupDataDir().listFiles();
 
             Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
             for (var file : filesToRestore) {
