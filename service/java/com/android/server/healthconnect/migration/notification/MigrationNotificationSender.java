@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.migration.notification;
 
-import static com.android.server.healthconnect.migration.MigrationConstants.SHOW_NOTIFICATION;
-
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -29,6 +27,8 @@ import android.content.Context;
 import android.os.Binder;
 import android.os.UserHandle;
 import android.util.Log;
+
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -63,7 +63,8 @@ public final class MigrationNotificationSender {
     /** Sends a notification to the current user based on the notification type. */
     public void sendNotification(
             @MigrationNotificationType int notificationType, @NonNull UserHandle userHandle) {
-        if (!SHOW_NOTIFICATION) {
+        if (!HealthConnectDeviceConfigManager.getInitialisedInstance()
+                .areMigrationNotificationsEnabled()) {
             return;
         }
         createNotificationChannel(userHandle);

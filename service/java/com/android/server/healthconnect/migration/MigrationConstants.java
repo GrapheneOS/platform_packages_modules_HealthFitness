@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.migration;
 
+import java.time.LocalDate;
+
 /**
  * Migration related constants.
  *
@@ -40,10 +42,11 @@ public final class MigrationConstants {
             "min_data_migration_sdk_extension_version";
     static final String MIGRATION_STARTS_COUNT_KEY = "migration_starts_count";
     static final String HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY = "have_canceled_old_migration_jobs";
+    static final String HAVE_RESET_MIGRATION_STATE_KEY = "have_reset_migration_state";
     static final String MIGRATION_STATE_CHANGE_NAMESPACE = MigrationStateChangeJob.class.toString();
 
     public static final String IN_PROGRESS_TIMEOUT_REACHED_KEY = "in_progress_timeout_reached_key";
     public static final String IDLE_TIMEOUT_REACHED_KEY = "idle_timeout_reached_key";
 
-    public static final boolean SHOW_NOTIFICATION = true;
+    static final LocalDate PREMATURE_MIGRATION_TIMEOUT_DATE = LocalDate.of(2023, 6, 15);
 }
