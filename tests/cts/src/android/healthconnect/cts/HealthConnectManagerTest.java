@@ -1663,6 +1663,88 @@ public class HealthConnectManagerTest {
 
         // verify response data is correct.
         verifyRecordTypeResponse(response, expectedResponseMap);
+
+        // delete first set inserted records.
+        TestUtils.deleteRecords(testRecords);
+
+        // clear out contributing packages.
+        TestUtils.populateAndResetExpectedResponseMap(expectedResponseMap);
+        // delete inserted records.
+
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
+        response = TestUtils.queryAllRecordTypesInfo();
+        // verify that the API still returns all record types with the cts packages as contributing
+        // package. this is because only one of the inserted record for each record type was
+        // deleted.
+        verifyRecordTypeResponse(response, expectedResponseMap);
+    }
+
+    @Test
+    public void testGetRecordTypeInfo_partiallyDeleteInsertedRecords_correctContributingPackages()
+            throws Exception {
+        // Insert a sets of test records for StepRecords, ExerciseSessionRecord, HeartRateRecord,
+        // BasalMetabolicRateRecord.
+        List<Record> testRecords = TestUtils.getTestRecords();
+        TestUtils.insertRecords(testRecords);
+
+        // Populate expected records. This method puts empty lists as contributing packages for all
+        // records.
+        HashMap<Class<? extends Record>, TestUtils.RecordTypeInfoTestResponse> expectedResponseMap =
+                new HashMap<>();
+        TestUtils.populateAndResetExpectedResponseMap(expectedResponseMap);
+        // Populate contributing packages list for expected records by adding the current cts
+        // package.
+        expectedResponseMap.get(StepsRecord.class).getContributingPackages().add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(ExerciseSessionRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(HeartRateRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+        expectedResponseMap
+                .get(BasalMetabolicRateRecord.class)
+                .getContributingPackages()
+                .add(APP_PACKAGE_NAME);
+
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
+        // since test records contains the following records
+        Map<Class<? extends Record>, RecordTypeInfoResponse> response =
+                TestUtils.queryAllRecordTypesInfo();
+        if (isEmptyContributingPackagesForAll(response)) {
+            return;
+        }
+        // verify response data is correct.
+        verifyRecordTypeResponse(response, expectedResponseMap);
+
+        // delete 2 of the inserted records.
+        ArrayList<Record> recordsToBeDeleted = new ArrayList<>();
+        for (int itr = 0; itr < testRecords.size() / 2; itr++) {
+            recordsToBeDeleted.add(testRecords.get(itr));
+            expectedResponseMap
+                    .get(testRecords.get(itr).getClass())
+                    .getContributingPackages()
+                    .clear();
+        }
+
+        TestUtils.deleteRecords(recordsToBeDeleted);
+
+        // When recordTypes are modified the appInfo also gets updated and this update happens on
+        // a background thread. To ensure the test has the latest values for appInfo, add a wait
+        // time before fetching it.
+        Thread.sleep(500);
+        response = TestUtils.queryAllRecordTypesInfo();
+        if (isEmptyContributingPackagesForAll(response)) {
+            return;
+        }
+        verifyRecordTypeResponse(response, expectedResponseMap);
     }
 
     @Test
