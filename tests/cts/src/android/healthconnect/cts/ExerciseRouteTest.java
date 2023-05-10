@@ -115,7 +115,9 @@ public class ExerciseRouteTest {
 
     @Test
     public void testExerciseRouteLocation_buildRoute_success() {
-        ExerciseRoute route = new ExerciseRoute(List.of(TestUtils.buildLocationTimePoint()));
+        ExerciseRoute route =
+                new ExerciseRoute(
+                        List.of(TestUtils.buildLocationTimePoint(TestUtils.SESSION_START_TIME)));
         assertThat(route.getRouteLocations()).hasSize(1);
     }
 

@@ -310,13 +310,10 @@ public class TestUtils {
                         RECORD_TYPE_BASAL_METABOLIC_RATE, getBasalMetabolicRateRecord()));
     }
 
-    public static ExerciseRoute.Location buildLocationTimePoint() {
+    public static ExerciseRoute.Location buildLocationTimePoint(Instant startTime) {
         return new ExerciseRoute.Location.Builder(
                         Instant.ofEpochMilli(
-                                (long)
-                                        (SESSION_START_TIME.toEpochMilli()
-                                                + 10
-                                                + Math.random() * 50)),
+                                (long) (startTime.toEpochMilli() + 10 + Math.random() * 50)),
                         Math.random() * 50,
                         Math.random() * 50)
                 .build();
@@ -325,9 +322,9 @@ public class TestUtils {
     public static ExerciseRoute buildExerciseRoute() {
         return new ExerciseRoute(
                 List.of(
-                        buildLocationTimePoint(),
-                        buildLocationTimePoint(),
-                        buildLocationTimePoint()));
+                        buildLocationTimePoint(SESSION_START_TIME),
+                        buildLocationTimePoint(SESSION_START_TIME),
+                        buildLocationTimePoint(SESSION_START_TIME)));
     }
 
     public static StepsRecord getStepsRecord() {

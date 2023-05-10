@@ -23,6 +23,7 @@ import android.annotation.Nullable;
 import android.content.Context;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
@@ -39,6 +40,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,17 +63,21 @@ public class UpsertTransactionRequest {
     private final boolean mSkipPackageNameAndLogs;
     @RecordTypeIdentifier.RecordType Set<Integer> mRecordTypes = new ArraySet<>();
 
+    private ArrayMap<String, Boolean> mExtraWritePermissionsToState;
+
     public UpsertTransactionRequest(
             @Nullable String packageName,
             @NonNull List<RecordInternal<?>> recordInternals,
             Context context,
-            boolean isInsertRequest) {
+            boolean isInsertRequest,
+            Map<String, Boolean> extraPermsStateMap) {
         this(
                 packageName,
                 recordInternals,
                 context,
                 isInsertRequest,
-                false /* skipPackageNameAndLogs */);
+                false /* skipPackageNameAndLogs */,
+                extraPermsStateMap);
     }
 
     public UpsertTransactionRequest(
@@ -80,8 +86,28 @@ public class UpsertTransactionRequest {
             Context context,
             boolean isInsertRequest,
             boolean skipPackageNameAndLogs) {
+        this(
+                packageName,
+                recordInternals,
+                context,
+                isInsertRequest,
+                skipPackageNameAndLogs,
+                Collections.emptyMap());
+    }
+
+    public UpsertTransactionRequest(
+            @Nullable String packageName,
+            @NonNull List<RecordInternal<?>> recordInternals,
+            Context context,
+            boolean isInsertRequest,
+            boolean skipPackageNameAndLogs,
+            Map<String, Boolean> extraPermsStateMap) {
         mPackageName = packageName;
         mSkipPackageNameAndLogs = skipPackageNameAndLogs;
+        if (extraPermsStateMap != null && !extraPermsStateMap.isEmpty()) {
+            mExtraWritePermissionsToState = new ArrayMap<>();
+            mExtraWritePermissionsToState.putAll(extraPermsStateMap);
+        }
 
         for (RecordInternal<?> recordInternal : recordInternals) {
             if (!mSkipPackageNameAndLogs) {
@@ -171,7 +197,8 @@ public class UpsertTransactionRequest {
                 RecordHelperProvider.getInstance().getRecordHelper(recordInternal.getRecordType());
         Objects.requireNonNull(recordHelper);
 
-        UpsertTableRequest request = recordHelper.getUpsertTableRequest(recordInternal);
+        UpsertTableRequest request =
+                recordHelper.getUpsertTableRequest(recordInternal, mExtraWritePermissionsToState);
         request.setRecordType(recordHelper.getRecordIdentifier());
         if (!isInsertRequest) {
             request.setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
