@@ -14,24 +14,45 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.migration.api
+package com.android.healthconnect.controller.tests.utils.di
 
 import android.health.connect.HealthConnectDataState
 import android.health.connect.HealthConnectException
 import android.health.connect.migration.HealthConnectMigrationUiState
 import android.os.OutcomeReceiver
+import com.android.healthconnect.controller.migration.api.HealthMigrationManager
 import java.util.concurrent.Executor
 
-/** Wrapper for HealthConnectManager migration apis. */
-interface HealthMigrationManager {
+class FakeHealthMigrationManager : HealthMigrationManager {
 
-    fun getHealthDataState(
+    private var state: Int = HealthConnectMigrationUiState.MIGRATION_UI_STATE_IDLE
+    private var dataRestoreError: Int = HealthConnectDataState.RESTORE_ERROR_NONE
+    private var dataMigrationState: Int = HealthConnectDataState.MIGRATION_STATE_IDLE
+
+    fun setMigrationState(state: Int) {
+        this.state = state
+    }
+
+    fun setDataMigrationState(error: Int, migrationState: Int) {
+        this.dataMigrationState = migrationState
+        this.dataRestoreError = error
+    }
+
+    override fun getHealthDataState(
         executor: Executor,
         callback: OutcomeReceiver<HealthConnectDataState, HealthConnectException>
-    )
+    ) {
+        callback.onResult(
+            HealthConnectDataState(
+                HealthConnectDataState.RESTORE_STATE_IN_PROGRESS,
+                dataRestoreError,
+                dataMigrationState))
+    }
 
-    fun getHealthConnectMigrationUiState(
+    override fun getHealthConnectMigrationUiState(
         executor: Executor,
         callback: OutcomeReceiver<HealthConnectMigrationUiState, HealthConnectException>
-    )
+    ) {
+        callback.onResult(HealthConnectMigrationUiState(state))
+    }
 }

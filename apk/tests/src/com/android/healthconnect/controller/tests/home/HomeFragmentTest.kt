@@ -27,6 +27,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.home.HomeFragment
 import com.android.healthconnect.controller.home.HomeFragmentViewModel
 import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.migration.MigrationViewModel.MigrationFragmentState.WithData
 import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
@@ -75,7 +76,9 @@ class HomeFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
-        whenever(migrationViewModel.migrationState).then { MutableLiveData(MigrationState.IDLE) }
+        whenever(migrationViewModel.migrationState).then {
+            MutableLiveData(WithData(MigrationState.IDLE))
+        }
     }
 
     @Test
