@@ -255,10 +255,12 @@ public class TestUtils {
         final Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setPackage(testApp.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(INTENT_EXTRA_CALLING_PKG, getContext().getPackageName());
         intent.putExtras(bundleToCreateIntent);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.putExtras(bundleToCreateIntent);
+
         getContext().startActivity(intent);
         if (!latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
             final String errorMessage =
