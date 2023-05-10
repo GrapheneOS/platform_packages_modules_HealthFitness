@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Comprueba si hay actualizaciones"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integración con Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect está lista para integrarse con tu sistema Android. Si autorizas el acceso de <xliff:g id="APP_NAME">%1$s</xliff:g> en este momento, es posible que algunas funciones no estén habilitadas hasta que se complete la integración."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect está lista para integrarse con tu sistema Android. Si otorgas acceso a las apps ahora, es posible que algunas funciones no estén habilitadas hasta que se complete la integración."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuar"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integración con Health Connect en curso"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect se está integrando al sistema Android.\n\nRecibirás una notificación cuando el proceso finalice y puedas usar Health Connect con <xliff:g id="APP_NAME">%1$s</xliff:g>."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect se está integrando al sistema Android.\n\nRecibirás una notificación cuando el proceso finalice y puedas usar Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Entendido"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"La integración con Health Connect no se completó"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Recibirás una notificación cuando vuelva a estar disponible."</string>

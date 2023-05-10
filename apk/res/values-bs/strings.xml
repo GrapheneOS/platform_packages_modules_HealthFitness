@@ -723,7 +723,7 @@
     <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Integracija Health Connecta je u toku"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Potrebno je ažuriranje"</string>
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect se integrira s Android sistemom da mu možete pristupiti direktno iz postavki."</string>
-    <string name="update_button" msgid="4544529019832009496">"Ažurirajte"</string>
+    <string name="update_button" msgid="4544529019832009496">"Ažuriraj"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Pokrenite ovo ažuriranje da Health Connect može nastaviti s integracijom s postavkama sistema"</string>
     <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Ažuriraj sada"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebno je ažuriranje sistema"</string>

@@ -771,7 +771,7 @@
     <string name="migration_not_complete_notification_action" msgid="757041885992445657">"နောက်ထပ်ဖတ်ရန်"</string>
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect ပေါင်းစည်းမှု ပြီးသွားပါပြီ"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"ဖွင့်ရန်"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"အသစ်ပါဝင်မှုများ"</string>
+    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"ဘာတွေထူးသလဲ"</string>
     <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Health Connect ကို ဆက်တင်များမှ တိုက်ရိုက်သုံးနိုင်ပါပြီ။ Health Connect အက်ပ်ကို အချိန်မရွေး ပရိုဂရမ် ဖယ်ရှားနိုင်သည်။"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"ရပြီ"</string>
 </resources>
