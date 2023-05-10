@@ -26,9 +26,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.Icon;
-import android.util.Log;
+import android.health.connect.Constants;
+import android.util.Slog;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -63,8 +63,6 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
     // Cached package name and resources from the resources APK
     @Nullable private String mResourcesApkPkgName;
     @Nullable private Resources mResourcesFromApk;
-    // TODO (b/275752544) Get drawable resource
-    @DrawableRes private int mIconResource = 0;
     // The AOSP package name needed for loading the resources
     @Nullable private String mResourceLoadPackageName;
 
@@ -90,8 +88,8 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
 
         if (info != null) {
             mResourcesApkPkgName = info.activityInfo.applicationInfo.packageName;
-            mIconResource = info.activityInfo.getIconResource();
-            mResourceLoadPackageName = getResources().getResourcePackageName(mIconResource);
+            int iconResource = info.activityInfo.getIconResource();
+            mResourceLoadPackageName = getResources().getResourcePackageName(iconResource);
         }
     }
 
@@ -102,14 +100,16 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
 
         if (resolveInfos.size() > 1) {
             // multiple apps found, log a warning, but continue
-            Log.w(TAG, "Found > 1 APK that can resolve Health Connect APK intent:");
-            for (ResolveInfo resolveInfo : resolveInfos) {
-                Log.w(
-                        TAG,
-                        String.format(
-                                "- pkg:%s at:%s",
-                                resolveInfo.activityInfo.applicationInfo.packageName,
-                                resolveInfo.activityInfo.applicationInfo.sourceDir));
+            if (Constants.DEBUG) {
+                Slog.w(TAG, "Found > 1 APK that can resolve Health Connect APK intent:");
+                for (ResolveInfo resolveInfo : resolveInfos) {
+                    Slog.w(
+                            TAG,
+                            String.format(
+                                    "- pkg:%s at:%s",
+                                    resolveInfo.activityInfo.applicationInfo.packageName,
+                                    resolveInfo.activityInfo.applicationInfo.sourceDir));
+                }
             }
         }
 
@@ -126,7 +126,7 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
 
         if (info == null) {
             // Resource APK not loaded yet, print a stack trace to see where this is called from
-            Log.e(
+            Slog.e(
                     TAG,
                     "Attempted to fetch resources before Health Connect resources APK is loaded!",
                     new IllegalStateException());
@@ -134,19 +134,6 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
         }
 
         return info;
-    }
-
-    /** Returns the app icon of the Health Connect resources APK. */
-    @Nullable
-    public Icon getAppIcon() {
-        String packageName = getResourcesApkPkgName();
-
-        try {
-            return Icon.createWithResource(packageName, mIconResource);
-        } catch (Exception e) {
-            Log.e(TAG, "Error while trying to create notification icon. ", e);
-        }
-        return null;
     }
 
     @Nullable
@@ -175,7 +162,7 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
         try {
             return createPackageContext(name, 0);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.wtf(TAG, "Failed to load resources", e);
+            Slog.wtf(TAG, "Failed to load resources", e);
         }
         return null;
     }
@@ -240,5 +227,30 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
         }
 
         return getString(stringId, formatArgs);
+    }
+
+    /** Returns an Icon by its drawable resource name. */
+    @Nullable
+    public Icon getIconByDrawableName(@NonNull String drawableResName) {
+        String resourceApkPkgName = getResourcesApkPkgName();
+        String resourcePkgName = getResourceLoadPackageName();
+        if (resourceApkPkgName == null) {
+            return null;
+        }
+
+        Resources resources = getResources();
+        if (resources == null) {
+            return null;
+        }
+
+        int resId = resources.getIdentifier(drawableResName, "drawable", resourcePkgName);
+        if (resId != Resources.ID_NULL) {
+            return Icon.createWithResource(resourceApkPkgName, resId);
+        }
+
+        if (Constants.DEBUG) {
+            Slog.w(TAG, "Drawable resource " + drawableResName + " not found");
+        }
+        return null;
     }
 }
