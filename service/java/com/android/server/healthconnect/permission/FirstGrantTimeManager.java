@@ -104,7 +104,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
     }
 
     /**
-     * Sets the provided first grant time for the given {@code packageName}, if it's not set yet.
+     * Sets the provided first grant time for the given {@code packageName}.
      */
     public void setFirstGrantTime(
             @NonNull String packageName, @NonNull Instant time, @NonNull UserHandle user) {
