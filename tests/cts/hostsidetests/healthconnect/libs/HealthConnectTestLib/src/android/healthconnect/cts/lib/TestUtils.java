@@ -697,6 +697,22 @@ public class TestUtils {
                 MANAGE_HEALTH_PERMISSION);
     }
 
+    public static void revokePermission(String pkgName, String permission) {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        runWithShellPermissionIdentity(
+                () ->
+                        service.getClass()
+                                .getMethod(
+                                        "revokeHealthPermission",
+                                        String.class,
+                                        String.class,
+                                        String.class)
+                                .invoke(service, pkgName, permission, null),
+                MANAGE_HEALTH_PERMISSION);
+    }
+
     public static void revokeHealthPermissions(String packageName) {
         runWithShellPermissionIdentity(() -> revokeHealthPermissionsPrivileged(packageName));
     }

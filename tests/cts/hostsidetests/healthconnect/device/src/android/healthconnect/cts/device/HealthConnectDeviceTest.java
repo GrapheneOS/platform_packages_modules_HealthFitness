@@ -35,6 +35,7 @@ import static android.healthconnect.cts.lib.TestUtils.readRecords;
 import static android.healthconnect.cts.lib.TestUtils.readRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.readRecordsUsingDataOriginFiltersAs;
 import static android.healthconnect.cts.lib.TestUtils.revokeHealthPermissions;
+import static android.healthconnect.cts.lib.TestUtils.revokePermission;
 import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -377,5 +378,44 @@ public class HealthConnectDeviceTest {
 
         assertThat(newPriorityList.size()).isEqualTo(oldPriorityList.size() + 1);
         assertThat(newPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName())).isTrue();
+    }
+
+    @Test
+    public void testRevokingOnlyOneCorrectPermissionDoesntRemoveAppFromPriorityList()
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+
+        List<String> healthPerms =
+                getGrantedHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+
+        revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+
+        for (String perm : healthPerms) {
+            grantPermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), perm);
+        }
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        List<String> oldPriorityList =
+                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
+                        .getDataOriginsPriorityOrder()
+                        .stream()
+                        .map(dataOrigin -> dataOrigin.getPackageName())
+                        .collect(Collectors.toList());
+
+        assertThat(oldPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName())).isTrue();
+
+        revokePermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), healthPerms.get(0));
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        List<String> newPriorityList =
+                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
+                        .getDataOriginsPriorityOrder()
+                        .stream()
+                        .map(dataOrigin -> dataOrigin.getPackageName())
+                        .collect(Collectors.toList());
+
+        assertThat(newPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName())).isTrue();
+
+        grantPermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), healthPerms.get(0));
     }
 }
