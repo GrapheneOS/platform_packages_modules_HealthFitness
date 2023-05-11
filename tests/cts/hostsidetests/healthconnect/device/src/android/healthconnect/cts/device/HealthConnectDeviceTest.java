@@ -23,7 +23,10 @@ import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.lib.TestUtils.deleteRecordsAs;
+import static android.healthconnect.cts.lib.TestUtils.fetchDataOriginsPriorityOrder;
 import static android.healthconnect.cts.lib.TestUtils.getChangeLogTokenAs;
+import static android.healthconnect.cts.lib.TestUtils.getGrantedHealthPermissions;
+import static android.healthconnect.cts.lib.TestUtils.grantPermission;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordWithAnotherAppPackageName;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordWithGivenClientId;
@@ -31,11 +34,15 @@ import static android.healthconnect.cts.lib.TestUtils.readChangeLogsUsingDataOri
 import static android.healthconnect.cts.lib.TestUtils.readRecords;
 import static android.healthconnect.cts.lib.TestUtils.readRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.readRecordsUsingDataOriginFiltersAs;
+import static android.healthconnect.cts.lib.TestUtils.revokeHealthPermissions;
 import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.app.UiAutomation;
 import android.health.connect.HealthConnectException;
+import android.health.connect.HealthDataCategory;
+import android.health.connect.HealthPermissions;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.Metadata;
@@ -43,6 +50,7 @@ import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.lib.TestUtils;
 import android.os.Bundle;
 
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.cts.install.lib.TestApp;
@@ -56,10 +64,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectDeviceTest {
     static final String TAG = "HealthConnectDeviceTest";
+    public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
     static final long VERSION_CODE = 1;
 
     static final TestApp APP_A_WITH_READ_WRITE_PERMS =
@@ -334,5 +344,38 @@ public class HealthConnectDeviceTest {
 
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
         assertThat(response.getDeletedLogs().size()).isEqualTo(noOfRecordsInsertedByAppB);
+    }
+
+    @Test
+    public void testGrantingCorrectPermsPutsTheAppInPriorityList() throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        List<String> oldPriorityList =
+                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
+                        .getDataOriginsPriorityOrder()
+                        .stream()
+                        .map(dataOrigin -> dataOrigin.getPackageName())
+                        .collect(Collectors.toList());
+
+        List<String> healthPerms =
+                getGrantedHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+
+        revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+
+        for (String perm : healthPerms) {
+            grantPermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), perm);
+        }
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        List<String> newPriorityList =
+                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
+                        .getDataOriginsPriorityOrder()
+                        .stream()
+                        .map(dataOrigin -> dataOrigin.getPackageName())
+                        .collect(Collectors.toList());
+
+        assertThat(newPriorityList.size()).isEqualTo(oldPriorityList.size() + 1);
+        assertThat(newPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName())).isTrue();
     }
 }
