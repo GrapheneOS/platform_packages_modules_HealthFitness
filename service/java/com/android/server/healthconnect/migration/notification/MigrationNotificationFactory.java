@@ -186,11 +186,6 @@ public class MigrationNotificationFactory {
                 getStringResource(MIGRATION_MODULE_UPDATE_NEEDED_NOTIFICATION_TITLE);
         String notificationContent =
                 getStringResource(MIGRATION_UPDATE_NEEDED_NOTIFICATION_CONTENT);
-        String notificationAction = getStringResource(MIGRATION_UPDATE_NEEDED_NOTIFICATION_ACTION);
-
-        Notification.Action action =
-                new Notification.Action.Builder(getAppIcon(), notificationAction, pendingIntent)
-                        .build();
 
         Notification notification =
                 new Notification.Builder(mContext, channelId)
@@ -198,7 +193,6 @@ public class MigrationNotificationFactory {
                         .setContentTitle(notificationTitle)
                         .setContentText(notificationContent)
                         .setContentIntent(pendingIntent)
-                        .setActions(action)
                         .setAutoCancel(true)
                         .build();
 
@@ -213,11 +207,6 @@ public class MigrationNotificationFactory {
                 getStringResource(MIGRATION_APP_UPDATE_NEEDED_NOTIFICATION_TITLE);
         String notificationContent =
                 getStringResource(MIGRATION_UPDATE_NEEDED_NOTIFICATION_CONTENT);
-        String notificationAction = getStringResource(MIGRATION_UPDATE_NEEDED_NOTIFICATION_ACTION);
-
-        Notification.Action action =
-                new Notification.Action.Builder(getAppIcon(), notificationAction, pendingIntent)
-                        .build();
 
         Notification notification =
                 new Notification.Builder(mContext, channelId)
@@ -225,7 +214,6 @@ public class MigrationNotificationFactory {
                         .setContentTitle(notificationTitle)
                         .setContentText(notificationContent)
                         .setContentIntent(pendingIntent)
-                        .setActions(action)
                         .setAutoCancel(true)
                         .build();
 
@@ -280,18 +268,12 @@ public class MigrationNotificationFactory {
         // TODO (b/275685600) replace with timeout
         String notificationContent =
                 getStringResourceWithArgs(RESUME_MIGRATION_NOTIFICATION_CONTENT, "1 day");
-        String notificationAction = getStringResource(RESUME_MIGRATION_NOTIFICATION_ACTION);
-
-        Notification.Action action =
-                new Notification.Action.Builder(getAppIcon(), notificationAction, pendingIntent)
-                        .build();
 
         Notification notification =
                 new Notification.Builder(mContext, channelId)
                         .setSmallIcon(getAppIcon())
                         .setContentTitle(notificationTitle)
                         .setContentText(notificationContent)
-                        .setActions(action)
                         .setOngoing(true)
                         .build();
 
@@ -304,17 +286,12 @@ public class MigrationNotificationFactory {
         PendingIntent pendingIntent = getHealthHomeSettingsPendingIntent();
 
         String notificationTitle = getStringResource(MIGRATION_NOT_COMPLETE_NOTIFICATION_TITLE);
-        String notificationAction = getStringResource(MIGRATION_NOT_COMPLETE_NOTIFICATION_ACTION);
-
-        Notification.Action action =
-                new Notification.Action.Builder(getAppIcon(), notificationAction, pendingIntent)
-                        .build();
 
         Notification notification =
                 new Notification.Builder(mContext, channelId)
                         .setSmallIcon(getAppIcon())
                         .setContentTitle(notificationTitle)
-                        .setActions(action)
+                        .setContentIntent(pendingIntent)
                         .setOngoing(true)
                         .build();
 
@@ -326,18 +303,12 @@ public class MigrationNotificationFactory {
     private Notification getMigrationCompleteNotification(@NonNull String channelId) {
         PendingIntent pendingIntent = getHealthHomeSettingsPendingIntent();
         String notificationTitle = getStringResource(MIGRATION_COMPLETE_NOTIFICATION_TITLE);
-        String notificationAction = getStringResource(MIGRATION_COMPLETE_NOTIFICATION_ACTION);
-
-        Notification.Action action =
-                new Notification.Action.Builder(getAppIcon(), notificationAction, pendingIntent)
-                        .build();
 
         Notification notification =
                 new Notification.Builder(mContext, channelId)
                         .setSmallIcon(getAppIcon())
                         .setContentTitle(notificationTitle)
                         .setContentIntent(pendingIntent)
-                        .setActions(action)
                         .setOngoing(true)
                         .build();
 
@@ -349,18 +320,12 @@ public class MigrationNotificationFactory {
     private Notification getMigrationPausedNotification(@NonNull String channelId) {
         PendingIntent pendingIntent = getMigrationInfoPendingIntent();
         String notificationTitle = getStringResource(MIGRATION_PAUSED_NOTIFICATION_TITLE);
-        String notificationAction = getStringResource(MIGRATION_PAUSED_NOTIFICATION_ACTION);
-
-        Notification.Action action =
-                new Notification.Action.Builder(getAppIcon(), notificationAction, pendingIntent)
-                        .build();
 
         Notification notification =
                 new Notification.Builder(mContext, channelId)
                         .setSmallIcon(getAppIcon())
                         .setContentTitle(notificationTitle)
                         .setContentIntent(pendingIntent)
-                        .setActions(action)
                         .setOngoing(true)
                         .build();
 
