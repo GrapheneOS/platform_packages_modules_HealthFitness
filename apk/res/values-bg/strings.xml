@@ -324,7 +324,7 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Да се изтрият ли за постоянно данните от типа „<xliff:g id="DATA_TYPE">%1$s</xliff:g>“, добавени от <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Искате ли да изтриете този запис за постоянно?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Свързаните приложения вече няма да могат да осъществяват достъп до тези данни от Health Connect"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Това ще изтрие всички записи за менструацията от <xliff:g id="START_DATE">%1$s</xliff:g> до <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
+    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Това ще изтрие всички записи за менструацията от <xliff:g id="START_DATE">%1$s</xliff:g> до <xliff:g id="END_DATE">%2$s</xliff:g>"</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Изтриване"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Назад"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Готово"</string>
@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Проверка за актуализации"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Интегриране на Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Приложението Health Connect е готово за интегриране със системата Android. Ако предоставите достъп на <xliff:g id="APP_NAME">%1$s</xliff:g> сега, някои функции може да не работят, докато интегрирането не бъде завършено."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Приложението Health Connect е готово за интегриране със системата Android. Ако предоставите достъп на приложенията сега, някои функции може да не работят, докато интегрирането не бъде завършено."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Напред"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Интегрирането на Health Connect е в ход"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect се интегрира със системата Android.\n\nЩе получите известие, когато процесът завърши и можете да използвате <xliff:g id="APP_NAME">%1$s</xliff:g> с Health Connect."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect се интегрира със системата Android.\n\nЩе получите известие, когато процесът завърши и можете да използвате Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Разбрах"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Интегрирането на Health Connect не бе завършено"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Ще получите известие, когато отново е налице."</string>

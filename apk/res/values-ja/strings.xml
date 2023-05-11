@@ -749,8 +749,8 @@
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"ヘルスコネクトの統合を再開してください"</string>
     <string name="resume_migration_notification_content" msgid="46172108837648715">"データを保持するため、<xliff:g id="TIME_NEEDED">%1$s</xliff:g>以内に統合を完了してください。"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"アプリの更新が必要です"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"ヘルスコネクトで引き続き使用するためには <xliff:g id="APP_NAME">%1$s</xliff:g> を更新する必要があります"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"ヘルスコネクトで引き続き使用するためには更新が必要なアプリがあります"</string>
+    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"ヘルスコネクトと引き続き連携するには <xliff:g id="APP_NAME">%1$s</xliff:g> を更新する必要があります"</string>
+    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"ヘルスコネクトと引き続き連携するには更新が必要なアプリがあります"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"アップデートを確認"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"ヘルスコネクトの統合"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"ヘルスコネクトを Android システムと統合する準備ができました。<xliff:g id="APP_NAME">%1$s</xliff:g> に今すぐアクセス権を付与しても、統合が完了するまで一部の機能が動作しないことがあります。"</string>

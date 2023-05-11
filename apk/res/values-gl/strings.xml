@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Buscar actualizacións"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integración de Saúde conectada"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"A aplicación Saúde conectada está lista para integrarse co sistema Android. Se lle dás acceso agora a <xliff:g id="APP_NAME">%1$s</xliff:g>, é posible que algunhas funcións non funcionen ata que remate a integración."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"A aplicación Saúde conectada está lista para integrarse co sistema Android. Se lles dás acceso agora ás aplicacións, é posible que algunhas opcións non funcionen ata que remate a integración."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuar"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integración de Saúde conectada en proceso"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Estase integrando Saúde conectada co sistema Android.\n\nRecibirás unha notificación cando remate o proceso e xa poidas usar <xliff:g id="APP_NAME">%1$s</xliff:g> con Saúde conectada."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Estase integrando Saúde conectada co sistema Android.\n\nRecibirás unha notificación cando remate o proceso e poidas usar Saúde conectada."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Entendido"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Non se completou a integración de Saúde conectada"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Recibirás unha notificación cando volva estar dispoñible."</string>
