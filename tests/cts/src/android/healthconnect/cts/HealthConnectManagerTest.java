@@ -1879,6 +1879,9 @@ public class HealthConnectManagerTest {
         for (var bodyFatRecordRead : bodyFatRecordsRead) {
             assertThat(bodyFats).contains(bodyFatRecordRead.getPercentage().getValue());
         }
+
+        TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        deleteAllStagedRemoteData();
     }
 
     private boolean isEmptyContributingPackagesForAll(
