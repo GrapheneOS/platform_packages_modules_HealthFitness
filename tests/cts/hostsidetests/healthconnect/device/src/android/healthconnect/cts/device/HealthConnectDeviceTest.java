@@ -418,4 +418,48 @@ public class HealthConnectDeviceTest {
 
         grantPermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), healthPerms.get(0));
     }
+
+    @Test
+    public void testRevokingAllCorrectPermissionsRemovesAppFromPriorityList()
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+
+        List<String> healthPerms =
+                getGrantedHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+
+        revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+
+        for (String perm : healthPerms) {
+            grantPermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), perm);
+        }
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        List<String> oldPriorityList =
+                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
+                        .getDataOriginsPriorityOrder()
+                        .stream()
+                        .map(dataOrigin -> dataOrigin.getPackageName())
+                        .collect(Collectors.toList());
+
+        assertThat(oldPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName())).isTrue();
+
+        for (String perm : healthPerms) {
+            revokePermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), perm);
+        }
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        List<String> newPriorityList =
+                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
+                        .getDataOriginsPriorityOrder()
+                        .stream()
+                        .map(dataOrigin -> dataOrigin.getPackageName())
+                        .collect(Collectors.toList());
+
+        assertThat(newPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName()))
+                .isFalse();
+
+        for (String perm : healthPerms) {
+            grantPermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), perm);
+        }
+    }
 }
