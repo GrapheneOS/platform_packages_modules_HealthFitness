@@ -37,6 +37,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
+import com.android.healthconnect.controller.migration.MigrationViewModel.MigrationFragmentState.WithData
 import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel.SessionWithAttribution
@@ -116,7 +117,9 @@ class RouteRequestActivityTest {
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
-        whenever(migrationViewModel.migrationState).then { MutableLiveData(MigrationState.IDLE) }
+        whenever(migrationViewModel.migrationState).then {
+            MutableLiveData(WithData(MigrationState.IDLE))
+        }
     }
 
     @Test

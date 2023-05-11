@@ -409,7 +409,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
             recordInternal.setTitle(getTitle().toString());
         }
 
-        if (hasRoute()) {
+        if (getRoute() != null) {
             recordInternal.setRoute(getRoute().toRouteInternal());
         }
 

@@ -22,9 +22,13 @@ import javax.inject.Inject
 
 interface DeviceInfoUtils {
     fun isSendFeedbackAvailable(context: Context): Boolean
+
     fun getFeedbackReporterPackage(context: Context): String?
+
     fun isPlayStoreAvailable(context: Context): Boolean
+
     fun openHCGetStartedLink(activity: FragmentActivity)
+
     fun openSendFeedbackActivity(activity: FragmentActivity)
 }
 
@@ -82,7 +86,7 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
     }
 
     override fun openHCGetStartedLink(activity: FragmentActivity) {
-        val helpUrlString = FEEDBACK_REPORTER
+        val helpUrlString = activity.getString(R.string.hc_get_started_link)
         val fullUri = HelpUtils.uriWithAddedParameters(activity, Uri.parse(helpUrlString))
         val intent =
             Intent(Intent.ACTION_VIEW, fullUri).apply {

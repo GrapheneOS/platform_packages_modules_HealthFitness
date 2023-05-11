@@ -336,8 +336,11 @@ public class BasalMetabolicRateRecordTest {
         assertThat(newResponse.get(BASAL_CALORIES_TOTAL)).isNotNull();
         Energy newEnergy = newResponse.get(BASAL_CALORIES_TOTAL);
         Energy oldEnergy = oldResponse.get(BASAL_CALORIES_TOTAL);
+        assertThat(oldEnergy.getInCalories() / 1000).isWithin(0.1).of(6501.6);
+        assertThat(newEnergy.getInCalories() / 1000).isGreaterThan(6501.6);
         assertThat((double) Math.round(newEnergy.getInCalories() - oldEnergy.getInCalories()))
-                .isEqualTo(46);
+                .isWithin(1)
+                .of(949440);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(BASAL_CALORIES_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
@@ -346,6 +349,25 @@ public class BasalMetabolicRateRecordTest {
         for (DataOrigin itr : oldDataOrigin) {
             assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
         }
+    }
+
+    @Test
+    public void testAggregation_BasalCaloriesBurntTotal_NoRecords() throws Exception {
+        TestUtils.deleteAllStagedRemoteData();
+        List<Record> records = Arrays.asList();
+        AggregateRecordsResponse<Energy> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(
+                                                        Instant.now().minus(10, ChronoUnit.DAYS))
+                                                .setEndTime(Instant.now().minus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(BASAL_CALORIES_TOTAL)
+                                .build(),
+                        records);
+        assertThat(response.get(BASAL_CALORIES_TOTAL)).isNotNull();
+        assertThat(response.get(BASAL_CALORIES_TOTAL).getInCalories()).isEqualTo(0);
     }
 
     @Test
