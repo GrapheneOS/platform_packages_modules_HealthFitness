@@ -261,6 +261,7 @@ public class TestUtils {
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.putExtras(bundleToCreateIntent);
 
+        Thread.sleep(500);
         getContext().startActivity(intent);
         if (!latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
             final String errorMessage =
