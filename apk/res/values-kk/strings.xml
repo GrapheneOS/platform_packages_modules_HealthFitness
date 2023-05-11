@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Жаңартулардың бар-жоғын тексеру"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect-ті біріктіру"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect қолданбасы Android жүйесімен біріктіруге дайын. <xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасына қазір пайдалану рұқсатын берсеңіз, кейбір функциялар біріктіру процесі аяқталғанша істемей тұруы мүмкін."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect қолданбасы Android жүйесімен біріктіруге дайын. Қолданбаларға қазір пайдалану рұқсатын берсеңіз, кейбір функциялар біріктіру процесі аяқталғанша істемей тұруы мүмкін."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Жалғастыру"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect-ті біріктіру процесі орындалып жатыр"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect қолданбасы Android жүйесімен біріктіріліп жатыр.\n\nПроцесс аяқталғанда, сізге хабарландыру жіберіледі және <xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасын Health Connect-пен пайдалана аласыз."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect қолданбасы Android жүйесімен біріктіріліп жатыр.\n\nПроцесс аяқталғанда, сізге хабарландыру жіберіледі және сіз Health Connect қолданбасын пайдалана аласыз."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Түсінікті"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect-ті біріктіру процесі аяқталмады"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Біріктіру процесі қайта басталғанда хабарландыру жіберіледі."</string>

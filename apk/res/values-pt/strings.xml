@@ -683,7 +683,7 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Exclusão automática de dados"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Depois de # mês}one{Depois de # mês}other{Depois de # meses}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nunca"</string>
-    <string name="range_off" msgid="8178520557618184215">"Desativado"</string>
+    <string name="range_off" msgid="8178520557618184215">"Desativada"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Quando você muda essas configurações, o app Conexão Saúde exclui os dados para refletir suas novas preferências"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Excluir os dados automaticamente depois de # mês?}one{Excluir os dados automaticamente depois de # mês?}other{Excluir os dados automaticamente depois de # meses?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{O app Conexão Saúde vai excluir dados novos automaticamente depois de # mês. Definir essa opção também vai excluir os dados atuais com mais de # mês.}one{O app Conexão Saúde vai excluir dados novos automaticamente depois de # mês. Definir essa opção também vai excluir os dados atuais com mais de # mês.}other{O app Conexão Saúde vai excluir dados novos automaticamente depois de # meses. Definir essa opção também vai excluir os dados atuais com mais de # meses.}}"</string>
@@ -710,11 +710,11 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse o trajeto desse exercício na plataforma Conexão Saúde?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"O app poderá ler seu local anterior no trajeto"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"Os trajetos de exercícios incluem informações de localização"</string>
+    <string name="request_route_info_header_title" msgid="4149969049719763190">"As rotas de treino incluem informações de localização"</string>
     <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"Quem tem acesso aos dados?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Apenas os apps com permissão têm acesso aos trajetos de exercícios"</string>
+    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Apenas os apps com permissão têm acesso às suas rotas de treino"</string>
     <string name="request_route_info_access_management_title" msgid="3222594923675464852">"Como posso gerenciar o acesso?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Você pode gerenciar o acesso de apps aos trajetos de exercícios nas configurações do app Conexão Saúde"</string>
+    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Você pode gerenciar o acesso de apps às rotas de treino nas configurações do app Conexão Saúde"</string>
     <string name="back_button" msgid="780519527385993407">"Voltar"</string>
     <string name="loading" msgid="2526615755685950317">"Carregando…"</string>
     <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integração em andamento"</string>
@@ -743,7 +743,7 @@
     <string name="resume_button" msgid="2255148549862208047">"Retomar"</string>
     <string name="migration_paused_notification_title" msgid="6020271090296330698">"A integração do app Conexão Saúde está pausada"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Retomar a integração"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Toque para continuar integrando o app Conexão Saúde ao sistema Android. Para manter seus dados, conclua em <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Toque para continuar a integração do app Conexão Saúde ao sistema Android. Para manter seus dados, conclua em <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Toque para continuar integrando o app Conexão Saúde ao sistema Android."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Continuar"</string>
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"Retomar a integração do app Conexão Saúde"</string>
