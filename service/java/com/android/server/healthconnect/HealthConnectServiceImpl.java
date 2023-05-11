@@ -1672,6 +1672,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         HealthDataCategoryPriorityHelper.getInstance().clearData(mTransactionManager);
         PriorityMigrationHelper.getInstance().clearData(mTransactionManager);
         RateLimiter.clearCache();
+        String[] packageNames = mContext.getPackageManager().getPackagesForUid(getCallingUid());
+        for (String packageName : packageNames) {
+            mFirstGrantTimeManager.setFirstGrantTime(packageName, Instant.now(), userHandle);
+        }
     }
 
     /**
