@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"ዝማኔዎች ካሉ ይፈትሹ"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"የጤና አገናኝ ውህደት"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"የጤና አገናኝ ከእርስዎ የAndroid ሥርዓት ጋር ለመዋሃድ ዝግጁ ነው። ለ<xliff:g id="APP_NAME">%1$s</xliff:g> አሁን መዳረሻ ከሰጡ አንዳንድ ባህሪያት ውህደት እስኪጠናቀቅ ድረስ ላይሰሩ ይችላሉ።"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"የጤና አገናኝ ከእርስዎ የAndroid ሥርዓት ጋር ለመዋሃድ ዝግጁ ነው። ለመተግበሪያዎች አሁን መዳረሻ ከሰጡ አንዳንድ ባህሪያት ውህደት እስከሚጠናቀቅ ድረስ ላይሠሩ ይችላሉ።"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"ቀጥል"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"የጤና አገናኝ ውህደት በሂደት ላይ"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"የጤና አገናኝ ከAndroid ሥርዓቱ ጋር እየተዋሃደ ነው።\n\nሂደቱ ሲጠናቀቅ ማሳወቂያ ያገኛሉ እና ከጤና አገናኝ ጋር <xliff:g id="APP_NAME">%1$s</xliff:g>ን መጠቀም ይችላሉ።"</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"የጤና አገናኝ ከAndroid ሥርዓቱ ጋር እየተዋሃደ ነው።\n\nሂደቱ ሲጠናቀቅ ማሳወቂያ ያገኛሉ እና ጤና አገናኝን መጠቀም ይችላሉ።"</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"ገባኝ"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"የጤና አገናኝ ውህደት አልተጠናቀቀም"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"እንደገና የሚገኝ ሲሆን ማሳወቂያ ያገኛሉ።"</string>

@@ -738,7 +738,7 @@
     <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"ज़्यादा स्टोरेज की ज़रूरत है"</string>
     <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Health Connect को आपके फ़ोन में <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> का स्टोरेज चाहिए, ताकि इंटिग्रेट करने की प्रोसेस जारी रखी जा सके."</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"इंटिग्रेट करने की प्रोसेस रोक दी गई है"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ऐप्लिकेशन, Android सिस्टम के साथ इंटिग्रेट होने के दौरान बंद किया गया.\n\nऐप्लिकेशन दोबारा खोलने के लिए, \'फिर शुरू करें\' पर क्लिक करें और डेटा और अनुमतियां ट्रांसफ़र करना जारी रखें."</string>
+    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ऐप्लिकेशन, Android सिस्टम के साथ इंटिग्रेट होने के दौरान बंद किया गया.\n\n\'फिर शुरू करें\' पर क्लिक करके ऐप्लिकेशन दोबारा खोलें और डेटा के साथ-साथ अनुमतियां ट्रांसफ़र करना जारी रखें."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"आपके Health Connect डेटा को सेव रखने के लिए, इस प्रोसेस को <xliff:g id="TIME_NEEDED">%1$s</xliff:g> में पूरा करें"</string>
     <string name="resume_button" msgid="2255148549862208047">"फिर शुरू करें"</string>
     <string name="migration_paused_notification_title" msgid="6020271090296330698">"Health Connect को इंटिग्रेट करने की प्रोसेस को रोक दिया गया है"</string>
