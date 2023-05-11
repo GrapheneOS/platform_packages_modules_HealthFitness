@@ -79,12 +79,15 @@ public class HealthConnectManagerService extends SystemService {
                         HealthConnectManager.getHealthPermissions(context),
                         permissionIntentTracker,
                         firstGrantTimeManager);
-        mPermissionPackageChangesOrchestrator =
-                new PermissionPackageChangesOrchestrator(
-                        permissionIntentTracker, firstGrantTimeManager, permissionHelper);
-        mUserManager = context.getSystemService(UserManager.class);
         mCurrentForegroundUser = context.getUser();
         mContext = context;
+        mPermissionPackageChangesOrchestrator =
+                new PermissionPackageChangesOrchestrator(
+                        permissionIntentTracker,
+                        firstGrantTimeManager,
+                        permissionHelper,
+                        mCurrentForegroundUser);
+        mUserManager = context.getSystemService(UserManager.class);
         mTransactionManager =
                 TransactionManager.getInstance(
                         new HealthConnectUserContext(mContext, mCurrentForegroundUser));
@@ -190,6 +193,7 @@ public class HealthConnectManagerService extends SystemService {
         mHealthConnectService.onUserSwitching(mCurrentForegroundUser);
         mMigrationBroadcastScheduler.setUserId(mCurrentForegroundUser.getIdentifier());
         mMigrationUiStateManager.setUserHandle(mCurrentForegroundUser);
+        mPermissionPackageChangesOrchestrator.setUserHandle(mCurrentForegroundUser);
 
         HealthConnectDailyJobs.cancelAllJobs(mContext);
 
