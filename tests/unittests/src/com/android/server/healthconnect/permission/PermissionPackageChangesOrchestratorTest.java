@@ -57,6 +57,7 @@ public class PermissionPackageChangesOrchestratorTest {
     @Mock private HealthPermissionIntentAppsTracker mTracker;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private TransactionManager mTransactionManager;
+    @Mock private UserHandle mUserHandle;
 
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
 
@@ -78,7 +79,8 @@ public class PermissionPackageChangesOrchestratorTest {
         mContext = ApplicationProvider.getApplicationContext();
         mCurrentUid = mContext.getPackageManager().getPackageUid(SELF_PACKAGE_NAME, 0);
         mOrchestrator =
-                new PermissionPackageChangesOrchestrator(mTracker, mFirstGrantTimeManager, mHelper);
+                new PermissionPackageChangesOrchestrator(
+                        mTracker, mFirstGrantTimeManager, mHelper, mUserHandle);
         setIntentWasRemoved(/* isIntentRemoved= */ false);
     }
 
