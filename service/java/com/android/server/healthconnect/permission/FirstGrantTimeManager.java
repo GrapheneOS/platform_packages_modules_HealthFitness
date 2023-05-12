@@ -31,6 +31,7 @@ import android.util.ArraySet;
 import android.util.Log;
 
 import com.android.internal.annotations.GuardedBy;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import java.io.File;
 import java.time.Instant;
@@ -154,6 +155,10 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                 if (grantTimeRecorded) {
                     // An app doesn't have health permissions anymore, reset its grant time.
                     mUidToGrantTimeCache.remove(uid);
+                    for (String packageName : packageNames) {
+                        HealthDataCategoryPriorityHelper.getInstance()
+                                .removeAppFromPriorityList(packageName);
+                    }
                 } else {
                     // An app got new health permission, set current time as it's first grant
                     // time if we can't update state from the staged data.
@@ -166,6 +171,8 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                         mUidToGrantTimeCache.extractUserGrantTimeState(user);
                 logIfInDebugMode("State after onPermissionsChanged :", updatedState);
                 mDatastore.writeForUser(updatedState, user, DATA_TYPE_CURRENT);
+            } else {
+                mPackageInfoHelper.updateHealthDataPriority(packageNames, user);
             }
         } finally {
             mGrantTimeLock.writeLock().unlock();
