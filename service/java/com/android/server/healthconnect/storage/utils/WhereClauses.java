@@ -63,6 +63,7 @@ public final class WhereClauses {
 
         return this;
     }
+
     public WhereClauses addWhereInClauseWithoutQuotes(String columnName, List<String> values) {
         if (values == null || values.isEmpty()) return this;
 

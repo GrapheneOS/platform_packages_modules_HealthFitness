@@ -614,11 +614,12 @@ public class ActiveCaloriesBurnedRecordTest {
                 .build();
     }
 
-    static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord(double energy) {
+    static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord(
+            Instant time, double energy) {
         return new ActiveCaloriesBurnedRecord.Builder(
                         new Metadata.Builder().build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(1000),
+                        time,
+                        time.plus(1, ChronoUnit.DAYS),
                         Energy.fromCalories(energy))
                 .build();
     }
