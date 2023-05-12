@@ -43,8 +43,8 @@ import java.util.List;
  * @hide
  */
 public final class WeightRecordHelper extends InstantRecordHelper<WeightRecordInternal> {
-    private static final String WEIGHT_RECORD_TABLE_NAME = "weight_record_table";
-    private static final String WEIGHT_COLUMN_NAME = "weight";
+    static final String WEIGHT_RECORD_TABLE_NAME = "weight_record_table";
+    static final String WEIGHT_COLUMN_NAME = "weight";
 
     public WeightRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_WEIGHT);

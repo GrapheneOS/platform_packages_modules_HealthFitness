@@ -442,7 +442,9 @@ public class TestUtils {
             AggregateRecordsRequest<T> request, List<Record> recordsToInsert)
             throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
-        insertRecords(recordsToInsert);
+        if (recordsToInsert != null) {
+            insertRecords(recordsToInsert);
+        }
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
         CountDownLatch latch = new CountDownLatch(1);
