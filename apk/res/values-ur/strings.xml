@@ -718,54 +718,52 @@
     <string name="back_button" msgid="780519527385993407">"پیچھے جائیں"</string>
     <string name="loading" msgid="2526615755685950317">"لوڈ ہو رہا ہے…"</string>
     <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"انضمام پیشرفت میں ہے"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے۔\n\nآپ کے ڈیٹا اور اجازتوں کی منتقلی میں کچھ وقت لگ سکتا ہے۔"</string>
+    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"‫Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے۔\n\nآپ کے ڈیٹا اور اجازتوں کی منتقلی میں کچھ وقت لگ سکتا ہے۔"</string>
     <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"ایپ کو اس وقت تک بند نہ کریں جب تک کہ آپ کو اطلاع نہ مل جائے کہ پروسیس مکمل ہو گیا ہے۔"</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect کا انضمام پیشرفت میں ہے"</string>
+    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"‫Health Connect کا انضمام پیشرفت میں ہے"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"اپ ڈیٹ درکار ہے"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے تاکہ آپ اسے اپنی ترتیبات سے براہ راست رسائی حاصل کر سکیں۔"</string>
+    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"‫Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے تاکہ آپ اسے اپنی ترتیبات سے براہ راست رسائی حاصل کر سکیں۔"</string>
     <string name="update_button" msgid="4544529019832009496">"اپ ڈیٹ کریں"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"اس اپ ڈیٹ کو شروع کریں تاکہ Health Connect کا آپ کے سسٹم کی ترتیبات کے ساتھ ضم ہونا جاری رہے"</string>
     <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"ابھی اپ ڈیٹ کریں"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"سسٹم اپ ڈیٹ درکار ہے"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"جاری رکھنے سے پہلے، اپنے فون سسٹم کو اپ ڈیٹ کریں۔"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"اگر آپ پہلے ہی اپنے فون سسٹم کو اپ ڈیٹ کر چکے ہیں تو انضمام جاری رکھنے کے لیے اپنے فون کو ری سٹارٹ کرنے کی کوشش کریں"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Health Connect کو اپ ڈیٹ کرنے کی ضرورت ہے"</string>
+    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"‫Health Connect کو اپ ڈیٹ کرنے کی ضرورت ہے"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"جاری رکھنے سے پہلے، Health Connect ایپ کو تازہ ترین ورژن میں اپ ڈیٹ کریں۔"</string>
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"مزید جگہ درکار ہے"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect کو انضمام جاری رکھنے کے لیے آپ کے فون پر <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> اسٹوریج کی جگہ درکار ہے۔\n\nاپنے فون پر کچھ جگہ خالی کریں اور پھر دوبارہ کوشش کریں۔"</string>
+    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"‫Health Connect کو انضمام جاری رکھنے کے لیے آپ کے فون پر <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> اسٹوریج کی جگہ درکار ہے۔\n\nاپنے فون پر کچھ جگہ خالی کریں اور پھر دوبارہ کوشش کریں۔"</string>
     <string name="try_again_button" msgid="8745496819992160789">"دوبارہ کوشش کریں"</string>
     <string name="free_up_space_button" msgid="4141013808635654695">"جگہ خالی کریں"</string>
     <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"مزید جگہ درکار ہے"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Health Connect کو انضمام جاری رکھنے کے لیے آپ کے فون پر <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> اسٹوریج کی جگہ درکار ہے۔"</string>
+    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"‫Health Connect کو انضمام جاری رکھنے کے لیے آپ کے فون پر <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> اسٹوریج کی جگہ درکار ہے۔"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"انضمام موقوف ہو گیا"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Android سسٹم کے ساتھ ضم ہونے کے دوران Health Connect ایپ بند ہو گئی۔\n\nایپ کو دوبارہ کھولنے کے لیے \'دوبارہ شروع کریں\' پر کلک کریں اور اپنے ڈیٹا اور اجازتوں کی منتقلی جاری رکھیں۔"</string>
+    <string name="migration_paused_screen_details" msgid="5898311710030340187">"‫Android سسٹم کے ساتھ ضم ہونے کے دوران Health Connect ایپ بند ہو گئی۔\n\nایپ کو دوبارہ کھولنے کے لیے \'دوبارہ شروع کریں\' پر کلک کریں اور اپنے ڈیٹا اور اجازتوں کی منتقلی جاری رکھیں۔"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"اپنا Health Connect ڈیٹا برقرار رکھنے کے لیے، اسے <xliff:g id="TIME_NEEDED">%1$s</xliff:g> دن کے اندر مکمل کریں"</string>
     <string name="resume_button" msgid="2255148549862208047">"دوبارہ شروع کریں"</string>
     <string name="migration_paused_notification_title" msgid="6020271090296330698">"Health Connect کا انضمام موقوف ہو گیا"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"انضمام دوبارہ شروع کریں"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Health Connect کو Android سسٹم کے ساتھ ضم کرنا جاری رکھنے کے لیے تھپتھپائیں۔ اپنا ڈیٹا برقرار رکھنے کے لیے، اسے <xliff:g id="TIME_NEEDED">%1$s</xliff:g> دن کے اندر مکمل کریں"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Health Connect کو Android سسٹم کے ساتھ ضم کرنا جاری رکھنے کے لیے تھپتھپائیں۔"</string>
+    <string name="resume_migration_banner_description" msgid="6236230413670826036">"‫Health Connect کو Android سسٹم کے ساتھ ضم کرنا جاری رکھنے کے لیے تھپتھپائیں۔ اپنا ڈیٹا برقرار رکھنے کے لیے، اسے <xliff:g id="TIME_NEEDED">%1$s</xliff:g> دن کے اندر مکمل کریں"</string>
+    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"‫Health Connect کو Android سسٹم کے ساتھ ضم کرنا جاری رکھنے کے لیے تھپتھپائیں۔"</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"جاری رکھیں"</string>
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"Health Connect کے انضمام کو دوبارہ شروع کریں"</string>
     <string name="resume_migration_notification_content" msgid="46172108837648715">"اپنا ڈیٹا برقرار رکھنے کے لیے، اسے <xliff:g id="TIME_NEEDED">%1$s</xliff:g> دن کے اندر مکمل کریں"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"ایپ کی اپ ڈیٹ درکار ہے"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"Health Connect کے ساتھ کام کرنا جاری رکھنے کے لیے <xliff:g id="APP_NAME">%1$s</xliff:g> کو اپ ٹو ڈیٹ ہونا ضروری ہے"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Health Connect کے ساتھ کام کرنا جاری رکھنے کے لیے کچھ ایپس کو اپ ٹو ڈیٹ ہونا ضروری ہے"</string>
+    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"‫Health Connect کے ساتھ کام کرنا جاری رکھنے کے لیے <xliff:g id="APP_NAME">%1$s</xliff:g> کو اپ ٹو ڈیٹ ہونا ضروری ہے"</string>
+    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"‫Health Connect کے ساتھ کام کرنا جاری رکھنے کے لیے کچھ ایپس کو اپ ٹو ڈیٹ ہونا ضروری ہے"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"اپ ڈیٹس چیک کریں"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect کا انضمام"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect آپ کے Android سسٹم کے ساتھ ضم ہونے کے لیے تیار ہے۔ اگر آپ ابھی <xliff:g id="APP_NAME">%1$s</xliff:g> کو رسائی دیتے ہیں، تو ہو سکتا ہے کچھ خصوصیات انضمام کے مکمل ہونے تک کام نہ کریں۔"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"‫Health Connect کا انضمام"</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"‫Health Connect آپ کے Android سسٹم کے ساتھ ضم ہونے کے لیے تیار ہے۔ اگر آپ ابھی <xliff:g id="APP_NAME">%1$s</xliff:g> کو رسائی دیتے ہیں، تو ہو سکتا ہے کچھ خصوصیات انضمام کے مکمل ہونے تک کام نہ کریں۔"</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"‫Health Connect آپ کے Android سسٹم کے ساتھ ضم ہونے کے لیے تیار ہے۔ اگر آپ ابھی ایپس کو رسائی دیتے ہیں تو ہو سکتا ہے کچھ خصوصیات انضمام کے مکمل ہونے تک کام نہ کریں۔"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"جاری رکھیں"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect کا انضمام پیشرفت میں ہے"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے۔\n\nپروسیس کے مکمل ہو جانے پر آپ کو ایک اطلاع ملے گی اور آپ Health Connect کے ساتھ <xliff:g id="APP_NAME">%1$s</xliff:g> کا استعمال کر سکتے ہیں۔"</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"‫Health Connect کا انضمام پیشرفت میں ہے"</string>
+    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"‫Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے۔\n\nپروسیس کے مکمل ہو جانے پر آپ کو ایک اطلاع ملے گی اور آپ Health Connect کے ساتھ <xliff:g id="APP_NAME">%1$s</xliff:g> کا استعمال کر سکتے ہیں۔"</string>
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"‫Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے۔\n\nپروسیس کے مکمل ہو جانے پر آپ کو ایک اطلاع ملے گی اور آپ Health Connect کا استعمال کر سکتے ہیں۔"</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"سمجھ آ گئی"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect کا انضمام مکمل نہیں ہوا"</string>
+    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"‫Health Connect کا انضمام مکمل نہیں ہوا"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"اس کے دوبارہ دستیاب ہونے پر آپ کو ایک اطلاع موصول ہوگی۔"</string>
     <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"سمجھ آ گئی"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Health Connect کا انضمام مکمل نہیں ہوا"</string>
+    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"‫Health Connect کا انضمام مکمل نہیں ہوا"</string>
     <string name="migration_not_complete_notification_action" msgid="757041885992445657">"مزید پڑھیں"</string>
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect کا انضمام مکمل ہو گیا"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"کھولیں"</string>

@@ -254,7 +254,7 @@
     <string name="health_permission_header_description" msgid="7497601695462373927">"ಈ ಅನುಮತಿಯನ್ನು ಹೊಂದಿರುವ ಆ್ಯಪ್‌ಗಳು ನಿಮ್ಮ ಆರೋಗ್ಯ ಹಾಗೂ ಫಿಟ್‌ನೆಸ್‌ ಡೇಟಾವನ್ನು ಓದಬಹುದು ಮತ್ತು ಬರೆಯಬಹುದು."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹವಾಗಿರುವ ಡೇಟಾವನ್ನು ಯಾವ ಆ್ಯಪ್‌ಗಳು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ನಿಯಂತ್ರಿಸಿ. ಆ್ಯಪ್ ಓದಬಹುದಾದ ಅಥವಾ ಬರೆಯಬಹುದಾದ ಡೇಟಾವನ್ನು ಪರಿಶೀಲಿಸಲು ಆ್ಯಪ್ ಅನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"ಆ್ಯಕ್ಸೆಸ್ ಅನುಮತಿಸಲಾಗಿದೆ"</string>
-    <string name="not_connected_apps_section_title" msgid="452718769894103039">"ಆ್ಯಕ್ಸೆಸ್ ಅನುಮತಿಸಲಾಗಿಲ್ಲ"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿಲ್ಲದಿರುವುದು"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಮತ್ತು ಸಹಾಯ"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"ಎಲ್ಲಾ ಆ್ಯಪ್‌ಗಳ ಆ್ಯಕ್ಸೆಸ್ ತೆಗೆದುಹಾಕಿ"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"ಓದಲು ಅನುಮತಿಸಲಾಗಿದೆ"</string>

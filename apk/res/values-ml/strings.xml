@@ -753,7 +753,7 @@
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Health Connect-നൊപ്പം പ്രവർത്തിക്കുന്നതിന് ചില ആപ്പുകൾ അപ് ടു ഡേറ്റ് ആയിരിക്കണം"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"അപ്‌ഡേറ്റുകൾ പരിശോധിക്കുക"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect സംയോജനം"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect നിങ്ങളുടെ Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കാൻ തയ്യാറാണ്. നിങ്ങൾ <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിന് ഇപ്പോൾ ആക്സസ് നൽകിയാൽ, സംയോജനം പൂർത്തിയാകുന്നത് വരെ ചില ഫീച്ചറുകൾ പ്രവർത്തിക്കണമെന്നില്ല."</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect നിങ്ങളുടെ Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കാൻ തയ്യാറാണ്. നിങ്ങൾ <xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിന് ഇപ്പോൾ ആക്സസ് നൽകിയാൽ, സംയോജനം പൂർത്തിയാകുന്നത് വരെ ചില ഫീച്ചറുകൾ പ്രവർത്തിക്കണമെന്നില്ല."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect നിങ്ങളുടെ Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കാൻ തയ്യാറായിരിക്കുന്നു. നിങ്ങൾ ആപ്പുകൾക്ക് ഇപ്പോൾ ആക്സസ് നൽകിയാൽ, സംയോജനം പൂർത്തിയാകുന്നതു വരെ ചില ഫീച്ചറുകൾ പ്രവർത്തിക്കണമെന്നില്ല."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"തുടരുക"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect സംയോജനം പുരോഗമിക്കുന്നു"</string>

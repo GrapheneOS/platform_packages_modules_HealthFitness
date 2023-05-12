@@ -723,7 +723,7 @@
     <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Integracija Povezivanja zdravlja je u toku"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Potrebno je ažuriranje"</string>
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Povezivanje zdravlja se integriše sa Android sistemom da biste mogli direktno da mu pristupate iz podešavanja."</string>
-    <string name="update_button" msgid="4544529019832009496">"Ažurirajte"</string>
+    <string name="update_button" msgid="4544529019832009496">"Ažuriraj"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Započnite ovo ažuriranje da bi Povezivanje zdravlja moglo da nastavi integraciju sa podešavanjima sistema"</string>
     <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Ažuriraj"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebno je ažuriranje sistema"</string>
@@ -733,8 +733,8 @@
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Pre nego što nastavite, ažurirajte aplikaciju Povezivanje zdravlja na najnoviju verziju."</string>
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Potrebno je još prostora"</string>
     <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Povezivanju zdravlja treba <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> memorijskog prostora na telefonu da bi se integracija nastavila.\n\nOslobodite nešto prostora na telefonu i probajte ponovo."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Probajte ponovo"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Oslobodite prostor"</string>
+    <string name="try_again_button" msgid="8745496819992160789">"Probaj ponovo"</string>
+    <string name="free_up_space_button" msgid="4141013808635654695">"Oslobodi prostor"</string>
     <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"Potrebno je još prostora"</string>
     <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Povezivanju zdravlja treba <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> memorijskog prostora na telefonu da bi nastavilo integrisanje."</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integracija je pauzirana"</string>
@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Proverite da li ima ažuriranja"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integracija Povezivanja zdravlja"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Povezivanje zdravlja je spremno za integraciju sa Android sistemom. Ako odmah date pristup aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g>, neke funkcije možda neće raditi dok se integracija ne dovrši."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Povezivanje zdravlja je spremno za integraciju sa Android sistemom. Ako odmah date pristup aplikacijama, neke funkcije možda neće raditi dok se integracija ne dovrši."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Nastavi"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integracija Povezivanja zdravlja je u toku"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Povezivanje zdravlja se integriše sa Android sistemom.\n\nDobićete obaveštenje kada proces bude dovršen i možete da koristite <xliff:g id="APP_NAME">%1$s</xliff:g> sa Povezivanjem zdravlja."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Povezivanje zdravlja se integriše sa Android sistemom.\n\nDobićete obaveštenje kada proces bude dovršen i možete da koristite  sa Povezivanjem zdravlja."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Važi"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Integracija Povezivanja zdravlja nije dovršena"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Dobićete obaveštenje kada ponovo postane dostupna."</string>

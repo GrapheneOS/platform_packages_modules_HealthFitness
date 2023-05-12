@@ -719,7 +719,7 @@
     <string name="loading" msgid="2526615755685950317">"Načítava sa…"</string>
     <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integruje sa"</string>
     <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Dáta o zdraví sa integrujú so systémom Android.\n\nPrenos vašich údajov a povolení môže chvíľu trvať."</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Nezatvárajte aplikáciu, kým nedostanete upozornenie na dokončenie procesu."</string>
+    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Nezatvárajte aplikáciu, kým nedostanete upozornenie, že proces je dokončený."</string>
     <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Dáta o zdraví sa integrujú"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Vyžaduje sa aktualizácia"</string>
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Dáta o zdraví sa integrujú so systémom Android, aby ste k nim mali prístup priamo z nastavení."</string>
@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Skontrolovať dostupnosť aktualizácií"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integrácia Dát o zdraví"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Dáta o zdraví sú pripravené na integráciu so systémom Android. Ak teraz udelíte aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> prístup, niektoré funkcie nemusia až do dokončenia integrácie fungovať."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Dáta o zdraví sú pripravené na integráciu so systémom Android. Ak teraz udelíte prístup k aplikáciám, niektoré funkcie nemusia až do dokončenia integrácie fungovať."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Pokračovať"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Dáta o zdraví sa integrujú"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Dáta o zdraví sa integrujú so systémom Android.\n\nPo dokončení integrácie dostanete upozornenie a budete môcť začať používať <xliff:g id="APP_NAME">%1$s</xliff:g> s Dátami o zdraví."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Dáta o zdraví sa integrujú so systémom Android.\n\nPo dokončení integrácie dostanete upozornenie a budete ich môcť používať."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Dobre"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Integrácia Dát o zdraví nebola dokončená"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Keď bude znova k dispozícii, dostanete upozornenie."</string>
@@ -770,6 +768,6 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Integrácia Dát o zdraví je dokončená"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Otvoriť"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Novinky"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Teraz máte prístup k Dátam o zdraví priamo z nastavení. Aplikáciu Dáta o zdraví môžete kedykoľvek aktualizovať."</string>
+    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Teraz máte prístup k Dátam o zdraví priamo z nastavení. Aplikáciu Dáta o zdraví môžete kedykoľvek odinštalovať."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Dobre"</string>
 </resources>
