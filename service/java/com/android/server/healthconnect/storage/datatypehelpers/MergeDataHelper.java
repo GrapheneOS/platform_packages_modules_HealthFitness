@@ -91,9 +91,9 @@ public final class MergeDataHelper {
 
     private final Comparator<RecordData> mRecordDataComparator;
     private TreeSet<RecordData> mBufferWindow;
-    private List<RecordData> mRecordDataList = new ArrayList<>();
+    private final List<RecordData> mRecordDataList = new ArrayList<>();
     private final Cursor mCursor;
-    private List<Long> mReversedPriorityList;
+    private final List<Long> mReversedPriorityList;
     private Instant mStartTime;
     private Instant mEndTime;
     private final String mColumnNameToMerge;
@@ -119,11 +119,6 @@ public final class MergeDataHelper {
                 Comparator.comparing(RecordData::getStartTime)
                         .thenComparing((a, b) -> compare(b, a));
         mBufferWindow = new TreeSet<>(mRecordDataComparator);
-    }
-
-    /** Returns aggregate sum between the startTime and endTime */
-    public double readCursor(Instant startTime, Instant endTime) {
-        return readCursor(startTime.toEpochMilli(), endTime.toEpochMilli());
     }
 
     /**
@@ -178,22 +173,17 @@ public final class MergeDataHelper {
     private boolean cursorOutOfRange() {
         long cursorStartTime = StorageUtils.getCursorLong(mCursor, START_TIME_COLUMN_NAME);
         long cursorEndTime = StorageUtils.getCursorLong(mCursor, END_TIME_COLUMN_NAME);
-        if ((cursorStartTime < mStartTime.toEpochMilli()
+        return (cursorStartTime < mStartTime.toEpochMilli()
                         && cursorEndTime <= mStartTime.toEpochMilli())
                 || (cursorStartTime > mEndTime.toEpochMilli()
-                        && cursorEndTime > mEndTime.toEpochMilli())) {
-            return true;
-        }
-        return false;
+                        && cursorEndTime > mEndTime.toEpochMilli());
     }
 
     /** Returns sum of the values from Buffer window */
     private double getTotal() {
         double sum = 0;
-        if (mRecordDataList != null) {
-            for (RecordData item : mRecordDataList) {
-                sum += item.getValue();
-            }
+        for (RecordData item : mRecordDataList) {
+            sum += item.getValue();
         }
         return sum;
     }
@@ -202,17 +192,33 @@ public final class MergeDataHelper {
      * Returns list of empty intervals where there are gaps without any record data in the final
      * merge used to calculate aggregate
      */
-    public List<Pair<Instant, Instant>> getEmptyIntervals() {
+    public List<Pair<Instant, Instant>> getEmptyIntervals(Instant startTime, Instant endTime) {
         List<Pair<Instant, Instant>> emptyIntervals = new ArrayList<>();
-        if (mRecordDataList != null) {
-            for (int i = 0; i < mRecordDataList.size() - 1; i++) {
-                Instant currentEnd = mRecordDataList.get(i).getEndTime();
-                Instant nextStart = mRecordDataList.get(i + 1).getStartTime();
-                if (nextStart.isAfter(currentEnd)) {
-                    emptyIntervals.add(new Pair(currentEnd, nextStart));
-                }
+        if (mRecordDataList.size() == 0) {
+            if (!startTime.equals(endTime)) {
+                emptyIntervals.add(new Pair<>(startTime, endTime));
+            }
+            return emptyIntervals;
+        }
+
+        if (startTime.isBefore(mRecordDataList.get(0).getStartTime())) {
+            emptyIntervals.add(new Pair<>(startTime, mRecordDataList.get(0).getStartTime()));
+        }
+
+        for (int i = 0; i < mRecordDataList.size() - 1; i++) {
+            Instant currentEnd = mRecordDataList.get(i).getEndTime();
+            Instant nextStart = mRecordDataList.get(i + 1).getStartTime();
+            if (nextStart.isAfter(currentEnd)) {
+                emptyIntervals.add(new Pair<>(currentEnd, nextStart));
             }
         }
+
+        if (endTime.isAfter(mRecordDataList.get(mRecordDataList.size() - 1).getEndTime())) {
+            emptyIntervals.add(
+                    new Pair<>(
+                            mRecordDataList.get(mRecordDataList.size() - 1).getEndTime(), endTime));
+        }
+
         return emptyIntervals;
     }
 
