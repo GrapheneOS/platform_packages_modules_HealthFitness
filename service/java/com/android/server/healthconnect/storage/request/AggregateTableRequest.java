@@ -338,12 +338,12 @@ public class AggregateTableRequest {
 
         if (mEndTimeColumnName != null) {
             // Filter all records which overlap with time filter interval:
-            // recordStartTime < filterEndTime and recordEndTime > filterStartTime
-            whereClauses.addWhereLessThanClause(mTimeColumnName, mEndTime);
-            whereClauses.addWhereGreaterThanClause(mEndTimeColumnName, mStartTime);
+            // recordStartTime < filterEndTime and recordEndTime >= filterStartTime
+            whereClauses.addWhereGreaterThanOrEqualClause(mEndTimeColumnName, mStartTime);
         } else {
-            whereClauses.addWhereBetweenClause(mTimeColumnName, mStartTime, mEndTime);
+            whereClauses.addWhereGreaterThanOrEqualClause(mTimeColumnName, mStartTime);
         }
+        whereClauses.addWhereLessThanClause(mTimeColumnName, mEndTime);
 
         return whereClauses.get(/* withWhereKeyword= */ true);
     }
