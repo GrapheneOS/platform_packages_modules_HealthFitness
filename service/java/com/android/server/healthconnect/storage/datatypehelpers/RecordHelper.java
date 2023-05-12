@@ -180,13 +180,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     /**
      * Used to calculate and get aggregate results for data types that support derived aggregates
      */
-    public double[] deriveAggregate(
-            Cursor cursor,
-            long startTime,
-            long endTime,
-            int groupSize,
-            long groupDelta,
-            String groupByColumnName) {
+    public double[] deriveAggregate(Cursor cursor, AggregateTableRequest request) {
         return null;
     }
 
