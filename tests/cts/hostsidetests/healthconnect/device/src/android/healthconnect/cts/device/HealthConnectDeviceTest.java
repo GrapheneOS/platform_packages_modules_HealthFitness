@@ -38,6 +38,7 @@ import static android.healthconnect.cts.lib.TestUtils.revokeHealthPermissions;
 import static android.healthconnect.cts.lib.TestUtils.revokePermission;
 import static android.healthconnect.cts.lib.TestUtils.updateDataOriginPriorityOrder;
 import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
+import static android.healthconnect.cts.lib.TestUtils.verifyDeleteRecords;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -46,6 +47,7 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
@@ -54,6 +56,7 @@ import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.lib.TestUtils;
 import android.os.Bundle;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
@@ -513,5 +516,71 @@ public class HealthConnectDeviceTest {
                                         .map(dataOrigin -> dataOrigin.getPackageName())
                                         .collect(Collectors.toList())))
                 .isTrue();
+    }
+
+    @Test
+    public void testAppWithManageHealthDataPermsCanReadAnotherAppEntry() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        ArrayList<String> recordClassesToRead = new ArrayList<>();
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            recordClassesToRead.add(recordTypeAndRecordIds.getRecordType());
+        }
+
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        int recordsSize = 0;
+        try {
+            for (String recordClass : recordClassesToRead) {
+                List<? extends Record> recordsRead =
+                        readRecords(
+                                new ReadRecordsRequestUsingFilters.Builder<>(
+                                                (Class<? extends Record>)
+                                                        Class.forName(recordClass))
+                                        .build(),
+                                ApplicationProvider.getApplicationContext());
+
+                recordsSize += recordsRead.size();
+            }
+        } catch (Exception e) {
+            Assert.fail(
+                    "App with MANAGE_HEALTH_DATA  permission should have read entries of another"
+                            + " app!");
+        }
+        assertThat(recordsSize).isNotEqualTo(0);
+    }
+
+    @Test
+    public void testAppWithManageHealthDataPermsCanDeleteAnotherAppEntry() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        List<RecordIdFilter> recordIdFilters = new ArrayList<>();
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            for (String recordId : recordTypeAndRecordIds.getRecordIds()) {
+                recordIdFilters.add(
+                        RecordIdFilter.fromId(
+                                (Class<? extends Record>)
+                                        Class.forName(recordTypeAndRecordIds.getRecordType()),
+                                recordId));
+            }
+        }
+
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        try {
+            verifyDeleteRecords(recordIdFilters, ApplicationProvider.getApplicationContext());
+        } catch (Exception e) {
+            Assert.fail(
+                    "App with MANAGE_HEALTH_DATA  permission should have deleted data from other"
+                            + " app!");
+        }
     }
 }
