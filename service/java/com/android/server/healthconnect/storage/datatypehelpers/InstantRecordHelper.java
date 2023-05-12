@@ -31,6 +31,8 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -112,9 +114,13 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
     final ZoneOffset getZoneOffset(Cursor cursor) {
         ZoneOffset zoneOffset = null;
         if (cursor.getCount() > 0 && cursor.getColumnIndex(ZONE_OFFSET_COLUMN_NAME) != -1) {
-            zoneOffset =
-                    ZoneOffset.ofTotalSeconds(
-                            StorageUtils.getCursorInt(cursor, ZONE_OFFSET_COLUMN_NAME));
+            try {
+                zoneOffset =
+                        ZoneOffset.ofTotalSeconds(
+                                StorageUtils.getCursorInt(cursor, ZONE_OFFSET_COLUMN_NAME));
+            } catch (Exception exception) {
+                zoneOffset = OffsetDateTime.now(ZoneId.systemDefault()).getOffset();
+            }
         }
 
         return zoneOffset;

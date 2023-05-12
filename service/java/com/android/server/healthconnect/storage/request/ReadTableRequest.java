@@ -43,6 +43,7 @@ import java.util.Objects;
  */
 public class ReadTableRequest {
     private static final String TAG = "HealthConnectRead";
+    private static final String UNION_ALL = " UNION ALL ";
 
     private final String mTableName;
     private RecordHelper<?> mRecordHelper;
@@ -54,6 +55,7 @@ public class ReadTableRequest {
     private String mLimitClause = "";
     private int mPageSize = DEFAULT_PAGE_SIZE;
     private List<ReadTableRequest> mExtraReadRequests;
+    private List<ReadTableRequest> mUnionReadRequests;
 
     public ReadTableRequest(@NonNull String tableName) {
         Objects.requireNonNull(tableName);
@@ -127,6 +129,20 @@ public class ReadTableRequest {
             Slog.d(TAG, "read query: " + readQuery);
         }
 
+        if (mUnionReadRequests != null && !mUnionReadRequests.isEmpty()) {
+            builder = new StringBuilder();
+            for (ReadTableRequest unionReadRequest : mUnionReadRequests) {
+                builder.append("SELECT * FROM (");
+                builder.append(unionReadRequest.getReadCommand());
+                builder.append(")");
+                builder.append(UNION_ALL);
+            }
+
+            builder.append(readQuery);
+
+            return builder.toString();
+        }
+
         return readQuery;
     }
 
@@ -176,5 +192,12 @@ public class ReadTableRequest {
         }
 
         return String.join(DELIMITER, mColumnNames);
+    }
+
+    public ReadTableRequest setUnionReadRequests(
+            @Nullable List<ReadTableRequest> unionReadRequests) {
+        mUnionReadRequests = unionReadRequests;
+
+        return this;
     }
 }
