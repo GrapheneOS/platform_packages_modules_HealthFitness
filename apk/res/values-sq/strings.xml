@@ -683,7 +683,7 @@
     <string name="auto_delete_section" msgid="7732381000331475082">"Fshirja automatike e të dhënave"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Pas # muaji}other{Pas # muajsh}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Asnjëherë"</string>
-    <string name="range_off" msgid="8178520557618184215">"Çaktivizuar"</string>
+    <string name="range_off" msgid="8178520557618184215">"Joaktive"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Kur i ndryshon këto cilësime, Health Connect fshin të dhënat ekzistuese për të pasqyruar preferencat e tua të reja"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Të fshihen automatikisht të dhënat pas # muaji?}other{Të fshihen automatikisht të dhënat pas # muajsh?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect do t\'i fshijë automatikisht të dhënat e reja pas # muaji. Caktimi i kësaj do të fshijë gjithashtu të dhënat ekzistuese më të vjetra se # muaj.}other{Health Connect do t\'i fshijë automatikisht të dhënat e reja pas # muajsh. Caktimi i kësaj do të fshijë gjithashtu të dhënat ekzistuese më të vjetra se # muaj.}}"</string>
@@ -743,17 +743,17 @@
     <string name="resume_button" msgid="2255148549862208047">"Vazhdo"</string>
     <string name="migration_paused_notification_title" msgid="6020271090296330698">"Integrimi i Health Connect u ndërpre"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Rifillo integrimin"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Trokit për të vazhduar integrimin e Health Connect me sistemin Android. Për të ruajtur të dhënat e tua, kryeje këtë brenda <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Trokit për të vazhduar integrimin e Health Connect me sistemin Android. Për të ruajtur të dhënat e tua, kryeje këtë brenda kësaj kohe: <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Trokit për të vazhduar integrimin e Health Connect me sistemin Android."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Vazhdo"</string>
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"Rifillo integrimin e Health Connect"</string>
     <string name="resume_migration_notification_content" msgid="46172108837648715">"Për të ruajtur të dhënat e tua, kryeje këtë brenda <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Nevojitet përditësimi i aplikacionit"</string>
+    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Nevojitet përditësimi i aplikacioneve"</string>
     <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> duhet të jetë i përditësuar që të vazhdojë të funksionojë me Health Connect"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Disa aplikacione duhet të jenë të përditësuara që të vazhdojnë të funksionojnë me Health Connect"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Kontrollo për përditësime"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integrimi i Health Connect"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect është gati për t\'u integruar me sistemin tënd Android. Nëse i jep tani qasje <xliff:g id="APP_NAME">%1$s</xliff:g>, disa veçori mund të mos funksionojnë pa përfunduar integrimi përpara."</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect është gati për t\'u integruar me sistemin tënd Android. Nëse i jep tani qasje <xliff:g id="APP_NAME">%1$s</xliff:g>, disa veçori mund të mos funksionojnë derisa të përfundojë integrimi."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect është gati për t\'u integruar me sistemin tënd Android. Nëse u jep aplikacioneve qasje tani, disa veçori mund të mos funksionojnë derisa të përfundojë integrimi."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Vazhdo"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integrimi i Health Connect është në proces"</string>
