@@ -707,7 +707,7 @@
     <string name="search_connected_apps" msgid="8180770761876928851">"Tìm kiếm ứng dụng"</string>
     <string name="no_results" msgid="4007426147286897998">"Không có kết quả nào"</string>
     <string name="help" msgid="6028777453152686162">"Trợ giúp"</string>
-    <string name="request_route_header_title" msgid="6599707039845646714">"Cho phép <xliff:g id="APP_NAME">%1$s</xliff:g> truy cập tuyến bài tập này trong Health Connect?"</string>
+    <string name="request_route_header_title" msgid="6599707039845646714">"Cho phép <xliff:g id="APP_NAME">%1$s</xliff:g> truy cập tuyến đường của hoạt động thể dục này trong Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"Ứng dụng này sẽ có thể đọc vị trí trước đây của bạn trong định tuyến"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
     <string name="request_route_info_header_title" msgid="4149969049719763190">"Các tuyến đường tập thể dục bao gồm cả thông tin vị trí"</string>
@@ -754,13 +754,11 @@
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Kiểm tra bản cập nhật"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Tích hợp Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect đã sẵn sàng tích hợp với hệ thống Android. Nếu bạn cấp ngay quyền truy cập cho <xliff:g id="APP_NAME">%1$s</xliff:g>, một số tính năng sẽ chưa hoạt động được cho đến khi quá trình tích hợp hoàn tất."</string>
-    <!-- no translation found for migration_pending_permissions_dialog_content_apps (6417173899016940664) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect đã sẵn sàng tích hợp với hệ thống Android của bạn. Nếu bạn cấp quyền truy cập ứng dụng ngay lúc này, một số tính năng sẽ chưa thể hoạt động cho đến khi quá trình tích hợp hoàn tất."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Tiếp tục"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Đang trong quá trình tích hợp Health Connect"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Đang tích hợp Health Connect với hệ thống Android.\n\nBạn sẽ nhận được thông báo khi quá trình tích hợp hoàn tất để bạn có thể sử dụng <xliff:g id="APP_NAME">%1$s</xliff:g> với Health Connect."</string>
-    <!-- no translation found for migration_in_progress_permissions_dialog_content_apps (8653954808926889199) -->
-    <skip />
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Đang tích hợp Health Connect với hệ thống Android.\n\nBạn sẽ nhận được thông báo khi quá trình tích hợp hoàn tất và bạn có thể sử dụng Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Tôi hiểu"</string>
     <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Chưa tích hợp xong Health Connect"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Bạn sẽ nhận được thông báo khi quá trình tích hợp có thể tiếp tục."</string>

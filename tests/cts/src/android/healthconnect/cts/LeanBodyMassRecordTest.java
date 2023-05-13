@@ -504,7 +504,13 @@ public class LeanBodyMassRecordTest {
                 .build();
     }
 
-    private static LeanBodyMassRecord getCompleteLeanBodyMassRecord() {
+    static LeanBodyMassRecord getBaseLeanBodyMassRecord(Instant time, double value) {
+        return new LeanBodyMassRecord.Builder(
+                        new Metadata.Builder().build(), time, Mass.fromGrams(value))
+                .build();
+    }
+
+    static LeanBodyMassRecord getCompleteLeanBodyMassRecord() {
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")
