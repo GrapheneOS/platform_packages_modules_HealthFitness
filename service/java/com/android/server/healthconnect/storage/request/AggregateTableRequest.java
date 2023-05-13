@@ -33,6 +33,7 @@ import android.health.connect.TimeRangeFilter;
 import android.health.connect.TimeRangeFilterHelper;
 import android.health.connect.datatypes.AggregationType;
 import android.util.ArrayMap;
+import android.util.Pair;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -337,12 +338,12 @@ public class AggregateTableRequest {
 
         if (mEndTimeColumnName != null) {
             // Filter all records which overlap with time filter interval:
-            // recordStartTime < filterEndTime and recordEndTime > filterStartTime
-            whereClauses.addWhereLessThanClause(mTimeColumnName, mEndTime);
-            whereClauses.addWhereGreaterThanClause(mEndTimeColumnName, mStartTime);
+            // recordStartTime < filterEndTime and recordEndTime >= filterStartTime
+            whereClauses.addWhereGreaterThanOrEqualClause(mEndTimeColumnName, mStartTime);
         } else {
-            whereClauses.addWhereBetweenClause(mTimeColumnName, mStartTime, mEndTime);
+            whereClauses.addWhereGreaterThanOrEqualClause(mTimeColumnName, mStartTime);
         }
+        whereClauses.addWhereLessThanClause(mTimeColumnName, mEndTime);
 
         return whereClauses.get(/* withWhereKeyword= */ true);
     }
@@ -358,8 +359,21 @@ public class AggregateTableRequest {
                 (n, v) -> mAggregateResults.get(n).setDataOrigins(packageNames));
     }
 
+    public List<Pair<Long, Long>> getGroupSplitIntervals() {
+        List<Long> groupSplits = getGroupSplits();
+        List<Pair<Long, Long>> groupIntervals = new ArrayList<>();
+        long previous = groupSplits.get(0);
+        for (int i = 1; i < groupSplits.size(); i++) {
+            Pair<Long, Long> pair = new Pair<>(previous, groupSplits.get(i));
+            groupIntervals.add(pair);
+            previous = groupSplits.get(i);
+        }
+
+        return groupIntervals;
+    }
+
     private List<Long> getGroupSplits() {
-        long currentStart = mGroupByStart;
+        long currentStart = mStartTime;
         List<Long> splits = new ArrayList<>();
         splits.add(currentStart);
         long currentEnd = getGroupEndTime(currentStart);
@@ -383,14 +397,7 @@ public class AggregateTableRequest {
     }
 
     private void deriveAggregate(Cursor cursor) {
-        double[] derivedAggregateArray =
-                mRecordHelper.deriveAggregate(
-                        cursor,
-                        mStartTime,
-                        mEndTime,
-                        mGroupBySize,
-                        mGroupByDelta,
-                        mGroupByColumnName);
+        double[] derivedAggregateArray = mRecordHelper.deriveAggregate(cursor, this);
         int index = 0;
         cursor.moveToFirst();
         for (double aggregate : derivedAggregateArray) {
