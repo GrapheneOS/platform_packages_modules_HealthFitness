@@ -175,6 +175,11 @@ public final class ChangeLogsRequestHelper {
                         .insert(new UpsertTableRequest(TABLE_NAME, contentValues)));
     }
 
+    /** Deletes all entries from the database. */
+    public synchronized void clearData(TransactionManager transactionManager) {
+        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
+    }
+
     /** A class to represent the request corresponding to a token */
     public static final class TokenRequest {
         private final List<String> mPackageNamesToFilter;

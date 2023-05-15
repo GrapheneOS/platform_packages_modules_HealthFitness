@@ -18,17 +18,22 @@ package android.healthconnect.cts;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.content.Context;
+import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.platform.test.annotations.AppModeFull;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,6 +44,17 @@ import java.util.List;
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectAccessLogsTest {
+    @After
+    public void tearDown() throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        String packageName = context.getPackageName();
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(new DataOrigin.Builder().setPackageName(packageName).build())
+                        .build());
+        TestUtils.deleteAllStagedRemoteData();
+    }
+
     @Test
     public void testAccessLogs_read_singleRecordType() throws InterruptedException {
         List<AccessLog> oldAccessLogsResponse = TestUtils.queryAccessLogs();
