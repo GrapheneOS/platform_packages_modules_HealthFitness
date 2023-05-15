@@ -26,6 +26,7 @@ import static android.health.connect.HealthPermissionCategory.BASAL_METABOLIC_RA
 import static android.health.connect.HealthPermissionCategory.EXERCISE;
 import static android.health.connect.HealthPermissionCategory.HEART_RATE;
 import static android.health.connect.HealthPermissionCategory.STEPS;
+import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_ACTIVELY_RECORDED;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
@@ -1086,6 +1087,69 @@ public class TestUtils {
                         new DataOrigin.Builder().setPackageName(context.getPackageName()).build())
                 .setDevice(buildDevice())
                 .setRecordingMethod(Metadata.RECORDING_METHOD_UNKNOWN)
+                .build();
+    }
+
+    public static HeartRateRecord getHugeHeartRateRecord() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("google")
+                        .setModel("Pixel4a")
+                        .setType(2)
+                        .build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        testMetadataBuilder.setClientRecordId("HRR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
+
+        HeartRateRecord.HeartRateSample heartRateRecord =
+                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
+        ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords =
+                new ArrayList<>(Collections.nCopies(85000, heartRateRecord));
+
+        return new HeartRateRecord.Builder(
+                        testMetadataBuilder.build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(500),
+                        heartRateRecords)
+                .build();
+    }
+
+    public static StepsRecord getCompleteStepsRecord() {
+        Device device =
+                new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
+
+        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        testMetadataBuilder.setClientRecordId("SR" + Math.random());
+        testMetadataBuilder.setRecordingMethod(RECORDING_METHOD_ACTIVELY_RECORDED);
+        Metadata testMetaData = testMetadataBuilder.build();
+        assertThat(testMetaData.getRecordingMethod()).isEqualTo(RECORDING_METHOD_ACTIVELY_RECORDED);
+        return new StepsRecord.Builder(
+                        testMetaData, Instant.now(), Instant.now().plusMillis(1000), 10)
+                .build();
+    }
+
+    public static StepsRecord getStepsRecord_update(
+            Record record, String id, String clientRecordId) {
+        Metadata metadata = record.getMetadata();
+        Metadata metadataWithId =
+                new Metadata.Builder()
+                        .setId(id)
+                        .setClientRecordId(clientRecordId)
+                        .setClientRecordVersion(metadata.getClientRecordVersion())
+                        .setDataOrigin(metadata.getDataOrigin())
+                        .setDevice(metadata.getDevice())
+                        .setLastModifiedTime(metadata.getLastModifiedTime())
+                        .build();
+        return new StepsRecord.Builder(
+                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 20)
+                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }
 

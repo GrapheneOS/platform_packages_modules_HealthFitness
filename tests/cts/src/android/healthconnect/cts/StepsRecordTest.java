@@ -17,7 +17,6 @@
 package android.healthconnect.cts;
 
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
-import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_ACTIVELY_RECORDED;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.cts.TestUtils.isHardwareAutomotive;
 
@@ -39,7 +38,6 @@ import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
-import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
@@ -85,7 +83,7 @@ public class StepsRecordTest {
 
     @Test
     public void testInsertStepsRecord() throws InterruptedException {
-        List<Record> records = List.of(getBaseStepsRecord(), getCompleteStepsRecord());
+        List<Record> records = List.of(getBaseStepsRecord(), TestUtils.getCompleteStepsRecord());
         TestUtils.insertRecords(records);
     }
 
@@ -111,7 +109,9 @@ public class StepsRecordTest {
 
     @Test
     public void testReadStepsRecord_usingIds() throws InterruptedException {
-        List<Record> recordList = Arrays.asList(getCompleteStepsRecord(), getCompleteStepsRecord());
+        List<Record> recordList =
+                Arrays.asList(
+                        TestUtils.getCompleteStepsRecord(), TestUtils.getCompleteStepsRecord());
         List<Record> insertedRecords = TestUtils.insertRecords(recordList);
         readStepsRecordUsingIds(insertedRecords);
     }
@@ -130,7 +130,9 @@ public class StepsRecordTest {
 
     @Test
     public void testReadStepsRecord_usingClientRecordIds() throws InterruptedException {
-        List<Record> recordList = Arrays.asList(getCompleteStepsRecord(), getCompleteStepsRecord());
+        List<Record> recordList =
+                Arrays.asList(
+                        TestUtils.getCompleteStepsRecord(), TestUtils.getCompleteStepsRecord());
         List<Record> insertedRecords = TestUtils.insertRecords(recordList);
         readStepsRecordUsingClientId(insertedRecords);
     }
@@ -152,7 +154,7 @@ public class StepsRecordTest {
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setAscending(true)
                                 .build());
-        StepsRecord testRecord = getCompleteStepsRecord();
+        StepsRecord testRecord = TestUtils.getCompleteStepsRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<StepsRecord> newStepsRecords =
                 TestUtils.readRecords(
@@ -170,7 +172,7 @@ public class StepsRecordTest {
                         .setStartTime(Instant.now())
                         .setEndTime(Instant.now().plusMillis(3000))
                         .build();
-        StepsRecord testRecord = getCompleteStepsRecord();
+        StepsRecord testRecord = TestUtils.getCompleteStepsRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<StepsRecord> newStepsRecords =
                 TestUtils.readRecords(
@@ -192,7 +194,7 @@ public class StepsRecordTest {
                                                 .setPackageName(context.getPackageName())
                                                 .build())
                                 .build());
-        StepsRecord testRecord = getCompleteStepsRecord();
+        StepsRecord testRecord = TestUtils.getCompleteStepsRecord();
         TestUtils.insertRecords(Collections.singletonList(testRecord));
         List<StepsRecord> newStepsRecords =
                 TestUtils.readRecords(
@@ -209,7 +211,7 @@ public class StepsRecordTest {
 
     @Test
     public void testReadStepsRecordUsingFilters_dataFilter_incorrect() throws InterruptedException {
-        TestUtils.insertRecords(Collections.singletonList(getCompleteStepsRecord()));
+        TestUtils.insertRecords(Collections.singletonList(TestUtils.getCompleteStepsRecord()));
         ReadRecordsRequestUsingFilters<StepsRecord> requestUsingFilters =
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                         .addDataOrigins(new DataOrigin.Builder().setPackageName("abc").build())
@@ -398,7 +400,7 @@ public class StepsRecordTest {
 
     @Test
     public void testDeleteStepsRecord_no_filters() throws InterruptedException {
-        String id = TestUtils.insertRecordAndGetId(getCompleteStepsRecord());
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getCompleteStepsRecord());
         TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
         TestUtils.assertRecordNotFound(id, StepsRecord.class);
     }
@@ -410,7 +412,7 @@ public class StepsRecordTest {
                         .setStartTime(Instant.now())
                         .setEndTime(Instant.now().plusMillis(1000))
                         .build();
-        String id = TestUtils.insertRecordAndGetId(getCompleteStepsRecord());
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getCompleteStepsRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
                         .addRecordType(StepsRecord.class)
@@ -421,7 +423,7 @@ public class StepsRecordTest {
 
     @Test
     public void testDeleteStepsRecord_recordId_filters() throws InterruptedException {
-        List<Record> records = List.of(getBaseStepsRecord(), getCompleteStepsRecord());
+        List<Record> records = List.of(getBaseStepsRecord(), TestUtils.getCompleteStepsRecord());
         TestUtils.insertRecords(records);
 
         for (Record record : records) {
@@ -436,7 +438,7 @@ public class StepsRecordTest {
     @Test
     public void testDeleteStepsRecord_dataOrigin_filters() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
-        String id = TestUtils.insertRecordAndGetId(getCompleteStepsRecord());
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getCompleteStepsRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
                         .addDataOrigin(
@@ -449,7 +451,7 @@ public class StepsRecordTest {
 
     @Test
     public void testDeleteStepsRecord_dataOrigin_filter_incorrect() throws InterruptedException {
-        String id = TestUtils.insertRecordAndGetId(getCompleteStepsRecord());
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getCompleteStepsRecord());
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
                         .addDataOrigin(new DataOrigin.Builder().setPackageName("abc").build())
@@ -459,7 +461,7 @@ public class StepsRecordTest {
 
     @Test
     public void testDeleteStepsRecord_usingIds() throws InterruptedException {
-        List<Record> records = List.of(getBaseStepsRecord(), getCompleteStepsRecord());
+        List<Record> records = List.of(getBaseStepsRecord(), TestUtils.getCompleteStepsRecord());
         List<Record> insertedRecord = TestUtils.insertRecords(records);
         List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
         for (Record record : insertedRecord) {
@@ -479,7 +481,7 @@ public class StepsRecordTest {
 
     @Test
     public void testDeleteStepsRecord_usingInvalidClientIds() throws InterruptedException {
-        List<Record> records = List.of(getBaseStepsRecord(), getCompleteStepsRecord());
+        List<Record> records = List.of(getBaseStepsRecord(), TestUtils.getCompleteStepsRecord());
         List<Record> insertedRecord = TestUtils.insertRecords(records);
         List<RecordIdFilter> recordIds = new ArrayList<>(records.size());
         for (Record record : insertedRecord) {
@@ -506,7 +508,7 @@ public class StepsRecordTest {
                         .setStartTime(Instant.now())
                         .setEndTime(Instant.now().plusMillis(1000))
                         .build();
-        String id = TestUtils.insertRecordAndGetId(getCompleteStepsRecord());
+        String id = TestUtils.insertRecordAndGetId(TestUtils.getCompleteStepsRecord());
         TestUtils.verifyDeleteRecords(StepsRecord.class, timeRangeFilter);
         TestUtils.assertRecordNotFound(id, StepsRecord.class);
     }
@@ -793,20 +795,23 @@ public class StepsRecordTest {
 
         List<Record> insertedRecords =
                 TestUtils.insertRecords(
-                        Arrays.asList(getCompleteStepsRecord(), getCompleteStepsRecord()));
+                        Arrays.asList(
+                                TestUtils.getCompleteStepsRecord(),
+                                TestUtils.getCompleteStepsRecord()));
 
         // read inserted records and verify that the data is same as inserted.
         readStepsRecordUsingIds(insertedRecords);
 
         // Generate a new set of records that will be used to perform the update operation.
         List<Record> updateRecords =
-                Arrays.asList(getCompleteStepsRecord(), getCompleteStepsRecord());
+                Arrays.asList(
+                        TestUtils.getCompleteStepsRecord(), TestUtils.getCompleteStepsRecord());
 
         // Modify the uid of the updateRecords to the uuid that was present in the insert records.
         for (int itr = 0; itr < updateRecords.size(); itr++) {
             updateRecords.set(
                     itr,
-                    getStepsRecord_update(
+                    TestUtils.getStepsRecord_update(
                             updateRecords.get(itr),
                             insertedRecords.get(itr).getMetadata().getId(),
                             insertedRecords.get(itr).getMetadata().getClientRecordId()));
@@ -823,14 +828,17 @@ public class StepsRecordTest {
             throws InterruptedException {
         List<Record> insertedRecords =
                 TestUtils.insertRecords(
-                        Arrays.asList(getCompleteStepsRecord(), getCompleteStepsRecord()));
+                        Arrays.asList(
+                                TestUtils.getCompleteStepsRecord(),
+                                TestUtils.getCompleteStepsRecord()));
 
         // read inserted records and verify that the data is same as inserted.
         readStepsRecordUsingIds(insertedRecords);
 
         // Generate a second set of records that will be used to perform the update operation.
         List<Record> updateRecords =
-                Arrays.asList(getCompleteStepsRecord(), getCompleteStepsRecord());
+                Arrays.asList(
+                        TestUtils.getCompleteStepsRecord(), TestUtils.getCompleteStepsRecord());
 
         // Modify the Uid of the updateRecords to the UUID that was present in the insert records,
         // leaving out alternate records so that they have a new UUID which is not present in the
@@ -838,7 +846,7 @@ public class StepsRecordTest {
         for (int itr = 0; itr < updateRecords.size(); itr++) {
             updateRecords.set(
                     itr,
-                    getStepsRecord_update(
+                    TestUtils.getStepsRecord_update(
                             updateRecords.get(itr),
                             itr % 2 == 0
                                     ? insertedRecords.get(itr).getMetadata().getId()
@@ -864,25 +872,28 @@ public class StepsRecordTest {
             throws InterruptedException {
         List<Record> insertedRecords =
                 TestUtils.insertRecords(
-                        Arrays.asList(getCompleteStepsRecord(), getCompleteStepsRecord()));
+                        Arrays.asList(
+                                TestUtils.getCompleteStepsRecord(),
+                                TestUtils.getCompleteStepsRecord()));
 
         // read inserted records and verify that the data is same as inserted.
         readStepsRecordUsingIds(insertedRecords);
 
         // Generate a second set of records that will be used to perform the update operation.
         List<Record> updateRecords =
-                Arrays.asList(getCompleteStepsRecord(), getCompleteStepsRecord());
+                Arrays.asList(
+                        TestUtils.getCompleteStepsRecord(), TestUtils.getCompleteStepsRecord());
 
         // Modify the Uuid of the updateRecords to the uuid that was present in the insert records.
         for (int itr = 0; itr < updateRecords.size(); itr++) {
             updateRecords.set(
                     itr,
-                    getStepsRecord_update(
+                    TestUtils.getStepsRecord_update(
                             updateRecords.get(itr),
                             insertedRecords.get(itr).getMetadata().getId(),
                             insertedRecords.get(itr).getMetadata().getClientRecordId()));
             //             adding an entry with invalid packageName.
-            updateRecords.set(itr, getCompleteStepsRecord());
+            updateRecords.set(itr, TestUtils.getCompleteStepsRecord());
         }
 
         try {
@@ -915,7 +926,7 @@ public class StepsRecordTest {
         assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
         assertThat(response.getDeletedLogs().size()).isEqualTo(0);
 
-        List<Record> testRecord = Collections.singletonList(getCompleteStepsRecord());
+        List<Record> testRecord = Collections.singletonList(TestUtils.getCompleteStepsRecord());
         TestUtils.insertRecords(testRecord);
         response = TestUtils.getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords().size()).isEqualTo(1);
@@ -992,24 +1003,6 @@ public class StepsRecordTest {
         assertThat(result).containsExactlyElementsIn(recordList);
     }
 
-    static StepsRecord getStepsRecord_update(Record record, String id, String clientRecordId) {
-        Metadata metadata = record.getMetadata();
-        Metadata metadataWithId =
-                new Metadata.Builder()
-                        .setId(id)
-                        .setClientRecordId(clientRecordId)
-                        .setClientRecordVersion(metadata.getClientRecordVersion())
-                        .setDataOrigin(metadata.getDataOrigin())
-                        .setDevice(metadata.getDevice())
-                        .setLastModifiedTime(metadata.getLastModifiedTime())
-                        .build();
-        return new StepsRecord.Builder(
-                        metadataWithId, Instant.now(), Instant.now().plusMillis(2000), 20)
-                .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
-                .build();
-    }
-
     static StepsRecord getBaseStepsRecord() {
         return new StepsRecord.Builder(
                         new Metadata.Builder().build(),
@@ -1036,23 +1029,6 @@ public class StepsRecordTest {
                                 .minus(daysPast, ChronoUnit.DAYS)
                                 .plus(durationInHours, ChronoUnit.HOURS),
                         count)
-                .build();
-    }
-
-    static StepsRecord getCompleteStepsRecord() {
-        Device device =
-                new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
-        DataOrigin dataOrigin =
-                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
-
-        Metadata.Builder testMetadataBuilder = new Metadata.Builder();
-        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
-        testMetadataBuilder.setClientRecordId("SR" + Math.random());
-        testMetadataBuilder.setRecordingMethod(RECORDING_METHOD_ACTIVELY_RECORDED);
-        Metadata testMetaData = testMetadataBuilder.build();
-        assertThat(testMetaData.getRecordingMethod()).isEqualTo(RECORDING_METHOD_ACTIVELY_RECORDED);
-        return new StepsRecord.Builder(
-                        testMetaData, Instant.now(), Instant.now().plusMillis(1000), 10)
                 .build();
     }
 
