@@ -47,6 +47,7 @@ import static android.health.connect.datatypes.AggregationType.AggregationTypeId
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_THIAMIN_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_TOTAL_CARBOHYDRATE_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_TOTAL_FAT_TOTAL;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_TRANS_FAT_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_UNSATURATED_FAT_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_A_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_VITAMIN_B12_TOTAL;
@@ -243,6 +244,9 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
             case NUTRITION_RECORD_TOTAL_FAT_TOTAL:
                 aggregateValue = results.getDouble(results.getColumnIndex(TOTAL_FAT_COLUMN_NAME));
                 break;
+            case NUTRITION_RECORD_TRANS_FAT_TOTAL:
+                aggregateValue = results.getDouble(results.getColumnIndex(TRANS_FAT_COLUMN_NAME));
+                break;
             case NUTRITION_RECORD_UNSATURATED_FAT_TOTAL:
                 aggregateValue =
                         results.getDouble(results.getColumnIndex(UNSATURATED_FAT_COLUMN_NAME));
@@ -382,6 +386,9 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
                 break;
             case NUTRITION_RECORD_TOTAL_FAT_TOTAL:
                 columnNames = Collections.singletonList(TOTAL_FAT_COLUMN_NAME);
+                break;
+            case NUTRITION_RECORD_TRANS_FAT_TOTAL:
+                columnNames = Collections.singletonList(TRANS_FAT_COLUMN_NAME);
                 break;
             case NUTRITION_RECORD_UNSATURATED_FAT_TOTAL:
                 columnNames = Collections.singletonList(UNSATURATED_FAT_COLUMN_NAME);

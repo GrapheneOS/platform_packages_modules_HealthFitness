@@ -1019,6 +1019,7 @@ package android.health.connect.datatypes {
     field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> THIAMIN_TOTAL;
     field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> TOTAL_CARBOHYDRATE_TOTAL;
     field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> TOTAL_FAT_TOTAL;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> TRANS_FAT_TOTAL;
     field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> UNSATURATED_FAT_TOTAL;
     field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> VITAMIN_A_TOTAL;
     field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Mass> VITAMIN_B12_TOTAL;
