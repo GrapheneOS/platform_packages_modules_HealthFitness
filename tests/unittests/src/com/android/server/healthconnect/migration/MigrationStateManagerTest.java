@@ -23,7 +23,9 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED;
 
+import static com.android.server.healthconnect.migration.MigrationConstants.CURRENT_STATE_START_TIME_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_RESET_MIGRATION_STATE_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_TIMEOUT_REACHED_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.IN_PROGRESS_TIMEOUT_REACHED_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
@@ -31,6 +33,7 @@ import static com.android.server.healthconnect.migration.MigrationConstants.MIGR
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STARTS_COUNT_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STATE_PREFERENCE_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.PREMATURE_MIGRATION_TIMEOUT_DATE;
 import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK_CERTIFICATE_ONE;
 import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK_CERTIFICATE_TWO;
 import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK_CONFIGURED_PACKAGE;
@@ -85,6 +88,8 @@ import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -882,6 +887,57 @@ public class MigrationStateManagerTest {
     public void testHasIdleStateTimedOut_returnsFalse_whenNotSet() {
         when(mPreferenceHelper.getPreference(eq(IDLE_TIMEOUT_REACHED_KEY))).thenReturn(null);
         assertFalse(mMigrationStateManager.hasIdleStateTimedOut());
+    }
+
+    @Test
+    public void testSwitchToSetupForUser_migrationHasTimedOutPrematurely() {
+        Instant mockStartTime =
+                PREMATURE_MIGRATION_TIMEOUT_DATE
+                        .minusDays(10)
+                        .atStartOfDay()
+                        .toInstant(ZoneOffset.UTC);
+        when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
+                .thenReturn(mockStartTime.toString());
+        setMigrationState(MIGRATION_STATE_COMPLETE);
+        mMigrationStateManager.resetMigrationStateIfNeeded(mContext);
+        verifyStateChange(MIGRATION_STATE_IDLE);
+    }
+
+    @Test
+    public void testSwitchToSetupForUser_migrationHasNotTimedOut() {
+        setMigrationState(MIGRATION_STATE_IDLE);
+        mMigrationStateManager.resetMigrationStateIfNeeded(mContext);
+        verifyNoStateChange();
+    }
+
+    @Test
+    public void testSwitchToSetupForUser_migrationHasTimedOutNotPrematurely() {
+        Instant mockStartTime =
+                PREMATURE_MIGRATION_TIMEOUT_DATE
+                        .plusDays(10)
+                        .atStartOfDay()
+                        .toInstant(ZoneOffset.UTC);
+        when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
+                .thenReturn(mockStartTime.toString());
+        setMigrationState(MIGRATION_STATE_COMPLETE);
+        mMigrationStateManager.resetMigrationStateIfNeeded(mContext);
+        verifyNoStateChange();
+    }
+
+    @Test
+    public void testSwitchToSetupForUser_migrationHasTimedOutPrematurely_stateAlreadyReset() {
+        Instant mockStartTime =
+                PREMATURE_MIGRATION_TIMEOUT_DATE
+                        .minusDays(10)
+                        .atStartOfDay()
+                        .toInstant(ZoneOffset.UTC);
+        when(mPreferenceHelper.getPreference(eq(HAVE_RESET_MIGRATION_STATE_KEY)))
+                .thenReturn(String.valueOf(true));
+        when(mPreferenceHelper.getPreference(eq(CURRENT_STATE_START_TIME_KEY)))
+                .thenReturn(mockStartTime.toString());
+        setMigrationState(MIGRATION_STATE_COMPLETE);
+        mMigrationStateManager.resetMigrationStateIfNeeded(mContext);
+        verifyNoStateChange();
     }
 
     private void setMigrationState(int state) {
