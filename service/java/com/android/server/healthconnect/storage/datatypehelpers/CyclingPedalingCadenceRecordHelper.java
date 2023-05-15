@@ -16,6 +16,10 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.CYCLING_PEDALING_CADENCE_RECORD_RPM_AVG;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
@@ -24,13 +28,19 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.AggregateResult;
+import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.storage.utils.SqlJoin;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -101,5 +111,42 @@ public class CyclingPedalingCadenceRecordHelper
                 REVOLUTIONS_PER_MINUTE_COLUMN_NAME,
                 cyclingPedalingCadenceRecord.getRevolutionsPerMinute());
         contentValues.put(EPOCH_MILLIS_COLUMN_NAME, cyclingPedalingCadenceRecord.getEpochMillis());
+    }
+
+    @Override
+    public final AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN:
+            case CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX:
+            case CYCLING_PEDALING_CADENCE_RECORD_RPM_AVG:
+                return new AggregateResult<>(
+                                results.getDouble(
+                                        results.getColumnIndex(REVOLUTIONS_PER_MINUTE_COLUMN_NAME)))
+                        .setZoneOffset(getZoneOffset(results));
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    final AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN:
+            case CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX:
+            case CYCLING_PEDALING_CADENCE_RECORD_RPM_AVG:
+                return new AggregateParams(
+                                SERIES_TABLE_NAME,
+                                Collections.singletonList(REVOLUTIONS_PER_MINUTE_COLUMN_NAME),
+                                START_TIME_COLUMN_NAME)
+                        .setJoin(
+                                new SqlJoin(
+                                        SERIES_TABLE_NAME,
+                                        TABLE_NAME,
+                                        PARENT_KEY_COLUMN_NAME,
+                                        PRIMARY_COLUMN_NAME));
+            default:
+                return null;
+        }
     }
 }
