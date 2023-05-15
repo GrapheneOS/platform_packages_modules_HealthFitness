@@ -650,6 +650,7 @@
     <string name="sleep_session_with_one_field" translatable="false"><xliff:g example="My Oura sleep" id="title">%1$s</xliff:g></string>
     <string name="sleep_session_with_notes" translatable="false"><xliff:g example="My Oura sleep" id="title">%1$s</xliff:g> \n<xliff:g example="This was a peaceful night" id="notes">%2$s</xliff:g></string>
     <string name="sleep_stage_awake" description="Awake stage throughout the sleep session. [CHAR LIMIT=50]">awake</string>
+    <string name="sleep_stage_awake_in_bed" description="Awake stage throughout the sleep session. [CHAR LIMIT=50]">awake in bed</string>
     <string name="sleep_stage_sleeping" description="Sleeping stage throughout the sleep session. [CHAR LIMIT=50]">sleeping</string>
     <string name="sleep_stage_out_of_bed" description="Out of bed stage throughout the sleep session. [CHAR LIMIT=50]">out of bed</string>
     <string name="sleep_stage_rem" description="REM stage throughout the sleep session. [CHAR LIMIT=50]">REM sleep</string>

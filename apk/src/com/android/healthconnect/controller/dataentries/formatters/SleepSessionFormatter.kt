@@ -16,6 +16,7 @@ package com.android.healthconnect.controller.dataentries.formatters
 import android.content.Context
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_AWAKE
+import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_AWAKE_IN_BED
 import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_AWAKE_OUT_OF_BED
 import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING
 import android.health.connect.datatypes.SleepSessionRecord.StageType.STAGE_TYPE_SLEEPING_DEEP
@@ -31,6 +32,7 @@ import com.android.healthconnect.controller.dataentries.formatters.shared.BaseFo
 import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import com.google.common.annotations.VisibleForTesting
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration
 import javax.inject.Inject
@@ -57,11 +59,13 @@ class SleepSessionFormatter @Inject constructor(@ApplicationContext private val 
             notes = getNotes(record))
     }
 
-    private fun formatValue(record: SleepSessionRecord): String {
+    @VisibleForTesting
+    fun formatValue(record: SleepSessionRecord): String {
         return formatSleepSession(record) { duration -> formatDurationShort(context, duration) }
     }
 
-    private fun formatA11yValue(record: SleepSessionRecord): String {
+    @VisibleForTesting
+    fun formatA11yValue(record: SleepSessionRecord): String {
         return formatSleepSession(record) { duration -> formatDurationLong(context, duration) }
     }
 
@@ -105,6 +109,7 @@ class SleepSessionFormatter @Inject constructor(@ApplicationContext private val 
             when (stage.type) {
                 STAGE_TYPE_UNKNOWN -> R.string.sleep_stage_unknown
                 STAGE_TYPE_AWAKE -> R.string.sleep_stage_awake
+                STAGE_TYPE_AWAKE_IN_BED -> R.string.sleep_stage_awake_in_bed
                 STAGE_TYPE_SLEEPING_DEEP -> R.string.sleep_stage_deep
                 STAGE_TYPE_SLEEPING_LIGHT -> R.string.sleep_stage_light
                 STAGE_TYPE_AWAKE_OUT_OF_BED -> R.string.sleep_stage_out_of_bed
