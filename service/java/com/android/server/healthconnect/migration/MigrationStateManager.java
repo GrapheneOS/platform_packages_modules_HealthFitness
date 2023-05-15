@@ -26,6 +26,7 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODU
 import static com.android.server.healthconnect.migration.MigrationConstants.ALLOWED_STATE_START_TIME_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.CURRENT_STATE_START_TIME_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_RESET_MIGRATION_STATE_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.HC_PACKAGE_NAME_CONFIG_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.HC_RELEASE_CERT_CONFIG_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_TIMEOUT_REACHED_KEY;
@@ -35,6 +36,7 @@ import static com.android.server.healthconnect.migration.MigrationConstants.MIGR
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STARTS_COUNT_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STATE_PREFERENCE_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.PREMATURE_MIGRATION_TIMEOUT_DATE;
 import static com.android.server.healthconnect.migration.MigrationUtils.filterIntent;
 import static com.android.server.healthconnect.migration.MigrationUtils.filterPermissions;
 
@@ -60,6 +62,8 @@ import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -187,6 +191,7 @@ public final class MigrationStateManager {
     public void switchToSetupForUser(@NonNull Context context) {
         synchronized (mLock) {
             cleanupOldPersistentMigrationJobsIfNeeded(context);
+            resetMigrationStateIfNeeded(context);
             MigrationStateChangeJob.cancelAllJobs(context);
             reconcilePackageChangesWithStates(context);
             reconcileStateChangeJob(context);
@@ -234,6 +239,7 @@ public final class MigrationStateManager {
         }
 
         switch (state) {
+            case MIGRATION_STATE_IDLE:
             case MIGRATION_STATE_APP_UPGRADE_REQUIRED:
             case MIGRATION_STATE_MODULE_UPGRADE_REQUIRED:
                 MigrationStateChangeJob.cancelAllJobs(context);
@@ -435,8 +441,10 @@ public final class MigrationStateManager {
         HashMap<String, String> preferences =
                 new HashMap<>(
                         Map.of(
-                                MIGRATION_STATE_PREFERENCE_KEY, String.valueOf(migrationState),
-                                CURRENT_STATE_START_TIME_KEY, Instant.now().toString()));
+                                MIGRATION_STATE_PREFERENCE_KEY,
+                                String.valueOf(migrationState),
+                                CURRENT_STATE_START_TIME_KEY,
+                                Instant.now().toString()));
 
         if (migrationState == MIGRATION_STATE_IN_PROGRESS) {
             // Reset the in progress timeout key reached if we move to In Progress
@@ -797,6 +805,33 @@ public final class MigrationStateManager {
             preferenceHelper.insertOrReplacePreference(
                     HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY, String.valueOf(true));
         }
+    }
+
+    /**
+     * Resets migration state to IDLE state for early users whose migration might have timed out
+     * before they migrate data.
+     */
+    void resetMigrationStateIfNeeded(@NonNull Context context) {
+        PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
+
+        if (!Boolean.parseBoolean(preferenceHelper.getPreference(HAVE_RESET_MIGRATION_STATE_KEY))
+                && hasMigrationTimedOutPrematurely()) {
+            updateMigrationState(context, MIGRATION_STATE_IDLE);
+            preferenceHelper.insertOrReplacePreference(
+                    HAVE_RESET_MIGRATION_STATE_KEY, String.valueOf(true));
+        }
+    }
+
+    private boolean hasMigrationTimedOutPrematurely() {
+        String currentStateStartTime =
+                PreferenceHelper.getInstance().getPreference(CURRENT_STATE_START_TIME_KEY);
+
+        if (!Objects.isNull(currentStateStartTime)) {
+            return getMigrationState() == MIGRATION_STATE_COMPLETE
+                    && LocalDate.ofInstant(Instant.parse(currentStateStartTime), ZoneOffset.MIN)
+                            .isBefore(PREMATURE_MIGRATION_TIMEOUT_DATE);
+        }
+        return false;
     }
 
     /**
