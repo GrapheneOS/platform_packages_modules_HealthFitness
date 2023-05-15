@@ -37,6 +37,7 @@ import static com.android.server.healthconnect.migration.MigrationTestUtils.getT
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -99,8 +100,9 @@ public class MigrationStateChangeJobTest {
             Duration.ofHours(
                     HealthConnectDeviceConfigManager
                             .IN_PROGRESS_STATE_TIMEOUT_HOURS_DEFAULT_FLAG_VALUE);
-    private static final boolean ENABLE_STATE_CHANGE_JOB_MOCK_VALUE =
-            HealthConnectDeviceConfigManager.ENABLE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE;
+    private static final boolean ENABLE_STATE_CHANGE_JOB_TRUE_MOCK_VALUE = true;
+
+    private static final boolean ENABLE_STATE_CHANGE_JOB_FALSE_MOCK_VALUE_FALSE = false;
     private static final long MIGRATION_COMPLETION_JOB_RUN_INTERVAL_MOCK_VALUE =
             TimeUnit.DAYS.toMillis(
                     HealthConnectDeviceConfigManager
@@ -139,8 +141,10 @@ public class MigrationStateChangeJobTest {
                 .thenReturn(NON_IDLE_STATE_TIMEOUT_MOCK_VALUE);
         when(mHealthConnectDeviceConfigManager.getInProgressStateTimeoutPeriod())
                 .thenReturn(IN_PROGRESS_STATE_TIMEOUT_MOCK_VALUE);
-        when(mHealthConnectDeviceConfigManager.getEnableStateChangeJob())
-                .thenReturn(ENABLE_STATE_CHANGE_JOB_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.isPauseStateChangeJobEnabled())
+                .thenReturn(ENABLE_STATE_CHANGE_JOB_TRUE_MOCK_VALUE);
+        when(mHealthConnectDeviceConfigManager.isCompleteStateChangeJobEnabled())
+                .thenReturn(ENABLE_STATE_CHANGE_JOB_TRUE_MOCK_VALUE);
         when(mHealthConnectDeviceConfigManager.getMigrationCompletionJobRunInterval())
                 .thenReturn(MIGRATION_COMPLETION_JOB_RUN_INTERVAL_MOCK_VALUE);
         when(mHealthConnectDeviceConfigManager.getMigrationPauseJobRunInterval())
@@ -151,6 +155,7 @@ public class MigrationStateChangeJobTest {
     public void tearDown() {
         clearInvocations(mPreferenceHelper);
         clearInvocations(mMigrationStateManager);
+        clearInvocations(mHealthConnectDeviceConfigManager);
         mStaticMockSession.finishMocking();
     }
 
@@ -328,9 +333,30 @@ public class MigrationStateChangeJobTest {
         verifyNoStateChange();
     }
 
+    /** Expected behavior: No changes to the state */
+    @Test
+    public void testExecuteCompleteJob_stateChangeJobsNotEnabled() {
+        setStartTime_expired_nonIdleState();
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        when(mHealthConnectDeviceConfigManager.isCompleteStateChangeJobEnabled())
+                .thenReturn(ENABLE_STATE_CHANGE_JOB_FALSE_MOCK_VALUE_FALSE);
+        MigrationStateChangeJob.executeMigrationCompletionJob(mContext);
+        verifyNoStateChange();
+    }
+
+    /** Expected behavior: Change state to complete */
+    @Test
+    public void testExecuteCompleteJob_stateChangeJobsEnabled() {
+        setStartTime_expired_nonIdleState();
+        when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
+        MigrationStateChangeJob.executeMigrationCompletionJob(mContext);
+        verifyStateChange(MIGRATION_STATE_COMPLETE, true);
+    }
+
     private void verifyNoStateChange() {
         verify(mPreferenceHelper, never()).insertOrReplacePreferencesTransaction(any());
-        verify(mMigrationStateManager, never()).updateMigrationState(any(Context.class), anyInt());
+        verify(mMigrationStateManager, never())
+                .updateMigrationState(any(Context.class), anyInt(), anyBoolean());
     }
 
     private void verifyStateChange(int state, boolean timeoutReached) {
