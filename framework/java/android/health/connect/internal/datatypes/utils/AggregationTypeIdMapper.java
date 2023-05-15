@@ -62,6 +62,7 @@ import static android.health.connect.datatypes.NutritionRecord.SUGAR_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.THIAMIN_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.TOTAL_CARBOHYDRATE_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.TOTAL_FAT_TOTAL;
+import static android.health.connect.datatypes.NutritionRecord.TRANS_FAT_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.UNSATURATED_FAT_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.VITAMIN_A_TOTAL;
 import static android.health.connect.datatypes.NutritionRecord.VITAMIN_B12_TOTAL;
@@ -105,16 +106,15 @@ import java.util.Map;
  * @hide
  */
 public final class AggregationTypeIdMapper {
-    private static final int MAP_SIZE = 65;
     private static volatile AggregationTypeIdMapper sAggregationTypeIdMapper;
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
     private final Map<AggregationType<?>, Integer> mDataAggregationTypeIdMap;
 
     private AggregationTypeIdMapper() {
-        mIdToAggregateResult = new HashMap<>(MAP_SIZE);
-        mIdDataAggregationTypeMap = new HashMap<>(MAP_SIZE);
-        mDataAggregationTypeIdMap = new HashMap<>(MAP_SIZE);
+        mIdToAggregateResult = new HashMap<>();
+        mIdDataAggregationTypeMap = new HashMap<>();
+        mDataAggregationTypeIdMap = new HashMap<>();
 
         addLongIdsToAggregateResultMap(
                 Arrays.asList(
@@ -189,7 +189,8 @@ public final class AggregationTypeIdMapper {
                         ZINC_TOTAL,
                         WEIGHT_AVG,
                         WEIGHT_MAX,
-                        WEIGHT_MIN));
+                        WEIGHT_MIN,
+                        TRANS_FAT_TOTAL));
     }
 
     @NonNull

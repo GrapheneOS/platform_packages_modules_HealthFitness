@@ -1105,6 +1105,17 @@ public final class NutritionRecord extends IntervalRecord {
                     Mass.class);
 
     /**
+     * Metric identifier to get total trans fat using aggregate APIs in {@link HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Mass> TRANS_FAT_TOTAL =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.NUTRITION_RECORD_TRANS_FAT_TOTAL,
+                    AggregationType.SUM,
+                    RECORD_TYPE_NUTRITION,
+                    Mass.class);
+
+    /**
      * Metric identifier to get total unsaturated fat using aggregate APIs in {@link
      * HealthConnectManager}
      */
