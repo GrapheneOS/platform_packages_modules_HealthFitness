@@ -22,6 +22,7 @@ import static android.health.connect.Constants.DEFAULT_LONG;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.TimeRangeFilter;
 import android.health.connect.TimeRangeFilterHelper;
@@ -60,10 +61,13 @@ public class AggregateDataRequestParcel implements Parcelable {
     // set the duration takes precedence, but there should not be case when both are set.
     private Period mPeriod;
 
+    private boolean mLocalTimeFilter;
+
     public AggregateDataRequestParcel(AggregateRecordsRequest<?> request) {
-        mStartTime = TimeRangeFilterHelper.getDurationStart(request.getTimeRangeFilter());
-        mEndTime = TimeRangeFilterHelper.getDurationEnd(request.getTimeRangeFilter());
+        mStartTime = TimeRangeFilterHelper.getFilterStartTimeMillis(request.getTimeRangeFilter());
+        mEndTime = TimeRangeFilterHelper.getFilterEndTimeMillis(request.getTimeRangeFilter());
         mAggregateIds = new int[request.getAggregationTypes().size()];
+        mLocalTimeFilter = TimeRangeFilterHelper.isLocalTimeFilter(request.getTimeRangeFilter());
 
         int i = 0;
         for (AggregationType<?> aggregationType : request.getAggregationTypes()) {
@@ -86,16 +90,24 @@ public class AggregateDataRequestParcel implements Parcelable {
         this(request);
         mDuration = null;
         mPeriod = period;
+
+        if (!TimeRangeFilterHelper.isLocalTimeFilter(request.getTimeRangeFilter())) {
+            throw new UnsupportedOperationException(
+                    "For period requests should use LocalTimeRangeFilter");
+        }
     }
 
     protected AggregateDataRequestParcel(Parcel in) {
         mStartTime = in.readLong();
         mEndTime = in.readLong();
+        mLocalTimeFilter = in.readBoolean();
         mAggregateIds = in.createIntArray();
         mPackageFilters = in.createStringArrayList();
-        int period = in.readInt();
-        if (period != DEFAULT_INT) {
-            mPeriod = Period.ofDays(period);
+        int periodDays = in.readInt();
+        if (periodDays != DEFAULT_INT) {
+            int periodMonths = in.readInt();
+            int periodYears = in.readInt();
+            mPeriod = Period.of(periodYears, periodMonths, periodDays);
         }
 
         long duration = in.readLong();
@@ -123,10 +135,13 @@ public class AggregateDataRequestParcel implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeLong(mStartTime);
         dest.writeLong(mEndTime);
+        dest.writeBoolean(mLocalTimeFilter);
         dest.writeIntArray(mAggregateIds);
         dest.writeStringList(mPackageFilters);
         if (mPeriod != null) {
             dest.writeInt(mPeriod.getDays());
+            dest.writeInt(mPeriod.getMonths());
+            dest.writeInt(mPeriod.getYears());
         } else {
             dest.writeInt(DEFAULT_INT);
         }
@@ -157,9 +172,16 @@ public class AggregateDataRequestParcel implements Parcelable {
 
     @NonNull
     public TimeRangeFilter getTimeRangeFilter() {
-        return new TimeInstantRangeFilter.Builder()
-                .setStartTime(Instant.ofEpochMilli(mStartTime))
-                .setEndTime(Instant.ofEpochMilli(mEndTime))
-                .build();
+        if (mLocalTimeFilter) {
+            return new LocalTimeRangeFilter.Builder()
+                    .setStartTime(TimeRangeFilterHelper.getLocalTimeFromMillis(mStartTime))
+                    .setEndTime(TimeRangeFilterHelper.getLocalTimeFromMillis(mEndTime))
+                    .build();
+        } else {
+            return new TimeInstantRangeFilter.Builder()
+                    .setStartTime(Instant.ofEpochMilli(mStartTime))
+                    .setEndTime(Instant.ofEpochMilli(mEndTime))
+                    .build();
+        }
     }
 }

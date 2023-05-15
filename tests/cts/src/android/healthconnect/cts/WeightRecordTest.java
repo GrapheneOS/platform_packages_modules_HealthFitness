@@ -23,10 +23,13 @@ import static android.health.connect.datatypes.WeightRecord.WEIGHT_MIN;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.health.connect.AggregateRecordsGroupedByDurationResponse;
+import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
@@ -51,7 +54,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -480,6 +486,151 @@ public class WeightRecordTest {
         assertThat(response.getDeletedLogs()).isEmpty();
     }
 
+    @Test
+    public void testAggregatePeriod_withLocalDateTime() throws Exception {
+        LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
+        Instant endTime = Instant.now();
+
+        TestUtils.insertRecords(
+                List.of(
+                        getWeightRecordWithTime(endTime.minus(1, ChronoUnit.HOURS)),
+                        getWeightRecordWithTime(endTime.minus(27, ChronoUnit.HOURS)),
+                        getWeightRecordWithTime(endTime.minus(55, ChronoUnit.HOURS))));
+
+        ZoneOffset currentOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+
+        LocalTimeRangeFilter filter =
+                new LocalTimeRangeFilter.Builder()
+                        .setStartTime(endTimeLocal.minusDays(3))
+                        .setEndTime(endTimeLocal)
+                        .build();
+
+        List<AggregateRecordsGroupedByPeriodResponse<Mass>> responses =
+                TestUtils.getAggregateResponseGroupByPeriod(
+                        new AggregateRecordsRequest.Builder<Mass>(filter)
+                                .addAggregationType(WEIGHT_MIN)
+                                .build(),
+                        Period.ofDays(1));
+
+        assertThat(responses).hasSize(3);
+        LocalDateTime groupBoundary = endTimeLocal.minusDays(3);
+        for (int i = 0; i < 3; i++) {
+            assertThat(responses.get(i).get(WEIGHT_MIN)).isEqualTo(Mass.fromGrams(10.0));
+            assertThat(responses.get(i).getZoneOffset(WEIGHT_MIN)).isEqualTo(currentOffset);
+            assertThat(responses.get(i).getStartTime().getDayOfYear())
+                    .isEqualTo(groupBoundary.getDayOfYear());
+            groupBoundary = groupBoundary.plus(1, ChronoUnit.DAYS);
+            assertThat(responses.get(i).getEndTime().getDayOfYear())
+                    .isEqualTo(groupBoundary.getDayOfYear());
+        }
+    }
+
+    @Test
+    public void testAggregateDuration_withLocalDateTime_responsesAnswerAndBoundariesCorrect()
+            throws Exception {
+        LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
+        LocalDateTime startTimeLocal = endTimeLocal.minusDays(3);
+        Instant endTime = Instant.now();
+
+        TestUtils.insertRecords(
+                List.of(
+                        getWeightRecordWithTime(endTime.minus(1, ChronoUnit.HOURS)),
+                        getWeightRecordWithTime(endTime.minus(27, ChronoUnit.HOURS)),
+                        getWeightRecordWithTime(endTime.minus(55, ChronoUnit.HOURS))));
+
+        List<AggregateRecordsGroupedByDurationResponse<Mass>> responses =
+                TestUtils.getAggregateResponseGroupByDuration(
+                        new AggregateRecordsRequest.Builder<Mass>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(startTimeLocal)
+                                                .setEndTime(endTimeLocal)
+                                                .build())
+                                .addAggregationType(WEIGHT_MAX)
+                                .build(),
+                        Duration.ofDays(1));
+
+        assertThat(responses).hasSize(3);
+        Instant groupBoundary =
+                startTimeLocal.toInstant(
+                        ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        for (int i = 0; i < 3; i++) {
+            assertThat(responses.get(i).get(WEIGHT_MAX)).isEqualTo(Mass.fromGrams(10.0));
+            assertThat(responses.get(i).getZoneOffset(WEIGHT_MAX))
+                    .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+            assertThat(responses.get(i).getStartTime().getEpochSecond())
+                    .isEqualTo(groupBoundary.getEpochSecond());
+            groupBoundary = groupBoundary.plus(1, ChronoUnit.DAYS);
+            assertThat(responses.get(i).getEndTime().getEpochSecond())
+                    .isEqualTo(groupBoundary.getEpochSecond());
+        }
+    }
+
+    @Test
+    public void testAggregateLocalFilter_minOffsetRecord() throws Exception {
+        LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
+        Instant endTimeInstant = Instant.now();
+
+        AggregateRecordsResponse<Mass> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Mass>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(endTimeLocal.minusHours(25))
+                                                .setEndTime(endTimeLocal.minusHours(15))
+                                                .build())
+                                .addAggregationType(WEIGHT_MAX)
+                                .addAggregationType(WEIGHT_MIN)
+                                .addAggregationType(WEIGHT_AVG)
+                                .build(),
+                        List.of(
+                                new WeightRecord.Builder(
+                                                TestUtils.generateMetadata(),
+                                                endTimeInstant,
+                                                Mass.fromGrams(10.0))
+                                        .setZoneOffset(ZoneOffset.MIN)
+                                        .build(),
+                                new WeightRecord.Builder(
+                                                TestUtils.generateMetadata(),
+                                                endTimeInstant,
+                                                Mass.fromGrams(20.0))
+                                        .setZoneOffset(ZoneOffset.MIN)
+                                        .build()));
+
+        assertThat(response.get(WEIGHT_MAX)).isNotNull();
+        assertThat(response.get(WEIGHT_MAX)).isEqualTo(Mass.fromGrams(20.0));
+        assertThat(response.get(WEIGHT_MIN)).isNotNull();
+        assertThat(response.get(WEIGHT_MIN)).isEqualTo(Mass.fromGrams(10.0));
+        assertThat(response.get(WEIGHT_AVG)).isNotNull();
+        assertThat(response.get(WEIGHT_AVG)).isEqualTo(Mass.fromGrams(15.0));
+    }
+
+    @Test
+    public void testAggregateLocalFilter_yearPeriod() throws Exception {
+        LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
+        Instant endTimeInstant = Instant.now();
+
+        TestUtils.insertRecords(
+                List.of(
+                        new WeightRecord.Builder(
+                                        TestUtils.generateMetadata(),
+                                        endTimeInstant.minus(400, ChronoUnit.DAYS),
+                                        Mass.fromGrams(10.0))
+                                .setZoneOffset(ZoneOffset.MIN)
+                                .build()));
+        List<AggregateRecordsGroupedByPeriodResponse<Mass>> responses =
+                TestUtils.getAggregateResponseGroupByPeriod(
+                        new AggregateRecordsRequest.Builder<Mass>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(endTimeLocal.minusYears(2))
+                                                .setEndTime(endTimeLocal)
+                                                .build())
+                                .addAggregationType(WEIGHT_MAX)
+                                .build(),
+                        Period.ofYears(1));
+
+        assertThat(responses).hasSize(1);
+        assertThat(responses.get(0).get(WEIGHT_MAX)).isEqualTo(Mass.fromGrams(10.0));
+    }
+
     private void readWeightRecordUsingClientId(List<Record> insertedRecord)
             throws InterruptedException {
         ReadRecordsRequestUsingIds.Builder<WeightRecord> request =
@@ -550,6 +701,10 @@ public class WeightRecordTest {
     }
 
     private static WeightRecord getCompleteWeightRecord() {
+        return getWeightRecordWithTime(Instant.now());
+    }
+
+    private static WeightRecord getWeightRecordWithTime(Instant time) {
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")
@@ -563,8 +718,7 @@ public class WeightRecordTest {
         testMetadataBuilder.setClientRecordId("WR" + Math.random());
         testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
-        return new WeightRecord.Builder(
-                        testMetadataBuilder.build(), Instant.now(), Mass.fromGrams(10.0))
+        return new WeightRecord.Builder(testMetadataBuilder.build(), time, Mass.fromGrams(10.0))
                 .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
     }

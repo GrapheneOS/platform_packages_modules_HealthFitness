@@ -62,7 +62,6 @@ public final class FloorsClimbedRecordHelper
                 return new AggregateParams(
                         FLOORS_CLIMBED_RECORD_TABLE_NAME,
                         new ArrayList(Arrays.asList(FLOORS_COLUMN_NAME)),
-                        START_TIME_COLUMN_NAME,
                         Double.class);
             default:
                 return null;

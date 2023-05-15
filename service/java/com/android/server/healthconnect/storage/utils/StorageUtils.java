@@ -47,12 +47,9 @@ import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCatego
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Period;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -256,16 +253,11 @@ public final class StorageUtils {
                 + tableName;
     }
 
-    public static long getPeriodDelta(Period period) {
-        return period.getDays();
-    }
-
-    public static LocalDateTime getPeriodLocalDateTime(long period) {
-        return LocalDateTime.of(LocalDate.ofEpochDay(period), LocalTime.MIN);
-    }
-
-    public static Instant getDurationInstant(long duration) {
-        return Instant.ofEpochMilli(duration);
+    public static long getPeriodDeltaInMillis(Period period) {
+        Duration years = ChronoUnit.YEARS.getDuration().multipliedBy(period.getYears());
+        Duration months = ChronoUnit.MONTHS.getDuration().multipliedBy(period.getMonths());
+        Duration days = ChronoUnit.DAYS.getDuration().multipliedBy(period.getDays());
+        return years.plus(months).plus(days).toMillis();
     }
 
     public static long getDurationDelta(Duration duration) {
