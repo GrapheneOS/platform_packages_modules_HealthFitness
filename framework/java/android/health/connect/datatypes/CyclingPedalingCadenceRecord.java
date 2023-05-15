@@ -16,6 +16,7 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 
@@ -29,6 +30,46 @@ import java.util.Set;
 /** Captures the user's cycling pedaling cadence. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE)
 public final class CyclingPedalingCadenceRecord extends IntervalRecord {
+
+    /**
+     * Metric identifier to retrieve average cycling pedaling cadence using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Double> RPM_AVG =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier
+                            .CYCLING_PEDALING_CADENCE_RECORD_RPM_AVG,
+                    AggregationType.AVG,
+                    RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+                    Double.class);
+
+    /**
+     * Metric identifier to retrieve minimum cycling pedaling cadence using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Double> RPM_MIN =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier
+                            .CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN,
+                    AggregationType.MIN,
+                    RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+                    Double.class);
+
+    /**
+     * Metric identifier to retrieve maximum cycling pedaling cadence using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Double> RPM_MAX =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier
+                            .CYCLING_PEDALING_CADENCE_RECORD_RPM_MAX,
+                    AggregationType.MAX,
+                    RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE,
+                    Double.class);
+
     private final List<CyclingPedalingCadenceRecordSample> mCyclingPedalingCadenceRecordSamples;
 
     /**
