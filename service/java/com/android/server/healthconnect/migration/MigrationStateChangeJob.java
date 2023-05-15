@@ -56,7 +56,8 @@ public final class MigrationStateChangeJob {
             HealthConnectDeviceConfigManager.getInitialisedInstance();
 
     public static void scheduleMigrationCompletionJob(Context context, int userId) {
-        if (!sHealthConnectDeviceConfigManager.getEnableStateChangeJob()) {
+        if (!HealthConnectDeviceConfigManager.getInitialisedInstance()
+                .isCompleteStateChangeJobEnabled()) {
             return;
         }
         ComponentName componentName = new ComponentName(context, HealthConnectDailyService.class);
@@ -78,7 +79,8 @@ public final class MigrationStateChangeJob {
     }
 
     public static void scheduleMigrationPauseJob(Context context, int userId) {
-        if (!sHealthConnectDeviceConfigManager.getEnableStateChangeJob()) {
+        if (!HealthConnectDeviceConfigManager.getInitialisedInstance()
+                .isPauseStateChangeJobEnabled()) {
             return;
         }
         ComponentName componentName = new ComponentName(context, HealthConnectDailyService.class);
@@ -99,7 +101,8 @@ public final class MigrationStateChangeJob {
 
     /** Execute migration completion job */
     public static void executeMigrationCompletionJob(@NonNull Context context) {
-        if (!sHealthConnectDeviceConfigManager.getEnableStateChangeJob()) {
+        if (!HealthConnectDeviceConfigManager.getInitialisedInstance()
+                .isCompleteStateChangeJobEnabled()) {
             return;
         }
         if (MigrationStateManager.getInitialisedInstance().getMigrationState()
@@ -156,7 +159,8 @@ public final class MigrationStateChangeJob {
 
     /** Execute migration pausing job. */
     public static void executeMigrationPauseJob(@NonNull Context context) {
-        if (!sHealthConnectDeviceConfigManager.getEnableStateChangeJob()) {
+        if (!HealthConnectDeviceConfigManager.getInitialisedInstance()
+                .isPauseStateChangeJobEnabled()) {
             return;
         }
         if (MigrationStateManager.getInitialisedInstance().getMigrationState()
