@@ -158,4 +158,9 @@ public final class AccessLogsHelper {
 
         return sAccessLogsHelper;
     }
+
+    /** Deletes all entries from the database. */
+    public synchronized void clearData(TransactionManager transactionManager) {
+        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
+    }
 }

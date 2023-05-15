@@ -214,6 +214,11 @@ public final class ChangeLogsHelper {
         return new ArrayMap<>(0);
     }
 
+    /** Deletes all entries from the database. */
+    public synchronized void clearData(TransactionManager transactionManager) {
+        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
+    }
+
     public static final class ChangeLogs {
         private final Map<RecordTypeAndAppIdPair, List<UUID>> mRecordTypeAndAppIdToUUIDMap =
                 new ArrayMap<>();

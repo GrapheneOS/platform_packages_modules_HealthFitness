@@ -1653,14 +1653,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         } catch (SecurityException | IllegalStateException e) {
             Log.e(TAG, "Exception encountered while staging", e);
             try {
-                @HealthConnectException.ErrorCode int errorCode =
-                        (e instanceof SecurityException) ? ERROR_SECURITY : ERROR_INTERNAL;
-                exceptionsByFileName.put("", new HealthConnectException(
-                        errorCode,
-                        e.getMessage()));
+                @HealthConnectException.ErrorCode
+                int errorCode = (e instanceof SecurityException) ? ERROR_SECURITY : ERROR_INTERNAL;
+                exceptionsByFileName.put("", new HealthConnectException(errorCode, e.getMessage()));
 
-                callback.onError(
-                        new StageRemoteDataException(exceptionsByFileName));
+                callback.onError(new StageRemoteDataException(exceptionsByFileName));
             } catch (RemoteException remoteException) {
                 Log.e(TAG, "Restore permission response could not be sent to the caller.", e);
             }
@@ -1701,6 +1698,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         MigrationEntityHelper.getInstance().clearData(mTransactionManager);
         HealthDataCategoryPriorityHelper.getInstance().clearData(mTransactionManager);
         PriorityMigrationHelper.getInstance().clearData(mTransactionManager);
+        ChangeLogsHelper.getInstance().clearData(mTransactionManager);
+        ChangeLogsRequestHelper.getInstance().clearData(mTransactionManager);
+        AccessLogsHelper.getInstance().clearData(mTransactionManager);
         RateLimiter.clearCache();
         String[] packageNames = mContext.getPackageManager().getPackagesForUid(getCallingUid());
         for (String packageName : packageNames) {
@@ -1768,15 +1768,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     });
         } catch (SecurityException | IllegalStateException e) {
             Log.e(TAG, "getHealthConnectDataState: Exception encountered", e);
-            @HealthConnectException.ErrorCode int errorCode =
-                    (e instanceof SecurityException) ? ERROR_SECURITY
-                            : ERROR_INTERNAL;
+            @HealthConnectException.ErrorCode
+            int errorCode = (e instanceof SecurityException) ? ERROR_SECURITY : ERROR_INTERNAL;
             try {
                 callback.onError(
                         new HealthConnectExceptionParcel(
-                                new HealthConnectException(
-                                        errorCode,
-                                        e.getMessage())));
+                                new HealthConnectException(errorCode, e.getMessage())));
             } catch (RemoteException remoteException) {
                 Log.e(TAG, "getHealthConnectDataState error could not be sent", e);
             }
