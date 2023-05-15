@@ -125,9 +125,9 @@ constructor(
 
     fun updatePermissions(grant: Boolean) {
         if (grant) {
-            _grantedPermissions.postValue(_permissionsList.value.orEmpty().toSet())
+            _grantedPermissions.setValue(_permissionsList.value.orEmpty().toSet())
         } else {
-            _grantedPermissions.postValue(emptySet())
+            _grantedPermissions.setValue(emptySet())
         }
     }
 
