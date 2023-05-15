@@ -21,7 +21,6 @@ import android.content.pm.PackageManager
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions
 import android.health.connect.datatypes.ExerciseSessionRecord
@@ -47,24 +46,23 @@ import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData.Co
 import com.android.healthconnect.testapps.toolbox.seed.SeedData
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils
 import com.android.healthconnect.testapps.toolbox.viewmodels.PerformanceTestingViewModel
-import kotlinx.coroutines.runBlocking
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-
+import kotlinx.coroutines.runBlocking
 
 /** Home fragment for Health Connect Toolbox. */
 class HomeFragment : Fragment() {
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     private lateinit var mRequestPermissionLauncher: ActivityResultLauncher<Array<String>>
-    private lateinit var mRequestRoutePermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var mRequestRoutePermissionLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var mNavigationController: NavController
     private val manager by lazy {
         requireContext().getSystemService(HealthConnectManager::class.java)
@@ -77,15 +75,19 @@ class HomeFragment : Fragment() {
         // Starting API Level 30 If permission is denied more than once, user doesn't see the dialog
         // asking permissions again unless they grant the permission from settings.
         mRequestPermissionLauncher =
-                registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionMap: Map<String, Boolean> ->
-                    requestPermissionResultHandler(permissionMap)
-                }
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+                permissionMap: Map<String, Boolean> ->
+                requestPermissionResultHandler(permissionMap)
+            }
         mRequestRoutePermissionLauncher =
-                registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-                    if (granted) {
-                        readRoute()
-                    }
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+                permissionMap: Map<String, Boolean> ->
+                val granted: Boolean = !permissionMap.values.contains(false)
+
+                if (granted) {
+                    readRoute()
                 }
+            }
     }
 
     private fun requestPermissionResultHandler(permissionMap: Map<String, Boolean>) {
@@ -99,14 +101,14 @@ class HomeFragment : Fragment() {
         if (numberOfPermissionsMissing == 0) {
             Toast.makeText(
                     this.requireContext(), R.string.all_permissions_success, Toast.LENGTH_SHORT)
-                    .show()
+                .show()
         } else {
             Toast.makeText(
                     this.requireContext(),
                     getString(
-                            R.string.number_of_permissions_not_granted, numberOfPermissionsMissing),
+                        R.string.number_of_permissions_not_granted, numberOfPermissionsMissing),
                     Toast.LENGTH_SHORT)
-                    .show()
+                .show()
         }
     }
 
@@ -114,9 +116,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val performanceTesting = PerformanceTesting(performanceTestingViewModel)
         childFragmentManager
-                .beginTransaction()
-                .add(performanceTesting, "PERFORMANCE_TESTING_FRAGMENT")
-                .commit()
+            .beginTransaction()
+            .add(performanceTesting, "PERFORMANCE_TESTING_FRAGMENT")
+            .commit()
         view.findViewById<Button>(R.id.launch_health_connect_button).setOnClickListener {
             launchHealthConnect()
         }
@@ -149,25 +151,27 @@ class HomeFragment : Fragment() {
         mNavigationController = findNavController()
     }
 
-  private fun launchHealthConnect() {
-    val intent = Intent("android.health.connect.action.HEALTH_HOME_SETTINGS")
-    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    startActivity(intent)
-  }
+    private fun launchHealthConnect() {
+        val intent = Intent("android.health.connect.action.HEALTH_HOME_SETTINGS")
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+    }
 
-  private fun seedDataButtonPressed() {
+    private fun seedDataButtonPressed() {
         try {
-          SeedData(requireContext(), manager).seedData()
-          Toast.makeText(this.requireContext(), R.string.toast_seed_data_success, Toast.LENGTH_SHORT).show()
+            SeedData(requireContext(), manager).seedData()
+            Toast.makeText(
+                    this.requireContext(), R.string.toast_seed_data_success, Toast.LENGTH_SHORT)
+                .show()
         } catch (ex: Exception) {
-          Toast.makeText(this.requireContext(), ex.localizedMessage, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this.requireContext(), ex.localizedMessage, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun isPermissionMissing(): Boolean {
         for (permission in ALL_PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(this.requireContext(), permission) !=
-                    PackageManager.PERMISSION_GRANTED) {
+                PackageManager.PERMISSION_GRANTED) {
                 return true
             }
         }
@@ -180,18 +184,18 @@ class HomeFragment : Fragment() {
         val compName = ComponentName(packageName, "$packageName.AliasMainActivity")
         val componentState = pm.getComponentEnabledSetting(compName)
         var desiredState = COMPONENT_ENABLED_STATE_ENABLED
-        if (componentState == COMPONENT_ENABLED_STATE_DEFAULT || componentState == COMPONENT_ENABLED_STATE_ENABLED) {
+        if (componentState == COMPONENT_ENABLED_STATE_DEFAULT ||
+            componentState == COMPONENT_ENABLED_STATE_ENABLED) {
             desiredState = COMPONENT_ENABLED_STATE_DISABLED
         }
-        pm.setComponentEnabledSetting(
-                compName,
-                desiredState,
-                PackageManager.DONT_KILL_APP)
+        pm.setComponentEnabledSetting(compName, desiredState, PackageManager.DONT_KILL_APP)
 
-        val toastText = if (desiredState == COMPONENT_ENABLED_STATE_ENABLED) R.string.toast_permission_filter_enabled else R.string.toast_permission_filter_disabled
+        val toastText =
+            if (desiredState == COMPONENT_ENABLED_STATE_ENABLED)
+                R.string.toast_permission_filter_enabled
+            else R.string.toast_permission_filter_disabled
 
         Toast.makeText(this.requireContext(), toastText, Toast.LENGTH_SHORT).show()
-
     }
 
     private fun requestPermissions() {
@@ -203,17 +207,22 @@ class HomeFragment : Fragment() {
                 this.requireContext(),
                 R.string.all_permissions_already_granted_toast,
                 Toast.LENGTH_LONG)
-                .show()
+            .show()
     }
 
     private fun requestRoutesPermissions() {
-        if (ContextCompat.checkSelfPermission(
-                        requireContext(), HealthPermissions.WRITE_EXERCISE_ROUTE) !=
-                PackageManager.PERMISSION_GRANTED) {
-            mRequestRoutePermissionLauncher.launch(HealthPermissions.WRITE_EXERCISE_ROUTE)
+        if (!(isPermissionGranted(HealthPermissions.WRITE_EXERCISE_ROUTE) &&
+            isPermissionGranted(HealthPermissions.WRITE_EXERCISE))) {
+            mRequestRoutePermissionLauncher.launch(
+                arrayOf(HealthPermissions.WRITE_EXERCISE_ROUTE, HealthPermissions.WRITE_EXERCISE))
             return
         }
         readRoute()
+    }
+
+    private fun isPermissionGranted(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(requireContext(), permission) ==
+            PackageManager.PERMISSION_GRANTED
     }
 
     private fun readRoute() {
@@ -221,22 +230,22 @@ class HomeFragment : Fragment() {
         val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
         val end = start.plusSeconds(100_000)
         val route =
-                ExerciseSessionRecord.Builder(
-                        GeneralUtils.getMetaData(requireContext()),
-                        start,
-                        end,
-                        ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
-                        .setRoute(generateExerciseRouteFromLocations(WARSAW_ROUTE, start.toEpochMilli()))
-                        .build()
+            ExerciseSessionRecord.Builder(
+                    GeneralUtils.getMetaData(requireContext()),
+                    start,
+                    end,
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                .setRoute(generateExerciseRouteFromLocations(WARSAW_ROUTE, start.toEpochMilli()))
+                .build()
         runBlocking {
             val result = GeneralUtils.insertRecords(listOf(route), manager)
             if (result.isNotEmpty()) {
                 val record = result.first()
                 val intent =
-                        Intent(HealthConnectManager.ACTION_REQUEST_EXERCISE_ROUTE).apply {
-                            putExtra(HealthConnectManager.EXTRA_SESSION_ID, record.metadata.id)
-                            putExtra(Intent.EXTRA_PACKAGE_NAME, requireContext().packageName)
-                        }
+                    Intent(HealthConnectManager.ACTION_REQUEST_EXERCISE_ROUTE).apply {
+                        putExtra(HealthConnectManager.EXTRA_SESSION_ID, record.metadata.id)
+                        putExtra(Intent.EXTRA_PACKAGE_NAME, requireContext().packageName)
+                    }
                 startActivityForResult(intent, 1)
             }
         }
