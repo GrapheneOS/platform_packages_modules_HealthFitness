@@ -98,7 +98,16 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
             "migration_pause_job_run_interval_hours";
 
     @VisibleForTesting
-    public static final String ENABLE_STATE_CHANGE_JOBS_FLAG = "enable_state_change_jobs";
+    public static final String ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG =
+            "enable_pause_state_change_jobs";
+
+    @VisibleForTesting
+    public static final String ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG =
+            "enable_complete_state_change_jobs";
+
+    @VisibleForTesting
+    public static final String ENABLE_MIGRATION_NOTIFICATIONS_FLAG =
+            "enable_migration_notifications";
 
     private static final boolean SESSION_DATATYPE_DEFAULT_FLAG_VALUE = true;
     private static final boolean EXERCISE_ROUTE_DEFAULT_FLAG_VALUE = true;
@@ -131,7 +140,13 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     public static final int MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_DEFAULT_FLAG_VALUE = 4;
 
     @VisibleForTesting
-    public static final boolean ENABLE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE = true;
+    public static final boolean ENABLE_PAUSE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE = true;
+
+    @VisibleForTesting
+    public static final boolean ENABLE_COMPLETE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE = false;
+
+    @VisibleForTesting
+    public static final boolean ENABLE_MIGRATION_NOTIFICATIONS_DEFAULT_FLAG_VALUE = true;
 
     private static HealthConnectDeviceConfigManager sDeviceConfigManager;
     private final ReentrantReadWriteLock mLock = new ReentrantReadWriteLock();
@@ -215,11 +230,25 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                     MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_DEFAULT_FLAG_VALUE);
 
     @GuardedBy("mLock")
-    private boolean mEnableStateChangeJob =
+    private boolean mEnablePauseStateChangeJob =
             DeviceConfig.getBoolean(
                     HEALTH_FITNESS_NAMESPACE,
-                    ENABLE_STATE_CHANGE_JOBS_FLAG,
-                    ENABLE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+                    ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG,
+                    ENABLE_PAUSE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private boolean mEnableCompleteStateChangeJob =
+            DeviceConfig.getBoolean(
+                    HEALTH_FITNESS_NAMESPACE,
+                    ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG,
+                    ENABLE_COMPLETE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+
+    @GuardedBy("mLock")
+    private boolean mEnableMigrationNotifications =
+            DeviceConfig.getBoolean(
+                    HEALTH_FITNESS_NAMESPACE,
+                    ENABLE_MIGRATION_NOTIFICATIONS_FLAG,
+                    ENABLE_MIGRATION_NOTIFICATIONS_DEFAULT_FLAG_VALUE);
 
     @NonNull
     @VisibleForTesting(visibility = VisibleForTesting.Visibility.PACKAGE)
@@ -254,7 +283,9 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         sFlagsToTrack.add(EXECUTION_TIME_BUFFER_MINUTES_FLAG);
         sFlagsToTrack.add(MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS_FLAG);
         sFlagsToTrack.add(MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_FLAG);
-        sFlagsToTrack.add(ENABLE_STATE_CHANGE_JOBS_FLAG);
+        sFlagsToTrack.add(ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG);
+        sFlagsToTrack.add(ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG);
+        sFlagsToTrack.add(ENABLE_MIGRATION_NOTIFICATIONS_FLAG);
     }
 
     /** Returns if operations with exercise route are enabled. */
@@ -386,11 +417,31 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         }
     }
 
-    /** Returns if state change jobs are enabled. */
-    public boolean getEnableStateChangeJob() {
+    /** Returns if migration pause change jobs are enabled. */
+    public boolean isPauseStateChangeJobEnabled() {
         mLock.readLock().lock();
         try {
-            return mEnableStateChangeJob;
+            return mEnablePauseStateChangeJob;
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns if migration completion jobs are enabled. */
+    public boolean isCompleteStateChangeJobEnabled() {
+        mLock.readLock().lock();
+        try {
+            return mEnableCompleteStateChangeJob;
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns if migration notifications are enabled. */
+    public boolean areMigrationNotificationsEnabled() {
+        mLock.readLock().lock();
+        try {
+            return mEnableMigrationNotifications;
         } finally {
             mLock.readLock().unlock();
         }
@@ -600,13 +651,33 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                 } finally {
                     mLock.writeLock().unlock();
                 }
-            } else if (name.equals(ENABLE_STATE_CHANGE_JOBS_FLAG)) {
+            } else if (name.equals(ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG)) {
                 mLock.writeLock().lock();
                 try {
-                    mEnableStateChangeJob =
+                    mEnablePauseStateChangeJob =
                             properties.getBoolean(
-                                    ENABLE_STATE_CHANGE_JOBS_FLAG,
-                                    ENABLE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+                                    ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG,
+                                    ENABLE_PAUSE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mEnableCompleteStateChangeJob =
+                            properties.getBoolean(
+                                    ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG,
+                                    ENABLE_COMPLETE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+                } finally {
+                    mLock.writeLock().unlock();
+                }
+            } else if (name.equals(ENABLE_MIGRATION_NOTIFICATIONS_FLAG)) {
+                mLock.writeLock().lock();
+                try {
+                    mEnableMigrationNotifications =
+                            properties.getBoolean(
+                                    ENABLE_MIGRATION_NOTIFICATIONS_FLAG,
+                                    ENABLE_MIGRATION_NOTIFICATIONS_DEFAULT_FLAG_VALUE);
                 } finally {
                     mLock.writeLock().unlock();
                 }

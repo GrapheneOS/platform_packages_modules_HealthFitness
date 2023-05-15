@@ -18,7 +18,7 @@ package com.android.server.healthconnect.migration;
 
 import static com.android.server.healthconnect.HealthConnectDeviceConfigManager.COUNT_MIGRATION_STATE_ALLOWED_FLAG;
 import static com.android.server.healthconnect.HealthConnectDeviceConfigManager.COUNT_MIGRATION_STATE_IN_PROGRESS_FLAG;
-import static com.android.server.healthconnect.HealthConnectDeviceConfigManager.ENABLE_STATE_CHANGE_JOBS_FLAG;
+import static com.android.server.healthconnect.HealthConnectDeviceConfigManager.ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG;
 import static com.android.server.healthconnect.HealthConnectDeviceConfigManager.EXECUTION_TIME_BUFFER_MINUTES_FLAG;
 import static com.android.server.healthconnect.HealthConnectDeviceConfigManager.IDLE_STATE_TIMEOUT_DAYS_FLAG;
 import static com.android.server.healthconnect.HealthConnectDeviceConfigManager.IN_PROGRESS_STATE_TIMEOUT_HOURS_FLAG;
@@ -198,12 +198,13 @@ public class ServerSideMigrationConstantsTest {
     @Test
     public void testEnableStateChangeJobs_changeValueInDeviceConfig_onPropertiesChanged() {
         Map<String, String> keyValueMap = new HashMap<String, String>();
-        keyValueMap.put(ENABLE_STATE_CHANGE_JOBS_FLAG, Boolean.toString(false));
+        keyValueMap.put(ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG, Boolean.toString(false));
         mProperties =
                 new DeviceConfig.Properties(DeviceConfig.NAMESPACE_HEALTH_FITNESS, keyValueMap);
 
         sHealthConnectDeviceConfigManager.onPropertiesChanged(mProperties);
 
-        assertThat(sHealthConnectDeviceConfigManager.getEnableStateChangeJob()).isEqualTo(false);
+        assertThat(sHealthConnectDeviceConfigManager.isPauseStateChangeJobEnabled())
+                .isEqualTo(false);
     }
 }
