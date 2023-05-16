@@ -20,7 +20,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
-import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
@@ -546,68 +545,23 @@ public class TotalCaloriesBurnedRecordTest {
                 .of(4693540);
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testAggregation_totalCaloriesBurnt_activeCalories_groupBy() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         Instant now = Instant.now();
-        List<Record> records =
-                Arrays.asList(
-                        getBaseTotalCaloriesBurnedRecord(now.minus(1, ChronoUnit.DAYS), 10),
-                        getBaseTotalCaloriesBurnedRecord(now.minus(2, ChronoUnit.DAYS), 20),
-                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(
-                                now.minus(4, ChronoUnit.DAYS), 20),
-                        BasalMetabolicRateRecordTest.getBasalMetabolicRateRecord(
-                                30, now.minus(3, ChronoUnit.DAYS)));
-        TestUtils.insertRecords(records);
-        List<AggregateRecordsGroupedByPeriodResponse<Energy>> responses =
-                TestUtils.getAggregateResponseGroupByPeriod(
-                        new AggregateRecordsRequest.Builder<Energy>(
-                                        new TimeInstantRangeFilter.Builder()
-                                                .setStartTime(now.minus(5, ChronoUnit.DAYS))
-                                                .setEndTime(now)
-                                                .build())
-                                .addAggregationType(TotalCaloriesBurnedRecord.ENERGY_TOTAL)
-                                .addDataOriginsFilter(
-                                        new DataOrigin.Builder()
-                                                .setPackageName(context.getPackageName())
-                                                .build())
-                                .build(),
-                        Period.ofDays(1));
-        assertThat(responses).isNotNull();
-        assertThat(responses.get(0).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
-                .isWithin(1)
-                .of(1564500);
-        assertThat(responses.get(1).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
-                .isWithin(1)
-                .of(1564520);
-        assertThat(responses.get(2).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
-                .isWithin(1)
-                .of(619200);
-        assertThat(responses.get(3).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
-                .isWithin(1)
-                .of(20);
-        assertThat(responses.get(4).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
-                .isWithin(1)
-                .of(10);
-
-        AggregateRecordsResponse<Energy> response =
-                TestUtils.getAggregateResponse(
-                        new AggregateRecordsRequest.Builder<Energy>(
-                                        new TimeInstantRangeFilter.Builder()
-                                                .setStartTime(now.minus(5, ChronoUnit.DAYS))
-                                                .setEndTime(now)
-                                                .build())
-                                .addAggregationType(TotalCaloriesBurnedRecord.ENERGY_TOTAL)
-                                .addDataOriginsFilter(
-                                        new DataOrigin.Builder()
-                                                .setPackageName(context.getPackageName())
-                                                .build())
-                                .build(),
-                        records);
-        assertThat(response).isNotNull();
-        assertThat(response.get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
-                .isWithin(1)
-                .of(3748250);
+        TestUtils.getAggregateResponseGroupByPeriod(
+                new AggregateRecordsRequest.Builder<Energy>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(now.minus(5, ChronoUnit.DAYS))
+                                        .setEndTime(now)
+                                        .build())
+                        .addAggregationType(TotalCaloriesBurnedRecord.ENERGY_TOTAL)
+                        .addDataOriginsFilter(
+                                new DataOrigin.Builder()
+                                        .setPackageName(context.getPackageName())
+                                        .build())
+                        .build(),
+                Period.ofDays(1));
     }
 
     @Test

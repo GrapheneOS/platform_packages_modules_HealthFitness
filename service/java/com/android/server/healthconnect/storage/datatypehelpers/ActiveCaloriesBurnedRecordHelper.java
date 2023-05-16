@@ -78,7 +78,6 @@ public final class ActiveCaloriesBurnedRecordHelper
                 return new AggregateParams(
                         ACTIVE_CALORIES_BURNED_RECORD_TABLE_NAME,
                         new ArrayList(Arrays.asList(ENERGY_COLUMN_NAME)),
-                        START_TIME_COLUMN_NAME,
                         Double.class);
             default:
                 return null;
