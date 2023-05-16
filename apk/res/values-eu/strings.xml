@@ -323,7 +323,7 @@
     <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"Halaber, kendu <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> aplikazioaren baimen guztiak Health Connect-etik"</string>
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Betiko ezabatu nahi dituzu <xliff:g id="APP_DATA">%2$s</xliff:g> aplikazioak gehitutako \"<xliff:g id="DATA_TYPE">%1$s</xliff:g>\" kategoriako datu guztiak?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Betiko ezabatu nahi duzu sarrera?"</string>
-    <string name="confirming_question_message" msgid="2934249835529079545">"Aurrerantzean, konektatutako aplikazioek ezingo dituzte atzitu Health Connect-eko datu horiek"</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"Aurrerantzean, konektatutako aplikazioek ezingo dituzte atzitu Health Connect-eko datu horiek."</string>
     <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"<xliff:g id="START_DATE">%1$s</xliff:g> eta <xliff:g id="END_DATE">%2$s</xliff:g> arteko hilekoari buruzko datu guztiak ezabatuko dira."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Ezabatu"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Egin atzera"</string>
@@ -495,6 +495,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> lo"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"esna"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"ohean esna"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"lo"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"jaikita"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM fasea"</string>
@@ -717,19 +718,19 @@
     <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Aplikazioek ariketei dagozkien ibilbideak erabiltzeko duten baimena kudeatzeko, joan Health Connect-en ezarpenetara"</string>
     <string name="back_button" msgid="780519527385993407">"Atzera"</string>
     <string name="loading" msgid="2526615755685950317">"Kargatzen…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integratzen"</string>
+    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integrazio-prozesua abian da"</string>
     <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect Android sisteman integratzen ari da.\n\nAgian tarte bat beharko da datuak eta baimenak transferitzeko."</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Ez itxi aplikazioa prozesua amaitu arte."</string>
+    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Ez itxi aplikazioa prozesu-amaierako jakinarazpena jaso arte."</string>
     <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect integratzen ari da"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Eguneratu egin behar da"</string>
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect Android sisteman integratzen ari da, ezarpenetatik zuzenean erabili ahal izan dezazun."</string>
     <string name="update_button" msgid="4544529019832009496">"Eguneratu"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Hasi eguneratzen, Health Connect-ek zure sistemaren ezarpenekin integratzen jarrai dezan"</string>
     <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Eguneratu"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Sistema eguneratu behar da"</string>
+    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Sistema eguneratu egin behar da"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Aurrera egin aurretik, eguneratu telefonoak darabilen sistema."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Telefonoak darabilen sistema dagoeneko eguneratu baduzu, berrabiarazi telefonoa integrazio-prozesuari berrekiteko"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Health Connect eguneratu behar da"</string>
+    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Health Connect eguneratu egin behar da"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Aurrera eginez gero, azken bertsiora eguneratuko da Health Connect aplikazioa."</string>
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Toki gehiago behar da"</string>
     <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Integratzen jarraitzeko, Health Connect-ek <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> behar ditu telefonoaren biltegian.\n\nEgin tokia telefonoan eta saiatu berriro."</string>
@@ -748,12 +749,12 @@
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Egin aurrera"</string>
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"Berrekin Health Connect integratzeko prozesuari"</string>
     <string name="resume_migration_notification_content" msgid="46172108837648715">"Datuak gorde nahi badituzu, amaitu prozesua <xliff:g id="TIME_NEEDED">%1$s</xliff:g> igaro baino lehen"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Aplikazioa eguneratu behar da"</string>
+    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Aplikazioa eguneratu egin behar da"</string>
     <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak eguneratuta egon behar du Health Connect-ekin funtzionatzen jarraitzeko"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Aplikazio batzuek eguneratuta egon behar dute Health Connect-ekin funtzionatzen jarraitzeko"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Bilatu eguneratzeak"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect-en integrazioa"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect Android sisteman integratzeko prest dago. <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari baimena emanez gero, baliteke eginbide batzuek ez funtzionatzea integratzen amaitu arte."</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect Android sisteman integratzeko prest dago. <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari hura erabiltzeko baimena emanez gero, baliteke eginbide batzuek ez funtzionatzea integratzen amaitu arte."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect Android sisteman integratzeko prest dago. Aplikazioei baimena emanez gero, baliteke eginbide batzuek ez funtzionatzea integratzen amaitu arte."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Egin aurrera"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect integratzen ari da"</string>
