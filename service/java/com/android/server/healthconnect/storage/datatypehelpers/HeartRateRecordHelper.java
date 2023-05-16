@@ -94,8 +94,7 @@ public class HeartRateRecordHelper
             case HEART_RATE_RECORD_MEASUREMENTS_COUNT:
                 return new AggregateParams(
                                 SERIES_TABLE_NAME,
-                                Collections.singletonList(BEATS_PER_MINUTE_COLUMN_NAME),
-                                START_TIME_COLUMN_NAME)
+                                Collections.singletonList(BEATS_PER_MINUTE_COLUMN_NAME))
                         .setJoin(
                                 new SqlJoin(
                                         SERIES_TABLE_NAME,

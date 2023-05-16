@@ -48,12 +48,16 @@ public class PriorityAggregationTest {
         mOneGroupAggregator =
                 Mockito.spy(
                         new PriorityRecordsAggregator(
-                                List.of(10L, 20L), List.of(1L, 2L), 0, mParams));
+                                List.of(10L, 20L), List.of(1L, 2L), 0, mParams, false));
 
         mMultiGroupAggregator =
                 Mockito.spy(
                         new PriorityRecordsAggregator(
-                                List.of(10L, 20L, 30L, 40L), List.of(1L, 2L, 3L), 0, mParams));
+                                List.of(10L, 20L, 30L, 40L),
+                                List.of(1L, 2L, 3L),
+                                0,
+                                mParams,
+                                false));
     }
 
     @Test

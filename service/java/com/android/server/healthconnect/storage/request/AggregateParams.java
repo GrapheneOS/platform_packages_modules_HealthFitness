@@ -17,12 +17,15 @@
 package com.android.server.healthconnect.storage.request;
 
 import android.annotation.IntDef;
+import android.annotation.NonNull;
 
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Collection of parameters of {@link AggregateTableRequest}.
@@ -33,7 +36,7 @@ public class AggregateParams {
     private final String mTableName;
 
     // Column used for time filtering. Start time for interval records.
-    private final String mTimeColumnName;
+    private String mTimeColumnName;
     private final List<String> mColumnsToFetch;
     private SqlJoin mJoin;
 
@@ -41,10 +44,16 @@ public class AggregateParams {
     // null for other records.
     private String mExtraTimeColumnName = null;
 
+    private String mTimeOffsetColumnName;
+
     private PriorityAggregationExtraParams mPriorityAggregationExtraParams;
 
     public AggregateParams(String tableName, List<String> columnsToFetch, String timeColumnName) {
         this(tableName, columnsToFetch, timeColumnName, null);
+    }
+
+    public AggregateParams(String tableName, List<String> columnsToFetch) {
+        this(tableName, columnsToFetch, null, null);
     }
 
     public AggregateParams(
@@ -52,9 +61,15 @@ public class AggregateParams {
             List<String> columnsToFetch,
             String timeColumnName,
             Class<?> priorityColumnDataType) {
+        // We ignore constructor time column parameter as it's set separately.
+        this(tableName, columnsToFetch, priorityColumnDataType);
+    }
+
+    public AggregateParams(
+            String tableName, List<String> columnsToFetch, Class<?> priorityColumnDataType) {
         mTableName = tableName;
-        mColumnsToFetch = columnsToFetch;
-        mTimeColumnName = timeColumnName;
+        mColumnsToFetch = new ArrayList<>();
+        mColumnsToFetch.addAll(columnsToFetch);
 
         // TODO(b/277776749): remove dependency on columns orders
         mPriorityAggregationExtraParams =
@@ -81,9 +96,18 @@ public class AggregateParams {
         return mColumnsToFetch;
     }
 
+    public String getTimeOffsetColumnName() {
+        return mTimeOffsetColumnName;
+    }
+
     /** Sets join type. */
     public AggregateParams setJoin(SqlJoin join) {
         mJoin = join;
+        return this;
+    }
+
+    public AggregateParams setTimeColumnName(String columnName) {
+        mTimeColumnName = columnName;
         return this;
     }
 
@@ -108,6 +132,12 @@ public class AggregateParams {
     /** Sets params for priority aggregation. */
     public AggregateParams setExtraTimeColumn(String extraTimeColumn) {
         mExtraTimeColumnName = extraTimeColumn;
+        return this;
+    }
+
+    public AggregateParams setOffsetColumnToFetch(@NonNull String mainTimeColumnOffset) {
+        Objects.requireNonNull(mainTimeColumnOffset);
+        mTimeOffsetColumnName = mainTimeColumnOffset;
         return this;
     }
 
@@ -161,5 +191,6 @@ public class AggregateParams {
         public String getColumnToAggregateName() {
             return mColumnToAggregateName;
         }
+
     }
 }
