@@ -130,9 +130,15 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             AggregationType<?> aggregationType,
             List<String> packageFilter,
             long startTime,
-            long endTime) {
+            long endTime,
+            boolean useLocalTime) {
         AggregateParams params = getAggregateParams(aggregationType);
-        Objects.requireNonNull(params);
+        params.setTimeColumnName(
+                useLocalTime ? getLocalStartTimeColumnName() : getStartTimeColumnName());
+        params.setExtraTimeColumn(
+                useLocalTime ? getLocalEndTimeColumnName() : getEndTimeColumnName());
+        params.setOffsetColumnToFetch(getZoneOffsetColumnName());
+
         if (supportsPriority(mRecordIdentifier, aggregationType.getAggregateOperationType())) {
             List<String> columns =
                     Arrays.asList(
@@ -142,18 +148,15 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                             LAST_MODIFIED_TIME_COLUMN_NAME);
             params.appendAdditionalColumns(columns);
         }
-
-        params.setExtraTimeColumn(getEndTimeColumnName());
         if (StorageUtils.isDerivedType(mRecordIdentifier)) {
             params.appendAdditionalColumns(Collections.singletonList(getStartTimeColumnName()));
         }
 
-        return new AggregateTableRequest(params, aggregationType, this)
+        return new AggregateTableRequest(params, aggregationType, this, useLocalTime)
                 .setPackageFilter(
                         AppInfoHelper.getInstance().getAppInfoIds(packageFilter),
                         APP_INFO_ID_COLUMN_NAME)
-                .setTimeFilter(startTime, endTime)
-                .setAdditionalColumnsToFetch(Collections.singletonList(getZoneOffsetColumnName()));
+                .setTimeFilter(startTime, endTime);
     }
 
     /**
@@ -199,7 +202,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         AppInfoHelper.TABLE_NAME,
                         Collections.singletonList(APP_INFO_ID_COLUMN_NAME),
                         Collections.singletonList(PRIMARY_COLUMN_NAME))
-                .setChildTableRequests(getChildTableCreateRequests());
+                .setChildTableRequests(getChildTableCreateRequests())
+                .setGeneratedColumnInfo(getGeneratedColumnInfo());
     }
 
     public UpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
@@ -278,6 +282,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
 
         return childTables;
+    }
+
+    @NonNull
+    protected List<CreateTableRequest.GeneratedColumnInfo> getGeneratedColumnInfo() {
+        return Collections.emptyList();
     }
 
     private void populateWithTablesNames(
@@ -521,6 +530,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     public abstract String getPeriodGroupByColumnName();
 
     public abstract String getStartTimeColumnName();
+
+    public abstract String getLocalStartTimeColumnName();
+
+    public String getLocalEndTimeColumnName() {
+        return null;
+    }
 
     public String getEndTimeColumnName() {
         return null;

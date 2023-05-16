@@ -60,7 +60,6 @@ public final class DistanceRecordHelper extends IntervalRecordHelper<DistanceRec
                 return new AggregateParams(
                         DISTANCE_RECORD_TABLE_NAME,
                         new ArrayList(Arrays.asList(DISTANCE_COLUMN_NAME)),
-                        START_TIME_COLUMN_NAME,
                         Double.class);
             default:
                 return null;
