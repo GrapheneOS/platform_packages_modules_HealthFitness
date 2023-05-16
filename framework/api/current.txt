@@ -362,12 +362,6 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.units.Pressure getDiastolic();
     method public int getMeasurementLocation();
     method @NonNull public android.health.connect.datatypes.units.Pressure getSystolic();
-    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Pressure> DIASTOLIC_AVG;
-    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Pressure> DIASTOLIC_MAX;
-    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Pressure> DIASTOLIC_MIN;
-    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Pressure> SYSTOLIC_AVG;
-    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Pressure> SYSTOLIC_MAX;
-    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Pressure> SYSTOLIC_MIN;
   }
 
   public static final class BloodPressureRecord.BloodPressureMeasurementLocation {

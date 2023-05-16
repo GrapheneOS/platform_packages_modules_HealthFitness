@@ -18,12 +18,6 @@ package android.health.connect.internal.datatypes.utils;
 
 import static android.health.connect.datatypes.ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL;
 import static android.health.connect.datatypes.BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL;
-import static android.health.connect.datatypes.BloodPressureRecord.DIASTOLIC_AVG;
-import static android.health.connect.datatypes.BloodPressureRecord.DIASTOLIC_MAX;
-import static android.health.connect.datatypes.BloodPressureRecord.DIASTOLIC_MIN;
-import static android.health.connect.datatypes.BloodPressureRecord.SYSTOLIC_AVG;
-import static android.health.connect.datatypes.BloodPressureRecord.SYSTOLIC_MAX;
-import static android.health.connect.datatypes.BloodPressureRecord.SYSTOLIC_MIN;
 import static android.health.connect.datatypes.CyclingPedalingCadenceRecord.RPM_AVG;
 import static android.health.connect.datatypes.CyclingPedalingCadenceRecord.RPM_MAX;
 import static android.health.connect.datatypes.CyclingPedalingCadenceRecord.RPM_MIN;
@@ -100,7 +94,6 @@ import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Power;
-import android.health.connect.datatypes.units.Pressure;
 import android.health.connect.datatypes.units.Volume;
 import android.os.Parcel;
 
@@ -202,14 +195,6 @@ public final class AggregationTypeIdMapper {
                         WEIGHT_MAX,
                         WEIGHT_MIN,
                         TRANS_FAT_TOTAL));
-        addPressureIdsToAggregateResultMap(
-                Arrays.asList(
-                        DIASTOLIC_AVG,
-                        DIASTOLIC_MAX,
-                        DIASTOLIC_MIN,
-                        SYSTOLIC_AVG,
-                        SYSTOLIC_MAX,
-                        SYSTOLIC_MIN));
     }
 
     @NonNull
@@ -272,11 +257,6 @@ public final class AggregationTypeIdMapper {
     @NonNull
     private AggregateResult<Mass> getMassResult(double result) {
         return new AggregateResult<>(Mass.fromGrams(result));
-    }
-
-    @NonNull
-    private AggregateResult<Pressure> getPressureResult(double result) {
-        return new AggregateResult<>(Pressure.fromMillimetersOfMercury(result));
     }
 
     private void addLongIdsToAggregateResultMap(
@@ -345,16 +325,6 @@ public final class AggregationTypeIdMapper {
             mIdToAggregateResult.put(
                     aggregationType.getAggregationTypeIdentifier(),
                     result -> getMassResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
-        }
-    }
-
-    private void addPressureIdsToAggregateResultMap(
-            @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getPressureResult(result.readDouble()));
             populateIdDataAggregationType(aggregationType);
         }
     }
