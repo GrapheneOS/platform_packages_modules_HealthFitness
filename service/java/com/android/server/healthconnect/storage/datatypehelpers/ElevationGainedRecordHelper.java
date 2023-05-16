@@ -63,7 +63,6 @@ public final class ElevationGainedRecordHelper
                 return new AggregateParams(
                         ELEVATION_GAINED_RECORD_TABLE_NAME,
                         new ArrayList(Arrays.asList(ELEVATION_COLUMN_NAME)),
-                        START_TIME_COLUMN_NAME,
                         Double.class);
             default:
                 return null;

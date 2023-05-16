@@ -23,6 +23,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
@@ -39,7 +40,9 @@ import org.junit.runner.RunWith;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
@@ -196,9 +199,11 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             Instant end = start.plus(3, ChronoUnit.DAYS);
             TestUtils.getAggregateResponseGroupByPeriod(
                     new AggregateRecordsRequest.Builder<Long>(
-                                    new TimeInstantRangeFilter.Builder()
-                                            .setStartTime(start)
-                                            .setEndTime(end)
+                                    new LocalTimeRangeFilter.Builder()
+                                            .setStartTime(
+                                                    LocalDateTime.ofInstant(start, ZoneOffset.UTC))
+                                            .setEndTime(
+                                                    LocalDateTime.ofInstant(end, ZoneOffset.UTC))
                                             .build())
                             .addAggregationType(BPM_MAX)
                             .addAggregationType(BPM_MIN)

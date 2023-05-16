@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static com.android.server.healthconnect.storage.HealthConnectDatabase.DB_VERSION_GENERATED_LOCAL_TIME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
@@ -23,10 +24,14 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.InstantRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
+import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.time.Instant;
@@ -47,7 +52,10 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
         extends RecordHelper<T> {
     public static final String TIME_COLUMN_NAME = "time";
     private static final String ZONE_OFFSET_COLUMN_NAME = "zone_offset";
+    private static final String LOCAL_DATE_TIME_EXPRESSION =
+            TIME_COLUMN_NAME + " + 1000 * " + ZONE_OFFSET_COLUMN_NAME;
     private static final String LOCAL_DATE_COLUMN_NAME = "local_date";
+    private static final String LOCAL_DATE_TIME_COLUMN_NAME = "local_date_time";
 
     InstantRecordHelper(@RecordTypeIdentifier.RecordType int recordIdentifier) {
         super(recordIdentifier);
@@ -59,6 +67,11 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
     }
 
     @Override
+    public String getLocalStartTimeColumnName() {
+        return LOCAL_DATE_TIME_COLUMN_NAME;
+    }
+
+    @Override
     public final String getDurationGroupByColumnName() {
         return TIME_COLUMN_NAME;
     }
@@ -66,6 +79,32 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
     @Override
     public final String getPeriodGroupByColumnName() {
         return LOCAL_DATE_COLUMN_NAME;
+    }
+
+    @Override
+    public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
+        try {
+            if (oldVersion < DB_VERSION_GENERATED_LOCAL_TIME) {
+                db.execSQL(
+                        AlterTableRequest.getAlterTableCommandToAddGeneratedColumn(
+                                getMainTableName(),
+                                new CreateTableRequest.GeneratedColumnInfo(
+                                        LOCAL_DATE_TIME_COLUMN_NAME,
+                                        INTEGER,
+                                        LOCAL_DATE_TIME_EXPRESSION)));
+            }
+        } catch (SQLException sqlException) {
+            // Ignore this means the field exists. This is possible via module rollback followed by
+            // an upgrade
+        }
+    }
+
+    @Override
+    @NonNull
+    protected List<CreateTableRequest.GeneratedColumnInfo> getGeneratedColumnInfo() {
+        return List.of(
+                new CreateTableRequest.GeneratedColumnInfo(
+                        LOCAL_DATE_TIME_COLUMN_NAME, INTEGER, LOCAL_DATE_TIME_EXPRESSION));
     }
 
     /**

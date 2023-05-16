@@ -87,8 +87,7 @@ public final class RestingHeartRateRecordHelper
             default:
                 return null;
         }
-        return new AggregateParams(
-                RESTING_HEART_RATE_RECORD_TABLE_NAME, columnNames, TIME_COLUMN_NAME);
+        return new AggregateParams(RESTING_HEART_RATE_RECORD_TABLE_NAME, columnNames);
     }
 
     @Override
