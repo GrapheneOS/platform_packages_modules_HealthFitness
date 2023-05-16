@@ -20,7 +20,9 @@ import static com.android.server.healthconnect.storage.datatypehelpers.ActiveCal
 import static com.android.server.healthconnect.storage.datatypehelpers.ActiveCaloriesBurnedRecordHelper.ENERGY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.BasalMetabolicRateRecordHelper.BASAL_METABOLIC_RATE_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.BasalMetabolicRateRecordHelper.BASAL_METABOLIC_RATE_RECORD_TABLE_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.InstantRecordHelper.LOCAL_DATE_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.InstantRecordHelper.TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.LOCAL_DATE_TIME_START_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_TIME_COLUMN_NAME;
 
 import android.annotation.NonNull;
@@ -52,12 +54,26 @@ public final class DeriveTotalCaloriesBurnedHelper {
     private MergeDataHelper mMergeDataHelper;
     private DeriveBasalCaloriesBurnedHelper mBasalCaloriesBurnedHelper;
 
+    private String mInstantRecordTimeColumnName;
+
+    private String mIntervalStartTimeColumnName;
+
+    private boolean mUseLocalTime;
+
     public DeriveTotalCaloriesBurnedHelper(
-            long startTime, long endTime, @NonNull List<Long> priorityList) {
+            long startTime, long endTime, @NonNull List<Long> priorityList, boolean useLocaleTime) {
         Objects.requireNonNull(priorityList);
         mStartTime = startTime;
         mEndTime = endTime;
         mPriority = priorityList;
+        mUseLocalTime = useLocaleTime;
+        if (useLocaleTime) {
+            mInstantRecordTimeColumnName = LOCAL_DATE_TIME_COLUMN_NAME;
+            mIntervalStartTimeColumnName = LOCAL_DATE_TIME_START_TIME_COLUMN_NAME;
+        } else {
+            mInstantRecordTimeColumnName = TIME_COLUMN_NAME;
+            mIntervalStartTimeColumnName = START_TIME_COLUMN_NAME;
+        }
         inititalizeCursors();
     }
 
@@ -69,28 +85,38 @@ public final class DeriveTotalCaloriesBurnedHelper {
                                 .setWhereClause(
                                         new WhereClauses()
                                                 .addWhereBetweenTimeClause(
-                                                        START_TIME_COLUMN_NAME,
+                                                        mIntervalStartTimeColumnName,
                                                         mStartTime,
                                                         mEndTime))
                                 .setOrderBy(
                                         new OrderByClause()
-                                                .addOrderByClause(START_TIME_COLUMN_NAME, true)));
+                                                .addOrderByClause(
+                                                        mIntervalStartTimeColumnName, true)));
         mBasalCaloriesBurnedCursor =
                 transactionManager.read(
                         new ReadTableRequest(BASAL_METABOLIC_RATE_RECORD_TABLE_NAME)
                                 .setWhereClause(
                                         new WhereClauses()
                                                 .addWhereBetweenTimeClause(
-                                                        TIME_COLUMN_NAME, mStartTime, mEndTime))
+                                                        mInstantRecordTimeColumnName,
+                                                        mStartTime,
+                                                        mEndTime))
                                 .setOrderBy(
                                         new OrderByClause()
-                                                .addOrderByClause(TIME_COLUMN_NAME, true)));
+                                                .addOrderByClause(
+                                                        mInstantRecordTimeColumnName, true)));
         mMergeDataHelper =
                 new MergeDataHelper(
-                        mActiveCaloriesBurnedCursor, mPriority, ENERGY_COLUMN_NAME, Double.class);
+                        mActiveCaloriesBurnedCursor,
+                        mPriority,
+                        ENERGY_COLUMN_NAME,
+                        Double.class,
+                        mUseLocalTime);
         mBasalCaloriesBurnedHelper =
                 new DeriveBasalCaloriesBurnedHelper(
-                        mBasalCaloriesBurnedCursor, BASAL_METABOLIC_RATE_COLUMN_NAME);
+                        mBasalCaloriesBurnedCursor,
+                        BASAL_METABOLIC_RATE_COLUMN_NAME,
+                        mInstantRecordTimeColumnName);
     }
 
     /** Close the cursors created */

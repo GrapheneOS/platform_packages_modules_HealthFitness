@@ -106,12 +106,18 @@ public final class TotalCaloriesBurnedRecordHelper
         List<Long> priorityList =
                 StorageUtils.getAppIdPriorityList(RECORD_TYPE_TOTAL_CALORIES_BURNED);
         MergeDataHelper mergeDataHelper =
-                new MergeDataHelper(cursor, priorityList, ENERGY_COLUMN_NAME, Double.class);
+                new MergeDataHelper(
+                        cursor,
+                        priorityList,
+                        ENERGY_COLUMN_NAME,
+                        Double.class,
+                        request.getUseLocalTime());
         DeriveTotalCaloriesBurnedHelper deriveTotalCaloriesBurnedHelper =
                 new DeriveTotalCaloriesBurnedHelper(
                         groupIntervals.get(0).first,
                         groupIntervals.get(groupIntervals.size() - 1).second,
-                        priorityList);
+                        priorityList,
+                        request.getUseLocalTime());
         double[] totalCaloriesBurnedArray = new double[groupIntervals.size()];
         for (Pair<Long, Long> groupInterval : groupIntervals) {
             long groupStartTime = groupInterval.first;
