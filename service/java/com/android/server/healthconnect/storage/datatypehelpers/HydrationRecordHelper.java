@@ -78,9 +78,7 @@ public final class HydrationRecordHelper extends IntervalRecordHelper<HydrationR
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case HYDRATION_RECORD_VOLUME_TOTAL:
                 return new AggregateParams(
-                        HYDRATION_RECORD_TABLE_NAME,
-                        Collections.singletonList(VOLUME_COLUMN_NAME),
-                        START_TIME_COLUMN_NAME);
+                        HYDRATION_RECORD_TABLE_NAME, Collections.singletonList(VOLUME_COLUMN_NAME));
             default:
                 return null;
         }
