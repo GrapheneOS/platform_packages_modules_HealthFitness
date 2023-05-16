@@ -103,6 +103,10 @@
             <item type="dimen" name="list_item_min_height"/>
             <item type="dimen" name="timeline_divider_height"/>
             <!-- END REGION -->
+
+            <!-- REGION STRINGS -->
+            <item type="string"  name="config_headlineFontFamily"/>
+            <!-- END REGION -->
         </policy>
     </overlayable>
 </resources>
