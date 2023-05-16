@@ -63,11 +63,14 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
 
     private final AggregateParams.PriorityAggregationExtraParams mExtraParams;
 
+    private final boolean mUseLocalTime;
+
     public PriorityRecordsAggregator(
             List<Long> groupSplits,
             List<Long> appIdPriorityList,
             @AggregationType.AggregationTypeIdentifier int aggregationType,
-            AggregateParams.PriorityAggregationExtraParams extraParams) {
+            AggregateParams.PriorityAggregationExtraParams extraParams,
+            boolean useLocalTime) {
         mGroupSplits = groupSplits;
         mAggregationType = aggregationType;
         mExtraParams = extraParams;
@@ -76,7 +79,7 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
             // Add to the map with -index, so app with higher priority has higher value in the map.
             mAppIdToPriority.put(appIdPriorityList.get(i), appIdPriorityList.size() - i);
         }
-
+        mUseLocalTime = useLocalTime;
         mTimestampsBuffer = new TreeSet<>();
         mNumberOfGroups = mGroupSplits.size() - 1;
         mGroupToFirstZoneOffset = new ArrayMap<>(mNumberOfGroups);
@@ -167,7 +170,7 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
     @VisibleForTesting
     AggregationRecordData readNewData(Cursor cursor) {
         AggregationRecordData data = createAggregationRecordData();
-        data.populateAggregationData(cursor);
+        data.populateAggregationData(cursor, mUseLocalTime);
         return data;
     }
 

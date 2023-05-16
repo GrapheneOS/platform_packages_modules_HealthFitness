@@ -77,8 +77,7 @@ public final class BasalMetabolicRateRecordHelper
             case BMR_RECORD_BASAL_CALORIES_TOTAL:
                 return new AggregateParams(
                         BASAL_METABOLIC_RATE_RECORD_TABLE_NAME,
-                        new ArrayList(Arrays.asList(BASAL_METABOLIC_RATE_COLUMN_NAME)),
-                        TIME_COLUMN_NAME);
+                        new ArrayList(Arrays.asList(BASAL_METABOLIC_RATE_COLUMN_NAME)));
             default:
                 return null;
         }
