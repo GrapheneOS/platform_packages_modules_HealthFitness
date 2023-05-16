@@ -43,4 +43,9 @@
         <meta-data android:name="listener"
                    android:value="com.android.cts.runner.CtsTestRunListener"/>
     </instrumentation>
+
+    <queries>
+        <package android:name="android.healthconnect.cts.testapp.readWritePerms.A"/>
+    </queries>
+
 </manifest>
