@@ -84,7 +84,7 @@ public final class WeightRecordHelper extends InstantRecordHelper<WeightRecordIn
             default:
                 return null;
         }
-        return new AggregateParams(WEIGHT_RECORD_TABLE_NAME, columnNames, TIME_COLUMN_NAME);
+        return new AggregateParams(WEIGHT_RECORD_TABLE_NAME, columnNames);
     }
 
     @Override

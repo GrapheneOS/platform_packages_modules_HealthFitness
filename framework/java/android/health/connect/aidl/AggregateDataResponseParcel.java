@@ -37,10 +37,9 @@ import android.util.ArrayMap;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,14 +106,29 @@ public class AggregateDataResponseParcel implements Parcelable {
             mDuration = Duration.ofMillis(duration);
         }
 
+        boolean isLocaltimeFilter = in.readBoolean();
         long startTime = in.readLong();
         long endTime = in.readLong();
         if (startTime != DEFAULT_LONG && endTime != DEFAULT_LONG) {
-            mTimeRangeFilter =
-                    new TimeInstantRangeFilter.Builder()
-                            .setStartTime(Instant.ofEpochMilli(startTime))
-                            .setEndTime(Instant.ofEpochMilli(endTime))
-                            .build();
+            if (isLocaltimeFilter) {
+                mTimeRangeFilter =
+                        new LocalTimeRangeFilter.Builder()
+                                .setStartTime(
+                                        LocalDateTime.ofInstant(
+                                                Instant.ofEpochMilli(startTime),
+                                                ZoneId.systemDefault()))
+                                .setEndTime(
+                                        LocalDateTime.ofInstant(
+                                                Instant.ofEpochMilli(endTime),
+                                                ZoneId.systemDefault()))
+                                .build();
+            } else {
+                mTimeRangeFilter =
+                        new TimeInstantRangeFilter.Builder()
+                                .setStartTime(Instant.ofEpochMilli(startTime))
+                                .setEndTime(Instant.ofEpochMilli(endTime))
+                                .build();
+            }
         }
     }
 
@@ -151,13 +165,14 @@ public class AggregateDataResponseParcel implements Parcelable {
 
         List<AggregateRecordsGroupedByDurationResponse<?>>
                 aggregateRecordsGroupedByDurationResponse = new ArrayList<>();
-        long mStartTime = TimeRangeFilterHelper.getDurationStart(mTimeRangeFilter);
+        long mStartTime = TimeRangeFilterHelper.getFilterStartTimeMillis(mTimeRangeFilter);
+        long mEndTime = TimeRangeFilterHelper.getFilterEndTimeMillis(mTimeRangeFilter);
         long mDelta = getDurationDelta(mDuration);
         for (AggregateRecordsResponse<?> aggregateRecordsResponse : mAggregateRecordsResponses) {
             aggregateRecordsGroupedByDurationResponse.add(
                     new AggregateRecordsGroupedByDurationResponse<>(
                             getDurationInstant(mStartTime),
-                            getDurationInstant(mStartTime + mDelta),
+                            getDurationInstant(Math.min(mStartTime + mDelta, mEndTime)),
                             aggregateRecordsResponse.getAggregateResults()));
             mStartTime += mDelta;
         }
@@ -174,21 +189,19 @@ public class AggregateDataResponseParcel implements Parcelable {
 
         List<AggregateRecordsGroupedByPeriodResponse<?>> aggregateRecordsGroupedByPeriodResponses =
                 new ArrayList<>();
-        long mStartTime = TimeRangeFilterHelper.getPeriodStart(mTimeRangeFilter);
-        long mDelta = getPeriodDelta(mPeriod);
+
+        LocalDateTime groupBoundary = ((LocalTimeRangeFilter) mTimeRangeFilter).getStartTime();
+        long mDelta = getPeriodDeltaInDays(mPeriod);
         for (AggregateRecordsResponse<?> aggregateRecordsResponse : mAggregateRecordsResponses) {
             aggregateRecordsGroupedByPeriodResponses.add(
                     new AggregateRecordsGroupedByPeriodResponse<>(
-                            getPeriodLocalDateTime(mStartTime),
-                            getPeriodLocalDateTime(mStartTime + mDelta),
+                            groupBoundary,
+                            groupBoundary.plusDays(mDelta),
                             aggregateRecordsResponse.getAggregateResults()));
-            mStartTime += mDelta;
+            groupBoundary = groupBoundary.plusDays(mDelta);
         }
 
         if (!aggregateRecordsGroupedByPeriodResponses.isEmpty()) {
-            aggregateRecordsGroupedByPeriodResponses
-                    .get(0)
-                    .setStartTime(getPeriodStartLocalDateTime(mTimeRangeFilter));
             aggregateRecordsGroupedByPeriodResponses
                     .get(aggregateRecordsGroupedByPeriodResponses.size() - 1)
                     .setEndTime(getPeriodEndLocalDateTime(mTimeRangeFilter));
@@ -245,9 +258,11 @@ public class AggregateDataResponseParcel implements Parcelable {
         }
 
         if (mTimeRangeFilter != null) {
-            dest.writeLong(TimeRangeFilterHelper.getDurationStart(mTimeRangeFilter));
-            dest.writeLong(TimeRangeFilterHelper.getDurationEnd(mTimeRangeFilter));
+            dest.writeBoolean(TimeRangeFilterHelper.isLocalTimeFilter(mTimeRangeFilter));
+            dest.writeLong(TimeRangeFilterHelper.getFilterStartTimeMillis(mTimeRangeFilter));
+            dest.writeLong(TimeRangeFilterHelper.getFilterEndTimeMillis(mTimeRangeFilter));
         } else {
+            dest.writeBoolean(false);
             dest.writeLong(DEFAULT_LONG);
             dest.writeLong(DEFAULT_LONG);
         }
@@ -261,20 +276,6 @@ public class AggregateDataResponseParcel implements Parcelable {
         }
 
         return zoneOffset;
-    }
-
-    private LocalDateTime getPeriodStartLocalDateTime(TimeRangeFilter timeRangeFilter) {
-        if (timeRangeFilter instanceof TimeInstantRangeFilter) {
-            return LocalDateTime.ofInstant(
-                    ((TimeInstantRangeFilter) timeRangeFilter).getStartTime(),
-                    ZoneOffset.systemDefault());
-        } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
-            return ((LocalTimeRangeFilter) timeRangeFilter).getStartTime();
-        } else {
-            throw new IllegalArgumentException(
-                    "Invalid time filter object. Object should be either "
-                            + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
-        }
     }
 
     private LocalDateTime getPeriodEndLocalDateTime(TimeRangeFilter timeRangeFilter) {
@@ -291,12 +292,8 @@ public class AggregateDataResponseParcel implements Parcelable {
         }
     }
 
-    private long getPeriodDelta(Period period) {
+    private long getPeriodDeltaInDays(Period period) {
         return period.getDays();
-    }
-
-    private LocalDateTime getPeriodLocalDateTime(long period) {
-        return LocalDateTime.of(LocalDate.ofEpochDay(period), LocalTime.MIN);
     }
 
     private Instant getDurationInstant(long duration) {
