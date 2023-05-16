@@ -923,9 +923,10 @@ public class TestUtils {
     public static void startMigration() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
-
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
+        AtomicReference<MigrationException> migrationExceptionAtomicReference =
+                new AtomicReference<>();
         service.startMigration(
                 Executors.newSingleThreadExecutor(),
                 new OutcomeReceiver<Void, MigrationException>() {
@@ -936,18 +937,24 @@ public class TestUtils {
 
                     @Override
                     public void onError(MigrationException exception) {
+                        migrationExceptionAtomicReference.set(exception);
                         Log.e(TAG, exception.getMessage());
+                        latch.countDown();
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (migrationExceptionAtomicReference.get() != null) {
+            throw migrationExceptionAtomicReference.get();
+        }
     }
 
     public static void finishMigration() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
-
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
         assertThat(service).isNotNull();
+        AtomicReference<MigrationException> migrationExceptionAtomicReference =
+                new AtomicReference<>();
         service.finishMigration(
                 Executors.newSingleThreadExecutor(),
                 new OutcomeReceiver<Void, MigrationException>() {
@@ -959,10 +966,15 @@ public class TestUtils {
 
                     @Override
                     public void onError(MigrationException exception) {
+                        migrationExceptionAtomicReference.set(exception);
                         Log.e(TAG, exception.getMessage());
+                        latch.countDown();
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (migrationExceptionAtomicReference.get() != null) {
+            throw migrationExceptionAtomicReference.get();
+        }
     }
 
     public static void insertMinDataMigrationSdkExtensionVersion(int version)

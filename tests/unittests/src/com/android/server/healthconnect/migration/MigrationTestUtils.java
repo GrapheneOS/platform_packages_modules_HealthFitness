@@ -32,7 +32,7 @@ import java.util.List;
 
 /** Common methods and variables used by migration unit tests. */
 public class MigrationTestUtils {
-    static final String MOCK_CONFIGURED_PACKAGE = "com.configured.app";
+    public static final String MOCK_CONFIGURED_PACKAGE = "com.configured.app";
     static final String MOCK_UNCONFIGURED_PACKAGE_ONE = "com.unconfigured.app";
     static final String MOCK_UNCONFIGURED_PACKAGE_TWO = "com.unconfigured.apptwo";
     static final String MOCK_QUERIED_BROADCAST_RECEIVER_ONE = ".SampleReceiverOne";
@@ -66,7 +66,7 @@ public class MigrationTestUtils {
         return resolveInfoArray;
     }
 
-    static void setResolveActivityResult(ResolveInfo result, PackageManager packageManager) {
+    public static void setResolveActivityResult(ResolveInfo result, PackageManager packageManager) {
         setResolveActivityResult(result, packageManager, PackageManager.MATCH_ALL);
     }
 

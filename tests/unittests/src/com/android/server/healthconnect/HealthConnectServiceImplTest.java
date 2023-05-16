@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect;
 
+import static android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
 
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
@@ -26,20 +27,29 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.INTER
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
+import android.health.connect.aidl.IMigrationCallback;
+import android.health.connect.migration.MigrationEntityParcel;
+import android.health.connect.migration.MigrationException;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 
@@ -51,6 +61,7 @@ import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
+import com.android.server.healthconnect.migration.MigrationTestUtils;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -84,11 +95,11 @@ public class HealthConnectServiceImplTest {
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private AppOpsManagerLocal mAppOpsManagerLocal;
     @Mock private PackageManager mPackageManager;
-
+    @Mock IMigrationCallback mCallback;
     private Context mContext;
     private HealthConnectServiceImpl mHealthConnectService;
     private MockitoSession mStaticMockSession;
-    private UserHandle mUserHandle = UserHandle.of(UserHandle.myUserId());
+    private UserHandle mUserHandle;
     private File mMockDataDirectory;
 
     @Before
@@ -98,6 +109,7 @@ public class HealthConnectServiceImplTest {
                         .mockStatic(Environment.class)
                         .mockStatic(PreferenceHelper.class)
                         .mockStatic(LocalManagerRegistry.class)
+                        .mockStatic(UserHandle.class)
                         .strictness(Strictness.LENIENT)
                         .startMocking();
         MockitoAnnotations.initMocks(this);
@@ -107,6 +119,8 @@ public class HealthConnectServiceImplTest {
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
         when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
                 .thenReturn(mAppOpsManagerLocal);
+        when(UserHandle.of(anyInt())).thenCallRealMethod();
+        mUserHandle = UserHandle.of(UserHandle.myUserId());
         when(mServiceContext.getPackageManager()).thenReturn(mPackageManager);
         when(mServiceContext.getUser()).thenReturn(mUserHandle);
 
@@ -260,6 +274,112 @@ public class HealthConnectServiceImplTest {
         verify(mPreferenceHelper, times(1))
                 .insertOrReplacePreference(
                         eq(DATA_DOWNLOAD_STATE_KEY), eq(String.valueOf(DATA_DOWNLOAD_STARTED)));
+    }
+
+    @Test
+    public void testStartMigration_noShowMigrationInfoIntentAvailable_returnsError()
+            throws InterruptedException, RemoteException {
+        setUpPassingPermissionCheckFor(MIGRATE_HEALTH_CONNECT_DATA);
+        mHealthConnectService.startMigration(MigrationTestUtils.MOCK_CONFIGURED_PACKAGE, mCallback);
+        Thread.sleep(500);
+        verifyZeroInteractions(mMigrationStateManager);
+        verify(mCallback).onError(any(MigrationException.class));
+    }
+
+    @Test
+    public void testStartMigration_showMigrationInfoIntentAvailable()
+            throws MigrationStateManager.IllegalMigrationStateException,
+                    InterruptedException,
+                    RemoteException {
+        setUpPassingPermissionCheckFor(MIGRATE_HEALTH_CONNECT_DATA);
+        MigrationTestUtils.setResolveActivityResult(new ResolveInfo(), mPackageManager);
+        mHealthConnectService.startMigration(MigrationTestUtils.MOCK_CONFIGURED_PACKAGE, mCallback);
+        Thread.sleep(500);
+        verify(mMigrationStateManager).startMigration(mServiceContext);
+    }
+
+    @Test
+    public void testFinishMigration_noShowMigrationInfoIntentAvailable_returnsError()
+            throws InterruptedException, RemoteException {
+        setUpPassingPermissionCheckFor(MIGRATE_HEALTH_CONNECT_DATA);
+        mHealthConnectService.finishMigration(
+                MigrationTestUtils.MOCK_CONFIGURED_PACKAGE, mCallback);
+        Thread.sleep(500);
+        verifyZeroInteractions(mMigrationStateManager);
+        verify(mCallback).onError(any(MigrationException.class));
+    }
+
+    @Test
+    public void testFinishMigration_showMigrationInfoIntentAvailable()
+            throws MigrationStateManager.IllegalMigrationStateException,
+                    InterruptedException,
+                    RemoteException {
+        setUpPassingPermissionCheckFor(MIGRATE_HEALTH_CONNECT_DATA);
+        MigrationTestUtils.setResolveActivityResult(new ResolveInfo(), mPackageManager);
+        mHealthConnectService.finishMigration(
+                MigrationTestUtils.MOCK_CONFIGURED_PACKAGE, mCallback);
+        Thread.sleep(500);
+        verify(mMigrationStateManager).finishMigration(mServiceContext);
+    }
+
+    @Test
+    public void testWriteMigration_noShowMigrationInfoIntentAvailable_returnsError()
+            throws InterruptedException, RemoteException {
+        setUpPassingPermissionCheckFor(MIGRATE_HEALTH_CONNECT_DATA);
+        mHealthConnectService.writeMigrationData(
+                MigrationTestUtils.MOCK_CONFIGURED_PACKAGE,
+                mock(MigrationEntityParcel.class),
+                mCallback);
+        Thread.sleep(500);
+        verifyZeroInteractions(mMigrationStateManager);
+        verify(mCallback).onError(any(MigrationException.class));
+    }
+
+    @Test
+    public void testWriteMigration_showMigrationInfoIntentAvailable()
+            throws MigrationStateManager.IllegalMigrationStateException,
+                    InterruptedException,
+                    RemoteException {
+        setUpPassingPermissionCheckFor(MIGRATE_HEALTH_CONNECT_DATA);
+        MigrationTestUtils.setResolveActivityResult(new ResolveInfo(), mPackageManager);
+        mHealthConnectService.writeMigrationData(
+                MigrationTestUtils.MOCK_CONFIGURED_PACKAGE,
+                mock(MigrationEntityParcel.class),
+                mCallback);
+        Thread.sleep(500);
+        verify(mMigrationStateManager).validateWriteMigrationData();
+        verify(mCallback).onSuccess();
+    }
+
+    @Test
+    public void testInsertMinSdkExtVersion_noShowMigrationInfoIntentAvailable_returnsError()
+            throws InterruptedException, RemoteException {
+        setUpPassingPermissionCheckFor(MIGRATE_HEALTH_CONNECT_DATA);
+        mHealthConnectService.insertMinDataMigrationSdkExtensionVersion(
+                MigrationTestUtils.MOCK_CONFIGURED_PACKAGE, 0, mCallback);
+        Thread.sleep(500);
+        verifyZeroInteractions(mMigrationStateManager);
+        verify(mCallback).onError(any(MigrationException.class));
+    }
+
+    @Test
+    public void testInsertMinSdkExtVersion_showMigrationInfoIntentAvailable()
+            throws MigrationStateManager.IllegalMigrationStateException,
+                    InterruptedException,
+                    RemoteException {
+        setUpPassingPermissionCheckFor(MIGRATE_HEALTH_CONNECT_DATA);
+        MigrationTestUtils.setResolveActivityResult(new ResolveInfo(), mPackageManager);
+        mHealthConnectService.insertMinDataMigrationSdkExtensionVersion(
+                MigrationTestUtils.MOCK_CONFIGURED_PACKAGE, 0, mCallback);
+        Thread.sleep(500);
+        verify(mMigrationStateManager).validateSetMinSdkVersion();
+        verify(mCallback).onSuccess();
+    }
+
+    private void setUpPassingPermissionCheckFor(String permission) {
+        doNothing()
+                .when(mServiceContext)
+                .enforcePermission(eq(permission), anyInt(), anyInt(), anyString());
     }
 
     private static File createAndGetNonEmptyFile(File dir, String fileName) throws IOException {
