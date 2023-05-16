@@ -30,7 +30,6 @@ import com.android.tradefed.testtype.DeviceTestCase
 import com.android.tradefed.testtype.IBuildReceiver
 import com.google.common.truth.Truth.assertThat
 import com.google.protobuf.ExtensionRegistry
-import org.junit.Assume
 
 class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
@@ -44,8 +43,10 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
     override fun setUp() {
         super.setUp()
+        if(!isHardwareSupported(device)) {
+            return
+        }
         assertThat(mCtsBuild).isNotNull()
-        Assume.assumeTrue(isHardwareSupported(device))
         ConfigUtils.removeConfig(device)
         ReportUtils.clearReports(device)
         val pmResult =
@@ -79,6 +80,9 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     }
 
     fun testImpressionsAndInteractionsSent() {
+        if(!isHardwareSupported(device)) {
+            return
+        }
         DeviceUtils.runDeviceTests(
             device, TEST_APP_PKG_NAME, ".HealthConnectUiTestHelper", "openHomeFragment")
         Thread.sleep(AtomTestUtils.WAIT_TIME_LONG.toLong())
