@@ -413,8 +413,7 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
             default:
                 return null;
         }
-        return new AggregateParams(
-                NUTRITION_RECORD_TABLE_NAME, columnNames, START_TIME_COLUMN_NAME);
+        return new AggregateParams(NUTRITION_RECORD_TABLE_NAME, columnNames);
     }
 
     @Override

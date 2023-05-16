@@ -48,6 +48,8 @@ public final class CreateTableRequest {
     private final List<List<String>> mUniqueColumns = new ArrayList<>();
     private List<ForeignKey> mForeignKeys = new ArrayList<>();
     private List<CreateTableRequest> mChildTableRequests = Collections.emptyList();
+    private List<GeneratedColumnInfo> mGeneratedColumnInfo = Collections.emptyList();
+
     public CreateTableRequest(String tableName, List<Pair<String, String>> columnInfo) {
         mTableName = tableName;
         mColumnInfo = columnInfo;
@@ -100,6 +102,15 @@ public final class CreateTableRequest {
                                 .append(columnInfo.second)
                                 .append(", "));
 
+        for (GeneratedColumnInfo generatedColumnInfo : mGeneratedColumnInfo) {
+            builder.append(generatedColumnInfo.getColumnName())
+                    .append(" ")
+                    .append(generatedColumnInfo.getColumnType())
+                    .append(" AS (")
+                    .append(generatedColumnInfo.getExpression())
+                    .append("), ");
+        }
+
         if (mForeignKeys != null) {
             for (ForeignKey foreignKey : mForeignKeys) {
                 builder.append(foreignKey.getFkConstraint()).append(", ");
@@ -151,6 +162,14 @@ public final class CreateTableRequest {
         return result;
     }
 
+    public CreateTableRequest setGeneratedColumnInfo(
+            @NonNull List<GeneratedColumnInfo> generatedColumnInfo) {
+        Objects.requireNonNull(generatedColumnInfo);
+
+        mGeneratedColumnInfo = generatedColumnInfo;
+        return this;
+    }
+
     private String getCreateIndexCommand(String indexName, List<String> columnNames) {
         Objects.requireNonNull(columnNames);
         Objects.requireNonNull(indexName);
@@ -176,6 +195,30 @@ public final class CreateTableRequest {
                 + "("
                 + columnName
                 + ")";
+    }
+
+    public static final class GeneratedColumnInfo {
+        private final String columnName;
+        private final String type;
+        private final String expression;
+
+        public GeneratedColumnInfo(String columnName, String type, String expression) {
+            this.columnName = columnName;
+            this.type = type;
+            this.expression = expression;
+        }
+
+        public String getColumnName() {
+            return columnName;
+        }
+
+        public String getColumnType() {
+            return type;
+        }
+
+        public String getExpression() {
+            return expression;
+        }
     }
 
     private final class ForeignKey {

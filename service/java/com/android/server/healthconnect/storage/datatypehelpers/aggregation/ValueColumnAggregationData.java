@@ -59,7 +59,7 @@ public class ValueColumnAggregationData extends AggregationRecordData {
     }
 
     @Override
-    void populateSpecificAggregationData(Cursor cursor) {
+    void populateSpecificAggregationData(Cursor cursor, boolean useLocalTime) {
         if (mValueColumnType == VALUE_TYPE_DOUBLE) {
             mValue = StorageUtils.getCursorDouble(cursor, mValueColumnName);
         } else if (mValueColumnType == VALUE_TYPE_LONG) {
