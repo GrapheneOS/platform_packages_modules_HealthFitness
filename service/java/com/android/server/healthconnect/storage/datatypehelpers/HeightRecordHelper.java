@@ -85,7 +85,7 @@ public final class HeightRecordHelper extends InstantRecordHelper<HeightRecordIn
             default:
                 return null;
         }
-        return new AggregateParams(HEIGHT_RECORD_TABLE_NAME, columnNames, TIME_COLUMN_NAME);
+        return new AggregateParams(HEIGHT_RECORD_TABLE_NAME, columnNames);
     }
 
     @Override

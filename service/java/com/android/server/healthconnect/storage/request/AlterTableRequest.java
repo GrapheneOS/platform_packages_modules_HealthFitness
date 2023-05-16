@@ -29,7 +29,7 @@ import java.util.List;
 public final class AlterTableRequest {
     public static final String TAG = "HealthConnectAlter";
     private static final String ALTER_TABLE_COMMAND = "ALTER TABLE ";
-    private static final String ADD_COLUMN_COMMAND = " ADD COLUMN";
+    private static final String ADD_COLUMN_COMMAND = " ADD COLUMN ";
     private final String mTableName;
     private final List<Pair<String, String>> mColumnInfo;
 
@@ -45,7 +45,6 @@ public final class AlterTableRequest {
         mColumnInfo.forEach(
                 (columnInfo) ->
                         builder.append(ADD_COLUMN_COMMAND)
-                                .append(" ")
                                 .append(columnInfo.first)
                                 .append(" ")
                                 .append(columnInfo.second)
@@ -54,5 +53,22 @@ public final class AlterTableRequest {
         Slog.d(TAG, "Alter table: " + builder);
 
         return builder.toString();
+    }
+
+    public static String getAlterTableCommandToAddGeneratedColumn(
+            String tableName, CreateTableRequest.GeneratedColumnInfo generatedColumnInfo) {
+        String request =
+                ALTER_TABLE_COMMAND
+                        + tableName
+                        + ADD_COLUMN_COMMAND
+                        + generatedColumnInfo.getColumnName()
+                        + " "
+                        + generatedColumnInfo.getColumnType()
+                        + " GENERATED ALWAYS AS ("
+                        + generatedColumnInfo.getExpression()
+                        + ")";
+
+        Slog.d(TAG, "Alter table generated: " + request);
+        return request;
     }
 }

@@ -76,8 +76,7 @@ public final class SleepSessionRecordHelper
                     new ArrayList<>(super.getPriorityAggregationColumnNames());
             sessionColumns.add(SleepStageRecordHelper.getStartTimeColumnName());
             sessionColumns.add(SleepStageRecordHelper.getEndTimeColumnName());
-            return new AggregateParams(
-                            SLEEP_SESSION_RECORD_TABLE_NAME, sessionColumns, START_TIME_COLUMN_NAME)
+            return new AggregateParams(SLEEP_SESSION_RECORD_TABLE_NAME, sessionColumns)
                     .setJoin(
                             SleepStageRecordHelper.getJoinForDurationAggregation(
                                     getMainTableName()))

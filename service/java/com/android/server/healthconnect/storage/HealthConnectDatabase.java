@@ -50,8 +50,10 @@ import java.util.List;
  */
 public class HealthConnectDatabase extends SQLiteOpenHelper {
     public static final int DB_VERSION_UUID_BLOB = 9;
+
+    public static final int DB_VERSION_GENERATED_LOCAL_TIME = 10;
     private static final String TAG = "HealthConnectDatabase";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "healthconnect.db";
     @NonNull private final Collection<RecordHelper<?>> mRecordHelpers;
     private final Context mContext;

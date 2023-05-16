@@ -63,7 +63,6 @@ public final class WheelchairPushesRecordHelper
                 return new AggregateParams(
                         WHEELCHAIR_PUSHES_RECORD_TABLE_NAME,
                         new ArrayList(Arrays.asList(COUNT_COLUMN_NAME)),
-                        START_TIME_COLUMN_NAME,
                         Long.class);
             default:
                 return null;
