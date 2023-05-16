@@ -16,9 +16,18 @@
 
 package android.healthconnect.cts;
 
+import static android.health.connect.datatypes.BloodPressureRecord.DIASTOLIC_AVG;
+import static android.health.connect.datatypes.BloodPressureRecord.DIASTOLIC_MAX;
+import static android.health.connect.datatypes.BloodPressureRecord.DIASTOLIC_MIN;
+import static android.health.connect.datatypes.BloodPressureRecord.SYSTOLIC_AVG;
+import static android.health.connect.datatypes.BloodPressureRecord.SYSTOLIC_MAX;
+import static android.health.connect.datatypes.BloodPressureRecord.SYSTOLIC_MIN;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.ReadRecordsRequestUsingFilters;
@@ -47,10 +56,12 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -358,6 +369,69 @@ public class BloodPressureRecordTest {
 
         assertThat(builder.setZoneOffset(zoneOffset).build().getZoneOffset()).isEqualTo(zoneOffset);
         assertThat(builder.clearZoneOffset().build().getZoneOffset()).isEqualTo(defaultZoneOffset);
+    }
+
+    private static BloodPressureRecord getBaseBloodPressureRecord(
+            double systolic, double diastolic) {
+        return new BloodPressureRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        1,
+                        Pressure.fromMillimetersOfMercury(systolic),
+                        Pressure.fromMillimetersOfMercury(diastolic),
+                        1)
+                .build();
+    }
+
+    @Test
+    public void testAggregation_bloodPressure() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        List<Record> records =
+                Arrays.asList(
+                        getBaseBloodPressureRecord(26.0, 35.0),
+                        getBaseBloodPressureRecord(30.0, 60.0),
+                        getBaseBloodPressureRecord(40.0, 52.0));
+        AggregateRecordsResponse<Pressure> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Pressure>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(DIASTOLIC_AVG)
+                                .addAggregationType(DIASTOLIC_MAX)
+                                .addAggregationType(DIASTOLIC_MIN)
+                                .addAggregationType(SYSTOLIC_AVG)
+                                .addAggregationType(SYSTOLIC_MAX)
+                                .addAggregationType(SYSTOLIC_MIN)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        records);
+        Pressure maxDiastolicPressure = response.get(DIASTOLIC_MAX);
+        Pressure minDiastolicPressure = response.get(DIASTOLIC_MIN);
+        Pressure avgDiastolicPressure = response.get(DIASTOLIC_AVG);
+        Pressure maxSystolicPressure = response.get(SYSTOLIC_MAX);
+        Pressure minSystolicPressure = response.get(SYSTOLIC_MIN);
+        Pressure avgSystolicPressure = response.get(SYSTOLIC_AVG);
+        assertThat(maxDiastolicPressure).isNotNull();
+        assertThat(maxDiastolicPressure.getInMillimetersOfMercury()).isEqualTo(60.0);
+        assertThat(minDiastolicPressure).isNotNull();
+        assertThat(minDiastolicPressure.getInMillimetersOfMercury()).isEqualTo(35.0);
+        assertThat(avgDiastolicPressure).isNotNull();
+        assertThat(avgDiastolicPressure.getInMillimetersOfMercury()).isEqualTo(49.0);
+        assertThat(maxSystolicPressure).isNotNull();
+        assertThat(maxSystolicPressure.getInMillimetersOfMercury()).isEqualTo(40.0);
+        assertThat(minSystolicPressure).isNotNull();
+        assertThat(minSystolicPressure.getInMillimetersOfMercury()).isEqualTo(26.0);
+        assertThat(avgSystolicPressure).isNotNull();
+        assertThat(avgSystolicPressure.getInMillimetersOfMercury()).isEqualTo(32.0);
+        Set<DataOrigin> dataOrigins = response.getDataOrigins(DIASTOLIC_AVG);
+        for (DataOrigin itr : dataOrigins) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
     }
 
     @Test
