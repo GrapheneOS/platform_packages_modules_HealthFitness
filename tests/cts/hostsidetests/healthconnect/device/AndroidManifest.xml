@@ -46,6 +46,7 @@
 
     <queries>
         <package android:name="android.healthconnect.cts.testapp.readWritePerms.A"/>
+        <package android:name="android.healthconnect.cts.testapp.readWritePerms.B"/>
     </queries>
 
 </manifest>
