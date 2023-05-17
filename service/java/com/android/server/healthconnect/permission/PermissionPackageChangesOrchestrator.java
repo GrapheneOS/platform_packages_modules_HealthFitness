@@ -29,6 +29,7 @@ import android.util.Log;
 import android.util.Slog;
 
 import com.android.modules.utils.BackgroundThread;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 /**
@@ -103,8 +104,10 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
             UserManager userManager = context.getSystemService(UserManager.class);
             if (userHandle.equals(mCurrentForegroundUser)
                     && userManager.isUserUnlocked(userHandle)) {
-                HealthDataCategoryPriorityHelper.getInstance()
-                        .removeAppFromPriorityList(packageName);
+                HealthConnectThreadScheduler.scheduleInternalTask(
+                        () ->
+                                HealthDataCategoryPriorityHelper.getInstance()
+                                        .removeAppFromPriorityList(packageName));
             }
         } else if (isHealthIntentRemoved) {
             // Revoke all health permissions as we don't grant health permissions if permissions
