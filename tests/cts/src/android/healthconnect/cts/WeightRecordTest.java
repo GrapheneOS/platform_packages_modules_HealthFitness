@@ -659,8 +659,9 @@ public class WeightRecordTest {
                                 .build(),
                         Period.ofYears(1));
 
-        assertThat(responses).hasSize(1);
+        assertThat(responses).hasSize(2);
         assertThat(responses.get(0).get(WEIGHT_MAX)).isEqualTo(Mass.fromGrams(10.0));
+        assertThat(responses.get(1).get(WEIGHT_MAX)).isNull();
     }
 
     private void readWeightRecordUsingClientId(List<Record> insertedRecord)

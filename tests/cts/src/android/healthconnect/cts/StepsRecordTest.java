@@ -721,8 +721,8 @@ public class StepsRecordTest {
 
     @Test
     public void testStepsCountAggregation_groupByDuration() throws Exception {
-        Instant start = Instant.now().minus(3, ChronoUnit.DAYS);
         Instant end = Instant.now();
+        Instant start = end.minus(3, ChronoUnit.DAYS);
         insertStepsRecordWithDelay(1000, 3);
 
         List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
@@ -774,7 +774,7 @@ public class StepsRecordTest {
                                 .addAggregationType(STEPS_COUNT_TOTAL)
                                 .build(),
                         Duration.ofHours(1));
-        assertThat(responses.size()).isEqualTo(23);
+        assertThat(responses.size()).isEqualTo(24);
         for (int i = 0; i < responses.size(); i++) {
             AggregateRecordsGroupedByDurationResponse<Long> response = responses.get(i);
             if (i > 9) {
@@ -785,6 +785,29 @@ public class StepsRecordTest {
                 assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(1000);
             }
         }
+    }
+
+    @Test
+    public void testAggregation_groupByDurationInstant_halfSizeGroupResultIsCorrect()
+            throws Exception {
+        Instant end = Instant.now();
+        TestUtils.insertRecords(List.of(getStepsRecord(end, 100, 1, 2)));
+
+        List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
+                TestUtils.getAggregateResponseGroupByDuration(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(end.minus(24, ChronoUnit.HOURS))
+                                                .setEndTime(
+                                                        end.minus(22, ChronoUnit.HOURS)
+                                                                .minus(30, ChronoUnit.MINUTES))
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        Duration.ofHours(1));
+        assertThat(responses.size()).isEqualTo(2);
+        assertThat(responses.get(0).get(STEPS_COUNT_TOTAL)).isEqualTo(50);
+        assertThat(responses.get(1).get(STEPS_COUNT_TOTAL)).isEqualTo(25);
     }
 
     @Test
@@ -1042,6 +1065,32 @@ public class StepsRecordTest {
     }
 
     @Test
+    public void testAggregatePeriod_withLocalDateTime_halfSizeGroupResultIsCorrect()
+            throws Exception {
+        Instant end = Instant.now();
+        // Insert steps from -48 hours to -12 hours, 36 hours session
+        TestUtils.insertRecords(List.of(getStepsRecord(end, 2160, 2, 36)));
+
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(end, ZoneOffset.UTC);
+        List<AggregateRecordsGroupedByPeriodResponse<Long>> responses =
+                TestUtils.getAggregateResponseGroupByPeriod(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(endTimeLocal.minusHours(60))
+                                                .setEndTime(endTimeLocal.minusHours(24))
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        Period.ofDays(1));
+
+        assertThat(responses).hasSize(2);
+        // -60 hours to -36 hours, 12 hours intersection with the group
+        assertThat(responses.get(0).get(STEPS_COUNT_TOTAL)).isEqualTo(720);
+        // -36 hours to -24 hours, 12 hours intersection with the group
+        assertThat(responses.get(1).get(STEPS_COUNT_TOTAL)).isEqualTo(720);
+    }
+
+    @Test
     public void testAggregateLocalFilter_minOffsetRecord() throws Exception {
         LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
         Instant endTimeInstant = Instant.now();
@@ -1168,11 +1217,14 @@ public class StepsRecordTest {
     }
 
     static StepsRecord getStepsRecord(int count, int daysPast, int durationInHours) {
+        return getStepsRecord(Instant.now(), count, daysPast, durationInHours);
+    }
+
+    static StepsRecord getStepsRecord(Instant time, int count, int daysPast, int durationInHours) {
         return new StepsRecord.Builder(
                         new Metadata.Builder().build(),
-                        Instant.now().minus(daysPast, ChronoUnit.DAYS),
-                        Instant.now()
-                                .minus(daysPast, ChronoUnit.DAYS)
+                        time.minus(daysPast, ChronoUnit.DAYS),
+                        time.minus(daysPast, ChronoUnit.DAYS)
                                 .plus(durationInHours, ChronoUnit.HOURS),
                         count)
                 .build();
