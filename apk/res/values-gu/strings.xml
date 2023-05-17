@@ -495,6 +495,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g>ની ઊંઘ"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"જાગૃત અવસ્થાનો તબક્કો"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"પથારીમાં જાગૃત અવસ્થામાં"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"ઊંઘનો તબક્કો"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"પલંગમાં ન હોવાનો તબક્કો"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"ઊંઘનો REM તબક્કો"</string>
