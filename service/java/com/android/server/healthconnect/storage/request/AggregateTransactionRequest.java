@@ -20,6 +20,7 @@ import android.annotation.NonNull;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.AggregateResult;
 import android.health.connect.TimeRangeFilter;
+import android.health.connect.TimeRangeFilterHelper;
 import android.health.connect.aidl.AggregateDataRequestParcel;
 import android.health.connect.aidl.AggregateDataResponseParcel;
 import android.health.connect.datatypes.AggregationType;
@@ -72,15 +73,15 @@ public final class AggregateTransactionRequest {
                                 aggregationType,
                                 request.getPackageFilters(),
                                 request.getStartTime(),
-                                request.getEndTime());
-                if (mDuration != null) {
+                                request.getEndTime(),
+                                TimeRangeFilterHelper.isLocalTimeFilter(mTimeRangeFilter));
+
+                if (mDuration != null || mPeriod != null) {
                     aggregateTableRequest.setGroupBy(
                             recordHelper.getDurationGroupByColumnName(),
+                            mPeriod,
                             mDuration,
                             mTimeRangeFilter);
-                } else if (mPeriod != null) {
-                    aggregateTableRequest.setGroupBy(
-                            recordHelper.getPeriodGroupByColumnName(), mPeriod, mTimeRangeFilter);
                 }
                 mAggregateTableRequests.add(aggregateTableRequest);
             } else {

@@ -49,6 +49,7 @@ import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
+import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordTypeInfoResponse;
@@ -98,6 +99,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -1613,7 +1615,16 @@ public class HealthConnectManagerTest {
         }
 
         try {
-            TestUtils.getAggregateResponseGroupByPeriod(aggregateRecordsRequest, Period.ofDays(1));
+            TestUtils.getAggregateResponseGroupByPeriod(
+                    new AggregateRecordsRequest.Builder<Long>(
+                                    new LocalTimeRangeFilter.Builder()
+                                            .setStartTime(
+                                                    LocalDateTime.now(ZoneOffset.UTC).minusDays(2))
+                                            .setEndTime(LocalDateTime.now(ZoneOffset.UTC))
+                                            .build())
+                            .addAggregationType(STEPS_COUNT_TOTAL)
+                            .build(),
+                    Period.ofDays(1));
             Assert.fail();
         } catch (HealthConnectException exception) {
             assertThat(exception).isNotNull();

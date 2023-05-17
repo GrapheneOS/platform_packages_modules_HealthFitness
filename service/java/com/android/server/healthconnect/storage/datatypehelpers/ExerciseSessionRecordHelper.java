@@ -138,10 +138,7 @@ public final class ExerciseSessionRecordHelper
         sessionColumns.add(ExerciseSegmentRecordHelper.getStartTimeColumnName());
         sessionColumns.add(ExerciseSegmentRecordHelper.getEndTimeColumnName());
         if (aggregateRequest.getAggregationTypeIdentifier() == EXERCISE_SESSION_DURATION_TOTAL) {
-            return new AggregateParams(
-                            EXERCISE_SESSION_RECORD_TABLE_NAME,
-                            sessionColumns,
-                            START_TIME_COLUMN_NAME)
+            return new AggregateParams(EXERCISE_SESSION_RECORD_TABLE_NAME, sessionColumns)
                     .setJoin(
                             ExerciseSegmentRecordHelper.getJoinForDurationAggregation(
                                     getMainTableName()))
