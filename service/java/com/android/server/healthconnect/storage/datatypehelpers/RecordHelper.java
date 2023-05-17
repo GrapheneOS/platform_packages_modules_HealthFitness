@@ -509,9 +509,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     public DeleteTableRequest getDeleteTableRequest(
-            List<String> packageFilters, long startTime, long endTime) {
+            List<String> packageFilters,
+            long startTime,
+            long endTime,
+            boolean usesLocalTimeFilter) {
+        final String timeColumnName =
+                usesLocalTimeFilter ? getLocalStartTimeColumnName() : getStartTimeColumnName();
         return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
-                .setTimeFilter(getStartTimeColumnName(), startTime, endTime)
+                .setTimeFilter(timeColumnName, startTime, endTime)
                 .setPackageFilter(
                         APP_INFO_ID_COLUMN_NAME,
                         AppInfoHelper.getInstance().getAppInfoIds(packageFilters))

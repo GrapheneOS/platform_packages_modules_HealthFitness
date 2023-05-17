@@ -67,7 +67,7 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
     }
 
     @Override
-    public String getLocalStartTimeColumnName() {
+    public final String getLocalStartTimeColumnName() {
         return LOCAL_DATE_TIME_COLUMN_NAME;
     }
 

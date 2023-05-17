@@ -57,6 +57,8 @@ import org.junit.runner.RunWith;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -310,6 +312,50 @@ public class HeartRateRecordTest {
                         .setTimeRangeFilter(timeRangeFilter)
                         .build());
         TestUtils.assertRecordNotFound(id, HeartRateRecord.class);
+    }
+
+    static HeartRateRecord getBaseHeartRateRecord(Instant time, ZoneOffset zoneOffset) {
+        HeartRateRecord.HeartRateSample heartRateRecord =
+                new HeartRateRecord.HeartRateSample(50, time.plusMillis(100));
+        ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
+        heartRateRecords.add(heartRateRecord);
+        heartRateRecords.add(heartRateRecord);
+
+        return new HeartRateRecord.Builder(
+                        new Metadata.Builder().build(),
+                        time,
+                        time.plus(1, ChronoUnit.SECONDS),
+                        heartRateRecords)
+                .setStartZoneOffset(zoneOffset)
+                .setEndZoneOffset(zoneOffset)
+                .build();
+    }
+
+    @Test
+    public void testDeleteStepsRecord_time_filters_local() throws InterruptedException {
+        LocalTimeRangeFilter timeRangeFilter =
+                new LocalTimeRangeFilter.Builder()
+                        .setStartTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 29))
+                        .setEndTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 32))
+                        .build();
+        LocalDateTime recordTime = LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 30);
+        String id1 =
+                TestUtils.insertRecordAndGetId(
+                        getBaseHeartRateRecord(
+                                recordTime.toInstant(ZoneOffset.MIN), ZoneOffset.MIN));
+        String id2 =
+                TestUtils.insertRecordAndGetId(
+                        getBaseHeartRateRecord(
+                                recordTime.toInstant(ZoneOffset.MAX), ZoneOffset.MAX));
+        TestUtils.assertRecordFound(id1, HeartRateRecord.class);
+        TestUtils.assertRecordFound(id2, HeartRateRecord.class);
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(HeartRateRecord.class)
+                        .setTimeRangeFilter(timeRangeFilter)
+                        .build());
+        TestUtils.assertRecordNotFound(id1, HeartRateRecord.class);
+        TestUtils.assertRecordNotFound(id2, HeartRateRecord.class);
     }
 
     @Test
