@@ -260,7 +260,7 @@
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"אישור לקרוא"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"אישור לכתוב"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"אין אפליקציות שקיבלו הרשאת גישה"</string>
-    <string name="no_apps_denied" msgid="743327680286446017">"אין אפליקציות שלא קיבלו הרשאת גישה"</string>
+    <string name="no_apps_denied" msgid="743327680286446017">"אין אפליקציות שסורב לתת להן גישה"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"להסיר את הרשאת הגישה לכל האפליקציות?"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"לאף אחת מהאפליקציות שלך לא תהיה אפשרות לגשת לנתונים או להוסיף נתונים חדשים ל-Health Connect. הפעולה הזאת לא תמחק נתונים קיימים.\n\nהפעולה הזאת לא משפיעה על הרשאות אחרות שעשויות להיות לאפליקציה, כמו המיקום, המצלמה או המיקרופון."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"הסרת הכול"</string>
@@ -495,6 +495,8 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> שינה"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"ערות"</string>
+    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
+    <skip />
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"שינה"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"מחוץ למיטה"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"שנת REM"</string>

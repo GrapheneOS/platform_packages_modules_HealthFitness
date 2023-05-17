@@ -495,6 +495,8 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> քուն"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"արթուն վիճակ"</string>
+    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
+    <skip />
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"քուն"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"անկողնուց դուրս"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"արագ քուն"</string>
@@ -720,7 +722,7 @@
     <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Ինտեգրումն ընթացքում է"</string>
     <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect-ն ինտեգրվում է Android համակարգի հետ։\n\nՈրոշ ժամանակ կարող է տևել, մինչև ձեր տվյալները և թույլտվությունները տեղափոխվեն։"</string>
     <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Մի՛ փակեք հավելվածը, մինչև չստանաք ծանուցում այն մասին, որ գործընթացն ավարտված է։"</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect-ի ինտեգրումն ընթացքում է"</string>
+    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect-ի ինտեգրումն ընթացքում&amp;nbsp;է"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Պահանջվում է թարմացում"</string>
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect-ն ինտեգրվում է Android համակարգի հետ, այնպես որ դուք կկարողանաք բացել հավելվածն անմիջապես ձեր կարգավորումներից։"</string>
     <string name="update_button" msgid="4544529019832009496">"Թարմացնել"</string>
@@ -739,15 +741,15 @@
     <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Health Connect-ին անհրաժեշտ է <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> տարածք ձեր հեռախոսում՝ ինտեգրումը շարունակելու համար։"</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Ինտեգրումը դադարեցվել է"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect հավելվածը փակվել է՝ Android համակարգի հետ ինտեգրվելիս։\n\nՍեղմեք «Վերսկսել», որպեսզի նորից բացեք հավելվածը և շարունակեք ձեր տվյալների ու թույլտվությունների տեղափոխումը։"</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Health Connect-ի ձեր տվյալները պահպանելու համար ավարտեք ինտեգրումը <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ընթացքում"</string>
+    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Health Connect-ի ձեր տվյալները պահպանելու համար ավարտեք ինտեգրումը <xliff:g id="TIME_NEEDED">%1$s</xliff:g>վա ընթացքում"</string>
     <string name="resume_button" msgid="2255148549862208047">"Վերսկսել"</string>
     <string name="migration_paused_notification_title" msgid="6020271090296330698">"Health Connect-ի ինտեգրումը դադարեցված է"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"Վերսկսեք ինտեգրումը"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Հպեք, որպեսզի շարունակեք Health Connect-ի ինտեգրումը Android համակարգի հետ։ Ձեր տվյալները պահպանելու համար ավարտեք ինտեգրումը <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ընթացքում"</string>
+    <string name="resume_migration_banner_title" msgid="4443957114824045317">"Շարունակեք ինտեգրումը"</string>
+    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Հպեք, որպեսզի շարունակեք Health Connect-ի ինտեգրումը Android համակարգի հետ։ Ձեր տվյալները պահպանելու համար ավարտեք ինտեգրումը <xliff:g id="TIME_NEEDED">%1$s</xliff:g>վա ընթացքում"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Հպեք, որպեսզի շարունակեք Health Connect-ի ինտեգրումը Android համակարգի հետ։"</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Շարունակել"</string>
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"Վերսկսեք Health Connect-ի ինտեգրումը"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"Ձեր տվյալները պահպանելու համար ավարտեք ինտեգրումը <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ընթացքում"</string>
+    <string name="resume_migration_notification_content" msgid="46172108837648715">"Ձեր տվյալները պահպանելու համար ավարտեք ինտեգրումը <xliff:g id="TIME_NEEDED">%1$s</xliff:g>վա ընթացքում"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Պահանջվում է հավելվածի թարմացում"</string>
     <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածն անհրաժեշտ է թարմացնել, որպեսզի այն շարունակի աշխատել Health Connect-ի հետ"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Որոշ հավելվածներ անհրաժեշտ է թարմացնել, որպեսզի դրանք շարունակեն աշխատել Health Connect-ի հետ"</string>
@@ -756,7 +758,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect-ը պատրաստ է ինտեգրման ձեր Android համակարգի հետ։ Եթե հիմա <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածին թույլտվություններ տրամադրեք, որոշ հավելվածներ կարող են չաշխատել, մինչև ինտեգրումը չավարտվի։"</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect-ը պատրաստ է ինտեգրման ձեր Android համակարգի հետ։ Եթե հիմա հավելվածներին թույլտվություններ տրամադրեք, որոշ գործառույթներ կարող են չաշխատել, մինչև ինտեգրումը չավարտվի։"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Շարունակել"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect-ի ինտեգրումն ընթացքում է"</string>
+    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect-ի ինտեգրումն ընթացքում&amp;nbsp;է"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect-ն ինտեգրվում է Android համակարգի հետ։\n\nԴուք ծանուցում կստանաք, երբ գործընթացն ավարտվի, և կկարողանաք օգտագործել <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածը Health Connect-ի հետ։"</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect-ն ինտեգրվում է Android համակարգի հետ։\n\nԴուք ծանուցում կստանաք, երբ գործընթացն ավարտվի, և կկարողանաք օգտվել Health Connect-ից։"</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Եղավ"</string>
