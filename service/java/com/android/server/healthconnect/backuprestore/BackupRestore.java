@@ -1019,7 +1019,10 @@ public final class BackupRestore {
         Slog.d(TAG, "Deleting table for: " + recordTypeClass);
         DeleteTableRequest deleteTableRequest =
                 recordHelper.getDeleteTableRequest(
-                        null, DEFAULT_LONG /* startTime */, DEFAULT_LONG /* endTime */);
+                        null /* packageFilters */,
+                        DEFAULT_LONG /* startTime */,
+                        DEFAULT_LONG /* endTime */,
+                        false /* useLocalTimeFilter */);
         getStagedDatabase().getWritableDatabase().execSQL(deleteTableRequest.getDeleteCommand());
     }
 

@@ -81,9 +81,8 @@ public final class DeleteTransactionRequest {
             }
 
             recordTypeToUuids.forEach(
-                    (recordHelper, uuids) -> {
-                        mDeleteTableRequests.add(recordHelper.getDeleteTableRequest(uuids));
-                    });
+                    (recordHelper, uuids) ->
+                            mDeleteTableRequests.add(recordHelper.getDeleteTableRequest(uuids)));
 
             // We currently only support either using filters or ids, so if we are deleting using
             // ids no need to proceed further.
@@ -110,7 +109,8 @@ public final class DeleteTransactionRequest {
                             recordHelper.getDeleteTableRequest(
                                     request.getPackageNameFilters(),
                                     request.getStartTime(),
-                                    request.getEndTime()));
+                                    request.getEndTime(),
+                                    request.isLocalTimeFilter()));
                 });
     }
 
