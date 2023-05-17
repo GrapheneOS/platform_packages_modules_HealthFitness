@@ -624,6 +624,18 @@ public class ActiveCaloriesBurnedRecordTest {
                 .build();
     }
 
+    static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord(
+            Instant time, double energy, ZoneOffset offset) {
+        return new ActiveCaloriesBurnedRecord.Builder(
+                        new Metadata.Builder().build(),
+                        time,
+                        time.plus(1, ChronoUnit.DAYS),
+                        Energy.fromCalories(energy))
+                .setStartZoneOffset(offset)
+                .setEndZoneOffset(offset)
+                .build();
+    }
+
     static ActiveCaloriesBurnedRecord getBaseActiveCaloriesBurnedRecord(double energy, int days) {
         return new ActiveCaloriesBurnedRecord.Builder(
                         new Metadata.Builder().build(),
