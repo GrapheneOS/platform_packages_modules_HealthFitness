@@ -548,8 +548,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             if (!holdsDataManagementPermission) {
                                 Instant startInstant =
                                         mPermissionHelper.getHealthDataStartDateAccess(
-                                                attributionSource.getPackageName(),
-                                                mContext.getUser());
+                                                attributionSource.getPackageName(), userHandle);
                                 if (startInstant == null) {
                                     throwExceptionIncorrectPermissionState();
                                 }
@@ -866,7 +865,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, builder);
                         Instant startDateInstant =
                                 mPermissionHelper.getHealthDataStartDateAccess(
-                                        attributionSource.getPackageName(), mContext.getUser());
+                                        attributionSource.getPackageName(), userHandle);
                         if (startDateInstant == null) {
                             throwExceptionIncorrectPermissionState();
                         }

@@ -108,7 +108,7 @@ public final class TimeRangeFilterHelper {
                 Instant.ofEpochMilli(localDateTimeMillis), LOCAL_TIME_ZERO_OFFSET);
     }
 
-    private static long getMillisOfLocalTime(LocalDateTime time) {
+    public static long getMillisOfLocalTime(LocalDateTime time) {
         return time.toInstant(LOCAL_TIME_ZERO_OFFSET).toEpochMilli();
     }
 }

@@ -495,6 +495,8 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> ұйқы"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"ояу"</string>
+    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
+    <skip />
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"ұйқы"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"ұйқыдан тұру"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"жылдам (REM) ұйқы"</string>
@@ -676,11 +678,11 @@
     <string name="send_feedback" msgid="7756927746070096780">"Пікір жіберу"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Health Connect-те қандай денсаулық және фитнес қолданбаларымен жұмыс істегіңіз келетіні жайлы ақпарат беріңіз."</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
-    <string name="auto_delete_button" msgid="8536451792268513619">"Автоматты жою"</string>
-    <string name="auto_delete_title" msgid="8761742828224207826">"Автоматты жою"</string>
+    <string name="auto_delete_button" msgid="8536451792268513619">"Автоматты түрде жою"</string>
+    <string name="auto_delete_title" msgid="8761742828224207826">"Автоматты түрде жою"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Деректерді белгілі бір уақыттан кейін өшіретін етіп жоспарлау арқылы оның Health Connect-те сақталу мерзімін басқаруға болады."</string>
     <string name="auto_delete_learn_more" msgid="2853655230440111557">"Толық ақпарат"</string>
-    <string name="auto_delete_section" msgid="7732381000331475082">"Деректерді автоматты жою"</string>
+    <string name="auto_delete_section" msgid="7732381000331475082">"Деректерді автоматты түрде жою"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# айдан кейін}other{# айдан кейін}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Ешқашан"</string>
     <string name="range_off" msgid="8178520557618184215">"Өшірулі"</string>

@@ -59,6 +59,7 @@ import org.junit.runner.RunWith;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -421,6 +422,39 @@ public class StepsRecordTest {
         TestUtils.assertRecordNotFound(id, StepsRecord.class);
     }
 
+    static StepsRecord getBaseStepsRecord(Instant time, ZoneOffset zoneOffset) {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().build(), time, time.plus(1, ChronoUnit.SECONDS), 50)
+                .setStartZoneOffset(zoneOffset)
+                .setEndZoneOffset(zoneOffset)
+                .build();
+    }
+
+    @Test
+    public void testDeleteStepsRecord_time_filters_local() throws InterruptedException {
+        LocalTimeRangeFilter timeRangeFilter =
+                new LocalTimeRangeFilter.Builder()
+                        .setStartTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 29))
+                        .setEndTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 32))
+                        .build();
+        LocalDateTime recordTime = LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 30);
+        String id1 =
+                TestUtils.insertRecordAndGetId(
+                        getBaseStepsRecord(recordTime.toInstant(ZoneOffset.MIN), ZoneOffset.MIN));
+        String id2 =
+                TestUtils.insertRecordAndGetId(
+                        getBaseStepsRecord(recordTime.toInstant(ZoneOffset.MAX), ZoneOffset.MAX));
+        TestUtils.assertRecordFound(id1, StepsRecord.class);
+        TestUtils.assertRecordFound(id2, StepsRecord.class);
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setTimeRangeFilter(timeRangeFilter)
+                        .build());
+        TestUtils.assertRecordNotFound(id1, StepsRecord.class);
+        TestUtils.assertRecordNotFound(id2, StepsRecord.class);
+    }
+
     @Test
     public void testDeleteStepsRecord_recordId_filters() throws InterruptedException {
         List<Record> records = List.of(getBaseStepsRecord(), getCompleteStepsRecord());
@@ -685,8 +719,8 @@ public class StepsRecordTest {
 
     @Test
     public void testStepsCountAggregation_groupByDuration() throws Exception {
-        Instant start = Instant.now().minus(3, ChronoUnit.DAYS);
         Instant end = Instant.now();
+        Instant start = end.minus(3, ChronoUnit.DAYS);
         insertStepsRecordWithDelay(1000, 3);
 
         List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
@@ -738,7 +772,7 @@ public class StepsRecordTest {
                                 .addAggregationType(STEPS_COUNT_TOTAL)
                                 .build(),
                         Duration.ofHours(1));
-        assertThat(responses.size()).isEqualTo(23);
+        assertThat(responses.size()).isEqualTo(24);
         for (int i = 0; i < responses.size(); i++) {
             AggregateRecordsGroupedByDurationResponse<Long> response = responses.get(i);
             if (i > 9) {
@@ -749,6 +783,29 @@ public class StepsRecordTest {
                 assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(1000);
             }
         }
+    }
+
+    @Test
+    public void testAggregation_groupByDurationInstant_halfSizeGroupResultIsCorrect()
+            throws Exception {
+        Instant end = Instant.now();
+        TestUtils.insertRecords(List.of(getStepsRecord(end, 100, 1, 2)));
+
+        List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
+                TestUtils.getAggregateResponseGroupByDuration(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(end.minus(24, ChronoUnit.HOURS))
+                                                .setEndTime(
+                                                        end.minus(22, ChronoUnit.HOURS)
+                                                                .minus(30, ChronoUnit.MINUTES))
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        Duration.ofHours(1));
+        assertThat(responses.size()).isEqualTo(2);
+        assertThat(responses.get(0).get(STEPS_COUNT_TOTAL)).isEqualTo(50);
+        assertThat(responses.get(1).get(STEPS_COUNT_TOTAL)).isEqualTo(25);
     }
 
     @Test
@@ -997,6 +1054,32 @@ public class StepsRecordTest {
     }
 
     @Test
+    public void testAggregatePeriod_withLocalDateTime_halfSizeGroupResultIsCorrect()
+            throws Exception {
+        Instant end = Instant.now();
+        // Insert steps from -48 hours to -12 hours, 36 hours session
+        TestUtils.insertRecords(List.of(getStepsRecord(end, 2160, 2, 36)));
+
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(end, ZoneOffset.UTC);
+        List<AggregateRecordsGroupedByPeriodResponse<Long>> responses =
+                TestUtils.getAggregateResponseGroupByPeriod(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(endTimeLocal.minusHours(60))
+                                                .setEndTime(endTimeLocal.minusHours(24))
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        Period.ofDays(1));
+
+        assertThat(responses).hasSize(2);
+        // -60 hours to -36 hours, 12 hours intersection with the group
+        assertThat(responses.get(0).get(STEPS_COUNT_TOTAL)).isEqualTo(720);
+        // -36 hours to -24 hours, 12 hours intersection with the group
+        assertThat(responses.get(1).get(STEPS_COUNT_TOTAL)).isEqualTo(720);
+    }
+
+    @Test
     public void testAggregateLocalFilter_minOffsetRecord() throws Exception {
         LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
         Instant endTimeInstant = Instant.now();
@@ -1141,11 +1224,14 @@ public class StepsRecordTest {
     }
 
     static StepsRecord getStepsRecord(int count, int daysPast, int durationInHours) {
+        return getStepsRecord(Instant.now(), count, daysPast, durationInHours);
+    }
+
+    static StepsRecord getStepsRecord(Instant time, int count, int daysPast, int durationInHours) {
         return new StepsRecord.Builder(
                         new Metadata.Builder().build(),
-                        Instant.now().minus(daysPast, ChronoUnit.DAYS),
-                        Instant.now()
-                                .minus(daysPast, ChronoUnit.DAYS)
+                        time.minus(daysPast, ChronoUnit.DAYS),
+                        time.minus(daysPast, ChronoUnit.DAYS)
                                 .plus(durationInHours, ChronoUnit.HOURS),
                         count)
                 .build();

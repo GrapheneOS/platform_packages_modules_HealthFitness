@@ -73,17 +73,17 @@ public abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>>
     }
 
     @Override
+    public final String getLocalStartTimeColumnName() {
+        return LOCAL_DATE_TIME_START_TIME_COLUMN_NAME;
+    }
+
+    @Override
     public final String getEndTimeColumnName() {
         return END_TIME_COLUMN_NAME;
     }
 
     @Override
-    public String getLocalStartTimeColumnName() {
-        return LOCAL_DATE_TIME_START_TIME_COLUMN_NAME;
-    }
-
-    @Override
-    public String getLocalEndTimeColumnName() {
+    public final String getLocalEndTimeColumnName() {
         return LOCAL_DATE_TIME_END_TIME_COLUMN_NAME;
     }
 

@@ -24,6 +24,7 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.TimeInstantRangeFilter;
@@ -48,6 +49,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -229,12 +231,22 @@ public class TotalCaloriesBurnedRecordTest {
 
     static TotalCaloriesBurnedRecord getBaseTotalCaloriesBurnedRecord(
             Instant startTime, double value) {
-        return new TotalCaloriesBurnedRecord.Builder(
+        return getBaseTotalCaloriesBurnedRecord(startTime, value, null);
+    }
+
+    static TotalCaloriesBurnedRecord getBaseTotalCaloriesBurnedRecord(
+            Instant startTime, double value, ZoneOffset offset) {
+        TotalCaloriesBurnedRecord.Builder builder =
+                new TotalCaloriesBurnedRecord.Builder(
                         new Metadata.Builder().build(),
                         startTime,
                         startTime.plus(1, ChronoUnit.DAYS),
-                        Energy.fromCalories(value))
-                .build();
+                        Energy.fromCalories(value));
+
+        if (offset != null) {
+            builder.setStartZoneOffset(offset).setEndZoneOffset(offset);
+        }
+        return builder.build();
     }
 
     @Test
@@ -584,6 +596,55 @@ public class TotalCaloriesBurnedRecordTest {
                                         new TimeInstantRangeFilter.Builder()
                                                 .setStartTime(now.minus(5, ChronoUnit.DAYS))
                                                 .setEndTime(now)
+                                                .build())
+                                .addAggregationType(TotalCaloriesBurnedRecord.ENERGY_TOTAL)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .build(),
+                        Duration.ofDays(1));
+        assertThat(responses).isNotNull();
+        assertThat(responses.get(0).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
+                .isWithin(1)
+                .of(1564500);
+        assertThat(responses.get(1).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
+                .isWithin(1)
+                .of(1564520);
+        assertThat(responses.get(2).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
+                .isWithin(1)
+                .of(619200);
+        assertThat(responses.get(3).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
+                .isWithin(1)
+                .of(20);
+        assertThat(responses.get(4).get(TotalCaloriesBurnedRecord.ENERGY_TOTAL).getInCalories())
+                .isWithin(1)
+                .of(10);
+    }
+
+    @Test
+    public void testAggregation_groupByDurationLocalFilter_shiftRecordsAndFilterWithOffset()
+            throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        Instant now = Instant.now();
+        ZoneOffset offset = ZoneOffset.ofHours(-1);
+        LocalDateTime localNow = LocalDateTime.ofInstant(now, offset);
+
+        List<Record> records =
+                Arrays.asList(
+                        getBaseTotalCaloriesBurnedRecord(now.minus(1, ChronoUnit.DAYS), 10, offset),
+                        getBaseTotalCaloriesBurnedRecord(now.minus(2, ChronoUnit.DAYS), 20, offset),
+                        ActiveCaloriesBurnedRecordTest.getBaseActiveCaloriesBurnedRecord(
+                                now.minus(4, ChronoUnit.DAYS), 20, offset),
+                        BasalMetabolicRateRecordTest.getBasalMetabolicRateRecord(
+                                30, now.minus(3, ChronoUnit.DAYS), offset));
+        TestUtils.insertRecords(records);
+        List<AggregateRecordsGroupedByDurationResponse<Energy>> responses =
+                TestUtils.getAggregateResponseGroupByDuration(
+                        new AggregateRecordsRequest.Builder<Energy>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(localNow.minusDays(5))
+                                                .setEndTime(localNow)
                                                 .build())
                                 .addAggregationType(TotalCaloriesBurnedRecord.ENERGY_TOTAL)
                                 .addDataOriginsFilter(
