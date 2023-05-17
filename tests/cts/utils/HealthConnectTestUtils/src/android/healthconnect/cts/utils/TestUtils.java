@@ -131,14 +131,18 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -563,6 +567,60 @@ public class TestUtils {
                                             .build())));
         }
         return builder.build();
+    }
+
+    public static StepsRecord buildStepsRecord(
+            String startTime, String endTime, int stepsCount, String packageName) {
+        Device device =
+                new Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build();
+        DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(packageName).build();
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().setDevice(device).setDataOrigin(dataOrigin).build(),
+                        getInstantTime(startTime),
+                        getInstantTime(endTime),
+                        stepsCount)
+                .build();
+    }
+
+    public static Instant getInstantTime(String time) {
+        return LocalDateTime.parse(
+                        time + " Mon 5/15/2023",
+                        DateTimeFormatter.ofPattern("hh:mm a EEE M/d/uuuu", Locale.US))
+                .atZone(ZoneId.of("America/Toronto"))
+                .toInstant();
+    }
+
+    public static <T> AggregateRecordsResponse<T> getAggregateResponse(
+            AggregateRecordsRequest<T> request) throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<AggregateRecordsResponse<T>> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
+                new AtomicReference<>();
+        service.aggregate(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(AggregateRecordsResponse<T> result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        healthConnectExceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (healthConnectExceptionAtomicReference.get() != null) {
+            throw healthConnectExceptionAtomicReference.get();
+        }
+
+        return response.get();
     }
 
     public static <T> AggregateRecordsResponse<T> getAggregateResponse(

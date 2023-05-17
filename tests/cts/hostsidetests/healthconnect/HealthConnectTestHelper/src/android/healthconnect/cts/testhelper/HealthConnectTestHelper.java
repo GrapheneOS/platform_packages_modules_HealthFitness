@@ -21,6 +21,7 @@ import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOGS_RESPON
 import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOG_TOKEN;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.CLIENT_ID;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.DELETE_RECORDS_QUERY;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.END_TIME;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.GET_CHANGE_LOG_TOKEN_QUERY;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.INSERT_RECORD_QUERY;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.INTENT_EXCEPTION;
@@ -31,10 +32,15 @@ import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_RECORDS_SIZE;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_RECORD_CLASS_NAME;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_USING_DATA_ORIGIN_FILTERS;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.RECORD_IDS;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.RECORD_TYPE;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.START_TIME;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.STEPS_COUNT;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.STEPS_RECORD;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.UPDATE_EXERCISE_ROUTE;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.UPDATE_RECORDS_QUERY;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.UPSERT_EXERCISE_ROUTE;
+import static android.healthconnect.cts.utils.TestUtils.buildStepsRecord;
 import static android.healthconnect.cts.utils.TestUtils.getChangeLogs;
 import static android.healthconnect.cts.utils.TestUtils.getExerciseSessionRecord;
 import static android.healthconnect.cts.utils.TestUtils.getTestRecords;
@@ -61,6 +67,7 @@ import android.os.Bundle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HealthConnectTestHelper extends Activity {
@@ -89,6 +96,18 @@ public class HealthConnectTestHelper extends Activity {
                                 insertRecordsWithGivenClientId(
                                         queryType, bundle.getDouble(CLIENT_ID), context);
                         break;
+                    }
+                    if (bundle.containsKey(RECORD_TYPE)) {
+                        if (bundle.getString(RECORD_TYPE).equals(STEPS_RECORD)) {
+                            returnIntent =
+                                    insertStepsRecord(
+                                            queryType,
+                                            bundle.getString(START_TIME),
+                                            bundle.getString(END_TIME),
+                                            bundle.getInt(STEPS_COUNT),
+                                            context);
+                            break;
+                        }
                     }
                     returnIntent = insertRecord(queryType, context);
                     break;
@@ -494,6 +513,32 @@ public class HealthConnectTestHelper extends Activity {
                         context);
 
         intent.putExtra(CHANGE_LOG_TOKEN, tokenResponse.getToken());
+        return intent;
+    }
+
+    /**
+     * Method to build steps record and insert them
+     *
+     * @param queryType - specifies the action, here it should be INSERT_RECORDS_QUERY
+     * @param startTime - start time for the steps record to build
+     * @param endTime - end time for the steps record to build
+     * @param stepsCount - number of steps to be added in the steps record
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
+    private Intent insertStepsRecord(
+            String queryType, String startTime, String endTime, int stepsCount, Context context) {
+        final Intent intent = new Intent(queryType);
+        try {
+            List<Record> recordToInsert =
+                    Arrays.asList(
+                            buildStepsRecord(
+                                    startTime, endTime, stepsCount, context.getPackageName()));
+            insertRecords(recordToInsert, context);
+            intent.putExtra(SUCCESS, true);
+        } catch (Exception e) {
+            intent.putExtra(SUCCESS, false);
+        }
         return intent;
     }
 }

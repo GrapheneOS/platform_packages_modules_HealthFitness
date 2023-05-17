@@ -62,6 +62,11 @@ public class MultiAppTestUtils {
     public static final String UPSERT_EXERCISE_ROUTE = "android.healthconnect.cts.upsertRoute";
     public static final String GET_CHANGE_LOG_TOKEN_QUERY =
             "android.healthconnect.cts.getChangeLogToken";
+    public static final String RECORD_TYPE = "android.healthconnect.cts.recordType";
+    public static final String STEPS_RECORD = "android.healthconnect.cts.stepsRecord";
+    public static final String START_TIME = "android.healthconnect.cts.startTime";
+    public static final String END_TIME = "android.healthconnect.cts.endTime";
+    public static final String STEPS_COUNT = "android.healthconnect.cts.stepsCount";
     public static final String INTENT_EXCEPTION = "android.healthconnect.cts.exception";
     private static final long POLLING_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(20);
 
@@ -156,6 +161,18 @@ public class MultiAppTestUtils {
         Bundle bundle = new Bundle();
         bundle.putString(QUERY_TYPE, GET_CHANGE_LOG_TOKEN_QUERY);
         bundle.putString(APP_PKG_NAME_USED_IN_DATA_ORIGIN, pkgName);
+
+        return getFromTestApp(testApp, bundle);
+    }
+
+    public static Bundle insertStepsRecordAs(
+            TestApp testApp, String startTime, String endTime, int stepsCount) throws Exception {
+        Bundle bundle = new Bundle();
+        bundle.putString(QUERY_TYPE, INSERT_RECORD_QUERY);
+        bundle.putString(RECORD_TYPE, STEPS_RECORD);
+        bundle.putString(START_TIME, startTime);
+        bundle.putString(END_TIME, endTime);
+        bundle.putInt(STEPS_COUNT, stepsCount);
 
         return getFromTestApp(testApp, bundle);
     }
