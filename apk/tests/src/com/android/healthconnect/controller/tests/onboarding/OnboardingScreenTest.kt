@@ -21,7 +21,6 @@ import android.content.Intent
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -41,6 +40,7 @@ import org.junit.Test
 @HiltAndroidTest
 class OnboardingScreenTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
+
     @Before
     fun setup() {
         hiltRule.inject()
@@ -62,7 +62,7 @@ class OnboardingScreenTest {
     fun onboardingScreen_isDisplayedCorrectly() {
         startOnboardingActivity()
 
-        onView(withText("Get Started with Health\u00A0Connect")).check(matches(isDisplayed()))
+        onView(withText("Get started with Health\u00A0Connect")).check(matches(isDisplayed()))
         onView(
                 withText(
                     "Health\u00A0Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone"))
