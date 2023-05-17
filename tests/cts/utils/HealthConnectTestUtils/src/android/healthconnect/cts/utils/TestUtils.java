@@ -127,6 +127,8 @@ import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.cts.install.lib.TestApp;
+
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
@@ -579,6 +581,69 @@ public class TestUtils {
                         getInstantTime(startTime),
                         getInstantTime(endTime),
                         stepsCount)
+                .build();
+    }
+
+    public static ExerciseSessionRecord buildExerciseSession(
+            String sessionStartTime, String sessionEndTime, Context context) {
+        return new ExerciseSessionRecord.Builder(
+                        new Metadata.Builder()
+                                .setDataOrigin(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .setId("ExerciseSession" + Math.random())
+                                .setClientRecordId("ExerciseSessionClient" + Math.random())
+                                .build(),
+                        getInstantTime(sessionStartTime),
+                        getInstantTime(sessionEndTime),
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                .build();
+    }
+
+    public static ExerciseSessionRecord buildExerciseSession(
+            String sessionStartTime,
+            String sessionEndTime,
+            String pauseStart,
+            String pauseEnd,
+            Context context) {
+        List<ExerciseSegment> segmentList =
+                List.of(
+                        new ExerciseSegment.Builder(
+                                        getInstantTime(sessionStartTime),
+                                        getInstantTime(pauseStart),
+                                        ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_OTHER_WORKOUT)
+                                .setRepetitionsCount(10)
+                                .build(),
+                        new ExerciseSegment.Builder(
+                                        getInstantTime(pauseStart),
+                                        getInstantTime(pauseEnd),
+                                        ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_PAUSE)
+                                .build());
+
+        if (getInstantTime(sessionEndTime).compareTo(getInstantTime(pauseEnd)) > 0) {
+            segmentList.add(
+                    new ExerciseSegment.Builder(
+                                    getInstantTime(pauseEnd),
+                                    getInstantTime(sessionEndTime),
+                                    ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_OTHER_WORKOUT)
+                            .setRepetitionsCount(10)
+                            .build());
+        }
+
+        return new ExerciseSessionRecord.Builder(
+                        new Metadata.Builder()
+                                .setDataOrigin(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(context.getPackageName())
+                                                .build())
+                                .setId("ExerciseSession" + Math.random())
+                                .setClientRecordId("ExerciseSessionClient" + Math.random())
+                                .build(),
+                        getInstantTime(sessionStartTime),
+                        getInstantTime(sessionEndTime),
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_FOOTBALL_AMERICAN)
+                .setSegments(segmentList)
                 .build();
     }
 
@@ -1731,6 +1796,16 @@ public class TestUtils {
                         .addRecordType(HeartRateRecord.class)
                         .addRecordType(BasalMetabolicRateRecord.class)
                         .build());
+    }
+
+    public static void revokeAndThenGrantHealthPermissions(TestApp testApp) {
+        List<String> healthPerms = getGrantedHealthPermissions(testApp.getPackageName());
+
+        revokeHealthPermissions(testApp.getPackageName());
+
+        for (String perm : healthPerms) {
+            grantPermission(testApp.getPackageName(), perm);
+        }
     }
 
     public static final class RecordAndIdentifier {

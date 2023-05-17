@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts.device;
 
+import static android.health.connect.datatypes.ExerciseSessionRecord.EXERCISE_DURATION_TOTAL;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOGS_RESPONSE;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOG_TOKEN;
@@ -24,6 +25,8 @@ import static android.healthconnect.cts.lib.MultiAppTestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.deleteRecordsAs;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.getChangeLogTokenAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.getDataOriginPriorityOrder;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.insertExerciseSessionAs;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.insertRecordAs;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.insertRecordWithAnotherAppPackageName;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.insertRecordWithGivenClientId;
@@ -41,6 +44,7 @@ import static android.healthconnect.cts.utils.TestUtils.getGrantedHealthPermissi
 import static android.healthconnect.cts.utils.TestUtils.getInstantTime;
 import static android.healthconnect.cts.utils.TestUtils.grantPermission;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
+import static android.healthconnect.cts.utils.TestUtils.revokeAndThenGrantHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.revokeHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.revokePermission;
 import static android.healthconnect.cts.utils.TestUtils.updateDataOriginPriorityOrder;
@@ -623,28 +627,12 @@ public class HealthConnectDeviceTest {
             throws Exception {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
 
-        List<String> healthPerms =
-                getGrantedHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-
-        revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-        revokeHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
-
-        for (String perm : healthPerms) {
-            grantPermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), perm);
-        }
-
-        for (String perm : healthPerms) {
-            grantPermission(APP_B_WITH_READ_WRITE_PERMS.getPackageName(), perm);
-        }
+        revokeAndThenGrantHealthPermissions(APP_A_WITH_READ_WRITE_PERMS);
+        revokeAndThenGrantHealthPermissions(APP_B_WITH_READ_WRITE_PERMS);
 
         List<DataOrigin> dataOriginPrioOrder =
-                List.of(
-                        new DataOrigin.Builder()
-                                .setPackageName(APP_A_WITH_READ_WRITE_PERMS.getPackageName())
-                                .build(),
-                        new DataOrigin.Builder()
-                                .setPackageName(APP_B_WITH_READ_WRITE_PERMS.getPackageName())
-                                .build());
+                getDataOriginPriorityOrder(
+                        APP_A_WITH_READ_WRITE_PERMS, APP_B_WITH_READ_WRITE_PERMS);
 
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
         List<String> priorityList =
@@ -684,13 +672,8 @@ public class HealthConnectDeviceTest {
         assertThat(oldResponse.get(STEPS_COUNT_TOTAL)).isEqualTo(2000);
 
         dataOriginPrioOrder =
-                List.of(
-                        new DataOrigin.Builder()
-                                .setPackageName(APP_B_WITH_READ_WRITE_PERMS.getPackageName())
-                                .build(),
-                        new DataOrigin.Builder()
-                                .setPackageName(APP_A_WITH_READ_WRITE_PERMS.getPackageName())
-                                .build());
+                getDataOriginPriorityOrder(
+                        APP_B_WITH_READ_WRITE_PERMS, APP_A_WITH_READ_WRITE_PERMS);
 
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
         updateDataOriginPriorityOrder(
@@ -715,5 +698,98 @@ public class HealthConnectDeviceTest {
         AggregateRecordsResponse<Long> newResponse = getAggregateResponse(aggregateRecordsRequest);
         assertThat(newResponse.get(STEPS_COUNT_TOTAL)).isNotNull();
         assertThat(newResponse.get(STEPS_COUNT_TOTAL)).isEqualTo(2500);
+    }
+
+    @Test
+    public void testAggregationOutputForExerciseSessionWithDataFromTwoAppsHavingDifferentPriority()
+            throws Exception {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+
+        revokeAndThenGrantHealthPermissions(APP_A_WITH_READ_WRITE_PERMS);
+        revokeAndThenGrantHealthPermissions(APP_B_WITH_READ_WRITE_PERMS);
+
+        List<DataOrigin> dataOriginPrioOrder =
+                getDataOriginPriorityOrder(
+                        APP_A_WITH_READ_WRITE_PERMS, APP_B_WITH_READ_WRITE_PERMS);
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        List<String> priorityList =
+                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
+                        .getDataOriginsPriorityOrder()
+                        .stream()
+                        .map(dataOrigin -> dataOrigin.getPackageName())
+                        .collect(Collectors.toList());
+
+        assertThat(
+                        priorityList.equals(
+                                dataOriginPrioOrder.stream()
+                                        .map(dataOrigin -> dataOrigin.getPackageName())
+                                        .collect(Collectors.toList())))
+                .isTrue();
+
+        Bundle bundle =
+                insertExerciseSessionAs(
+                        APP_A_WITH_READ_WRITE_PERMS,
+                        "01:00 PM",
+                        "03:00 PM",
+                        "02:00 PM",
+                        "03:00 PM");
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+        bundle =
+                insertExerciseSessionAs(
+                        APP_B_WITH_READ_WRITE_PERMS, "02:00 PM", "03:00 PM", null, null);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        AggregateRecordsRequest<Long> aggregateRecordsRequest =
+                new AggregateRecordsRequest.Builder<Long>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(getInstantTime("01:00 PM"))
+                                        .setEndTime(getInstantTime("03:00 PM"))
+                                        .build())
+                        .addAggregationType(EXERCISE_DURATION_TOTAL)
+                        .build();
+        assertThat(aggregateRecordsRequest.getAggregationTypes()).isNotNull();
+        assertThat(aggregateRecordsRequest.getTimeRangeFilter()).isNotNull();
+        assertThat(aggregateRecordsRequest.getDataOriginsFilters()).isNotNull();
+
+        AggregateRecordsResponse<Long> response = getAggregateResponse(aggregateRecordsRequest);
+        assertThat(response.get(EXERCISE_DURATION_TOTAL)).isNotNull();
+        assertThat(response.get(EXERCISE_DURATION_TOTAL))
+                .isEqualTo(
+                        (getInstantTime("03:00 PM").toEpochMilli()
+                                        - getInstantTime("01:00 PM").toEpochMilli())
+                                - (getInstantTime("03:00 PM").toEpochMilli()
+                                        - getInstantTime("02:00 PM").toEpochMilli()));
+
+        dataOriginPrioOrder =
+                getDataOriginPriorityOrder(
+                        APP_B_WITH_READ_WRITE_PERMS, APP_A_WITH_READ_WRITE_PERMS);
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        updateDataOriginPriorityOrder(
+                new UpdateDataOriginPriorityOrderRequest(
+                        dataOriginPrioOrder, HealthDataCategory.ACTIVITY));
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        priorityList =
+                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
+                        .getDataOriginsPriorityOrder()
+                        .stream()
+                        .map(dataOrigin -> dataOrigin.getPackageName())
+                        .collect(Collectors.toList());
+
+        assertThat(
+                        priorityList.equals(
+                                dataOriginPrioOrder.stream()
+                                        .map(dataOrigin -> dataOrigin.getPackageName())
+                                        .collect(Collectors.toList())))
+                .isTrue();
+
+        AggregateRecordsResponse<Long> newResponse = getAggregateResponse(aggregateRecordsRequest);
+        assertThat(newResponse.get(EXERCISE_DURATION_TOTAL)).isNotNull();
+        assertThat(newResponse.get(EXERCISE_DURATION_TOTAL))
+                .isEqualTo(
+                        getInstantTime("03:00 PM").toEpochMilli()
+                                - getInstantTime("01:00 PM").toEpochMilli());
     }
 }
