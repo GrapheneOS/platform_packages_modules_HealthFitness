@@ -94,7 +94,8 @@ public final class BasalMetabolicRateRecordHelper
     @Override
     public double[] deriveAggregate(Cursor cursor, AggregateTableRequest request) {
         DeriveBasalCaloriesBurnedHelper deriveBasalCaloriesBurnedHelper =
-                new DeriveBasalCaloriesBurnedHelper(cursor, BASAL_METABOLIC_RATE_COLUMN_NAME);
+                new DeriveBasalCaloriesBurnedHelper(
+                        cursor, BASAL_METABOLIC_RATE_COLUMN_NAME, request.getTimeColumnName());
         List<Pair<Long, Long>> groupIntervals = request.getGroupSplitIntervals();
         return deriveBasalCaloriesBurnedHelper.getBasalCaloriesBurned(groupIntervals);
     }
