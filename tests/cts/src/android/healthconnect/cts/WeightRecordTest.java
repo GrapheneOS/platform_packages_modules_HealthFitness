@@ -557,6 +557,7 @@ public class WeightRecordTest {
         }
     }
 
+
     @Test
     public void testAggregateDuration_withLocalDateTime_responsesAnswerAndBoundariesCorrect()
             throws Exception {
@@ -633,6 +634,54 @@ public class WeightRecordTest {
         assertThat(response.get(WEIGHT_MIN)).isEqualTo(Mass.fromGrams(10.0));
         assertThat(response.get(WEIGHT_AVG)).isNotNull();
         assertThat(response.get(WEIGHT_AVG)).isEqualTo(Mass.fromGrams(15.0));
+    }
+
+    @Test
+    public void testAggregateLocalFilter_offsetRecordAndFilter() throws Exception {
+        testOffset(ZoneOffset.MAX);
+        testOffset(ZoneOffset.ofHours(1));
+        testOffset(ZoneOffset.UTC);
+        testOffset(ZoneOffset.ofHours(-1));
+        testOffset(ZoneOffset.MIN);
+    }
+
+    private void testOffset(ZoneOffset offset) throws InterruptedException {
+        Instant endTimeInstant = Instant.now();
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTimeInstant, offset);
+
+        AggregateRecordsResponse<Mass> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Mass>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(endTimeLocal.minusMinutes(1))
+                                                .setEndTime(endTimeLocal.plusMinutes(1))
+                                                .build())
+                                .addAggregationType(WEIGHT_MAX)
+                                .addAggregationType(WEIGHT_MIN)
+                                .addAggregationType(WEIGHT_AVG)
+                                .build(),
+                        List.of(
+                                new WeightRecord.Builder(
+                                                TestUtils.generateMetadata(),
+                                                endTimeInstant,
+                                                Mass.fromGrams(10.0))
+                                        .setZoneOffset(offset)
+                                        .build(),
+                                new WeightRecord.Builder(
+                                                TestUtils.generateMetadata(),
+                                                endTimeInstant,
+                                                Mass.fromGrams(20.0))
+                                        .setZoneOffset(offset)
+                                        .build()));
+
+        assertThat(response.get(WEIGHT_MAX)).isNotNull();
+        assertThat(response.get(WEIGHT_MAX)).isEqualTo(Mass.fromGrams(20.0));
+        assertThat(response.get(WEIGHT_MIN)).isNotNull();
+        assertThat(response.get(WEIGHT_MIN)).isEqualTo(Mass.fromGrams(10.0));
+        assertThat(response.get(WEIGHT_AVG)).isNotNull();
+        assertThat(response.get(WEIGHT_AVG)).isEqualTo(Mass.fromGrams(15.0));
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder().addRecordType(WeightRecord.class).build());
     }
 
     @Test

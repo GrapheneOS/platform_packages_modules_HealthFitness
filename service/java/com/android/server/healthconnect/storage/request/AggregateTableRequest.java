@@ -140,6 +140,16 @@ public class AggregateTableRequest {
         return appendAggregateCommand(builder, /* isMetadata= */ true);
     }
 
+    /** Returns name of the main time column (start time for Interval, time for Instant records) */
+    public String getTimeColumnName() {
+        return mTimeColumnName;
+    }
+
+    /** Returns whether request is using local time instead of physical one. */
+    public boolean getUseLocalTime() {
+        return mUseLocalTime;
+    }
+
     /** Returns SQL statement to perform aggregation operation */
     @NonNull
     public String getAggregationCommand() {
