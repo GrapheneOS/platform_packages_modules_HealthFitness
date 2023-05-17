@@ -379,7 +379,7 @@
     <!--endregion-->
 
     <!--region Onboarding -->
-    <string name="onboarding_title" description="Label used to show the title of onboarding page when user opens Health Connect app for the fist time">Get Started with Health&#160;Connect</string>
+    <string name="onboarding_title" description="Label used to show the title of onboarding page when user opens Health Connect app for the fist time">Get started with Health&#160;Connect</string>
     <string name="onboarding_description" description="Content description of Health Connect app on the onboarding page">Health&#160;Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone</string>
     <string name="share_data" description="Label used to show how the user can share data with apps">Share data with your apps</string>
     <string name="share_data_description" description="Content description for how the user can share data with apps">Choose the data each app can read or write to Health&#160;Connect</string>
