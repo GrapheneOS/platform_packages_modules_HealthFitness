@@ -20,7 +20,6 @@ import static com.android.server.healthconnect.storage.datatypehelpers.BasalMeta
 import static com.android.server.healthconnect.storage.datatypehelpers.BasalMetabolicRateRecordHelper.BASAL_METABOLIC_RATE_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.HeightRecordHelper.HEIGHT_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.HeightRecordHelper.HEIGHT_RECORD_TABLE_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.InstantRecordHelper.TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.LeanBodyMassRecordHelper.LEAN_BODY_MASS_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.LeanBodyMassRecordHelper.MASS_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.WeightRecordHelper.WEIGHT_COLUMN_NAME;
@@ -60,15 +59,19 @@ public final class DeriveBasalCaloriesBurnedHelper {
     private final Cursor mCursor;
     private final String mColumnName;
     private double mRateOfEnergyBurntInWatts = 0;
+    private String mTimeColumnName;
 
     @SuppressWarnings("GoodTime") // constant age represented by primitive
     private static final int DEFAULT_AGE = 30;
 
-    public DeriveBasalCaloriesBurnedHelper(@NonNull Cursor cursor, @NonNull String columnName) {
+    public DeriveBasalCaloriesBurnedHelper(
+            @NonNull Cursor cursor, @NonNull String columnName, @NonNull String timeColumnName) {
         Objects.requireNonNull(cursor);
         Objects.requireNonNull(columnName);
+        Objects.requireNonNull(timeColumnName);
         mCursor = cursor;
         mColumnName = columnName;
+        mTimeColumnName = timeColumnName;
     }
 
     /**
@@ -90,7 +93,7 @@ public final class DeriveBasalCaloriesBurnedHelper {
 
         long lastItemTime = -1;
         while (mCursor.moveToNext()) {
-            long time = StorageUtils.getCursorLong(mCursor, TIME_COLUMN_NAME);
+            long time = StorageUtils.getCursorLong(mCursor, mTimeColumnName);
 
             if (lastItemTime == -1) {
                 if (time > intervalStartTime && mRateOfEnergyBurntInWatts == 0) {
@@ -147,11 +150,11 @@ public final class DeriveBasalCaloriesBurnedHelper {
                                 .setWhereClause(
                                         new WhereClauses()
                                                 .addWhereLessThanOrEqualClause(
-                                                        TIME_COLUMN_NAME, intervalStartTime))
+                                                        mTimeColumnName, intervalStartTime))
                                 .setLimit(0)
                                 .setOrderBy(
                                         new OrderByClause()
-                                                .addOrderByClause(TIME_COLUMN_NAME, false)))) {
+                                                .addOrderByClause(mTimeColumnName, false)))) {
             if (cursor.getCount() == 0) {
                 // No data found, fallback to LBM
                 return derivedBasalCaloriesBurnedFromLeanBodyMass(
@@ -178,7 +181,7 @@ public final class DeriveBasalCaloriesBurnedHelper {
             double bmrFromLbmInCaloriesPerDay = 0;
             while (lbmCursor.moveToNext()) {
                 double mass = StorageUtils.getCursorDouble(lbmCursor, MASS_COLUMN_NAME);
-                long time = StorageUtils.getCursorLong(lbmCursor, TIME_COLUMN_NAME);
+                long time = StorageUtils.getCursorLong(lbmCursor, mTimeColumnName);
                 if (lastReadTime == -1) {
                     // Derive calories from profile for start time to first entry time, if required
                     if (time > intervalStartTime) {
@@ -234,11 +237,11 @@ public final class DeriveBasalCaloriesBurnedHelper {
             long weightTime = Integer.MAX_VALUE;
             while (hasHeight || hasWeight) {
                 if (hasHeight) {
-                    heightTime = StorageUtils.getCursorLong(heightCursor, TIME_COLUMN_NAME);
+                    heightTime = StorageUtils.getCursorLong(heightCursor, mTimeColumnName);
                 }
 
                 if (hasWeight) {
-                    weightTime = StorageUtils.getCursorLong(weightCursor, TIME_COLUMN_NAME);
+                    weightTime = StorageUtils.getCursorLong(weightCursor, mTimeColumnName);
                 }
 
                 if (lastTimeUsed < intervalStartTime) {
@@ -308,29 +311,28 @@ public final class DeriveBasalCaloriesBurnedHelper {
         final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
         return transactionManager.read(
                 new ReadTableRequest(tableName)
-                        .setColumnNames(List.of(colName, TIME_COLUMN_NAME))
+                        .setColumnNames(List.of(colName, mTimeColumnName))
                         .setWhereClause(
                                 new WhereClauses()
                                         .addWhereBetweenTimeClause(
-                                                TIME_COLUMN_NAME,
+                                                mTimeColumnName,
                                                 intervalStartTime,
                                                 intervalEndTime))
-                        .setOrderBy(new OrderByClause().addOrderByClause(TIME_COLUMN_NAME, true))
+                        .setOrderBy(new OrderByClause().addOrderByClause(mTimeColumnName, true))
                         .setUnionReadRequests(
                                 List.of(
                                         new ReadTableRequest(tableName)
-                                                .setColumnNames(List.of(colName, TIME_COLUMN_NAME))
+                                                .setColumnNames(List.of(colName, mTimeColumnName))
                                                 .setWhereClause(
                                                         new WhereClauses()
                                                                 .addWhereLessThanOrEqualClause(
-                                                                        TIME_COLUMN_NAME,
+                                                                        mTimeColumnName,
                                                                         intervalStartTime))
                                                 .setLimit(0)
                                                 .setOrderBy(
                                                         new OrderByClause()
                                                                 .addOrderByClause(
-                                                                        TIME_COLUMN_NAME,
-                                                                        false)))));
+                                                                        mTimeColumnName, false)))));
     }
 
     /**

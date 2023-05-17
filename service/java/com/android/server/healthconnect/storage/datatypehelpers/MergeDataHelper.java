@@ -19,6 +19,8 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import static android.health.connect.Constants.DEFAULT_DOUBLE;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.LOCAL_DATE_TIME_END_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.LOCAL_DATE_TIME_START_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
@@ -99,11 +101,14 @@ public final class MergeDataHelper {
     private final String mColumnNameToMerge;
     private final Class<?> mValueColumnType;
 
+    private final boolean mUseLocalTime;
+
     public MergeDataHelper(
             @NonNull Cursor cursor,
             @NonNull List<Long> priorityList,
             @NonNull String columnNameToMerge,
-            @NonNull Class<?> valueColumnType) {
+            @NonNull Class<?> valueColumnType,
+            boolean useLocalTime) {
         Objects.requireNonNull(cursor);
         Objects.requireNonNull(priorityList);
         Objects.requireNonNull(columnNameToMerge);
@@ -115,6 +120,7 @@ public final class MergeDataHelper {
         Collections.reverse(mReversedPriorityList);
         mColumnNameToMerge = columnNameToMerge;
         mValueColumnType = valueColumnType;
+        mUseLocalTime = useLocalTime;
         mRecordDataComparator =
                 Comparator.comparing(RecordData::getStartTime)
                         .thenComparing((a, b) -> compare(b, a));
@@ -171,12 +177,20 @@ public final class MergeDataHelper {
     }
 
     private boolean cursorOutOfRange() {
-        long cursorStartTime = StorageUtils.getCursorLong(mCursor, START_TIME_COLUMN_NAME);
-        long cursorEndTime = StorageUtils.getCursorLong(mCursor, END_TIME_COLUMN_NAME);
+        long cursorStartTime = StorageUtils.getCursorLong(mCursor, getStartTimeColumnName());
+        long cursorEndTime = StorageUtils.getCursorLong(mCursor, getEndTimeColumnName());
         return (cursorStartTime < mStartTime.toEpochMilli()
                         && cursorEndTime <= mStartTime.toEpochMilli())
                 || (cursorStartTime > mEndTime.toEpochMilli()
                         && cursorEndTime > mEndTime.toEpochMilli());
+    }
+
+    private String getStartTimeColumnName() {
+        return mUseLocalTime ? LOCAL_DATE_TIME_START_TIME_COLUMN_NAME : START_TIME_COLUMN_NAME;
+    }
+
+    private String getEndTimeColumnName() {
+        return mUseLocalTime ? LOCAL_DATE_TIME_END_TIME_COLUMN_NAME : END_TIME_COLUMN_NAME;
     }
 
     /** Returns sum of the values from Buffer window */
@@ -297,9 +311,10 @@ public final class MergeDataHelper {
             double factor = 1;
             Instant startTime =
                     Instant.ofEpochMilli(
-                            StorageUtils.getCursorLong(cursor, START_TIME_COLUMN_NAME));
+                            StorageUtils.getCursorLong(cursor, getStartTimeColumnName()));
             Instant endTime =
-                    Instant.ofEpochMilli(StorageUtils.getCursorLong(cursor, END_TIME_COLUMN_NAME));
+                    Instant.ofEpochMilli(
+                            StorageUtils.getCursorLong(cursor, getEndTimeColumnName()));
             Instant currentStartTime = TimeUtils.latest(startTime, mStartTime);
             Instant currentEndTime = TimeUtils.earliest(endTime, mEndTime);
             double aggregateData = getDataToAggregate(cursor);
