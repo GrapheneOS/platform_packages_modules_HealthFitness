@@ -324,7 +324,7 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"¿Deseas borrar de forma permanente toda la información de <xliff:g id="DATA_TYPE">%1$s</xliff:g> que agregó <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"¿Deseas borrar esta entrada de forma permanente?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Las apps conectadas ya no podrán acceder a estos datos de Health Connect"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Esto borrará todas las menstruaciones registradas desde <xliff:g id="START_DATE">%1$s</xliff:g> hasta <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
+    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Esto borrará todas las menstruaciones registradas del <xliff:g id="START_DATE">%1$s</xliff:g> al <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Borrar"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Atrás"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Listo"</string>
@@ -495,6 +495,8 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> durmiendo"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"en vela"</string>
+    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
+    <skip />
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"durmiendo"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"fuera de la cama"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"de sueño MOR"</string>
@@ -730,7 +732,7 @@
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Antes de continuar, actualiza el sistema de tu teléfono."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si ya actualizaste el sistema del teléfono, intenta reiniciarlo para continuar con la integración"</string>
     <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Debes actualizar Health Connect"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Antes de continuar, actualiza la app Health Connect a su última versión."</string>
+    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Antes de continuar, actualiza la app de Health Connect a su última versión."</string>
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Necesitas más espacio"</string>
     <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect necesita <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> de espacio de almacenamiento en tu teléfono para continuar con la integración.\n\nLibera espacio en el teléfono y vuelve a intentar."</string>
     <string name="try_again_button" msgid="8745496819992160789">"Reintentar"</string>
@@ -743,7 +745,7 @@
     <string name="resume_button" msgid="2255148549862208047">"Reanudar"</string>
     <string name="migration_paused_notification_title" msgid="6020271090296330698">"Se pausó la integración con Health Connect"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Reanuda la integración"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Presiona para continuar integrando Health Connect con el sistema Android. Para preservar tus datos, completa el proceso en un plazo de <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Presiona para continuar integrando Health Connect con el sistema Android. Para preservar tus datos, completa el proceso en un plazo de <xliff:g id="TIME_NEEDED">%1$s</xliff:g>."</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Presiona para continuar integrando Health Connect con el sistema Android."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Continuar"</string>
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"Reanuda la integración con Health Connect"</string>
@@ -768,6 +770,6 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Se completó la integración con Health Connect"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Abrir"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Novedades"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Ya puedes acceder a Health Connect directamente desde la configuración. Desinstala la app Health Connect cuando lo desees."</string>
+    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Ya puedes acceder a Health Connect directamente desde la configuración. Desinstala la app de Health Connect cuando lo desees."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Entendido"</string>
 </resources>
