@@ -29,8 +29,6 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Log;
 
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +41,7 @@ import java.util.Set;
  */
 public class PackageInfoUtils {
     private static final String TAG = "HealthConnectPackageInfoUtils";
+    private static volatile PackageInfoUtils sPackageInfoUtils;
 
     /**
      * Store PackageManager for each user. Keys are users, values are PackageManagers which get from
@@ -50,10 +49,15 @@ public class PackageInfoUtils {
      */
     private final Map<UserHandle, PackageManager> mUsersPackageManager = new ArrayMap<>();
 
-    private final Context mContext;
+    private PackageInfoUtils() {}
 
-    PackageInfoUtils(Context context) {
-        mContext = context;
+    @NonNull
+    public static synchronized PackageInfoUtils getInstance() {
+        if (sPackageInfoUtils == null) {
+            sPackageInfoUtils = new PackageInfoUtils();
+        }
+
+        return sPackageInfoUtils;
     }
 
     @NonNull
@@ -72,25 +76,26 @@ public class PackageInfoUtils {
     }
 
     @NonNull
-    List<PackageInfo> getPackagesHoldingHealthPermissions(UserHandle user) {
+    public List<PackageInfo> getPackagesHoldingHealthPermissions(UserHandle user, Context context) {
         // TODO(b/260707328): replace with getPackagesHoldingPermissions
         List<PackageInfo> allInfos =
-                getPackageManagerAsUser(user)
+                getPackageManagerAsUser(user, context)
                         .getInstalledPackages(PackageManager.PackageInfoFlags.of(GET_PERMISSIONS));
         List<PackageInfo> healthAppsInfos = new ArrayList<>();
 
         for (PackageInfo info : allInfos) {
-            if (anyRequestedHealthPermissionGranted(mContext, info)) {
+            if (anyRequestedHealthPermissionGranted(context, info)) {
                 healthAppsInfos.add(info);
             }
         }
         return healthAppsInfos;
     }
 
-    boolean hasGrantedHealthPermissions(@NonNull String[] packageNames, @NonNull UserHandle user) {
+    boolean hasGrantedHealthPermissions(
+            @NonNull String[] packageNames, @NonNull UserHandle user, @NonNull Context context) {
         for (String packageName : packageNames) {
-            PackageInfo info = getPackageInfoWithPermissionsAsUser(packageName, user);
-            if (anyRequestedHealthPermissionGranted(mContext, info)) {
+            PackageInfo info = getPackageInfoWithPermissionsAsUser(packageName, user, context);
+            if (anyRequestedHealthPermissionGranted(context, info)) {
                 return true;
             }
         }
@@ -98,8 +103,9 @@ public class PackageInfoUtils {
     }
 
     @Nullable
-    String[] getPackagesForUid(@NonNull int packageUid, @NonNull UserHandle user) {
-        return getPackageManagerAsUser(user).getPackagesForUid(packageUid);
+    String[] getPackagesForUid(
+            @NonNull int packageUid, @NonNull UserHandle user, @NonNull Context context) {
+        return getPackageManagerAsUser(user, context).getPackagesForUid(packageUid);
     }
 
     /**
@@ -129,10 +135,10 @@ public class PackageInfoUtils {
     }
 
     @Nullable
-    PackageInfo getPackageInfoWithPermissionsAsUser(
-            @NonNull String packageName, @NonNull UserHandle user) {
+    public PackageInfo getPackageInfoWithPermissionsAsUser(
+            @NonNull String packageName, @NonNull UserHandle user, @NonNull Context context) {
         try {
-            return getPackageManagerAsUser(user)
+            return getPackageManagerAsUser(user, context)
                     .getPackageInfo(
                             packageName, PackageManager.PackageInfoFlags.of(GET_PERMISSIONS));
         } catch (PackageManager.NameNotFoundException e) {
@@ -143,7 +149,7 @@ public class PackageInfoUtils {
     }
 
     @Nullable
-    String getSharedUserNameFromUid(int uid) {
+    String getSharedUserNameFromUid(int uid, Context context) {
         String[] packages =
                 mUsersPackageManager
                         .get(UserHandle.getUserHandleForUid(uid))
@@ -154,7 +160,7 @@ public class PackageInfoUtils {
         }
         try {
             PackageInfo info =
-                    getPackageManagerAsUser(UserHandle.getUserHandleForUid(uid))
+                    getPackageManagerAsUser(UserHandle.getUserHandleForUid(uid), context)
                             .getPackageInfo(packages[0], PackageManager.PackageInfoFlags.of(0));
             return info.sharedUserId;
         } catch (PackageManager.NameNotFoundException e) {
@@ -183,11 +189,12 @@ public class PackageInfoUtils {
     }
 
     @Nullable
-    Integer getPackageUid(@NonNull String packageName, @NonNull UserHandle user) {
+    Integer getPackageUid(
+            @NonNull String packageName, @NonNull UserHandle user, @NonNull Context context) {
         Integer uid = null;
         try {
             uid =
-                    getPackageManagerAsUser(user)
+                    getPackageManagerAsUser(user, context)
                             .getPackageUid(
                                     packageName,
                                     PackageManager.PackageInfoFlags.of(/* flags= */ 0));
@@ -197,24 +204,12 @@ public class PackageInfoUtils {
         return uid;
     }
 
-    void updateHealthDataPriority(@NonNull String[] packageNames, @NonNull UserHandle user) {
-        for (String packageName : packageNames) {
-            PackageInfo info = getPackageInfoWithPermissionsAsUser(packageName, user);
-            if (anyRequestedHealthPermissionGranted(mContext, info)) {
-                HealthDataCategoryPriorityHelper.getInstance()
-                        .removeFromPriorityListIfNeeded(info, mContext);
-            } else {
-                HealthDataCategoryPriorityHelper.getInstance()
-                        .removeAppFromPriorityList(packageName);
-            }
-        }
-    }
-
     @NonNull
-    private PackageManager getPackageManagerAsUser(@NonNull UserHandle user) {
+    private PackageManager getPackageManagerAsUser(
+            @NonNull UserHandle user, @NonNull Context context) {
         PackageManager packageManager = mUsersPackageManager.get(user);
         if (packageManager == null) {
-            packageManager = mContext.createContextAsUser(user, /* flag= */ 0).getPackageManager();
+            packageManager = context.getPackageManager();
             mUsersPackageManager.put(user, packageManager);
         }
         return packageManager;

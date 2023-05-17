@@ -21,11 +21,14 @@ import static com.android.server.healthconnect.permission.FirstGrantTimeDatastor
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.UiAutomation;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequest;
@@ -62,6 +65,8 @@ public class FirstGrantTimeUnitTest {
     private static final int DEFAULT_VERSION = 1;
 
     @Mock private HealthPermissionIntentAppsTracker mTracker;
+    @Mock private PackageManager mPackageManager;
+    @Mock private Context mContext;
 
     private FirstGrantTimeManager mGrantTimeManager;
 
@@ -80,11 +85,13 @@ public class FirstGrantTimeUnitTest {
                 .thenReturn(new UserGrantTimeState(DEFAULT_VERSION));
         when(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .thenReturn(true);
+        when(mContext.createContextAsUser(any(), anyInt())).thenReturn(context);
+        when(mContext.getApplicationContext()).thenReturn(context);
+        when(mContext.getPackageManager()).thenReturn(mPackageManager);
 
         mUiAutomation.adoptShellPermissionIdentity(
                 "android.permission.OBSERVE_GRANT_REVOKE_PERMISSIONS");
-        mGrantTimeManager = new FirstGrantTimeManager(context, mTracker, mDatastore);
-        mUiAutomation.dropShellPermissionIdentity();
+        mGrantTimeManager = new FirstGrantTimeManager(mContext, mTracker, mDatastore);
     }
 
     @Test(expected = IllegalArgumentException.class)
