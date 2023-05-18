@@ -16,6 +16,8 @@
 
 package android.healthconnect.cts.lib;
 
+import static android.content.pm.PackageManager.GET_PERMISSIONS;
+
 import static androidx.test.InstrumentationRegistry.getContext;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
@@ -26,12 +28,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthPermissions;
 import android.health.connect.InsertRecordsResponse;
 import android.health.connect.ReadRecordsRequest;
 import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
+import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
@@ -49,8 +56,10 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Power;
 import android.os.Bundle;
 import android.os.OutcomeReceiver;
+import android.os.UserHandle;
 import android.util.Log;
 
+import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.cts.install.lib.TestApp;
@@ -72,6 +81,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class TestUtils {
     static final String TAG = "HealthConnectTest";
+    public static final String MANAGE_HEALTH_PERMISSION =
+            HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
     public static final String QUERY_TYPE = "android.healthconnect.cts.queryType";
     public static final String INTENT_EXTRA_CALLING_PKG = "android.healthconnect.cts.calling_pkg";
     public static final String APP_PKG_NAME_USED_IN_DATA_ORIGIN =
@@ -99,6 +110,7 @@ public class TestUtils {
             "android.healthconnect.cts.getChangeLogToken";
     public static final String INTENT_EXCEPTION = "android.healthconnect.cts.exception";
     private static final long POLLING_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(20);
+    private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
 
     public static class RecordTypeAndRecordIds implements Serializable {
         private String mRecordType;
@@ -621,6 +633,67 @@ public class TestUtils {
         return response.get();
     }
 
+    public static FetchDataOriginsPriorityOrderResponse fetchDataOriginsPriorityOrder(
+            int dataCategory) throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<FetchDataOriginsPriorityOrderResponse> response = new AtomicReference<>();
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+        service.fetchDataOriginsPriorityOrder(
+                dataCategory,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(FetchDataOriginsPriorityOrderResponse result) {
+                        response.set(result);
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException exception) {
+                        exceptionAtomicReference.set(exception);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
+        return response.get();
+    }
+
+    public static void updateDataOriginPriorityOrder(UpdateDataOriginPriorityOrderRequest request)
+            throws InterruptedException {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
+        service.updateDataOriginPriorityOrder(
+                request,
+                Executors.newSingleThreadExecutor(),
+                new OutcomeReceiver<>() {
+                    @Override
+                    public void onResult(Void result) {
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onError(HealthConnectException healthConnectException) {
+                        exceptionAtomicReference.set(healthConnectException);
+                        latch.countDown();
+                    }
+                });
+        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        if (exceptionAtomicReference.get() != null) {
+            throw exceptionAtomicReference.get();
+        }
+    }
+
     public static void deleteAllStagedRemoteData() {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
@@ -641,5 +714,93 @@ public class TestUtils {
                 .setDataOrigin(dataOrigin)
                 .setClientRecordId(String.valueOf(clientId))
                 .build();
+    }
+
+    public static void grantPermission(String pkgName, String permission) {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        runWithShellPermissionIdentity(
+                () ->
+                        service.getClass()
+                                .getMethod("grantHealthPermission", String.class, String.class)
+                                .invoke(service, pkgName, permission),
+                MANAGE_HEALTH_PERMISSION);
+    }
+
+    public static void revokePermission(String pkgName, String permission) {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+        assertThat(service).isNotNull();
+        runWithShellPermissionIdentity(
+                () ->
+                        service.getClass()
+                                .getMethod(
+                                        "revokeHealthPermission",
+                                        String.class,
+                                        String.class,
+                                        String.class)
+                                .invoke(service, pkgName, permission, null),
+                MANAGE_HEALTH_PERMISSION);
+    }
+
+    public static void revokeHealthPermissions(String packageName) {
+        runWithShellPermissionIdentity(() -> revokeHealthPermissionsPrivileged(packageName));
+    }
+
+    private static void revokeHealthPermissionsPrivileged(String packageName)
+            throws PackageManager.NameNotFoundException {
+        final Context targetContext = InstrumentationRegistry.getTargetContext();
+        final PackageManager packageManager = targetContext.getPackageManager();
+        final UserHandle user = targetContext.getUser();
+
+        final PackageInfo packageInfo =
+                packageManager.getPackageInfo(
+                        packageName,
+                        PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
+
+        final String[] permissions = packageInfo.requestedPermissions;
+        if (permissions == null) {
+            return;
+        }
+
+        for (String permission : permissions) {
+            if (permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
+                packageManager.revokeRuntimePermission(packageName, permission, user);
+            }
+        }
+    }
+
+    public static List<String> getGrantedHealthPermissions(String pkgName) {
+        final PackageInfo pi = getAppPackageInfo(pkgName);
+        final String[] requestedPermissions = pi.requestedPermissions;
+        final int[] requestedPermissionsFlags = pi.requestedPermissionsFlags;
+
+        if (requestedPermissions == null) {
+            return List.of();
+        }
+
+        final List<String> permissions = new ArrayList<>();
+
+        for (int i = 0; i < requestedPermissions.length; i++) {
+            if ((requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0) {
+                if (requestedPermissions[i].startsWith(HEALTH_PERMISSION_PREFIX)) {
+                    permissions.add(requestedPermissions[i]);
+                }
+            }
+        }
+
+        return permissions;
+    }
+
+    private static PackageInfo getAppPackageInfo(String pkgName) {
+        final Context targetContext = InstrumentationRegistry.getTargetContext();
+        return runWithShellPermissionIdentity(
+                () ->
+                        targetContext
+                                .getPackageManager()
+                                .getPackageInfo(
+                                        pkgName,
+                                        PackageManager.PackageInfoFlags.of(GET_PERMISSIONS)));
     }
 }
