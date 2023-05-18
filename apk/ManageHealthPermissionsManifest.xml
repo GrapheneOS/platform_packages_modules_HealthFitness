@@ -22,7 +22,6 @@
         android:name="android.permission.MANAGE_HEALTH_PERMISSIONS"
         android:protectionLevel="signature" />
 
-    <!-- TODO(b/249531235): Modify permission labels once finalized. -->
     <permission-group android:name="android.permission-group.HEALTH"
                       android:priority="100"
                       android:icon="@drawable/ic_health_connect"

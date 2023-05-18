@@ -220,9 +220,10 @@ public class HealthConnectManagerTest {
         AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
 
         // Insert a sample record of each data type.
-        List<Record> insertRecords = TestUtils.insertRecords(TestUtils.getTestRecords());
+        List<Record> insertRecords = TestUtils.insertRecords(getTestRecords());
 
         // read inserted records and verify that the data is same as inserted.
+        assertThat(insertRecords).containsExactlyElementsIn(readMultipleRecordTypes(insertRecords));
 
         // Generate a second set of records that will be used to perform the update operation.
         List<Record> updateRecords = getTestRecords();
@@ -259,12 +260,10 @@ public class HealthConnectManagerTest {
 
         // assert the inserted data has been modified per the updateRecords.
         assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(responseException.get()).isNull();
 
         // assert the inserted data has been modified by reading the data.
-        // TODO(b/260181009): Modify and complete Tests for Update API in HealthConnectManagerTest
-        //  using read API
-
-        assertThat(responseException.get()).isNull();
+        assertThat(updateRecords).containsExactlyElementsIn(readMultipleRecordTypes(updateRecords));
     }
 
     /**
@@ -291,10 +290,10 @@ public class HealthConnectManagerTest {
         AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
 
         // Insert a sample record of each data type.
-        List<Record> insertRecords = TestUtils.insertRecords(TestUtils.getTestRecords());
+        List<Record> insertRecords = TestUtils.insertRecords(getTestRecords());
 
         // read inserted records and verify that the data is same as inserted.
-
+        assertThat(insertRecords).containsExactlyElementsIn(readMultipleRecordTypes(insertRecords));
         // Generate a second set of records that will be used to perform the update operation.
         List<Record> updateRecords = getTestRecords();
 
@@ -335,8 +334,7 @@ public class HealthConnectManagerTest {
         assertThat(latch.await(/* timeout */ 3, TimeUnit.SECONDS)).isEqualTo(true);
 
         // assert the inserted data has not been modified by reading the data.
-        // TODO(b/260181009): Modify and complete Tests for Update API in HealthConnectManagerTest
-        //  using read API
+        assertThat(insertRecords).containsExactlyElementsIn(readMultipleRecordTypes(insertRecords));
 
         // verify that the testcase failed due to invalid argument exception.
         assertThat(responseException.get()).isNotNull();
@@ -367,10 +365,10 @@ public class HealthConnectManagerTest {
         AtomicReference<Exception> responseException = new AtomicReference<>();
 
         // Insert a sample record of each data type.
-        List<Record> insertRecords = TestUtils.insertRecords(TestUtils.getTestRecords());
+        List<Record> insertRecords = TestUtils.insertRecords(getTestRecords());
 
         // read inserted records and verify that the data is same as inserted.
-
+        assertThat(insertRecords).containsExactlyElementsIn(readMultipleRecordTypes(insertRecords));
         // Generate a second set of records that will be used to perform the update operation.
         List<Record> updateRecords = getTestRecords();
 
@@ -419,8 +417,7 @@ public class HealthConnectManagerTest {
         assertThat(latch.await(/* timeout */ 3, TimeUnit.SECONDS)).isEqualTo(true);
 
         // assert the inserted data has not been modified by reading the data.
-        // TODO(b/260181009): Modify and complete Tests for Update API in HealthConnectManagerTest
-        //  using read API
+        assertThat(insertRecords).containsExactlyElementsIn(readMultipleRecordTypes(insertRecords));
 
         // verify that the testcase failed due to invalid argument exception.
         assertThat(responseException.get()).isNotNull();
@@ -2059,6 +2056,38 @@ public class HealthConnectManagerTest {
             default:
                 throw new IllegalStateException("Invalid record type.");
         }
+    }
+
+    private static List<Record> readMultipleRecordTypes(List<Record> insertedRecords)
+            throws InterruptedException {
+        List<Record> readRecords = new ArrayList<>();
+        for (Record record : insertedRecords) {
+            switch (record.getRecordType()) {
+                case RECORD_TYPE_STEPS:
+                    readRecords.addAll(
+                            TestUtils.readRecords(
+                                    new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                                            .addId(record.getMetadata().getId())
+                                            .build()));
+                    break;
+                case RECORD_TYPE_HEART_RATE:
+                    readRecords.addAll(
+                            TestUtils.readRecords(
+                                    new ReadRecordsRequestUsingIds.Builder<>(HeartRateRecord.class)
+                                            .addId(record.getMetadata().getId())
+                                            .build()));
+                    break;
+                case RECORD_TYPE_BASAL_METABOLIC_RATE:
+                    readRecords.addAll(
+                            TestUtils.readRecords(
+                                    new ReadRecordsRequestUsingIds.Builder<>(
+                                                    BasalMetabolicRateRecord.class)
+                                            .addId(record.getMetadata().getId())
+                                            .build()));
+                    break;
+            }
+        }
+        return readRecords;
     }
 
     private StepsRecord getStepsRecord(String clientRecordId, String packageName) {

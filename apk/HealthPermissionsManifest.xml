@@ -17,8 +17,6 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.android.healthconnect.controller">
-    <!-- TODO(b/249531235): update labels and descriptions once UX writing is finalised -->
-    <!-- TODO(b/255341635): add documentation comments -->
 
     <!-- Read permissions for activities -->
     <!-- Allows an application to read calories burnt.
