@@ -253,17 +253,6 @@ public final class StorageUtils {
                 + tableName;
     }
 
-    public static long getPeriodDeltaInMillis(Period period) {
-        Duration years = ChronoUnit.YEARS.getDuration().multipliedBy(period.getYears());
-        Duration months = ChronoUnit.MONTHS.getDuration().multipliedBy(period.getMonths());
-        Duration days = ChronoUnit.DAYS.getDuration().multipliedBy(period.getDays());
-        return years.plus(months).plus(days).toMillis();
-    }
-
-    public static long getDurationDelta(Duration duration) {
-        return Math.max(duration.toMillis(), 1); // to millis
-    }
-
     /**
      * Reads ZoneOffset using given cursor. Returns null of column name is not present in the table.
      */

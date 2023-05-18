@@ -57,6 +57,7 @@ import org.junit.runner.RunWith;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -258,6 +259,37 @@ public class WeightRecordTest {
                         .setTimeRangeFilter(timeRangeFilter)
                         .build());
         TestUtils.assertRecordNotFound(id, WeightRecord.class);
+    }
+
+    static WeightRecord getBaseWeightRecord(Instant time, ZoneOffset zoneOffset) {
+        return new WeightRecord.Builder(new Metadata.Builder().build(), time, Mass.fromGrams(50))
+                .setZoneOffset(zoneOffset)
+                .build();
+    }
+
+    @Test
+    public void testDeleteWeightRecord_time_filters_local() throws InterruptedException {
+        LocalTimeRangeFilter timeRangeFilter =
+                new LocalTimeRangeFilter.Builder()
+                        .setStartTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 29))
+                        .setEndTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 31))
+                        .build();
+        LocalDateTime recordTime = LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 30);
+        String id1 =
+                TestUtils.insertRecordAndGetId(
+                        getBaseWeightRecord(recordTime.toInstant(ZoneOffset.MIN), ZoneOffset.MIN));
+        String id2 =
+                TestUtils.insertRecordAndGetId(
+                        getBaseWeightRecord(recordTime.toInstant(ZoneOffset.MAX), ZoneOffset.MAX));
+        TestUtils.assertRecordFound(id1, WeightRecord.class);
+        TestUtils.assertRecordFound(id2, WeightRecord.class);
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addRecordType(WeightRecord.class)
+                        .setTimeRangeFilter(timeRangeFilter)
+                        .build());
+        TestUtils.assertRecordNotFound(id1, WeightRecord.class);
+        TestUtils.assertRecordNotFound(id2, WeightRecord.class);
     }
 
     @Test
@@ -525,6 +557,7 @@ public class WeightRecordTest {
         }
     }
 
+
     @Test
     public void testAggregateDuration_withLocalDateTime_responsesAnswerAndBoundariesCorrect()
             throws Exception {
@@ -604,6 +637,54 @@ public class WeightRecordTest {
     }
 
     @Test
+    public void testAggregateLocalFilter_offsetRecordAndFilter() throws Exception {
+        testOffset(ZoneOffset.MAX);
+        testOffset(ZoneOffset.ofHours(1));
+        testOffset(ZoneOffset.UTC);
+        testOffset(ZoneOffset.ofHours(-1));
+        testOffset(ZoneOffset.MIN);
+    }
+
+    private void testOffset(ZoneOffset offset) throws InterruptedException {
+        Instant endTimeInstant = Instant.now();
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTimeInstant, offset);
+
+        AggregateRecordsResponse<Mass> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Mass>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(endTimeLocal.minusMinutes(1))
+                                                .setEndTime(endTimeLocal.plusMinutes(1))
+                                                .build())
+                                .addAggregationType(WEIGHT_MAX)
+                                .addAggregationType(WEIGHT_MIN)
+                                .addAggregationType(WEIGHT_AVG)
+                                .build(),
+                        List.of(
+                                new WeightRecord.Builder(
+                                                TestUtils.generateMetadata(),
+                                                endTimeInstant,
+                                                Mass.fromGrams(10.0))
+                                        .setZoneOffset(offset)
+                                        .build(),
+                                new WeightRecord.Builder(
+                                                TestUtils.generateMetadata(),
+                                                endTimeInstant,
+                                                Mass.fromGrams(20.0))
+                                        .setZoneOffset(offset)
+                                        .build()));
+
+        assertThat(response.get(WEIGHT_MAX)).isNotNull();
+        assertThat(response.get(WEIGHT_MAX)).isEqualTo(Mass.fromGrams(20.0));
+        assertThat(response.get(WEIGHT_MIN)).isNotNull();
+        assertThat(response.get(WEIGHT_MIN)).isEqualTo(Mass.fromGrams(10.0));
+        assertThat(response.get(WEIGHT_AVG)).isNotNull();
+        assertThat(response.get(WEIGHT_AVG)).isEqualTo(Mass.fromGrams(15.0));
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder().addRecordType(WeightRecord.class).build());
+    }
+
+    @Test
     public void testAggregateLocalFilter_yearPeriod() throws Exception {
         LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
         Instant endTimeInstant = Instant.now();
@@ -627,8 +708,9 @@ public class WeightRecordTest {
                                 .build(),
                         Period.ofYears(1));
 
-        assertThat(responses).hasSize(1);
+        assertThat(responses).hasSize(2);
         assertThat(responses.get(0).get(WEIGHT_MAX)).isEqualTo(Mass.fromGrams(10.0));
+        assertThat(responses.get(1).get(WEIGHT_MAX)).isNull();
     }
 
     private void readWeightRecordUsingClientId(List<Record> insertedRecord)

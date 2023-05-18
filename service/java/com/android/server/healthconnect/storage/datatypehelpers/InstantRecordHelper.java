@@ -55,7 +55,7 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
     private static final String LOCAL_DATE_TIME_EXPRESSION =
             TIME_COLUMN_NAME + " + 1000 * " + ZONE_OFFSET_COLUMN_NAME;
     private static final String LOCAL_DATE_COLUMN_NAME = "local_date";
-    private static final String LOCAL_DATE_TIME_COLUMN_NAME = "local_date_time";
+    public static final String LOCAL_DATE_TIME_COLUMN_NAME = "local_date_time";
 
     InstantRecordHelper(@RecordTypeIdentifier.RecordType int recordIdentifier) {
         super(recordIdentifier);
@@ -67,7 +67,7 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
     }
 
     @Override
-    public String getLocalStartTimeColumnName() {
+    public final String getLocalStartTimeColumnName() {
         return LOCAL_DATE_TIME_COLUMN_NAME;
     }
 
