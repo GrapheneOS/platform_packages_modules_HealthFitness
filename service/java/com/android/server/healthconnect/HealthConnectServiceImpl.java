@@ -1435,8 +1435,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
-    // TODO(b/265780725): Update javadocs and ensure that the caller handles SHOW_MIGRATION_INFO
-    // intent.
+    /**
+     * Changes migration state to {@link MIGRATION_STATE_IN_PROGRESS} if the current state allows
+     * migration to be started.
+     *
+     * @param packageName calling package name
+     * @param callback Callback to receive a result or an error encountered while performing this
+     *     operation.
+     */
     @Override
     public void startMigration(@NonNull String packageName, IMigrationCallback callback) {
         int uid = Binder.getCallingUid();
@@ -1473,8 +1479,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
-    // TODO(b/265780725): Update javadocs and ensure that the caller handles SHOW_MIGRATION_INFO
-    // intent.
+    /**
+     * Changes migration state to {@link MIGRATION_STATE_COMPLETE} if migration is not already
+     * complete.
+     *
+     * @param packageName calling package name
+     * @param callback Callback to receive a result or an error encountered while performing this
+     *     operation.
+     */
     @Override
     public void finishMigration(@NonNull String packageName, IMigrationCallback callback) {
         int uid = Binder.getCallingUid();
@@ -1502,8 +1514,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
-    // TODO(b/265780725): Update javadocs and ensure that the caller handles SHOW_MIGRATION_INFO
-    // intent.
+    /**
+     * Write data to module storage. The migration state must be {@link MIGRATION_STATE_IN_PROGRESS}
+     * to be able to write data.
+     *
+     * @param packageName calling package name
+     * @param parcel Migration entity containing the data being migrated.
+     * @param callback Callback to receive a result or an error encountered while performing this
+     *     operation.
+     */
     @Override
     public void writeMigrationData(
             @NonNull String packageName,
@@ -1541,6 +1560,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    /**
+     * @param packageName calling package name
+     * @param requiredSdkExtension The minimum sdk extension version for module to be ready for data
+     *     migration from the apk.
+     * @param callback Callback to receive a result or an error encountered while performing this
+     *     operation.
+     */
     public void insertMinDataMigrationSdkExtensionVersion(
             @NonNull String packageName, int requiredSdkExtension, IMigrationCallback callback) {
         int uid = Binder.getCallingUid();
