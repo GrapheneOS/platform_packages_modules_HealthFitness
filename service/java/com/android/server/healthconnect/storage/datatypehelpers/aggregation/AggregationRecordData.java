@@ -17,6 +17,8 @@
 package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.LOCAL_DATE_TIME_END_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.LOCAL_DATE_TIME_START_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_ZONE_OFFSET_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
@@ -67,22 +69,30 @@ public abstract class AggregationRecordData {
         return StorageUtils.getCursorUUID(cursor, UUID_COLUMN_NAME);
     }
 
-    void populateAggregationData(Cursor cursor) {
-        mRecordStartTime = StorageUtils.getCursorLong(cursor, START_TIME_COLUMN_NAME);
-        mRecordEndTime = StorageUtils.getCursorLong(cursor, END_TIME_COLUMN_NAME);
+    void populateAggregationData(Cursor cursor, boolean useLocalTime) {
+        mRecordStartTime =
+                StorageUtils.getCursorLong(
+                        cursor,
+                        useLocalTime
+                                ? LOCAL_DATE_TIME_START_TIME_COLUMN_NAME
+                                : START_TIME_COLUMN_NAME);
+        mRecordEndTime =
+                StorageUtils.getCursorLong(
+                        cursor,
+                        useLocalTime ? LOCAL_DATE_TIME_END_TIME_COLUMN_NAME : END_TIME_COLUMN_NAME);
         mAppId = StorageUtils.getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
         mLastModifiedTime = StorageUtils.getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME);
         mStartTimeZoneOffset = StorageUtils.getZoneOffset(cursor, START_ZONE_OFFSET_COLUMN_NAME);
-        populateSpecificAggregationData(cursor);
+        populateSpecificAggregationData(cursor, useLocalTime);
     }
 
     AggregationTimestamp getStartTimestamp() {
-        return new AggregationTimestamp(AggregationTimestamp.INTERVAL_START, mRecordStartTime)
+        return new AggregationTimestamp(AggregationTimestamp.INTERVAL_START, getStartTime())
                 .setParentData(this);
     }
 
     AggregationTimestamp getEndTimestamp() {
-        return new AggregationTimestamp(AggregationTimestamp.INTERVAL_END, mRecordEndTime)
+        return new AggregationTimestamp(AggregationTimestamp.INTERVAL_END, getEndTime())
                 .setParentData(this);
     }
 
@@ -102,7 +112,7 @@ public abstract class AggregationRecordData {
      */
     abstract double getResultOnInterval(long startTime, long endTime);
 
-    abstract void populateSpecificAggregationData(Cursor cursor);
+    abstract void populateSpecificAggregationData(Cursor cursor, boolean useLocalTime);
 
     @Override
     public String toString() {

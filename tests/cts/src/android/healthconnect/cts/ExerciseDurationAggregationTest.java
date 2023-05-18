@@ -25,6 +25,7 @@ import static com.google.common.truth.Truth.assertThat;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
+import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSegmentType;
@@ -36,6 +37,8 @@ import org.junit.Test;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -206,5 +209,71 @@ public class ExerciseDurationAggregationTest {
         for (AggregateRecordsGroupedByDurationResponse<Long> response : responses) {
             assertThat(response.get(EXERCISE_DURATION_TOTAL)).isEqualTo(3600000);
         }
+    }
+
+    @Test
+    public void testAggregation_oneSessionLocalTimeFilter_findsSessionWithMinOffset()
+            throws InterruptedException {
+        Instant endTime = SESSION_START_TIME.plus(1, ChronoUnit.HOURS);
+        ExerciseSessionRecord session =
+                new ExerciseSessionRecord.Builder(
+                                TestUtils.generateMetadata(),
+                                SESSION_START_TIME,
+                                endTime,
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
+                        .setStartZoneOffset(ZoneOffset.MIN)
+                        .setEndZoneOffset(ZoneOffset.MIN)
+                        .build();
+
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, ZoneId.systemDefault());
+        AggregateRecordsResponse<Long> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(endTimeLocal.minusHours(25))
+                                                .setEndTime(endTimeLocal.minusHours(15))
+                                                .build())
+                                .addAggregationType(EXERCISE_DURATION_TOTAL)
+                                .build(),
+                        List.of(session));
+
+        assertThat(response.get(EXERCISE_DURATION_TOTAL)).isEqualTo(3600000);
+    }
+
+    @Test
+    public void testAggregation_oneSessionLocalTimeFilterExcludeSegment_substractsExcludeInterval()
+            throws InterruptedException {
+        Instant endTime = SESSION_START_TIME.plus(1, ChronoUnit.HOURS);
+        ExerciseSessionRecord session =
+                new ExerciseSessionRecord.Builder(
+                                TestUtils.generateMetadata(),
+                                SESSION_START_TIME,
+                                endTime,
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
+                        .setStartZoneOffset(ZoneOffset.MIN)
+                        .setEndZoneOffset(ZoneOffset.MIN)
+                        .setSegments(
+                                List.of(
+                                        new ExerciseSegment.Builder(
+                                                        SESSION_START_TIME.plusSeconds(10),
+                                                        endTime.minusSeconds(10),
+                                                        ExerciseSegmentType
+                                                                .EXERCISE_SEGMENT_TYPE_PAUSE)
+                                                .build()))
+                        .build();
+
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, ZoneId.systemDefault());
+        AggregateRecordsResponse<Long> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(endTimeLocal.minusHours(25))
+                                                .setEndTime(endTimeLocal.minusHours(15))
+                                                .build())
+                                .addAggregationType(EXERCISE_DURATION_TOTAL)
+                                .build(),
+                        List.of(session));
+
+        assertThat(response.get(EXERCISE_DURATION_TOTAL)).isEqualTo(20000);
     }
 }

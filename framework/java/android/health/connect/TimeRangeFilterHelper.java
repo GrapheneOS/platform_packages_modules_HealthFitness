@@ -18,9 +18,9 @@ package android.health.connect;
 
 import android.annotation.NonNull;
 
-import java.time.LocalDate;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 
 /**
  * A helper class for {@link TimeRangeFilter} to handle possible time filter types.
@@ -28,45 +28,9 @@ import java.time.temporal.ChronoUnit;
  * @hide
  */
 public final class TimeRangeFilterHelper {
-    /**
-     * @return start time period.
-     */
-    public static long getPeriodStart(TimeRangeFilter timeRangeFilter) {
-        LocalDate localDate;
-        if (timeRangeFilter instanceof TimeInstantRangeFilter) {
-            localDate =
-                    LocalDate.ofInstant(
-                            ((TimeInstantRangeFilter) timeRangeFilter).getStartTime(),
-                            ZoneOffset.MIN);
-        } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
-            localDate = LocalDate.from(((LocalTimeRangeFilter) timeRangeFilter).getStartTime());
-        } else {
-            throw new IllegalArgumentException(
-                    "Invalid time filter object. Object should be either "
-                            + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
-        }
-        return ChronoUnit.DAYS.between(LocalDate.ofEpochDay(0), localDate);
-    }
 
-    /**
-     * @return end time period.
-     */
-    public static long getPeriodEnd(TimeRangeFilter timeRangeFilter) {
-        LocalDate localDate;
-        if (timeRangeFilter instanceof TimeInstantRangeFilter) {
-            localDate =
-                    LocalDate.ofInstant(
-                            ((TimeInstantRangeFilter) timeRangeFilter).getEndTime(),
-                            ZoneOffset.MAX);
-        } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
-            localDate = LocalDate.from(((LocalTimeRangeFilter) timeRangeFilter).getEndTime());
-        } else {
-            throw new IllegalArgumentException(
-                    "Invalid time filter object. Object should be either "
-                            + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
-        }
-        return ChronoUnit.DAYS.between(LocalDate.ofEpochDay(0), localDate);
-    }
+    private static ZoneOffset LOCAL_TIME_ZERO_OFFSET = ZoneOffset.UTC;
+
     /**
      * @return duration start time epoch milli.
      */
@@ -101,5 +65,50 @@ public final class TimeRangeFilterHelper {
                     "Invalid time filter object. Object should be either "
                             + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
         }
+    }
+
+    public static boolean isLocalTimeFilter(@NonNull TimeRangeFilter timeRangeFilter) {
+        return (timeRangeFilter instanceof LocalTimeRangeFilter);
+    }
+
+    /**
+     * @return start time epoch milliseconds for Instant time filter and epoch milliseconds using
+     *     system zoneOffset for LocalTime filter
+     */
+    public static long getFilterStartTimeMillis(@NonNull TimeRangeFilter timeRangeFilter) {
+        if (isLocalTimeFilter(timeRangeFilter)) {
+            return getMillisOfLocalTime(((LocalTimeRangeFilter) timeRangeFilter).getStartTime());
+        } else if (timeRangeFilter instanceof TimeInstantRangeFilter) {
+            return ((TimeInstantRangeFilter) timeRangeFilter).getStartTime().toEpochMilli();
+        } else {
+            throw new IllegalArgumentException(
+                    "Invalid time filter object. Object should be either "
+                            + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
+        }
+    }
+
+    /**
+     * @return end time epoch milliseconds for Instant time filter and epoch milliseconds using
+     *     system zoneOffset for LocalTime filter
+     */
+    public static long getFilterEndTimeMillis(@NonNull TimeRangeFilter timeRangeFilter) {
+        if (isLocalTimeFilter(timeRangeFilter)) {
+            return getMillisOfLocalTime(((LocalTimeRangeFilter) timeRangeFilter).getEndTime());
+        } else if (timeRangeFilter instanceof TimeInstantRangeFilter) {
+            return ((TimeInstantRangeFilter) timeRangeFilter).getEndTime().toEpochMilli();
+        } else {
+            throw new IllegalArgumentException(
+                    "Invalid time filter object. Object should be either "
+                            + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
+        }
+    }
+
+    public static LocalDateTime getLocalTimeFromMillis(Long localDateTimeMillis) {
+        return LocalDateTime.ofInstant(
+                Instant.ofEpochMilli(localDateTimeMillis), LOCAL_TIME_ZERO_OFFSET);
+    }
+
+    private static long getMillisOfLocalTime(LocalDateTime time) {
+        return time.toInstant(LOCAL_TIME_ZERO_OFFSET).toEpochMilli();
     }
 }

@@ -25,11 +25,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
-import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
@@ -56,7 +56,7 @@ import org.junit.runner.RunWith;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.Period;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -613,12 +613,12 @@ public class HeartRateRecordTest {
     }
 
     @Test
-    public void testBpmAggregation_groupBy_Period() throws Exception {
+    public void testBpmAggregation_groupByDuration() throws Exception {
         Instant start = Instant.now().minus(3, ChronoUnit.DAYS);
         Instant end = start.plus(3, ChronoUnit.DAYS);
         insertHeartRateRecordsInPastDays(4);
-        List<AggregateRecordsGroupedByPeriodResponse<Long>> responses =
-                TestUtils.getAggregateResponseGroupByPeriod(
+        List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
+                TestUtils.getAggregateResponseGroupByDuration(
                         new AggregateRecordsRequest.Builder<Long>(
                                         new TimeInstantRangeFilter.Builder()
                                                 .setStartTime(start)
@@ -627,9 +627,9 @@ public class HeartRateRecordTest {
                                 .addAggregationType(BPM_MAX)
                                 .addAggregationType(BPM_MIN)
                                 .build(),
-                        Period.ofDays(1));
+                        Duration.ofDays(1));
         assertThat(responses.size()).isAtLeast(3);
-        for (AggregateRecordsGroupedByPeriodResponse<Long> response : responses) {
+        for (AggregateRecordsGroupedByDurationResponse<Long> response : responses) {
             if (start.toEpochMilli()
                     < response.getStartTime()
                             .atZone(ZoneOffset.systemDefault())
@@ -831,6 +831,36 @@ public class HeartRateRecordTest {
     }
 
     @Test
+    public void testAggregateLocalFilter_minOffsetRecord() throws Exception {
+        LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
+        Instant endTimeInstant = Instant.now();
+
+        AggregateRecordsResponse<Long> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(endTimeLocal.minusHours(25))
+                                                .setEndTime(endTimeLocal.minusHours(15))
+                                                .build())
+                                .addAggregationType(BPM_AVG)
+                                .addAggregationType(BPM_MAX)
+                                .addAggregationType(BPM_MIN)
+                                .build(),
+                        List.of(
+                                getBaseHeartRateRecord(
+                                        70, endTimeInstant.minusSeconds(500), ZoneOffset.MIN),
+                                getBaseHeartRateRecord(
+                                        130, endTimeInstant.minusSeconds(1500), ZoneOffset.MIN)));
+
+        assertThat(response.get(BPM_MAX)).isNotNull();
+        assertThat(response.get(BPM_MAX)).isEqualTo(130);
+        assertThat(response.get(BPM_MIN)).isNotNull();
+        assertThat(response.get(BPM_MIN)).isEqualTo(70);
+        assertThat(response.get(BPM_AVG)).isNotNull();
+        assertThat(response.get(BPM_AVG)).isEqualTo(100);
+    }
+
+    @Test
     public void testUpdateRecords_recordWithInvalidPackageName_noChangeInDataBase()
             throws InterruptedException {
         List<Record> insertedRecords =
@@ -955,18 +985,32 @@ public class HeartRateRecordTest {
     }
 
     private static HeartRateRecord getBaseHeartRateRecord(long beatsPerMinute) {
+        return getBaseHeartRateRecord(beatsPerMinute, Instant.now(), null);
+    }
+
+    private static HeartRateRecord getBaseHeartRateRecord(
+            long beatsPerMinute, Instant time, ZoneOffset offset) {
         HeartRateRecord.HeartRateSample heartRateRecord =
-                new HeartRateRecord.HeartRateSample(beatsPerMinute, Instant.now().plusMillis(100));
+                new HeartRateRecord.HeartRateSample(beatsPerMinute, time.plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
         heartRateRecords.add(heartRateRecord);
         heartRateRecords.add(heartRateRecord);
 
-        return new HeartRateRecord.Builder(
+        HeartRateRecord.Builder builder =
+                new HeartRateRecord.Builder(
                         new Metadata.Builder().setClientRecordId("HRR" + Math.random()).build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(500),
-                        heartRateRecords)
-                .build();
+                        time,
+                        time.plusMillis(500),
+                        heartRateRecords);
+
+        if (offset != null) {
+            builder.setStartZoneOffset(offset).setEndZoneOffset(offset);
+        } else {
+            ZoneOffset currentOffset =
+                    ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            builder.setStartZoneOffset(currentOffset).setEndZoneOffset(currentOffset);
+        }
+        return builder.build();
     }
 
     private static HeartRateRecord getCompleteHeartRateRecord() {
