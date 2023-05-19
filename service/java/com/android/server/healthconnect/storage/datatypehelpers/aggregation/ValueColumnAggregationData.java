@@ -21,6 +21,7 @@ import static com.android.server.healthconnect.storage.request.AggregateParams.P
 
 import android.database.Cursor;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.request.AggregateParams.PriorityAggregationExtraParams.ValueColumnType;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
@@ -30,7 +31,6 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
  * @hide
  */
 public class ValueColumnAggregationData extends AggregationRecordData {
-
     private final String mValueColumnName;
     @ValueColumnType private final int mValueColumnType;
     private double mValue;
@@ -67,5 +67,11 @@ public class ValueColumnAggregationData extends AggregationRecordData {
         } else {
             throw new IllegalArgumentException("Unknown aggregation column type.");
         }
+    }
+
+    @VisibleForTesting
+    AggregationRecordData setValue(double value) {
+        mValue = value;
+        return this;
     }
 }
