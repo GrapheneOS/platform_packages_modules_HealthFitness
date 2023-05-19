@@ -552,7 +552,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 if (startInstant == null) {
                                     throwExceptionIncorrectPermissionState();
                                 }
-                                if (startInstant.toEpochMilli() > startDateAccess) {
+
+                                // Always set the startDateAccess for local time filter, as for
+                                // local date time we use it in conjunction with the time filter
+                                // start-time
+                                if (request.usesLocalTimeFilter()
+                                        || startInstant.toEpochMilli() > startDateAccess) {
                                     startDateAccess = startInstant.toEpochMilli();
                                 }
                             }
