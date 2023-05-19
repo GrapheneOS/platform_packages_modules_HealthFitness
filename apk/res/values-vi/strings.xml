@@ -251,7 +251,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"Ngày đã chọn"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"Ngày hôm trước"</string>
     <string name="default_error" msgid="7966868260616403475">"Đã xảy ra lỗi. Vui lòng thử lại."</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"Các ứng dụng được cấp quyền này có thể đọc cũng như ghi dữ liệu sức khoẻ và thể hình của bạn."</string>
+    <string name="health_permission_header_description" msgid="7497601695462373927">"Các ứng dụng được cấp quyền này có thể đọc cũng như ghi dữ liệu sức khoẻ và hoạt động thể dục của bạn."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Kiểm soát những ứng dụng có thể truy cập vào dữ liệu được lưu trữ trong Health Connect. Nhấn vào một ứng dụng để xem dữ liệu mà ứng dụng đó có thể đọc hoặc ghi."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Được phép truy cập"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Không được phép truy cập"</string>
@@ -495,6 +495,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> ngủ"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"thức"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"nằm mà không ngủ"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"đang ngủ"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"ra khỏi giường"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"Ngủ mắt di chuyển nhanh (REM)"</string>
