@@ -57,8 +57,6 @@ import org.junit.runner.RunWith;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -333,12 +331,12 @@ public class HeartRateRecordTest {
 
     @Test
     public void testDeleteStepsRecord_time_filters_local() throws InterruptedException {
+        LocalDateTime recordTime = LocalDateTime.now(ZoneOffset.MIN);
         LocalTimeRangeFilter timeRangeFilter =
                 new LocalTimeRangeFilter.Builder()
-                        .setStartTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 29))
-                        .setEndTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 32))
+                        .setStartTime(recordTime.minus(1, ChronoUnit.SECONDS))
+                        .setEndTime(recordTime.plus(2, ChronoUnit.SECONDS))
                         .build();
-        LocalDateTime recordTime = LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 30);
         String id1 =
                 TestUtils.insertRecordAndGetId(
                         getBaseHeartRateRecord(
