@@ -16,9 +16,15 @@
 
 package android.healthconnect.cts;
 
+import static android.health.connect.datatypes.SpeedRecord.SPEED_AVG;
+import static android.health.connect.datatypes.SpeedRecord.SPEED_MAX;
+import static android.health.connect.datatypes.SpeedRecord.SPEED_MIN;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.ReadRecordsRequestUsingFilters;
@@ -29,6 +35,7 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
@@ -47,10 +54,12 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -332,6 +341,46 @@ public class SpeedRecordTest {
         assertThat(response.getDeletedLogs()).isEmpty();
     }
 
+    @Test
+    public void testSpeedAggregation_getAggregationFromThreerecords_aggResponsesAreCorrect()
+            throws Exception {
+        List<Record> records =
+                Arrays.asList(
+                        buildRecordForSpeed(120, 100),
+                        buildRecordForSpeed(80, 101),
+                        buildRecordForSpeed(100, 102));
+        AggregateRecordsResponse<Velocity> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Velocity>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(SPEED_MAX)
+                                .addAggregationType(SPEED_AVG)
+                                .addAggregationType(SPEED_MIN)
+                                .build(),
+                        records);
+        checkAggregationResult(SPEED_MIN, Velocity.fromMetersPerSecond(80), response);
+        checkAggregationResult(SPEED_AVG, Velocity.fromMetersPerSecond(100), response);
+        checkAggregationResult(SPEED_MAX, Velocity.fromMetersPerSecond(120), response);
+    }
+
+    private void checkAggregationResult(
+            AggregationType<Velocity> type,
+            Velocity expectedResult,
+            AggregateRecordsResponse<Velocity> response) {
+        assertThat(response.get(type)).isNotNull();
+        assertThat(response.get(type)).isEqualTo(expectedResult);
+        assertThat(response.getZoneOffset(type))
+                .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        Set<DataOrigin> dataOrigins = response.getDataOrigins(type);
+        assertThat(dataOrigins).hasSize(1);
+        for (DataOrigin itr : dataOrigins) {
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
+        }
+    }
+
     private void testReadSpeedRecordIds() throws InterruptedException {
         List<Record> recordList = Arrays.asList(getCompleteSpeedRecord(), getCompleteSpeedRecord());
         readSpeedRecordUsingIds(recordList);
@@ -539,6 +588,10 @@ public class SpeedRecordTest {
     }
 
     private static SpeedRecord getCompleteSpeedRecord() {
+        return buildRecordForSpeed(10, 100);
+    }
+
+    private static SpeedRecord buildRecordForSpeed(double speed, long millisFromStart) {
 
         Device device =
                 new Device.Builder()
@@ -555,7 +608,8 @@ public class SpeedRecordTest {
 
         SpeedRecord.SpeedRecordSample speedRecord =
                 new SpeedRecord.SpeedRecordSample(
-                        Velocity.fromMetersPerSecond(10.0), Instant.now().plusMillis(100));
+                        Velocity.fromMetersPerSecond(speed),
+                        Instant.now().plusMillis(millisFromStart));
 
         ArrayList<SpeedRecord.SpeedRecordSample> speedRecords = new ArrayList<>();
         speedRecords.add(speedRecord);

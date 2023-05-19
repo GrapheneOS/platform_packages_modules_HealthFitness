@@ -16,6 +16,7 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.StepsCadenceRecordInternal;
 
@@ -29,6 +30,43 @@ import java.util.Set;
 /** Captures the user's steps cadence. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE)
 public final class StepsCadenceRecord extends IntervalRecord {
+
+    /**
+     * Metric identifier to retrieve average Steps cadence rate using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Double> STEPS_CADENCE_RATE_AVG =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.STEPS_CADENCE_RECORD_RATE_AVG,
+                    AggregationType.AVG,
+                    RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
+                    Double.class);
+
+    /**
+     * Metric identifier to retrieve minimum Steps cadence rate using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Double> STEPS_CADENCE_RATE_MIN =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.STEPS_CADENCE_RECORD_RATE_MIN,
+                    AggregationType.MIN,
+                    RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
+                    Double.class);
+
+    /**
+     * Metric identifier to retrieve maximum Steps cadence rate using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Double> STEPS_CADENCE_RATE_MAX =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.STEPS_CADENCE_RECORD_RATE_MAX,
+                    AggregationType.MAX,
+                    RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
+                    Double.class);
+
     private final List<StepsCadenceRecordSample> mStepsCadenceRecordSamples;
 
     /**
