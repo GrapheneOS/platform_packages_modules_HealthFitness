@@ -16,6 +16,7 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Velocity;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
@@ -30,6 +31,43 @@ import java.util.Set;
 /** Captures the user's speed, e.g. during running or cycling. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
 public final class SpeedRecord extends IntervalRecord {
+
+    /**
+     * Metric identifier to retrieve average speed using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Velocity> SPEED_AVG =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.SPEED_RECORD_SPEED_AVG,
+                    AggregationType.AVG,
+                    RecordTypeIdentifier.RECORD_TYPE_SPEED,
+                    Velocity.class);
+
+    /**
+     * Metric identifier to retrieve minimum speed using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Velocity> SPEED_MIN =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.SPEED_RECORD_SPEED_MIN,
+                    AggregationType.MIN,
+                    RecordTypeIdentifier.RECORD_TYPE_SPEED,
+                    Velocity.class);
+
+    /**
+     * Metric identifier to retrieve maximum speed using aggregate APIs in {@link
+     * HealthConnectManager}
+     */
+    @NonNull
+    public static final AggregationType<Velocity> SPEED_MAX =
+            new AggregationType<>(
+                    AggregationType.AggregationTypeIdentifier.SPEED_RECORD_SPEED_MAX,
+                    AggregationType.MAX,
+                    RecordTypeIdentifier.RECORD_TYPE_SPEED,
+                    Velocity.class);
+
     private final List<SpeedRecordSample> mSpeedRecordSamples;
 
     /**

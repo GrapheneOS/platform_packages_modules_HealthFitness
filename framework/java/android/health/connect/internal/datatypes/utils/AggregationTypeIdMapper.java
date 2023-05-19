@@ -79,6 +79,12 @@ import static android.health.connect.datatypes.PowerRecord.POWER_AVG;
 import static android.health.connect.datatypes.PowerRecord.POWER_MAX;
 import static android.health.connect.datatypes.PowerRecord.POWER_MIN;
 import static android.health.connect.datatypes.SleepSessionRecord.SLEEP_DURATION_TOTAL;
+import static android.health.connect.datatypes.SpeedRecord.SPEED_AVG;
+import static android.health.connect.datatypes.SpeedRecord.SPEED_MAX;
+import static android.health.connect.datatypes.SpeedRecord.SPEED_MIN;
+import static android.health.connect.datatypes.StepsCadenceRecord.STEPS_CADENCE_RATE_AVG;
+import static android.health.connect.datatypes.StepsCadenceRecord.STEPS_CADENCE_RATE_MAX;
+import static android.health.connect.datatypes.StepsCadenceRecord.STEPS_CADENCE_RATE_MIN;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_AVG;
 import static android.health.connect.datatypes.WeightRecord.WEIGHT_MAX;
@@ -94,6 +100,7 @@ import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Power;
+import android.health.connect.datatypes.units.Velocity;
 import android.health.connect.datatypes.units.Volume;
 import android.os.Parcel;
 
@@ -133,7 +140,14 @@ public final class AggregationTypeIdMapper {
                         SLEEP_DURATION_TOTAL,
                         EXERCISE_DURATION_TOTAL));
         addDoubleIdsToAggregateResultMap(
-                Arrays.asList(FLOORS_CLIMBED_TOTAL, RPM_AVG, RPM_MAX, RPM_MIN));
+                Arrays.asList(
+                        FLOORS_CLIMBED_TOTAL,
+                        RPM_AVG,
+                        RPM_MAX,
+                        RPM_MIN,
+                        STEPS_CADENCE_RATE_MAX,
+                        STEPS_CADENCE_RATE_AVG,
+                        STEPS_CADENCE_RATE_MIN));
         addPowerIdsToAggregateResultMap(Arrays.asList(POWER_MIN, POWER_MAX, POWER_AVG));
         addEnergyIdsToAggregateResultMap(
                 Arrays.asList(
@@ -195,6 +209,7 @@ public final class AggregationTypeIdMapper {
                         WEIGHT_MAX,
                         WEIGHT_MIN,
                         TRANS_FAT_TOTAL));
+        addVelocityIdsToAggregateResultMap(Arrays.asList(SPEED_MAX, SPEED_AVG, SPEED_MIN));
     }
 
     @NonNull
@@ -257,6 +272,11 @@ public final class AggregationTypeIdMapper {
     @NonNull
     private AggregateResult<Mass> getMassResult(double result) {
         return new AggregateResult<>(Mass.fromGrams(result));
+    }
+
+    @NonNull
+    private AggregateResult<Velocity> getVelocityResult(double result) {
+        return new AggregateResult<>(Velocity.fromMetersPerSecond(result));
     }
 
     private void addLongIdsToAggregateResultMap(
@@ -325,6 +345,16 @@ public final class AggregationTypeIdMapper {
             mIdToAggregateResult.put(
                     aggregationType.getAggregationTypeIdentifier(),
                     result -> getMassResult(result.readDouble()));
+            populateIdDataAggregationType(aggregationType);
+        }
+    }
+
+    private void addVelocityIdsToAggregateResultMap(
+            @NonNull List<AggregationType<?>> aggregationTypeList) {
+        for (AggregationType<?> aggregationType : aggregationTypeList) {
+            mIdToAggregateResult.put(
+                    aggregationType.getAggregationTypeIdentifier(),
+                    result -> getVelocityResult(result.readDouble()));
             populateIdDataAggregationType(aggregationType);
         }
     }

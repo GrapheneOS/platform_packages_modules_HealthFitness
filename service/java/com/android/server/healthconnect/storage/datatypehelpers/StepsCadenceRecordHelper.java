@@ -16,6 +16,10 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.STEPS_CADENCE_RECORD_RATE_AVG;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.STEPS_CADENCE_RECORD_RATE_MAX;
+import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.STEPS_CADENCE_RECORD_RATE_MIN;
+
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
@@ -25,11 +29,17 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.AggregateResult;
+import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.StepsCadenceRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.storage.utils.SqlJoin;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -95,5 +105,41 @@ public class StepsCadenceRecordHelper
             StepsCadenceRecordInternal.StepsCadenceRecordSample stepsCadenceRecord) {
         contentValues.put(RATE_COLUMN_NAME, stepsCadenceRecord.getRate());
         contentValues.put(EPOCH_MILLIS_COLUMN_NAME, stepsCadenceRecord.getEpochMillis());
+    }
+
+    @Override
+    public AggregateResult<?> getAggregateResult(
+            Cursor results, AggregationType<?> aggregationType) {
+        switch (aggregationType.getAggregationTypeIdentifier()) {
+            case STEPS_CADENCE_RECORD_RATE_AVG:
+            case STEPS_CADENCE_RECORD_RATE_MIN:
+            case STEPS_CADENCE_RECORD_RATE_MAX:
+                return new AggregateResult<>(
+                                results.getDouble(results.getColumnIndex(RATE_COLUMN_NAME)))
+                        .setZoneOffset(getZoneOffset(results));
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
+        switch (aggregateRequest.getAggregationTypeIdentifier()) {
+            case STEPS_CADENCE_RECORD_RATE_AVG:
+            case STEPS_CADENCE_RECORD_RATE_MIN:
+            case STEPS_CADENCE_RECORD_RATE_MAX:
+                return new AggregateParams(
+                                SERIES_TABLE_NAME,
+                                Collections.singletonList(RATE_COLUMN_NAME),
+                                START_TIME_COLUMN_NAME)
+                        .setJoin(
+                                new SqlJoin(
+                                        SERIES_TABLE_NAME,
+                                        TABLE_NAME,
+                                        PARENT_KEY_COLUMN_NAME,
+                                        PRIMARY_COLUMN_NAME));
+            default:
+                return null;
+        }
     }
 }

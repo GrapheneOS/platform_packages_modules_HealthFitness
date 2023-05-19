@@ -1223,6 +1223,9 @@ package android.health.connect.datatypes {
 
   public final class SpeedRecord extends android.health.connect.datatypes.IntervalRecord {
     method @NonNull public java.util.List<android.health.connect.datatypes.SpeedRecord.SpeedRecordSample> getSamples();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Velocity> SPEED_AVG;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Velocity> SPEED_MAX;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.Velocity> SPEED_MIN;
   }
 
   public static final class SpeedRecord.Builder {
@@ -1242,6 +1245,9 @@ package android.health.connect.datatypes {
 
   public final class StepsCadenceRecord extends android.health.connect.datatypes.IntervalRecord {
     method @NonNull public java.util.List<android.health.connect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample> getSamples();
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Double> STEPS_CADENCE_RATE_AVG;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Double> STEPS_CADENCE_RATE_MAX;
+    field @NonNull public static final android.health.connect.datatypes.AggregationType<java.lang.Double> STEPS_CADENCE_RATE_MIN;
   }
 
   public static final class StepsCadenceRecord.Builder {
