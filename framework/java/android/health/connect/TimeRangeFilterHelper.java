@@ -29,43 +29,7 @@ import java.time.ZoneOffset;
  */
 public final class TimeRangeFilterHelper {
 
-    private static ZoneOffset LOCAL_TIME_ZERO_OFFSET = ZoneOffset.UTC;
-
-    /**
-     * @return duration start time epoch milli.
-     */
-    public static long getDurationStart(@NonNull TimeRangeFilter timeRangeFilter) {
-        if (timeRangeFilter instanceof TimeInstantRangeFilter) {
-            return ((TimeInstantRangeFilter) timeRangeFilter).getStartTime().toEpochMilli();
-        } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
-            return ((LocalTimeRangeFilter) timeRangeFilter)
-                    .getStartTime()
-                    .toInstant(ZoneOffset.MAX)
-                    .toEpochMilli();
-        } else {
-            throw new IllegalArgumentException(
-                    "Invalid time filter object. Object should be either "
-                            + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
-        }
-    }
-
-    /**
-     * @return duration end time epoch milli.
-     */
-    public static long getDurationEnd(@NonNull TimeRangeFilter timeRangeFilter) {
-        if (timeRangeFilter instanceof TimeInstantRangeFilter) {
-            return ((TimeInstantRangeFilter) timeRangeFilter).getEndTime().toEpochMilli();
-        } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
-            return ((LocalTimeRangeFilter) timeRangeFilter)
-                    .getEndTime()
-                    .toInstant(ZoneOffset.MIN)
-                    .toEpochMilli();
-        } else {
-            throw new IllegalArgumentException(
-                    "Invalid time filter object. Object should be either "
-                            + "TimeInstantRangeFilter or LocalTimeRangeFilter.");
-        }
-    }
+    private static final ZoneOffset LOCAL_TIME_ZERO_OFFSET = ZoneOffset.UTC;
 
     public static boolean isLocalTimeFilter(@NonNull TimeRangeFilter timeRangeFilter) {
         return (timeRangeFilter instanceof LocalTimeRangeFilter);
