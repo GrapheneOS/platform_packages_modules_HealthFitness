@@ -90,7 +90,8 @@ constructor(
                 .records
                 .filter { menstruationPeriodRecord ->
                     menstruationPeriodRecord.startTime.isBefore(end) &&
-                        menstruationPeriodRecord.endTime.isAfter(startDate)
+                        (menstruationPeriodRecord.endTime.isAfter(startDate) ||
+                            menstruationPeriodRecord.endTime.equals(startDate))
                 }
 
         return records.map { record -> menstruationPeriodFormatter.format(startDate, record) }
