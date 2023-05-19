@@ -40,7 +40,6 @@ public class SessionDurationAggregationData extends AggregationRecordData {
     private static final String TAG = "HealthSessionPriorityAggregation";
     private final String mExcludeIntervalStartTimeColumn;
     private final String mExcludeIntervalEndTimeColumn;
-
     private static final long MILLIS_IN_SECOND = 1000L;
     List<Long> mExcludeStarts;
     List<Long> mExcludeEnds;
