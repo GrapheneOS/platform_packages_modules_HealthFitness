@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  */
 public class ReadRecordsRequestParcel implements Parcelable {
     public static final Creator<ReadRecordsRequestParcel> CREATOR =
-            new Creator<ReadRecordsRequestParcel>() {
+            new Creator<>() {
                 @Override
                 public ReadRecordsRequestParcel createFromParcel(Parcel in) {
                     return new ReadRecordsRequestParcel(in);
@@ -60,11 +60,13 @@ public class ReadRecordsRequestParcel implements Parcelable {
     private final int mPageSize;
     private final long mPageToken;
     private final boolean mAscending;
+    private final boolean mLocalTimeFilter;
 
     protected ReadRecordsRequestParcel(Parcel in) {
         mRecordType = in.readInt();
         mStartTime = in.readLong();
         mEndTime = in.readLong();
+        mLocalTimeFilter = in.readBoolean();
         mPackageFilters = in.createStringArrayList();
         mRecordIdFiltersParcel =
                 in.readParcelable(
@@ -81,6 +83,7 @@ public class ReadRecordsRequestParcel implements Parcelable {
         mEndTime = DEFAULT_LONG;
         mRecordType = RecordMapper.getInstance().getRecordType(request.getRecordType());
         mPageSize = DEFAULT_INT;
+        mLocalTimeFilter = false;
 
         // set to -1 as pageToken is not supported for read using ids but only with filters.
         mPageToken = DEFAULT_LONG;
@@ -98,9 +101,12 @@ public class ReadRecordsRequestParcel implements Parcelable {
             mStartTime = DEFAULT_LONG;
             mEndTime = DEFAULT_LONG;
         } else {
-            mStartTime = TimeRangeFilterHelper.getDurationStart(request.getTimeRangeFilter());
-            mEndTime = TimeRangeFilterHelper.getDurationEnd(request.getTimeRangeFilter());
+            mStartTime =
+                    TimeRangeFilterHelper.getFilterStartTimeMillis(request.getTimeRangeFilter());
+            mEndTime = TimeRangeFilterHelper.getFilterEndTimeMillis(request.getTimeRangeFilter());
         }
+
+        mLocalTimeFilter = TimeRangeFilterHelper.isLocalTimeFilter(request.getTimeRangeFilter());
         mRecordType = RecordMapper.getInstance().getRecordType(request.getRecordType());
         mPageSize = request.getPageSize();
         mPageToken = request.getPageToken();
@@ -144,11 +150,16 @@ public class ReadRecordsRequestParcel implements Parcelable {
         return 0;
     }
 
+    public boolean usesLocalTimeFilter() {
+        return mLocalTimeFilter;
+    }
+
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeInt(mRecordType);
         dest.writeLong(mStartTime);
         dest.writeLong(mEndTime);
+        dest.writeBoolean(mLocalTimeFilter);
         dest.writeStringList(mPackageFilters);
         dest.writeParcelable(mRecordIdFiltersParcel, 0);
         dest.writeInt(mPageSize);
