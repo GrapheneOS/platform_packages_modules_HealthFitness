@@ -64,8 +64,16 @@ public class AggregationTimestamp implements Comparable<AggregationTimestamp> {
 
     @Override
     public int compareTo(AggregationTimestamp o) {
+        if (this.equals(o)) {
+            return 0;
+        }
+
         if (getTime() == o.getTime()) {
-            return getType() - o.getType();
+            if (getType() != o.getType()) {
+                return getType() - o.getType();
+            }
+
+            return getParentData().compareTo(o.getParentData());
         } else if (getTime() < o.getTime()) {
             return -1;
         } else {

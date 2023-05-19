@@ -35,10 +35,8 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.request.AggregateParams;
 
 import java.time.ZoneOffset;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeSet;
 
 /**
@@ -46,7 +44,7 @@ import java.util.TreeSet;
  *
  * @hide
  */
-public class PriorityRecordsAggregator implements Comparator<AggregationRecordData> {
+public class PriorityRecordsAggregator {
     static final String TAG = "HealthPriorityRecordsAggregator";
 
     private final List<Long> mGroupSplits;
@@ -83,7 +81,7 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
         mTimestampsBuffer = new TreeSet<>();
         mNumberOfGroups = mGroupSplits.size() - 1;
         mGroupToFirstZoneOffset = new ArrayMap<>(mNumberOfGroups);
-        mOpenIntervals = new TreeSet<>(this);
+        mOpenIntervals = new TreeSet<>();
         mGroupToAggregationResult = new ArrayMap<>(mGroupSplits.size());
 
         if (Constants.DEBUG) {
@@ -135,9 +133,22 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
         // Add record timestamps to buffer until latest buffer record do not overlap with earliest
         // buffer record.
         long expansionBorder = mTimestampsBuffer.first().getParentData().getEndTime();
+        if (Constants.DEBUG) {
+            Slog.d(
+                    TAG,
+                    "Try to update buffer exp border: "
+                            + expansionBorder
+                            + " latest start: "
+                            + mLatestPopulatedStart);
+        }
+
         while (mLatestPopulatedStart <= expansionBorder && cursor.moveToNext()) {
             AggregationRecordData data = readNewDataAndAddToBuffer(cursor);
             mLatestPopulatedStart = data.getStartTime();
+
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "Updated buffer with : " + data);
+            }
         }
 
         if (Constants.DEBUG) {
@@ -170,7 +181,7 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
     @VisibleForTesting
     AggregationRecordData readNewData(Cursor cursor) {
         AggregationRecordData data = createAggregationRecordData();
-        data.populateAggregationData(cursor, mUseLocalTime);
+        data.populateAggregationData(cursor, mUseLocalTime, mAppIdToPriority);
         return data;
     }
 
@@ -218,11 +229,18 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
         }
 
         if (mOpenIntervals.isEmpty() || mCurrentGroup < 0 || mCurrentGroup >= mNumberOfGroups) {
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "No open intervals or current group: " + mCurrentGroup);
+            }
             return;
         }
 
         if (!mGroupToAggregationResult.containsKey(mCurrentGroup)) {
             mGroupToAggregationResult.put(mCurrentGroup, 0.0d);
+        }
+
+        if (Constants.DEBUG) {
+            Slog.d(TAG, "Update result with: " + mOpenIntervals.last());
         }
 
         mGroupToAggregationResult.put(
@@ -247,18 +265,5 @@ public class PriorityRecordsAggregator implements Comparator<AggregationRecordDa
             }
         }
         return earliestInterval.getStartTimeZoneOffset();
-    }
-
-    // Compared aggregation data by data source priority, then by last modified time.
-    @Override
-    public int compare(AggregationRecordData o1, AggregationRecordData o2) {
-        if (!Objects.equals(
-                mAppIdToPriority.get(o1.getAppId()), mAppIdToPriority.get(o2.getAppId()))) {
-            return Integer.compare(
-                    mAppIdToPriority.get(o1.getAppId()), mAppIdToPriority.get(o2.getAppId()));
-        }
-
-        // The later the last modified time, the higher priority this record has.
-        return Long.compare(o2.getLastModifiedTime(), o1.getLastModifiedTime());
     }
 }
