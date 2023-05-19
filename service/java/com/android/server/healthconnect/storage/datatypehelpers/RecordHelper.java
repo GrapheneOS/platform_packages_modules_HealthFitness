@@ -641,8 +641,18 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 }
             }
 
-            return clauses.addWhereBetweenTimeClause(
-                    getStartTimeColumnName(), startDateAccess, request.getEndTime());
+            if (request.usesLocalTimeFilter()) {
+                clauses.addWhereGreaterThanOrEqualClause(getStartTimeColumnName(), startDateAccess);
+                clauses.addWhereBetweenClause(
+                        getLocalStartTimeColumnName(),
+                        request.getStartTime(),
+                        request.getEndTime());
+            } else {
+                clauses.addWhereBetweenTimeClause(
+                        getStartTimeColumnName(), startDateAccess, request.getEndTime());
+            }
+
+            return clauses;
         }
 
         // Since for now we don't support mixing IDs and filters, we need to look for IDs now
@@ -674,7 +684,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     private OrderByClause getOrderByClause(ReadRecordsRequestParcel request) {
         OrderByClause orderByClause = new OrderByClause();
-        if (request.getRecordIdFiltersParcel() != null) {
+        if (request.getRecordIdFiltersParcel() == null) {
             orderByClause.addOrderByClause(getStartTimeColumnName(), request.isAscending());
         }
         return orderByClause;
