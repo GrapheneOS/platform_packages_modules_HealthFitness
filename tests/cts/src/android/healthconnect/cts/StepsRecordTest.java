@@ -59,7 +59,6 @@ import org.junit.runner.RunWith;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -184,6 +183,17 @@ public class StepsRecordTest {
         assertThat(newStepsRecords.get(newStepsRecords.size() - 1).equals(testRecord)).isTrue();
     }
 
+    static StepsRecord getBaseStepsRecord(Instant time, ZoneOffset zoneOffset, int value) {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().build(),
+                        time,
+                        time.plus(1, ChronoUnit.SECONDS),
+                        value)
+                .setStartZoneOffset(zoneOffset)
+                .setEndZoneOffset(zoneOffset)
+                .build();
+    }
+
     @Test
     public void testReadStepsRecordUsingFilters_dataFilter_correct() throws InterruptedException {
         Context context = ApplicationProvider.getApplicationContext();
@@ -235,6 +245,48 @@ public class StepsRecordTest {
                                 .setPageSize(1)
                                 .build());
         assertThat(newStepsRecords.first.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void testReadStepsRecordUsingFilters_timeFilterLocal() throws InterruptedException {
+        LocalDateTime recordTime = LocalDateTime.now(ZoneOffset.MIN);
+        LocalTimeRangeFilter filter =
+                new LocalTimeRangeFilter.Builder()
+                        .setStartTime(recordTime.minus(1, ChronoUnit.SECONDS))
+                        .setEndTime(recordTime.plus(1, ChronoUnit.SECONDS))
+                        .build();
+        StepsRecord testRecord =
+                getBaseStepsRecord(recordTime.toInstant(ZoneOffset.MIN), ZoneOffset.MIN, 50);
+        TestUtils.insertRecords(Collections.singletonList(testRecord));
+        List<StepsRecord> newStepsRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .build());
+        assertThat(newStepsRecords.size()).isEqualTo(1);
+        StepsRecord stepsRecord = newStepsRecords.get(newStepsRecords.size() - 1);
+        assertThat(stepsRecord.getCount()).isEqualTo(50);
+        assertThat(stepsRecord.getStartZoneOffset()).isEqualTo(ZoneOffset.MIN);
+        assertThat(stepsRecord.getEndZoneOffset()).isEqualTo(ZoneOffset.MIN);
+
+        TimeInstantRangeFilter timeInstantRangeFilter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(
+                                recordTime.minus(1, ChronoUnit.SECONDS).toInstant(ZoneOffset.MIN))
+                        .setEndTime(
+                                recordTime.plus(1, ChronoUnit.SECONDS).toInstant(ZoneOffset.MIN))
+                        .build();
+
+        newStepsRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setTimeRangeFilter(timeInstantRangeFilter)
+                                .build());
+        stepsRecord = newStepsRecords.get(newStepsRecords.size() - 1);
+        assertThat(newStepsRecords.size()).isEqualTo(1);
+        assertThat(stepsRecord.getCount()).isEqualTo(50);
+        assertThat(stepsRecord.getStartZoneOffset()).isEqualTo(ZoneOffset.MIN);
+        assertThat(stepsRecord.getEndZoneOffset()).isEqualTo(ZoneOffset.MIN);
     }
 
     @Test
@@ -422,28 +474,72 @@ public class StepsRecordTest {
         TestUtils.assertRecordNotFound(id, StepsRecord.class);
     }
 
-    static StepsRecord getBaseStepsRecord(Instant time, ZoneOffset zoneOffset) {
-        return new StepsRecord.Builder(
-                        new Metadata.Builder().build(), time, time.plus(1, ChronoUnit.SECONDS), 50)
-                .setStartZoneOffset(zoneOffset)
-                .setEndZoneOffset(zoneOffset)
-                .build();
+    @Test
+    public void testReadStepsRecordUsingFiltersLocal_withPageSize() throws InterruptedException {
+        LocalDateTime recordTime = LocalDateTime.now(ZoneOffset.MIN).minus(10, ChronoUnit.SECONDS);
+        LocalTimeRangeFilter filter =
+                new LocalTimeRangeFilter.Builder()
+                        .setStartTime(recordTime.minus(2, ChronoUnit.SECONDS))
+                        .setEndTime(recordTime.plus(2, ChronoUnit.SECONDS))
+                        .build();
+        List<Record> testRecord =
+                List.of(
+                        getBaseStepsRecord(
+                                recordTime.plus(1, ChronoUnit.SECONDS).toInstant(ZoneOffset.MIN),
+                                ZoneOffset.MIN,
+                                20),
+                        getBaseStepsRecord(
+                                recordTime.toInstant(ZoneOffset.MIN), ZoneOffset.MIN, 50),
+                        getBaseStepsRecord(
+                                recordTime.minus(1, ChronoUnit.SECONDS).toInstant(ZoneOffset.MIN),
+                                ZoneOffset.MIN,
+                                70));
+        TestUtils.insertRecords(testRecord);
+        Pair<List<StepsRecord>, Long> newStepsRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .setPageSize(1)
+                                .build());
+        assertThat(newStepsRecords.first.size()).isEqualTo(1);
+        assertThat(newStepsRecords.first.get(0).getCount()).isEqualTo(70);
+        newStepsRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .setPageSize(1)
+                                .setPageToken(newStepsRecords.second)
+                                .build());
+        assertThat(newStepsRecords.first.size()).isEqualTo(1);
+        assertThat(newStepsRecords.first.get(0).getCount()).isEqualTo(50);
+        newStepsRecords =
+                TestUtils.readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setTimeRangeFilter(filter)
+                                .setPageSize(1)
+                                .setPageToken(newStepsRecords.second)
+                                .build());
+        assertThat(newStepsRecords.first.size()).isEqualTo(1);
+        assertThat(newStepsRecords.first.get(0).getCount()).isEqualTo(20);
+        assertThat(newStepsRecords.second).isEqualTo(-1);
     }
 
     @Test
     public void testDeleteStepsRecord_time_filters_local() throws InterruptedException {
+        LocalDateTime recordTime = LocalDateTime.now(ZoneOffset.MIN);
         LocalTimeRangeFilter timeRangeFilter =
                 new LocalTimeRangeFilter.Builder()
-                        .setStartTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 29))
-                        .setEndTime(LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 32))
+                        .setStartTime(recordTime.minus(1, ChronoUnit.SECONDS))
+                        .setEndTime(recordTime.plus(2, ChronoUnit.SECONDS))
                         .build();
-        LocalDateTime recordTime = LocalDateTime.of(2023, Month.APRIL, 29, 8, 30, 30);
         String id1 =
                 TestUtils.insertRecordAndGetId(
-                        getBaseStepsRecord(recordTime.toInstant(ZoneOffset.MIN), ZoneOffset.MIN));
+                        getBaseStepsRecord(
+                                recordTime.toInstant(ZoneOffset.MIN), ZoneOffset.MIN, 50));
         String id2 =
                 TestUtils.insertRecordAndGetId(
-                        getBaseStepsRecord(recordTime.toInstant(ZoneOffset.MAX), ZoneOffset.MAX));
+                        getBaseStepsRecord(
+                                recordTime.toInstant(ZoneOffset.MAX), ZoneOffset.MAX, 50));
         TestUtils.assertRecordFound(id1, StepsRecord.class);
         TestUtils.assertRecordFound(id2, StepsRecord.class);
         TestUtils.verifyDeleteRecords(
