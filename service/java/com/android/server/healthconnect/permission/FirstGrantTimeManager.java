@@ -31,6 +31,8 @@ import android.util.ArraySet;
 import android.util.Log;
 
 import com.android.internal.annotations.GuardedBy;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import java.io.File;
@@ -104,9 +106,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         return grantTimeDate;
     }
 
-    /**
-     * Sets the provided first grant time for the given {@code packageName}.
-     */
+    /** Sets the provided first grant time for the given {@code packageName}. */
     public void setFirstGrantTime(
             @NonNull String packageName, @NonNull Instant time, @NonNull UserHandle user) {
         final Integer uid = mPackageInfoHelper.getPackageUid(packageName, user);
@@ -155,9 +155,11 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                 if (grantTimeRecorded) {
                     // An app doesn't have health permissions anymore, reset its grant time.
                     mUidToGrantTimeCache.remove(uid);
-                    for (String packageName : packageNames) {
-                        HealthDataCategoryPriorityHelper.getInstance()
-                                .removeAppFromPriorityList(packageName);
+                    // Update priority table only if migration is not in progress as it should
+                    // already take care of merging permissions.
+                    if (!MigrationStateManager.getInitialisedInstance().isMigrationInProgress()) {
+                        HealthConnectThreadScheduler.scheduleInternalTask(
+                                () -> removeAppFromPriorityList(packageNames));
                     }
                 } else {
                     // An app got new health permission, set current time as it's first grant
@@ -172,7 +174,12 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                 logIfInDebugMode("State after onPermissionsChanged :", updatedState);
                 mDatastore.writeForUser(updatedState, user, DATA_TYPE_CURRENT);
             } else {
-                mPackageInfoHelper.updateHealthDataPriority(packageNames, user);
+                // Update priority table only if migration is not in progress as it should already
+                // take care of merging permissions
+                if (!MigrationStateManager.getInitialisedInstance().isMigrationInProgress()) {
+                    HealthConnectThreadScheduler.scheduleInternalTask(
+                            () -> mPackageInfoHelper.updateHealthDataPriority(packageNames, user));
+                }
             }
         } finally {
             mGrantTimeLock.writeLock().unlock();
@@ -628,6 +635,12 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                     put(uid, time);
                 }
             }
+        }
+    }
+
+    private void removeAppFromPriorityList(String[] packageNames) {
+        for (String packageName : packageNames) {
+            HealthDataCategoryPriorityHelper.getInstance().removeAppFromPriorityList(packageName);
         }
     }
 }
