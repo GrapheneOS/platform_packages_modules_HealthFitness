@@ -1115,15 +1115,19 @@ public class StepsRecordTest {
 
     @Test
     public void testAggregatePeriod_withLocalDateTime() throws Exception {
-        TestUtils.insertRecords(
-                List.of(
-                        getStepsRecord(10, 1, 1),
-                        getStepsRecord(10, 2, 1),
-                        getStepsRecord(10, 3, 1),
-                        getStepsRecord(10, 4, 1)));
+        testAggregationLocalTimeOffset(ZoneOffset.ofHours(-4));
+        testAggregationLocalTimeOffset(ZoneOffset.MIN);
+        testAggregationLocalTimeOffset(ZoneOffset.MAX);
+        testAggregationLocalTimeOffset(ZoneOffset.UTC);
+        testAggregationLocalTimeOffset(ZoneOffset.ofHours(4));
+    }
 
-        LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC).minusHours(12);
+    private void testAggregationLocalTimeOffset(ZoneOffset offset) throws InterruptedException {
+        LocalDateTime endTimeLocal = LocalDateTime.now(offset);
         LocalDateTime startTimeLocal = endTimeLocal.minusDays(4);
+        Instant endTimeInstant = endTimeLocal.toInstant(offset);
+        insertFourStepsRecordsWithZoneOffset(endTimeInstant, offset);
+
         List<AggregateRecordsGroupedByPeriodResponse<Long>> responses =
                 TestUtils.getAggregateResponseGroupByPeriod(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -1139,14 +1143,15 @@ public class StepsRecordTest {
         LocalDateTime groupBoundary = startTimeLocal;
         for (int i = 0; i < 4; i++) {
             assertThat(responses.get(i).get(STEPS_COUNT_TOTAL)).isEqualTo(10);
-            assertThat(responses.get(i).getZoneOffset(STEPS_COUNT_TOTAL))
-                    .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+            assertThat(responses.get(i).getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(offset);
             assertThat(responses.get(i).getStartTime().getDayOfYear())
                     .isEqualTo(groupBoundary.getDayOfYear());
             groupBoundary = groupBoundary.plusDays(1);
             assertThat(responses.get(i).getEndTime().getDayOfYear())
                     .isEqualTo(groupBoundary.getDayOfYear());
         }
+
+        tearDown();
     }
 
     @Test
@@ -1154,7 +1159,7 @@ public class StepsRecordTest {
             throws Exception {
         Instant end = Instant.now();
         // Insert steps from -48 hours to -12 hours, 36 hours session
-        TestUtils.insertRecords(List.of(getStepsRecord(end, 2160, 2, 36)));
+        TestUtils.insertRecords(List.of(getStepsRecord(end, 2160, 2, 36, ZoneOffset.UTC)));
 
         LocalDateTime endTimeLocal = LocalDateTime.ofInstant(end, ZoneOffset.UTC);
         List<AggregateRecordsGroupedByPeriodResponse<Long>> responses =
@@ -1212,15 +1217,20 @@ public class StepsRecordTest {
 
     @Test
     public void testAggregateDuration_withLocalDateTime() throws Exception {
-        TestUtils.insertRecords(
-                List.of(
-                        getStepsRecord(10, 1, 1),
-                        getStepsRecord(10, 2, 1),
-                        getStepsRecord(10, 3, 1),
-                        getStepsRecord(10, 4, 1)));
+        testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset.MIN);
+        testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset.ofHours(-4));
+        testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset.UTC);
+        testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset.ofHours(4));
+        testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset.MAX);
+    }
 
-        LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC).minusHours(12);
+    private void testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset offset)
+            throws Exception {
+        Instant endTime = Instant.now();
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, offset);
         LocalDateTime startTimeLocal = endTimeLocal.minusDays(4);
+        insertFourStepsRecordsWithZoneOffset(endTime, offset);
+
         List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
                 TestUtils.getAggregateResponseGroupByDuration(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -1233,19 +1243,28 @@ public class StepsRecordTest {
                         Duration.ofDays(1));
 
         assertThat(responses).hasSize(4);
-        Instant groupBoundary =
-                startTimeLocal.toInstant(
-                        ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        Instant groupBoundary = startTimeLocal.toInstant(ZoneOffset.UTC);
         for (int i = 0; i < 4; i++) {
             assertThat(responses.get(i).get(STEPS_COUNT_TOTAL)).isEqualTo(10);
-            assertThat(responses.get(i).getZoneOffset(STEPS_COUNT_TOTAL))
-                    .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+            assertThat(responses.get(i).getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(offset);
             assertThat(responses.get(i).getStartTime().getEpochSecond())
                     .isEqualTo(groupBoundary.getEpochSecond());
             groupBoundary = groupBoundary.plus(1, ChronoUnit.DAYS);
             assertThat(responses.get(i).getEndTime().getEpochSecond())
                     .isEqualTo(groupBoundary.getEpochSecond());
         }
+
+        tearDown();
+    }
+
+    private void insertFourStepsRecordsWithZoneOffset(Instant endTime, ZoneOffset offset)
+            throws InterruptedException {
+        TestUtils.insertRecords(
+                List.of(
+                        getStepsRecord(endTime, 10, 1, 1, offset),
+                        getStepsRecord(endTime, 10, 2, 1, offset),
+                        getStepsRecord(endTime, 10, 3, 1, offset),
+                        getStepsRecord(endTime, 10, 4, 1, offset)));
     }
 
     StepsRecord getStepsRecordDuplicateEntry(
@@ -1324,13 +1343,22 @@ public class StepsRecordTest {
     }
 
     static StepsRecord getStepsRecord(Instant time, int count, int daysPast, int durationInHours) {
-        return new StepsRecord.Builder(
+        return getStepsRecord(time, count, daysPast, durationInHours, null);
+    }
+
+    static StepsRecord getStepsRecord(
+            Instant time, int count, int daysPast, int durationInHours, ZoneOffset offset) {
+        StepsRecord.Builder builder =
+                new StepsRecord.Builder(
                         new Metadata.Builder().build(),
                         time.minus(daysPast, ChronoUnit.DAYS),
                         time.minus(daysPast, ChronoUnit.DAYS)
                                 .plus(durationInHours, ChronoUnit.HOURS),
-                        count)
-                .build();
+                        count);
+        if (offset != null) {
+            builder.setStartZoneOffset(offset).setEndZoneOffset(offset);
+        }
+        return builder.build();
     }
 
     static StepsRecord getCompleteStepsRecord() {
