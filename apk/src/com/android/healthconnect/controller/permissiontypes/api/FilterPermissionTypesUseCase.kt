@@ -65,7 +65,7 @@ constructor(
             recordTypeInfoMap.values.filter {
                 it.dataCategory == category &&
                     it.contributingPackages.isNotEmpty() &&
-                    it.contributingPackages.firstNotNullOf { contributingApp ->
+                    it.contributingPackages.any { contributingApp ->
                         contributingApp.packageName == selectedAppPackageName
                     }
             }
