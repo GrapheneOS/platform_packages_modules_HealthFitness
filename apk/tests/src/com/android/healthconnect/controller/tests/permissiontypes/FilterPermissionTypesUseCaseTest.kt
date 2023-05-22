@@ -19,6 +19,7 @@ import com.android.healthconnect.controller.permissiontypes.api.FilterPermission
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.google.common.truth.Truth
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -48,6 +49,39 @@ class FilterPermissionTypesUseCaseTest {
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         usecase = FilterPermissionTypesUseCase(manager, Dispatchers.Main)
+    }
+
+    @Test
+    fun appFilters_permissionCategoriesAreFilteredCorrectly() = runTest {
+        val recordTypeInfo =
+            mapOf<Record, RecordTypeInfoResponse>(
+                getStepsCadence(listOf(10.3, 20.1)) to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.STEPS,
+                        HealthDataCategory.ACTIVITY,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME))),
+                getRecord(type = ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING) to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.EXERCISE,
+                        HealthDataCategory.ACTIVITY,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME_2))))
+
+        Mockito.doAnswer(prepareAnswer(recordTypeInfo))
+            .`when`(manager)
+            .queryAllRecordTypesInfo(Matchers.any(), Matchers.any())
+
+        val testApp1FilteredPermissionCategories =
+            usecase.invoke(HealthDataCategory.ACTIVITY, TEST_APP_PACKAGE_NAME)
+
+        Truth.assertThat(testApp1FilteredPermissionCategories.size).isEqualTo(1)
+        Truth.assertThat(testApp1FilteredPermissionCategories).contains(HealthPermissionType.STEPS)
+
+        val testApp2FilteredPermissionCategories =
+            usecase.invoke(HealthDataCategory.ACTIVITY, TEST_APP_PACKAGE_NAME_2)
+
+        Truth.assertThat(testApp2FilteredPermissionCategories.size).isEqualTo(1)
+        Truth.assertThat(testApp2FilteredPermissionCategories)
+            .contains(HealthPermissionType.EXERCISE)
     }
 
     @Test
