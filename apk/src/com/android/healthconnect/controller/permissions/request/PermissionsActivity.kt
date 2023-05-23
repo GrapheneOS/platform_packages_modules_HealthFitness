@@ -45,6 +45,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationInProgressDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationPendingDialog
 import com.android.healthconnect.controller.migration.MigrationViewModel
@@ -175,6 +176,9 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
                     handleResults(viewModel.request(getPackageNameExtra()))
                     finish()
                 }
+            }
+            MigrationState.COMPLETE -> {
+                maybeShowWhatsNewDialog(this)
             }
             else -> {
                 // Show nothing
