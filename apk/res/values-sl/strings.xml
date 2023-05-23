@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Upravljajte dostop aplikacij do podatkov o zdravju"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Upravljajte dostop aplikacij do podatkov o zdravju."</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Dovoljenja in podatki"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Upravljajte podatke o zdravju in telesni pripravljenosti v telefonu ter nadzirajte, katere aplikacije lahko dostopajo do njih."</string>
     <string name="data_title" msgid="4456619761533380816">"Podatki in dostop"</string>
@@ -495,8 +495,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> spanja"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"budnosti"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"bedenje v postelji"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"spanja"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"iz postelje"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"spanca REM"</string>
