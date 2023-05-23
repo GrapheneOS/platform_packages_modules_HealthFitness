@@ -9,6 +9,8 @@
         android:name="com.android.healthconnect.controller.migration.MigrationNavigationFragment">
         <action
             android:id="@+id/action_migrationNavigationFragment_to_migrationInProgressFragment"
+            app:popUpTo="@id/migrationNavigationFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/migrationInProgressFragment"/>
         <action
             android:id="@+id/action_migrationNavigationFragment_to_migrationAppUpdateNeededFragment"
@@ -22,6 +24,8 @@
             app:destination="@id/migrationModuleUpdateNeededFragment"/>
         <action
             android:id="@+id/action_migrationNavigationFragment_to_migrationPausedFragment"
+            app:popUpTo="@id/migrationNavigationFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/migrationPausedFragment"/>
         <action
             android:id="@+id/action_migrationNavigationFragment_to_homeFragment"
@@ -41,6 +45,11 @@
         <action
             android:id="@+id/action_migrationAppUpdateNeededFragment_to_homeScreen"
             app:destination="@id/healthConnectHomeActivity"/>
+        <action
+            android:id="@+id/action_migrationAppUpdateNeededFragment_to_migrationNavigationFragment"
+            app:popUpTo="@id/migrationAppUpdateNeededFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/migrationNavigationFragment"/>
     </fragment>
 
     <fragment
@@ -57,6 +66,9 @@
     <fragment
         android:id="@+id/migrationPausedFragment"
         android:name="com.android.healthconnect.controller.migration.MigrationPausedFragment">
+        <action
+            android:id="@+id/action_migrationPausedFragment_to_homeScreen"
+            app:destination="@id/healthConnectHomeActivity"/>
         <action
             android:id="@+id/action_migrationPausedFragment_to_migrationApk"
             app:destination="@id/migrationApk"/>

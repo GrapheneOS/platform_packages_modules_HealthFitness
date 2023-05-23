@@ -28,6 +28,7 @@ import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.HealthFitnessUiStatsLog.*
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter
+import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.permissions.shared.Constants
@@ -149,13 +150,15 @@ class HomeFragment : Hilt_HomeFragment() {
         preferenceScreen.removePreferenceRecursively(MIGRATION_BANNER_PREFERENCE_KEY)
 
         when (migrationState) {
+            MigrationState.ALLOWED_PAUSED,
+            MigrationState.ALLOWED_NOT_STARTED,
             MigrationState.MODULE_UPGRADE_REQUIRED,
             MigrationState.APP_UPGRADE_REQUIRED -> {
                 migrationBanner = getMigrationBanner()
                 preferenceScreen.addPreference(migrationBanner)
             }
             MigrationState.COMPLETE -> {
-                maybeShowWhatsNewDialog()
+                maybeShowWhatsNewDialog(requireContext())
             }
             MigrationState.ALLOWED_ERROR -> {
                 maybeShowMigrationNotCompleteDialog()
@@ -185,32 +188,6 @@ class HomeFragment : Hilt_HomeFragment() {
                         _ ->
                         sharedPreference.edit().apply {
                             putBoolean(getString(R.string.migration_not_complete_dialog_seen), true)
-                            apply()
-                        }
-                    }
-                .create()
-                .show()
-        }
-    }
-
-    private fun maybeShowWhatsNewDialog() {
-        val sharedPreference =
-            requireActivity().getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
-        val dialogSeen =
-            sharedPreference.getBoolean(getString(R.string.whats_new_dialog_seen), false)
-
-        if (!dialogSeen) {
-            AlertDialogBuilder(this)
-                .setLogName(ErrorPageElement.UNKNOWN_ELEMENT)
-                .setTitle(R.string.migration_whats_new_dialog_title)
-                .setMessage(R.string.migration_whats_new_dialog_content)
-                .setCancelable(false)
-                .setNegativeButton(
-                    R.string.migration_whats_new_dialog_button, ErrorPageElement.UNKNOWN_ELEMENT) {
-                        _,
-                        _ ->
-                        sharedPreference.edit().apply {
-                            putBoolean(getString(R.string.whats_new_dialog_seen), true)
                             apply()
                         }
                     }
