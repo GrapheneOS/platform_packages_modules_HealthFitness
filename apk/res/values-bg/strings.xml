@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Защо Health Connect премахва разрешенията за приложенията"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ако дадено приложение бъде спряно или премахнато от Google Play, Health Connect автоматично премахва разрешенията му.\n\nТова означава, че приложението повече няма да има достъп до данните, съхранявани в Health Connect. Ако по-рано е записало данни, то ще се показва в списъка с неактивни приложения."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Разбрах"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Първи стъпки с Health Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect съхранява данните за здравословното ви състояние и физическата ви активност и ви предоставя лесен начин да синхронизирате различните приложения на телефона си"</string>
     <string name="share_data" msgid="3481932156368883946">"Споделяне на данни с приложенията ви"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Изберете типовете данни, които отделните приложения да четат или записват в Health Connect"</string>

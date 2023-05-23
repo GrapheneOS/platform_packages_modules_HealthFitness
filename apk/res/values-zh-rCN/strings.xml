@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect 为何会撤消应用权限"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"如果应用在 Google Play 中被暂停或下架，Health Connect 将自动撤消其权限。\n\n这表示此应用无法再访问 Health Connect 中存储的数据。此应用如果之前写入过数据，则会列在已停用应用列表中。"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"知道了"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"开始使用 Health Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect 会存储您的健康与健身数据，让您可以轻松同步手机上的不同应用"</string>
     <string name="share_data" msgid="3481932156368883946">"与应用分享数据"</string>
     <string name="share_data_description" msgid="2919871301634375092">"选择每个应用可以从 Health Connect 读取或向其中写入的数据"</string>

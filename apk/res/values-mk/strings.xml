@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Зошто Health Connect отстранува дозволи за апликации"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ако некоја апликација е суспендирана или отстранета од Google Play, Health Connect автоматски ги отстранува нејзините дозволи.\n\nОва значи дека апликацијата веќе нема да може да пристапува до податоците зачувани во Health Connect. Ако оваа апликација има претходно запишани податоци, таа се појавува во списокот со неактивни апликации."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Сфатив"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Започнете со Health Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect ги складира податоците за вашето здравје и фитнес, давајќи ви едноставен начин да ги синхронизирате различните апликации на вашиот телефон"</string>
     <string name="share_data" msgid="3481932156368883946">"Споделувајте податоци со вашите апликации"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Изберете ги податоците што секоја апликација може да ги чита или запишува во Health Connect"</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> спиење"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"будни"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"будни во кревет"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"спиење"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"надвор од кревет"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM-сон"</string>

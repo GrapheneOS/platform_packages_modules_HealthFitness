@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect हे अ‍ॅप परवानग्या का काढून टाकते"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"एखादे अ‍ॅप Google Play वरून निलंबित केल्यास किंवा काढून टाकल्यास, Health Connect हे आपोआप त्याच्या परवानग्या काढून टाकते.\n\nयाचा अर्थ असा, की अ‍ॅप यापुढे Health Connect मध्ये स्टोअर केलेला डेटा अ‍ॅक्सेस करू शकत नाही. या अ‍ॅपने याआधी डेटा राइट केलेला असल्यास, ते इनॅक्टिव्ह अ‍ॅप्सच्या सूचीमध्ये दिसते."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"समजले"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect सह सुरुवात करा"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect हे तुमचा आरोग्य आणि फिटनेसशी संबंधित डेटा स्टोअर करते व तुम्हाला तुमच्या फोनवरील वेगवेगळी अ‍ॅप्स सिंक करण्याचा सोपा मार्ग देते"</string>
     <string name="share_data" msgid="3481932156368883946">"तुमच्या अ‍ॅप्ससह डेटा शेअर करा"</string>
     <string name="share_data_description" msgid="2919871301634375092">"प्रत्येक अ‍ॅप हे Health Connect वर कोणता डेटा रीड किंवा राइट करू शकते ते निवडा"</string>

@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect ले एपलाई दिइएका अनुमति रद्द गर्नुको कारण"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Google Play बाट कुनै एप निलम्बन गरिएको वा हटाइएको छ भने Health Connect ले सो एपलाई दिइएका अनुमतिहरू स्वतः रद्द गर्ने छ। \n\nयसको अर्थ उक्त एपले अबदेखि Health Connect मा भण्डारण गरिएको डेटा प्राप्त गर्न सक्दैन। यो एपमा पहिलै नै डेटा सेभ गरिएको छ भने उक्त एप निष्क्रिय एपहरूको सूचीमा देखिन्छ।"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"बुझेँ"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect चलाउन थाल्नुहोस्"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect ले तपाईंको स्वास्थ्य र तन्दुरुस्तीसम्बन्धी डेटा भण्डारण गर्छ र तपाईं आफ्नो फोनमा विभिन्न एपहरू सरल तरिकाले सिंक गर्न सक्नुहुन्छ"</string>
     <string name="share_data" msgid="3481932156368883946">"आफ्ना एपहरूसँग डेटा सेयर गर्नुहोस्"</string>
     <string name="share_data_description" msgid="2919871301634375092">"हरेक एपलाई कुन कुन डेटा Health Connect मा रिड वा राइट गर्न दिने भन्ने कुरा छनौट गर्नुहोस्"</string>

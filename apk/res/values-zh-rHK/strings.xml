@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect 移除應用程式權限的原因"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"如果 Google Play 已移除某個應用程式或將其停權，Health Connect 會自動移除該應用程式的權限。\n\n這代表該應用程式無法再存取儲存於 Health Connect 的資料。該應用程式如曾寫入資料，則會在已停用的應用程式清單中顯示。"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"知道了"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"開始使用 Health Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect 能儲存健康和健身資料，方便你同步處理手機上各個應用程式的資料"</string>
     <string name="share_data" msgid="3481932156368883946">"與應用程式分享資料"</string>
     <string name="share_data_description" msgid="2919871301634375092">"選擇每個應用程式可讀取或寫入 Health Connect 的資料"</string>

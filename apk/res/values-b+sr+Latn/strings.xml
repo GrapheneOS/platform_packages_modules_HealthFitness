@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Zašto Povezivanje zdravlja uklanja dozvole za aplikacije"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ako je aplikacija suspendovana ili uklonjena sa Google Play-a, Povezivanje zdravlja automatski uklanja njene dozvole.\n\nTo znači da aplikacija više ne može da pristupa podacima sačuvanim u Povezivanju zdravlja. Ako je ova aplikacija prethodno upisivala podatke, pojaviće se na listi neaktivnih aplikacija."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Važi"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Započnite sa Povezivanjem zdravlja"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Povezivanje zdravlja čuva vaše podatke o zdravlju i fitnesu i pruža vam jednostavan način da sinhronizujete različite aplikacije na telefonu"</string>
     <string name="share_data" msgid="3481932156368883946">"Delite podatke sa aplikacijama"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Odaberite podatke koje svaka aplikacije može da čita i upisuje u Povezivanje zdravlja"</string>

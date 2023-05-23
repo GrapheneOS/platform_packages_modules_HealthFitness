@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Isizathu sokuba i-Health Connect isuse izimvume ze-app"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Uma i-app imiswe okwesikhashana noma lisuswa ku-Google Play, i-Health Connect isusa izimvume zayo ngokuzenzakalelayo.\n\nLokhu kusho ukuthi i-app ngeke isakwazi ukufinyelela idatha egcinwe ku-Health Connect. Uma le-app inedatha ebhaliwe ngaphambilini, ivela kuhlu lwama-app angasebenzi."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Ngiyezwa"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Qalisa nge-Health Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"I-Health Connect igcina ngokuvikelekile idatha yakho yezempilo nokufaneleka, okukunikeza indlela elula yokuvumelanisa ama-app ahlukile efonini yakho"</string>
     <string name="share_data" msgid="3481932156368883946">"Yabelana ngedatha nama-app akho"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Khetha idatha i-app ngayinye engayifunda noma iyibhalele ku-Health Connect"</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"u-<xliff:g id="DURATION"> %1$s</xliff:g> ulele"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"uphapheme"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"uphapheme embhedeni"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"ukulala"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"awukho embhedeni"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"Ukulala kwe-REM"</string>
