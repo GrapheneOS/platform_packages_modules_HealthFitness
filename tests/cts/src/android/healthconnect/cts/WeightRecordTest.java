@@ -526,17 +526,19 @@ public class WeightRecordTest {
     }
 
     @Test
-    public void testAggregatePeriod_withLocalDateTime() throws Exception {
-        LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
+    public void testAggregatePeriod_withLocalDateTime_responsesAnswerAndBoundariesCorrect()
+            throws Exception {
+        testAggregatePeriodForZoneOffset(ZoneOffset.ofHours(4));
+        testAggregatePeriodForZoneOffset(ZoneOffset.ofHours(-4));
+        testAggregatePeriodForZoneOffset(ZoneOffset.MIN);
+        testAggregatePeriodForZoneOffset(ZoneOffset.MAX);
+        testAggregatePeriodForZoneOffset(ZoneOffset.UTC);
+    }
+
+    void testAggregatePeriodForZoneOffset(ZoneOffset offset) throws Exception {
         Instant endTime = Instant.now();
-
-        TestUtils.insertRecords(
-                List.of(
-                        getWeightRecordWithTime(endTime.minus(1, ChronoUnit.HOURS)),
-                        getWeightRecordWithTime(endTime.minus(27, ChronoUnit.HOURS)),
-                        getWeightRecordWithTime(endTime.minus(55, ChronoUnit.HOURS))));
-
-        ZoneOffset currentOffset = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, offset);
+        insertThreeWeightRecordsWithZoneOffset(endTime, offset);
 
         LocalTimeRangeFilter filter =
                 new LocalTimeRangeFilter.Builder()
@@ -555,34 +557,38 @@ public class WeightRecordTest {
         LocalDateTime groupBoundary = endTimeLocal.minusDays(3);
         for (int i = 0; i < 3; i++) {
             assertThat(responses.get(i).get(WEIGHT_MIN)).isEqualTo(Mass.fromGrams(10.0));
-            assertThat(responses.get(i).getZoneOffset(WEIGHT_MIN)).isEqualTo(currentOffset);
+            assertThat(responses.get(i).getZoneOffset(WEIGHT_MIN)).isEqualTo(offset);
             assertThat(responses.get(i).getStartTime().getDayOfYear())
                     .isEqualTo(groupBoundary.getDayOfYear());
             groupBoundary = groupBoundary.plus(1, ChronoUnit.DAYS);
             assertThat(responses.get(i).getEndTime().getDayOfYear())
                     .isEqualTo(groupBoundary.getDayOfYear());
         }
-    }
 
+        tearDown();
+    }
 
     @Test
     public void testAggregateDuration_withLocalDateTime_responsesAnswerAndBoundariesCorrect()
             throws Exception {
-        LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
-        LocalDateTime startTimeLocal = endTimeLocal.minusDays(3);
-        Instant endTime = Instant.now();
+        testDurationLocalTimeAggregationZoneOffset(ZoneOffset.ofHours(4));
+        testDurationLocalTimeAggregationZoneOffset(ZoneOffset.ofHours(-4));
+        testDurationLocalTimeAggregationZoneOffset(ZoneOffset.MIN);
+        testDurationLocalTimeAggregationZoneOffset(ZoneOffset.MAX);
+        testDurationLocalTimeAggregationZoneOffset(ZoneOffset.UTC);
+    }
 
-        TestUtils.insertRecords(
-                List.of(
-                        getWeightRecordWithTime(endTime.minus(1, ChronoUnit.HOURS)),
-                        getWeightRecordWithTime(endTime.minus(27, ChronoUnit.HOURS)),
-                        getWeightRecordWithTime(endTime.minus(55, ChronoUnit.HOURS))));
+    private void testDurationLocalTimeAggregationZoneOffset(ZoneOffset offset)
+            throws InterruptedException {
+        Instant endTime = Instant.now();
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, offset);
+        insertThreeWeightRecordsWithZoneOffset(endTime, offset);
 
         List<AggregateRecordsGroupedByDurationResponse<Mass>> responses =
                 TestUtils.getAggregateResponseGroupByDuration(
                         new AggregateRecordsRequest.Builder<Mass>(
                                         new LocalTimeRangeFilter.Builder()
-                                                .setStartTime(startTimeLocal)
+                                                .setStartTime(endTimeLocal.minusDays(3))
                                                 .setEndTime(endTimeLocal)
                                                 .build())
                                 .addAggregationType(WEIGHT_MAX)
@@ -590,19 +596,27 @@ public class WeightRecordTest {
                         Duration.ofDays(1));
 
         assertThat(responses).hasSize(3);
-        Instant groupBoundary =
-                startTimeLocal.toInstant(
-                        ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+        Instant groupBoundary = endTimeLocal.minusDays(3).toInstant(ZoneOffset.UTC);
         for (int i = 0; i < 3; i++) {
             assertThat(responses.get(i).get(WEIGHT_MAX)).isEqualTo(Mass.fromGrams(10.0));
-            assertThat(responses.get(i).getZoneOffset(WEIGHT_MAX))
-                    .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+            assertThat(responses.get(i).getZoneOffset(WEIGHT_MAX)).isEqualTo(offset);
             assertThat(responses.get(i).getStartTime().getEpochSecond())
                     .isEqualTo(groupBoundary.getEpochSecond());
             groupBoundary = groupBoundary.plus(1, ChronoUnit.DAYS);
             assertThat(responses.get(i).getEndTime().getEpochSecond())
                     .isEqualTo(groupBoundary.getEpochSecond());
         }
+
+        tearDown();
+    }
+
+    private void insertThreeWeightRecordsWithZoneOffset(Instant time, ZoneOffset offset)
+            throws InterruptedException {
+        TestUtils.insertRecords(
+                List.of(
+                        getWeightRecordWithTime(time.minus(1, ChronoUnit.HOURS), offset),
+                        getWeightRecordWithTime(time.minus(27, ChronoUnit.HOURS), offset),
+                        getWeightRecordWithTime(time.minus(55, ChronoUnit.HOURS), offset)));
     }
 
     @Test
@@ -794,6 +808,11 @@ public class WeightRecordTest {
     }
 
     private static WeightRecord getWeightRecordWithTime(Instant time) {
+        return getWeightRecordWithTime(
+                time, ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
+    }
+
+    private static WeightRecord getWeightRecordWithTime(Instant time, ZoneOffset offset) {
         Device device =
                 new Device.Builder()
                         .setManufacturer("google")
@@ -808,7 +827,7 @@ public class WeightRecordTest {
         testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
         return new WeightRecord.Builder(testMetadataBuilder.build(), time, Mass.fromGrams(10.0))
-                .setZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
+                .setZoneOffset(offset)
                 .build();
     }
 }
