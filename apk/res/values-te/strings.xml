@@ -251,7 +251,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"ఎంచుకున్న రోజు"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"మునుపటి రోజు"</string>
     <string name="default_error" msgid="7966868260616403475">"ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ట్రై చేయండి."</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"ఈ అనుమతి ఉన్న యాప్‌లు మీ ఆరోగ్యం, అలాగే ఫిట్‌నెస్ డేటాను చదవగలవు, రాయగలవు."</string>
+    <string name="health_permission_header_description" msgid="7497601695462373927">"ఈ అనుమతి ఉన్న యాప్‌లు మీ ఆరోగ్యానికి, ఫిట్‌నెస్‌కు చెందిన డేటాను రీడ్‌ చేసి, రైట్‌ చేయగలవు."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connectలో స్టోర్ చేయబడిన డేటాను ఏ యాప్‌లు యాక్సెస్ చేయవచ్చో కంట్రోల్ చేయండి. ఒక యాప్ చదవగలిగే లేదా రాయగల డేటాను రివ్యూ చేయడానికి సదరు యాప్‌ను ట్యాప్ చేయండి."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"యాక్సెస్ అనుమతించబడింది"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"యాక్సెస్ అనుమతించబడలేదు"</string>
@@ -495,8 +495,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> స్లీపింగ్"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"మేల్కొని ఉన్న సమయం"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"సమయం పాటు బెడ్‌పై మెలుకువగా"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"స్లీపింగ్"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"మంచం వెలుపల"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM స్లీప్"</string>
