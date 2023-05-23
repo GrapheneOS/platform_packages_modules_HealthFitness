@@ -41,6 +41,8 @@ import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.migration.MigrationActivity
+import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationInProgressDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationPendingDialog
 import com.android.healthconnect.controller.migration.MigrationViewModel
@@ -188,6 +190,9 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
                     null) { _, _ ->
                         requireActivity().finish()
                     }
+            }
+            MigrationState.COMPLETE -> {
+                maybeShowWhatsNewDialog(requireContext())
             }
             else -> {
                 // Show nothing
