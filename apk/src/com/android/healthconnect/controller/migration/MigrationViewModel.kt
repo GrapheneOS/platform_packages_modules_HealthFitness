@@ -40,7 +40,7 @@ constructor(
         loadHealthConnectMigrationUiState()
     }
 
-    private fun loadHealthConnectMigrationUiState() {
+    fun loadHealthConnectMigrationUiState() {
         viewModelScope.launch {
             _migrationState.postValue(
                 MigrationFragmentState.WithData(loadMigrationStateUseCase.invoke()))
