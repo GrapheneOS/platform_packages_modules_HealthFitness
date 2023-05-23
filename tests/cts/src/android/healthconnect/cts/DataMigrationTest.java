@@ -25,7 +25,6 @@ import static android.health.connect.HealthPermissions.READ_HEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.datatypes.units.Length.fromMeters;
 import static android.health.connect.datatypes.units.Power.fromWatts;
-import static android.healthconnect.cts.TestUtils.runShellCommand;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -76,6 +75,7 @@ import android.health.connect.migration.MigrationException;
 import android.health.connect.migration.PermissionMigrationPayload;
 import android.health.connect.migration.PriorityMigrationPayload;
 import android.health.connect.migration.RecordMigrationPayload;
+import android.healthconnect.cts.utils.TestUtils;
 import android.os.Build;
 import android.os.OutcomeReceiver;
 import android.os.UserHandle;
@@ -900,7 +900,7 @@ public class DataMigrationTest {
                         + ".MigrationStateChangeJob@android/com\\.android\\.server\\"
                         + ".healthconnect\\.HealthConnectDailyService";
 
-        String commandOutput = runShellCommand("dumpsys jobscheduler");
+        String commandOutput = TestUtils.runShellCommand("dumpsys jobscheduler");
 
         Pattern regexPattern = Pattern.compile(scheduledStateChangeJobPattern);
         Matcher matcher = regexPattern.matcher(commandOutput);
@@ -921,7 +921,7 @@ public class DataMigrationTest {
 
     private String getHealthFitnessDeviceConfig(String key, String defaultValue)
             throws IOException {
-        String value = runShellCommand("device_config get health_fitness " + key);
+        String value = TestUtils.runShellCommand("device_config get health_fitness " + key);
         return value.isBlank() ? defaultValue : value.strip();
     }
 
@@ -958,7 +958,7 @@ public class DataMigrationTest {
     }
 
     private void setHealthFitnessDeviceConfig(String key, String value) throws IOException {
-        runShellCommand("device_config put health_fitness " + key + " " + value);
+        TestUtils.runShellCommand("device_config put health_fitness " + key + " " + value);
     }
 
     private void assertStateChangeJobExists() throws IOException {

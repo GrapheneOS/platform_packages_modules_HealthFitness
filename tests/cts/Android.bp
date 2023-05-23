@@ -44,6 +44,7 @@ android_test {
         "cts-wm-util",
 	"modules-utils-build",
         "testng",
+        "cts-healthconnect-utils",
     ],
     min_sdk_version: "34",
     sdk_version: "module_current",
@@ -63,7 +64,6 @@ android_test {
     ],
     srcs: [
         "src/android/healthconnect/cts/nopermission/*.java",
-        "src/android/healthconnect/cts/TestUtils.java",
     ],
     // Tag this module as a cts test artifact
     test_suites: [
@@ -78,6 +78,7 @@ android_test {
         "ctstestrunner-axt",
         "cts-wm-util",
         "testng",
+        "cts-healthconnect-utils",
     ],
     min_sdk_version: "34",
     sdk_version: "module_current",
@@ -97,7 +98,6 @@ android_test {
     ],
     srcs: [
         "src/android/healthconnect/cts/ratelimiter/*.java",
-        "src/android/healthconnect/cts/TestUtils.java",
     ],
     // Tag this module as a cts test artifact
     test_suites: [
@@ -113,6 +113,7 @@ android_test {
         "cts-wm-util",
 	"modules-utils-build",
         "testng",
+        "cts-healthconnect-utils",
     ],
     min_sdk_version: "34",
     sdk_version: "module_current",
@@ -132,7 +133,6 @@ android_test {
         ":healthfitness-cts-testapp-srcs",
         ":healthfitness-cts-testapp2-srcs",
         "src/android/healthconnect/cts/ui/**/*.kt",
-        "src/android/healthconnect/cts/TestUtils.java",
         "src/com/android/cts/install/lib/*.java",
     ],
     // Tag this module as a cts test artifact
@@ -149,7 +149,8 @@ android_test {
         "cts-wm-util",
         "testng",
         "cts-healthconnect-lib",
-        "cts-install-lib"
+        "cts-install-lib",
+        "cts-healthconnect-utils",
     ],
     min_sdk_version: "34",
     sdk_version: "module_current",
@@ -174,7 +175,6 @@ android_test {
     ],
     srcs: [
         "src/android/healthconnect/cts/showmigrationinfointent/ShowMigrationInfoIntentAbsentTest.java",
-        "src/android/healthconnect/cts/TestUtils.java",
     ],
     // Tag this module as a cts test artifact
     test_suites: [
@@ -190,6 +190,7 @@ android_test {
         "cts-wm-util",
 	"modules-utils-build",
         "testng",
+        "cts-healthconnect-utils",
     ],
     min_sdk_version: "34",
     sdk_version: "module_current",

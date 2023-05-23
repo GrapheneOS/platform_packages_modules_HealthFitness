@@ -16,9 +16,9 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.cts.TestUtils.SESSION_END_TIME;
-import static android.healthconnect.cts.TestUtils.SESSION_START_TIME;
-import static android.healthconnect.cts.TestUtils.buildSleepSession;
+import static android.healthconnect.cts.utils.TestUtils.SESSION_END_TIME;
+import static android.healthconnect.cts.utils.TestUtils.SESSION_START_TIME;
+import static android.healthconnect.cts.utils.TestUtils.buildSleepSession;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -38,6 +38,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
+import android.healthconnect.cts.utils.TestUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 

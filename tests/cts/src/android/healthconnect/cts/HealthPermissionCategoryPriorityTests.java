@@ -22,7 +22,7 @@ import static android.health.connect.HealthDataCategory.CYCLE_TRACKING;
 import static android.health.connect.HealthDataCategory.NUTRITION;
 import static android.health.connect.HealthDataCategory.SLEEP;
 import static android.health.connect.HealthDataCategory.VITALS;
-import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
+import static android.healthconnect.cts.utils.TestUtils.MANAGE_HEALTH_DATA;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -33,6 +33,7 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.datatypes.DataOrigin;
+import android.healthconnect.cts.utils.TestUtils;
 import android.os.OutcomeReceiver;
 
 import androidx.test.InstrumentationRegistry;

@@ -16,33 +16,43 @@
 
 package android.healthconnect.cts.testhelper;
 
-import static android.healthconnect.cts.lib.TestUtils.APP_PKG_NAME_USED_IN_DATA_ORIGIN;
-import static android.healthconnect.cts.lib.TestUtils.CHANGE_LOGS_RESPONSE;
-import static android.healthconnect.cts.lib.TestUtils.CHANGE_LOG_TOKEN;
-import static android.healthconnect.cts.lib.TestUtils.CLIENT_ID;
-import static android.healthconnect.cts.lib.TestUtils.DELETE_RECORDS_QUERY;
-import static android.healthconnect.cts.lib.TestUtils.GET_CHANGE_LOG_TOKEN_QUERY;
-import static android.healthconnect.cts.lib.TestUtils.INSERT_RECORD_QUERY;
-import static android.healthconnect.cts.lib.TestUtils.INTENT_EXCEPTION;
-import static android.healthconnect.cts.lib.TestUtils.QUERY_TYPE;
-import static android.healthconnect.cts.lib.TestUtils.READ_CHANGE_LOGS_QUERY;
-import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_QUERY;
-import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_SIZE;
-import static android.healthconnect.cts.lib.TestUtils.READ_RECORD_CLASS_NAME;
-import static android.healthconnect.cts.lib.TestUtils.READ_USING_DATA_ORIGIN_FILTERS;
-import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
-import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
-import static android.healthconnect.cts.lib.TestUtils.UPDATE_EXERCISE_ROUTE;
-import static android.healthconnect.cts.lib.TestUtils.UPDATE_RECORDS_QUERY;
-import static android.healthconnect.cts.lib.TestUtils.UPSERT_EXERCISE_ROUTE;
-import static android.healthconnect.cts.lib.TestUtils.getChangeLogs;
-import static android.healthconnect.cts.lib.TestUtils.getExerciseSessionRecord;
-import static android.healthconnect.cts.lib.TestUtils.getTestRecords;
-import static android.healthconnect.cts.lib.TestUtils.insertRecords;
-import static android.healthconnect.cts.lib.TestUtils.insertRecordsAndGetIds;
-import static android.healthconnect.cts.lib.TestUtils.readRecords;
-import static android.healthconnect.cts.lib.TestUtils.updateRecords;
-import static android.healthconnect.cts.lib.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.APP_PKG_NAME_USED_IN_DATA_ORIGIN;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOGS_RESPONSE;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOG_TOKEN;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.CLIENT_ID;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.DELETE_RECORDS_QUERY;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.END_TIME;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.EXERCISE_SESSION;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.GET_CHANGE_LOG_TOKEN_QUERY;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.INSERT_RECORD_QUERY;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.INTENT_EXCEPTION;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.PAUSE_END;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.PAUSE_START;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.QUERY_TYPE;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_CHANGE_LOGS_QUERY;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_RECORDS_QUERY;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_RECORDS_SIZE;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_RECORD_CLASS_NAME;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_USING_DATA_ORIGIN_FILTERS;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.RECORD_IDS;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.RECORD_TYPE;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.START_TIME;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.STEPS_COUNT;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.STEPS_RECORD;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.SUCCESS;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.UPDATE_EXERCISE_ROUTE;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.UPDATE_RECORDS_QUERY;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.UPSERT_EXERCISE_ROUTE;
+import static android.healthconnect.cts.utils.TestUtils.buildExerciseSession;
+import static android.healthconnect.cts.utils.TestUtils.buildStepsRecord;
+import static android.healthconnect.cts.utils.TestUtils.getChangeLogs;
+import static android.healthconnect.cts.utils.TestUtils.getExerciseSessionRecord;
+import static android.healthconnect.cts.utils.TestUtils.getTestRecords;
+import static android.healthconnect.cts.utils.TestUtils.insertRecords;
+import static android.healthconnect.cts.utils.TestUtils.insertRecordsAndGetIds;
+import static android.healthconnect.cts.utils.TestUtils.readRecords;
+import static android.healthconnect.cts.utils.TestUtils.updateRecords;
+import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
 
 import android.app.Activity;
 import android.content.Context;
@@ -56,11 +66,12 @@ import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
-import android.healthconnect.cts.lib.TestUtils;
+import android.healthconnect.cts.utils.TestUtils;
 import android.os.Bundle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HealthConnectTestHelper extends Activity {
@@ -89,6 +100,28 @@ public class HealthConnectTestHelper extends Activity {
                                 insertRecordsWithGivenClientId(
                                         queryType, bundle.getDouble(CLIENT_ID), context);
                         break;
+                    }
+                    if (bundle.containsKey(RECORD_TYPE)) {
+                        if (bundle.getString(RECORD_TYPE).equals(STEPS_RECORD)) {
+                            returnIntent =
+                                    insertStepsRecord(
+                                            queryType,
+                                            bundle.getString(START_TIME),
+                                            bundle.getString(END_TIME),
+                                            bundle.getInt(STEPS_COUNT),
+                                            context);
+                            break;
+                        } else if (bundle.getString(RECORD_TYPE).equals(EXERCISE_SESSION)) {
+                            returnIntent =
+                                    insertExerciseSession(
+                                            queryType,
+                                            bundle.getString(START_TIME),
+                                            bundle.getString(END_TIME),
+                                            bundle.getString(PAUSE_START),
+                                            bundle.getString(PAUSE_END),
+                                            context);
+                            break;
+                        }
                     }
                     returnIntent = insertRecord(queryType, context);
                     break;
@@ -135,6 +168,15 @@ public class HealthConnectTestHelper extends Activity {
                                     queryType, bundle.getString(CHANGE_LOG_TOKEN), context);
                     break;
                 case GET_CHANGE_LOG_TOKEN_QUERY:
+                    if (bundle.containsKey(READ_RECORD_CLASS_NAME)) {
+                        returnIntent =
+                                getChangeLogToken(
+                                        queryType,
+                                        bundle.getString(APP_PKG_NAME_USED_IN_DATA_ORIGIN),
+                                        bundle.getStringArrayList(READ_RECORD_CLASS_NAME),
+                                        context);
+                        break;
+                    }
                     returnIntent =
                             getChangeLogToken(
                                     queryType,
@@ -494,6 +536,108 @@ public class HealthConnectTestHelper extends Activity {
                         context);
 
         intent.putExtra(CHANGE_LOG_TOKEN, tokenResponse.getToken());
+        return intent;
+    }
+
+    /**
+     * Method to get changeLogToken for an app
+     *
+     * @param queryType - specifies the action, here it should be GET_CHANGE_LOG_TOKEN_QUERY
+     * @param pkgName - pkgName of the app whose changeLogs we have to read using the returned token
+     * @param recordClassesToRead - Record Classes whose changeLogs to be read using the returned
+     *     token
+     * @param context - application context
+     * @return - Intent to send back to the main app which is running the tests
+     */
+    private Intent getChangeLogToken(
+            String queryType,
+            String pkgName,
+            ArrayList<String> recordClassesToRead,
+            Context context)
+            throws Exception {
+        final Intent intent = new Intent(queryType);
+
+        ChangeLogTokenRequest.Builder changeLogTokenRequestBuilder =
+                new ChangeLogTokenRequest.Builder()
+                        .addDataOriginFilter(
+                                new DataOrigin.Builder().setPackageName(pkgName).build());
+        for (String recordClass : recordClassesToRead) {
+            changeLogTokenRequestBuilder.addRecordType(
+                    (Class<? extends Record>) Class.forName(recordClass));
+        }
+        ChangeLogTokenResponse tokenResponse =
+                TestUtils.getChangeLogToken(changeLogTokenRequestBuilder.build(), context);
+
+        intent.putExtra(CHANGE_LOG_TOKEN, tokenResponse.getToken());
+        return intent;
+    }
+
+    /**
+     * Method to build steps record and insert them
+     *
+     * @param queryType - specifies the action, here it should be INSERT_RECORDS_QUERY
+     * @param startTime - start time for the steps record to build
+     * @param endTime - end time for the steps record to build
+     * @param stepsCount - number of steps to be added in the steps record
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
+    private Intent insertStepsRecord(
+            String queryType, String startTime, String endTime, int stepsCount, Context context) {
+        final Intent intent = new Intent(queryType);
+        try {
+            List<Record> recordToInsert =
+                    Arrays.asList(
+                            buildStepsRecord(
+                                    startTime, endTime, stepsCount, context.getPackageName()));
+            insertRecords(recordToInsert, context);
+            intent.putExtra(SUCCESS, true);
+        } catch (Exception e) {
+            intent.putExtra(SUCCESS, false);
+        }
+        return intent;
+    }
+
+    /**
+     * Method to build Exercise Session records and insert them
+     *
+     * @param queryType - specifies the action, here it should be INSERT_RECORDS_QUERY
+     * @param sessionStartTime - start time of the exercise session to build
+     * @param sessionEndTime - end time of the exercise session t build
+     * @param pauseStart - start time of the pause segment in the exercise session
+     * @param pauseEnd - end time of the pause segment in the exercise session
+     * @param context - application context
+     * @return Intent to send back to the main app which is running the tests
+     */
+    private Intent insertExerciseSession(
+            String queryType,
+            String sessionStartTime,
+            String sessionEndTime,
+            String pauseStart,
+            String pauseEnd,
+            Context context) {
+        final Intent intent = new Intent(queryType);
+        try {
+            List<Record> recordToInsert;
+            if (pauseStart == null) {
+                recordToInsert =
+                        Arrays.asList(
+                                buildExerciseSession(sessionStartTime, sessionEndTime, context));
+            } else {
+                recordToInsert =
+                        Arrays.asList(
+                                buildExerciseSession(
+                                        sessionStartTime,
+                                        sessionEndTime,
+                                        pauseStart,
+                                        pauseEnd,
+                                        context));
+            }
+            insertRecords(recordToInsert, context);
+            intent.putExtra(SUCCESS, true);
+        } catch (Exception e) {
+            intent.putExtra(SUCCESS, false);
+        }
         return intent;
     }
 }

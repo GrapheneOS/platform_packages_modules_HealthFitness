@@ -18,15 +18,15 @@ package android.healthconnect.cts.device;
 
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
 import static android.healthconnect.cts.device.HealthConnectDeviceTest.APP_A_WITH_READ_WRITE_PERMS;
-import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_SIZE;
-import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
-import static android.healthconnect.cts.lib.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.lib.TestUtils.deleteTestData;
-import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
-import static android.healthconnect.cts.lib.TestUtils.insertSessionNoRouteAs;
-import static android.healthconnect.cts.lib.TestUtils.readRecords;
-import static android.healthconnect.cts.lib.TestUtils.readRecordsAs;
-import static android.healthconnect.cts.lib.TestUtils.updateRouteAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_RECORDS_SIZE;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.SUCCESS;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.insertRecordAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.insertSessionNoRouteAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.readRecordsAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.updateRouteAs;
+import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.cts.utils.TestUtils.deleteTestData;
+import static android.healthconnect.cts.utils.TestUtils.readRecords;
 
 import static com.android.compatibility.common.util.FeatureUtil.AUTOMOTIVE_FEATURE;
 import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature;

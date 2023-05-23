@@ -23,6 +23,7 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
+import android.healthconnect.cts.utils.TestUtils;
 import android.provider.DeviceConfig;
 
 import androidx.test.platform.app.InstrumentationRegistry;

@@ -34,7 +34,7 @@ import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
-import android.healthconnect.cts.TestUtils;
+import android.healthconnect.cts.utils.TestUtils;
 import android.platform.test.annotations.AppModeFull;
 import android.provider.DeviceConfig;
 
@@ -275,8 +275,8 @@ public class RateLimiterTest {
     /**
      * This method tries to use the Maximum write quota possible. Distributes the load across
      * Insert, and Update APIs. Also, we provide dataManagement permission to
-     * TestUtils.verifyDeleteRecords. We test unmetered rate limting as well here. No write quota is
-     * used by TestUtils.verifyDeleteRecords.
+     * MultiAppTestUtils.verifyDeleteRecords. We test unmetered rate limting as well here. No write
+     * quota is used by MultiAppTestUtils.verifyDeleteRecords.
      */
     private void tryAcquireCallQuotaNTimesForWrite(int nTimes) throws InterruptedException {
         List<Record> testRecord = Arrays.asList(TestUtils.getCompleteStepsRecord());
