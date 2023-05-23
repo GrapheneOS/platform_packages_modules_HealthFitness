@@ -24,7 +24,7 @@ import android.app.UiAutomation;
 import android.content.Context;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.migration.MigrationException;
-import android.healthconnect.cts.TestUtils;
+import android.healthconnect.cts.utils.TestUtils;
 import android.os.Build;
 import android.os.OutcomeReceiver;
 import android.os.ext.SdkExtensions;

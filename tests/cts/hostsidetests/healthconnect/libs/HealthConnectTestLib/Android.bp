@@ -27,6 +27,7 @@ java_library {
                  "androidx.test.rules",
                   "cts-install-lib",
                   "platform-test-annotations",
+                  "cts-healthconnect-utils",
     ],
     sdk_version: "test_current"
 }

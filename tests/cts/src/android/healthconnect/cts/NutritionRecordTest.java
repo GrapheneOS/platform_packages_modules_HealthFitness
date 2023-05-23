@@ -82,6 +82,7 @@ import android.health.connect.datatypes.NutritionRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Mass;
+import android.healthconnect.cts.utils.TestUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;

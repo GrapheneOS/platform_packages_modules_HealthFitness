@@ -16,30 +16,30 @@
 
 package android.healthconnect.cts.device;
 
-import static android.healthconnect.cts.lib.TestUtils.CHANGE_LOGS_RESPONSE;
-import static android.healthconnect.cts.lib.TestUtils.CHANGE_LOG_TOKEN;
-import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_SIZE;
-import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
-import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
-import static android.healthconnect.cts.lib.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.lib.TestUtils.deleteRecordsAs;
-import static android.healthconnect.cts.lib.TestUtils.deleteTestData;
-import static android.healthconnect.cts.lib.TestUtils.fetchDataOriginsPriorityOrder;
-import static android.healthconnect.cts.lib.TestUtils.getChangeLogTokenAs;
-import static android.healthconnect.cts.lib.TestUtils.getGrantedHealthPermissions;
-import static android.healthconnect.cts.lib.TestUtils.grantPermission;
-import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
-import static android.healthconnect.cts.lib.TestUtils.insertRecordWithAnotherAppPackageName;
-import static android.healthconnect.cts.lib.TestUtils.insertRecordWithGivenClientId;
-import static android.healthconnect.cts.lib.TestUtils.readChangeLogsUsingDataOriginFiltersAs;
-import static android.healthconnect.cts.lib.TestUtils.readRecords;
-import static android.healthconnect.cts.lib.TestUtils.readRecordsAs;
-import static android.healthconnect.cts.lib.TestUtils.readRecordsUsingDataOriginFiltersAs;
-import static android.healthconnect.cts.lib.TestUtils.revokeHealthPermissions;
-import static android.healthconnect.cts.lib.TestUtils.revokePermission;
-import static android.healthconnect.cts.lib.TestUtils.updateDataOriginPriorityOrder;
-import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
-import static android.healthconnect.cts.lib.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOGS_RESPONSE;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOG_TOKEN;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.READ_RECORDS_SIZE;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.RECORD_IDS;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.SUCCESS;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.deleteRecordsAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.getChangeLogTokenAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.insertRecordAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.insertRecordWithAnotherAppPackageName;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.insertRecordWithGivenClientId;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.readChangeLogsUsingDataOriginFiltersAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.readRecordsAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.readRecordsUsingDataOriginFiltersAs;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.updateRecordsAs;
+import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.cts.utils.TestUtils.deleteTestData;
+import static android.healthconnect.cts.utils.TestUtils.fetchDataOriginsPriorityOrder;
+import static android.healthconnect.cts.utils.TestUtils.getGrantedHealthPermissions;
+import static android.healthconnect.cts.utils.TestUtils.grantPermission;
+import static android.healthconnect.cts.utils.TestUtils.readRecords;
+import static android.healthconnect.cts.utils.TestUtils.revokeHealthPermissions;
+import static android.healthconnect.cts.utils.TestUtils.revokePermission;
+import static android.healthconnect.cts.utils.TestUtils.updateDataOriginPriorityOrder;
+import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -54,7 +54,7 @@ import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
-import android.healthconnect.cts.lib.TestUtils;
+import android.healthconnect.cts.utils.TestUtils;
 import android.os.Bundle;
 
 import androidx.test.core.app.ApplicationProvider;

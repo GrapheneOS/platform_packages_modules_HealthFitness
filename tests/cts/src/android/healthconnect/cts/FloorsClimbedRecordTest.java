@@ -37,6 +37,7 @@ import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.FloorsClimbedRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
+import android.healthconnect.cts.utils.TestUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;

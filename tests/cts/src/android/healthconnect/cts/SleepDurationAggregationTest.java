@@ -17,8 +17,8 @@
 package android.healthconnect.cts;
 
 import static android.health.connect.datatypes.SleepSessionRecord.SLEEP_DURATION_TOTAL;
-import static android.healthconnect.cts.TestUtils.SESSION_END_TIME;
-import static android.healthconnect.cts.TestUtils.SESSION_START_TIME;
+import static android.healthconnect.cts.utils.TestUtils.SESSION_END_TIME;
+import static android.healthconnect.cts.utils.TestUtils.SESSION_START_TIME;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -27,6 +27,7 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.SleepSessionRecord;
+import android.healthconnect.cts.utils.TestUtils;
 
 import org.junit.After;
 import org.junit.Test;

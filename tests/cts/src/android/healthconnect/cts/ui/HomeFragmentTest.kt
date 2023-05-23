@@ -19,9 +19,9 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.StepsRecord
-import android.healthconnect.cts.TestUtils.verifyDeleteRecords
+import android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
-import android.healthconnect.cts.lib.TestUtils.insertRecordAs
+import android.healthconnect.cts.lib.MultiAppTestUtils.insertRecordAs
 import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
 import androidx.test.uiautomator.By

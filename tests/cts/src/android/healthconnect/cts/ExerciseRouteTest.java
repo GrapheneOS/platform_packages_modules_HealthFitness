@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 
 import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.datatypes.units.Length;
+import android.healthconnect.cts.utils.TestUtils;
 import android.os.Parcel;
 
 import androidx.test.runner.AndroidJUnit4;

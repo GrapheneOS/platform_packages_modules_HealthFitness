@@ -16,10 +16,10 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.cts.TestUtils.SESSION_END_TIME;
-import static android.healthconnect.cts.TestUtils.SESSION_START_TIME;
-import static android.healthconnect.cts.TestUtils.buildExerciseSession;
-import static android.healthconnect.cts.TestUtils.buildLocationTimePoint;
+import static android.healthconnect.cts.utils.TestUtils.SESSION_END_TIME;
+import static android.healthconnect.cts.utils.TestUtils.SESSION_START_TIME;
+import static android.healthconnect.cts.utils.TestUtils.buildExerciseSession;
+import static android.healthconnect.cts.utils.TestUtils.buildLocationTimePoint;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -43,6 +43,7 @@ import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Length;
+import android.healthconnect.cts.utils.TestUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
