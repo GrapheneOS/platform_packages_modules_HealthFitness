@@ -47,6 +47,9 @@
     },
     {
       "name": "CtsHealthConnectHostSideDeviceTestCases"
+    },
+    {
+      "name": "CtsHealthFitnessShowMigrationInfoIntentAbsentTests"
     }
   ]
 }
