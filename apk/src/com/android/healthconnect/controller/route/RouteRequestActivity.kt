@@ -30,6 +30,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
+import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationInProgressDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationPendingDialog
 import com.android.healthconnect.controller.migration.MigrationViewModel
@@ -63,6 +64,8 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
     private val migrationViewModel: MigrationViewModel by viewModels()
 
     private var requester: String? = null
+    private var migrationState = MigrationState.UNKNOWN
+    private var sessionWithAttribution: SessionWithAttribution? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,12 +88,16 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
 
         viewModel.getExerciseWithRoute(intent.getStringExtra(EXTRA_SESSION_ID)!!)
         runBlocking { requester = appInfoReader.getAppMetadata(callingPackage!!).appName }
-        viewModel.exerciseSession.observe(this) { session -> setupRequestDialog(session) }
+        viewModel.exerciseSession.observe(this) { session ->
+            this.sessionWithAttribution = session
+            setupRequestDialog(session)
+        }
 
         migrationViewModel.migrationState.observe(this) { migrationState ->
             when (migrationState) {
                 is MigrationViewModel.MigrationFragmentState.WithData -> {
                     maybeShowMigrationDialog(migrationState.migrationState)
+                    this.migrationState = migrationState.migrationState
                 }
                 else -> {
                     // do nothing
@@ -151,6 +158,7 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
             setResult(Activity.RESULT_OK, result)
             finish()
         }
+
         dialog =
             AlertDialogBuilder(this)
                 .setIcon(R.attr.healthConnectIcon)
@@ -158,6 +166,12 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
                 .setView(view)
                 .setCancelable(false)
                 .create()
+        if (!dialog!!.isShowing && migrationState in listOf(
+                        MigrationState.IDLE, MigrationState.COMPLETE, MigrationState.COMPLETE_IDLE,
+                        MigrationState.ALLOWED_MIGRATOR_DISABLED, MigrationState.ALLOWED_ERROR
+                )) {
+            dialog?.show()
+        }
     }
 
     private fun setupInfoDialog() {
@@ -202,6 +216,11 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
                         finish()
                     })
             }
+            MigrationState.COMPLETE -> {
+                maybeShowWhatsNewDialog(this) { _, _ ->
+                    dialog?.show()
+                }
+            }
             else -> {
                 // Show the request dialog
                 dialog?.show()
@@ -209,8 +228,8 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
         }
     }
 
-    override fun onPause() {
+    override fun onDestroy() {
         dialog?.dismiss()
-        super.onPause()
+        super.onDestroy()
     }
 }

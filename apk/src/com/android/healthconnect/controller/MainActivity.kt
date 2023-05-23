@@ -62,6 +62,15 @@ class MainActivity : Hilt_MainActivity() {
             .addOnDestinationChangedListener(DestinationChangedListener(this))
     }
 
+    override fun onResume() {
+        super.onResume()
+        val currentMigrationState = runBlocking { migrationViewModel.getCurrentMigrationUiState() }
+
+        if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
+            return
+        }
+    }
+
     override fun onBackPressed() {
         val navController = findNavController(R.id.nav_host_fragment)
         if (!navController.popBackStack()) {

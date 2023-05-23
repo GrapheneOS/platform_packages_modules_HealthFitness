@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.migration
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -38,6 +39,7 @@ class MigrationPausedFragment : Hilt_MigrationPausedFragment() {
 
     companion object {
         private const val TAG = "MigrationPausedFragment"
+        const val INTEGRATION_PAUSED_SEEN_KEY = "integration_paused_seen"
     }
 
     override fun onCreateView(
@@ -53,6 +55,7 @@ class MigrationPausedFragment : Hilt_MigrationPausedFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val resumeButton = view.findViewById<Button>(R.id.resume_button)
+        val cancelButton = view.findViewById<Button>(R.id.cancel_button)
         logger.logImpression(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
         resumeButton.setOnClickListener {
             logger.logInteraction(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
@@ -63,6 +66,25 @@ class MigrationPausedFragment : Hilt_MigrationPausedFragment() {
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
             }
         }
+
+        cancelButton.setOnClickListener {
+            logger.logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
+            val sharedPreferences =
+                    requireActivity()
+                            .getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+            val integrationPausedSeen =
+                    sharedPreferences.getBoolean(INTEGRATION_PAUSED_SEEN_KEY, false)
+            if (!integrationPausedSeen) {
+                sharedPreferences.edit().apply {
+                    putBoolean(INTEGRATION_PAUSED_SEEN_KEY, true)
+                    apply()
+                }
+                findNavController()
+                        .navigate(R.id.action_migrationPausedFragment_to_homeScreen)
+            }
+            requireActivity().finish()
+        }
+
     }
 
     override fun onResume() {

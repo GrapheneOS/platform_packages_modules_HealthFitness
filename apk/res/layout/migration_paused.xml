@@ -66,6 +66,22 @@
             android:layout_weight="1">
 
             <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@android:string/cancel"
+                style="@style/Widget.HealthConnect.Button.Borderless" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
                 android:id="@+id/resume_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

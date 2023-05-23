@@ -23,6 +23,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.migration.MigrationPausedFragment.Companion.INTEGRATION_PAUSED_SEEN_KEY
 import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.logging.MigrationElement
@@ -44,10 +45,6 @@ class MigrationActivity : Hilt_MigrationActivity() {
             activity: Activity,
             migrationState: MigrationState
         ): Boolean {
-            val migrationInputNeeded =
-                (migrationState == MigrationState.ALLOWED_PAUSED) ||
-                    (migrationState == MigrationState.ALLOWED_NOT_STARTED) ||
-                    (migrationState == MigrationState.IN_PROGRESS)
 
             val sharedPreference =
                 activity.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
@@ -72,7 +69,19 @@ class MigrationActivity : Hilt_MigrationActivity() {
                     activity.finish()
                     return true
                 }
-            } else if (migrationInputNeeded) {
+            } else if (migrationState == MigrationState.ALLOWED_PAUSED ||
+                    migrationState == MigrationState.ALLOWED_NOT_STARTED) {
+                val allowedPausedSeen =
+                        sharedPreference.getBoolean(INTEGRATION_PAUSED_SEEN_KEY, false)
+
+                if (!allowedPausedSeen) {
+                    activity.startActivity(createMigrationActivityIntent(activity))
+                    activity.finish()
+                    return true
+                }
+            }
+
+            else if (migrationState == MigrationState.IN_PROGRESS) {
                 activity.startActivity(createMigrationActivityIntent(activity))
                 activity.finish()
                 return true
@@ -122,6 +131,33 @@ class MigrationActivity : Hilt_MigrationActivity() {
                 .show()
         }
 
+        fun maybeShowWhatsNewDialog(context: Context,
+                                    negativeButtonAction: DialogInterface.OnClickListener? = null) {
+            val sharedPreference =
+                    context.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+            val dialogSeen =
+                    sharedPreference.getBoolean(context.getString(R.string.whats_new_dialog_seen), false)
+
+            if (!dialogSeen) {
+                AlertDialogBuilder(context)
+                        .setLogName(MigrationElement.MIGRATION_DONE_DIALOG_CONTAINER)
+                        .setTitle(R.string.migration_whats_new_dialog_title)
+                        .setMessage(R.string.migration_whats_new_dialog_content)
+                        .setCancelable(false)
+                        .setNegativeButton(
+                                R.string.migration_whats_new_dialog_button, MigrationElement.MIGRATION_DONE_DIALOG_BUTTON) {
+                            unusedDialogInterface, unusedInt ->
+                            sharedPreference.edit().apply {
+                                putBoolean(context.getString(R.string.whats_new_dialog_seen), true)
+                                apply()
+                            }
+                            negativeButtonAction?.onClick(unusedDialogInterface, unusedInt)
+                        }
+                        .create()
+                        .show()
+            }
+        }
+
         private fun createMigrationActivityIntent(context: Context): Intent {
             return Intent(context, MigrationActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -148,5 +184,11 @@ class MigrationActivity : Hilt_MigrationActivity() {
             finish()
         }
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.setGraph(R.navigation.migration_nav_graph)
     }
 }
