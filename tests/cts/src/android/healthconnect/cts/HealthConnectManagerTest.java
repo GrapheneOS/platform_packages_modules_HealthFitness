@@ -125,6 +125,7 @@ public class HealthConnectManagerTest {
     @Before
     public void before() throws InterruptedException {
         deleteAllRecords();
+        TestUtils.deleteAllStagedRemoteData();
     }
 
     @After
@@ -142,6 +143,8 @@ public class HealthConnectManagerTest {
 
     @Before
     public void setUp() {
+        // TODO(b/283737434): Update the HC code to use user aware context on permission change.
+        // Temporary fix to set firstGrantTime for the correct user in HSUM.
         TestUtils.deleteAllStagedRemoteData();
     }
 
