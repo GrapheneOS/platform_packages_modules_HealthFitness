@@ -38,7 +38,6 @@ import org.junit.Test;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -214,18 +213,20 @@ public class ExerciseDurationAggregationTest {
     @Test
     public void testAggregation_oneSessionLocalTimeFilter_findsSessionWithMinOffset()
             throws InterruptedException {
-        Instant endTime = SESSION_START_TIME.plus(1, ChronoUnit.HOURS);
+        Instant endTime = Instant.now();
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, ZoneOffset.UTC);
+
+        long sessionDurationSeconds = 3600;
         ExerciseSessionRecord session =
                 new ExerciseSessionRecord.Builder(
                                 TestUtils.generateMetadata(),
-                                SESSION_START_TIME,
+                                endTime.minusSeconds(sessionDurationSeconds),
                                 endTime,
                                 ExerciseSessionType.EXERCISE_SESSION_TYPE_BADMINTON)
                         .setStartZoneOffset(ZoneOffset.MIN)
                         .setEndZoneOffset(ZoneOffset.MIN)
                         .build();
 
-        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, ZoneId.systemDefault());
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -237,7 +238,7 @@ public class ExerciseDurationAggregationTest {
                                 .build(),
                         List.of(session));
 
-        assertThat(response.get(EXERCISE_DURATION_TOTAL)).isEqualTo(3600000);
+        assertThat(response.get(EXERCISE_DURATION_TOTAL)).isEqualTo(sessionDurationSeconds * 1000);
     }
 
     @Test
@@ -262,7 +263,7 @@ public class ExerciseDurationAggregationTest {
                                                 .build()))
                         .build();
 
-        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, ZoneId.systemDefault());
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, ZoneOffset.UTC);
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
