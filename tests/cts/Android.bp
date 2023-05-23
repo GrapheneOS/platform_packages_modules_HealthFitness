@@ -162,3 +162,37 @@ android_test {
             ":CtsHealthConnectTestAppBWithNormalReadWritePermission"
         ],
 }
+
+android_test {
+    name: "CtsHealthFitnessShowMigrationInfoIntentAbsentTests",
+    defaults: ["cts_defaults"],
+    libs: [
+        "android.test.runner",
+        "android.test.base",
+        "framework-healthfitness",
+        "framework-sdkextensions"
+    ],
+    srcs: [
+        "src/android/healthconnect/cts/showmigrationinfointent/ShowMigrationInfoIntentAbsentTest.java",
+        "src/android/healthconnect/cts/TestUtils.java",
+    ],
+    // Tag this module as a cts test artifact
+    test_suites: [
+        "cts",
+        "general-tests",
+        "mts-healthfitness",
+    ],
+    static_libs: [
+        "androidx.test.rules",
+        "androidx.test.ext.truth",
+        "compatibility-device-util-axt",
+        "ctstestrunner-axt",
+        "cts-wm-util",
+	"modules-utils-build",
+        "testng",
+    ],
+    min_sdk_version: "UpsideDownCake",
+    sdk_version: "module_current",
+    test_config:"AndroidTestShowMigrationInfoIntentAbsent.xml",
+    manifest: "AndroidManifestShowMigrationInfoIntentAbsent.xml",
+}
