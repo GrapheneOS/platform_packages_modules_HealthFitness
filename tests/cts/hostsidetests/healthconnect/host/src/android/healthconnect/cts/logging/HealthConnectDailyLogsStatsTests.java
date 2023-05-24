@@ -49,6 +49,9 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
 
     @Override
     protected void setUp() throws Exception {
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
         super.setUp();
         assertThat(mCtsBuild).isNotNull();
         assertThat(isHardwareSupported(getDevice())).isTrue();
@@ -69,6 +72,9 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
     }
 
     public void testConnectedApps() throws Exception {
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
         ConfigUtils.uploadConfigForPushedAtoms(
                 getDevice(),
                 TEST_APP_PKG_NAME,
@@ -84,7 +90,9 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
     }
 
     public void testDatabaseStats() throws Exception {
-
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
         // To clear the data before the test starts (as a safety measure)
         DeviceUtils.runDeviceTests(
                 getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", "deleteAllRecordsAddedForTest");

@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Spravovat přístup aplikací ke zdravotním údajům"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Správa přístupu aplikací ke zdravotním údajům"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Oprávnění a data"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Spravujte údaje o zdraví a kondici v telefonu a určete, které aplikace k nim mají přístup"</string>
     <string name="data_title" msgid="4456619761533380816">"Data a přístup"</string>
