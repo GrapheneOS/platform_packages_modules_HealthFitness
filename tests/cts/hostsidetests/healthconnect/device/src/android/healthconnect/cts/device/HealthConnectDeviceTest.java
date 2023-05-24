@@ -64,8 +64,10 @@ import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.utils.TestUtils;
 import android.os.Bundle;
 
@@ -305,12 +307,16 @@ public class HealthConnectDeviceTest {
     public void testAppCanReadChangeLogsUsingDataOriginFilters() throws Exception {
         Bundle bundle =
                 getChangeLogTokenAs(
-                        APP_B_WITH_READ_WRITE_PERMS, APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+                        APP_B_WITH_READ_WRITE_PERMS,
+                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
+                        null);
         String changeLogTokenForAppB = bundle.getString(CHANGE_LOG_TOKEN);
 
         bundle =
                 getChangeLogTokenAs(
-                        APP_A_WITH_READ_WRITE_PERMS, APP_B_WITH_READ_WRITE_PERMS.getPackageName());
+                        APP_A_WITH_READ_WRITE_PERMS,
+                        APP_B_WITH_READ_WRITE_PERMS.getPackageName(),
+                        null);
         String changeLogTokenForAppA = bundle.getString(CHANGE_LOG_TOKEN);
 
         bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
@@ -791,5 +797,52 @@ public class HealthConnectDeviceTest {
                 .isEqualTo(
                         getInstantTime("03:00 PM").toEpochMilli()
                                 - getInstantTime("01:00 PM").toEpochMilli());
+    }
+
+    @Test
+    public void testToVerifyNoPermissionChangeLog() throws Exception {
+        ArrayList<String> recordClassesToRead = new ArrayList();
+        recordClassesToRead.add(HeartRateRecord.class.getName());
+        recordClassesToRead.add(StepsRecord.class.getName());
+
+        Bundle bundle =
+                getChangeLogTokenAs(
+                        APP_B_WITH_READ_WRITE_PERMS,
+                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
+                        recordClassesToRead);
+        String changeLogTokenForAppB = bundle.getString(CHANGE_LOG_TOKEN);
+
+        bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<String> healthPerms =
+                getGrantedHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
+
+        revokeHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
+
+        try {
+            readChangeLogsUsingDataOriginFiltersAs(
+                    APP_B_WITH_READ_WRITE_PERMS, changeLogTokenForAppB);
+            Assert.fail(
+                    "Should have thrown exception in reading changeLogs without read permissions!");
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
+        }
+
+        try {
+            getChangeLogTokenAs(
+                    APP_B_WITH_READ_WRITE_PERMS,
+                    APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
+                    recordClassesToRead);
+            Assert.fail(
+                    "Should have thrown exception in getting change log token without read "
+                            + "permission!");
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
+        }
+
+        for (String perm : healthPerms) {
+            grantPermission(APP_B_WITH_READ_WRITE_PERMS.getPackageName(), perm);
+        }
     }
 }

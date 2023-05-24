@@ -161,11 +161,16 @@ public class MultiAppTestUtils {
         return getFromTestApp(testApp, bundle);
     }
 
-    public static Bundle getChangeLogTokenAs(TestApp testApp, String pkgName) throws Exception {
+    public static Bundle getChangeLogTokenAs(
+            TestApp testApp, String pkgName, ArrayList<String> recordClassesToRead)
+            throws Exception {
         Bundle bundle = new Bundle();
         bundle.putString(QUERY_TYPE, GET_CHANGE_LOG_TOKEN_QUERY);
         bundle.putString(APP_PKG_NAME_USED_IN_DATA_ORIGIN, pkgName);
 
+        if (recordClassesToRead != null) {
+            bundle.putStringArrayList(READ_RECORD_CLASS_NAME, recordClassesToRead);
+        }
         return getFromTestApp(testApp, bundle);
     }
 
