@@ -138,7 +138,7 @@ public abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>>
 
     final ZoneOffset getZoneOffset(Cursor cursor) {
         ZoneOffset zoneOffset = null;
-        if (cursor.getColumnIndex(START_ZONE_OFFSET_COLUMN_NAME) != -1) {
+        if (cursor.getCount() > 0 && cursor.getColumnIndex(START_ZONE_OFFSET_COLUMN_NAME) != -1) {
             zoneOffset =
                     ZoneOffset.ofTotalSeconds(
                             StorageUtils.getCursorInt(cursor, START_ZONE_OFFSET_COLUMN_NAME));
