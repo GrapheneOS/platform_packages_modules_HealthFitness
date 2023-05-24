@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.api.MigrationState
@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint(HealthPreferenceFragment::class)
 class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
 
-    private val migrationViewModel: MigrationViewModel by activityViewModels()
+    private val migrationViewModel: MigrationViewModel by viewModels()
     private lateinit var sharedPreference: SharedPreferences
 
     override fun onCreateView(
@@ -31,6 +31,7 @@ class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedPreference =
             requireActivity().getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+
         migrationViewModel.migrationState.observe(viewLifecycleOwner) { migrationState ->
             when (migrationState) {
                 is MigrationViewModel.MigrationFragmentState.Loading -> {
