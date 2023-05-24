@@ -235,6 +235,13 @@ public class PriorityRecordsAggregator {
             return;
         }
 
+        if (startPoint.getTime() == endPoint.getTime()
+                && startPoint.getType() == AggregationTimestamp.GROUP_BORDER
+                && endPoint.getType() == AggregationTimestamp.INTERVAL_END) {
+            // Don't create new aggregation result as no open intervals in this group so far.
+            return;
+        }
+
         if (!mGroupToAggregationResult.containsKey(mCurrentGroup)) {
             mGroupToAggregationResult.put(mCurrentGroup, 0.0d);
         }
@@ -246,9 +253,7 @@ public class PriorityRecordsAggregator {
         mGroupToAggregationResult.put(
                 mCurrentGroup,
                 mGroupToAggregationResult.get(mCurrentGroup)
-                        + mOpenIntervals
-                                .last()
-                                .getResultOnInterval(startPoint.getTime(), endPoint.getTime()));
+                        + mOpenIntervals.last().getResultOnInterval(startPoint, endPoint));
 
         if (mCurrentGroup >= 0
                 && !mGroupToFirstZoneOffset.containsKey(mCurrentGroup)

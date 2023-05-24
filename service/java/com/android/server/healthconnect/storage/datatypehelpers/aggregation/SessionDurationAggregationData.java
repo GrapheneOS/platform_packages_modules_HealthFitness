@@ -51,10 +51,10 @@ public class SessionDurationAggregationData extends AggregationRecordData {
     }
 
     @Override
-    double getResultOnInterval(long startTime, long endTime) {
+    double getResultOnInterval(AggregationTimestamp startPoint, AggregationTimestamp endPoint) {
         return AggregationRecordData.calculateIntervalOverlapDuration(
-                        getStartTime(), startTime, getEndTime(), endTime)
-                - calculateDurationToExclude(startTime, endTime);
+                        getStartTime(), startPoint.getTime(), getEndTime(), endPoint.getTime())
+                - calculateDurationToExclude(startPoint.getTime(), endPoint.getTime());
     }
 
     @Override

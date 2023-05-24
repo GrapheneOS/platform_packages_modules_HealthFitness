@@ -17,7 +17,6 @@
 package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.aggregation.PriorityAggregationTestDataFactory.createSessionData;
-import static com.android.server.healthconnect.storage.datatypehelpers.aggregation.PriorityAggregationTestDataFactory.createStepsData;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -37,7 +36,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 
-public class PriorityAggregationTest {
+public class SessionPriorityAggregationTest {
     @Mock Cursor mCursor;
 
     PriorityRecordsAggregator mOneGroupAggregator;
@@ -129,69 +128,6 @@ public class PriorityAggregationTest {
         assertThat(mMultiGroupAggregator.getResultForGroup(0)).isNull(); // Group 10-20
         assertThat(mMultiGroupAggregator.getResultForGroup(1)).isEqualTo(4.0); // Group 20-30
         assertThat(mMultiGroupAggregator.getResultForGroup(2)).isEqualTo(1.0); // Group 30-40
-    }
-
-    @Test
-    public void testOneStepsRecord_doesntHavePriority_accountedForAggregation() {
-        doReturn(createStepsData(10, 20, 10, 100, 1))
-                .when(mOneGroupAggregator)
-                .readNewData(mCursor);
-        when(mCursor.moveToNext()).thenReturn(true, false);
-        mOneGroupAggregator.calculateAggregation(mCursor);
-        assertThat(mOneGroupAggregator.getResultForGroup(0)).isEqualTo(10.0);
-    }
-
-    @Test
-    public void testTwoStepsRecords_noOneHasPriority_latestAccountedForAggregation() {
-        doReturn(createStepsData(10, 20, 10, 100, 10), createStepsData(10, 20, 20, 200, 20))
-                .when(mOneGroupAggregator)
-                .readNewData(mCursor);
-        when(mCursor.moveToNext()).thenReturn(true, true, false);
-        mOneGroupAggregator.calculateAggregation(mCursor);
-        assertThat(mOneGroupAggregator.getResultForGroup(0)).isEqualTo(20);
-    }
-
-    @Test
-    public void testThreeStepsRecords_onlyOneHasPriority_withPriorityAccountedForAggregation() {
-        doReturn(
-                        createStepsData(10, 20, 15, 1, 1),
-                        createStepsData(10, 20, 20, Integer.MIN_VALUE, 10),
-                        createStepsData(10, 20, 25, Integer.MIN_VALUE, 20))
-                .when(mOneGroupAggregator)
-                .readNewData(mCursor);
-        when(mCursor.moveToNext()).thenReturn(true, true, true, false);
-        mOneGroupAggregator.calculateAggregation(mCursor);
-        assertThat(mOneGroupAggregator.getResultForGroup(0)).isEqualTo(15);
-    }
-
-    @Test
-    public void testTwoStepsRecords_samePriority_latestRecordIsPicked() {
-        doReturn(createStepsData(10, 20, 20, 1, 10), createStepsData(10, 20, 15, 1, 1))
-                .when(mOneGroupAggregator)
-                .readNewData(mCursor);
-        when(mCursor.moveToNext()).thenReturn(true, true, false);
-        mOneGroupAggregator.calculateAggregation(mCursor);
-        assertThat(mOneGroupAggregator.getResultForGroup(0)).isEqualTo(20.0);
-    }
-
-    @Test
-    public void testTwoStepsRecords_samePriorityWithOverlap_latestRecordIsPicked() {
-        doReturn(createStepsData(10, 17, 7, 1, 10), createStepsData(12, 20, 80, 1, 1))
-                .when(mOneGroupAggregator)
-                .readNewData(mCursor);
-        when(mCursor.moveToNext()).thenReturn(true, true, false);
-        mOneGroupAggregator.calculateAggregation(mCursor);
-        assertThat(mOneGroupAggregator.getResultForGroup(0)).isEqualTo(7.0 + 30.0);
-    }
-
-    @Test
-    public void testTwoStepsRecords_samePriorityWithOverlapSecondLater_latestRecordIsPicked() {
-        doReturn(createStepsData(10, 17, 7, 1, 1), createStepsData(12, 20, 80, 1, 10))
-                .when(mOneGroupAggregator)
-                .readNewData(mCursor);
-        when(mCursor.moveToNext()).thenReturn(true, true, false);
-        mOneGroupAggregator.calculateAggregation(mCursor);
-        assertThat(mOneGroupAggregator.getResultForGroup(0)).isEqualTo(2.0 + 80.0);
     }
 
     @Test

@@ -30,6 +30,7 @@ public class AggregationTimestamp implements Comparable<AggregationTimestamp> {
     @IntDef({GROUP_BORDER, INTERVAL_START, INTERVAL_END})
     public @interface TimestampType {}
 
+    // Note: values matter for ordering in compareBy
     public static final int GROUP_BORDER = 0;
     public static final int INTERVAL_START = 1;
     public static final int INTERVAL_END = 2;
@@ -69,10 +70,16 @@ public class AggregationTimestamp implements Comparable<AggregationTimestamp> {
         }
 
         if (getTime() == o.getTime()) {
+            // We sort in the following order:
+            // all group borders first as group intervals are inclusive for start,
+            // exclusive for end. Then all intervals starts, then all intervals ends.
+            // If types are equal, sort by priority, if still equal by last modified time.
             if (getType() != o.getType()) {
                 return getType() - o.getType();
             }
 
+            // Equal type and time can happen only if both are either starts or ends of intervals,
+            // hence parentData is not null for both. ParentData is null only for group border.
             return getParentData().compareTo(o.getParentData());
         } else if (getTime() < o.getTime()) {
             return -1;
