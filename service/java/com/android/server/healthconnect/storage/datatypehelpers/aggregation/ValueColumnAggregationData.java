@@ -41,13 +41,21 @@ public class ValueColumnAggregationData extends AggregationRecordData {
     }
 
     @Override
-    double getResultOnInterval(long startTime, long endTime) {
+    double getResultOnInterval(AggregationTimestamp startPoint, AggregationTimestamp endPoint) {
         double intervalDuration = getEndTime() - getStartTime();
         double overlapDuration =
-                Math.min(getEndTime(), endTime) - Math.max(getStartTime(), startTime);
+                Math.min(getEndTime(), endPoint.getTime())
+                        - Math.max(getStartTime(), startPoint.getTime());
 
-        // Case: start time equals end time
-        if (intervalDuration == 0) {
+        // Case when this record start time equals to end time.
+        // We check types of timestamps as if
+        // multiple instant (start time = end time) records have the same time, we want to account
+        // only one value. In this case sorted timestamps will look like
+        // [start1, start2, end1, end2] and we output non-zero value only after calling
+        // getResultOnInterval(start2, end1).
+        if (intervalDuration == 0
+                && startPoint.getType() == AggregationTimestamp.INTERVAL_START
+                && endPoint.getType() == AggregationTimestamp.INTERVAL_END) {
             return mValue;
         }
 
