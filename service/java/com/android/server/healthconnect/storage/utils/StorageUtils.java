@@ -23,10 +23,14 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED;
+import static android.text.TextUtils.isEmpty;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.CLIENT_RECORD_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.utils.RecordTypeForUuidMappings.getRecordTypeIdForUuid;
+
+import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -39,10 +43,8 @@ import android.health.connect.internal.datatypes.IntervalRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
 import android.health.connect.internal.datatypes.utils.RecordTypeRecordCategoryMapper;
-import android.text.TextUtils;
 import android.util.Slog;
 
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import java.nio.ByteBuffer;
@@ -105,52 +107,60 @@ public final class StorageUtils {
         }
     }
 
+    /**
+     * Sets UUID for the given record. If {@link RecordInternal#getClientRecordId()} is null or
+     * empty, then the UUID is randomly generated. Otherwise, the UUID is generated as a combination
+     * of {@link RecordInternal#getPackageName()}, {@link RecordInternal#getClientRecordId()} and
+     * {@link RecordInternal#getRecordType()}.
+     */
     public static void addNameBasedUUIDTo(@NonNull RecordInternal<?> recordInternal) {
-        byte[] clientIDBlob;
-        if (recordInternal.getClientRecordId() == null
-                || recordInternal.getClientRecordId().isEmpty()) {
-            clientIDBlob = UUID.randomUUID().toString().getBytes();
-        } else {
-            clientIDBlob = recordInternal.getClientRecordId().getBytes();
+        final String clientRecordId = recordInternal.getClientRecordId();
+        if (isEmpty(clientRecordId)) {
+            recordInternal.setUuid(UUID.randomUUID());
+            return;
         }
 
         final UUID uuid =
                 getUUID(
-                        recordInternal.getAppInfoId(),
-                        clientIDBlob,
+                        requireNonNull(recordInternal.getPackageName()),
+                        clientRecordId,
                         recordInternal.getRecordType());
         recordInternal.setUuid(uuid);
     }
 
     /** Updates the uuid using the clientRecordID if the clientRecordId is present. */
     public static void updateNameBasedUUIDIfRequired(@NonNull RecordInternal<?> recordInternal) {
-        byte[] clientIDBlob;
-        if (recordInternal.getClientRecordId() == null
-                || recordInternal.getClientRecordId().isEmpty()) {
+        final String clientRecordId = recordInternal.getClientRecordId();
+        if (isEmpty(clientRecordId)) {
             // If clientRecordID is absent, use the uuid already set in the input record and
             // hence no need to modify it.
             return;
         }
-        clientIDBlob = recordInternal.getClientRecordId().getBytes();
+
         final UUID uuid =
                 getUUID(
-                        recordInternal.getAppInfoId(),
-                        clientIDBlob,
+                        requireNonNull(recordInternal.getPackageName()),
+                        clientRecordId,
                         recordInternal.getRecordType());
         recordInternal.setUuid(uuid);
     }
 
-    public static UUID getUUIDFor(RecordIdFilter recordIdFilter, String packageName) {
-        byte[] clientIDBlob;
-        if (recordIdFilter.getClientRecordId() == null
-                || recordIdFilter.getClientRecordId().isEmpty()) {
+    /**
+     * Returns a UUID for the given {@link RecordIdFilter} and package name. If {@link
+     * RecordIdFilter#getClientRecordId()} is null or empty, then the UUID corresponds to {@link
+     * RecordIdFilter#getId()}. Otherwise, the UUID is generated as a combination of the package
+     * name, {@link RecordIdFilter#getClientRecordId()} and {@link RecordIdFilter#getRecordType()}.
+     */
+    public static UUID getUUIDFor(
+            @NonNull RecordIdFilter recordIdFilter, @NonNull String packageName) {
+        final String clientRecordId = recordIdFilter.getClientRecordId();
+        if (isEmpty(clientRecordId)) {
             return UUID.fromString(recordIdFilter.getId());
         }
-        clientIDBlob = recordIdFilter.getClientRecordId().getBytes();
 
         return getUUID(
-                AppInfoHelper.getInstance().getAppInfoId(packageName),
-                clientIDBlob,
+                packageName,
+                clientRecordId,
                 RecordMapper.getInstance().getRecordType(recordIdFilter.getRecordType()));
     }
 
@@ -270,7 +280,7 @@ public final class StorageUtils {
     /** Encodes record properties participating in deduplication into a byte array. */
     @Nullable
     public static byte[] getDedupeByteBuffer(@NonNull RecordInternal<?> record) {
-        if (!TextUtils.isEmpty(record.getClientRecordId())) {
+        if (!isEmpty(record.getClientRecordId())) {
             return null; // If dedupe by clientRecordId then don't dedupe by hash
         }
 
@@ -309,13 +319,20 @@ public final class StorageUtils {
                 .array();
     }
 
-    /** Returns a hex string that represents a UUID */
-    private static UUID getUUID(long appId, byte[] clientIDBlob, int recordId) {
+    /** Returns a UUID for the given package name, client record id and record type id. */
+    private static UUID getUUID(
+            @NonNull String packageName, @NonNull String clientRecordId, int recordTypeId) {
+        final byte[] packageNameBytes = packageName.getBytes();
+        final byte[] clientRecordIdBytes = clientRecordId.getBytes();
+
         byte[] bytes =
-                ByteBuffer.allocate(Long.BYTES + Integer.BYTES + clientIDBlob.length)
-                        .putLong(appId)
-                        .putInt(recordId)
-                        .put(clientIDBlob)
+                ByteBuffer.allocate(
+                                packageNameBytes.length
+                                        + Integer.BYTES
+                                        + clientRecordIdBytes.length)
+                        .put(packageNameBytes)
+                        .putInt(getRecordTypeIdForUuid(recordTypeId))
+                        .put(clientRecordIdBytes)
                         .array();
         return UUID.nameUUIDFromBytes(bytes);
     }
