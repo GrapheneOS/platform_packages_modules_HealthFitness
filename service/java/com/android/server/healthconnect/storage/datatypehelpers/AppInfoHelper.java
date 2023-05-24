@@ -153,6 +153,7 @@ public final class AppInfoHelper {
         }
 
         record.setAppInfoId(appInfo.getId());
+        record.setPackageName(appInfo.getPackageName());
     }
 
     /**

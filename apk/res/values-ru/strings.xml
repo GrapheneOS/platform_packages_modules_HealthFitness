@@ -495,8 +495,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"Сон: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"бодрствование"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"бодрствования в постели"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"сон"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"на ногах"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"быстрый сон"</string>
