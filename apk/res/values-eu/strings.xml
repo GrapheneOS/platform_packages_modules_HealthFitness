@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Zergatik kentzen ditu aplikazio-baimenak Health Connect-ek?"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Aplikazio bat Google Play-n behin-behinean eteten bada edo bertatik kentzen bada, Health Connect-ek automatikoki kentzen ditu dauzkan baimenak.\n\nAplikazioak une horretatik aurrera Health Connect-en gordetako datuak atzitu ezin dituela esan nahi du horrek. Aplikazio horrek aldez aurretik erregistratutako datuak badauzka, aplikazio inaktiboen zerrendan agertuko da."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Ados"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Hasi Health Connect erabiltzen"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect-ek osasunari eta fitnessari buruzko datuak gordetzen ditu, eta telefonoko aplikazioak erraz sinkronizatzeko aukera eskaintzen du"</string>
     <string name="share_data" msgid="3481932156368883946">"Partekatu datuak zure aplikazioekin"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Aukeratu aplikazio bakoitzak Health Connect-en irakurri edo idatz ditzakeen datuak"</string>

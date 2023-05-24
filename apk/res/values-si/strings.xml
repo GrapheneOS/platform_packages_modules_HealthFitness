@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect යෙදුම් අවසර ඉවත් කරන හේතුව"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"යෙදුමක් අත්හිටුවා හෝ Google Play වෙතින් ඉවත් කර ඇත්නම්, Health Connect එහි අවසරයන් ස්වයංක්‍රීයව ඉවත් කරයි.\n\nමෙයින් අදහස් වන්නේ යෙදුමට තවදුරටත් Health Connect තුළ ගබඩා කර ඇති දත්ත වෙත ප්‍රවේශ විය නොහැකි බවයි. මෙම යෙදුමට පෙර ලියා ඇති දත්ත තිබේ නම්, එය අක්‍රිය යෙදුම් ලැයිස්තුවේ දිස් වේ."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"තේරුණා"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect සමග පටන් ගන්න"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect ඔබට ඔබේ දුරකථනයේ විවිධ යෙදුම් සමමුහූර්ත කිරීමට සරල ක්‍රමයක් ලබා දෙමින්, ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත ගබඩා කරයි"</string>
     <string name="share_data" msgid="3481932156368883946">"ඔබේ යෙදුම් සමග දත්ත බෙදා ගන්න"</string>
     <string name="share_data_description" msgid="2919871301634375092">"එක් එක් යෙදුමට Health Connect වෙත කියවීමට හෝ ලිවීමට හැකි දත්ත තෝරා ගන්න"</string>

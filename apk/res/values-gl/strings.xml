@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Por que Saúde conectada quita permisos de aplicacións?"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Se se suspende unha aplicación ou desaparece de Google Play, Saúde conectada quítalle os permisos de xeito automático.\n\nAo facelo, a aplicación xa non poderá acceder aos datos almacenados en Saúde conectada. Se esta aplicación escribiu datos anteriormente, aparecerá na lista de aplicacións inactivas."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entendido"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Comeza a usar Saúde conectada"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Saúde conectada almacena os teus datos de saúde e actividade física, e permíteche sincronizar facilmente as distintas aplicacións do teléfono"</string>
     <string name="share_data" msgid="3481932156368883946">"Comparte datos coas túas aplicacións"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Decide que datos pode ler ou escribir cada aplicación en Saúde conectada"</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> durmindo"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g>⁠<xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"sen durmir"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"na cama sen durmir"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"durmindo"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"fóra da cama"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"en fase REM"</string>

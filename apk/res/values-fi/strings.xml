@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Miksi Health Connect poistaa sovelluslupia"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Jos sovellus on jäädytetty tai poistettu Google Playsta, Health Connect poistaa sovelluksen luvat automaattisesti.\n\nTämä tarkoittaa, että sovelluksella ei ole enää pääsyä Health Connectiin tallennettuun dataasi. Jos sovelluksessa on aiemmin kirjoitettua dataa, se näkyy epäaktiivisten sovellusten luettelossa."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Aloita Health Connectin käyttö"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect tallentaa terveys‑ ja kuntoiludatasi ja tarjoaa helpon tavan synkronoida eri sovelluksia puhelimellasi"</string>
     <string name="share_data" msgid="3481932156368883946">"Jaa dataa sovelluksille"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Valitse, mitä dataa kukin sovellus voi lukea tai kirjoittaa Health Connectiin"</string>

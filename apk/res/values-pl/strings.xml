@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Dlaczego Health Connect usuwa uprawnienia aplikacji"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Jeśli aplikacja zostanie zawieszona lub usunięta z Google Play, Health Connect automatycznie usunie jej uprawnienia.\n\nOznacza to, że aplikacja utraci dostęp do informacji przechowywanych w Health Connect. Jeśli aplikacja zapisywała wcześniej dane, pojawi się na liście nieaktywnych aplikacji."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Pierwsze kroki z Health Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect przechowuje Twoje dane o zdrowiu i aktywności fizycznej oraz ułatwia synchronizację danych z różnych aplikacji na telefonie"</string>
     <string name="share_data" msgid="3481932156368883946">"Udostępniaj dane aplikacjom"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Wybierz dane, jakie każda aplikacja będzie mogła odczytywać i zapisywać w Health Connect"</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"Sen: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="NAME">%2$s</xliff:g> <xliff:g id="DURATION">%1$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"Brak snu:"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"wybudzenie"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"Sen:"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"Poza łóżkiem:"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM:"</string>

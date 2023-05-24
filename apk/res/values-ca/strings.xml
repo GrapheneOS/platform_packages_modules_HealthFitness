@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Per què Salut connectada suprimeix els permisos d\'aplicacions"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Si una aplicació se suspèn o suprimeix de Google Play, Salut connectada en suprimeix els permisos automàticament.\n\nAixò significa que l\'aplicació ja no podrà accedir a les dades emmagatzemades a Salut Connectada. Si aquesta aplicació ha escrit dades anteriorment, apareixerà a la llista d\'aplicacions inactives."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entesos"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Comença amb Salut connectada"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Salut connectada emmagatzema les teves dades de salut i fitnes, i t\'ofereix una manera senzilla de sincronitzar les diverses aplicacions del telèfon"</string>
     <string name="share_data" msgid="3481932156368883946">"Comparteix dades amb les aplicacions"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Tria les dades que cada aplicació pot llegir o escriure a Salut connectada"</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> dormint"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"despert"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"al llit sense dormir"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"dormint"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"fora del llit"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"de son REM"</string>

@@ -285,7 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect, ऐप्लिकेशन को मिली अनुमतियां क्यों हटाता है"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"अगर Google Play में किसी ऐप्लिकेशन पर रोक लगा दी गई है या उसे हटा दिया गया है, तो Health Connect उस ऐप्लिकेशन को मिली अनुमतियों को अपने-आप हटा देता है.\n\nइसका यह मतलब है कि अब वह ऐप्लिकेशन, Health Connect में सेव किए गए आपके डेटा को ऐक्सेस नहीं कर पाएगा. अगर इस ऐप्लिकेशन में पहले से डेटा सेव है, तो यह बंद किए गए ऐप्लिकेशन की सूची में दिखेगा."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"ठीक है"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect का इस्तेमाल शुरू करें"</string>
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect का इस्तेमाल शुरू करें"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect में, सेहत और फ़िटनेस से जुड़ा आपका डेटा सेव किया जाता है. इससे, अपने फ़ोन में अलग-अलग ऐप्लिकेशन को आसानी से सिंक करने में मदद मिलती है"</string>
     <string name="share_data" msgid="3481932156368883946">"ऐप्लिकेशन के साथ डेटा शेयर करें"</string>
     <string name="share_data_description" msgid="2919871301634375092">"यह चुनें कि हर ऐप्लिकेशन, Health Connect में कौनसा डेटा देख सकता है और उसमें बदलाव कर सकता है"</string>
@@ -495,8 +495,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> की नींद"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"जागना"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"बिस्तर पर लेटे होने के बावजूद नींद नहीं आई"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"सोना"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"बिस्तर में न होना"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"नींद के दौरान आरईएम (रैपिड आई मूवमेंट)"</string>

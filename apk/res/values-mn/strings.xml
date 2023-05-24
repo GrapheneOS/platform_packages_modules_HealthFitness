@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect аппын зөвшөөрлийг яагаад хасдаг вэ?"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Хэрэв аппыг Google Play-с түр хаасан эсвэл хассан бол Health Connect түүний зөвшөөрлийг автоматаар хасдаг.\n\nЭнэ нь тус апп Health Connect-д хадгалсан өгөгдөлд цаашид хандах боломжгүй гэсэн үг юм. Хэрэв энэ аппад өмнө нь бичсэн өгөгдөл байвал энэ нь идэвхгүй аппын жагсаалтад харагдана."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Ойлголоо"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect-г ашиглаж эхлээрэй"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect таны эрүүл мэнд, фитнесийн өгөгдлийг хадгалснаар та утсан дээрээ байгаа өөр өөр аппуудыг энгийн аргаар синк хийх боломжтой болно"</string>
     <string name="share_data" msgid="3481932156368883946">"Аппуудтайгаа өгөгдөл хуваалцаарай"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Апп бүрийн Health Connect-с унших болон түүнд бичих боломжтой өгөгдлийг сонгоно уу"</string>

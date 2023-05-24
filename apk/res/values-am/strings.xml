@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"የጤና አገናኝ ለምን የመተግበሪያ ፍቃዶችን እንደሚያስወግድ"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"አንድ መተግበሪያ ከGoogle Play ከታገደ ወይም ከተወገደ የጤና አገናኝ በራስ-ሰር የእሱን ፈቃዶች ያስወግዳል።\n\nይህ ማለት መተግበሪያው ከእንግዲህ የጤና አገናኝ ውስጥ የተከማቸ ውሂብን መድረስ አይችልም ማለት ነው። ይህ መተግበሪያ ከዚህ ቀደም የተጻፈ ውሂብ ካለው የቦዘኑ መተግበሪያዎች ዝርዝሩ ውስጥ ይታያል።"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"ገባኝ"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"በHealth Connect ይጀምሩ"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"የጤና አገናኝ የእርስዎን የጤና እና አካል ብቃት ውሂብ ያከማቻል፣ ይህም በስልክዎ ላይ ያሉ የተለያዩ መተግበሪያዎችን ለማስመር ቀላል መንገድ ይሰጥዎታል"</string>
     <string name="share_data" msgid="3481932156368883946">"በመተግበሪያዎችዎ ውሂብን ያጋሩ"</string>
     <string name="share_data_description" msgid="2919871301634375092">"እያንዳንዱ መተግበሪያ በጤና አገናኝ ላይ ማንበብ ወይም መጻፍ የሚችለውን ውሂብ ይምረጡ"</string>

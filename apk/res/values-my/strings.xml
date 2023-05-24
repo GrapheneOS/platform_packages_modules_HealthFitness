@@ -289,7 +289,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect က အက်ပ်ခွင့်ပြုချက်များကို ဖယ်ရှားရသည့် အကြောင်းရင်း"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"အက်ပ်ကို Google Play မှ ဆိုင်းငံ့ (သို့) ဖယ်ရှားလိုက်ပါက Health Connect သည် ၎င်း၏ ခွင့်ပြုချက်များကို အလိုအလျောက် ဖယ်ရှားသည်။\n\nဆိုလိုသည်မှာ အက်ပ်သည် Health Connect တွင် သိမ်းထားသည့် ဒေတာကို မသုံးနိုင်တော့ပါ။ ဤအက်ပ်တွင် ယခင်ရေးသွင်းထားသည့် ဒေတာရှိပါက အသုံးမပြုသော အက်ပ်စာရင်းတွင် ၎င်းကို မြင်ရသည်။"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"ရပြီ"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect စတင်အသုံးပြုခြင်း"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect သည် သင်၏ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို သိမ်းပြီး ၎င်းဖြင့် သင့်ဖုန်းပေါ်ရှိ အက်ပ်အမျိုးမျိုးကို ရိုးရှင်းစွာစင့်ခ်လုပ်နိုင်သည်"</string>
     <string name="share_data" msgid="3481932156368883946">"သင့်အက်ပ်များနှင့် ဒေတာမျှဝေရန်"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Health Connect တွင် အက်ပ်တစ်ခုစီက ဖတ်နိုင် (သို့) ရေးနိုင်မည့် ဒေတာကို သင်ရွေးနိုင်သည်"</string>

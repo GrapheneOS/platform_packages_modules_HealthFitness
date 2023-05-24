@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"헬스 커넥트에서 앱 권한을 삭제하는 이유"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"앱이 Google Play에서 정지되거나 삭제되면 헬스 커넥트에서 해당 앱의 권한을 자동으로 삭제합니다.\n\n그러면 앱에서 더 이상 헬스 커넥트에 저장된 데이터에 액세스할 수 없게 됩니다. 이전에 데이터를 기록한 적이 있는 앱이라면 비활성 앱 목록에 표시됩니다."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"확인"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"헬스 커넥트 시작하기"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"헬스 커넥트는 건강 및 피트니스 데이터를 저장하므로 휴대전화에 설치된 여러 앱을 간편하게 동기화할 수 있습니다."</string>
     <string name="share_data" msgid="3481932156368883946">"앱과 데이터 공유"</string>
     <string name="share_data_description" msgid="2919871301634375092">"각 앱이 헬스 커넥트에서 읽거나 쓸 수 있는 데이터를 선택하세요."</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"수면 시간: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="NAME">%2$s</xliff:g>: <xliff:g id="DURATION">%1$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"깨어 있는 상태"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"깨어 있는 상태로 누워 있음"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"수면 중"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"침대에서 나옴"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"렘 수면"</string>

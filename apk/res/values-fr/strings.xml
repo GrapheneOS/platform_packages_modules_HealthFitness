@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Pourquoi Santé Connect retire des autorisations d\'applis"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Si une appli est suspendue ou retirée de Google Play, Santé Connect retire automatiquement les autorisations associées.\n\nL\'appli n\'a alors plus accès aux données stockées dans Santé Connect. Si cette appli a déjà écrit des données, elle figure dans la liste des applis inactives."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Premiers pas avec Santé Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Santé Connect stocke vos données de santé et de remise en forme, et vous permet de synchroniser facilement les différentes applis de votre téléphone"</string>
     <string name="share_data" msgid="3481932156368883946">"Partager des données avec vos applis"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Sélectionnez les données que chaque appli peut lire ou modifier dans Santé Connect"</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> de sommeil"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> : <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"éveillé"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"éveillé au lit"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"endormi"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"hors du lit"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"en sommeil paradoxal"</string>

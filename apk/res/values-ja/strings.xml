@@ -285,7 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"ヘルスコネクトによりアプリの権限が削除される理由"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"アプリが Google Play での公開が停止された場合や Google Play から削除された場合、ヘルスコネクトにより、そのアプリの権限が自動的に削除されます。\n\nそのため、そのアプリはヘルスコネクトに保存されたデータにアクセスできなくなります。そのアプリで以前に書き込まれたデータがある場合は、無効なアプリのリストに表示されます。"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"ヘルスコネクトを使ってみる"</string>
+    <string name="onboarding_title" msgid="8550656211291180188">"ヘルスコネクトを使ってみる"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"ヘルスコネクトを利用すると、健康状態やフィットネスのデータを保存し、スマートフォン上のさまざまなアプリを簡単に同期することができます"</string>
     <string name="share_data" msgid="3481932156368883946">"アプリとデータを共有する"</string>
     <string name="share_data_description" msgid="2919871301634375092">"ヘルスコネクトに対して、各アプリが読み取りや書き込みを行えるデータを選択できます"</string>
@@ -495,8 +495,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> - 睡眠"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"覚醒"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"寝床で目が覚めている状態"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"睡眠"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"起床"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"レム睡眠"</string>

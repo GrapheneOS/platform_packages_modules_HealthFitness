@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect ਨੇ ਐਪ ਇਜਾਜ਼ਤਾਂ ਨੂੰ ਕਿਉਂ ਹਟਾ ਦਿੱਤਾ"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"ਜੇ ਕਿਸੇ ਐਪ ਨੂੰ Google Play ਤੋਂ ਮੁਅੱਤਲ ਕਰ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ ਜਾਂ ਹਟਾ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ, ਤਾਂ Health Connect ਐਪ ਸਵੈਚਲਿਤ ਤੌਰ \'ਤੇ ਇਸ ਦੀਆਂ ਇਜਾਜ਼ਤਾਂ ਨੂੰ ਹਟਾ ਦਿੰਦੀ ਹੈ।\n\nਇਸਦਾ ਮਤਲਬ ਹੈ ਕਿ ਐਪ ਹੁਣ Health Connect ਵਿੱਚ ਸਟੋਰ ਕੀਤੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਨਹੀਂ ਕਰ ਸਕਦੀ। ਜੇ ਇਸ ਐਪ ਵਿੱਚ ਪਹਿਲਾਂ ਤੋਂ ਰੱਖਿਅਤ ਕੀਤਾ ਹੋਇਆ ਡਾਟਾ ਹੈ, ਤਾਂ ਇਹ ਅਕਿਰਿਆਸ਼ੀਲ ਐਪਾਂ ਦੀ ਸੂਚੀ ਵਿੱਚ ਦਿਸੇਗਾ।"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"ਸਮਝ ਲਿਆ"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect ਨਾਲ ਸ਼ੁਰੂਆਤ ਕਰੋ"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect ਤੁਹਾਨੂੰ ਆਪਣੇ ਫ਼ੋਨ \'ਤੇ ਵੱਖ-ਵੱਖ ਐਪਾਂ ਨੂੰ ਸਿੰਕ ਕਰਨ ਦਾ ਸਰਲ ਤਰੀਕਾ ਦੇ ਕੇ, ਤੁਹਾਡੇ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਸੰਬੰਧੀ ਡਾਟੇ ਨੂੰ ਸਟੋਰ ਕਰਦੀ ਹੈ"</string>
     <string name="share_data" msgid="3481932156368883946">"ਆਪਣੀਆਂ ਐਪਾਂ ਨਾਲ ਡਾਟਾ ਸਾਂਝਾ ਕਰੋ"</string>
     <string name="share_data_description" msgid="2919871301634375092">"ਉਹ ਡਾਟਾ ਚੁਣੋ ਜਿਸਨੂੰ Health Connect ਵਿੱਚ ਹਰੇਕ ਐਪ ਪੜ੍ਹ ਜਾਂ ਲਿਖ ਸਕੇ"</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> ਦੀ ਨੀਂਦ"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"ਜਾਗ"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"ਬਿਸਤਰ ਵਿੱਚ ਜਾਗਦੇ ਰਹਿਣਾ"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"ਨੀਂਦ"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"ਬਿਸਤਰ ਤੋਂ ਉੱਠੇ"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM ਨੀਂਦ"</string>

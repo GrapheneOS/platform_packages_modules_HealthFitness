@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Spravovat přístup aplikací ke zdravotním údajům"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Správa přístupu aplikací ke zdravotním údajům"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Oprávnění a data"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Spravujte údaje o zdraví a kondici v telefonu a určete, které aplikace k nim mají přístup"</string>
     <string name="data_title" msgid="4456619761533380816">"Data a přístup"</string>
@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Proč aplikace Health Connect aplikacím odebírá oprávnění"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Pokud je aplikace pozastavena nebo odstraněna z Google Play, Health Connect jí automaticky odebere oprávnění.\n\nTo znamená, že aplikace již nebude mít přístup k datům uloženým ve službě Health Connect. Pokud tato aplikace dříve zapsala nějaká data, zobrazí se v seznamu neaktivních aplikací."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Rozumím"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Začínáme s aplikací Health Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Služba Health Connect slouží k bezpečnému ukládání údajů o zdraví a kondici, což umožňuje jednoduše synchronizovat různé aplikace v telefonu"</string>
     <string name="share_data" msgid="3481932156368883946">"Sdílení dat s aplikacemi"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Můžete si zvolit, které údaje mohou jednotlivé aplikace číst nebo zapisovat ve službě Health Connect"</string>

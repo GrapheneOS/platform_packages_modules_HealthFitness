@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Γιατί το Health Connect καταργεί άδειες εφαρμογών"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Αν μια εφαρμογή τεθεί σε αναστολή ή καταργηθεί από το Google Play, το Health Connect καταργεί αυτόματα τις άδειές της.\n\nΑυτό σημαίνει ότι η εφαρμογή δεν μπορεί πλέον να αποκτήσει πρόσβαση σε δεδομένα που έχουν αποθηκευτεί στο Health Connect. Εάν αυτή η εφαρμογή έχει εγγράψει στο παρελθόν δεδομένα, θα εμφανίζεται στη λίστα ανενεργών εφαρμογών."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Το κατάλαβα"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Ξεκινήστε με το Health Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Το Health Connect αποθηκεύει τα δεδομένα υγείας και φυσικής κατάστασής σας, προσφέροντας έναν απλό τρόπο συγχρονισμού των διαφορετικών εφαρμογών στο τηλέφωνό σας"</string>
     <string name="share_data" msgid="3481932156368883946">"Μοιραστείτε δεδομένα με τις εφαρμογές σας"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Επιλέξτε τα δεδομένα που μπορεί να διαβάσει ή να εγγράψει κάθε εφαρμογή στο Health Connect."</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"Ύπνος <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"σε εγρήγορση"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"ξύπνιος στο κρεβάτι"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"ύπνος"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"εκτός κρεβατιού"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"ύπνος REM"</string>

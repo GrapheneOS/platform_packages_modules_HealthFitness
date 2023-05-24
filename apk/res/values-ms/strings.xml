@@ -285,7 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Perihal Health Connect mengalih keluar kebenaran apl"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Jika apl digantung atau dialih keluar daripada Google Play, Health Connect mengalih keluar kebenaran apl tersebut secara automatik.\n\nHal ini bermakna apl tersebut tidak lagi boleh mengakses data yang disimpan dalam Health Connect. Jika apl ini mempunyai data bertulis sebelum ini, apl ini akan muncul dalam senarai apl tidak aktif."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Bermula dengan Health Connect"</string>
+    <string name="onboarding_title" msgid="8550656211291180188">"Bermula dengan Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect menyimpan data kesihatan dan kecergasan anda, menyediakan cara yang mudah untuk menyegerakkan pelbagai apl pada telefon anda"</string>
     <string name="share_data" msgid="3481932156368883946">"Kongsi data dengan apl anda"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Pilih data yang boleh dibaca atau ditulis oleh setiap apl pada Health Connect"</string>

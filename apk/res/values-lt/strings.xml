@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Kodėl „Health Connect“ pašalina programų leidimus"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Jei programa sustabdyta arba pašalinta iš „Google Play“, „Health Connect“ automatiškai pašalina jos leidimus.\n\nTai reiškia, kad programa nebegali pasiekti duomenų, saugomų sistemoje „Health Connect“. Jei šioje programoje yra anksčiau įrašytų duomenų, ji rodoma neaktyvių programų sąraše."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Supratau"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Darbo su klasikinės versijos „Health Connect“ pradžia"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Sistemoje „Health Connect“ saugomi jūsų sveikatos ir kūno rengybos duomenys ir galite lengvai sinchronizuoti skirtingas programas telefone"</string>
     <string name="share_data" msgid="3481932156368883946">"Duomenų bendrinimas su programomis"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Pasirinkite, kokius duomenis kiekviena programa gali skaityti ar rašyti sistemoje „Health Connect“"</string>

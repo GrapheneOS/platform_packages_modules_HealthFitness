@@ -285,7 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect, ಆ್ಯಪ್ ಅನುಮತಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಹಾಕುತ್ತದೆ"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Google Play ನಿಂದ ಆ್ಯಪ್ ಅನ್ನು ಅಮಾನತುಗೊಳಿಸಿದರೆ ಅಥವಾ ತೆಗೆದುಹಾಕಿದರೆ, Health Connect ಅದರ ಅನುಮತಿಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ತೆಗೆದುಹಾಕುತ್ತದೆ.\n\nಇದರರ್ಥ Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಆ್ಯಪ್‌ಗೆ ಇನ್ನು ಮುಂದೆ ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. ಈ ಆ್ಯಪ್ ಈ ಹಿಂದೆ ಬರೆದ ಡೇಟಾವನ್ನು ಹೊಂದಿದ್ದರೆ, ಅದು ನಿಷ್ಕ್ರಿಯ ಆ್ಯಪ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"ಅರ್ಥವಾಯಿತು"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Health Connect ಬಳಕೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ"</string>
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ಬಳಕೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect ನಿಮ್ಮ ಆರೋಗ್ಯ ಹಾಗೂ ಫಿಟ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸುತ್ತದೆ, ಅದರಿಂದ ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿರುವ ವಿವಿಧ ಆ್ಯಪ್‌ಗಳನ್ನು ಸಿಂಕ್ ಮಾಡಲು ನಿಮಗೆ ಸರಳವಾದ ಮಾರ್ಗವನ್ನು ಒದಗಿಸುತ್ತದೆ"</string>
     <string name="share_data" msgid="3481932156368883946">"ನಿಮ್ಮ ಆ್ಯಪ್‌ಗಳೊಂದಿಗೆ ಡೇಟಾವನ್ನು ಹಂಚಿಕೊಳ್ಳಿ"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Health Connect ನಲ್ಲಿ ಪ್ರತಿ ಆ್ಯಪ್ ಓದಬಹುದಾದ ಅಥವಾ ಬರೆಯಬಹುದಾದ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
@@ -495,8 +495,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> ನಿದ್ರೆ"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"ಎಚ್ಚರಗೊಳ್ಳುವುದು"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"ಹಾಸಿಗೆಯಲ್ಲಿ ಎಚ್ಚರವಿರುವಿಕೆ"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"ನಿದ್ರೆ"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"ಹಾಸಿಗೆಯಲ್ಲಿ ಇಲ್ಲದಿರುವುದು"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM ನಿದ್ರೆ"</string>

@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Por que motivo a Saúde Connect remove autorizações de apps"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Se uma app for suspensa ou removida do Google Play, a Saúde Connect remove automaticamente as respetivas autorizações.\n\nIsto significa que a app deixa de poder aceder aos dados armazenados na Saúde Connect. Se esta app tiver dados escritos anteriormente, é apresentada na lista de apps inativas."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Comece a usar a Saúde Connect"</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"A Saúde Connect armazena os seus dados de saúde e fitness, oferecendo-lhe uma forma simples de sincronizar as diferentes apps no seu telemóvel"</string>
     <string name="share_data" msgid="3481932156368883946">"Partilhar dados com as suas apps"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Escolha os dados que cada app pode ler ou escrever na Saúde Connect"</string>

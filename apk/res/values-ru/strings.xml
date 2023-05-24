@@ -285,7 +285,8 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Почему сервис \"Здоровье и спорт\" отзывает разрешения для приложений"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Если приложение заблокировано или удалено в Google Play, сервис \"Здоровье и спорт\" автоматически отзывает разрешения для него.\n\nЭто означает, что у приложения больше не будет доступа к информации, хранящейся в этом сервисе. Оно появится в списке неактивных приложений, если ранее записывало данные."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Закрыть"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Начало работы с сервисом \"Здоровье и спорт\""</string>
+    <!-- no translation found for onboarding_title (8550656211291180188) -->
+    <skip />
     <string name="onboarding_description" msgid="4873129122057931161">"Сервис \"Здоровье и спорт\" хранит ваши данные о здоровье и физической активности, позволяя без труда синхронизировать их с другими приложениями на телефоне."</string>
     <string name="share_data" msgid="3481932156368883946">"Делитесь данными с приложениями"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Выбирайте, какую информацию каждое приложение сможет читать и сохранять в сервисе \"Здоровье и спорт\"."</string>
@@ -495,8 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"Сон: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"бодрствование"</string>
-    <!-- no translation found for sleep_stage_awake_in_bed (5533385496857888503) -->
-    <skip />
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"бодрствования в постели"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"сон"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"на ногах"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"быстрый сон"</string>
