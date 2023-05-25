@@ -180,7 +180,7 @@ public final class BackupRestore {
     private final FirstGrantTimeManager mFirstGrantTimeManager;
     private final MigrationStateManager mMigrationStateManager;
 
-    private final Context mStagedDbContext;
+    private final StagedDatabaseContext mStagedDbContext;
     private final Context mContext;
     private final Map<Long, String> mStagedPackageNamesByAppIds = new ArrayMap<>();
     private final Object mMergingLock = new Object();
@@ -198,14 +198,15 @@ public final class BackupRestore {
             @NonNull Context context) {
         mFirstGrantTimeManager = firstGrantTimeManager;
         mMigrationStateManager = migrationStateManager;
-        mStagedDbContext = new StagedDatabaseContext(context);
         mContext = context;
         mCurrentForegroundUser = mContext.getUser();
+        mStagedDbContext = new StagedDatabaseContext(context, mCurrentForegroundUser);
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
         Slog.d(TAG, "Performing user switch operations.");
         mCurrentForegroundUser = currentForegroundUser;
+        mStagedDbContext.updateForegroundUser(mCurrentForegroundUser);
         HealthConnectThreadScheduler.scheduleInternalTask(this::scheduleAllJobs);
     }
 
@@ -1123,14 +1124,22 @@ public final class BackupRestore {
      * @hide
      */
     private static final class StagedDatabaseContext extends ContextWrapper {
-        StagedDatabaseContext(@NonNull Context context) {
+        private volatile UserHandle mCurrentForegroundUser;
+
+        StagedDatabaseContext(@NonNull Context context, UserHandle userHandle) {
             super(context);
             Objects.requireNonNull(context);
+            mCurrentForegroundUser = userHandle;
+        }
+
+        public void updateForegroundUser(UserHandle userHandle) {
+            mCurrentForegroundUser = userHandle;
         }
 
         @Override
         public File getDatabasePath(String name) {
-            File stagedDataDir = getStagedRemoteDataDirectoryForUser(0);
+            File stagedDataDir =
+                    getStagedRemoteDataDirectoryForUser(mCurrentForegroundUser.getIdentifier());
             stagedDataDir.mkdirs();
             return new File(stagedDataDir, name);
         }
