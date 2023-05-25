@@ -23,6 +23,7 @@ import static android.healthconnect.cts.lib.TestUtils.RECORD_IDS;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.lib.TestUtils.deleteRecordsAs;
+import static android.healthconnect.cts.lib.TestUtils.deleteTestData;
 import static android.healthconnect.cts.lib.TestUtils.fetchDataOriginsPriorityOrder;
 import static android.healthconnect.cts.lib.TestUtils.getChangeLogTokenAs;
 import static android.healthconnect.cts.lib.TestUtils.getGrantedHealthPermissions;
@@ -112,7 +113,8 @@ public class HealthConnectDeviceTest {
                     "CtsHealthConnectTestAppWithDataManagePermission.apk");
 
     @After
-    public void tearDown() {
+    public void tearDown() throws InterruptedException {
+        deleteTestData();
         deleteAllStagedRemoteData();
     }
 

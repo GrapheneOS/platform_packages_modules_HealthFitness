@@ -24,12 +24,14 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.app.UiAutomation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
@@ -38,6 +40,7 @@ import android.health.connect.InsertRecordsResponse;
 import android.health.connect.ReadRecordsRequest;
 import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
+import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
@@ -67,6 +70,7 @@ import com.android.cts.install.lib.TestApp;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -194,6 +198,43 @@ public class TestUtils {
         bundle.putDouble(CLIENT_ID, clientId);
 
         return getFromTestApp(testApp, bundle);
+    }
+
+    public static void verifyDeleteRecords(DeleteUsingFiltersRequest request)
+            throws InterruptedException {
+        UiAutomation uiAutomation =
+                androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+                        .getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity("android.permission.MANAGE_HEALTH_DATA");
+        try {
+            Context context = ApplicationProvider.getApplicationContext();
+            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
+            CountDownLatch latch = new CountDownLatch(1);
+            AtomicReference<HealthConnectException> exceptionAtomicReference =
+                    new AtomicReference<>();
+            assertThat(service).isNotNull();
+            service.deleteRecords(
+                    request,
+                    Executors.newSingleThreadExecutor(),
+                    new OutcomeReceiver<>() {
+                        @Override
+                        public void onResult(Void result) {
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onError(HealthConnectException healthConnectException) {
+                            exceptionAtomicReference.set(healthConnectException);
+                            latch.countDown();
+                        }
+                    });
+            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            if (exceptionAtomicReference.get() != null) {
+                throw exceptionAtomicReference.get();
+            }
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
     }
 
     public static Bundle readRecordsUsingDataOriginFiltersAs(
@@ -360,6 +401,21 @@ public class TestUtils {
                 getStepsRecord(packageName, clientId),
                 getHeartRateRecord(packageName, clientId),
                 getBasalMetabolicRateRecord(packageName, clientId));
+    }
+
+    public static void deleteTestData() throws InterruptedException {
+        verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .setTimeRangeFilter(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.EPOCH)
+                                        .setEndTime(Instant.now().plus(10, ChronoUnit.DAYS))
+                                        .build())
+                        .addRecordType(ExerciseSessionRecord.class)
+                        .addRecordType(StepsRecord.class)
+                        .addRecordType(HeartRateRecord.class)
+                        .addRecordType(BasalMetabolicRateRecord.class)
+                        .build());
     }
 
     public static ExerciseSessionRecord getExerciseSessionRecord(
