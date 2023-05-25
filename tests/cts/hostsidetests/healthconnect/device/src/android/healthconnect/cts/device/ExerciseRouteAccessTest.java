@@ -21,6 +21,7 @@ import static android.healthconnect.cts.device.HealthConnectDeviceTest.APP_A_WIT
 import static android.healthconnect.cts.lib.TestUtils.READ_RECORDS_SIZE;
 import static android.healthconnect.cts.lib.TestUtils.SUCCESS;
 import static android.healthconnect.cts.lib.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.cts.lib.TestUtils.deleteTestData;
 import static android.healthconnect.cts.lib.TestUtils.insertRecordAs;
 import static android.healthconnect.cts.lib.TestUtils.insertSessionNoRouteAs;
 import static android.healthconnect.cts.lib.TestUtils.readRecords;
@@ -57,7 +58,8 @@ public class ExerciseRouteAccessTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws InterruptedException {
+        deleteTestData();
         deleteAllStagedRemoteData();
 
         mAutomation.grantRuntimePermission(
@@ -97,8 +99,14 @@ public class ExerciseRouteAccessTest {
 
     @Test
     public void testRouteUpdate_updateRouteWithPerm_noRouteAfterUpdate() throws Exception {
-        assertThat(insertRecordAs(APP_A_WITH_READ_WRITE_PERMS).getBoolean(SUCCESS)).isTrue();
         List<ExerciseSessionRecord> records =
+                readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
+                                .build());
+        assertThat(records).isEmpty();
+
+        assertThat(insertRecordAs(APP_A_WITH_READ_WRITE_PERMS).getBoolean(SUCCESS)).isTrue();
+        records =
                 readRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
                                 .build());
