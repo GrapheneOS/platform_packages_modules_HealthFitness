@@ -28,6 +28,7 @@ import android.healthconnect.cts.TestUtils;
 import android.os.Build;
 import android.os.OutcomeReceiver;
 import android.os.ext.SdkExtensions;
+import android.platform.test.annotations.AppModeFull;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
@@ -43,6 +44,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+@AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class ShowMigrationInfoIntentAbsentTest {
     private Context mContext;
