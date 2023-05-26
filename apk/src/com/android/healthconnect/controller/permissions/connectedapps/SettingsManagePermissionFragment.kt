@@ -132,17 +132,6 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
                     requireActivity().finish()
                 }
             }
-            MigrationState.ALLOWED_PAUSED,
-            MigrationState.ALLOWED_NOT_STARTED,
-            MigrationState.APP_UPGRADE_REQUIRED,
-            MigrationState.MODULE_UPGRADE_REQUIRED -> {
-                showMigrationPendingDialog(
-                    requireContext(),
-                    getString(R.string.migration_pending_permissions_dialog_content_apps),
-                    null) { _, _ ->
-                        requireActivity().finish()
-                    }
-            }
             MigrationState.COMPLETE -> {
                 maybeShowWhatsNewDialog(requireContext())
             }
