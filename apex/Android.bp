@@ -35,10 +35,7 @@ apex {
         "HealthConnectBackupRestore",
         "HealthConnectController",
     ],
-    prebuilts: [
-        "current_sdkinfo",
-        "privapp_allowlist_com.android.healthconnect.controller.xml",
-    ],
+    prebuilts: ["current_sdkinfo"],
     key: "com.android.healthfitness.key",
     min_sdk_version: "UpsideDownCake",
     certificate: ":com.android.healthfitness.certificate",
