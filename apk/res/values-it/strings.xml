@@ -236,7 +236,7 @@
     <string name="write_permission_category" msgid="1529702804865008111">"Consenti scrittura all\'app \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="request_permissions_cancel" msgid="1787483997235365393">"Annulla"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Consenti"</string>
-    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Concedi tutte"</string>
+    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Consenti tutte"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Non consentire"</string>
     <string name="request_permissions_header_desc" msgid="5561173070722750153">"Scegli i dati da far leggere o scrivere a questa app in Connessione Salute"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Se concedi l\'accesso in lettura, questa app potrà leggere i nuovi dati e quelli degli ultimi 30 giorni"</string>
