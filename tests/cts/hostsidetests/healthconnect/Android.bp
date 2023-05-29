@@ -112,6 +112,7 @@ android_test {
         "android.test.runner",
         "framework-healthfitness",
     ],
+    java_resource_dirs: ["res"],
     data : [
           ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
           ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
@@ -126,7 +127,7 @@ java_test_host {
     defaults: ["cts_defaults"],
     srcs: [
         "host/**/*.java",
-        "host/**/*.kt"
+        "host/**/*.kt",
     ],
     test_suites: [
         "cts",
@@ -143,6 +144,7 @@ java_test_host {
         "cts-statsd-atom-host-test-utils",
         "androidx.annotation_annotation",
     ],
+    java_resource_dirs: ["host/res"],
     data: [
         ":CtsHealthConnectTestApp",
     ]
