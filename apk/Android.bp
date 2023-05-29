@@ -163,6 +163,7 @@ android_app {
     sdk_version: "module_current",
     min_sdk_version: "UpsideDownCake",
     privileged: true,
+    privapp_allowlist: ":privapp_allowlist_com.android.healthconnect.controller.xml",
     rename_resources_package: false,
     updatable: true,
     additional_manifests: [
@@ -176,9 +177,6 @@ android_app {
         "HealthConnectPermissionsApis",
         "HealthConnectMigrationApis",
         "hilt_android"
-    ],
-    required: [
-        "privapp_allowlist_com.android.healthconnect.controller.xml",
     ],
     libs: [
         "framework-healthfitness"
