@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Чому сервіс Health Connect вилучає дозволи для додатків"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Якщо певний додаток заблоковано або вилучено з Google Play, сервіс Health Connect автоматично видаляє його дозволи.\n\nЦе означає, що такий додаток більше не має доступу до даних, які зберігаються в Health Connect. Якщо він раніше записував дані, то з’явиться в списку неактивних додатків."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Початок роботи з Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Сервіс Health Connect зберігає ваші дані про здоров’я та фізичну активність, а також дає змогу легко синхронізувати їх із різними додатками на вашому телефоні"</string>
     <string name="share_data" msgid="3481932156368883946">"Діліться даними з додатками"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Виберіть дані, які кожен додаток зможе читати або записувати в Health Connect"</string>

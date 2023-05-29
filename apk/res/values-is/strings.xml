@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Ástæða þess að Heilsutenging fjarlægir heimildir forrita"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ef Google Play fjarlægir eða lokar tímabundið á forrit fjarlægir Heilsutenging sjálfkrafa heimildir þess.\n\nÞað þýðir að forritið getur ekki nálgast gögn sem eru vistuð í Heilsutengingu. Ef viðkomandi forrit hefur skrifað gögn áður birtist það á listanum yfir óvirk forrit."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Ég skil"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Byrjaðu að nota Heilsutengingu"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Heilsutenging varðveitir heilsu- og hreystigögnin þín og gefur þér kost á að samstilla ýmis forrit í símanum á einfaldan hátt"</string>
     <string name="share_data" msgid="3481932156368883946">"Deildu gögnum með forritum"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Veldu hvaða gögn hvert forrit getur lesið eða skrifað yfir í Heilsutengingu"</string>

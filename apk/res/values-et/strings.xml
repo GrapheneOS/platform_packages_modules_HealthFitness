@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Miks eemaldab Health Connect rakenduste load?"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Kui rakendus on Google Plays peatatud või sealt eemaldatud, eemaldab Health Connect automaatselt selle load.\n\nSee tähendab, et rakendus ei pääse enam Health Connecti salvestatud andmetele juurde. Kui rakendusel on varem kirjutatud andmeid, kuvatakse rakendus mitteaktiivsete rakenduste loendis."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Selge"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Alustage Health Connecti kasutamist"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect talletab teie tervise- ja treeninguandmeid, pakkudes teile lihtsat viisi telefonis eri rakenduste sünkroonimiseks."</string>
     <string name="share_data" msgid="3481932156368883946">"Jagage oma rakendustega andmeid"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Valige, milliseid andmeid iga rakendus lugeda või Health Connecti kirjutada saab."</string>
@@ -671,7 +670,7 @@
     <string name="help_and_feedback" msgid="4772169905005369871">"Abi ja tagasiside"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Kui te installitud rakendust ei näe, ei pruugi see veel Health Connectiga ühilduda"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Asjad, mida proovida"</string>
-    <string name="check_for_updates" msgid="3841090978657783101">"Otsige värskendusi"</string>
+    <string name="check_for_updates" msgid="3841090978657783101">"Otsi värskendusi"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Veenduge, et installitud rakendused oleksid ajakohased"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Kuva kõik ühilduvad rakendused"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Otsige rakendusi Google Playst"</string>

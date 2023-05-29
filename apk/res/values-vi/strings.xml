@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Lý do Health Connect xoá quyền cho ứng dụng"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Nếu một ứng dụng bị tạm ngưng hoặc bị xoá khỏi Google Play, Health Connect sẽ tự động xoá các quyền của ứng dụng đó.\n\nĐiều này có nghĩa là ứng dụng đó không thể truy cập vào dữ liệu được lưu trữ trên Health Connect nữa. Nếu đã ghi dữ liệu trước đó thì ứng dụng này sẽ xuất hiện trong danh sách ứng dụng không hoạt động."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Tôi hiểu"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Làm quen với Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect lưu trữ dữ liệu về sức khoẻ và hoạt động thể dục của bạn, qua đó mang lại cho bạn một cách đơn giản để đồng bộ hoá nhiều ứng dụng trên điện thoại"</string>
     <string name="share_data" msgid="3481932156368883946">"Chia sẻ dữ liệu với ứng dụng"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Chọn dữ liệu mà mỗi ứng dụng có thể đọc hoặc ghi vào Health Connect"</string>

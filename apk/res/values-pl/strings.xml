@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Dlaczego Health Connect usuwa uprawnienia aplikacji"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Jeśli aplikacja zostanie zawieszona lub usunięta z Google Play, Health Connect automatycznie usunie jej uprawnienia.\n\nOznacza to, że aplikacja utraci dostęp do informacji przechowywanych w Health Connect. Jeśli aplikacja zapisywała wcześniej dane, pojawi się na liście nieaktywnych aplikacji."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Pierwsze kroki w Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect przechowuje Twoje dane o zdrowiu i aktywności fizycznej oraz ułatwia synchronizację danych z różnych aplikacji na telefonie"</string>
     <string name="share_data" msgid="3481932156368883946">"Udostępniaj dane aplikacjom"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Wybierz dane, jakie każda aplikacja będzie mogła odczytywać i zapisywać w Health Connect"</string>

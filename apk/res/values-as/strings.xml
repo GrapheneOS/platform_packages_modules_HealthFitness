@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connectএ কিয় এপৰ অনুমতি আঁতৰায়"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"যদি কোনো এপ্‌ Google Playৰ পৰা নিলম্বন কৰা অথবা আঁতৰোৱা হয়, তেন্তে Health Connectএ স্বয়ংক্ৰিয়ভাৱে ইয়াৰ অনুমতিসমূহ আঁতৰাই পেলায়।\n\nইয়াৰ অৰ্থ হৈছে এপ্‌টোৱে আৰু Health Connectত ষ্ট’ৰ কৰা ডেটা এক্সেছ কৰিব নোৱাৰে। যদি এই এপ্‌টোত পূৰ্বতে ছেভ কৰা ডেটা আছে, তেন্তে সেয়া নিষ্ক্ৰিয় এপৰ সূচীত দেখুওৱা হয়।"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"বুজি পালোঁ"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ব্যৱহাৰ কৰা আৰম্ভ কৰক"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connectএ আপোনাৰ স্বাস্থ্য আৰু শৰীৰচৰ্চা সম্পৰ্কীয় ডেটা ষ্ট’ৰ কৰি আপোনাক আপোনাৰ ফ’নত থকা বিভিন্ন এপ্‌সমূহ ছিংক কৰাৰ সহজ উপায় প্ৰদান কৰে"</string>
     <string name="share_data" msgid="3481932156368883946">"আপোনাৰ এপ্‌সমূহৰ সৈতে ডেটা শ্বেয়াৰ কৰক"</string>
     <string name="share_data_description" msgid="2919871301634375092">"প্ৰতিটো এপে Health Connectত কি ডেটা পঢ়িব অথবা লিখিব পাৰিব সেয়া বাছনি কৰক"</string>

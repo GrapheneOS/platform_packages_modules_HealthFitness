@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Gründe, warum Health Connect App-Berechtigungen entfernt"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Wenn eine App bei Google Play gesperrt oder entfernt wird, entfernt Health Connect automatisch ihre Berechtigungen.\n\nDie App kann dann nicht mehr auf deine in Health Connect gespeicherten Daten zugreifen. Falls sie schon einmal Daten geschrieben hat, wird sie in der Liste inaktiver Apps angezeigt."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Ok"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Erste Schritte mit Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Dank Health Connect werden deine Gesundheits- und Fitnessdaten gespeichert und lassen sich einfach mit verschiedenen Apps auf deinem Smartphone synchronisieren"</string>
     <string name="share_data" msgid="3481932156368883946">"Daten für deine Apps freigeben"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Du legst fest, welche Daten Apps bei Health Connect lesen oder schreiben können"</string>

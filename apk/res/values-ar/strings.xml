@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"سبب إزالة تطبيق Health Connect لأذونات التطبيقات"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"في حال تعليق أحد التطبيقات أو إزالته من Google Play، يزيل تطبيق Health Connect تلقائيًا أذونات هذا التطبيق.\n\nويعني هذا أنه لم يُعد بإمكان هذا التطبيق الوصول إلى البيانات المخزَّنة في Health Connect. إذا كتب هذا التطبيق البيانات في وقت سابق، سيظهر في قائمة التطبيقات غير النشطة."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"حسنًا"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"بدء استخدام Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"يُخزِّن تطبيق Health Connect بيانات الصحة واللياقة البدنية، ما يمنحك طريقة بسيطة لمزامنة التطبيقات المختلفة على هاتفك."</string>
     <string name="share_data" msgid="3481932156368883946">"مشاركة البيانات مع تطبيقاتك"</string>
     <string name="share_data_description" msgid="2919871301634375092">"اختَر البيانات التي يمكن لكل تطبيق قراءتها من تطبيق Health Connect أو كتابتها فيه."</string>

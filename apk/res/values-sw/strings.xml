@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Sababu zinazofanya Health Connect iondoe ruhusa za programu"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Endapo programu imesimamishwa au kuondolewa kwenye Google Play, Health Connect huondoa ruhusa zake kiotomatiki.\n\nHatua hii inamaanisha kwamba programu haiwezi tena kufikia data iliyohifadhiwa kwenye Health Connect. Ikiwa programu hii ina data iliyorekodiwa hapo awali, itaonekana kwenye orodha ya programu ambazo hazitumiki."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Nimeelewa"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Anza kutumia Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect huhifadhi data yako ya afya na siha, hivyo kukupatia njia rahisi ya kusawazisha programu tofauti kwenye simu yako"</string>
     <string name="share_data" msgid="3481932156368883946">"Shiriki data na programu zako"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Chagua data ambayo kila programu inaweza kusoma na kuandika kwenye Health Connect"</string>

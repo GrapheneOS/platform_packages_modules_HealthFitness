@@ -236,7 +236,7 @@
     <string name="write_permission_category" msgid="1529702804865008111">"Consenti scrittura all\'app \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="request_permissions_cancel" msgid="1787483997235365393">"Annulla"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Consenti"</string>
-    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Concedi tutte"</string>
+    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Consenti tutte"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Non consentire"</string>
     <string name="request_permissions_header_desc" msgid="5561173070722750153">"Scegli i dati da far leggere o scrivere a questa app in Connessione Salute"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Se concedi l\'accesso in lettura, questa app potrà leggere i nuovi dati e quelli degli ultimi 30 giorni"</string>
@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Perché Connessione Salute rimuove le autorizzazioni app"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Se un\'app viene sospesa o rimossa da Google Play, Connessione Salute rimuove automaticamente le relative autorizzazioni.\n\nCiò significa che l\'app non può più accedere ai dati archiviati in Connessione Salute. Se in precedenza aveva scritto dati, l\'app apparirà nell\'elenco di app non attive."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Inizia a usare Connessione Salute"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Connessione Salute archivia i dati relativi alla salute e all\'attività fisica e ti consente di sincronizzare facilmente le varie app installate sul telefono"</string>
     <string name="share_data" msgid="3481932156368883946">"Condividi i dati con le tue app"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Scegli i dati che ciascuna app può leggere o scrivere su Connessione Salute"</string>

@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Hoekom Health Connect apptoestemmings verwyder"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"As ’n app opgeskort of uit Google Play verwyder word, verwyder Health Connect outomaties sy toestemmings.\n\nDit beteken dat die app nie meer toegang kan kry tot data wat in Health Connect geberg is nie. As hierdie app voorheen data geskryf het, sal dit op die lys van onaktiewe apps verskyn."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Het dit"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Kom aan die gang met Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect berg jou gesondheid- en fiksheiddata en bied só ’n eenvoudige manier om die verskillende apps op jou foon te sinkroniseer"</string>
     <string name="share_data" msgid="3481932156368883946">"Deel data met jou apps"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Kies die data wat elke app in Health Connect kan lees of skryf"</string>

@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Pourquoi Connexion santé retire les autorisations des applications"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Lorsqu\'une application est suspendue ou retirée de Google Play, Connexion santé retire automatiquement ses autorisations.\n\nCela signifie que l\'application ne peut plus accéder aux données stockées dans Connexion santé. Si cette application a déjà écrit des données, elle apparaît dans la liste des applications inactives."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Premiers pas avec Connexion santé"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Connexion santé stocke vos données de santé et d\'activité physique, et vous offre un moyen simple de synchroniser les différentes applications de votre téléphone"</string>
     <string name="share_data" msgid="3481932156368883946">"Partager des données avec vos applications"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Choisissez les données que chaque application peut lire ou écrire dans Connexion santé"</string>

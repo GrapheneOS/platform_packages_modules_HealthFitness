@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"چرا Health Connect اجازه‌های برنامه را برمی‌دارد"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"اگر برنامه‌ای به حالت تعلیق درآید یا از Google Play برداشته شود، Health Connect به‌طور خودکار اجازه‌های آن را برمی‌دارد.\n\nاین بدان معنی است که آن برنامه دیگر نمی‌تواند به داده‌های ذخیره‌شده در Health Connect دسترسی داشته باشد. اگر این برنامه ازقبل داده‌های نوشته‌شده داشته باشد، در فهرست برنامه‌های غیرفعال نشان داده می‌شود."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"متوجه‌ام"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"شروع کار با Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"‫Health Connect داده‌های سلامتی و تناسب اندام شما را ذخیره می‌کند و روشی ساده برای همگام‌سازی برنامه‌های مختلف تلفن دراختیارتان می‌گذارد"</string>
     <string name="share_data" msgid="3481932156368883946">"هم‌رسانی داده‌ها با برنامه‌ها"</string>
     <string name="share_data_description" msgid="2919871301634375092">"می‌توانید داده‌هایی را که هر برنامه اجازه دارد در Health Connect بخواند یا بنویسد انتخاب کنید"</string>

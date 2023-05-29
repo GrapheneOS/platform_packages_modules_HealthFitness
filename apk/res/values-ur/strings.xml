@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect ایپ کی اجازتوں کو کیوں ہٹاتی ہے"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"اگر کسی ایپ کو Google Play سے معطل یا ہٹا دیا جاتا ہے تو Health Connect خود کار طور پر اس کی اجازتوں کو ہٹا دیتی ہے۔\n\nاس کا مطلب ہے کہ ایپ Health Connect میں محفوظ کردہ ڈیٹا تک مزید رسائی حاصل نہیں کر سکتی۔ اگر اس ایپ میں پہلے ڈیٹا لکھا ہوا ہے تو یہ غیر فعال ایپس کی فہرست میں ظاہر ہوتا ہے۔"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"سمجھ آ گئی"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect کے ساتھ شروع کریں"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"‫Health Connect ایپ آپ کے صحت اور تندرستی کے ڈیٹا کو اسٹور کرتی ہے جو آپ کے فون پر مختلف ایپس کو سِنک کرنے کا ایک آسان طریقہ فراہم کرتا ہے"</string>
     <string name="share_data" msgid="3481932156368883946">"اپنی ایپس کے ساتھ ڈیٹا کا اشتراک کریں"</string>
     <string name="share_data_description" msgid="2919871301634375092">"وہ ڈیٹا منتخب کریں جسے ہر ایپ Health Connect پر پڑھ یا لکھ سکتی ہے"</string>

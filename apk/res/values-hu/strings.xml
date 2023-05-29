@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Miért távolít el a Health Connect alkalmazásengedélyeket?"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ha valamelyik alkalmazás felfüggesztésre vagy eltávolításra kerül a Google Playen, a Health Connect automatikusan eltávolítja az engedélyeit.\n\nEz azt jelenti, hogy az adott alkalmazás a továbbiakban már nem férhet hozzá a Health Connect szolgáltatásban tárolt adatokhoz. Ha az alkalmazás korábban rögzített adatokat, akkor az inaktív alkalmazások listájában lesz látható."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Értem"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Kezdő lépések a Health Connect szolgáltatással"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"A Health Connect tárolja az egészségével és a fitnesztevékenységeivel kapcsolatos adatokat, így könnyedén szinkronizálhatja a telefonján lévő különböző alkalmazásokat"</string>
     <string name="share_data" msgid="3481932156368883946">"Megoszthat adatokat az alkalmazásaival"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Beállíthatja, hogy az egyes alkalmazások milyen adatokat olvashatnak/írhatnak a Health Connectben"</string>

@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Alasan Health Connect menghapus izin aplikasi"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Jika aplikasi ditangguhkan atau dihapus dari Google Play, Health Connect akan otomatis menghapus izinnya.\n\nArtinya, aplikasi tidak dapat lagi mengakses data yang disimpan di Health Connect. Jika sebelumnya aplikasi telah menulis data, aplikasi akan ditampilkan di daftar aplikasi tidak aktif."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Oke"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Mulai menggunakan Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect menyimpan data kesehatan dan kebugaran Anda supaya Anda dapat menyinkronkan berbagai aplikasi di ponsel dengan mudah"</string>
     <string name="share_data" msgid="3481932156368883946">"Berbagi data dengan aplikasi lainnya"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Pilih data yang dapat dibaca atau ditulis ke Health Connect oleh setiap aplikasi"</string>

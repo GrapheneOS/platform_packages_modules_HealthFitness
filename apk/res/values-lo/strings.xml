@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"ເປັນຫຍັງ Health Connect ຈຶ່ງລຶບການອະນຸຍາດແອັບອອກ"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"ຫາກມີແອັບຖືກລະງັບ ຫຼື ລຶບອອກຈາກ Google Play, Health Connect ຈະລຶບການອະນຸຍາດຂອງມັນອອກອັດຕະໂນມັດ.\n\nນີ້ໝາຍຄວາມວ່າແອັບຈະບໍ່ສາມາດເຂົ້າເຖິງຂໍ້ມູນທີ່ຈັດເກັບໄວ້ໃນ Health Connect ໄດ້ອີກຕໍ່ໄປ. ຫາກແອັບນີ້ມີຂໍ້ມູນທີ່ຂຽນໄວ້ກ່ອນໜ້າ, ມັນຈະປາກົດໃນລາຍຊື່ແອັບທີ່ບໍ່ເຄື່ອນໄຫວ."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"ເຂົ້າໃຈແລ້ວ"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"ເລີ່ມຕົ້ນການນຳໃຊ້ Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect ຈະບັນທຶກຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານ, ເພື່ອມອບວິທີງ່າຍໆໃນການຊິ້ງຂໍ້ມູນແອັບຕ່າງໆຢູ່ໂທລະສັບຂອງທ່ານ"</string>
     <string name="share_data" msgid="3481932156368883946">"ແບ່ງປັນຂໍ້ມູນກັບແອັບຂອງທ່ານ"</string>
     <string name="share_data_description" msgid="2919871301634375092">"ເລືອກຂໍ້ມູນທີ່ແຕ່ລະແອັບສາມາດອ່ານ ຫຼື ຂຽນລົງໃສ່ Health Connect ໄດ້"</string>
