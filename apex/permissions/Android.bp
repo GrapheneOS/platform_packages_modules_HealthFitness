@@ -16,9 +16,7 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-prebuilt_etc {
+filegroup {
     name: "privapp_allowlist_com.android.healthconnect.controller.xml",
-    sub_dir: "permissions",
-    src: "com.android.healthconnect.controller.xml",
-    installable: false,
+    srcs: ["com.android.healthconnect.controller.xml"],
 }
