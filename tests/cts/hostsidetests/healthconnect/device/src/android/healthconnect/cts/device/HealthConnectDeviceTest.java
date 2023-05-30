@@ -33,6 +33,7 @@ import static android.healthconnect.cts.lib.MultiAppTestUtils.updateRecordsAs;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.deleteTestData;
 import static android.healthconnect.cts.utils.TestUtils.fetchDataOriginsPriorityOrder;
+import static android.healthconnect.cts.utils.TestUtils.getApplicationInfo;
 import static android.healthconnect.cts.utils.TestUtils.getGrantedHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.grantPermission;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
@@ -584,5 +585,29 @@ public class HealthConnectDeviceTest {
                     "App with MANAGE_HEALTH_DATA  permission should have deleted data from other"
                             + " app!");
         }
+    }
+
+    @Test
+    public void testToVerifyGetContributorApplicationsInfo() throws Exception {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        bundle = insertRecordAs(APP_B_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<String> pkgNameList =
+                List.of(
+                        APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
+                        APP_B_WITH_READ_WRITE_PERMS.getPackageName());
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
+        List<String> appInfoList =
+                getApplicationInfo().stream()
+                        .map(appInfo -> appInfo.getPackageName())
+                        .collect(Collectors.toList());
+
+        assertThat(appInfoList.containsAll(pkgNameList)).isTrue();
     }
 }
