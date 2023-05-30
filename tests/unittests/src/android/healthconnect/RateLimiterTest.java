@@ -44,52 +44,60 @@ public class RateLimiterTest {
     private static final int MAX_FOREGROUND_CALL_15M = 1000;
     private static final int MAX_BACKGROUND_CALL_15M = 1000;
     private static final Duration WINDOW_15M = Duration.ofMinutes(15);
+    private static final int MEMORY_COST = 20000;
 
     @Rule public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() {
-        Map<Integer, Integer> quotaBucketToMaxApiCallQuotaMap = new HashMap<>();
+        Map<Integer, Integer> quotaBucketToMaxRollingQuotaMap = new HashMap<>();
         Map<String, Integer> quotaBucketToMaxMemoryQuotaMap = new HashMap<>();
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_15M_FOREGROUND,
                 HealthConnectDeviceConfigManager
                         .QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE);
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_15M_BACKGROUND,
                 HealthConnectDeviceConfigManager
                         .QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE);
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND,
                 HealthConnectDeviceConfigManager
                         .QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE);
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND,
                 HealthConnectDeviceConfigManager
                         .QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE);
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_24H_FOREGROUND,
                 HealthConnectDeviceConfigManager
                         .QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE);
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 RateLimiter.QuotaBucket.QUOTA_BUCKET_READS_PER_24H_BACKGROUND,
                 HealthConnectDeviceConfigManager
                         .QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE);
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND,
                 HealthConnectDeviceConfigManager
                         .QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE);
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND,
                 HealthConnectDeviceConfigManager
                         .QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxRollingQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_PER_APP_15M,
+                HealthConnectDeviceConfigManager.DATA_PUSH_LIMIT_PER_APP_15M_DEFAULT_FLAG_VALUE);
+        quotaBucketToMaxRollingQuotaMap.put(
+                RateLimiter.QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_ACROSS_APPS_15M,
+                HealthConnectDeviceConfigManager
+                        .DATA_PUSH_LIMIT_ACROSS_APPS_15M_DEFAULT_FLAG_VALUE);
         quotaBucketToMaxMemoryQuotaMap.put(
                 CHUNK_SIZE_LIMIT_IN_BYTES,
                 HealthConnectDeviceConfigManager.CHUNK_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE);
         quotaBucketToMaxMemoryQuotaMap.put(
                 RECORD_SIZE_LIMIT_IN_BYTES,
                 HealthConnectDeviceConfigManager.RECORD_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE);
-        RateLimiter.updateApiCallQuotaMap(quotaBucketToMaxApiCallQuotaMap);
+        RateLimiter.updateMaxRollingQuotaMap(quotaBucketToMaxRollingQuotaMap);
         RateLimiter.updateMemoryQuotaMap(quotaBucketToMaxMemoryQuotaMap);
         RateLimiter.updateEnableRateLimiterFlag(true);
     }
@@ -166,6 +174,16 @@ public class RateLimiterTest {
     }
 
     @Test
+    public void testRecordMemoryRollingQuota_exceedBackgroundLimit() throws InterruptedException {
+        RateLimiter.clearCache();
+        @QuotaCategory.Type int quotaCategoryWrite = 3;
+        exception.expect(HealthConnectException.class);
+        exception.expectMessage(containsString("API call quota exceeded"));
+        tryAcquireCallQuotaNTimes(
+                quotaCategoryWrite, IS_IN_FOREGROUND_FALSE, MAX_BACKGROUND_CALL_15M, 40000);
+    }
+
+    @Test
     public void checkMaxChunkMemoryUsage_LimitExceeded() {
         long valueExceeding = 5000001;
         exception.expect(HealthConnectException.class);
@@ -206,8 +224,25 @@ public class RateLimiterTest {
 
     private void tryAcquireCallQuotaNTimes(
             @QuotaCategory.Type int quotaCategory, boolean isInForeground, int nTimes) {
+
+        if (quotaCategory == QuotaCategory.QUOTA_CATEGORY_WRITE) {
+            for (int i = 0; i < nTimes; i++) {
+                RateLimiter.tryAcquireApiCallQuota(UID, quotaCategory, isInForeground, MEMORY_COST);
+            }
+        } else {
+            for (int i = 0; i < nTimes; i++) {
+                RateLimiter.tryAcquireApiCallQuota(UID, quotaCategory, isInForeground);
+            }
+        }
+    }
+
+    private void tryAcquireCallQuotaNTimes(
+            @QuotaCategory.Type int quotaCategory,
+            boolean isInForeground,
+            int nTimes,
+            int memoryCost) {
         for (int i = 0; i < nTimes; i++) {
-            RateLimiter.tryAcquireApiCallQuota(UID, quotaCategory, isInForeground);
+            RateLimiter.tryAcquireApiCallQuota(UID, quotaCategory, isInForeground, memoryCost);
         }
     }
 }

@@ -59,6 +59,10 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
             "max_write_requests_per_15m_foreground";
     private static final String MAX_WRITE_REQUESTS_PER_15M_BACKGROUND_FLAG =
             "max_write_requests_per_15m_background";
+    private static final String MAX_DATA_PUSH_LIMIT_PER_APP_15M_BACKGROUND_FLAG =
+            "max_data_push_limit_per_app_15m_background";
+    private static final String MAX_DATA_PUSH_LIMIT_ACROSS_APPS_15M_BACKGROUND_FLAG =
+            "max_data_push_limit_across_apps_15m_background";
     private static final String MAX_WRITE_CHUNK_SIZE_FLAG = "max_write_chunk_size";
     private static final String MAX_WRITE_SINGLE_RECORD_SIZE_FLAG = "max_write_single_record_size";
 
@@ -118,6 +122,8 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     public static final int QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE = 8000;
     public static final int CHUNK_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE = 5000000;
     public static final int RECORD_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE = 1000000;
+    public static final int DATA_PUSH_LIMIT_PER_APP_15M_DEFAULT_FLAG_VALUE = 35000000;
+    public static final int DATA_PUSH_LIMIT_ACROSS_APPS_15M_DEFAULT_FLAG_VALUE = 100000000;
 
     @VisibleForTesting
     public static final int MIGRATION_STATE_IN_PROGRESS_COUNT_DEFAULT_FLAG_VALUE = 5;
@@ -449,56 +455,68 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
 
     /** Updates rate limiting quota values. */
     public void updateRateLimiterValues() {
-        Map<Integer, Integer> quotaBucketToMaxApiCallQuotaMap = new HashMap<>();
+        Map<Integer, Integer> quotaBucketToMaxRollingQuotaMap = new HashMap<>();
         Map<String, Integer> quotaBucketToMaxMemoryQuotaMap = new HashMap<>();
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_24H_FOREGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_READ_REQUESTS_PER_24H_FOREGROUND_FLAG,
                         QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE));
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_24H_BACKGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_READ_REQUESTS_PER_24H_BACKGROUND_FLAG,
                         QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE));
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_15M_FOREGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_READ_REQUESTS_PER_15M_FOREGROUND_FLAG,
                         QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE));
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_15M_BACKGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_READ_REQUESTS_PER_15M_BACKGROUND_FLAG,
                         QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE));
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_WRITE_REQUESTS_PER_24H_FOREGROUND_FLAG,
                         QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE));
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_WRITE_REQUESTS_PER_24H_BACKGROUND_FLAG,
                         QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE));
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_WRITE_REQUESTS_PER_15M_FOREGROUND_FLAG,
                         QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE));
-        quotaBucketToMaxApiCallQuotaMap.put(
+        quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_WRITE_REQUESTS_PER_15M_BACKGROUND_FLAG,
                         QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE));
+        quotaBucketToMaxRollingQuotaMap.put(
+                QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_PER_APP_15M,
+                DeviceConfig.getInt(
+                        DeviceConfig.NAMESPACE_HEALTH_FITNESS,
+                        MAX_DATA_PUSH_LIMIT_PER_APP_15M_BACKGROUND_FLAG,
+                        DATA_PUSH_LIMIT_PER_APP_15M_DEFAULT_FLAG_VALUE));
+        quotaBucketToMaxRollingQuotaMap.put(
+                QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_ACROSS_APPS_15M,
+                DeviceConfig.getInt(
+                        DeviceConfig.NAMESPACE_HEALTH_FITNESS,
+                        MAX_DATA_PUSH_LIMIT_ACROSS_APPS_15M_BACKGROUND_FLAG,
+                        DATA_PUSH_LIMIT_ACROSS_APPS_15M_DEFAULT_FLAG_VALUE));
         quotaBucketToMaxMemoryQuotaMap.put(
                 RateLimiter.CHUNK_SIZE_LIMIT_IN_BYTES,
                 DeviceConfig.getInt(
@@ -511,7 +529,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_WRITE_SINGLE_RECORD_SIZE_FLAG,
                         RECORD_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE));
-        RateLimiter.updateApiCallQuotaMap(quotaBucketToMaxApiCallQuotaMap);
+        RateLimiter.updateMaxRollingQuotaMap(quotaBucketToMaxRollingQuotaMap);
         RateLimiter.updateMemoryQuotaMap(quotaBucketToMaxMemoryQuotaMap);
         mLock.readLock().lock();
         try {

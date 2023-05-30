@@ -327,7 +327,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 recordInternals, attributionSource);
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                         tryAcquireApiCallQuota(
-                                uid, QuotaCategory.QUOTA_CATEGORY_WRITE, isInForeground, builder);
+                                uid,
+                                QuotaCategory.QUOTA_CATEGORY_WRITE,
+                                isInForeground,
+                                builder,
+                                recordsParcel.getRecordsChunkSize());
                         Trace.traceBegin(TRACE_TAG_INSERT, TAG_INSERT);
                         UpsertTransactionRequest insertRequest =
                                 new UpsertTransactionRequest(
@@ -709,7 +713,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 recordInternals, attributionSource);
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                         tryAcquireApiCallQuota(
-                                uid, QuotaCategory.QUOTA_CATEGORY_WRITE, isInForeground, builder);
+                                uid,
+                                QuotaCategory.QUOTA_CATEGORY_WRITE,
+                                isInForeground,
+                                builder,
+                                recordsParcel.getRecordsChunkSize());
                         UpsertTransactionRequest request =
                                 new UpsertTransactionRequest(
                                         attributionSource.getPackageName(),
@@ -1852,6 +1860,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             HealthConnectServiceLogger.Builder builder) {
         try {
             RateLimiter.tryAcquireApiCallQuota(uid, quotaCategory, isInForeground);
+        } catch (RateLimiterException rateLimiterException) {
+            builder.setRateLimit(
+                    rateLimiterException.getRateLimiterQuotaBucket(),
+                    rateLimiterException.getRateLimiterQuotaLimit());
+            throw new HealthConnectException(
+                    rateLimiterException.getErrorCode(), rateLimiterException.getMessage());
+        }
+    }
+
+    private void tryAcquireApiCallQuota(
+            int uid,
+            @QuotaCategory.Type int quotaCategory,
+            boolean isInForeground,
+            HealthConnectServiceLogger.Builder builder,
+            long memoryCost) {
+        try {
+            RateLimiter.tryAcquireApiCallQuota(uid, quotaCategory, isInForeground, memoryCost);
         } catch (RateLimiterException rateLimiterException) {
             builder.setRateLimit(
                     rateLimiterException.getRateLimiterQuotaBucket(),
