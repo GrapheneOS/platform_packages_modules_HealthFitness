@@ -3,6 +3,7 @@ package android.health.connect {
 
   public final class AggregateRecordsGroupedByDurationResponse<T> {
     method @Nullable public T get(@NonNull android.health.connect.datatypes.AggregationType<T>);
+    method @NonNull public java.util.Set<android.health.connect.datatypes.DataOrigin> getDataOrigins(@NonNull android.health.connect.datatypes.AggregationType<T>);
     method @NonNull public java.time.Instant getEndTime();
     method @NonNull public java.time.Instant getStartTime();
     method @Nullable public java.time.ZoneOffset getZoneOffset(@NonNull android.health.connect.datatypes.AggregationType<T>);
@@ -10,6 +11,7 @@ package android.health.connect {
 
   public final class AggregateRecordsGroupedByPeriodResponse<T> {
     method @Nullable public T get(@NonNull android.health.connect.datatypes.AggregationType<T>);
+    method @NonNull public java.util.Set<android.health.connect.datatypes.DataOrigin> getDataOrigins(@NonNull android.health.connect.datatypes.AggregationType<T>);
     method @NonNull public java.time.LocalDateTime getEndTime();
     method @NonNull public java.time.LocalDateTime getStartTime();
     method @Nullable public java.time.ZoneOffset getZoneOffset(@NonNull android.health.connect.datatypes.AggregationType<T>);
