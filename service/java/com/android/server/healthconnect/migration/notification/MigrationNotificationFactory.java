@@ -70,6 +70,8 @@ public class MigrationNotificationFactory {
 
     private static final String MIGRATION_PAUSED_NOTIFICATION_TITLE =
             "migration_paused_notification_title";
+    private static final String MIGRATION_PAUSED_NOTIFICATION_CONTENT =
+            "migration_paused_notification_content";
     private static final String MIGRATION_PAUSED_NOTIFICATION_ACTION = "resume_button";
 
     private static final String RESUME_MIGRATION_NOTIFICATION_TITLE =
@@ -320,16 +322,16 @@ public class MigrationNotificationFactory {
     private Notification getMigrationPausedNotification(@NonNull String channelId) {
         PendingIntent pendingIntent = getMigrationInfoPendingIntent();
         String notificationTitle = getStringResource(MIGRATION_PAUSED_NOTIFICATION_TITLE);
-
+        String notificationContent = getStringResource(MIGRATION_PAUSED_NOTIFICATION_CONTENT);
         Notification notification =
                 new Notification.Builder(mContext, channelId)
                         .setSmallIcon(getAppIcon())
                         .setContentTitle(notificationTitle)
+                        .setContentText(notificationContent)
                         .setContentIntent(pendingIntent)
-                        .setOngoing(true)
+                        .setAutoCancel(true)
                         .build();
 
-        notification.flags = Notification.FLAG_NO_CLEAR;
         return notification;
     }
 
@@ -425,6 +427,7 @@ public class MigrationNotificationFactory {
             MIGRATION_MORE_SPACE_NEEDED_NOTIFICATION_TRY_AGAIN_ACTION,
             MIGRATION_MORE_SPACE_NEEDED_NOTIFICATION_FREE_UP_SPACE_ACTION,
             MIGRATION_PAUSED_NOTIFICATION_TITLE,
+            MIGRATION_PAUSED_NOTIFICATION_CONTENT,
             MIGRATION_PAUSED_NOTIFICATION_ACTION,
             RESUME_MIGRATION_NOTIFICATION_TITLE,
             RESUME_MIGRATION_NOTIFICATION_CONTENT,
