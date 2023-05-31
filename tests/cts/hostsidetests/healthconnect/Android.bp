@@ -141,6 +141,7 @@ java_test_host {
     ],
     static_libs: [
         "cts-statsd-atom-host-test-utils",
+        "androidx.annotation_annotation",
     ],
     data: [
         ":CtsHealthConnectTestApp",
