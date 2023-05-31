@@ -34,6 +34,7 @@ class MigrationActivity : Hilt_MigrationActivity() {
 
     companion object {
         const val MIGRATION_COMPLETE_KEY = "migration_complete_key"
+        const val MIGRATION_ACTIVITY_INTENT = "android.health.connect.action.MIGRATION"
 
         private fun isMigrationComplete(activity: Activity): Boolean {
             val sharedPreference =
@@ -102,7 +103,7 @@ class MigrationActivity : Hilt_MigrationActivity() {
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(
-                    android.R.string.cancel,
+                    R.string.migration_pending_permissions_dialog_button_start_integration,
                     MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON,
                     negativeButtonAction)
                 .setPositiveButton(
