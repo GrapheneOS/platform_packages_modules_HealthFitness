@@ -564,6 +564,15 @@ public class WeightRecordTest {
             groupBoundary = groupBoundary.plus(1, ChronoUnit.DAYS);
             assertThat(responses.get(i).getEndTime().getDayOfYear())
                     .isEqualTo(groupBoundary.getDayOfYear());
+            assertThat(responses.get(i).getDataOrigins(WEIGHT_MIN)).hasSize(1);
+            assertThat(
+                            responses
+                                    .get(i)
+                                    .getDataOrigins(WEIGHT_MIN)
+                                    .iterator()
+                                    .next()
+                                    .getPackageName())
+                    .isEqualTo(ApplicationProvider.getApplicationContext().getPackageName());
         }
 
         tearDown();
@@ -606,6 +615,15 @@ public class WeightRecordTest {
             groupBoundary = groupBoundary.plus(1, ChronoUnit.DAYS);
             assertThat(responses.get(i).getEndTime().getEpochSecond())
                     .isEqualTo(groupBoundary.getEpochSecond());
+            assertThat(responses.get(i).getDataOrigins(WEIGHT_MAX)).hasSize(1);
+            assertThat(
+                            responses
+                                    .get(i)
+                                    .getDataOrigins(WEIGHT_MAX)
+                                    .iterator()
+                                    .next()
+                                    .getPackageName())
+                    .isEqualTo(ApplicationProvider.getApplicationContext().getPackageName());
         }
 
         tearDown();
