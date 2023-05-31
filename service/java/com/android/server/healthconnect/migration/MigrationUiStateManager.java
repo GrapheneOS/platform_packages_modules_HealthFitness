@@ -121,9 +121,9 @@ public class MigrationUiStateManager {
         int migrationUiState = getHealthConnectMigrationUiState();
 
         switch (migrationUiState) {
-            case MIGRATION_UI_STATE_APP_UPGRADE_REQUIRED:
+            case MIGRATION_UI_STATE_ALLOWED_PAUSED:
                 mMigrationNotificationSender.sendNotification(
-                        MigrationNotificationSender.NOTIFICATION_TYPE_MIGRATION_APP_UPDATE_NEEDED,
+                        MigrationNotificationSender.NOTIFICATION_TYPE_MIGRATION_PAUSED,
                         mUserHandle);
                 break;
 

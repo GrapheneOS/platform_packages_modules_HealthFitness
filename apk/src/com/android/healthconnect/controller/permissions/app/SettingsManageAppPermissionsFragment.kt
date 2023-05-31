@@ -33,7 +33,10 @@
  */
 package com.android.healthconnect.controller.permissions.app
 
+import android.app.Activity
+import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
+import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -42,6 +45,7 @@ import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationActivity
+import com.android.healthconnect.controller.migration.MigrationActivity.Companion.MIGRATION_ACTIVITY_INTENT
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationInProgressDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationPendingDialog
@@ -187,9 +191,11 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
                     getString(
                         R.string.migration_pending_permissions_dialog_content,
                         viewModel.appInfo.value?.appName),
-                    null) { _, _ ->
-                        requireActivity().finish()
-                    }
+                        positiveButtonAction = null,
+                        negativeButtonAction = { _, _ ->
+                            requireContext().startActivity(Intent(MIGRATION_ACTIVITY_INTENT))
+                            requireActivity().finish()
+                        })
             }
             MigrationState.COMPLETE -> {
                 maybeShowWhatsNewDialog(requireContext())
