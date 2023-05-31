@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect యాప్ అనుమతులను ఎందుకు తీసివేస్తుంది"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Google Play నుండి యాప్ సస్పెండ్ చేయబడినా లేదా తీసివేయబడినా, Health Connect దాని అనుమతులను ఆటోమేటిక్‌గా తీసివేస్తుంది.\n\nయాప్ ఇకపై Health Connectలో స్టోర్ చేసిన డేటాను యాక్సెస్ చేయలేదని దీని అర్థం. ఈ యాప్ మునుపు రాసిన డేటాను కలిగి ఉంటే, అది ఇన్‌యాక్టివ్ యాప్‌ల లిస్ట్‌లో కనిపిస్తుంది."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"అర్థమైంది"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connectను ప్రారంభించండి"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect మీ ఆరోగ్యానికి, ఫిట్‌నెస్‌కు సంబంధించిన డేటాను స్టోర్ చేస్తుంది, తద్వారా మీరు మీ డేటాను ఫోన్​లోని విభిన్న రకాల యాప్‌లతో సులభంగా సింక్ చేయవచ్చు"</string>
     <string name="share_data" msgid="3481932156368883946">"మీ యాప్‌లతో డేటాను షేర్ చేయండి"</string>
     <string name="share_data_description" msgid="2919871301634375092">"ప్రతి ఒక్క యాప్ Health Connectలో ఏ డేటాను రీడ్‌ చేయాలి లేదా రైట్ చేయాలి అన్నది ఎంచుకోండి"</string>

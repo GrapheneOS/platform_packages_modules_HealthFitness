@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Prečo Dáta o zdraví odstraňujú povolenia aplikácií"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ak bude aplikácia zablokovaná alebo odstránená zo služby Google Play, Dáta o zdraví automaticky odstránia jej povolenia.\n\nZnamená to, že daná aplikácia už nebude mať prístup k údajom uloženým v Dátach o zdraví. Ak aplikácia v minulosti zapísala údaje, zobrazí sa v zozname neaktívnych aplikácií."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Dobre"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Začíname s Dátami o zdraví"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Dáta o zdraví uchovávajú vaše údaje o zdraví a kondícii a umožňujú vám jednoducho synchronizovať rôzne aplikácie v telefóne"</string>
     <string name="share_data" msgid="3481932156368883946">"Zdieľanie údajov s aplikáciami"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Vyberte, ktoré údaje budú môcť jednotlivé aplikácie v Dátach o zdraví čítať alebo zapisovať"</string>

@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect\'in uygulama izinlerini kaldırmasının nedeni"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Health Connect, Google Play\'den kaldırılan veya askıya alınan uygulamaların izinlerini otomatik olarak kaldırır.\n\nİzinleri kaldırılan uygulamalar artık Health Connect\'te depolanan verilere erişemez. Bu uygulamalar daha önce yazılmış veriler içeriyorsa etkin olmayan uygulamalar listesinde görünür."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Anladım"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect\'i kullanmaya başlama"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect, sağlık ve fitness verilerinizi depolayarak telefonunuzdaki farklı uygulamaları senkronize etmek için basit bir yol sunar"</string>
     <string name="share_data" msgid="3481932156368883946">"Uygulamalarınızla veri paylaşın"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Her uygulamanın okuyabileceği veya Health Connect\'e yazabileceği verileri seçin"</string>

@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Колдонмонун ден соолук тууралуу маалыматка кирүү мүмкүнчүлүгүн тескөө"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Колдонмо үчүн ден соолукка байланыштуу нерселердин жеткиликтүүлүгүн тескейсиз"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Уруксаттар жана маалыматтар"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Телефонуңуздан кыймылдуулугуңуз жана ден соолугуңузга байланыштуу нерселерди тескеп, алар кайсы колдонмолорго жеткиликтүү болорун көзөмөлдөйсүз"</string>
     <string name="data_title" msgid="4456619761533380816">"Колдонмодогу нерселер жана жеткиликтүүлүк"</string>
@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect колдонмолордун уруксаттарын эмне үчүн өчүрөт"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Эгер колдонмо Google Play\'де убактылуу токтотулуп же өчүрүлсө, Health Connect анын уруксаттарын автоматтык түрдө өчүрүп коёт.\n\nБул колдонмо Health Connect\'те сакталган маалыматыңызга мындан ары мүмкүнчүлүк ала албайт дегенди билдирет. Бул колдонмонун мурда жазылган маалыматы болсо, ал жигерсиз колдонмолордун тизмесинде көрүнөт."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Түшүндүм"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect\'ти колдонуп баштоо"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect кызматы ден-соолугуңузга жана кыймылдуулугуңузга байланыштуу нерселерди сактап, аларды телефондогу башка колдонмолор менен шайкештештирет."</string>
     <string name="share_data" msgid="3481932156368883946">"Колдонмолор менен ар кандай нерселерди бөлүшүү"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Ар бир колдонмо Health Connect кызматында кандай маалыматты окуп, сактай ала турганын тандайсыз"</string>

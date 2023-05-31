@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Niyə Health Connect tətbiq icazələrini silir"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Tətbiq dayandırılsa və ya Google Play\'dən silinsə, Health Connect onun icazələrini avtomatik silir.\n\nYəni ki, tətbiq daha Health Connect\'də saxlanmış datanıza giriş edə bilməz. Bu tətbiqdə əvvəllər yazılmış data varsa, o, fəaliyyətsiz tətbiqlər siyahısında görünür."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Anladım"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ilə başlayın"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect sağlamlıq və fitnes datanızı saxlayaraq, telefonunuzdakı müxtəlif tətbiqləri sinxronlaşdırmaq üçün sadə yol təqdim edir"</string>
     <string name="share_data" msgid="3481932156368883946">"Tətbiqlərinizlə data paylaşın"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Hər bir tətbiqin Health Connect\'də oxuya və ya yaza biləcəyi datanı seçin"</string>

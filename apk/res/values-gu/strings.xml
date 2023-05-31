@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect દ્વારા ઍપ પરવાનગીઓ કાઢી નાખવાનું કારણ"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"જો કોઈ ઍપને Google Playમાંથી સસ્પેન્ડ કરવામાં કે કાઢી નાખવામાં આવે, તો Health Connect ઑટોમૅટિક રીતે તેની પરવાનગીઓ કાઢી નાખે છે.\n\nતેનો અર્થ એ થાય છે કે ઍપ હવેથી Health Connectમાં સ્ટોર કરેલો ડેટા ઍક્સેસ કરી શકશે નહીં. જો આ ઍપમાં અગાઉ લખવામાં આવેલો કોઈ ડેટા હોય, તો તે નિષ્ક્રિય ઍપની સૂચિમાં દેખાય છે."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"સમજાઈ ગયું"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect સાથે શરુ કરો"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect તમારો આરોગ્ય અને ફિટનેસ સંબંધિત ડેટા સ્ટોર કરે છે, જેનાથી તમે તમારા ફોન પર વિવિધ ઍપ સરળ રીતે સિંક કરી શકો છો"</string>
     <string name="share_data" msgid="3481932156368883946">"તમારી ઍપ સાથે ડેટા શેર કરો"</string>
     <string name="share_data_description" msgid="2919871301634375092">"દરેક ઍપ Health Connect પર વાંચી કે લખી શકે તે ડેટા પસંદ કરો"</string>

@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Därför tar Health Connect bort appbehörigheter"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Om en app stängs av eller tas bort från Google Play tar Health Connect automatiskt bort dess behörigheter.\n\nDet innebär att appen inte längre har åtkomst till data som sparats i Health Connect. Om appen har skrivit data tidigare visas den i listan över inaktiva appar."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Kom igång med Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect lagrar din hälso- och träningsdata, så att du enkelt kan synkronisera olika appar på telefonen"</string>
     <string name="share_data" msgid="3481932156368883946">"Dela data med dina appar"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Välj vilken data varje app får läs- eller skrivbehörighet till för Health Connect"</string>

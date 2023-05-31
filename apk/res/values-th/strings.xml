@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"ทำไม Health Connect จึงนำสิทธิ์ของแอปออก"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"หากแอปถูกระงับหรือนำออกจาก Google Play, Health Connect จะนำสิทธิ์ของแอปนั้นออกโดยอัตโนมัติ\n\nซึ่งแปลว่าแอปดังกล่าวจะไม่สามารถเข้าถึงข้อมูลที่เก็บไว้ใน Health Connect ได้อีกต่อไป ข้อมูลที่แอปเคยเขียนไว้จะไปปรากฏในรายการข้อมูลแอปที่ไม่ได้ใช้งาน"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"รับทราบ"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"เริ่มต้นใช้งาน Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect จะจัดเก็บข้อมูลสุขภาพและการออกกำลังกาย และให้คุณซิงค์แอปต่างๆ ในโทรศัพท์ได้โดยง่าย"</string>
     <string name="share_data" msgid="3481932156368883946">"แชร์ข้อมูลกับแอปต่างๆ"</string>
     <string name="share_data_description" msgid="2919871301634375092">"เลือกข้อมูลที่แต่ละแอปจะอ่านหรือเขียนลงใน Health Connect ได้"</string>

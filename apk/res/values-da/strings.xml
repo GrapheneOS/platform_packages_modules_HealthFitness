@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Derfor fjerner Health Connect apptilladelser"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Hvis en app suspenderes eller fjernes fra Google Play, fjerner Health Connect automatisk dens tilladelser.\n\nDet betyder, at appen ikke længere vil have adgang til data, der er gemt i Health Connect. Hvis appen tidligere har skrevet data, vises den på listen over inaktive apps."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Kom godt i gang med Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect opbevarer dine sundheds- og motionsdata, så du nemt kan synkronisere de forskellige apps på din telefon"</string>
     <string name="share_data" msgid="3481932156368883946">"Del data med dine apps"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Vælg, hvilke data appen skal kunne læse eller skrive til Health Connect"</string>

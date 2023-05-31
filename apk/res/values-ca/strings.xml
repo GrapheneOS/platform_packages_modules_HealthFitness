@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Per què Salut connectada suprimeix els permisos d\'aplicacions"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Si una aplicació se suspèn o suprimeix de Google Play, Salut connectada en suprimeix els permisos automàticament.\n\nAixò significa que l\'aplicació ja no podrà accedir a les dades emmagatzemades a Salut Connectada. Si aquesta aplicació ha escrit dades anteriorment, apareixerà a la llista d\'aplicacions inactives."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entesos"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Comença amb Salut connectada"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Salut connectada emmagatzema les teves dades de salut i fitnes, i t\'ofereix una manera senzilla de sincronitzar les diverses aplicacions del telèfon"</string>
     <string name="share_data" msgid="3481932156368883946">"Comparteix dades amb les aplicacions"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Tria les dades que cada aplicació pot llegir o escriure a Salut connectada"</string>

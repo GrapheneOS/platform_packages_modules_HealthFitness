@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Ինչու է Health Connect-ը հեռացնում հավելվածների թույլտվությունները"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Health Connect ծառայությունն ավտոմատ հեռացնում է այն հավելվածների թույլտվությունները, որոնք կասեցված են կամ հեռացված Google Play-ից։\n\nՍա նշանակում է, որ Health Connect-ում պահված տվյալներն այլևս հասանելի չեն այդ հավելվածներին։ Եթե հավելվածը նախկինում տվյալներ է գրանցել, այն հայտնվում է անգործուն հավելվածների ցանկում։"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Եղավ"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Ներկայացնում ենք Health Connect-ը"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect-ը պահում է ձեր առողջության և ֆիզիկական ակտիվության տվյալները և համաժամացնում տարբեր հավելվածների աշխատանքը ձեր հեռախոսում"</string>
     <string name="share_data" msgid="3481932156368883946">"Կիսվեք տվյալներով հավելվածների հետ"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Ընտրեք տվյալները, որոնք յուրաքանչյուր հավելված կարող է կարդալ և գրանցել Health Connect-ում"</string>

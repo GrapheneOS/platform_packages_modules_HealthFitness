@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Bakit nag-aalis ng mga pahintulot sa app ang Health Connect"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Kung sinuspinde o inalis sa Google Play ang isang app, awtomatikong aalisin ng Health Connect ang mga pahintulot nito.\n\nIbig sabihin, hindi na maa-access ng app ang data na naka-store sa Health Connect. Kung dating nagra-write ng data ang app na ito, lalabas ito sa listahan ng mga hindi aktibong app."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Magsimula sa Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Sino-store ng Health Connect ang iyong data ng kalusugan at fitness, na nagbibigay sa iyo ng simpleng paraan para i-sync ang iba\'t ibang app sa telepono mo"</string>
     <string name="share_data" msgid="3481932156368883946">"Magbahagi ng data sa iyong mga app"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Piliin ang data na puwedeng i-read o i-write ng bawat app sa Health Connect"</string>

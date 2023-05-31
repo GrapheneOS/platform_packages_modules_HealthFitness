@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Waarom Health Connect app-rechten verwijdert"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Als een app wordt opgeschort of verwijderd van Google Play, verwijdert Health Connect automatisch de rechten voor die app.\n\nDit betekent dat de app geen toegang meer heeft tot gegevens die zijn opgeslagen in Health Connect. Heeft de app eerder gegevens geschreven, dan verschijnt deze in de lijst met inactieve apps."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Aan de slag met Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect slaat je gezondheids- en fitnessgegevens op zodat je de verschillende apps op je telefoon makkelijk kunt synchroniseren"</string>
     <string name="share_data" msgid="3481932156368883946">"Gegevens delen met je apps"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Kies de gegevens die elke app mag lezen in of sturen naar Health Connect"</string>

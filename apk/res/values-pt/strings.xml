@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Por que a plataforma Conexão Saúde remove as permissões de apps"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Se um app for suspenso ou removido do Google Play, a plataforma Conexão Saúde vai remover automaticamente as permissões dele.\n\nIsso significa que o app não poderá mais acessar seus dados armazenados na Conexão Saúde. Se esse app tiver gravado dados anteriormente, ele vai aparecer na lista de apps inativos."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entendi"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Comece a usar o app Conexão Saúde"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"A plataforma Conexão Saúde armazena seus dados de saúde e condicionamento físico, oferecendo uma maneira simples de sincronizar os diferentes apps no smartphone"</string>
     <string name="share_data" msgid="3481932156368883946">"Compartilhar dados com seus apps"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Escolha os dados que cada app pode ler ou gravar na plataforma Conexão Saúde"</string>

@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect ଆପ ଅନୁମତିଗୁଡ଼ିକୁ କାହିଁକି କାଢ଼ି ଦିଏ"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"ଯଦି ଏକ ଆପକୁ Google Playରୁ ସସପେଣ୍ଡ କରାଯାଏ କିମ୍ବା କାଢ଼ି ଦିଆଯାଏ, ତେବେ Health Connect ସ୍ୱଚାଳିତ ଭାବେ ଏହାର ଅନୁମତିଗୁଡ଼ିକୁ କାଢ଼ି ଦିଏ।\n\nଏହାର ଅର୍ଥ ହେଉଛି ଏହି ଆପଟି Health Connectରେ ଷ୍ଟୋର କରାଯାଇଥିବା ଡାଟାକୁ ଆଉ ଆକ୍ସେସ କରିପାରିବ ନାହିଁ। ଯଦି ଏହି ଆପରେ ପୂର୍ବରୁ ଲିଖିତ ଡାଟା ଅଛି, ତେବେ ଏହା ନିଷ୍କ୍ରିୟ ଆପ୍ସ ତାଲିକାରେ ଦେଖାଯାଏ।"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"ବୁଝିଗଲି"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ସହ ଆରମ୍ଭ କରନ୍ତୁ"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ଷ୍ଟୋର କରେ, ଆପଣଙ୍କ ଫୋନରେ ବିଭିନ୍ନ ଆପ୍ସ ସିଙ୍କ କରିବାକୁ ଆପଣଙ୍କୁ ଏକ ସହଜ ଉପାୟ ଦେଇଥାଏ"</string>
     <string name="share_data" msgid="3481932156368883946">"ଆପଣଙ୍କ ଆପ୍ସ ସହ ଡାଟା ସେୟାର କରନ୍ତୁ"</string>
     <string name="share_data_description" msgid="2919871301634375092">"ପ୍ରତ୍ୟେକ ଆପ Health Connectରୁ କେଉଁ ଡାଟା ପଢ଼ିପାରିବ କିମ୍ବା ଲେଖିପାରିବ ତାହା ବାଛନ୍ତୁ"</string>

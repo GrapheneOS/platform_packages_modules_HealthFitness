@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Por qué Salud conectada quita los permisos de las aplicaciones"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Si una aplicación se suspende o se elimina de Google Play, Salud conectada quita automáticamente sus permisos.\n\nPor lo tanto, la aplicación ya no podrá acceder a tus datos almacenados en Salud conectada. Si la aplicación ya había escrito datos, aparecerá en la lista de aplicaciones inactivas."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entendido"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Empezar a usar Salud conectada"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Salud conectada almacena tus datos de salud y actividad física, y te ofrece una forma sencilla de sincronizar las diferentes aplicaciones de tu teléfono"</string>
     <string name="share_data" msgid="3481932156368883946">"Comparte datos con tus aplicaciones"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Elige los datos que cada aplicación puede leer o escribir en Salud conectada"</string>

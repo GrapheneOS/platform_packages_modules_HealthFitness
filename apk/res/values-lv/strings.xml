@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Kāpēc platformā Health Connect tiek noņemtas lietotņu atļaujas"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ja lietotnes darbība tiek apturēta vai lietotne tiek noņemta no pakalpojuma Google Play, platformā Health Connect tiek automātiski noņemtas šīs lietotnes atļaujas.\n\nTas nozīmē, ka lietotne vairs nevar piekļūt platformā Health Connect saglabātajiem datiem. Ja attiecīgā lietotne iepriekš ir rakstījusi datus, tā tiek rādīta neaktīvo lietotņu sarakstā."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Labi"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Darba sākšana ar Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Platformā Health Connect tiek glabāti jūsu veselības un fizisko aktivitāšu dati, tādējādi varat vienkāršā veidā sinhronizēt dažādas lietotnes savā tālrunī."</string>
     <string name="share_data" msgid="3481932156368883946">"Datu kopīgošana ar lietotnēm"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Izvēlieties, kādus datus katra lietotne var lasīt vai rakstīt platformā Health Connect."</string>

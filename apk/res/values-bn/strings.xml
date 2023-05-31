@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Health Connect কেন অ্যাপকে দেওয়া অনুমতি সরিয়ে দেয়"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"কোনও অ্যাপ Google Play থেকে সাসপেন্ড করা বা সরানো হলে, Health Connect অটোমেটিকভাবে এর অনুমতি সরিয়ে দেয়।\n\nএর অর্থ হল অ্যাপটি Health Connect-এ স্টোর করে রাখা ডেটা আর অ্যাক্সেস করতে পারবে না। এই অ্যাপ যদি আগে কোনও ডেটা সেভ করে থাকে, বন্ধ থাকা অ্যাপের তালিকায় এটি দেখা যাবে।"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"বুঝেছি"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ব্যবহার শুরু করুন"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect, আপনার স্বাস্থ্য ও ফিটনেস সংক্রান্ত ডেটা সেভ করে, যার ফলে সহজেই বিভিন্ন অ্যাপ আপনার ফোনে সিঙ্ক করে নিতে পারেন"</string>
     <string name="share_data" msgid="3481932156368883946">"অ্যাপের সাথে ডেটা শেয়ার করুন"</string>
     <string name="share_data_description" msgid="2919871301634375092">"প্রতিটি অ্যাপ, Health Connect-এর যেসব ডেটা দেখতে ও এডিট করতে পারবে সেগুলি বেছে নিন"</string>

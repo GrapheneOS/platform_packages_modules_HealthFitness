@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Pse i heq Health Connect lejet e aplikacioneve"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Nëse një aplikacion pezullohet ose hiqet nga Google Play, Health Connect i heq automatikisht lejet e tij.\n\nKjo do të thotë që aplikacioni nuk mund të ketë më qasje te të dhënat e ruajtura në Health Connect. Nëse ky aplikacion ka të dhëna që janë shkruar më herët, ai shfaqet në listën e aplikacioneve joaktive."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"E kuptova"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Fillo me Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect ruan të dhënat e tua të shëndetit dhe të fitnesit, duke të ofruar një mënyrë të thjeshtë për të sinkronizuar aplikacione të ndryshme në telefonin tënd"</string>
     <string name="share_data" msgid="3481932156368883946">"Ndaj të dhënat me aplikacionet e tua"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Zgjidh të dhënat që çdo aplikacion mund të lexojë ose të shkruajë në Health Connect"</string>

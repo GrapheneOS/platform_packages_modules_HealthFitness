@@ -285,8 +285,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Zakaj Health Connect odstrani dovoljenja za aplikacije"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Če je aplikacija blokirana ali odstranjena iz Googla Play, Health Connect samodejno odstrani njena dovoljenja.\n\nTo pomeni, da aplikacija ne more več dostopati do podatkov, shranjenih v storitvi Health Connect. Če je ta aplikacija pred tem zapisovala podatke, je prikazana na seznamu neaktivnih aplikacij."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Razumem"</string>
-    <!-- no translation found for onboarding_title (8550656211291180188) -->
-    <skip />
+    <string name="onboarding_title" msgid="8550656211291180188">"Začetek uporabe storitve Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect shranjuje vaše podatke o zdravju in telesni pripravljenosti ter vam omogoča, da na preprost način sinhronizirate različne aplikacije v telefonu."</string>
     <string name="share_data" msgid="3481932156368883946">"Deljenje podatkov z aplikacijami"</string>
     <string name="share_data_description" msgid="2919871301634375092">"Izberite, katere podatke lahko aplikacije berejo ali zapisujejo v storitvi Health Connect."</string>
