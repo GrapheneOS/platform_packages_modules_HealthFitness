@@ -538,6 +538,9 @@ public class HealthConnectManager {
                             callback) {
         Objects.requireNonNull(request);
         Objects.requireNonNull(duration);
+        if (duration.toMillis() < 1) {
+            throw new IllegalArgumentException("Duration should be at least 1 millisecond");
+        }
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
@@ -605,6 +608,9 @@ public class HealthConnectManager {
                             callback) {
         Objects.requireNonNull(request);
         Objects.requireNonNull(period);
+        if (period == Period.ZERO) {
+            throw new IllegalArgumentException("Period duration should be at least a day");
+        }
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {

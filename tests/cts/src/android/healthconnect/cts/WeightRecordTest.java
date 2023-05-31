@@ -245,6 +245,60 @@ public class WeightRecordTest {
         }
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testAggregation_zeroDuration_throwsException() throws Exception {
+        TestUtils.getAggregateResponseGroupByDuration(
+                new AggregateRecordsRequest.Builder<Mass>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.ofEpochMilli(0))
+                                        .setEndTime(Instant.now())
+                                        .build())
+                        .addAggregationType(WEIGHT_AVG)
+                        .build(),
+                Duration.ZERO);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAggregation_zeroPeriod_throwsException() throws Exception {
+        TestUtils.getAggregateResponseGroupByPeriod(
+                new AggregateRecordsRequest.Builder<Mass>(
+                                new LocalTimeRangeFilter.Builder()
+                                        .setStartTime(
+                                                LocalDateTime.now(ZoneOffset.UTC).minusDays(1))
+                                        .setEndTime(LocalDateTime.now(ZoneOffset.UTC))
+                                        .build())
+                        .addAggregationType(WEIGHT_AVG)
+                        .build(),
+                Period.ZERO);
+    }
+
+    @Test(expected = HealthConnectException.class)
+    public void testAggregationPeriod_lotsOfGroups_throwsException() throws Exception {
+        TestUtils.getAggregateResponseGroupByPeriod(
+                new AggregateRecordsRequest.Builder<Mass>(
+                                new LocalTimeRangeFilter.Builder()
+                                        .setStartTime(
+                                                LocalDateTime.ofEpochSecond(0, 0, ZoneOffset.UTC))
+                                        .setEndTime(LocalDateTime.now(ZoneOffset.UTC))
+                                        .build())
+                        .addAggregationType(WEIGHT_AVG)
+                        .build(),
+                Period.ofDays(1));
+    }
+
+    @Test(expected = HealthConnectException.class)
+    public void testAggregation_hugeNumberOfGroups_throwsException() throws Exception {
+        TestUtils.getAggregateResponseGroupByDuration(
+                new AggregateRecordsRequest.Builder<Mass>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.ofEpochMilli(0))
+                                        .setEndTime(Instant.now())
+                                        .build())
+                        .addAggregationType(WEIGHT_AVG)
+                        .build(),
+                Duration.ofSeconds(1));
+    }
+
     @Test
     public void testDeleteWeightRecord_no_filters() throws InterruptedException {
         String id = TestUtils.insertRecordAndGetId(getCompleteWeightRecord());
