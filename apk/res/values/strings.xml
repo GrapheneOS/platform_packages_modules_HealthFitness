@@ -1016,7 +1016,8 @@
     <string name="migration_paused_screen_details" description="Detail information shown when migration has been paused.">The Health&#160;Connect app closed while it was being integrated with the Android system.\n\nClick resume to reopen the app and continue transferring your data and permissions.</string>
     <string name="migration_paused_screen_details_timeout" description="Detail information about migration timeout shown when migration has been paused.">In order to keep your Health&#160;Connect data, complete this within <xliff:g example="1 day" id="time_needed">%1$s</xliff:g></string>
     <string name="resume_button" description="Text of a button prompting the user resume migration [CHAR_LIMIT=40]">Resume</string>
-    <string name="migration_paused_notification_title" description="Title of notification sent when migration has been paused.">Health&#160;Connect integration paused</string>
+    <string name="migration_paused_notification_title" description="Title of notification sent when migration has been paused.">Integration paused</string>
+    <string name="migration_paused_notification_content" description="Content of notification sent when migration has been paused.">Health&#160;Connect is being integrated with the Android system. Tap to continue</string>
     <!--  endregion -->
 
     <!-- region Resume migration banner -->
@@ -1040,6 +1041,7 @@
     <string name="migration_pending_permissions_dialog_content" description="Content of dialog shown to the user when migration is pending and an app is requesting permissions.">Health&#160;Connect is ready to be integrated with your Android system. If you give <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> access now, some features may not work until integration is complete.</string>
     <string name="migration_pending_permissions_dialog_content_apps" description="Content of dialog shown to the user when migration is pending and the user is viewing health permissions.">Health&#160;Connect is ready to be integrated with your Android system. If you give apps access now, some features may not work until integration is complete.</string>
     <string name="migration_pending_permissions_dialog_button_continue" description="Button of dialog shown to the user when migration is pending and an app is requesting permissions.">Continue</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" description="Button of dialog shown to the user when migration is pending and an app is requesting permissions.">Start integration</string>
     <!--  endregion -->
 
     <!-- region Migration in progress permissions dialog -->
