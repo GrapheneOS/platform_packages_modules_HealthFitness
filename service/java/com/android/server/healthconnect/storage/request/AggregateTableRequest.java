@@ -61,6 +61,8 @@ public class AggregateTableRequest {
     private static final String TAG = "HealthConnectAggregate";
     private static final String GROUP_BY_COLUMN_NAME = "category";
 
+    private static final int MAX_NUMBER_OF_GROUPS = Constants.MAXIMUM_PAGE_SIZE;
+
     private final long DEFAULT_TIME = -1;
     private final String mTableName;
     private final List<String> mColumnNamesToAggregate;
@@ -393,6 +395,11 @@ public class AggregateTableRequest {
         while (!currentEnd.isAfter(filterEnd)) {
             splits.add(TimeRangeFilterHelper.getMillisOfLocalTime(currentEnd));
             currentEnd = currentEnd.plus(period);
+
+            if (splits.size() > MAX_NUMBER_OF_GROUPS) {
+                throw new IllegalArgumentException(
+                        "Number of groups must not exceed " + MAX_NUMBER_OF_GROUPS);
+            }
         }
 
         // If the last group doesn't fit the rest of the window, we cut it up to filterEnd
@@ -407,6 +414,11 @@ public class AggregateTableRequest {
         long groupByStart = TimeRangeFilterHelper.getFilterStartTimeMillis(timeRangeFilter);
         long groupByEnd = TimeRangeFilterHelper.getFilterEndTimeMillis(timeRangeFilter);
         long groupDurationMillis = duration.toMillis();
+
+        if ((groupByEnd - groupByStart) / groupDurationMillis > MAX_NUMBER_OF_GROUPS) {
+            throw new IllegalArgumentException(
+                    "Number of buckets must not exceed " + MAX_NUMBER_OF_GROUPS);
+        }
 
         List<Long> splits = new ArrayList<>();
         splits.add(groupByStart);
