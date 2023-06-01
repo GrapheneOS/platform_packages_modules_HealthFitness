@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Колдонмонун ден соолук тууралуу маалыматка кирүү мүмкүнчүлүгүн тескөө"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Колдонмо үчүн ден соолукка байланыштуу нерселердин жеткиликтүүлүгүн тескейсиз"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Уруксаттар жана маалыматтар"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Телефонуңуздан кыймылдуулугуңуз жана ден соолугуңузга байланыштуу нерселерди тескеп, алар кайсы колдонмолорго жеткиликтүү болорун көзөмөлдөйсүз"</string>
     <string name="data_title" msgid="4456619761533380816">"Колдонмодогу нерселер жана жеткиликтүүлүк"</string>

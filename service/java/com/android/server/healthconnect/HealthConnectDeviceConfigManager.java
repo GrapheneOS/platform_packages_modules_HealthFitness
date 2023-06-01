@@ -123,7 +123,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     public static final int MIGRATION_STATE_IN_PROGRESS_COUNT_DEFAULT_FLAG_VALUE = 5;
 
     @VisibleForTesting public static final int MIGRATION_STATE_ALLOWED_COUNT_DEFAULT_FLAG_VALUE = 5;
-    @VisibleForTesting public static final int MAX_START_MIGRATION_CALLS_DEFAULT_FLAG_VALUE = 3;
+    @VisibleForTesting public static final int MAX_START_MIGRATION_CALLS_DEFAULT_FLAG_VALUE = 6;
     @VisibleForTesting public static final int IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE = 120;
     @VisibleForTesting public static final int NON_IDLE_STATE_TIMEOUT_DAYS_DEFAULT_FLAG_VALUE = 15;
 
