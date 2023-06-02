@@ -20,6 +20,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.content.Context;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 
@@ -48,6 +49,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.DistanceRecordHe
 import com.android.server.healthconnect.storage.datatypehelpers.ElevationGainedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.FloorsClimbedRecordHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeartRateVariabilityRmssdHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HeightRecordHelper;
@@ -102,6 +104,8 @@ public class AutoDeleteServiceTest {
 
     @Mock private AppInfoHelper mAppInfoHelper;
     @Mock private ActivityDateHelper mActivityDateHelper;
+    @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
+    @Mock Context mContext;
     private MockitoSession mStaticMockSession;
 
     @Before
@@ -113,6 +117,7 @@ public class AutoDeleteServiceTest {
                         .mockStatic(RecordHelperProvider.class)
                         .mockStatic(AppInfoHelper.class)
                         .mockStatic(ActivityDateHelper.class)
+                        .mockStatic(HealthDataCategoryPriorityHelper.class)
                         .startMocking();
 
         MockitoAnnotations.initMocks(this);
@@ -141,8 +146,10 @@ public class AutoDeleteServiceTest {
         when(AppInfoHelper.getInstance()).thenReturn(mAppInfoHelper);
         when(ActivityDateHelper.getInstance()).thenReturn(mActivityDateHelper);
         when(mPreferenceHelper.getPreference(AUTO_DELETE_DURATION_RECORDS_KEY)).thenReturn(null);
+        when(HealthDataCategoryPriorityHelper.getInstance())
+                .thenReturn(mHealthDataCategoryPriorityHelper);
 
-        AutoDeleteService.startAutoDelete();
+        AutoDeleteService.startAutoDelete(mContext);
 
         verify(mRecordHelperProvider, never()).getRecordHelpers();
         verify(mTransactionManager, Mockito.times(2))
@@ -153,6 +160,7 @@ public class AutoDeleteServiceTest {
                                                 deleteTableRequestsList)));
         verify(mAppInfoHelper).syncAppInfoRecordTypesUsed();
         verify(mActivityDateHelper).reSyncForAllRecords();
+        verify(mHealthDataCategoryPriorityHelper).reSyncHealthDataPriorityTable(mContext);
     }
 
     @Test
@@ -162,12 +170,14 @@ public class AutoDeleteServiceTest {
         when(RecordHelperProvider.getInstance()).thenReturn(mRecordHelperProvider);
         when(AppInfoHelper.getInstance()).thenReturn(mAppInfoHelper);
         when(ActivityDateHelper.getInstance()).thenReturn(mActivityDateHelper);
+        when(HealthDataCategoryPriorityHelper.getInstance())
+                .thenReturn(mHealthDataCategoryPriorityHelper);
 
         when(mPreferenceHelper.getPreference(AUTO_DELETE_DURATION_RECORDS_KEY))
                 .thenReturn(String.valueOf(30));
         when(mRecordHelperProvider.getRecordHelpers()).thenReturn(getRecordHelpers());
 
-        AutoDeleteService.startAutoDelete();
+        AutoDeleteService.startAutoDelete(mContext);
 
         verify(mTransactionManager, Mockito.times(3))
                 .deleteWithoutChangeLogs(
@@ -177,6 +187,7 @@ public class AutoDeleteServiceTest {
                                                 deleteTableRequestsList)));
         verify(mAppInfoHelper).syncAppInfoRecordTypesUsed();
         verify(mActivityDateHelper).reSyncForAllRecords();
+        verify(mHealthDataCategoryPriorityHelper).reSyncHealthDataPriorityTable(mContext);
     }
 
     private boolean checkTableNames_getPreferenceReturnNull(List<DeleteTableRequest> list) {

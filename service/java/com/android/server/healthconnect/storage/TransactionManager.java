@@ -75,10 +75,12 @@ public final class TransactionManager {
             mUserHandleToDatabaseMap = new ConcurrentHashMap<>();
     private static volatile TransactionManager sTransactionManager;
     private volatile HealthConnectDatabase mHealthConnectDatabase;
+    private UserHandle mUserHandle;
 
     private TransactionManager(@NonNull HealthConnectUserContext context) {
         mHealthConnectDatabase = new HealthConnectDatabase(context);
         mUserHandleToDatabaseMap.put(context.getCurrentUserHandle(), mHealthConnectDatabase);
+        mUserHandle = context.getCurrentUserHandle();
     }
 
     public void onUserUnlocked(@NonNull HealthConnectUserContext healthConnectUserContext) {
@@ -91,6 +93,7 @@ public final class TransactionManager {
 
         mHealthConnectDatabase =
                 mUserHandleToDatabaseMap.get(healthConnectUserContext.getCurrentUserHandle());
+        mUserHandle = healthConnectUserContext.getCurrentUserHandle();
     }
 
     /**
@@ -751,5 +754,10 @@ public final class TransactionManager {
         Objects.requireNonNull(sTransactionManager);
 
         return sTransactionManager;
+    }
+
+    @NonNull
+    public UserHandle getCurrentUserHandle() {
+        return mUserHandle;
     }
 }

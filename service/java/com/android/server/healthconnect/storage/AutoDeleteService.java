@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage;
 
+import android.annotation.NonNull;
+import android.content.Context;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
@@ -23,6 +25,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelp
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
@@ -56,7 +59,7 @@ public class AutoDeleteService {
     }
 
     /** Starts the Auto Deletion process. */
-    public static void startAutoDelete() {
+    public static void startAutoDelete(@NonNull Context context) {
         try {
             // Only do transactional operations here - as this job might get cancelled for several
             // reasons, such as: User switch, low battery etc.
@@ -67,6 +70,8 @@ public class AutoDeleteService {
             AppInfoHelper.getInstance().syncAppInfoRecordTypesUsed();
             // Re-sync activity dates table
             ActivityDateHelper.getInstance().reSyncForAllRecords();
+            // Sync health data priority list table
+            HealthDataCategoryPriorityHelper.getInstance().reSyncHealthDataPriorityTable(context);
         } catch (Exception e) {
             Slog.e(TAG, "Auto delete run failed", e);
             // Don't rethrow as that will crash system_server

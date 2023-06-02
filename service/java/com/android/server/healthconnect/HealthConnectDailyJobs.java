@@ -71,7 +71,7 @@ public class HealthConnectDailyJobs {
 
     public static void execute(@NonNull Context context, JobParameters params) {
         int userId = params.getExtras().getInt(EXTRA_USER_ID, /* defaultValue= */ DEFAULT_INT);
-        AutoDeleteService.startAutoDelete();
+        AutoDeleteService.startAutoDelete(context);
         DailyLoggingService.logDailyMetrics(context, UserHandle.getUserHandleForUid(userId));
     }
 }
