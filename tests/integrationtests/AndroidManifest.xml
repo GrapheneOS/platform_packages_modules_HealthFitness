@@ -32,6 +32,9 @@
         <package android:name="android.healthconnect.test.app3"/>
     </queries>
 
+    <uses-permission android:name="android.permission.health.READ_BODY_FAT"/>
+    <uses-permission android:name="android.permission.health.READ_HEIGHT"/>
+
     <application android:debuggable="true">
         <uses-library android:name="android.test.runner"/>
         <activity android:name=".EmptyActivity"
