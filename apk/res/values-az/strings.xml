@@ -742,7 +742,10 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Android sistemi ilə inteqrasiya zamanı Health Connect bağlandı.\n\nTətbiqi yenidən açmaq üçün \"bərpa edin\" üzərinə klikləyin, data və icazələrin ötürülməsinə davam edin."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Health Connect datasını saxlamaq üçün <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ərzində tamamlayın"</string>
     <string name="resume_button" msgid="2255148549862208047">"Bərpa edin"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"Health Connect inteqrasiyasına pauza verildi"</string>
+    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
+    <skip />
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"İnteqrasiyanı bərpa edin"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Health Connect-in Android sistemi ilə inteqrasiyasını davam etdirmək üçün toxunun. Datanı saxlamaq üçün <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ərzində tamamlayın"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Health Connect-in Android sistemi ilə inteqrasiyasını davam etdirmək üçün toxunun."</string>
@@ -757,6 +760,8 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect Android sistemi ilə inteqrasiyaya hazırdır. <xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinə indi giriş versəniz, inteqrasiya tamamlanana qədər bəzi funksiyalar işləməyə bilər."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect Android sistemi ilə inteqrasiyaya hazırdır. Tətbiqlərə indi giriş versəniz, inteqrasiya tamamlanana qədər bəzi funksiyalar işləməyə bilər."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Davam edin"</string>
+    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect inteqrasiya edilir"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect Android sistemi ilə inteqrasiya edilir.\n\nTamamlandıqda bildiriş alacaq və Health Connect ilə <xliff:g id="APP_NAME">%1$s</xliff:g> istifadə edə biləcəksiniz."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect Android sistemi ilə inteqrasiya edilir.\n\nTamamlandıqda bildiriş alacaq və Health Connect istifadə edə biləcəksiniz."</string>

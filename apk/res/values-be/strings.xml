@@ -742,7 +742,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Праграма \"Здароўе і спорт\" была закрыта ў час інтэграцыі з сістэмай Android.\n\nКаб адкрыць праграму зноў і працягнуць перанос вашых даных і дазволаў, націсніце \"Узнавіць\"."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Каб захаваць свае даныя з праграмы \"Здароўе і спорт\", выканайце гэтае дзеянне за <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"Узнавіць"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"Інтэграцыя праграмы \"Здароўе і спорт\" прыпынена"</string>
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Інтэграцыя прыпынена"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Праграма \"Здароўе і спорт\" інтэгруецца з сістэмай Android. Націсніце, каб працягнуць."</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Узнавіце інтэграцыю"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Націсніце, каб працягнуць інтэграцыю праграмы \"Здароўе і спорт\" з сістэмай Android. Каб захаваць свае даныя, выканайце гэтае дзеянне за <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Націсніце, каб працягнуць інтэграцыю праграмы \"Здароўе і спорт\" з сістэмай Android."</string>
@@ -757,6 +758,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Праграма \"Здароўе і спорт\" гатова да інтэграцыі з вашай сістэмай Android. Калі вы дасце доступ для праграмы <xliff:g id="APP_NAME">%1$s</xliff:g> зараз, некаторыя функцыі могуць не працаваць, пакуль інтэграцыя не будзе скончана."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Праграма \"Здароўе і спорт\" гатовая да інтэграцыі з сістэмай Android. Калі вы дасце праграмам доступ зараз, некаторыя функцыі не будуць працаваць, пакуль не завершыцца інтэграцыя."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Працягнуць"</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Пачаць інтэграцыю"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Ідзе інтэграцыя праграмы \"Здароўе і спорт\""</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Ідзе інтэграцыя праграмы \"Здароўе і \"спорт\" з сістэмай Android.\n\nПасля завяршэння гэтага працэсу вы атрымаеце апавяшчэнне і зможаце карыстацца <xliff:g id="APP_NAME">%1$s</xliff:g> з праграмай \"Здароўе і спорт\"."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Выконваецца інтэграцыя праграмы \"Здароўе і спорт\" з сістэмай Android.\n\nПасля завяршэння гэтага працэсу вы атрымаеце апавяшчэнне і зможаце карыстацца праграмай \"Здароўе і спорт\"."</string>

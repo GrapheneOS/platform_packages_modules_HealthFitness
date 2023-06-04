@@ -742,7 +742,10 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Η εφαρμογή Health Connect έκλεισε ενώ γινόταν ενσωμάτωση με το σύστημα Android.\n\nΚάντε κλικ στη συνέχιση για να ανοίξετε ξανά την εφαρμογή και να συνεχίσετε τη μεταφορά των δεδομένων και των αδειών σας."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Για να διατηρήσετε τα δεδομένα σας Health Connect, ολοκληρώστε αυτήν τη διαδικασία εντός <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"Συνέχιση"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"Η ενσωμάτωση του Health Connect τέθηκε σε παύση"</string>
+    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
+    <skip />
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Συνέχιση ενσωμάτωσης"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Πατήστε για να συνεχίσετε την ενσωμάτωση του Health Connect με το σύστημα Android. Για να διατηρήσετε τα δεδομένα σας, ολοκληρώστε αυτήν τη διαδικασία εντός <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Πατήστε για να συνεχίσετε την ενσωμάτωση του Health Connect με το σύστημα Android."</string>
@@ -757,6 +760,8 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Το Health Connect είναι έτοιμο να ενσωματωθεί στο σύστημα Android. Αν παραχωρήσετε τώρα πρόσβαση στην εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g>, ορισμένες λειτουργίες ενδέχεται να μην λειτουργούν μέχρι να ολοκληρωθεί η ενσωμάτωση."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Το Health Connect είναι έτοιμο να ενσωματωθεί στο σύστημα Android. Αν παραχωρήσετε πρόσβαση στις εφαρμογές τώρα, ορισμένες λειτουργίες ενδέχεται να μην λειτουργούν μέχρι να ολοκληρωθεί η ενσωμάτωση."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Συνέχεια"</string>
+    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Η ενσωμάτωση του Health Connect είναι σε εξέλιξη"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Γίνεται ενσωμάτωση του Health Connect με το σύστημα Android.\n\nΘα λάβετε μια ειδοποίηση όταν ολοκληρωθεί η διαδικασία και μπορείτε να χρησιμοποιήσετε την εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g> με το Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Γίνεται ενσωμάτωση του Health Connect με το σύστημα Android.\n\nΘα λάβετε μια ειδοποίηση όταν ολοκληρωθεί η διαδικασία και θα μπορείτε να χρησιμοποιήσετε το Health Connect."</string>

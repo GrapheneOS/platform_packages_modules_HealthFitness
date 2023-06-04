@@ -742,7 +742,10 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"កម្មវិធី Health Connect បានបិទ ខណៈពេលដែល​កម្មវិធីនេះកំពុងត្រូវបានរួមបញ្ចូល​ជាមួយប្រព័ន្ធ Android។\n\nសូមចុច \"បន្ត\" ដើម្បីបើក​កម្មវិធីឡើងវិញ និងបន្តផ្ទេរទិន្នន័យនិងការអនុញ្ញាតរបស់អ្នក។"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ដើម្បីរក្សាទុកទិន្នន័យ Health Connect របស់អ្នក សូមបញ្ចប់សកម្មភាពនេះក្នុងរយៈពេល <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"បន្ត"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"ការរួមបញ្ចូល Health Connect ត្រូវបានផ្អាក"</string>
+    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
+    <skip />
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"បន្តការរួមបញ្ចូល"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"ចុចដើម្បី​បន្តរួមបញ្ចូល Health Connect ជាមួយប្រព័ន្ធ Android។ ដើម្បីរក្សាទុក​ទិន្នន័យរបស់អ្នក សូមបញ្ចប់​សកម្មភាពនេះក្នុងរយៈពេល <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"ចុចដើម្បី​បន្តរួមបញ្ចូល Health Connect ជាមួយប្រព័ន្ធ Android។"</string>
@@ -757,6 +760,8 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"អាចរួមបញ្ចូល Health Connect ជាមួយប្រព័ន្ធ Android របស់អ្នកបានហើយ។ ប្រសិនបើ​អ្នកផ្ដល់សិទ្ធិឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើឥឡូវនេះ មុខងារមួយចំនួន​អាចនឹងមិនដំណើរការទេ រហូតទាល់តែ​ការរួមបញ្ចូលបញ្ចប់។"</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"អាចរួមបញ្ចូល Health Connect ជាមួយប្រព័ន្ធ Android របស់អ្នកបានហើយ។ ប្រសិនបើ​អ្នកផ្ដល់សិទ្ធិចូលប្រើប្រាស់ដល់កម្មវិធីឥឡូវនេះ មុខងារមួយចំនួន​អាចនឹងមិនដំណើរការទេ រហូតទាល់តែ​ការរួមបញ្ចូលបញ្ចប់។"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"បន្ត"</string>
+    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"ការរួមបញ្ចូល Health Connect កំពុងដំណើរការ"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect កំពុងត្រូវបាន​រួមបញ្ចូលជាមួយប្រព័ន្ធ Android។\n\nអ្នកនឹងទទួល​បានការជូនដំណឹង នៅពេល​ដំណើរការនេះបញ្ចប់ ហើយអ្នកអាចប្រើ <xliff:g id="APP_NAME">%1$s</xliff:g> ជាមួយ Health Connect បាន។"</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect កំពុងត្រូវបាន​រួមបញ្ចូលជាមួយប្រព័ន្ធ Android។\n\nអ្នកនឹងទទួល​បានការជូនដំណឹង នៅពេល​ដំណើរការនេះបញ្ចប់ ហើយអ្នកអាចប្រើ Health Connect បាន។"</string>
