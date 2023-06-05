@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Керуйте доступом додатка до даних про здоров’я"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Керуйте доступом додатків до даних про здоров’я"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Дозволи й дані"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Керуйте даними про здоров’я та фізичну активність на телефоні, а також визначайте додатки, які матимуть доступ до даних"</string>
     <string name="data_title" msgid="4456619761533380816">"Дані та доступ"</string>
@@ -742,7 +742,10 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Додаток Health Connect закрито під час інтеграції із системою Android.\n\nНатисніть \"Відновити\", щоб повторно відкрити додаток і продовжити перенесення даних та дозволів."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Щоб зберегти дані Health Connect, завершіть перенесення протягом періоду в <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"Відновити"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"Інтеграцію Health Connect призупинено"</string>
+    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
+    <skip />
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Відновіть інтеграцію"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Торкніться, щоб продовжити інтеграцію Health Connect із системою Android. Щоб зберегти свої дані, у вас є <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Торкніться, щоб продовжити інтеграцію Health Connect із системою Android."</string>
@@ -757,6 +760,8 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Сервіс Health Connect готовий до інтеграції із системою Android. Якщо зараз надати доступ додатку <xliff:g id="APP_NAME">%1$s</xliff:g>, деякі функції можуть не працювати до завершення інтеграції."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Сервіс Health Connect готовий до інтеграції із системою Android. Якщо зараз надати доступ додаткам, деякі функції можуть не працювати до завершення інтеграції."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Продовжити"</string>
+    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Триває інтеграція Health Connect"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect інтегрується із системою Android.\n\nКоли це завершиться, ви отримаєте сповіщення та зможете використовувати додаток <xliff:g id="APP_NAME">%1$s</xliff:g> із Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Сервіс Health Connect інтегрується із системою Android.\n\nКоли це завершиться, ви отримаєте сповіщення і зможете використовувати Health Connect."</string>
