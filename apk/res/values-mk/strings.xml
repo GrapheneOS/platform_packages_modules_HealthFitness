@@ -742,7 +742,10 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Апликацијата Health Connect се затвори додека се интегрираше со системот на Android.\n\nКликнете „продолжи“ за повторно да ја отворите апликацијата и да продолжите со пренесување на вашите податоци и дозволи."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"За да ги зачувате вашите податоци од Health Connect, завршете го ова за <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"Продолжи"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"Интеграцијата на Health Connect е паузирана"</string>
+    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
+    <skip />
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Продолжи со интеграција"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Допрете за да продолжите со интегрирање на Health Connect со системот со Android. За да ги зачувате вашите податоци, завршете го ова за <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Допрете за да продолжите со интегрирање на Health Connect со системот со Android."</string>
@@ -757,6 +760,8 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect е подготвена да се интегрира со системот со Android. Ако сега дадете пристап на <xliff:g id="APP_NAME">%1$s</xliff:g>, некои функции може да не функционираат додека не заврши интеграцијата."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect е подготвена да се интегрира со системот со Android. Ако сега дадете пристап на апликациите, некои функции може да не функционираат додека не заврши интеграцијата."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Продолжи"</string>
+    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Интеграцијата на Health Connect е во тек"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect се интегрира со системот Android.\n\nЌе добиете известување кога процесот ќе заврши и можете да ја користите <xliff:g id="APP_NAME">%1$s</xliff:g> со Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect се интегрира со системот со Android.\n\nЌе добиете известување кога процесот ќе заврши и ќе може да користите Health Connect."</string>

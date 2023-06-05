@@ -742,7 +742,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"A Health Connect alkalmazás bezárult az Android rendszerrel való integrációja közben.\n\nKattintson a „Folytatás” lehetőségre az app újbóli megnyitásához, valamint az adatok és az engedélyek átvitelének folytatásához."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"A Health Connect-adatainak megőrzése érdekében végezze el ezt a műveletet a megadott időn belül (<xliff:g id="TIME_NEEDED">%1$s</xliff:g>)"</string>
     <string name="resume_button" msgid="2255148549862208047">"Folytatás"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"A Health Connect integrációja szüneteltetve van"</string>
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Az integráció szüneteltetve van"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Folyamatban van a Health Connect integrációja az Android rendszerrel. Koppintson a folytatáshoz."</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Integráció folytatása"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Koppintson a Health Connect Android rendszerrel való integrációjának folytatásához. Az adatai megőrzése érdekében végezze el ezt a műveletet a megadott időn belül (<xliff:g id="TIME_NEEDED">%1$s</xliff:g>)."</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Koppintson a Health Connect Android rendszerrel való integrációjának folytatásához."</string>
@@ -757,6 +758,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"A Health Connect készen áll az Android rendszerrel való integrációra. Ha most hozzáférést ad a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> alkalmazás számára, előfordulhat, hogy egyes funkciók nem működnek majd az integráció befejezéséig."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"A Health Connect készen áll az Android rendszerrel való integrációra. Ha most ad hozzáférést alkalmazások számára, előfordulhat, hogy egyes funkciók nem működnek még az integráció befejezéséig."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Tovább"</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Integráció indítása"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"A Health Connect integrációja folyamatban van"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Folyamatban van a Health Connect integrációja az Android rendszerrel.\n\nÉrtesítést kap, amikor a folyamat befejeződött, és már használhatja a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> alkalmazást a Health Connecttel."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Folyamatban van a Health Connect integrációja az Android rendszerrel.\n\nÉrtesítést kap, amikor a folyamat befejeződött, és már használhatja a Health Connectet."</string>

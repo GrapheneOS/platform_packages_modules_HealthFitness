@@ -742,7 +742,10 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect-ის აპი დაიხურა მისი Android სისტემასთან ინტეგრაციისას.\n\nდააწკაპუნეთ ღილაკზე „განახლება“ აპის ხელახლა გასახსნელად და გააგრძელეთ თქვენი მონაცემების და ნებართვების გადატანა."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"თქვენი Health Connect-ის მონაცემების შესანახად, დაასრულეთ ეს <xliff:g id="TIME_NEEDED">%1$s</xliff:g>-ში"</string>
     <string name="resume_button" msgid="2255148549862208047">"გაგრძელება"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"Health Connect-ის ინტეგრაცია დაპაუზებულია"</string>
+    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
+    <skip />
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"ინტეგრაციის გაგრძელება"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"შეეხეთ Health Connect-ის Android სისტემასთან ინტეგრაციის გასაგრძელებლად. თქვენი მონაცემების სისრულის შესანარჩუნებლად, დაასრულეთ ეს <xliff:g id="TIME_NEEDED">%1$s</xliff:g>-ში"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"შეეხეთ Health Connect-ის Android სისტემასთან ინტეგრაციის გასაგრძელებლად."</string>
@@ -757,6 +760,8 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect მზადაა თქვენს Android სისტემასთან ინტეგრაციისათვის. თუ <xliff:g id="APP_NAME">%1$s</xliff:g>-ს ახლა წვდომას მიანიჭებთ, გარკვეულმა ფუნქციებმა შეიძლება ვერ იმუშავონ ინტეგრაციის დასრულებამდე."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect მზადაა თქვენს Android სისტემასთან ინტეგრაციისათვის. თუ აპებს წვდომას ახლა მიანიჭებთ, გარკვეულმა ფუნქციებმა შეიძლება ვერ იმუშაოს ინტეგრაციის დასრულებამდე."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"გაგრძელება"</string>
+    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"მიმდინარეობს Health Connect-ის ინტეგრაცია"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"მიმდინარეობს Health Connect-ის ინტეგრაცია Android სისტემასთან.\n\nთქვენ მიიღებთ შეტყობინებას, როდესაც ეს პროცესი დასრულ;დება და შეგიძლიათ გამოიყენოთ <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connec-თან ერთად."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"მიმდინარეობს Health Connect-ის ინტეგრაცია Android სისტემასთან.\n\nპროცესის დასრულების შემდეგ მიიღებთ შეტყობინებას და შეგეძლებათ Health Connect-ის გამოყენება."</string>

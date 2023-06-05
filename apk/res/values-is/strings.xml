@@ -742,7 +742,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Forrit Heilsutengingar lokaðist meðan á samþættingu við Android-kerfið stóð.\n\nSmelltu á „Halda áfram“ til að opna forritið aftur og halda flutningi gagna og heimilda áfram."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Ljúktu þessu innan <xliff:g id="TIME_NEEDED">%1$s</xliff:g> til að halda Heilsutengingargögnunum þínum."</string>
     <string name="resume_button" msgid="2255148549862208047">"Halda áfram"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"Hlé var gert á samþættingu Heilsutengingar"</string>
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Hlé var gert á samþættingu"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Samþætting Heilsutengingar og Android-kerfisins er í gangi. Ýttu til að halda áfram"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Halda samþættingu áfram"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Ýttu til að halda samþættingu Heilsutengingar og Android-kerfisins áfram. Ljúktu þessu innan <xliff:g id="TIME_NEEDED">%1$s</xliff:g> til að halda gögnunum þínum."</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Ýttu til að halda samþættingu Heilsutengingar og Android-kerfisins áfram."</string>
@@ -757,6 +758,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Nú geturðu samþætt Heilsutengingu og Android-kerfið. Ef þú veitir <xliff:g id="APP_NAME">%1$s</xliff:g> aðgang núna virka sumir eiginleikar hugsanlega ekki fyrr en samþættingu er lokið."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Nú geturðu samþætt Heilsutengingu og Android-kerfið. Ef þú veitir forritum aðgang núna virka sumir eiginleikar hugsanlega ekki fyrr en samþættingu er lokið."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Halda áfram"</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Hefja samþættingu"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Samþætting Heilsutengingar er í gangi"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Samþætting Heilsutengingar og Android-kerfisins er í gangi.\n\nÞú færð tilkynningu þegar ferlinu er lokið og hægt er að nota <xliff:g id="APP_NAME">%1$s</xliff:g> með Heilsutengingu."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Samþætting Heilsutengingar og Android-kerfisins er í gangi.\n\nÞú færð tilkynningu þegar ferlinu er lokið og hægt er að nota Heilsutengingu."</string>
