@@ -46,6 +46,9 @@ java_sdk_library {
         "modules-utils-backgroundthread",
     ],
     installable: true,
+    optimize: {
+        proguard_flags_files: ["proguard.flags"],
+    },
     visibility: [
             "//packages/modules/HealthFitness/tests:__subpackages__",
     ],
