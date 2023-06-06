@@ -742,7 +742,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect 应用与 Android 系统集成时，会处于关闭状态。\n\n请点击“恢复”重新打开该应用，继续转移您的数据和权限。"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"为保留您的 Health Connect 数据，请在 <xliff:g id="TIME_NEEDED">%1$s</xliff:g> 内完成这项操作"</string>
     <string name="resume_button" msgid="2255148549862208047">"恢复"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"Health Connect 集成已暂停"</string>
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"集成已暂停"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect 正在与 Android 系统集成。点按即可继续"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"恢复集成"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"点按即可继续将 Health Connect 与 Android 系统进行集成。为保留您的数据，请在 <xliff:g id="TIME_NEEDED">%1$s</xliff:g>内完成这项操作"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"点按即可继续将 Health Connect 与 Android 系统进行集成。"</string>
@@ -757,6 +758,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect 已可以与您的 Android 系统集成。如果您现在授予“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问权限，则在集成完成之前，部分功能可能无法使用。"</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect 已可以与您的 Android 系统集成。如果您现在授予应用访问权限，则在集成完成之前，部分功能可能无法使用。"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"继续"</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"开始集成"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect 集成正在进行中"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect 正在与 Android 系统集成。\n\n完成后，您会收到相关通知，届时即可将“<xliff:g id="APP_NAME">%1$s</xliff:g>”与 Health Connect 配合使用。"</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect 正在与 Android 系统集成。\n\n完成后，您会收到通知，然后便可使用 Health Connect。"</string>

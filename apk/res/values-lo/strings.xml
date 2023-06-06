@@ -742,7 +742,10 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"ແອັບ Health Connect ປິດລົງໃນລະຫວ່າງການເຊື່ອມໂຍງກັບລະບົບ Android.\n\nຄລິກ ສືບຕໍ່ ເພື່ອເປີດແອັບຄືນໃໝ່ ແລະ ສືບຕໍ່ໂອນຍ້າຍຂໍ້ມູນ ແລະ ການອະນຸຍາດຂອງທ່ານ."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ເພື່ອຮັກສາຂໍ້ມູນ Health Connect ຂອງທ່ານໄວ້, ໃຫ້ສຳເລັດຂະບວນການນີ້ພາຍໃນ <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"ສືບຕໍ່"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"ຢຸດການເຊື່ອມໂຍງ Health Connect ໄວ້ຊົ່ວຄາວ"</string>
+    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
+    <skip />
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"ສືບຕໍ່ການເຊື່ອມໂຍງ"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"ແຕະເພື່ອສືບຕໍ່ການເຊື່ອມໂຍງ Health Connect ກັບລະບົບ Android. ເພື່ອຮັກສາຂໍ້ມູນຂອງທ່ານໄວ້, ໃຫ້ສຳເລັດຂະບວນການນີ້ພາຍໃນ <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"ແຕະເພື່ອສືບຕໍ່ການເຊື່ອມໂຍງ Health Connect ກັບລະບົບ Android."</string>
@@ -757,6 +760,8 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect ພ້ອມທີ່ຈະເຊື່ອມໂຍງກັບລະບົບ Android ຂອງທ່ານແລ້ວ. ຫາກທ່ານໃຫ້ສິດເຂົ້າເຖິງ <xliff:g id="APP_NAME">%1$s</xliff:g> ໃນຕອນນີ້, ບາງຄຸນສົມບັດອາດບໍ່ເຮັດວຽກຈົນກວ່າຈະສຳເລັດການເຊື່ອມໂຍງ."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect ພ້ອມທີ່ຈະເຊື່ອມໂຍງກັບລະບົບ Android ຂອງທ່ານແລ້ວ. ຫາກທ່ານໃຫ້ສິດເຂົ້າເຖິງແກ່ແອັບໃນຕອນນີ້, ບາງຄຸນສົມບັດອາດບໍ່ເຮັດວຽກຈົນກວ່າຈະສຳເລັດການເຊື່ອມໂຍງ."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"ສືບຕໍ່"</string>
+    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"ກຳລັງດຳເນີນການເຊື່ອມໂຍງ Health Connect"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect ກຳລັງຖືກເຊື່ອມໂຍງເຂົ້າກັບລະບົບ Android.\n\nທ່ານຈະໄດ້ຮັບການແຈ້ງເຕືອນເມື່ອຂະບວນການສຳເລັດແລ້ວ ຈາກນັ້ນທ່ານຈະສາມາດໃຊ້ <xliff:g id="APP_NAME">%1$s</xliff:g> ກັບ Health Connect ໄດ້."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect ກຳລັງຖືກເຊື່ອມໂຍງເຂົ້າກັບລະບົບ Android.\n\nທ່ານຈະໄດ້ຮັບການແຈ້ງເຕືອນເມື່ອຂະບວນການສຳເລັດແລ້ວ ຈາກນັ້ນທ່ານຈະສາມາດໃຊ້ Health Connect ໄດ້."</string>
