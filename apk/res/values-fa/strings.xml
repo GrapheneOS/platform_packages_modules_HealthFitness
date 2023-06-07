@@ -742,7 +742,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"برنامه Health Connect درحین ادغام شدن با سیستم Android بسته شد.\n\nبرای باز کردن مجدد برنامه و ادامه پیدا کردن انتقال داده‌ها و اجازه‌ها، روی «ازسرگیری» کلیک کنید."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"برای حفظ داده‌های Health Connect، این فرایند را ظرف <xliff:g id="TIME_NEEDED">%1$s</xliff:g> آینده تکمیل کنید"</string>
     <string name="resume_button" msgid="2255148549862208047">"ازسرگیری"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"یکپارچه‌سازی Health Connect موقتاً متوقف شد"</string>
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"عملیات ادغام موقتاً متوقف شد"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect درحال ادغام شدن با سیستم Android است. برای ادامه ضربه بزنید"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"ازسرگیری یکپارچه‌سازی"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"برای ادامه یکپارچه‌سازی Health Connect با سیستم Android، ضربه بزنید. برای حفظ داده‌ها، این فرایند را ظرف <xliff:g id="TIME_NEEDED">%1$s</xliff:g> آینده تکمیل کنید"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"برای ادامه یکپارچه‌سازی Health Connect با سیستم Android، ضربه بزنید."</string>
@@ -757,6 +758,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"‫Health Connect برای ادغام شدن با سیستم Android آماده است. اگر اکنون به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه دسترسی بدهید، ممکن است برخی‌از ویژگی‌ها تا زمان تکمیل یکپارچه‌سازی کار نکنند."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"‫Health Connect برای ادغام شدن با سیستم Android آماده است. اگر اکنون به برنامه‌ها اجازه دسترسی بدهید، ممکن است برخی‌از ویژگی‌ها تا زمان تکمیل فرایند ادغام کار نکنند."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"ادامه"</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"شروع کردن ادغام"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"یکپارچه‌سازی Health Connect درحال انجام است"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"‫Health Connect درحال ادغام شدن با سیستم Android است.\n\nوقتی این فرایند کامل شود اعلانی دریافت خواهید کرد و می‌توانید از <xliff:g id="APP_NAME">%1$s</xliff:g> با Health Connect استفاده کنید."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"‫Health Connect درحال ادغام شدن با سیستم Android است.\n\nوقتی این فرایند کامل شود اعلانی دریافت خواهید کرد و می‌توانید از Health Connect استفاده کنید."</string>
