@@ -25,6 +25,7 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.INTER
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -43,6 +44,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
+import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
@@ -80,11 +82,67 @@ import org.mockito.quality.Strictness;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Set;
 
 /** Unit test class for {@link HealthConnectServiceImpl} */
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectServiceImplTest {
+    /**
+     * Health connect service APIs that blocks calls when data sync (ex: backup and restore, data
+     * migration) is in progress.
+     *
+     * <p><b>Before adding a method name to this list, make sure the method implementation contains
+     * the blocking part (i.e: {@link HealthConnectServiceImpl#throwExceptionIfDataSyncInProgress}
+     * for asynchronous APIs and {@link
+     * HealthConnectServiceImpl#throwIllegalStateExceptionIfDataSyncInProgress} for synchronous
+     * APIs). </b>
+     *
+     * <p>Also, consider adding the method to {@link
+     * android.healthconnect.cts.HealthConnectManagerTest#testDataApis_migrationInProgress_apisBlocked}
+     * cts test.
+     */
+    public static final Set<String> BLOCK_CALLS_DURING_DATA_SYNC_LIST =
+            Set.of(
+                    "grantHealthPermission",
+                    "revokeHealthPermission",
+                    "revokeAllHealthPermissions",
+                    "getGrantedHealthPermissions",
+                    "getHistoricalAccessStartDateInMilliseconds",
+                    "insertRecords",
+                    "aggregateRecords",
+                    "readRecords",
+                    "updateRecords",
+                    "getChangeLogToken",
+                    "getChangeLogs",
+                    "deleteUsingFilters",
+                    "deleteUsingFiltersForSelf",
+                    "getCurrentPriority",
+                    "updatePriority",
+                    "setRecordRetentionPeriodInDays",
+                    "getRecordRetentionPeriodInDays",
+                    "getContributorApplicationsInfo",
+                    "queryAllRecordTypesInfo",
+                    "queryAccessLogs",
+                    "getActivityDates");
+
+    /** Health connect service APIs that do not block calls when data sync is in progress. */
+    public static final Set<String> DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST =
+            Set.of(
+                    "startMigration",
+                    "finishMigration",
+                    "writeMigrationData",
+                    "stageAllHealthConnectRemoteData",
+                    "getAllDataForBackup",
+                    "getAllBackupFileNames",
+                    "deleteAllStagedRemoteData",
+                    "updateDataDownloadState",
+                    "getHealthConnectDataState",
+                    "getHealthConnectMigrationUiState",
+                    "insertMinDataMigrationSdkExtensionVersion",
+                    "asBinder");
+
     @Mock private TransactionManager mTransactionManager;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private MigrationCleaner mMigrationCleaner;
@@ -374,6 +432,45 @@ public class HealthConnectServiceImplTest {
         Thread.sleep(500);
         verify(mMigrationStateManager).validateSetMinSdkVersion();
         verify(mCallback).onSuccess();
+    }
+
+    /**
+     * Tests that new HealthConnect APIs block API calls during data sync using {@link
+     * HealthConnectServiceImpl.BlockCallsDuringDataSync} annotation.
+     *
+     * <p>If the API doesn't need to block API calls during data sync(ex: backup and restore, data
+     * migration), add it to the allowedApisList list yo pass this test.
+     */
+    @Test
+    public void testHealthConnectServiceApis_blocksCallsDuringDataSync() {
+        // These APIs are not expected to block API calls during data sync.
+
+        Method[] allMethods = IHealthConnectService.class.getMethods();
+        for (Method m : allMethods) {
+            assertWithMessage(
+                            "Method '%s' does not belong to either"
+                                + " BLOCK_CALLS_DURING_DATA_SYNC_LIST or"
+                                + " DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST. Make sure the method"
+                                + " implementation includes a section blocking calls during data"
+                                + " sync, then add the method to BLOCK_CALLS_DURING_DATA_SYNC_LIST"
+                                + " (check the Javadoc for this constant for more details). If the"
+                                + " method must allow calls during data sync, add it to"
+                                + " DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST.",
+                            m.getName())
+                    .that(
+                            DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST.contains(m.getName())
+                                    || BLOCK_CALLS_DURING_DATA_SYNC_LIST.contains(m.getName()))
+                    .isTrue();
+
+            assertWithMessage(
+                            "Method '%s' can not belong to both BLOCK_CALLS_DURING_DATA_SYNC_LIST"
+                                    + " and DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST.",
+                            m.getName())
+                    .that(
+                            DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST.contains(m.getName())
+                                    && BLOCK_CALLS_DURING_DATA_SYNC_LIST.contains(m.getName()))
+                    .isFalse();
+        }
     }
 
     private void setUpPassingPermissionCheckFor(String permission) {
