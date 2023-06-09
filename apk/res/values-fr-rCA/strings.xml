@@ -742,7 +742,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"L\'application Connexion santé s\'est fermée pendant l\'intégration au système Android.\n\nCliquez sur reprendre pour rouvrir l\'application et continuer le transfert de vos données et autorisations."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Pour conserver vos données de Connexion santé, complétez l\'intégration dans un délai de <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"Reprendre"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"L\'intégration de Connexion santé a été suspendue"</string>
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Intégration suspendue"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Connexion santé est en cours d\'intégration dans le système Android. Touchez pour continuer"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Reprendre l\'intégration"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Touchez pour continuer l\'intégration de Connexion santé au système Android. Pour conserver vos données de Connexion santé, complétez l\'intégration dans un délai de <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Touchez pour continuer l\'intégration de Connexion santé au système Android."</string>
@@ -757,6 +758,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Connexion santé est prête à être intégrée à votre système Android. Si vous accordez l\'accès à <xliff:g id="APP_NAME">%1$s</xliff:g> dès maintenant, certaines fonctionnalités risquent de ne pas fonctionner jusqu\'à ce que l\'intégration soit terminée."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Connexion santé est prête à être intégrée à votre système Android. Si vous accordez l\'accès aux applications dès maintenant, certaines fonctionnalités risquent de ne pas fonctionner jusqu\'à ce que l\'intégration soit terminée."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuer"</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Démarrer l\'intégration"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Intégration de Connexion santé en cours…"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Connexion santé est en cours d\'intégration au système Android.\n\nVous recevrez une notification lorsque le processus sera terminé et que vous pourrez utiliser <xliff:g id="APP_NAME">%1$s</xliff:g> avec Connexion santé."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Connexion santé est en cours d\'intégration au système Android.\n\nVous recevrez une notification une fois que le processus sera terminé et que vous pourrez utiliser Connexion santé."</string>

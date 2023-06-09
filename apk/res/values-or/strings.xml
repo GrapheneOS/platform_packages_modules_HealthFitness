@@ -742,7 +742,10 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ଆପକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରାଯାଉଥିବା ସମୟରେ ଏହା ବନ୍ଦ ହୋଇଯାଇଛି।\n\nଆପକୁ ପୁଣି ଖୋଲି ଆପଣଙ୍କ ଡାଟା ଓ ଅନୁମତିଗୁଡ଼ିକୁ ଟ୍ରାନ୍ସଫର କରିବା ଜାରି ରଖିବା ପାଇଁ \"ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ\"ରେ କ୍ଲିକ କରନ୍ତୁ।"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ଆପଣଙ୍କ Health Connect ଡାଟା ରଖିବା ପାଇଁ, ଏହାକୁ <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ମଧ୍ୟରେ ସମ୍ପୂର୍ଣ୍ଣ କରନ୍ତୁ"</string>
     <string name="resume_button" msgid="2255148549862208047">"ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ"</string>
-    <string name="migration_paused_notification_title" msgid="6020271090296330698">"Health Connectର ଇଣ୍ଟିଗ୍ରେସନକୁ ବିରତ କରାଯାଇଛି"</string>
+    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
+    <skip />
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"ଇଣ୍ଟିଗ୍ରେସନ ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରିବା ଜାରି ରଖିବା ପାଇଁ ଟାପ କରନ୍ତୁ। ଆପଣଙ୍କ ଡାଟା ରଖିବା ପାଇଁ, ଏହାକୁ <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ମଧ୍ୟରେ ସମ୍ପୂର୍ଣ୍ଣ କରନ୍ତୁ"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରିବା ଜାରି ରଖିବା ପାଇଁ ଟାପ କରନ୍ତୁ।"</string>
@@ -757,6 +760,8 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"ଆପଣଙ୍କ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରାଯିବା ପାଇଁ Health Connect ପ୍ରସ୍ତୁତ ଅଛି। ଯଦି ଆପଣ ବର୍ତ୍ତମାନ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଇଣ୍ଟିଗ୍ରେସନ ସମ୍ପୂର୍ଣ୍ଣ ନହେବା ପର୍ଯ୍ୟନ୍ତ କିଛି ଫିଚର କାମ କରିନପାରେ।"</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"ଆପଣଙ୍କ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରାଯିବା ପାଇଁ Health Connect ପ୍ରସ୍ତୁତ ଅଛି। ଯଦି ଆପଣ ବର୍ତ୍ତମାନ ଆପ୍ସକୁ ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଇଣ୍ଟିଗ୍ରେସନ ସମ୍ପୂର୍ଣ୍ଣ ନହେବା ପର୍ଯ୍ୟନ୍ତ କିଛି ଫିଚର କାମ କରିନପାରେ।"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"ଜାରି ରଖନ୍ତୁ"</string>
+    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
+    <skip />
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connectର ଇଣ୍ଟିଗ୍ରେସନ ଚାଲିଛି"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରାଯାଉଛି।\n\nପ୍ରକ୍ରିୟା ସମ୍ପୂର୍ଣ୍ଣ ହେଲେ ଆପଣ ଏକ ବିଜ୍ଞପ୍ତି ପାଇବେ ଏବଂ ଆପଣ Health Connect ସହ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ବ୍ୟବହାର କରିପାରିବେ।"</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରାଯାଉଛି।\n\nପ୍ରକ୍ରିୟା ସମ୍ପୂର୍ଣ୍ଣ ହେଲେ ଆପଣ ଏକ ବିଜ୍ଞପ୍ତି ପାଇବେ ଏବଂ ଆପଣ Health Connectକୁ ବ୍ୟବହାର କରିପାରିବେ।"</string>
