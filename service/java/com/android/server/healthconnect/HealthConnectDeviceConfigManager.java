@@ -146,7 +146,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     public static final boolean ENABLE_COMPLETE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE = false;
 
     @VisibleForTesting
-    public static final boolean ENABLE_MIGRATION_NOTIFICATIONS_DEFAULT_FLAG_VALUE = false;
+    public static final boolean ENABLE_MIGRATION_NOTIFICATIONS_DEFAULT_FLAG_VALUE = true;
 
     private static HealthConnectDeviceConfigManager sDeviceConfigManager;
     private final ReentrantReadWriteLock mLock = new ReentrantReadWriteLock();
