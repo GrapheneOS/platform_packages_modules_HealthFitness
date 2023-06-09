@@ -18,7 +18,6 @@ package android.healthconnect.cts.ratelimiter;
 
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 
-
 import static org.hamcrest.CoreMatchers.containsString;
 
 import android.app.UiAutomation;
@@ -145,6 +144,13 @@ public class RateLimiterTest {
         exceedRecordMemoryQuota();
     }
 
+    @Test
+    public void testRecordMemoryRollingQuota_foregroundCall_exceedBackgroundLimit()
+            throws InterruptedException {
+        // No exception expected.
+        exceedRecordMemoryRollingQuotaBackgroundLimit();
+    }
+
     private void exceedChunkMemoryQuota() throws InterruptedException {
         List<Record> testRecord = Collections.nCopies(30000, TestUtils.getCompleteStepsRecord());
 
@@ -153,6 +159,13 @@ public class RateLimiterTest {
 
     private void exceedRecordMemoryQuota() throws InterruptedException {
         TestUtils.insertRecords(List.of(TestUtils.getHugeHeartRateRecord()));
+    }
+
+    private void exceedRecordMemoryRollingQuotaBackgroundLimit() throws InterruptedException {
+        List<Record> testRecord = Collections.nCopies(350, TestUtils.getCompleteStepsRecord());
+        for (int i = 0; i < 1000; i++) {
+            TestUtils.insertRecords(testRecord);
+        }
     }
 
     private void exceedWriteQuota() throws InterruptedException {
