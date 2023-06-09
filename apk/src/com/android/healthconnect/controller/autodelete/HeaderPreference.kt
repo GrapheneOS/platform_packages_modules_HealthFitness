@@ -24,15 +24,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.utils.DeviceInfoUtils
+import com.android.healthconnect.controller.utils.DeviceInfoUtilsImpl
 import com.android.healthconnect.controller.utils.convertTextViewIntoLink
-import javax.inject.Inject
 
 /** Custom preference for the header of the auto-delete screen. */
 class HeaderPreference constructor(context: Context, private val activity: FragmentActivity) :
     Preference(context) {
-
-    @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
 
     override fun onBindViewHolder(holder: PreferenceViewHolder?) {
         super.onBindViewHolder(holder)
@@ -56,7 +53,7 @@ class HeaderPreference constructor(context: Context, private val activity: Fragm
         val linkString: String = context.getString(R.string.auto_delete_learn_more)
         linkView?.let {
             convertTextViewIntoLink(it, linkString, 0, linkString.length) {
-                deviceInfoUtils.openHCGetStartedLink(activity)
+                DeviceInfoUtilsImpl().openHCGetStartedLink(activity)
             }
         }
     }
