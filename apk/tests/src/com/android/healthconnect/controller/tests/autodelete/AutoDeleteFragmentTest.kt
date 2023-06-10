@@ -180,4 +180,17 @@ class AutoDeleteFragmentTest {
 
         onView(withId(R.id.radio_button_18_months)).check(matches(isChecked()))
     }
+
+    @Test
+    fun autoDeleteFragment_learnMoreButton_isClickable() {
+        Mockito.`when`(viewModel.storedAutoDeleteRange).then {
+            MutableLiveData(
+                AutoDeleteViewModel.AutoDeleteState.WithData(
+                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        }
+        launchFragment<AutoDeleteFragment>(Bundle())
+
+        // Need to provide id as well, otherwise both TextView and TextLinkView are found.
+        onView(allOf(withText("Learn more"), withId(R.id.link))).perform(click())
+    }
 }
