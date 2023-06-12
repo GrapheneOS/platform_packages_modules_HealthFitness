@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.dataentries
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -122,6 +123,8 @@ constructor(
     private fun updateSelectedDate() {
         onDateChangedListener?.onDateChanged(selectedDate)
         selectedDateView.text = dateFormatter.formatLongDate(selectedDate)
+        selectedDateView.contentDescription = dateFormatter.formatLongDate(selectedDate)
+        selectedDateView.sendAccessibilityEvent(AccessibilityEvent.TYPE_ANNOUNCEMENT)
         val today = timeSource.currentTimeMillis().toInstant().toLocalDate().atStartOfDay()
         val curDate = selectedDate.toLocalDate().atStartOfDay()
         nextDayButton.isEnabled = curDate.isBefore(today)
