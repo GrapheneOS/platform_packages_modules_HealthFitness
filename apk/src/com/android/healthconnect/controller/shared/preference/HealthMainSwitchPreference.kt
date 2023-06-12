@@ -17,11 +17,13 @@ package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.preference.PreferenceViewHolder
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
-import com.android.healthconnect.controller.utils.logging.UIAction
+import com.android.settingslib.widget.MainSwitchBar
 import com.android.settingslib.widget.MainSwitchPreference
 import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.EntryPointAccessors
@@ -35,6 +37,7 @@ constructor(context: Context, attrs: AttributeSet? = null) : MainSwitchPreferenc
     var logNameActive: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
     var logNameInactive: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
     private var loggingSwitchListener: OnMainSwitchChangeListener
+    private var mainSwitchBar: MainSwitchBar? = null
 
     init {
         val hiltEntryPoint =
@@ -66,5 +69,18 @@ constructor(context: Context, attrs: AttributeSet? = null) : MainSwitchPreferenc
         } else {
             logger.logImpression(logNameInactive)
         }
+    }
+
+    override fun onBindViewHolder(holder: PreferenceViewHolder?) {
+        super.onBindViewHolder(holder)
+        this.mainSwitchBar = holder?.findViewById(R.id.settingslib_main_switch_bar) as MainSwitchBar
+    }
+
+    // Whether this switch preference is currently focused by a11y readers
+    fun isAccessibilityFocused(): Boolean {
+        mainSwitchBar?.isAccessibilityFocused?.let {
+            return it
+        }
+        return false
     }
 }
