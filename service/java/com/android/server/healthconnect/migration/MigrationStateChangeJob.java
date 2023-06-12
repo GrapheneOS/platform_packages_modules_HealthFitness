@@ -21,7 +21,6 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_COMP
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 
-import static com.android.server.healthconnect.HealthConnectDailyJobs.HC_DAILY_JOB;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_JOB_NAME_KEY;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_USER_ID;
 import static com.android.server.healthconnect.migration.MigrationConstants.CURRENT_STATE_START_TIME_KEY;
@@ -203,24 +202,6 @@ public final class MigrationStateChangeJob {
             }
         }
         return false;
-    }
-
-    /** Cancels old migration jobs that are persisted and were never canceled. */
-    // TODO(b/276415134): Code clean-up
-    static void cleanupOldPersistentMigrationJobs(@NonNull Context context) {
-        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-        Objects.requireNonNull(jobScheduler);
-
-        List<JobInfo> allJobs = jobScheduler.getAllPendingJobs();
-        for (JobInfo job : allJobs) {
-            if (job.isPersisted()
-                    && job.getService()
-                            .equals(new ComponentName(context, HealthConnectDailyService.class))
-                    && !Objects.equals(
-                            job.getExtras().getString(EXTRA_JOB_NAME_KEY), HC_DAILY_JOB)) {
-                jobScheduler.cancel(job.getId());
-            }
-        }
     }
 
     public static void cancelAllJobs(@NonNull Context context) {

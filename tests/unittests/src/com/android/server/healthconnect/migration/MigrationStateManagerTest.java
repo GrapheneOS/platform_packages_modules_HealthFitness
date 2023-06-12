@@ -24,7 +24,6 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_P
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED;
 
 import static com.android.server.healthconnect.migration.MigrationConstants.CURRENT_STATE_START_TIME_KEY;
-import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_RESET_MIGRATION_STATE_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_TIMEOUT_REACHED_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.IN_PROGRESS_TIMEOUT_REACHED_KEY;
@@ -821,30 +820,6 @@ public class MigrationStateManagerTest {
         mMigrationStateManager.switchToSetupForUser(mContext);
         verifyNoJobScheduled();
         verifyCancelAllJobs();
-    }
-
-    @Test
-    public void testCancelOldMigrationJobs_haveNotCanceled() {
-        when(mPreferenceHelper.getPreference(eq(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY)))
-                .thenReturn(null);
-        mMigrationStateManager.switchToSetupForUser(mContext);
-        ExtendedMockito.verify(
-                () -> MigrationStateChangeJob.cleanupOldPersistentMigrationJobs(eq(mContext)));
-        verify(mPreferenceHelper)
-                .insertOrReplacePreference(
-                        eq(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY), eq(String.valueOf(true)));
-    }
-
-    @Test
-    public void testCancelOldMigrationJobs_haveAlreadyCanceled() {
-        when(mPreferenceHelper.getPreference(eq(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY)))
-                .thenReturn(String.valueOf(true));
-        mMigrationStateManager.switchToSetupForUser(mContext);
-        ExtendedMockito.verify(
-                () -> MigrationStateChangeJob.cleanupOldPersistentMigrationJobs(eq(mContext)),
-                never());
-        verify(mPreferenceHelper, never())
-                .insertOrReplacePreference(eq(HAVE_CANCELED_OLD_MIGRATION_JOBS_KEY), any());
     }
 
     @Test
