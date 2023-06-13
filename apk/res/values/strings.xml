@@ -898,7 +898,7 @@
     <string name="auto_delete_button" description="Label for a button that open the auto-deletion settings. [CHAR_LIMIT=50]">Auto-delete</string>
     <string name="auto_delete_title" description="Title of screen for a user to manage the auto-deletion settings [CHAR_LIMIT=40]">Auto-delete</string>
     <string name="auto_delete_header" description="Description for the auto-delete settings page. [CHAR_LIMIT=NONE]">Control how long your data is stored in Health&#160;Connect by scheduling it to delete after a set time</string>
-    <string name="auto_delete_learn_more" description="Label of a link that helps to learn more about auto-delete. [CHAR_LIMIT=50]">Learn more</string>
+    <string name="auto_delete_learn_more" description="Label of a link that helps to learn more about auto-delete. [CHAR_LIMIT=50]">Learn more about auto-delete</string>
     <string name="auto_delete_section" description="Label for a section that picks the time range for auto-deletion. [CHAR_LIMIT=50]">Auto-delete data</string>
     <string name="range_after_x_months" description="Item in a list of possible time ranges for auto-deletion. Choosing this will automatically delete data older than x months. [CHAR_LIMIT=50]">{count, plural, =1{After # month}other{After # months}}</string>
     <string name="range_never" description="Item in a list of possible time ranges for auto-deletion. Choosing this will never delete data automatically. [CHAR_LIMIT=50]">Never</string>

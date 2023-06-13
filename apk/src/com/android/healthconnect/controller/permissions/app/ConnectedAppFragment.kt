@@ -87,6 +87,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         private const val FOOTER_KEY = "connected_app_footer"
         private const val PARAGRAPH_SEPARATOR = "\n\n"
     }
+
     init {
         this.setPageName(PageName.APP_ACCESS_PAGE)
     }
@@ -206,7 +207,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
     private fun setupAllowAllPreference() {
         allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
-            if (preference.isPressed) {
+            if (preference.isPressed || allowAllPreference!!.isAccessibilityFocused()) {
                 if (grantAll) {
                     val permissionsUpdated = appPermissionViewModel.grantAllPermissions(packageName)
                     if (!permissionsUpdated) {
