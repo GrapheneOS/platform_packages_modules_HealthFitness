@@ -1245,6 +1245,82 @@ public class StepsRecordTest {
     }
 
     @Test
+    public void testAggregate_withDifferentTimeZone() throws Exception {
+        Instant instant = Instant.now();
+        List<Record> records =
+                List.of(
+                        getStepsRecord(instant, 10, 4, 1, ZoneOffset.ofHours(1)),
+                        getStepsRecord(instant, 20, 5, 1, ZoneOffset.ofHours(2)),
+                        getStepsRecord(instant, 30, 3, 1, ZoneOffset.ofHours(3)),
+                        getStepsRecord(instant, 40, 1, 1, ZoneOffset.ofHours(4)));
+        AggregateRecordsRequest<Long> aggregateRecordsRequest =
+                new AggregateRecordsRequest.Builder<Long>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.ofEpochMilli(0))
+                                        .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                        .build())
+                        .addAggregationType(STEPS_COUNT_TOTAL)
+                        .build();
+        AggregateRecordsResponse<Long> oldResponse =
+                TestUtils.getAggregateResponse(aggregateRecordsRequest, records);
+        assertThat(oldResponse.getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(ZoneOffset.ofHours(2));
+        List<Record> recordNew =
+                Arrays.asList(
+                        getStepsRecord(instant, 1000, 7, 1, ZoneOffset.UTC),
+                        getStepsRecord(1000, 4, 1));
+        AggregateRecordsResponse<Long> newResponse =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        recordNew);
+        assertThat(newResponse.get(STEPS_COUNT_TOTAL)).isNotNull();
+        assertThat(newResponse.getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(ZoneOffset.UTC);
+    }
+
+    @Test
+    public void testAggregateGroup_withDifferentTimeZone() throws Exception {
+        Instant instant = Instant.now();
+        Instant endTime = Instant.now();
+        LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, ZoneOffset.UTC);
+        LocalDateTime startTimeLocal = endTimeLocal.minusDays(5);
+        TestUtils.insertRecords(
+                List.of(
+                        getStepsRecord(instant, 10, 5, 1, ZoneOffset.ofHours(2)),
+                        getStepsRecord(
+                                instant.plus(3, ChronoUnit.HOURS), 10, 5, 13, ZoneOffset.UTC),
+                        getStepsRecord(instant, 20, 4, 1, ZoneOffset.ofHours(3)),
+                        getStepsRecord(instant.plus(4, ChronoUnit.HOURS), 10, 4, 3, ZoneOffset.UTC),
+                        getStepsRecord(instant, 30, 3, 1, ZoneOffset.ofHours(5)),
+                        getStepsRecord(instant.plus(5, ChronoUnit.HOURS), 10, 3, 3, ZoneOffset.UTC),
+                        getStepsRecord(instant, 10, 2, 1, ZoneOffset.ofHours(2)),
+                        getStepsRecord(instant, 40, 1, 1, ZoneOffset.UTC)));
+        List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
+                TestUtils.getAggregateResponseGroupByDuration(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(startTimeLocal)
+                                                .setEndTime(endTimeLocal)
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        Duration.ofDays(1));
+        assertThat(responses.get(0).getZoneOffset(STEPS_COUNT_TOTAL))
+                .isEqualTo(ZoneOffset.ofHours(2));
+        assertThat(responses.get(1).getZoneOffset(STEPS_COUNT_TOTAL))
+                .isEqualTo(ZoneOffset.ofHours(3));
+        assertThat(responses.get(2).getZoneOffset(STEPS_COUNT_TOTAL))
+                .isEqualTo(ZoneOffset.ofHours(5));
+        assertThat(responses.get(3).getZoneOffset(STEPS_COUNT_TOTAL))
+                .isEqualTo(ZoneOffset.ofHours(2));
+        assertThat(responses.get(4).getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(ZoneOffset.UTC);
+    }
+
+    @Test
     public void testAggregateDuration_withLocalDateTime() throws Exception {
         testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset.MIN);
         testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset.ofHours(-4));
