@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Avtomatik oʻchirish"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Avtomatik oʻchirish"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Maʼlumotlaringiz Health Connect xizmatida qanday saqlanishi va belgilangan vaqtdan keyin oʻchirilishini boshqaring"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"Batafsil"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"Maʼlumotlarning avtomatik oʻchirilishi"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# oydan keyin}other{# oydan keyin}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Hech qachon"</string>
