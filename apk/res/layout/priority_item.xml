@@ -22,12 +22,23 @@
     android:textDirection="locale"
     android:clickable="false">
 
+    <TextView
+        android:id="@+id/app_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="?attr/textAppearanceItem" />
+
     <ImageView
         android:id="@+id/app_icon"
         android:layout_width="@dimen/app_icon_size"
         android:layout_height="@dimen/app_icon_size"
         android:layout_gravity="center_vertical"
-        android:importantForAccessibility="no" />
+        android:importantForAccessibility="no"
+        android:layout_marginStart="@dimen/spacing_xsmall" />
 
     <TextView
         android:id="@+id/app_name"
