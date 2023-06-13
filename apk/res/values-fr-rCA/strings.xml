@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Connexion santé"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Gérer l\'accès des applications aux données relatives à la santé"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Gérez l\'accès des applications aux données relatives à la santé"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Autorisations et données"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Gérez les données de santé et d\'activité physique sur votre téléphone, et contrôlez les applications qui peuvent y accéder"</string>
     <string name="data_title" msgid="4456619761533380816">"Données et accès"</string>
@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Suppression automatique"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Suppression automatique"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Contrôlez la durée de conservation de vos données dans Connexion santé en définissant un délai au terme duquel elles seront supprimées"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"En savoir plus"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"Suppression automatique des données"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Après # mois}one{Après # mois}other{Après # mois}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Jamais"</string>

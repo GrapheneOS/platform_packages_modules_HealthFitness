@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"자동 삭제"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"자동 삭제"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"헬스 커넥트의 데이터 저장 기간을 관리하세요. 설정된 기간이 끝나면 내 데이터가 삭제되도록 예약할 수 있습니다."</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"자세히 알아보기"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"데이터 자동 삭제"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{#개월 후}other{#개월 후}}"</string>
     <string name="range_never" msgid="4429478261788361233">"사용 안함"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"헬스 커넥트 앱이 Android 시스템과의 통합 중에 종료되었습니다.\n\n재개를 클릭하여 앱을 다시 열고 데이터 및 권한 이전을 계속하세요."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"헬스 커넥트 데이터를 유지하려면 <xliff:g id="TIME_NEEDED">%1$s</xliff:g> 이내에 완료하세요."</string>
     <string name="resume_button" msgid="2255148549862208047">"재개"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"통합 일시중지됨"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"헬스 커넥트가 Android 시스템과 통합 중입니다. 계속하려면 탭하세요."</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"통합 재개"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"헬스 커넥트와 Android 시스템과의 통합을 계속하려면 탭하세요. 데이터를 유지하려면 <xliff:g id="TIME_NEEDED">%1$s</xliff:g> 이내에 완료하세요."</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"헬스 커넥트와 Android 시스템과의 통합을 계속하려면 탭하세요."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"헬스 커넥트가 Android 시스템과 통합될 준비가 되었습니다. 지금 <xliff:g id="APP_NAME">%1$s</xliff:g> 앱에 액세스 권한을 부여하면 통합이 완료될 때까지 일부 기능이 작동하지 않을 수 있습니다."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"헬스 커넥트가 Android 시스템과 통합될 준비가 되었습니다. 지금 앱에 액세스 권한을 부여하면 통합이 완료될 때까지 일부 기능이 작동하지 않을 수 있습니다."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"계속"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"통합 시작"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"헬스 커넥트 통합 진행 중"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"헬스 커넥트가 Android 시스템과 통합 중입니다.\n\n통합이 완료되고 헬스 커넥트와 함께 <xliff:g id="APP_NAME">%1$s</xliff:g> 앱을 사용할 수 있게 되면 알려드립니다."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"헬스 커넥트가 Android 시스템과 통합 중입니다.\n\n통합이 완료되고 헬스 커넥트를 사용할 수 있게 되면 알려드립니다."</string>

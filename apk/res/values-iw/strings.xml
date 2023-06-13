@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"מחיקה אוטומטית"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"מחיקה אוטומטית"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"אפשר להחליט כמה זמן הנתונים יאוחסנו ב-Health Connect ולתזמן את המחיקה שלהם לאחר זמן מוגדר מראש"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"מידע נוסף"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"מחיקה אוטומטית של נתונים"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{אחרי חודש אחד}one{אחרי # חודשים}two{אחרי חודשיים}other{אחרי # חודשים}}"</string>
     <string name="range_never" msgid="4429478261788361233">"אף פעם"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"אפליקציית Health Connect נסגרה בזמן השילוב עם מערכת Android‏.\n\nיש ללחוץ על \'המשך\' כדי לפתוח מחדש את האפליקציה ולהמשיך בהעברת הנתונים וההרשאות."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"כדי שנתוני Health Connect שלך יישמרו, עליך להשלים זאת בתוך <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"המשך"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"השילוב מושהה"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"תהליך השילוב של Health Connect במערכת Android עוד לא הסתיים. צריך להקיש כדי להמשיך"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"המשך השילוב"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"יש להקיש כדי להמשיך בשילוב של Health Connect עם מערכת Android. כדי שהנתונים שלך יישמרו, עליך להשלים זאת בתוך <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"יש להקיש כדי להמשיך בשילוב של Health Connect עם מערכת Android."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect מוכנה לשילוב עם מערכת ה-Android. אם תינתן לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> גישה עכשיו, ייתכן שחלק מהתכונות לא יפעלו עד להשלמת השילוב."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect מוכנה לשילוב עם מערכת Android. אם תינתן לאפליקציות גישה עכשיו, ייתכן שחלק מהתכונות לא יפעלו עד להשלמת השילוב."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"המשך"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"להתחלת השילוב"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"השילוב של Health Connect מתבצע"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"מתבצע שילוב של Health Connect עם מערכת Android‏.\n\nתישלח אליך הודעה כשהתהליך יושלם ואפשר יהיה להשתמש באפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> עם Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"מתבצע שילוב של Health Connect עם מערכת Android‏.\n\nתישלח אליך הודעה כשהתהליך יושלם ואפשר יהיה להשתמש ב-Health Connect."</string>

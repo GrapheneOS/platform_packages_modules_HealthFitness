@@ -684,7 +684,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"အလိုအလျောက်ဖျက်ရန်"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"အလိုအလျောက်ဖျက်ရန်"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"သတ်မှတ်ချိန်နောက်ပိုင်းတွင် ဖျက်ရန် စီစဉ်ထားခြင်းဖြင့် Health Connect တွင် သင်၏ဒေတာ မည်မျှကြာသိမ်းမည်ကို သတ်မှတ်နိုင်သည်"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"ပိုမိုလေ့လာရန်"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"ဒေတာ အလိုအလျောက်ဖျက်ရန်"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# လ နောက်ပိုင်း}other{# လ နောက်ပိုင်း}}"</string>
     <string name="range_never" msgid="4429478261788361233">"မည်သည့်အခါမှ"</string>
