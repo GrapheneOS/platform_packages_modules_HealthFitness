@@ -463,6 +463,7 @@
     <string name="data_entry_header" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g></string>
     <string name="data_point_action_content_description" description="Content description for the menu button of an individual data entry [CHAR LIMIT=NONE]">Delete data entry</string>
     <string name="delete_data_point" description="Menu option for deleting an individual data entry [CHAR LIMIT=50]">Delete entry</string>
+    <string name="aggregation_total" description="Description before the total value. For instance, Total: 1000 steps. [CHAR LIMIT=50]">Total: <xliff:g id="total_value" example="1000 steps">%s</xliff:g></string>
 
     <string name="watt_format" description="Power value with unit. [ICU SYNTAX][CHAR LIMIT=80]">{value, plural, =1 {1 W} other {# W}}</string>
     <string name="watt_format_long" description="Power value with unit. [ICU SYNTAX][CHAR LIMIT=160]">{value, plural, =1 {1 watt} other {# watts}}</string>
