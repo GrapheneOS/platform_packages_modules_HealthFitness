@@ -18,6 +18,7 @@
 
 package com.android.healthconnect.controller.dataentries
 
+import android.content.Context
 import android.health.connect.AggregateRecordsRequest
 import android.health.connect.AggregateRecordsResponse
 import android.health.connect.HealthConnectManager
@@ -30,6 +31,7 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.units.Energy
 import android.health.connect.datatypes.units.Length
 import androidx.core.os.asOutcomeReceiver
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
 import com.android.healthconnect.controller.dataentries.formatters.StepsFormatter
@@ -41,6 +43,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
@@ -58,7 +61,8 @@ constructor(
     private val distanceFormatter: DistanceFormatter,
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @ApplicationContext private val context: Context
 ) : BaseUseCase<LoadAggregationInput, FormattedAggregation>(dispatcher) {
 
     override suspend fun execute(input: LoadAggregationInput): FormattedAggregation {
@@ -111,23 +115,31 @@ constructor(
             is Long ->
                 FormattedAggregation(
                     aggregation = stepsFormatter.formatUnit(aggregationResult),
-                    aggregationA11y = stepsFormatter.formatA11yUnit(aggregationResult),
+                    aggregationA11y =
+                        addAggregationA11yPrefix(stepsFormatter.formatA11yUnit(aggregationResult)),
                     contributingApps = contributingApps)
             is Energy ->
                 FormattedAggregation(
                     aggregation = totalCaloriesBurnedFormatter.formatUnit(aggregationResult),
                     aggregationA11y =
-                        totalCaloriesBurnedFormatter.formatA11yUnit(aggregationResult),
+                        addAggregationA11yPrefix(
+                            totalCaloriesBurnedFormatter.formatA11yUnit(aggregationResult)),
                     contributingApps = contributingApps)
             is Length ->
                 FormattedAggregation(
                     aggregation = distanceFormatter.formatUnit(aggregationResult),
-                    aggregationA11y = distanceFormatter.formatA11yUnit(aggregationResult),
+                    aggregationA11y =
+                        addAggregationA11yPrefix(
+                            distanceFormatter.formatA11yUnit(aggregationResult)),
                     contributingApps = contributingApps)
             else -> {
                 throw IllegalArgumentException("Unsupported aggregation type!")
             }
         }
+    }
+
+    private fun addAggregationA11yPrefix(aggregation: String): String {
+        return context.getString(R.string.aggregation_total, aggregation)
     }
 
     private suspend fun getContributingApps(apps: Set<DataOrigin>): String {
