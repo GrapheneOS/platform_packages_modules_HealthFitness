@@ -42,6 +42,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.android.compatibility.common.util.ApiTest;
 import com.android.modules.utils.build.SdkLevel;
 
 import org.junit.After;
@@ -100,6 +101,7 @@ public class RateLimiterTest {
     }
 
     @Test
+    @ApiTest(apis = {"android.health.connect#insertRecords"})
     public void testTryAcquireApiCallQuota_writeLimitExceeded_flagEnabled()
             throws InterruptedException {
         exception.expect(HealthConnectException.class);
@@ -108,6 +110,7 @@ public class RateLimiterTest {
     }
 
     @Test
+    @ApiTest(apis = {"android.health.connect#insertRecords"})
     public void testTryAcquireApiCallQuota_writeLimitExceeded_flagDisabled()
             throws InterruptedException {
         setEnableRateLimiterFlag(false);
@@ -115,6 +118,7 @@ public class RateLimiterTest {
     }
 
     @Test
+    @ApiTest(apis = {"android.health.connect#readRecords"})
     public void testTryAcquireApiCallQuota_readLimitExceeded_flagEnabled()
             throws InterruptedException {
         exception.expect(HealthConnectException.class);
@@ -123,6 +127,7 @@ public class RateLimiterTest {
     }
 
     @Test
+    @ApiTest(apis = {"android.health.connect#readRecords"})
     public void testTryAcquireApiCallQuota_readLimitExceeded_flagDisabled()
             throws InterruptedException {
         setEnableRateLimiterFlag(false);
@@ -145,6 +150,7 @@ public class RateLimiterTest {
     }
 
     @Test
+    @ApiTest(apis = {"android.health.connect#insertRecords"})
     public void testRecordMemoryRollingQuota_foregroundCall_exceedBackgroundLimit()
             throws InterruptedException {
         // No exception expected.
