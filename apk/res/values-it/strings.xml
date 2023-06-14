@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Elimina automaticamente"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Elimina automaticamente"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Gestisci per quanto tempo i dati sono memorizzati in Connessione Salute impostando l\'eliminazione automatica dopo un determinato periodo di tempo"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"Scopri di più"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"Elimina i dati automaticamente"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Dopo # mese}other{Dopo # mesi}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Mai"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"L\'app Connessione Salute è stata chiusa durante l\'integrazione nel sistema Android.\n\nFai clic su Riprendi per riaprire l\'app e continuare a trasferire dati e autorizzazioni."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Per mantenere i tuoi dati di Connessione Salute, completa l\'operazione entro <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"Riprendi"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Integrazione in pausa"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"L\'integrazione di Connessione Salute nel sistema Android è stata messa in pausa. Tocca per continuare"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Riprendi l\'integrazione"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Tocca per continuare con l\'integrazione di Connessione Salute nel sistema Android. Per mantenere i tuoi dati, completa l\'operazione entro <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Tocca per continuare con l\'integrazione di Connessione Salute nel sistema Android."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"L\'app Connessione Salute è pronta per l\'integrazione nel sistema Android. Se consenti l\'accesso all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> ora, alcune funzionalità potrebbero non funzionare fino al completamento dell\'integrazione."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"L\'app Connessione Salute è pronta per essere integrata nel sistema Android. Se consenti ora l\'accesso alle app, alcune funzionalità potrebbero non essere disponibili fino al completamento dell\'integrazione."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continua"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Avvia integrazione"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integrazione di Connessione Salute in corso"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"È in corso l\'integrazione di Connessione Salute nel sistema Android.\n\nAl termine del processo riceverai una notifica e potrai usare <xliff:g id="APP_NAME">%1$s</xliff:g> con Connessione Salute."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"È in corso l\'integrazione di Connessione Salute nel sistema Android.\n\nAl termine della procedura riceverai una notifica e potrai usare Connessione Salute."</string>
