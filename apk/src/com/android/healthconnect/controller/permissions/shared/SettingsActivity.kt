@@ -35,6 +35,8 @@ package com.android.healthconnect.controller.permissions.shared
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
@@ -83,7 +85,9 @@ class SettingsActivity : Hilt_SettingsActivity() {
         val rationalIntentDeclared = healthPermissionReader.isRationalIntentDeclared(appPackageName)
         if (!rationalIntentDeclared) {
             Log.e(TAG, "App should support rational intent!")
-            finish()
+            // posting finish() on the next main loop iteration to prevent a blank screen
+            // if the activity has been started for the first time (b/284327172)
+            Handler(Looper.getMainLooper()).post(this::finish)
         }
     }
 
