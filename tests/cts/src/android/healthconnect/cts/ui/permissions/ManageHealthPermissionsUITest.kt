@@ -78,7 +78,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
             clickOnContentDescription("Search apps")
 
             waitDisplayed(By.text("Search apps"))
-            waitDisplayed(By.text("Health Connect cts test app"))
+            waitDisplayed(By.text("CtsHealthConnectTestAppAWithNormalReadWritePermission"))
         }
     }
 
