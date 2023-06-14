@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Eliminación automática"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Eliminación automática"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Controla o tempo durante o cal se almacenan os teus datos en Saúde conectada. Só tes que configurar a plataforma para que elimine a información pasado un determinado período"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"Máis información"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"Eliminar datos automaticamente"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Tras # mes}other{Tras # meses}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nunca"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Pechouse a aplicación Saúde conectada cando se estaba integrando no sistema Android.\n\nFai clic en retomar para volver abrir a aplicación e seguir transferindo os teus datos e permisos."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Para manter os teus datos de Saúde conectada, completa esta acción no prazo de <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"Retomar"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"A integración púxose en pausa"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Saúde conectada estase integrando co sistema Android. Toca para continuar"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Retoma a integración"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Toca para continuar coa integración de Saúde conectada co sistema Android. Para manter os teus datos, completa esta acción no prazo de <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Toca para continuar coa integración de Saúde conectada co sistema Android."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"A aplicación Saúde conectada está lista para integrarse co sistema Android. Se lle dás acceso agora a <xliff:g id="APP_NAME">%1$s</xliff:g>, é posible que algunhas funcións non funcionen ata que remate a integración."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"A aplicación Saúde conectada está lista para integrarse co sistema Android. Se lles dás acceso agora ás aplicacións, é posible que algunhas opcións non funcionen ata que remate a integración."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuar"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Comezar integración"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integración de Saúde conectada en proceso"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Estase integrando Saúde conectada co sistema Android.\n\nRecibirás unha notificación cando remate o proceso e xa poidas usar <xliff:g id="APP_NAME">%1$s</xliff:g> con Saúde conectada."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Estase integrando Saúde conectada co sistema Android.\n\nRecibirás unha notificación cando remate o proceso e poidas usar Saúde conectada."</string>

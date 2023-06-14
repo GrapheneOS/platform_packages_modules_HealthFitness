@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"স্বয়ংক্ৰিয়ভাৱে মচা"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"স্বয়ংক্ৰিয়ভাৱে মচা"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"এক নিৰ্ধাৰিত সময়ৰ পাছত আপোনাৰ ডেটা মচাৰ সময়সূচী নিৰ্ধাৰণ কৰি Health Connectত সেই ডেটা কিমান দিনলৈ ষ্ট’ৰ হৈ থাকে সেয়া নিয়ন্ত্ৰণ কৰক"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"অধিক জানক"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"ডেটা স্বয়ংক্ৰিয়ভাৱে মচা"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# মাহৰ পাছত}one{# মাহৰ পাছত}other{# মাহৰ পাছত}}"</string>
     <string name="range_never" msgid="4429478261788361233">"কেতিয়াও নহয়"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect এপ্‌টো এটা Android ছিষ্টেমৰ সৈতে একত্ৰিত কৰি থকাৰ সময়ত বন্ধ হৈছে\n\nএপ্‌টো পুনৰ খুলিবলৈ পুনৰ আৰম্ভ কৰিবলৈ আৰু আপোনাৰ ডেটা আৰু অনুমতিসমূহ স্থানান্তৰণ কৰাটো অব্যাহত ৰাখক।"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"আপোনাৰ Health Connect ডেটা ৰাখিবলৈ, এইটো <xliff:g id="TIME_NEEDED">%1$s</xliff:g>ৰ ভিতৰত সম্পূৰ্ণ কৰক"</string>
     <string name="resume_button" msgid="2255148549862208047">"পুনৰ আৰম্ভ কৰক"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"একত্ৰিত কৰাটো পজ কৰা হৈছে"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connectক Android ছিষ্টেমৰ সৈতে একত্ৰিত কৰি থকা হৈছে। অব্যাহত ৰাখিবলৈ টিপক"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"একত্ৰিত কৰাটো পুনৰ আৰম্ভ কৰক"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Android ছিষ্টেমটোৰ সৈতে Health Connect একত্ৰিত কৰাটো অব্যাহত ৰাখিবলৈ টিপক। আপোনাৰ ডেটা ৰাখিবলৈ, এইটো <xliff:g id="TIME_NEEDED">%1$s</xliff:g>ৰ ভিতৰত সম্পূৰ্ণ কৰক"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Android ছিষ্টেমটোৰ সৈতে Health Connect একত্ৰিত কৰাটো অব্যাহত ৰাখিবলৈ টিপক।"</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"আপোনাৰ Android ছিষ্টেমৰ সৈতে একত্ৰিত কৰিবলৈ Health Connect সাজু। যদি আপুনি এতিয়া <xliff:g id="APP_NAME">%1$s</xliff:g>ক এক্সেছ দিয়ে, একত্ৰিত কৰাটো সম্পূৰ্ণ নোহোৱা পৰ্যন্ত কিছুমান সুবিধাই কাম নকৰিব পাৰে।"</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"আপোনাৰ Android ছিষ্টেমৰ সৈতে একত্ৰিত কৰিবলৈ Health Connect সাজু। যদি আপুনি এতিয়া এপ্‌সমূহক এক্সেছ দিয়ে, একত্ৰিত কৰাটো সম্পূৰ্ণ নোহোৱা পৰ্যন্ত কিছুমান সুবিধাই কাম নকৰিব পাৰে।"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"অব্যাহত ৰাখক"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"একত্ৰিত কৰাটো আৰম্ভ কৰক"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect একত্ৰিত কৰি থকা হৈছে"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connectক Android ছিষ্টেমৰ সৈতে একত্ৰিত কৰি থকা হৈছে।\n\nপ্ৰক্ৰিয়াটো সম্পূৰ্ণ হ’লে আপুনি জাননী লাভ কৰিব আৰু আপুনি Health Connectৰ সৈতে <xliff:g id="APP_NAME">%1$s</xliff:g> ব্যৱহাৰ কৰিব পাৰিব।"</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connectক Android ছিষ্টেমৰ সৈতে একত্ৰিত কৰি থকা হৈছে।\n\nপ্ৰক্ৰিয়াটো সম্পূৰ্ণ হ’লে আপুনি এটা জাননী লাভ কৰিব আৰু আপুনি Health Connect ব্যৱহাৰ কৰিব পাৰিব।"</string>

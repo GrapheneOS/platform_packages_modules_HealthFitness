@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"ऑटोमैटिकली मिट जाए"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ऑटोमैटिकली मिटाएं"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"यह कंट्रोल करें कि Health Connect में आपका डेटा कितने समय तक सेव करके रखा जाए. इसके लिए, आपको डेटा को तय समय के बाद मिटाने का शेड्यूल सेट करना होगा"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"ज़्यादा जानें"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"डेटा को ऑटोमैटिकली मिटाएं"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# महीने के बाद}one{# महीने के बाद}other{# महीनों के बाद}}"</string>
     <string name="range_never" msgid="4429478261788361233">"कभी नहीं"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ऐप्लिकेशन, Android सिस्टम के साथ इंटिग्रेट होने के दौरान बंद किया गया.\n\n\'फिर शुरू करें\' पर क्लिक करके ऐप्लिकेशन दोबारा खोलें और डेटा के साथ-साथ अनुमतियां ट्रांसफ़र करना जारी रखें."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"आपके Health Connect डेटा को सेव रखने के लिए, इस प्रोसेस को <xliff:g id="TIME_NEEDED">%1$s</xliff:g> में पूरा करें"</string>
     <string name="resume_button" msgid="2255148549862208047">"फिर शुरू करें"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"इंटिग्रेशन की प्रोसेस रोक दी गई है"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect को Android सिस्टम के साथ इंटिग्रेट कर दिया गया है. जारी रखने के लिए टैप करें"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"इंटिग्रेट करने की प्रोसेस फिर शुरू करें"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Health Connect को Android सिस्टम के साथ इंटिग्रेट करने की प्रोसेस जारी रखने के लिए टैप करें. आपके डेटा को सेव रखने के लिए, इस प्रोसेस को <xliff:g id="TIME_NEEDED">%1$s</xliff:g> में पूरा करें"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Health Connect को Android सिस्टम के साथ इंटिग्रेट करने की प्रोसेस जारी रखने के लिए टैप करें."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect को अब Android सिस्टम के साथ इंटिग्रेट किया जा सकता है. इंटिग्रेट करने की प्रोसेस पूरी होने से पहले ही <xliff:g id="APP_NAME">%1$s</xliff:g> को ऐक्सेस देने पर, हो सकता है कि कुछ सुविधाएं काम न करें."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect को अब Android सिस्टम के साथ इंटिग्रेट किया जा सकता है. ऐप्लिकेशन को इंटिग्रेट करने की प्रोसेस पूरी होने से पहले ही ऐक्सेस देने पर, हो सकता है कि कुछ सुविधाएं काम न करें."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"जारी रखें"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"इंटिग्रेशन शुरू करें"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect को इंटिग्रेट किया जा रहा है"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect को Android सिस्टम के साथ इंटिग्रेट किया जा रहा है.\n\nयह प्रोसेस पूरी होने के बाद आपको सूचना मिलेगी. इससे <xliff:g id="APP_NAME">%1$s</xliff:g> को Health Connect के साथ इस्तेमाल किया जा सकेगा."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect को Android सिस्टम के साथ इंटिग्रेट किया जा रहा है.\n\nयह प्रोसेस पूरी होने के बाद आपको सूचना मिलेगी. साथ ही, Health Connect का इस्तेमाल किया जा सकता है."</string>

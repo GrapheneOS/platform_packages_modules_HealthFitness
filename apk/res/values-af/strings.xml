@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Vee outomaties uit"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Vee outomaties uit"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Jy kan beheer hoe lank jou data in Health Connect geberg word deur te skeduleer dat dit ná ’n vasgestelde tyd uitgevee word"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"Kom meer te wete"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"Vee data outomaties uit"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Ná # maand}other{Ná # maande}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nooit"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Die Health Connect-app het toegemaak terwyl die proses om dit met die Android-stelsel te integreer, aan die gang was.\n\nKlik hervat om die app weer oop te maak en voort te gaan om jou data en toestemmings oor te dra."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Voltooi dit binne <xliff:g id="TIME_NEEDED">%1$s</xliff:g> as jy jou Health Connect-data wil behou"</string>
     <string name="resume_button" msgid="2255148549862208047">"Hervat"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Integrasie is onderbreek"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect word tans met die Android-stelsel geïntegreer. Tik om voort te gaan"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Hervat integrasie"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Tik om voort te gaan om Health Connect met die Android-stelsel te integreer. Voltooi dit binne <xliff:g id="TIME_NEEDED">%1$s</xliff:g> as jy jou data wil behou"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Tik om voort te gaan om Health Connect met die Android-stelsel te integreer."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect is gereed om met jou Android-stelsel geïntegreer te word. As jy <xliff:g id="APP_NAME">%1$s</xliff:g> nou toegang gee, sal sommige kenmerke nie werk totdat integrasie voltooi is nie."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect is gereed om met jou Android-stelsel geïntegreer te word. As jy apps nou toegang gee, sal sommige kenmerke nie werk voordat integrasie voltooi is nie."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Gaan voort"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Begin integrasie"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect-integrasie is aan die gang"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect word tans met die Android-stelsel geïntegreer.\n\nJy sal ’n kennisgewing kry wanneer die proses voltooi is en jy <xliff:g id="APP_NAME">%1$s</xliff:g> met Health Connect kan gebruik."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect word tans met die Android-stelsel geïntegreer.\n\nJy sal ’n kennisgewing kry wanneer die proses voltooi is en jy Health Connect kan gebruik."</string>

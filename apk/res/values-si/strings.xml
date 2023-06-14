@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"ස්වයං-මැකීම"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ස්වයං-මැකීම"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"සැකසූ වේලාවකට පසු එය මැකීමට කාලසටහන් ගත කිරීමෙන් Health Connect තුළ ඔබේ දත්ත කොපමණ කාලයක් ගබඩා කර තිබේ ද යන්න පාලන කරන්න"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"තව දැන ගන්න"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"දත්ත ස්වයං-මැකීම"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# මාසයකට පසු}one{මාස #කට පසු}other{මාස #කට පසු}}"</string>
     <string name="range_never" msgid="4429478261788361233">"කවදාවත් නෑ"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect යෙදුම Android පද්ධතිය සමග ඒකාබද්ධ වෙමින් තිබියදී වැසුණා.\n\nයෙදුම නැවත විවෘත කර ඔබේ දත්ත සහ අවසර දිගටම මාරු කිරීමට නැවත පටන් ගන්න ක්ලික් කරන්න."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ඔබේ Health Connect දත්ත තබා ගැනීමට මෙය <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ඇතුළත සම්පූර්ණ කරන්න"</string>
     <string name="resume_button" msgid="2255148549862208047">"නැවත පටන් ගන්න"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"ඒකාබද්ධ කිරීම විරාම කරන ලදි"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect Android පද්ධතිය සමග ඒකාබද්ධ වෙමින් පවතී. ඉදිරියට යාමට තට්ටු කරන්න"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"ඒකාබද්ධ කිරීම නැවත ආරම්භ කරන්න"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Health Connect, Android පද්ධතිය සමග දිගටම ඒකාබද්ධ කිරීමට තට්ටු කරන්න. ඔබේ දත්ත තබා ගැනීම සඳහා, මෙය <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ඇතුළත සම්පූර්ණ කරන්න"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Health Connect, Android පද්ධතිය සමග දිගටම ඒකාබද්ධ කිරීමට තට්ටු කරන්න."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect ඔබේ Android පද්ධතිය සමග ඒකාබද්ධ වීමට සූදානම් වෙයි. ඔබ දැන් <xliff:g id="APP_NAME">%1$s</xliff:g>ට ප්‍රවේශය ලබා දෙන්නේ නම්, ඒකාබද්ධ කිරීම සම්පූර්ණ වන තෙක් සමහර විශේෂාංග ක්‍රියා නොකරයි."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect ඔබේ Android පද්ධතිය සමග ඒකාබද්ධ වීමට සූදානම් වෙයි. ඔබ දැන් යෙදුම්වලට ප්‍රවේශය ලබා දෙන්නේ නම්, ඒකාබද්ධ කිරීම සම්පූර්ණ වන තෙක් සමහර විශේෂාංග ක්‍රියා නොකරයි."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"ඉදිරියට යන්න"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"ඒකාබද්ධ කිරීම අරඹන්න"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect ඒකාබද්ධ කිරීම සිදු වෙමින් පවතී"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect, Android පද්ධතිය සමග ඒකාබද්ධ වෙමින් පවතී.\n\nක්‍රියාවලිය සම්පූර්ණ වූ විට ඔබට දැනුම්දීමක් ලැබෙන අතර ඔබට Health Connect සමග <xliff:g id="APP_NAME">%1$s</xliff:g> භාවිත කළ හැක."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect Android පද්ධතිය සමග ඒකාබද්ධ වෙමින් පවතී.\n\nක්‍රියාවලිය සම්පූර්ණ වූ විට ඔබට දැනුම්දීමක් ලැබෙන අතර ඔබට Health Connect භාවිතා කළ හැක."</string>
