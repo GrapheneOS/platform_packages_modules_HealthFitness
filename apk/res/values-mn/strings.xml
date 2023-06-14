@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Автоматаар устгах"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Автоматаар устгах"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Таны өгөгдлийг Health Connect-д хэр удаан хадгалахыг хянахын тулд үүнийг тохируулсан хугацааны дараа устгах хуваарь гаргана уу"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"Нэмэлт мэдээлэл авах"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"Өгөгдлийг автоматаар устгах"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# сарын дараа}other{# сарын дараа}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Огт үгүй"</string>

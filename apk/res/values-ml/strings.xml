@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"സ്വയമേവ ഇല്ലാതാക്കൽ"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"സ്വയമേവ ഇല്ലാതാക്കൽ"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Health Connect നിങ്ങളുടെ ഡാറ്റ എത്ര നാൾ സംഭരിക്കണമെന്നത്, ഒരു നിശ്ചിത സമയത്തിന് ശേഷം അത് ഇല്ലാതാക്കാനായി ഷെഡ്യൂൾ ചെയ്തുകൊണ്ട് നിയന്ത്രിക്കുക"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"കൂടുതലറിയുക"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"ഡാറ്റ സ്വയമേവ ഇല്ലാതാക്കുക"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# മാസത്തിന് ശേഷം}other{# മാസത്തിന് ശേഷം}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ഒരിക്കലും വേണ്ട"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ആപ്പ് Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കുമ്പോൾ അതിന്റെ പ്രവർത്തനം അവസാനിച്ചു.\n\nആപ്പ് വീണ്ടും തുറന്ന് നിങ്ങളുടെ ഡാറ്റയും അനുമതികളും കൈമാറുന്നത് തുടരാൻ, \'പുനരാരംഭിക്കുക\' ക്ലിക്ക് ചെയ്യുക."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"നിങ്ങളുടെ Health Connect ഡാറ്റ നിലനിർത്താൻ, <xliff:g id="TIME_NEEDED">%1$s</xliff:g> സമയപരിധിക്കുള്ളിൽ ഇത് പൂർത്തിയാക്കുക"</string>
     <string name="resume_button" msgid="2255148549862208047">"പുനരാരംഭിക്കുക"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"സമന്വയിപ്പിക്കൽ താൽക്കാലികമായി നിർത്തി"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Android സിസ്റ്റവുമായി Health Connect-നെ സമന്വയിപ്പിക്കുന്നു. തുടരാൻ ടാപ്പ് ചെയ്യുക"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"സംയോജനം പുനരാരംഭിക്കുക"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Android സിസ്റ്റവുമായി Health Connect സംയോജിപ്പിക്കുന്നത് തുടരാൻ ടാപ്പ് ചെയ്യുക. നിങ്ങളുടെ ഡാറ്റ നിലനിർത്താൻ, <xliff:g id="TIME_NEEDED">%1$s</xliff:g> സമയപരിധിക്കുള്ളിൽ ഇത് പൂർത്തിയാക്കുക"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Android സിസ്റ്റവുമായി Health Connect സംയോജിപ്പിക്കുന്നത് തുടരാൻ ടാപ്പ് ചെയ്യുക."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect നിങ്ങളുടെ Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കാൻ തയ്യാറാണ്. നിങ്ങൾ <xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിന് ഇപ്പോൾ ആക്സസ് നൽകിയാൽ, സംയോജനം പൂർത്തിയാകുന്നത് വരെ ചില ഫീച്ചറുകൾ പ്രവർത്തിക്കണമെന്നില്ല."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect നിങ്ങളുടെ Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കാൻ തയ്യാറായിരിക്കുന്നു. നിങ്ങൾ ആപ്പുകൾക്ക് ഇപ്പോൾ ആക്സസ് നൽകിയാൽ, സംയോജനം പൂർത്തിയാകുന്നതു വരെ ചില ഫീച്ചറുകൾ പ്രവർത്തിക്കണമെന്നില്ല."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"തുടരുക"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"സമന്വയിപ്പിക്കൽ ആരംഭിക്കുക"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect സംയോജനം പുരോഗമിക്കുന്നു"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Android സിസ്റ്റവുമായി Health Connect സംയോജിപ്പിക്കുന്നു.\n\nപ്രക്രിയ പൂർത്തിയായി Health Connect-നൊപ്പം <xliff:g id="APP_NAME">%1$s</xliff:g> ഉപയോഗിക്കാനാകുമ്പോൾ നിങ്ങൾക്ക് അറിയിപ്പ് ലഭിക്കും."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Android സിസ്റ്റവുമായി Health Connect-നെ സംയോജിപ്പിക്കുന്നു.\n\nപ്രക്രിയ പൂർത്തിയായി Health Connect ഉപയോഗിക്കാനാകുമ്പോൾ നിങ്ങൾക്ക് അറിയിപ്പ് ലഭിക്കും."</string>
