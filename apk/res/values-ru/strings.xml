@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Автоматическое удаление"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Автоматическое удаление"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Укажите период, по истечении которого данные будут автоматически удаляться из приложения \"Здоровье и спорт\""</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"Подробнее…"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"Автоматически удалять данные через:"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Через # месяц}one{Через # месяц}few{Через # месяца}many{Через # месяцев}other{Через # месяца}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Никогда"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Во время интеграции с Android приложение \"Здоровье и спорт\" было закрыто.\n\nНажмите \"Возобновить\", чтобы заново открыть приложение и продолжить перенос данных и разрешений."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Чтобы не потерять данные из сервиса \"Здоровье и спорт\", завершите перенос в течение <xliff:g id="TIME_NEEDED">%1$s</xliff:g>."</string>
     <string name="resume_button" msgid="2255148549862208047">"Возобновить"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Интеграция приостановлена"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Интеграция приложения \"Здоровье и спорт\" с Android приостановлена. Нажмите, чтобы продолжить."</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Возобновите интеграцию"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Нажмите, чтобы продолжить интеграцию приложения \"Здоровье и спорт\" с Android. Чтобы не потерять данные, завершите процесс в течение <xliff:g id="TIME_NEEDED">%1$s</xliff:g>."</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Нажмите, чтобы продолжить интеграцию приложения \"Здоровье и спорт\" с Android."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Приложение \"Здоровье и спорт\" готово к интеграции с Android. Если предоставить приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ сейчас, некоторые функции не будут работать до окончания процесса."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Здоровье и спорт можно начать интегрировать с Android. Если предоставить приложениям доступ сейчас, некоторые функции не будут работать до окончания процесса."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Продолжить"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Начать интеграцию"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Интеграция приложения \"Здоровье и спорт\""</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Выполняется интеграция приложения \"Здоровье и спорт\" с Android.\n\nПосле завершения вы получите уведомление и сможете привязать к сервису приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\"."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Выполняется интеграция приложения \"Здоровье и спорт\" с Android.\n\nПосле окончания вы получите уведомление и сможете использовать приложение."</string>

@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"ఆటోమేటిక్ తొలగింపు"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ఆటోమేటిక్ తొలగింపు"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Health Connectలో మీ డేటా ఎంతకాలం తర్వాత తొలగించబడాలో నిర్ణీత కాల వ్యవధిని ఎంచుకోండి"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"మరింత తెలుసుకోండి"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"ఆటోమేటిక్ డేటా తొలగింపు"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# నెల తర్వాత}other{# నెలల తర్వాత}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ఎప్పుడూ వద్దు"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవుతున్నప్పుడు Health Connect యాప్ మూసివేయబడింది.\n\nయాప్‌ను మళ్లీ తెరవడానికి \'కొనసాగించండి\' పై క్లిక్ చేయండి, అలాగే మీ డేటా, అనుమతులను బదిలీ చేయడం కొనసాగించండి."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"మీ Health Connect డేటా‌ను అలాగే ఉంచడానికి, దీన్ని <xliff:g id="TIME_NEEDED">%1$s</xliff:g>‌లో పూర్తి చేయండి"</string>
     <string name="resume_button" msgid="2255148549862208047">"కొనసాగించండి"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"ఇంటిగ్రేషన్ పాజ్ చేయబడింది"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Android సిస్టమ్‌తో Health Connect ఇంటిగ్రేట్ చేయబడుతోంది. కొనసాగడానికి ట్యాప్ చేయండి"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"ఇంటిగ్రేషన్‌ను కొనసాగించండి"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Android సిస్టమ్‌తో Health Connect‌ను ఇంటిగ్రేట్ చేయడాన్ని కొనసాగించడానికి ట్యాప్ చేయండి. మీ డేటా‌ను అలాగే ఉంచడానికి, దీన్ని <xliff:g id="TIME_NEEDED">%1$s</xliff:g>‌‌‌లో పూర్తి చేయండి"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Android సిస్టమ్‌తో Health Connect‌ను ఇంటిగ్రేట్ చేయడాన్ని కొనసాగించడానికి ట్యాప్ చేయండి."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect మీ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవ్వడానికి సిద్ధంగా ఉంది. మీరు ఇప్పుడు <xliff:g id="APP_NAME">%1$s</xliff:g>‌కు యాక్సెస్ ఇస్తే, ఇంటిగ్రేషన్ పూర్తయ్యే వరకు కొన్ని ఫీచర్‌లు పని చేయకపోవచ్చు."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect మీ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవ్వడానికి సిద్ధంగా ఉంది. మీరు ఇప్పుడు ‌యాప్‌లకు యాక్సెస్ ఇస్తే, ఇంటిగ్రేషన్ పూర్తయ్యే వరకు కొన్ని ఫీచర్‌లు పని చేయకపోవచ్చు."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"కొనసాగించండి"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"ఇంటిగ్రేషన్ చేయడం ప్రారంభించండి"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect ఇంటిగ్రేషన్ ప్రోగ్రెస్‌లో ఉంది"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect యాప్ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవుతోంది.\n\nప్రాసెస్ పూర్తయినప్పుడు మీకు నోటిఫికేషన్ వస్తుంది, అలాగే మీరు <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectతో ఉపయోగించవచ్చు."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect యాప్ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవుతోంది.\n\nప్రాసెస్ పూర్తయినప్పుడు మీకు నోటిఫికేషన్ వస్తుంది, మీరు Health Connect యాప్‌ను ఉపయోగించవచ్చు."</string>

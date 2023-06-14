@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"தானாக நீக்கு"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"தானாக நீக்குதல்"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Health Connectடில் உள்ள உங்கள் தரவைக் குறிப்பிட்ட காலத்திற்குப் பிறகு நீக்கத் திட்டமிடுவதன் மூலம், தரவு எவ்வளவு காலத்திற்குச் சேமிக்கப்பட வேண்டும் என்பதைக் கட்டுப்படுத்தலாம்"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"மேலும் அறிக"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"தரவைத் தானாக நீக்கு"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# மாதத்திற்குப் பிறகு}other{# மாதங்களுக்குப் பிறகு}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ஒருபோதும் இல்லை"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Android சிஸ்டத்துடன் ஒருங்கிணைக்கப்படும்போது Health Connect ஆப்ஸ் மூடப்பட்டது.\n\nஆப்ஸை மீண்டும் திறந்து உங்கள் தரவையும் அனுமதிகளையும் தொடர்ந்து மாற்ற \'மீண்டும் தொடங்கு\' என்பதைக் கிளிக் செய்யுங்கள்."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"உங்கள் Health Connect தரவை வைத்திருக்க, இதை <xliff:g id="TIME_NEEDED">%1$s</xliff:g>க்குள் நிறைவுசெய்யுங்கள்"</string>
     <string name="resume_button" msgid="2255148549862208047">"மீண்டும் தொடங்கு"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"ஒருங்கிணைப்பு இடைநிறுத்தப்பட்டுள்ளது"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Android சிஸ்டத்துடன் Health Connect ஆப்ஸ் ஒருங்கிணைக்கப்படுகிறது. தொடர தட்டவும்"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"ஒருங்கிணைப்பை மீண்டும் தொடங்குங்கள்"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Android சிஸ்டத்துடன் Health Connect ஆப்ஸைத் தொடர்ந்து ஒருங்கிணைக்க தட்டுங்கள். உங்கள் தரவை வைத்திருக்க, இதை <xliff:g id="TIME_NEEDED">%1$s</xliff:g>க்குள் நிறைவுசெய்யுங்கள்"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Android சிஸ்டத்துடன் Health Connect ஆப்ஸைத் தொடர்ந்து ஒருங்கிணைக்க தட்டுங்கள்."</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"உங்கள் Android சிஸ்டத்துடன் ஒருங்கிணைக்க Health Connect தயாராக உள்ளது. நீங்கள் இப்போது <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸுக்கான அணுகலை வழங்கினால், ஒருங்கிணைப்பு நிறைவடையும் வரை சில அம்சங்கள் செயல்படாமல் போகக்கூடும்."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"உங்கள் Android சிஸ்டத்துடன் ஒருங்கிணைக்க Health Connect தயாராக உள்ளது. நீங்கள் இப்போது ஆப்ஸுக்கான அணுகலை வழங்கினால், ஒருங்கிணைப்பு நிறைவடையும் வரை சில அம்சங்கள் செயல்படாமல் போகக்கூடும்."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"தொடருங்கள்"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"ஒருங்கிணைப்பைத் தொடங்கு"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect ஒருங்கிணைப்பு செயலிலுள்ளது"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Android சிஸ்டத்துடன் Health Connect ஆப்ஸ் ஒருங்கிணைக்கப்படுகிறது.\n\nசெயலாக்கம் நிறைவடைந்ததும் அறிவிப்பைப் பெறுவீர்கள். அதன் பிறகு Health Connect ஆப்ஸுடன் <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸைப் பயன்படுத்தலாம்."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Android சிஸ்டத்துடன் Health Connect ஆப்ஸ் ஒருங்கிணைக்கப்படுகிறது.\n\nசெயல்முறை நிறைவடைந்ததும் அறிவிப்பைப் பெறுவீர்கள். அதன் பிறகு Health Connect ஆப்ஸைப் பயன்படுத்தலாம்."</string>

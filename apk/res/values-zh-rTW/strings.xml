@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"自動刪除"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"自動刪除"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"如要控制 Health Connect 的資料保留期限，可以安排系統在一段時間後刪除資料"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"瞭解詳情"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"自動刪除資料"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# 個月後}other{# 個月後}}"</string>
     <string name="range_never" msgid="4429478261788361233">"永不"</string>
@@ -742,10 +743,8 @@
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect 應用程式在與 Android 系統整合時關閉了。\n\n請按一下「繼續」重新開啟應用程式，繼續轉移資料和權限。"</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"為了保留你的 Health Connect 資料，請在 <xliff:g id="TIME_NEEDED">%1$s</xliff:g>內完成這項操作"</string>
     <string name="resume_button" msgid="2255148549862208047">"繼續"</string>
-    <!-- no translation found for migration_paused_notification_title (4368414714202113077) -->
-    <skip />
-    <!-- no translation found for migration_paused_notification_content (1950511270109811771) -->
-    <skip />
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"整合已暫停"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect 正在與 Android 系統整合。輕觸即可繼續"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"繼續整合"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"輕觸一下即可繼續讓 Health Connect 與 Android 系統整合。為了保留你的資料，請在 <xliff:g id="TIME_NEEDED">%1$s</xliff:g>內完成這項操作"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"輕觸一下即可繼續讓 Health Connect 與 Android 系統整合。"</string>
@@ -760,8 +759,7 @@
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect 已準備好與 Android 系統整合。如果你現在授予「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取權限，在整合作業完成前，部分功能可能會無法運作。"</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect 已準備就緒，可以與 Android 系統整合。如果現在將權限授予應用程式，部分功能在整合完成前可能無法運作。"</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"繼續"</string>
-    <!-- no translation found for migration_pending_permissions_dialog_button_start_integration (754910196871313049) -->
-    <skip />
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"開始整合"</string>
     <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect 整合中"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect 正在與 Android 系統整合。\n\n你會在程序完成時接到通知，屆時即可搭配使用「<xliff:g id="APP_NAME">%1$s</xliff:g>」和 Health Connect。"</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect 正在與 Android 系統整合。\n\n你會在整合完成後收到通知，屆時就能使用 Health Connect。"</string>
