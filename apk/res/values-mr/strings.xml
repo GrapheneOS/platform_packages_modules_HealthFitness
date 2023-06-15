@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"ऑटो-डिलीट"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ऑटो-डिलीट"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"तुमचा डेटा सेट केलेल्या वेळेनंतर हटवण्यासाठी शेड्युल करून Health Connect मध्ये किती काळ स्टोअर केला जातो ते नियंत्रित करा"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"अधिक जाणून घ्या"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"डेटा ऑटो-डिलीट करा"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# महिन्यानंतर}other{# महिन्यांनंतर}}"</string>
     <string name="range_never" msgid="4429478261788361233">"कधीही नाही"</string>

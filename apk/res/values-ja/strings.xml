@@ -680,7 +680,8 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"自動削除"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"自動削除"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"指定した時間が過ぎたらデータを削除するよう設定することで、ヘルスコネクトでの保存時間を管理できます"</string>
-    <string name="auto_delete_learn_more" msgid="2853655230440111557">"詳細"</string>
+    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
+    <skip />
     <string name="auto_delete_section" msgid="7732381000331475082">"データの自動削除"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# か月後}other{# か月後}}"</string>
     <string name="range_never" msgid="4429478261788361233">"なし"</string>
