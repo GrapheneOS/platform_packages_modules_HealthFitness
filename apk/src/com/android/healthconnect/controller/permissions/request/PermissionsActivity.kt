@@ -16,21 +16,6 @@
  *
  */
 
-/**
- * Copyright (C) 2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * ```
- *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
 package com.android.healthconnect.controller.permissions.request
 
 import android.app.Activity
@@ -55,6 +40,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
+import com.android.healthconnect.controller.utils.increaseViewTouchTargetSize
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import dagger.hilt.android.AndroidEntryPoint
@@ -131,6 +117,9 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
         val cancelButton: View = findViewById(R.id.cancel)
         logger.logImpression(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
 
+        val parentView = cancelButton.parent as View
+        increaseViewTouchTargetSize(this, cancelButton, parentView)
+
         cancelButton.setOnClickListener {
             logger.logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
             viewModel.updatePermissions(false)
@@ -141,6 +130,10 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
     private fun setupAllowButton() {
         val allowButton: View = findViewById(R.id.allow)
         logger.logImpression(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+
+        val parentView = allowButton.parent.parent as View
+        increaseViewTouchTargetSize(this, allowButton, parentView)
+
         viewModel.grantedPermissions.observe(this) { grantedPermissions ->
             allowButton.isEnabled = grantedPermissions.isNotEmpty()
         }
