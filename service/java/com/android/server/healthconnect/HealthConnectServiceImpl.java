@@ -347,6 +347,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         finishDataDeliveryWriteRecords(recordInternals, attributionSource);
                         logRecordTypeSpecificUpsertMetrics(
                                 recordInternals, attributionSource.getPackageName());
+                        builder.setDataTypesFromRecordInternals(recordInternals);
                     } catch (SQLiteException sqLiteException) {
                         builder.setHealthDataServiceApiStatusError(HealthConnectException.ERROR_IO);
                         Slog.e(TAG, "SQLiteException: ", sqLiteException);
@@ -724,6 +725,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         finishDataDeliveryWriteRecords(recordInternals, attributionSource);
                         logRecordTypeSpecificUpsertMetrics(
                                 recordInternals, attributionSource.getPackageName());
+                        builder.setDataTypesFromRecordInternals(recordInternals);
                         // Update activity dates table
                         HealthConnectThreadScheduler.scheduleInternalTask(
                                 () ->
