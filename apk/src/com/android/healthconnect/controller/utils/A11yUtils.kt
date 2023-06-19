@@ -25,14 +25,13 @@ import android.view.View
 import com.android.healthconnect.controller.R
 import kotlin.math.max
 
-/**
- * Increases a view's touch target size and uses the parentView as the touch delegate.
- */
+/** Increases a view's touch target size and uses the parentView as the touch delegate. */
 fun increaseViewTouchTargetSize(context: Context, childView: View, parentView: View) {
     val largerTouchBounds = Rect()
     childView.getHitRect(largerTouchBounds)
-    val margin = getTouchTargetMargin(context.resources.getDimension(R.dimen.button_size),
-            largerTouchBounds.height())
+    val margin =
+        getTouchTargetMargin(
+            context.resources.getDimension(R.dimen.button_size), largerTouchBounds.height())
     largerTouchBounds.top -= margin
     largerTouchBounds.left -= margin
     largerTouchBounds.bottom += margin
