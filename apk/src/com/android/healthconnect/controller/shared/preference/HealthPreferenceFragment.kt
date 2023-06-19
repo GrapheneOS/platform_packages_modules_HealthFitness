@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityEvent
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils.loadAnimation
@@ -34,6 +35,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEnt
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.setupSharedMenu
+import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.EntryPointAccessors
 
 /** A base fragment that represents a page in Health Connect. */
@@ -55,6 +57,9 @@ abstract class HealthPreferenceFragment : PreferenceFragmentCompat() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setupLogger()
         super.onCreate(savedInstanceState)
+        val appBarLayout = requireActivity().findViewById<AppBarLayout>(R.id.app_bar)
+        appBarLayout?.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+        appBarLayout?.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
     }
 
     override fun onResume() {
@@ -139,7 +144,9 @@ abstract class HealthPreferenceFragment : PreferenceFragmentCompat() {
                 animation.setAnimationListener(
                     object : AnimationListener {
                         override fun onAnimationStart(animation: Animation) {}
+
                         override fun onAnimationRepeat(animation: Animation) {}
+
                         override fun onAnimationEnd(animation: Animation) {
                             view.visibility = View.INVISIBLE
                         }
