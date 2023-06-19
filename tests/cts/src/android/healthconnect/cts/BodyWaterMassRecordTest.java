@@ -42,7 +42,6 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -59,13 +58,6 @@ import java.util.UUID;
 public class BodyWaterMassRecordTest {
     private static final String TAG = "BodyWaterMassRecordTest";
     private static final Instant TIME = Instant.ofEpochMilli((long) 1e9);
-
-    @Before
-    public void setUp() {
-        // TODO(b/283737434): Update the HC code to use user aware context on permission change.
-        // Temporary fix to set firstGrantTime for the correct user in HSUM.
-        TestUtils.deleteAllStagedRemoteData();
-    }
 
     @After
     public void tearDown() throws InterruptedException {
