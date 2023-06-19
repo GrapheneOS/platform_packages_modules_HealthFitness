@@ -168,6 +168,15 @@ public class HealthConnectTestHelper extends Activity {
                                     queryType, bundle.getString(CHANGE_LOG_TOKEN), context);
                     break;
                 case GET_CHANGE_LOG_TOKEN_QUERY:
+                    if (bundle.containsKey(READ_RECORD_CLASS_NAME)) {
+                        returnIntent =
+                                getChangeLogToken(
+                                        queryType,
+                                        bundle.getString(APP_PKG_NAME_USED_IN_DATA_ORIGIN),
+                                        bundle.getStringArrayList(READ_RECORD_CLASS_NAME),
+                                        context);
+                        break;
+                    }
                     returnIntent =
                             getChangeLogToken(
                                     queryType,
@@ -525,6 +534,39 @@ public class HealthConnectTestHelper extends Activity {
                                         new DataOrigin.Builder().setPackageName(pkgName).build())
                                 .build(),
                         context);
+
+        intent.putExtra(CHANGE_LOG_TOKEN, tokenResponse.getToken());
+        return intent;
+    }
+
+    /**
+     * Method to get changeLogToken for an app
+     *
+     * @param queryType - specifies the action, here it should be GET_CHANGE_LOG_TOKEN_QUERY
+     * @param pkgName - pkgName of the app whose changeLogs we have to read using the returned token
+     * @param recordClassesToRead - Record Classes whose changeLogs to be read using the returned
+     *     token
+     * @param context - application context
+     * @return - Intent to send back to the main app which is running the tests
+     */
+    private Intent getChangeLogToken(
+            String queryType,
+            String pkgName,
+            ArrayList<String> recordClassesToRead,
+            Context context)
+            throws Exception {
+        final Intent intent = new Intent(queryType);
+
+        ChangeLogTokenRequest.Builder changeLogTokenRequestBuilder =
+                new ChangeLogTokenRequest.Builder()
+                        .addDataOriginFilter(
+                                new DataOrigin.Builder().setPackageName(pkgName).build());
+        for (String recordClass : recordClassesToRead) {
+            changeLogTokenRequestBuilder.addRecordType(
+                    (Class<? extends Record>) Class.forName(recordClass));
+        }
+        ChangeLogTokenResponse tokenResponse =
+                TestUtils.getChangeLogToken(changeLogTokenRequestBuilder.build(), context);
 
         intent.putExtra(CHANGE_LOG_TOKEN, tokenResponse.getToken());
         return intent;
