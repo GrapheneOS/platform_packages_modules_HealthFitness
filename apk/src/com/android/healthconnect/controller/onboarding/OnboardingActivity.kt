@@ -2,7 +2,6 @@ package com.android.healthconnect.controller.onboarding
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.FragmentActivity
@@ -23,28 +22,14 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
         @VisibleForTesting const val USER_ACTIVITY_TRACKER = "USER_ACTIVITY_TRACKER"
         @VisibleForTesting const val ONBOARDING_SHOWN_PREF_KEY = "ONBOARDING_SHOWN_PREF_KEY"
 
-        fun maybeRedirectToOnboardingActivity(
-            activity: Activity,
-            nextActivityIntent: Intent
-        ): Boolean {
+        fun maybeRedirectToOnboardingActivity(activity: Activity): Boolean {
             val sharedPreference =
                 activity.getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
             val previouslyOpened = sharedPreference.getBoolean(ONBOARDING_SHOWN_PREF_KEY, false)
             if (!previouslyOpened) {
-                activity.startActivity(createOnboardingIntent(activity, nextActivityIntent))
-                activity.finish()
                 return true
             }
             return false
-        }
-
-        private fun createOnboardingIntent(context: Context, nextActivityIntent: Intent): Intent {
-            val onboardingIntent =
-                Intent(context, OnboardingActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    putExtra(Intent.EXTRA_INTENT, nextActivityIntent)
-                }
-            return onboardingIntent
         }
     }
 
@@ -64,6 +49,7 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
 
         goBackButton.setOnClickListener {
             logger.logInteraction(OnboardingElement.ONBOARDING_GO_BACK_BUTTON)
+            setResult(Activity.RESULT_CANCELED)
             finish()
         }
         getStartedButton.setOnClickListener {
@@ -71,14 +57,9 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
             val editor = sharedPreference.edit()
             editor.putBoolean(ONBOARDING_SHOWN_PREF_KEY, true)
             editor.apply()
-            val nextIntentToOpen: Intent? = getIntentExtra()
-            nextIntentToOpen?.let { startActivity(getIntentExtra()) }
+            setResult(Activity.RESULT_OK)
             finish()
         }
-    }
-
-    private fun getIntentExtra(): Intent? {
-        return intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)
     }
 
     override fun onResume() {

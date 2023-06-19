@@ -36,6 +36,8 @@ import com.android.healthconnect.controller.migration.MigrationActivity.Companio
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
+import com.android.healthconnect.controller.onboarding.OnboardingActivityContract
+import com.android.healthconnect.controller.onboarding.OnboardingActivityContract.Companion.INTENT_RESULT_CANCELLED
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -59,7 +61,7 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
     private val migrationViewModel: MigrationViewModel by viewModels()
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_permissions)
@@ -73,8 +75,8 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
             return
         }
 
-        if (maybeRedirectToOnboardingActivity(this, intent)) {
-            return
+        if (maybeRedirectToOnboardingActivity(this) && savedInstanceState == null) {
+            openOnboardingActivity.launch(1)
         }
 
         val rationalIntentDeclared =
@@ -204,4 +206,11 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
     private fun getPackageNameExtra(): String {
         return intent.getStringExtra(EXTRA_PACKAGE_NAME).orEmpty()
     }
+
+    val openOnboardingActivity =
+        registerForActivityResult(OnboardingActivityContract()) { result ->
+            if (result == INTENT_RESULT_CANCELLED) {
+                finish()
+            }
+        }
 }
