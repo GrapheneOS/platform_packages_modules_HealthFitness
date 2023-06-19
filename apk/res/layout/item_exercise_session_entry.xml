@@ -20,7 +20,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:background="?android:attr/selectableItemBackground"
-    android:clickable="true"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:clipToPadding="false">
 
