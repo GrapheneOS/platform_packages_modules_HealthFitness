@@ -306,19 +306,24 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
             getString(R.string.other_android_permissions) +
                 PARAGRAPH_SEPARATOR +
                 getString(R.string.manage_permissions_rationale, appName)
+        var contentDescription =
+            getString(R.string.other_android_permissions_content_description) +
+                PARAGRAPH_SEPARATOR +
+                getString(R.string.manage_permissions_rationale, appName)
 
         if (isAtLeastOneGranted) {
             val dataAccessDate = appPermissionViewModel.loadAccessDate(packageName)
             dataAccessDate?.let {
                 val formattedDate = dateFormatter.formatLongDate(dataAccessDate)
-                title =
-                    getString(R.string.manage_permissions_time_frame, appName, formattedDate) +
-                        PARAGRAPH_SEPARATOR +
-                        title
+                val paragraph =
+                    getString(R.string.manage_permissions_time_frame, appName, formattedDate)
+                title = paragraph + PARAGRAPH_SEPARATOR + title
+                contentDescription = paragraph + PARAGRAPH_SEPARATOR + contentDescription
             }
         }
 
         mConnectedAppFooter?.title = title
+        mConnectedAppFooter?.setContentDescription(contentDescription)
         if (healthPermissionReader.isRationalIntentDeclared(packageName)) {
             mConnectedAppFooter?.setLearnMoreText(getString(R.string.manage_permissions_learn_more))
             logger.logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
