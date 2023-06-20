@@ -17,10 +17,8 @@ package com.android.healthconnect.controller.shared.dialog
 
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Rect
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
-import android.view.TouchDelegate
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -38,7 +36,6 @@ import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import dagger.hilt.android.EntryPointAccessors
-import kotlin.math.max
 
 /** {@link AlertDialog.Builder} wrapper for applying theming attributes. */
 class AlertDialogBuilder(private val context: Context) {
@@ -190,9 +187,7 @@ class AlertDialogBuilder(private val context: Context) {
         val dialog = alertDialogBuilder.create()
         setDialogGravityFromTheme(dialog)
 
-        dialog.setOnShowListener {
-            increaseDialogTouchTargetSize(dialog)
-        }
+        dialog.setOnShowListener { increaseDialogTouchTargetSize(dialog) }
 
         // Dialog container
         logger.logImpression(elementName)
