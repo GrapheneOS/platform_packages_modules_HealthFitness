@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Выдаленне даных"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Выдаліць запіс даных"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Выдаліць запіс"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Усяго: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 Вт}one{# Вт}few{# Вт}many{# Вт}other{# Вт}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 ват}one{# ват}few{# ваты}many{# ватаў}other{# вата}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 крок}one{# крок}few{# крокі}many{# крокаў}other{# кроку}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Наладжванне аўтавыдалення"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Наладжванне аўтавыдалення"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Вы можаце вызначыць працягласць захавання вашых даных у праграме \"Здароўе і спорт\". Для гэтага трэба наладзіць расклад іх выдалення праз пэўны час"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Даведацца больш пра аўтавыдаленне"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Аўтаматычнае выдаленне даных"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Праз # месяц}one{Праз # месяц}few{Праз # месяцы}many{Праз # месяцаў}other{Праз # месяца}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Ніколі"</string>

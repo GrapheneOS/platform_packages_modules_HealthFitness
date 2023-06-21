@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"데이터 삭제"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"데이터 항목 삭제"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"항목 삭제"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"총 <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1W}other{#W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1와트}other{#와트}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1걸음}other{#걸음}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"자동 삭제"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"자동 삭제"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"헬스 커넥트의 데이터 저장 기간을 관리하세요. 설정된 기간이 끝나면 내 데이터가 삭제되도록 예약할 수 있습니다."</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"자동 삭제에 관해 자세히 알아보기"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"데이터 자동 삭제"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{#개월 후}other{#개월 후}}"</string>
     <string name="range_never" msgid="4429478261788361233">"사용 안함"</string>
