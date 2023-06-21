@@ -52,7 +52,7 @@
     <string name="vitals_category_lowercase" msgid="4664457787866407963">"కీలక ఆరోగ్య కొలమానాలు"</string>
     <string name="cycle_tracking_category_uppercase" msgid="4723200714782660489">"సైకిల్ ట్రాకింగ్"</string>
     <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"సైకిల్ ట్రాకింగ్"</string>
-    <string name="nutrition_category_uppercase" msgid="6665096097987741036">"న్యూట్రిషన్ డేటా"</string>
+    <string name="nutrition_category_uppercase" msgid="6665096097987741036">"న్యూట్రిషన్"</string>
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"న్యూట్రిషన్ డేటా"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"డేటాను బ్రౌజ్ చేయండి"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"డేటాను మేనేజ్ చేయండి"</string>

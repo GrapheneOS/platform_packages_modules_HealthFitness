@@ -80,7 +80,7 @@
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"verbrande actieve calorieën"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Gegevens over verbrande actieve calorieën lezen"</string>
     <string name="active_calories_burned_write_content_description" msgid="8794383690157452892">"Gegevens over verbrande actieve calorieën schrijven"</string>
-    <string name="exercise_uppercase_label" msgid="9174662895529523172">"Oefening"</string>
+    <string name="exercise_uppercase_label" msgid="9174662895529523172">"Training"</string>
     <string name="exercise_lowercase_label" msgid="7210988327804427943">"oefening"</string>
     <string name="exercise_read_content_description" msgid="2079728018078185556">"Gegevens over beweging lezen"</string>
     <string name="exercise_write_content_description" msgid="3267630937895011886">"Gegevens over beweging schrijven"</string>
