@@ -323,7 +323,7 @@
     <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"Fjern også alle <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g>-tilladelser fra Health Connect"</string>
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Vil du slette alle data om <xliff:g id="DATA_TYPE">%1$s</xliff:g> permanent, der er tilføjet af <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Vil du slette denne post permanent?"</string>
-    <string name="confirming_question_message" msgid="2934249835529079545">"TIlknyttede apps vil ikke længere kunne tilgå disse data fra Health Connect"</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"Tilknyttede apps vil ikke længere kunne tilgå disse data fra Health Connect"</string>
     <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Denne handling vil slette alle menstruationsposter fra <xliff:g id="START_DATE">%1$s</xliff:g> til <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Slet"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Gå tilbage"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Sletning af data"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Slet datapost"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Slet post"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"I alt: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 watt}one{# watt}other{# watt}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 skridt}one{# skridt}other{# skridt}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Slet automatisk"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Slet automatisk"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Bestem, hvor længe dine data skal gemmes i Health Connect, ved at planlægge sletning af dataene efter et bestemt tidspunkt"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Få flere oplysninger om automatisk sletning"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Slet data automatisk"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Efter # måned}one{Efter # måned}other{Efter # måneder}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Aldrig"</string>

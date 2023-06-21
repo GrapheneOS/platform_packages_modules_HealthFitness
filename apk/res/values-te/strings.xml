@@ -52,7 +52,7 @@
     <string name="vitals_category_lowercase" msgid="4664457787866407963">"కీలక ఆరోగ్య కొలమానాలు"</string>
     <string name="cycle_tracking_category_uppercase" msgid="4723200714782660489">"సైకిల్ ట్రాకింగ్"</string>
     <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"సైకిల్ ట్రాకింగ్"</string>
-    <string name="nutrition_category_uppercase" msgid="6665096097987741036">"న్యూట్రిషన్ డేటా"</string>
+    <string name="nutrition_category_uppercase" msgid="6665096097987741036">"న్యూట్రిషన్"</string>
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"న్యూట్రిషన్ డేటా"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"డేటాను బ్రౌజ్ చేయండి"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"డేటాను మేనేజ్ చేయండి"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"డేటా తొలగింపు"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"డేటా ఎంట్రీని తొలగించండి"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"ఎంట్రీని తొలగించండి"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"మొత్తం: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 వా}other{# వా}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 వాట్}other{# వాట్‌లు}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 అడుగు}other{# అడుగులు}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"ఆటోమేటిక్ తొలగింపు"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ఆటోమేటిక్ తొలగింపు"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Health Connectలో మీ డేటా ఎంతకాలం తర్వాత తొలగించబడాలో నిర్ణీత కాల వ్యవధిని ఎంచుకోండి"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"ఆటోమేటిక్ తొలగింపు గురించి మరింత తెలుసుకోండి"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ఆటోమేటిక్ డేటా తొలగింపు"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# నెల తర్వాత}other{# నెలల తర్వాత}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ఎప్పుడూ వద్దు"</string>
