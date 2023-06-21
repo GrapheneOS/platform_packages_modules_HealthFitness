@@ -41,6 +41,9 @@ import static android.healthconnect.cts.lib.TestUtils.updateDataOriginPriorityOr
 import static android.healthconnect.cts.lib.TestUtils.updateRecordsAs;
 import static android.healthconnect.cts.lib.TestUtils.verifyDeleteRecords;
 
+import static com.android.compatibility.common.util.FeatureUtil.AUTOMOTIVE_FEATURE;
+import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
@@ -65,6 +68,8 @@ import com.android.cts.install.lib.TestApp;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -111,6 +116,11 @@ public class HealthConnectDeviceTest {
                     VERSION_CODE,
                     false,
                     "CtsHealthConnectTestAppWithDataManagePermission.apk");
+
+    @Before
+    public void setUp() {
+        Assume.assumeFalse(hasSystemFeature(AUTOMOTIVE_FEATURE));
+    }
 
     @After
     public void tearDown() throws InterruptedException {
