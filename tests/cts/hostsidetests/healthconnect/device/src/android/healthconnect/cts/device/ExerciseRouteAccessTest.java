@@ -28,6 +28,9 @@ import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteDat
 import static android.healthconnect.cts.utils.TestUtils.deleteTestData;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 
+import static com.android.compatibility.common.util.FeatureUtil.AUTOMOTIVE_FEATURE;
+import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
@@ -40,6 +43,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,6 +57,8 @@ public class ExerciseRouteAccessTest {
     @Before
     public void setUp() {
         mAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        Assume.assumeFalse(hasSystemFeature(AUTOMOTIVE_FEATURE));
+
         mAutomation.grantRuntimePermission(
                 APP_A_WITH_READ_WRITE_PERMS.getPackageName(), WRITE_EXERCISE_ROUTE);
     }
