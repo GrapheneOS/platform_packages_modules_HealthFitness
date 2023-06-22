@@ -238,6 +238,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void grantHealthPermission(
             @NonNull String packageName, @NonNull String permissionName, @NonNull UserHandle user) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(permissionName);
+        Objects.requireNonNull(user);
+
         throwIllegalStateExceptionIfDataSyncInProgress();
         Trace.traceBegin(TRACE_TAG_GRANT_PERMISSION, TAG_GRANT_PERMISSION);
         mPermissionHelper.grantHealthPermission(packageName, permissionName, user);
@@ -250,6 +254,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull String permissionName,
             @Nullable String reason,
             @NonNull UserHandle user) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(permissionName);
+        Objects.requireNonNull(user);
+
         throwIllegalStateExceptionIfDataSyncInProgress();
         mPermissionHelper.revokeHealthPermission(packageName, permissionName, reason, user);
     }
@@ -257,6 +265,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void revokeAllHealthPermissions(
             @NonNull String packageName, @Nullable String reason, @NonNull UserHandle user) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(user);
+
         throwIllegalStateExceptionIfDataSyncInProgress();
         mPermissionHelper.revokeAllHealthPermissions(packageName, reason, user);
     }
@@ -264,6 +275,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public List<String> getGrantedHealthPermissions(
             @NonNull String packageName, @NonNull UserHandle user) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(user);
+
         throwIllegalStateExceptionIfDataSyncInProgress();
         Trace.traceBegin(TRACE_TAG_READ_PERMISSION, TAG_READ_PERMISSION);
         List<String> grantedPermissions =
@@ -275,6 +289,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public long getHistoricalAccessStartDateInMilliseconds(
             @NonNull String packageName, @NonNull UserHandle userHandle) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(userHandle);
+
         throwIllegalStateExceptionIfDataSyncInProgress();
         Instant date = mPermissionHelper.getHealthDataStartDateAccess(packageName, userHandle);
         if (date == null) {
@@ -299,6 +316,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull AttributionSource attributionSource,
             @NonNull RecordsParcel recordsParcel,
             @NonNull IInsertRecordsResponseCallback callback) {
+        Objects.requireNonNull(attributionSource);
+        Objects.requireNonNull(recordsParcel);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -408,8 +429,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      */
     public void aggregateRecords(
             @NonNull AttributionSource attributionSource,
-            AggregateDataRequestParcel request,
-            IAggregateRecordsResponseCallback callback) {
+            @NonNull AggregateDataRequestParcel request,
+            @NonNull IAggregateRecordsResponseCallback callback) {
+        Objects.requireNonNull(attributionSource);
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -501,6 +526,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull AttributionSource attributionSource,
             @NonNull ReadRecordsRequestParcel request,
             @NonNull IReadRecordsResponseCallback callback) {
+        Objects.requireNonNull(attributionSource);
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -687,6 +716,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull AttributionSource attributionSource,
             @NonNull RecordsParcel recordsParcel,
             @NonNull IEmptyResponseCallback callback) {
+        Objects.requireNonNull(attributionSource);
+        Objects.requireNonNull(recordsParcel);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -788,6 +821,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull AttributionSource attributionSource,
             @NonNull ChangeLogTokenRequest request,
             @NonNull IGetChangeLogTokenCallback callback) {
+        Objects.requireNonNull(attributionSource);
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final HealthConnectServiceLogger.Builder builder =
@@ -851,7 +888,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void getChangeLogs(
             @NonNull AttributionSource attributionSource,
             @NonNull ChangeLogsRequest token,
-            IChangeLogsResponseCallback callback) {
+            @NonNull IChangeLogsResponseCallback callback) {
+        Objects.requireNonNull(attributionSource);
+        Objects.requireNonNull(token);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final HealthConnectServiceLogger.Builder builder =
@@ -964,6 +1005,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull AttributionSource attributionSource,
             @NonNull DeleteUsingFiltersRequestParcel request,
             @NonNull IEmptyResponseCallback callback) {
+        Objects.requireNonNull(attributionSource);
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1057,6 +1102,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull AttributionSource attributionSource,
             @NonNull DeleteUsingFiltersRequestParcel request,
             @NonNull IEmptyResponseCallback callback) {
+        Objects.requireNonNull(attributionSource);
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1157,6 +1206,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull String packageName,
             @HealthDataCategory.Type int dataCategory,
             @NonNull IGetPriorityResponseCallback callback) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1206,6 +1258,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull String packageName,
             @NonNull UpdatePriorityRequestParcel updatePriorityRequest,
             @NonNull IEmptyResponseCallback callback) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(updatePriorityRequest);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1242,7 +1298,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     @Override
     public void setRecordRetentionPeriodInDays(
-            int days, @NonNull UserHandle user, IEmptyResponseCallback callback) {
+            int days, @NonNull UserHandle user, @NonNull IEmptyResponseCallback callback) {
+        Objects.requireNonNull(user);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1276,6 +1335,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     @Override
     public int getRecordRetentionPeriodInDays(@NonNull UserHandle user) {
+        Objects.requireNonNull(user);
+
         enforceIsForegroundUser(getCallingUserHandle());
         throwExceptionIfDataSyncInProgress();
         try {
@@ -1301,6 +1362,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      */
     @Override
     public void getContributorApplicationsInfo(@NonNull IApplicationInfoResponseCallback callback) {
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1337,6 +1400,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     /** Retrieves {@link RecordTypeInfoResponse} for each RecordType. */
     @Override
     public void queryAllRecordTypesInfo(@NonNull IRecordTypeInfoResponseCallback callback) {
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1371,7 +1436,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * @see HealthConnectManager#queryAccessLogs
      */
     @Override
-    public void queryAccessLogs(@NonNull String packageName, IAccessLogsResponseCallback callback) {
+    public void queryAccessLogs(
+            @NonNull String packageName, @NonNull IAccessLogsResponseCallback callback) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1413,7 +1482,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getActivityDates(
             @NonNull ActivityDatesRequestParcel activityDatesRequestParcel,
-            IActivityDatesResponseCallback callback) {
+            @NonNull IActivityDatesResponseCallback callback) {
+        Objects.requireNonNull(activityDatesRequestParcel);
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1459,7 +1531,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      *     operation.
      */
     @Override
-    public void startMigration(@NonNull String packageName, IMigrationCallback callback) {
+    public void startMigration(@NonNull String packageName, @NonNull IMigrationCallback callback) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(callback);
+
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1503,7 +1578,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      *     operation.
      */
     @Override
-    public void finishMigration(@NonNull String packageName, IMigrationCallback callback) {
+    public void finishMigration(@NonNull String packageName, @NonNull IMigrationCallback callback) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(callback);
+
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1541,8 +1619,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void writeMigrationData(
             @NonNull String packageName,
-            MigrationEntityParcel parcel,
-            IMigrationCallback callback) {
+            @NonNull MigrationEntityParcel parcel,
+            @NonNull IMigrationCallback callback) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(parcel);
+        Objects.requireNonNull(callback);
+
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
         UserHandle callingUserHandle = getCallingUserHandle();
@@ -1583,7 +1665,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      *     operation.
      */
     public void insertMinDataMigrationSdkExtensionVersion(
-            @NonNull String packageName, int requiredSdkExtension, IMigrationCallback callback) {
+            @NonNull String packageName,
+            int requiredSdkExtension,
+            @NonNull IMigrationCallback callback) {
+        Objects.requireNonNull(packageName);
+        Objects.requireNonNull(callback);
+
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
@@ -1618,6 +1705,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @NonNull StageRemoteDataRequest stageRemoteDataRequest,
             @NonNull UserHandle userHandle,
             @NonNull IDataStagingFinishedCallback callback) {
+        Objects.requireNonNull(stageRemoteDataRequest);
+        Objects.requireNonNull(userHandle);
+        Objects.requireNonNull(callback);
+
         Map<String, ParcelFileDescriptor> origPfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
         Map<String, HealthConnectException> exceptionsByFileName =
@@ -1681,6 +1772,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void getAllDataForBackup(
             @NonNull StageRemoteDataRequest stageRemoteDataRequest,
             @NonNull UserHandle userHandle) {
+        Objects.requireNonNull(stageRemoteDataRequest);
+        Objects.requireNonNull(userHandle);
+
         mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
         mBackupRestore.getAllDataForBackup(stageRemoteDataRequest, userHandle);
     }
@@ -1699,6 +1793,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      */
     @Override
     public void deleteAllStagedRemoteData(@NonNull UserHandle userHandle) {
+        Objects.requireNonNull(userHandle);
+
         mContext.enforceCallingPermission(
                 DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION, null);
         mBackupRestore.deleteAndResetEverything(userHandle);
@@ -1734,6 +1830,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      */
     @Override
     public void getHealthConnectDataState(@NonNull IGetHealthConnectDataStateCallback callback) {
+        Objects.requireNonNull(callback);
+
         try {
             mDataPermissionEnforcer.enforceAnyOfPermissions(
                     MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
@@ -1796,6 +1894,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getHealthConnectMigrationUiState(
             @NonNull IGetHealthConnectMigrationUiStateCallback callback) {
+        Objects.requireNonNull(callback);
+
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
