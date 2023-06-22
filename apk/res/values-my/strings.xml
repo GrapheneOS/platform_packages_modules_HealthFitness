@@ -38,12 +38,8 @@
     <string name="recent_access_screen_description" msgid="331101209889185402">"ပြီးခဲ့သော ၂၄ နာရီတွင် မည်သည့်အက်ပ်က သင့်ဒေတာကိုသုံးထားကြောင်း ကြည့်နိုင်သည်"</string>
     <string name="today_header" msgid="1006837293203834373">"ယနေ့"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"မနေ့က"</string>
-    <!-- String.format failed for translation -->
-    <!-- no translation found for read_data_access_label (7145747310980361968) -->
-    <skip />
-    <!-- String.format failed for translation -->
-    <!-- no translation found for write_data_access_label (7955988316773000250) -->
-    <skip />
+    <string name="read_data_access_label" msgid="7145747310980361968">"ဖတ်ရန်- %sများ"</string>
+    <string name="write_data_access_label" msgid="7955988316773000250">"ရေးရန်- %sများ"</string>
     <string name="data_type_separator" msgid="1299848322898210658">"၊ "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"ခွင့်ပြုချက်များကို စီမံရန်"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"လှုပ်ရှားမှု"</string>
