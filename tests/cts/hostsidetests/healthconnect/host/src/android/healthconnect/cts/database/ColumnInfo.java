@@ -61,7 +61,9 @@ class ColumnInfo {
         private final List<String> mCheckConstraints;
         private String mDefaultValue;
 
-        Builder(String name, String dataType) {
+        Builder(@NonNull String name, @NonNull String dataType) {
+            Objects.requireNonNull(name);
+            Objects.requireNonNull(dataType);
             mName = name;
             mDataType = dataType;
             mConstraints = new ArrayList<>();
@@ -154,5 +156,49 @@ class ColumnInfo {
                     && checkConstraintList.equals(expectedCheckConstraintList);
         }
         return false;
+    }
+
+    /**
+     * Compares two ColumnInfo and stores any backward incompatible change to the corresponding
+     * ErrorInfo of column.
+     */
+    public void checkColumnDiff(
+            ColumnInfo expectedColumn, List<String> modificationOfColumn, String tableName) {
+
+        if (!mDataType.equals(expectedColumn.mDataType)) {
+            modificationOfColumn.add(
+                    "Datatype has been changed for column: "
+                            + mName
+                            + " of the table: "
+                            + tableName);
+        }
+        if (!Objects.equals(mDefaultValue, expectedColumn.mDefaultValue)) {
+            modificationOfColumn.add(
+                    "Default value has been changed for column: "
+                            + mName
+                            + " of the table: "
+                            + tableName);
+        }
+        List<Integer> constraintList1 = mConstraints.stream().sorted().toList();
+        List<Integer> constraintList2 = expectedColumn.mConstraints.stream().sorted().toList();
+
+        if (!constraintList1.equals(constraintList2)) {
+            modificationOfColumn.add(
+                    "Constraints have been changed for column: "
+                            + mName
+                            + " of the table: "
+                            + tableName);
+        }
+        List<String> checkConstraintList1 = mCheckConstraints.stream().sorted().toList();
+        List<String> checkConstraintList2 =
+                expectedColumn.mCheckConstraints.stream().sorted().toList();
+
+        if (!checkConstraintList1.equals(checkConstraintList2)) {
+            modificationOfColumn.add(
+                    "Check constraints has been changed for the column: "
+                            + mName
+                            + " of the table: "
+                            + tableName);
+        }
     }
 }

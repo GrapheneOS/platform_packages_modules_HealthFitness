@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -197,4 +199,304 @@ public class DataBaseTestUtils {
         }
         return result.getTextSummary();
     }
+
+    /**
+     * Checks the deletion of tables of the previous version of the database in the current version
+     * of the database.
+     */
+    public static void checkExistingTableDeletion(
+            HashMap<String, TableInfo> mTableListPreviousVersion,
+            HashMap<String, TableInfo> mTableListCurrentVersion,
+            List<String> deletionOfTable) {
+
+        for (String tableName : mTableListPreviousVersion.keySet()) {
+
+            if (!mTableListCurrentVersion.containsKey(tableName)) {
+                deletionOfTable.add("Table: " + tableName + " has been deleted from the database");
+            }
+        }
+    }
+
+    /**
+     * Checks for the modifications in the primary keys of the database between previous and current
+     * version.
+     */
+    public static void checkPrimaryKeyModification(
+            HashMap<String, TableInfo> mTableListPreviousVersion,
+            HashMap<String, TableInfo> mTableListCurrentVersion,
+            List<String> modificationOfPrimaryKey) {
+
+        for (String tableName : mTableListPreviousVersion.keySet()) {
+
+            if (mTableListCurrentVersion.containsKey(tableName)) {
+
+                List<String> primaryKeyPreviousVersion =
+                        mTableListPreviousVersion.get(tableName).getPrimaryKey();
+                List<String> primaryKeyCurrentVersion =
+                        mTableListCurrentVersion.get(tableName).getPrimaryKey();
+
+                for (String pk : primaryKeyPreviousVersion) {
+                    if (!primaryKeyCurrentVersion.contains(pk)) {
+                        modificationOfPrimaryKey.add(
+                                "Primary key column: "
+                                        + pk
+                                        + " has been deleted from the table: "
+                                        + tableName);
+                    }
+                }
+
+                for (String pk : primaryKeyCurrentVersion) {
+                    if (!primaryKeyPreviousVersion.contains(pk)) {
+                        modificationOfPrimaryKey.add(
+                                "Primary key column: "
+                                        + pk
+                                        + " has been added to the table: "
+                                        + tableName);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks for the modifications in the columns of each table of the database between previous
+     * and current version.
+     */
+    public static void checkColumnModification(
+            HashMap<String, TableInfo> mTableListPreviousVersion,
+            HashMap<String, TableInfo> mTableListCurrentVersion,
+            List<String> modificationOfColumn) {
+
+        for (String tableName : mTableListPreviousVersion.keySet()) {
+
+            if (mTableListCurrentVersion.containsKey(tableName)) {
+
+                HashMap<String, ColumnInfo> columnInfoPreviousVersion =
+                        mTableListPreviousVersion.get(tableName).getColumnInfoMapping();
+                HashMap<String, ColumnInfo> columnInfoCurrentVersion =
+                        mTableListCurrentVersion.get(tableName).getColumnInfoMapping();
+
+                for (String columnName : columnInfoPreviousVersion.keySet()) {
+                    ColumnInfo column1 = columnInfoPreviousVersion.get(columnName);
+
+                    if (columnInfoCurrentVersion.containsKey(columnName)) {
+                        ColumnInfo column2 = columnInfoCurrentVersion.get(columnName);
+                        column1.checkColumnDiff(column2, modificationOfColumn, tableName);
+                    } else {
+                        modificationOfColumn.add(
+                                "Column: "
+                                        + columnName
+                                        + " has been deleted from the table: "
+                                        + tableName);
+                    }
+                }
+
+                for (String columnName : columnInfoCurrentVersion.keySet()) {
+
+                    if (!columnInfoPreviousVersion.containsKey(columnName)) {
+                        ColumnInfo columnInfo = columnInfoCurrentVersion.get(columnName);
+
+                        if (columnInfo.getConstraints().contains(ColumnInfo.UNIQUE_CONSTRAINT)) {
+                            modificationOfColumn.add(
+                                    "UNIQUE constraint is not allowed for the new column: "
+                                            + columnName
+                                            + " of table: "
+                                            + tableName);
+                        }
+
+                        if (columnInfo.getConstraints().contains(ColumnInfo.NOT_NULL_CONSTRAINT)) {
+                            modificationOfColumn.add(
+                                    "NOT NULL constraint is not allowed for the new column: "
+                                            + columnName
+                                            + " of table: "
+                                            + tableName);
+                        }
+
+                        if (columnInfo
+                                .getConstraints()
+                                .contains(ColumnInfo.AUTO_INCREMENT_CONSTRAINT)) {
+                            modificationOfColumn.add(
+                                    "AUTOINCREMENT constraint is not allowed for the new column: "
+                                            + columnName
+                                            + " of table: "
+                                            + tableName);
+                        }
+
+                        if (!columnInfo.getCheckConstraints().isEmpty()) {
+                            modificationOfColumn.add(
+                                    "Check constraints are not allowed for the new column: "
+                                            + columnName
+                                            + " of table: "
+                                            + tableName);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks for the modifications in the foreign keys of each table of the database between
+     * previous and current version.
+     */
+    public static void checkForeignKeyModification(
+            HashMap<String, TableInfo> mTableListPreviousVersion,
+            HashMap<String, TableInfo> mTableListCurrentVersion,
+            List<String> modificationOfForeignKey) {
+
+        for (String tableName : mTableListPreviousVersion.keySet()) {
+
+            if (mTableListCurrentVersion.containsKey(tableName)) {
+
+                HashMap<String, ForeignKeyInfo> foreignKeyListPreviousVersion =
+                        mTableListPreviousVersion.get(tableName).getForeignKeyMapping();
+                HashMap<String, ForeignKeyInfo> foreignKeyListCurrentVersion =
+                        mTableListCurrentVersion.get(tableName).getForeignKeyMapping();
+
+                for (String foreignKeyName : foreignKeyListPreviousVersion.keySet()) {
+
+                    if (foreignKeyListCurrentVersion.containsKey(foreignKeyName)) {
+
+                        ForeignKeyInfo foreignInfo1 =
+                                foreignKeyListPreviousVersion.get(foreignKeyName);
+                        ForeignKeyInfo foreignInfo2 =
+                                foreignKeyListCurrentVersion.get(foreignKeyName);
+
+                        foreignInfo1.checkForeignKeyDiff(
+                                foreignInfo2, modificationOfForeignKey, tableName);
+                    } else {
+                        modificationOfForeignKey.add(
+                                "Foreign Key: "
+                                        + foreignKeyName
+                                        + " has been deleted from the table: "
+                                        + tableName);
+                    }
+                }
+
+                for (String foreignKeyName : foreignKeyListCurrentVersion.keySet()) {
+
+                    if (!foreignKeyListPreviousVersion.containsKey(foreignKeyName)) {
+
+                        ForeignKeyInfo foreignKeyInfo =
+                                foreignKeyListCurrentVersion.get(foreignKeyName);
+                        String referTableName = foreignKeyInfo.getForeignKeyTableName();
+                        List<Integer> constraintListOfReferencedColumn =
+                                mTableListCurrentVersion
+                                        .get(referTableName)
+                                        .getColumnInfoMapping()
+                                        .get(foreignKeyInfo.getForeignKeyName())
+                                        .getConstraints();
+                        if (!mTableListCurrentVersion
+                                        .get(referTableName)
+                                        .getPrimaryKey()
+                                        .contains(foreignKeyInfo.getForeignKeyReferredColumnName())
+                                && !constraintListOfReferencedColumn.contains(
+                                        ColumnInfo.UNIQUE_CONSTRAINT)) {
+                            modificationOfForeignKey.add(
+                                    "New Foreign key : "
+                                            + foreignKeyName
+                                            + " of  table: "
+                                            + tableName
+                                            + " has neither been made on primary key of "
+                                            + "referenced table: "
+                                            + referTableName
+                                            + " nor UNIQUE constraint ");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks for the modifications in the indexes of each table of the database between previous
+     * and current version.
+     */
+    public static void checkIndexModification(
+            HashMap<String, TableInfo> mTableListPreviousVersion,
+            HashMap<String, TableInfo> mTableListCurrentVersion,
+            List<String> modificationOfIndex) {
+
+        for (String tableName : mTableListPreviousVersion.keySet()) {
+
+            if (mTableListCurrentVersion.containsKey(tableName)) {
+
+                HashMap<String, IndexInfo> indexInfoPreviousVersion =
+                        mTableListPreviousVersion.get(tableName).getIndexInfoMapping();
+                HashMap<String, IndexInfo> indexInfoCurrentVersion =
+                        mTableListCurrentVersion.get(tableName).getIndexInfoMapping();
+
+                for (String indexName : indexInfoPreviousVersion.keySet()) {
+                    IndexInfo index1 = indexInfoPreviousVersion.get(indexName);
+
+                    if (indexInfoCurrentVersion.containsKey(indexName)) {
+
+                        IndexInfo index2 = indexInfoCurrentVersion.get(indexName);
+                        index1.checkIndexDiff(index2, modificationOfIndex, tableName);
+                    } else {
+                        modificationOfIndex.add(
+                                "Index : "
+                                        + indexName
+                                        + " has been deleted from table "
+                                        + tableName);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks for the addition of new tables in the current version of the database.
+     *
+     * <p>The only way by which a new table can interact with older ones is with the help of foreign
+     * key So, we need a check to ensure that the table to which the foreign key is being mapped is
+     * primary key of that table.
+     */
+    public static void checkNewTableAddition(
+            HashMap<String, TableInfo> mTableListPreviousVersion,
+            HashMap<String, TableInfo> mTableListCurrentVersion,
+            List<String> additionOfTable) {
+
+        for (String tableName : mTableListCurrentVersion.keySet()) {
+
+            if (!mTableListPreviousVersion.containsKey(tableName)) {
+
+                HashMap<String, ForeignKeyInfo> foreignKeyList =
+                        mTableListCurrentVersion.get(tableName).getForeignKeyMapping();
+
+                for (String foreignKeyName : foreignKeyList.keySet()) {
+
+                    ForeignKeyInfo foreignKeyInfo = foreignKeyList.get(foreignKeyName);
+                    String referTableName = foreignKeyInfo.getForeignKeyTableName();
+                    List<Integer> constraintListOfReferencedColumn =
+                            mTableListCurrentVersion
+                                    .get(referTableName)
+                                    .getColumnInfoMapping()
+                                    .get(foreignKeyInfo.getForeignKeyName())
+                                    .getConstraints();
+                    /**
+                     * Checking whether the column to which foreign key has been mapped is primary
+                     * key of the referenced table or not.
+                     */
+                    if (!mTableListCurrentVersion
+                                    .get(referTableName)
+                                    .getPrimaryKey()
+                                    .contains(foreignKeyInfo.getForeignKeyReferredColumnName())
+                            && !constraintListOfReferencedColumn.contains(
+                                    ColumnInfo.UNIQUE_CONSTRAINT)) {
+                        additionOfTable.add(
+                                "Foreign key : "
+                                        + foreignKeyName
+                                        + " of new table: "
+                                        + tableName
+                                        + " has neither been made on primary key of referenced"
+                                        + " table: "
+                                        + referTableName
+                                        + " nor UNIQUE constraint ");
+                    }
+                }
+            }
+        }
+    }
 }
+

@@ -38,19 +38,20 @@ public class ForeignKeyInfo {
      * a table.
      */
     @IntDef({
-        ON_DELETE_CASCADE,
-        ON_DELETE_SET_NULL,
-        ON_DELETE_SET_DEFAULT,
-        ON_DELETE_RESTRICT,
-        ON_UPDATE_CASCADE,
-        ON_UPDATE_SET_NULL,
-        ON_UPDATE_SET_DEFAULT,
-        ON_UPDATE_RESTRICT,
-        DEFERRABLE_FLAG,
-        INITIALLY_DEFERRED
+            ON_DELETE_CASCADE,
+            ON_DELETE_SET_NULL,
+            ON_DELETE_SET_DEFAULT,
+            ON_DELETE_RESTRICT,
+            ON_UPDATE_CASCADE,
+            ON_UPDATE_SET_NULL,
+            ON_UPDATE_SET_DEFAULT,
+            ON_UPDATE_RESTRICT,
+            DEFERRABLE_FLAG,
+            INITIALLY_DEFERRED
     })
     @Retention(RetentionPolicy.SOURCE)
-    public @interface ForeignKeyFlags {}
+    public @interface ForeignKeyFlags {
+    }
 
     public static final int ON_DELETE_CASCADE = 0;
     public static final int ON_DELETE_SET_NULL = 1;
@@ -145,5 +146,42 @@ public class ForeignKeyInfo {
             return flagList.equals(expectedFlags);
         }
         return false;
+    }
+
+    /**
+     * Compares two ForeignKeyInfo and stores any backward incompatible change to the corresponding
+     * ErrorInfo of foreignKey.
+     */
+    public void checkForeignKeyDiff(
+            ForeignKeyInfo expectedForeignkeyInfo,
+            List<String> modificationOfForeignKey,
+            String tableName) {
+
+        if (!mForeignKeyTableName.equals(expectedForeignkeyInfo.mForeignKeyTableName)) {
+            modificationOfForeignKey.add(
+                    "Referenced table has been changed for Foreign key: "
+                            + mForeignKeyName
+                            + " of table: "
+                            + tableName);
+        }
+        if (!mForeignKeyReferredColumn.equals(expectedForeignkeyInfo.mForeignKeyReferredColumn)) {
+            modificationOfForeignKey.add(
+                    "Primary Key of Referenced table has been changed for Foreign key: "
+                            + mForeignKeyName
+                            + " of table: "
+                            + tableName);
+        }
+
+        List<Integer> actualForeignKeyFlags = mForeignKeyFlags.stream().sorted().toList();
+        List<Integer> expectedForeignKeyFlags =
+                expectedForeignkeyInfo.mForeignKeyFlags.stream().sorted().toList();
+
+        if (!actualForeignKeyFlags.equals(expectedForeignKeyFlags)) {
+            modificationOfForeignKey.add(
+                    "Foreign Key Flags have been changed for Foreign Key: "
+                            + mForeignKeyName
+                            + " of table: "
+                            + tableName);
+        }
     }
 }

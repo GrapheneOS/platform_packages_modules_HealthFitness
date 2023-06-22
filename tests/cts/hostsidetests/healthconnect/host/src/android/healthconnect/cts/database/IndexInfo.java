@@ -121,4 +121,52 @@ class IndexInfo {
         }
         return false;
     }
+
+    /**
+     * Compares two IndexInfo and stores any backward incompatible change to the corresponding
+     * ErrorInfo of index.
+     */
+    public void checkIndexDiff(
+            IndexInfo expectedIndex, List<String> modificationOfIndex, String tableName) {
+
+        for (String columnName : mColumnList) {
+            if (!expectedIndex.mColumnList.contains(columnName)) {
+                modificationOfIndex.add(
+                        "Column: "
+                                + columnName
+                                + " has been deleted from the  index : "
+                                + mIndexName
+                                + " of table: "
+                                + tableName);
+            }
+        }
+
+        for (String columnName : expectedIndex.mColumnList) {
+            if (!mColumnList.contains(columnName)) {
+                modificationOfIndex.add(
+                        "Column: "
+                                + columnName
+                                + " has been added to the index : "
+                                + mIndexName
+                                + " of table: "
+                                + tableName);
+            }
+        }
+
+        if (mCheckUniqueFlag != expectedIndex.mCheckUniqueFlag) {
+            if (mCheckUniqueFlag) {
+                modificationOfIndex.add(
+                        "Unique flag has been removed from the index: "
+                                + mIndexName
+                                + " of table: "
+                                + tableName);
+            } else {
+                modificationOfIndex.add(
+                        "Unique flag has been added to the index: "
+                                + mIndexName
+                                + " of table: "
+                                + tableName);
+            }
+        }
+    }
 }
