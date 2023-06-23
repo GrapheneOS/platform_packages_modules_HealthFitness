@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Брисање података"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Избриши унос података"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Избриши унос"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Укупно: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}few{# W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 ват}one{# ват}few{# вата}other{# вати}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 корак}one{# корак}few{# корака}other{# корака}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Аутоматско брисање"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Аутоматско брисање"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Контролишите колико дуго се подаци чувају у Повезивању здравља заказивањем брисања после изабраног времена"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Сазнајте више о аутоматском брисању"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Аутоматско брисање података"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{После # месеца}one{После # месеца}few{После # месеца}other{После # месеци}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Никад"</string>

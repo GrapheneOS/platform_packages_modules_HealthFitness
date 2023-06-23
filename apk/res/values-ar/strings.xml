@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"حذف البيانات"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"حذف إدخالات البيانات"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"حذف إدخال"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"الإجمالي: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 واط}zero{# واط}two{# واط}few{# واط}many{# واط}other{# واط}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 واط}zero{# واط}two{# واط}few{# واط}many{# واط}other{# واط}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{خطوة واحدة}zero{# خطوة}two{خطوتان}few{# خطوات}many{# خطوة}other{# خطوة}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"الحذف التلقائي"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"الحذف التلقائي"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"يمكن التحكّم في مدة تخزين البيانات في تطبيق Health Connect من خلال جدولتها ليتم حذفها بعد فترة زمنية معيَنة."</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"مزيد من المعلومات عن الحذف التلقائي"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"الحذف التلقائي للبيانات"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{بعد شهر واحد}zero{بعد # شهر}two{بعد شهرَين}few{بعد # شهور}many{بعد # شهرًا}other{بعد # شهر}}"</string>
     <string name="range_never" msgid="4429478261788361233">"أبدًا"</string>

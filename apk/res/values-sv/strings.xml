@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Hantera appens åtkomst till din hälsodata"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Hantera appars åtkomst till din hälsodata"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Behörigheter och data"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Hantera hälso- och träningsdata på telefonen och styr vilka appar som har åtkomst till den"</string>
     <string name="data_title" msgid="4456619761533380816">"Data och åtkomst"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Radera data"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Radera datapost"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Radera post"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Totalt: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 watt}other{# watt}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 steg}other{# steg}}"</string>
@@ -379,7 +380,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 repetition}other{# repetitioner}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 repetition}other{# repetitioner}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Träningssegment"</string>
-    <string name="exercise_laps_header" msgid="117228630553856372">"Längder"</string>
+    <string name="exercise_laps_header" msgid="117228630553856372">"Varv"</string>
     <string name="back_extension" msgid="426518933137440577">"Ryggresning"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
     <string name="barbell_shoulder_press" msgid="3800236222803424251">"Militärpress"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Radera automatiskt"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Radera automatiskt"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Styr hur länge din data lagras i Health Connect genom att schemalägga att den ska raderas efter en viss tid"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Läs mer om automatisk radering"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Radera data automatiskt"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Efter # månad}other{Efter # månader}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Aldrig"</string>
@@ -722,7 +722,7 @@
     <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integrering pågår"</string>
     <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect integreras med Android-systemet.\n\nDet kan ta en stund för din data och dina behörigheter att överföras."</string>
     <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Stäng inte appen förrän du får en avisering om att processen är klar."</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect- integreringen pågår"</string>
+    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect-integreringen pågår"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Uppdatering krävs"</string>
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect integreras med Android-systemet så att du kan komma åt det direkt från inställningarna."</string>
     <string name="update_button" msgid="4544529019832009496">"Uppdatera"</string>
@@ -772,6 +772,6 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect-integreringen är slutförd"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Öppna"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Nyheter"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Du kan du komma åt Health Connect direkt från inställningarna. Du kan avinstallera Health Connect-appen när du vill."</string>
+    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Nu kan du komma åt Health Connect direkt från inställningarna. Du kan avinstallera Health Connect-appen när du vill."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"OK"</string>
 </resources>

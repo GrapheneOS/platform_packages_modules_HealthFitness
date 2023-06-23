@@ -256,12 +256,12 @@
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Acceso permitido"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Acceso no permitido"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"Configuración y ayuda"</string>
-    <string name="disconnect_all_apps" msgid="748945115977534726">"Quitar acceso a todas las aplicaciones"</string>
+    <string name="disconnect_all_apps" msgid="748945115977534726">"Quitar acceso de todas las aplicaciones"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"Con permiso de lectura"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"Con permiso de escritura"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"No hay aplicaciones permitidas"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"No hay aplicaciones denegadas"</string>
-    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"¿Quitar acceso a todas las aplicaciones?"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"¿Quitar acceso de todas las aplicaciones?"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Ninguna de tus aplicaciones podrá acceder ni añadir nuevos datos a Salud conectada. No se eliminarán los datos ya almacenados.\n\nEsta acción no afecta a otros permisos que pueda tener esta aplicación, como los de ubicación, cámara o micrófono."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Quitar todos"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Gestionar aplicación"</string>
@@ -324,7 +324,7 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"¿Eliminar permanentemente todos los datos de <xliff:g id="DATA_TYPE">%1$s</xliff:g> añadidos por <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"¿Eliminar permanentemente esta entrada?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Las aplicaciones conectadas ya no podrán acceder a estos datos de Salud conectada"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Se borrarán todos las entradas de menstruación del <xliff:g id="START_DATE">%1$s</xliff:g> al <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
+    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Se borrarán todas las entradas de menstruación del <xliff:g id="START_DATE">%1$s</xliff:g> al <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Eliminar"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Atrás"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Hecho"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Eliminación de datos"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Eliminar entrada de datos"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Eliminar entrada"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Total: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 vatio}other{# vatios}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 paso}other{# pasos}}"</string>
@@ -379,7 +380,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 rep}other{# rep}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 repetición}other{# repeticiones}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Segmentos de ejercicio"</string>
-    <string name="exercise_laps_header" msgid="117228630553856372">"Vueltas"</string>
+    <string name="exercise_laps_header" msgid="117228630553856372">"Vueltas/Largos"</string>
     <string name="back_extension" msgid="426518933137440577">"Extensión de espalda"</string>
     <string name="badminton" msgid="8839727076522086870">"Bádminton"</string>
     <string name="barbell_shoulder_press" msgid="3800236222803424251">"Press de hombros con barra"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Eliminación automática"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Eliminación automática"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Controla cuánto tiempo se almacenan tus datos en Salud conectada programando que se eliminen después de un periodo determinado"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Más información sobre la eliminación automática"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Eliminación automática de datos"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Después de # mes}other{Después de # meses}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nunca"</string>
@@ -723,7 +723,7 @@
     <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Salud conectada se está integrando con el sistema Android.\n\nLa transferencia de tus datos y permisos puede tardar un poco."</string>
     <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"No cierres la aplicación hasta que recibas una notificación que indique que se ha completado el proceso."</string>
     <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Integración de Salud conectada en curso"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Necesita actualizarse"</string>
+    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Es necesario actualizar"</string>
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Salud conectada se está integrando con el sistema Android para que puedas acceder a ella directamente desde tus ajustes."</string>
     <string name="update_button" msgid="4544529019832009496">"Actualizar"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Inicia esta actualización para que Salud conectada pueda seguir integrándose con los ajustes del sistema"</string>
@@ -751,12 +751,12 @@
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Continuar"</string>
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"Reanuda la integración de Salud conectada"</string>
     <string name="resume_migration_notification_content" msgid="46172108837648715">"Para conservar tus datos, completa esta acción en <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Es necesario actualizar la aplicación"</string>
+    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Es necesario actualizar aplicaciones"</string>
     <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"Debes actualizar <xliff:g id="APP_NAME">%1$s</xliff:g> para que siga funcionando con Salud conectada"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Debes actualizar algunas aplicaciones para que sigan funcionando con Salud conectada"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Buscar actualizaciones"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integración con Salud conectada"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Salud conectada está lista para integrarse con tu sistema Android. Si le das acceso a <xliff:g id="APP_NAME">%1$s</xliff:g> ahora, es posible que algunas funciones no puedan usarse hasta que se haya completado la integración."</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Salud conectada está lista para integrarse con tu sistema Android. Si das acceso a <xliff:g id="APP_NAME">%1$s</xliff:g> ahora, es posible que algunas funciones no puedan usarse hasta que se haya completado la integración."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Salud conectada está lista para integrarse con tu sistema Android. Si das acceso a las aplicaciones ahora, es posible que algunas funciones no puedan usarse hasta que se haya completado la integración."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continuar"</string>
     <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Iniciar integración"</string>

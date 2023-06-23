@@ -38,12 +38,8 @@
     <string name="recent_access_screen_description" msgid="331101209889185402">"ပြီးခဲ့သော ၂၄ နာရီတွင် မည်သည့်အက်ပ်က သင့်ဒေတာကိုသုံးထားကြောင်း ကြည့်နိုင်သည်"</string>
     <string name="today_header" msgid="1006837293203834373">"ယနေ့"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"မနေ့က"</string>
-    <!-- String.format failed for translation -->
-    <!-- no translation found for read_data_access_label (7145747310980361968) -->
-    <skip />
-    <!-- String.format failed for translation -->
-    <!-- no translation found for write_data_access_label (7955988316773000250) -->
-    <skip />
+    <string name="read_data_access_label" msgid="7145747310980361968">"ဖတ်ရန်- %sများ"</string>
+    <string name="write_data_access_label" msgid="7955988316773000250">"ရေးရန်- %sများ"</string>
     <string name="data_type_separator" msgid="1299848322898210658">"၊ "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"ခွင့်ပြုချက်များကို စီမံရန်"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"လှုပ်ရှားမှု"</string>
@@ -344,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"ဒေတာဖျက်ခြင်း"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"ဒေတာထည့်သွင်းမှု ဖျက်ရန်"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"ထည့်သွင်းမှု ဖျက်ရန်"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"စုစုပေါင်း- <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{၁ W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{၁ ဝပ်}other{# ဝပ်}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{ခြေလှမ်း ၁ လှမ်း}other{ခြေလှမ်း # လှမ်း}}"</string>
@@ -684,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"အလိုအလျောက်ဖျက်ရန်"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"အလိုအလျောက်ဖျက်ရန်"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"သတ်မှတ်ချိန်နောက်ပိုင်းတွင် ဖျက်ရန် စီစဉ်ထားခြင်းဖြင့် Health Connect တွင် သင်၏ဒေတာ မည်မျှကြာသိမ်းမည်ကို သတ်မှတ်နိုင်သည်"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"အလိုအလျောက်ဖျက်ခြင်းအကြောင်း ပိုမိုလေ့လာရန်"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ဒေတာ အလိုအလျောက်ဖျက်ရန်"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# လ နောက်ပိုင်း}other{# လ နောက်ပိုင်း}}"</string>
     <string name="range_never" msgid="4429478261788361233">"မည်သည့်အခါမှ"</string>

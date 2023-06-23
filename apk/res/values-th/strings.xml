@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"การลบข้อมูล"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"ลบรายการข้อมูล"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"ลบรายการข้อมูล"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"รวม: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 วัตต์}other{# วัตต์}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 วัตต์}other{# วัตต์}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 ก้าว}other{# ก้าว}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"ลบอัตโนมัติ"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ลบอัตโนมัติ"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"ควบคุมระยะเวลาการจัดเก็บข้อมูลใน Health Connect โดยกำหนดให้ลบหลังเวลาที่ตั้งไว้"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"ดูข้อมูลเพิ่มเติมเกี่ยวกับการลบอัตโนมัติ"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ลบข้อมูลอัตโนมัติ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{หลังผ่านไป # เดือน}other{หลังผ่านไป # เดือน}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ไม่เลย"</string>
