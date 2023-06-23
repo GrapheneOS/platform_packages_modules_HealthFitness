@@ -121,9 +121,7 @@ public class SpeedRecordHelper
             case SPEED_RECORD_SPEED_MIN:
             case SPEED_RECORD_SPEED_AVG:
                 return new AggregateParams(
-                                SERIES_TABLE_NAME,
-                                Collections.singletonList(SPEED_COLUMN_NAME),
-                                START_TIME_COLUMN_NAME)
+                                SERIES_TABLE_NAME, Collections.singletonList(SPEED_COLUMN_NAME))
                         .setJoin(
                                 new SqlJoin(
                                         SERIES_TABLE_NAME,
