@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Kudhibiti uwezo wa programu wa kufikia data ya afya"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Dhibiti uwezo wa programu kufikia data ya afya"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Ruhusa na data"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Dhibiti data za afya na siha kwenye simu yako na usimamie programu zinazoweza kuifikia"</string>
     <string name="data_title" msgid="4456619761533380816">"Data na ufikiaji"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Kufuta data"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Futa data"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Futa data"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Jumla: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{Wati 1}other{Wati #}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{Wati 1}other{Wati #}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{Hatua 1}other{Hatua #}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Futa kiotomatiki"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Futa kiotomatiki"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Dhibiti muda ambao data yako inahifadhiwa kwenye Health Connect kwa kuratibu ifutwe baada ya muda ulioweka"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Pata maelezo zaidi kuhusu kufuta kiotomatiki"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Futa data kiotomatiki"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Baada ya mwezi #}other{Baada ya miezi #}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Isifute kamwe"</string>
