@@ -24,12 +24,12 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthDataCategory;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
@@ -49,7 +49,7 @@ import java.util.Map;
  *
  * @hide
  */
-public final class PriorityMigrationHelper {
+public final class PriorityMigrationHelper extends DatabaseHelper {
 
     @VisibleForTesting
     public static final String PRE_MIGRATION_TABLE_NAME = "pre_migration_category_priority_table";
@@ -130,19 +130,21 @@ public final class PriorityMigrationHelper {
         return new CreateTableRequest(PRE_MIGRATION_TABLE_NAME, getColumnInfo());
     }
 
-    /** Upgrades the database to the latest version. */
-    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
+    @Override
+    protected String getMainTableName() {
+        return PRE_MIGRATION_TABLE_NAME;
+    }
 
     /**
      * Populate the pre-migration priority table if table is newly created by copying entries from
      * priority table.
      */
     private void populatePreMigrationTable() {
-            Map<Integer, List<Long>> existingPriority =
-                    HealthDataCategoryPriorityHelper.getInstance()
-                            .getHealthDataCategoryToAppIdPriorityMapImmutable();
+        Map<Integer, List<Long>> existingPriority =
+                HealthDataCategoryPriorityHelper.getInstance()
+                        .getHealthDataCategoryToAppIdPriorityMapImmutable();
 
-            TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
+        TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
         existingPriority.forEach(
                 (category, priority) -> {
                     if (!priority.isEmpty()) {
@@ -175,8 +177,9 @@ public final class PriorityMigrationHelper {
     /**
      * This implementation should return the column names with which the table should be created.
      */
+    @Override
     @NonNull
-    private List<Pair<String, String>> getColumnInfo() {
+    protected List<Pair<String, String>> getColumnInfo() {
         ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(CATEGORY_COLUMN_NAME, INTEGER_UNIQUE));
         columnInfo.add(new Pair<>(PRIORITY_ORDER_COLUMN_NAME, TEXT_NOT_NULL));

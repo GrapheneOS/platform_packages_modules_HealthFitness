@@ -23,7 +23,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
@@ -52,7 +51,7 @@ import java.util.stream.Collectors;
  *
  * @hide
  */
-public final class ActivityDateHelper {
+public final class ActivityDateHelper extends DatabaseHelper {
     private static final String TABLE_NAME = "activity_date_table";
     private static final String EPOCH_DAYS_COLUMN_NAME = "epoch_days";
     private static final String RECORD_TYPE_ID_COLUMN_NAME = "record_type_id";
@@ -70,12 +69,9 @@ public final class ActivityDateHelper {
                 .addUniqueConstraints(List.of(EPOCH_DAYS_COLUMN_NAME, RECORD_TYPE_ID_COLUMN_NAME));
     }
 
-    /** Called on DB update. */
-    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
-
-    /** Deletes all entries from the database and clears the cache. */
-    public synchronized void clearData(TransactionManager transactionManager) {
-        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
+    @Override
+    protected String getMainTableName() {
+        return TABLE_NAME;
     }
 
     /** Insert a new activity dates for the given records */
@@ -147,8 +143,9 @@ public final class ActivityDateHelper {
                 });
     }
 
+    @Override
     @NonNull
-    List<Pair<String, String>> getColumnInfo() {
+    protected List<Pair<String, String>> getColumnInfo() {
         return Arrays.asList(
                 new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT),
                 new Pair<>(EPOCH_DAYS_COLUMN_NAME, INTEGER_NOT_NULL),

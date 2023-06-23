@@ -40,9 +40,7 @@ import com.android.server.healthconnect.permission.HealthConnectPermissionHelper
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PermissionPackageChangesOrchestrator;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
@@ -142,10 +140,7 @@ public class HealthConnectManagerService extends SystemService {
         }
 
         HealthConnectThreadScheduler.shutdownThreadPools();
-        AppInfoHelper.getInstance().clearCache();
-        DeviceInfoHelper.getInstance().clearCache();
-        HealthDataCategoryPriorityHelper.getInstance().clearCache();
-        PreferenceHelper.getInstance().clearCache();
+        DatabaseHelper.clearAllCache();
         mTransactionManager.onUserSwitching();
         RateLimiter.clearCache();
         HealthConnectThreadScheduler.resetThreadPools();

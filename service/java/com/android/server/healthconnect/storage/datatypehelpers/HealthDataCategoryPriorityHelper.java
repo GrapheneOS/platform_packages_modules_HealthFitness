@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
@@ -61,7 +60,7 @@ import java.util.stream.Collectors;
  *
  * @hide
  */
-public class HealthDataCategoryPriorityHelper {
+public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     private static final String TABLE_NAME = "health_data_category_priority_table";
     private static final String HEALTH_DATA_CATEGORY_COLUMN_NAME = "health_data_category";
     public static final List<Pair<String, Integer>> UNIQUE_COLUMN_INFO =
@@ -79,11 +78,6 @@ public class HealthDataCategoryPriorityHelper {
     private volatile ConcurrentHashMap<Integer, List<Long>> mHealthDataCategoryToAppIdPriorityMap;
 
     private HealthDataCategoryPriorityHelper() {}
-
-    // Called on DB update.
-    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {
-        // empty by default
-    }
 
     /**
      * Returns a requests representing the tables that should be created corresponding to this
@@ -210,14 +204,14 @@ public class HealthDataCategoryPriorityHelper {
                 newPriorityOrder);
     }
 
-    /** Deletes all entries from the database and clears the cache. */
-    public synchronized void clearData(@NonNull TransactionManager transactionManager) {
-        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
-        clearCache();
-    }
-
+    @Override
     public synchronized void clearCache() {
         mHealthDataCategoryToAppIdPriorityMap = null;
+    }
+
+    @Override
+    protected String getMainTableName() {
+        return TABLE_NAME;
     }
 
     private Map<Integer, List<Long>> getHealthDataCategoryToAppIdPriorityMap() {
@@ -299,7 +293,7 @@ public class HealthDataCategoryPriorityHelper {
      * <p>PLEASE DON'T USE THIS METHOD TO ADD NEW COLUMNS
      */
     @NonNull
-    private List<Pair<String, String>> getColumnInfo() {
+    protected List<Pair<String, String>> getColumnInfo() {
         ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY));
         columnInfo.add(new Pair<>(HEALTH_DATA_CATEGORY_COLUMN_NAME, INTEGER_UNIQUE));
@@ -374,8 +368,8 @@ public class HealthDataCategoryPriorityHelper {
             String currPerm = packageInfo.requestedPermissions[i];
             if (HealthConnectManager.isHealthPermission(context, currPerm)
                     && ((packageInfo.requestedPermissionsFlags[i]
-                    & PackageInfo.REQUESTED_PERMISSION_GRANTED)
-                    != 0)) {
+                                    & PackageInfo.REQUESTED_PERMISSION_GRANTED)
+                            != 0)) {
                 int dataCategory = HealthPermissions.getHealthDataCategory(currPerm);
                 if (dataCategory != -1) {
                     dataCategoryWithPermission.add(dataCategory);

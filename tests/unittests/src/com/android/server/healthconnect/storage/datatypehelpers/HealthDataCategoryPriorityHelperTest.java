@@ -94,7 +94,7 @@ public class HealthDataCategoryPriorityHelperTest {
     @After
     public void tearDown() throws Exception {
         mStaticMockSession.finishMocking();
-        mHealthDataCategoryPriorityHelper.clearCache();
+        mHealthDataCategoryPriorityHelper.clearData(mTransactionManager);
     }
 
     @Test

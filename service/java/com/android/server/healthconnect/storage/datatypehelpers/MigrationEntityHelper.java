@@ -23,7 +23,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -32,6 +31,7 @@ import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +41,7 @@ import java.util.List;
  *
  * @hide
  */
-public final class MigrationEntityHelper {
+public final class MigrationEntityHelper extends DatabaseHelper {
 
     @VisibleForTesting public static final String TABLE_NAME = "migration_entity_table";
     private static final String COLUMN_ENTITY_ID = "entity_id";
@@ -69,8 +69,19 @@ public final class MigrationEntityHelper {
                         new Pair<>(COLUMN_ENTITY_ID, TEXT_NOT_NULL_UNIQUE)));
     }
 
-    /** Upgrades the database to the latest version. */
-    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
+    @Override
+    protected String getMainTableName() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    protected List<Pair<String, String>> getColumnInfo() {
+        ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
+        columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY));
+        columnInfo.add(new Pair<>(COLUMN_ENTITY_ID, TEXT_NOT_NULL_UNIQUE));
+
+        return columnInfo;
+    }
 
     /** Returns a request to insert the provided {@code entityId}. */
     @NonNull

@@ -31,7 +31,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.accesslog.AccessLog.OperationType;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse.DeletedLog;
@@ -62,7 +61,7 @@ import java.util.stream.Collectors;
  *
  * @hide
  */
-public final class ChangeLogsHelper {
+public final class ChangeLogsHelper extends DatabaseHelper {
     public static final String TABLE_NAME = "change_logs_table";
     private static final String RECORD_TYPE_COLUMN_NAME = "record_type";
     private static final String APP_ID_COLUMN_NAME = "app_id";
@@ -91,8 +90,10 @@ public final class ChangeLogsHelper {
                 .createIndexOn(APP_ID_COLUMN_NAME);
     }
 
-    // Called on DB update.
-    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
+    @Override
+    protected String getMainTableName() {
+        return TABLE_NAME;
+    }
 
     /** Returns change logs post the time when {@code changeLogTokenRequest} was generated */
     public ChangeLogsResponse getChangeLogs(
@@ -165,7 +166,7 @@ public final class ChangeLogsHelper {
     }
 
     @NonNull
-    private List<Pair<String, String>> getColumnInfo() {
+    protected List<Pair<String, String>> getColumnInfo() {
         List<Pair<String, String>> columnInfo = new ArrayList<>(NUM_COLS);
         columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT));
         columnInfo.add(new Pair<>(RECORD_TYPE_COLUMN_NAME, INTEGER));
@@ -212,11 +213,6 @@ public final class ChangeLogsHelper {
         }
 
         return new ArrayMap<>(0);
-    }
-
-    /** Deletes all entries from the database. */
-    public synchronized void clearData(TransactionManager transactionManager) {
-        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
     }
 
     public static final class ChangeLogs {

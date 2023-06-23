@@ -136,6 +136,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelp
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
@@ -1799,14 +1800,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION, null);
         mBackupRestore.deleteAndResetEverything(userHandle);
         mMigrationStateManager.clearCaches(mContext);
-        AppInfoHelper.getInstance().clearData(mTransactionManager);
-        ActivityDateHelper.getInstance().clearData(mTransactionManager);
-        MigrationEntityHelper.getInstance().clearData(mTransactionManager);
-        HealthDataCategoryPriorityHelper.getInstance().clearData(mTransactionManager);
-        PriorityMigrationHelper.getInstance().clearData(mTransactionManager);
-        ChangeLogsHelper.getInstance().clearData(mTransactionManager);
-        ChangeLogsRequestHelper.getInstance().clearData(mTransactionManager);
-        AccessLogsHelper.getInstance().clearData(mTransactionManager);
+        DatabaseHelper.clearAllData(mTransactionManager);
         RateLimiter.clearCache();
         String[] packageNames = mContext.getPackageManager().getPackagesForUid(getCallingUid());
         for (String packageName : packageNames) {
