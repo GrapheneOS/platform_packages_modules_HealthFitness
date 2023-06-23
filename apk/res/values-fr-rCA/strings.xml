@@ -169,7 +169,7 @@
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Lecture des données relatives à la métrorragie"</string>
     <string name="intermenstrual_bleeding_write_content_description" msgid="1377719923165234099">"Écriture des données relatives à la métrorragie"</string>
     <string name="menstruation_uppercase_label" msgid="9119506748428874832">"Menstruations"</string>
-    <string name="menstruation_lowercase_label" msgid="8098816978006207242">"les menstruations"</string>
+    <string name="menstruation_lowercase_label" msgid="8098816978006207242">"menstruations"</string>
     <string name="menstruation_read_content_description" msgid="7710047469771882021">"Lecture des données relatives aux menstruations"</string>
     <string name="menstruation_write_content_description" msgid="5142669435897047396">"Écriture des données relatives aux menstruations"</string>
     <string name="ovulation_test_uppercase_label" msgid="1929868571862288837">"Test d\'ovulation"</string>
