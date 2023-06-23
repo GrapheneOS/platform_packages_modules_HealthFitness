@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"מחיקת נתונים"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"מחיקת רשומת הנתונים"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"מחיקת רשומה"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"סה\"כ: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 ואט}one{# ואט}two{# ואט}other{# ואט}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 ואט}one{# ואט}two{# ואט}other{# ואט}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{צעד אחד}one{# צעדים}two{# צעדים}other{# צעדים}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"מחיקה אוטומטית"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"מחיקה אוטומטית"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"אפשר להחליט כמה זמן הנתונים יאוחסנו ב-Health Connect ולתזמן את המחיקה שלהם לאחר זמן מוגדר מראש"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"מידע נוסף על מחיקה אוטומטית"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"מחיקה אוטומטית של נתונים"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{אחרי חודש אחד}one{אחרי # חודשים}two{אחרי חודשיים}other{אחרי # חודשים}}"</string>
     <string name="range_never" msgid="4429478261788361233">"אף פעם"</string>

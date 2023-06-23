@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Upravljajte pristupom aplikacija podacima o zdravlju"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Upravljajte kojim podacima o zdravlju pristupaju aplikacije"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Dopuštenja i podaci"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Upravljajte podacima o zdravlju i sportskim aktivnostima na telefonu i odredite koje im aplikacije mogu pristupiti"</string>
     <string name="data_title" msgid="4456619761533380816">"Podaci i pristup"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Brisanje podataka"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Brisanje unosa podataka"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Izbriši unos"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Ukupno: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}few{# W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 vat}one{# vat}few{# vata}other{# vata}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 korak}one{# korak}few{# koraka}other{# koraka}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Automatsko brisanje"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Automatsko brisanje"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Kontrolirajte koliko se dugo vaši podaci pohranjuju u Health Connectu zakazivanjem brisanja nakon postavljenog vremena"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Saznajte više o automatskom brisanju"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Automatsko brisanje podataka"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Nakon # mjeseca}one{Nakon # mjeseca}few{Nakon # mjeseca}other{Nakon # mjeseci}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nikad"</string>
