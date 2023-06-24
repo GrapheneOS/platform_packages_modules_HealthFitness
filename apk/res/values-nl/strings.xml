@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Toegang van app tot gezondheidsgegevens beheren"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Toegang van apps tot gezondheidsgegevens beheren"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Rechten en gegevens"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Beheer de gezondheids- en fitnessgegevens op je telefoon en bepaal welke apps er toegang toe krijgen"</string>
     <string name="data_title" msgid="4456619761533380816">"Gegevens en toegang"</string>
@@ -80,7 +80,7 @@
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"verbrande actieve calorieën"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Gegevens over verbrande actieve calorieën lezen"</string>
     <string name="active_calories_burned_write_content_description" msgid="8794383690157452892">"Gegevens over verbrande actieve calorieën schrijven"</string>
-    <string name="exercise_uppercase_label" msgid="9174662895529523172">"Oefening"</string>
+    <string name="exercise_uppercase_label" msgid="9174662895529523172">"Training"</string>
     <string name="exercise_lowercase_label" msgid="7210988327804427943">"oefening"</string>
     <string name="exercise_read_content_description" msgid="2079728018078185556">"Gegevens over beweging lezen"</string>
     <string name="exercise_write_content_description" msgid="3267630937895011886">"Gegevens over beweging schrijven"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Gegevensverwijdering"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Gegevensinvoer verwijderen"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Item verwijderen"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Totaal: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 watt}other{# watt}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 stap}other{# stappen}}"</string>
@@ -379,7 +380,7 @@
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 herh.}other{# herh.}}"</string>
     <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 herhaling}other{# herhalingen}}"</string>
     <string name="exercise_segments_header" msgid="2992953017179406012">"Oefeningssegmenten"</string>
-    <string name="exercise_laps_header" msgid="117228630553856372">"Baantjes"</string>
+    <string name="exercise_laps_header" msgid="117228630553856372">"Baantjes/Rondjes"</string>
     <string name="back_extension" msgid="426518933137440577">"Back extension"</string>
     <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
     <string name="barbell_shoulder_press" msgid="3800236222803424251">"Barbell shoulder press"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Automatisch verwijderen"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Automatisch verwijderen"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Beheer hoelang je gegevens worden bewaard in Health Connect door te plannen dat ze na een bepaalde periode worden verwijderd"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Meer informatie over automatisch verwijderen"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Gegevens automatisch verwijderen"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Na # maand}other{Na # maanden}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nooit"</string>
