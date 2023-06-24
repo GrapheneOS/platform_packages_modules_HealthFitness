@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"数据删除"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"删除数据记录"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"删除条目"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"总计：<xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 瓦特}other{# 瓦特}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 步}other{# 步}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"自动删除"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"自动删除"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"安排系统在设定的期限过后删除您在 Health Connect 内存储的数据，从而控制这类数据的存储时长"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"详细了解自动删除"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"自动删除数据"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# 个月后}other{# 个月后}}"</string>
     <string name="range_never" msgid="4429478261788361233">"永不"</string>

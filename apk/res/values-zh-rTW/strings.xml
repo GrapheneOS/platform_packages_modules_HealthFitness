@@ -323,14 +323,14 @@
     <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"一併移除「<xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g>」在 Health Connect 中的所有權限"</string>
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"要永久刪除「<xliff:g id="APP_DATA">%2$s</xliff:g>」新增的所有<xliff:g id="DATA_TYPE">%1$s</xliff:g>資料嗎？"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"要永久刪除這個項目嗎？"</string>
-    <string name="confirming_question_message" msgid="2934249835529079545">"連結的應用程式將無法再從 Health Connect 存取這類資料"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"這將刪除從 <xliff:g id="START_DATE">%1$s</xliff:g>到 <xliff:g id="END_DATE">%2$s</xliff:g>的經期項目。"</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"已連結的應用程式將無法再從 Health Connect 存取這類資料"</string>
+    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"這將刪除從 <xliff:g id="START_DATE">%1$s</xliff:g>到 <xliff:g id="END_DATE">%2$s</xliff:g>的經期紀錄。"</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"刪除"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"返回"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"完成"</string>
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"關閉"</string>
     <string name="delete_dialog_success_title" msgid="5009733262743173477">"資料已刪除"</string>
-    <string name="delete_dialog_success_message" msgid="2451953113522118128">"Health Connect 中已經沒有這類資料。"</string>
+    <string name="delete_dialog_success_message" msgid="2451953113522118128">"Health Connect 中已經沒有此資料。"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"正在刪除資料"</string>
     <string name="delete_dialog_failure_title" msgid="1959020721355789496">"無法刪除資料"</string>
     <string name="delete_dialog_failure_message" msgid="7473241488471319963">"發生錯誤，Health Connect 無法刪除資料"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"資料刪除"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"刪除資料項目"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"刪除項目"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"總計：<xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 瓦特}other{# 瓦特}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 瓦特}other{# 瓦特}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 步}other{# 步}}"</string>
@@ -680,15 +681,14 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"自動刪除"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"自動刪除"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"如要控制 Health Connect 的資料保留期限，可以安排系統在一段時間後刪除資料"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"進一步瞭解自動刪除功能"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"自動刪除資料"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# 個月後}other{# 個月後}}"</string>
     <string name="range_never" msgid="4429478261788361233">"永不"</string>
     <string name="range_off" msgid="8178520557618184215">"已關閉"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"如果變更這些設定，Health Connect 將根據新的偏好設定刪除現有資料"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{要在 # 個月後自動刪除資料嗎？}other{要在 # 個月後自動刪除資料嗎？}}"</string>
-    <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect 將在 # 個月後自動刪除新資料。如果選擇這項設定，系統將一併刪除 # 個月前的現有資料。}other{Health Connect 將在 # 個月後自動刪除新資料。如果選擇這項設定，系統將一併刪除 # 個月前的現有資料。}}"</string>
+    <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect 將只保存 # 個月內的資料。如果選擇這項設定，系統將一併刪除 # 個月前的現有資料。}other{Health Connect 將只保存 # 個月內的資料。如果選擇這項設定，系統將一併刪除 # 個月前的現有資料。}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"設定自動刪除功能"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"系統將刪除現有資料"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect 將刪除 # 個月前的所有資料。可能需要一天的時間，連結的應用程式才會反映這些變更。}other{Health Connect 將刪除 # 個月前的所有資料。可能需要一天的時間，連結的應用程式才會反映這些變更。}}"</string>
@@ -724,7 +724,7 @@
     <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"收到程序完成的通知之前，請不要關閉應用程式。"</string>
     <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect 整合中"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"需要更新"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect 正在與 Android 系統整合，因此可以直接從設定頁面存取。"</string>
+    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect 正在與 Android 系統整合，以便你直接從設定頁面存取。"</string>
     <string name="update_button" msgid="4544529019832009496">"更新"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"開始執行這項更新作業，讓 Health Connect 能夠繼續與系統設定整合"</string>
     <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"立即更新"</string>

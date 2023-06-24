@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"தரவு நீக்கம்"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"தரவு உள்ளீட்டை நீக்கும்"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"உள்ளீட்டை நீக்கு"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"மொத்தம்: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 வாட்}other{# வாட்}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 வாட்}other{# வாட்}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 காலடி}other{# காலடிகள்}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"தானாக நீக்கு"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"தானாக நீக்குதல்"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Health Connectடில் உள்ள உங்கள் தரவைக் குறிப்பிட்ட காலத்திற்குப் பிறகு நீக்கத் திட்டமிடுவதன் மூலம், தரவு எவ்வளவு காலத்திற்குச் சேமிக்கப்பட வேண்டும் என்பதைக் கட்டுப்படுத்தலாம்"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"தானாக நீக்குதல் அம்சம் குறித்து மேலும் அறிக"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"தரவைத் தானாக நீக்கு"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# மாதத்திற்குப் பிறகு}other{# மாதங்களுக்குப் பிறகு}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ஒருபோதும் இல்லை"</string>

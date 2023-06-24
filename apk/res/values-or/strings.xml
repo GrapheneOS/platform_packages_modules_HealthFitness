@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"ସ୍ୱାସ୍ଥ୍ୟ ଡାଟାକୁ ଆପର ଆକ୍ସେସକୁ ପରିଚାଳନା କରନ୍ତୁ"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"ସ୍ୱାସ୍ଥ୍ୟ ଡାଟାକୁ ଆପର ଆକ୍ସେସ ପରିଚାଳନା କରନ୍ତୁ"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"ଅନୁମତି ଏବଂ ଡାଟା"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"ଆପଣଙ୍କ ଫୋନରେ ସ୍ୱାସ୍ଥ୍ୟ ଓ ଫିଟନେସ ଡାଟାକୁ ପରିଚାଳନା କରନ୍ତୁ ଏବଂ କେଉଁ ଆପ୍ସ ଏହାକୁ ଆକ୍ସେସ କରିପାରିବ ତାହା ନିୟନ୍ତ୍ରଣ କରନ୍ତୁ"</string>
     <string name="data_title" msgid="4456619761533380816">"ଡାଟା ଏବଂ ଆକ୍ସେସ"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"ଡାଟା ଡିଲିସନ"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"ଡାଟା ଏଣ୍ଟ୍ରିକୁ ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"ଏଣ୍ଟ୍ରିକୁ ଡିଲିଟ କରନ୍ତୁ"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"ମୋଟ: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 ୱାଟ}other{# ୱାଟ}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 ୱାଟ}other{# ୱାଟ}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 ଷ୍ଟେପ}other{# ଷ୍ଟେପ}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"ଅଟୋ-ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ଅଟୋ-ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"ସେଟ ହୋଇଥିବା ଏକ ସମୟ ପରେ ଆପଣଙ୍କ ଡାଟାକୁ ଡିଲିଟ କରିବା ପାଇଁ ସିଡୁଲ କରି Health Connectରେ ଏହାକୁ କେତେ ସମୟ ଷ୍ଟୋର କରାଯାଏ ତାହା ନିୟନ୍ତ୍ରଣ କରନ୍ତୁ"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"ସ୍ୱତଃ-ଡିଲିଟ ବିଷୟରେ ଅଧିକ ଜାଣନ୍ତୁ"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ଡାଟାକୁ ଅଟୋ-ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# ମାସ ପରେ}other{# ମାସ ପରେ}}"</string>
     <string name="range_never" msgid="4429478261788361233">"କେବେ ବି ନୁହେଁ"</string>
