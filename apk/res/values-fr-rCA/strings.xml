@@ -27,7 +27,7 @@
     <string name="no_data" msgid="1906986019249068659">"Aucune donnée"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Autorisations de l\'application"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Gérez vos applications et vos autorisations"</string>
-    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> applications sur <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> ont accès"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> application(s) sur <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> ont accès"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> applications ont accès"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> application a accès"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Aucune"</string>
@@ -109,7 +109,7 @@
     <string name="speed_read_content_description" msgid="9097089387385110692">"Lecture des données relatives à la vitesse"</string>
     <string name="speed_write_content_description" msgid="5382921934987959251">"Écriture des données relatives à la vitesse"</string>
     <string name="steps_uppercase_label" msgid="2581405504646486105">"Pas"</string>
-    <string name="steps_lowercase_label" msgid="706153549312838582">"les pas"</string>
+    <string name="steps_lowercase_label" msgid="706153549312838582">"pas"</string>
     <string name="steps_read_content_description" msgid="7839297670092769964">"Lecture des données relatives aux pas"</string>
     <string name="steps_write_content_description" msgid="6360223825799711659">"Écriture des données relatives aux pas"</string>
     <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"Total des calories brûlées"</string>
@@ -169,7 +169,7 @@
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Lecture des données relatives à la métrorragie"</string>
     <string name="intermenstrual_bleeding_write_content_description" msgid="1377719923165234099">"Écriture des données relatives à la métrorragie"</string>
     <string name="menstruation_uppercase_label" msgid="9119506748428874832">"Menstruations"</string>
-    <string name="menstruation_lowercase_label" msgid="8098816978006207242">"les menstruations"</string>
+    <string name="menstruation_lowercase_label" msgid="8098816978006207242">"menstruations"</string>
     <string name="menstruation_read_content_description" msgid="7710047469771882021">"Lecture des données relatives aux menstruations"</string>
     <string name="menstruation_write_content_description" msgid="5142669435897047396">"Écriture des données relatives aux menstruations"</string>
     <string name="ovulation_test_uppercase_label" msgid="1929868571862288837">"Test d\'ovulation"</string>
@@ -193,7 +193,7 @@
     <string name="nutrition_read_content_description" msgid="5820331769605952082">"Lecture des données relatives à la nutrition"</string>
     <string name="nutrition_write_content_description" msgid="6690090231218210367">"Écriture des données relatives à la nutrition"</string>
     <string name="sleep_uppercase_label" msgid="1458084584315123727">"Sommeil"</string>
-    <string name="sleep_lowercase_label" msgid="7795584924503475035">"le sommeil"</string>
+    <string name="sleep_lowercase_label" msgid="7795584924503475035">"sommeil"</string>
     <string name="sleep_read_content_description" msgid="7064608272681424436">"Lecture des données de sommeil"</string>
     <string name="sleep_write_content_description" msgid="2259414465110376554">"Écriture des données de sommeil"</string>
     <string name="basal_body_temperature_uppercase_label" msgid="4571393253935677019">"Température basale"</string>
@@ -268,7 +268,7 @@
     <string name="delete_app_data" msgid="6890357774873859952">"Supprimer les données de l\'application"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Applications inactives"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Ces applications n\'ont plus accès à Connexion santé, mais leurs données y sont toujours stockées"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut lire les données ajoutées après le<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut lire les données ajoutées après le <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Pour gérer les autres autorisations Android qui peuvent être accordées à cette application, accédez à Paramètres &gt; Applications"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"Les données que vous partagez avec <xliff:g id="APP_NAME">%1$s</xliff:g> sont couvertes par la politique de confidentialité de celle-ci"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Pour gérer les autres autorisations Android qui peuvent être accordées à cette application, accédez à Paramètres, puis touchez Applications"</string>
@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Suppression de données"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Supprimez les entrées de données"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Supprimer l\'entrée"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Total : <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 watt}one{# watt}other{# watts}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 pas}one{# pas}other{# pas}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Suppression automatique"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Suppression automatique"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Contrôlez la durée de conservation de vos données dans Connexion santé en définissant un délai au terme duquel elles seront supprimées"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"En savoir plus sur la suppression automatique"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Suppression automatique des données"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Après # mois}one{Après # mois}other{Après # mois}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Jamais"</string>

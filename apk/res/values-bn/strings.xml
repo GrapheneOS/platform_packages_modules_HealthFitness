@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"ডেটা মুছে ফেলা"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"ডেটা এন্ট্রি মুছুন"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"এন্ট্রি মুছুন"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"মোট: <xliff:g id="TOTAL_VALUE">%s</xliff:g>টি"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{১ ওয়াট}one{# ওয়াট}other{# ওয়াট}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{১ ওয়াট}one{# ওয়াট}other{# ওয়াট}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{১ পা হেঁটেছেন}one{# পা হেঁটেছেন}other{# পা হেঁটেছেন}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"অটোমেটিক মুছে দিন"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"অটোমেটিক মুছে দিন"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"সেট করা সময়ের পরে শিডিউল করে ডেটা মুছে ফেলার মাধ্যমে কতক্ষণ আপনার ডেটা Health Connect-এ সেভ করা থাকবে তা নিয়ন্ত্রণ করুন"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"অটোমেটিক মুছে দেওয়ার বিকল্প সম্পর্কে আরও জানুন"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ডেটা অটোমেটিক মুছে দিন"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# মাস পরে}one{# মাস পরে}other{# মাস পরে}}"</string>
     <string name="range_never" msgid="4429478261788361233">"কখনওই নয়"</string>

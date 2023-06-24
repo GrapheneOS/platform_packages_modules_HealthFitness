@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Pag-delete ng data"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"I-delete ang entry ng data"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"I-delete ang entry"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Kabuuan: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 watt}one{# watts}other{# watts}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 hakbang}one{# hakbang}other{# na hakbang}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Awtomatikong i-delete"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Awtomatikong i-delete"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Kontrolin kung gaano katagal iso-store ang iyong data sa Health Connect sa pamamagitan ng pag-iskedyul na i-delete ito pagkalipas ng takdang panahon"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Matuto pa tungkol sa awtomatikong pag-delete"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Awtomatikong i-delete ang data"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Pagkalipas ng # buwan}one{Pagkalipas ng # buwan}other{Pagkalipas ng # na buwan}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Hindi kailanman"</string>

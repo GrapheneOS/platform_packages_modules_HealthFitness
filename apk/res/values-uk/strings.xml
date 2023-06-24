@@ -340,6 +340,7 @@
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Видалення даних"</string>
     <string name="data_point_action_content_description" msgid="7872439279343967754">"Видалити запис даних"</string>
     <string name="delete_data_point" msgid="4234569507133768630">"Видалити запис"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Усього: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 Вт}one{# Вт}few{# Вт}many{# Вт}other{# Вт}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 ват}one{# ват}few{# вати}many{# ватів}other{# вата}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 крок}one{# крок}few{# кроки}many{# кроків}other{# кроку}}"</string>
@@ -680,8 +681,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Автоматичне видалення"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Автоматичне видалення"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Виберіть, після якого періоду зберігання дані видалятимуться з додатка Health Connect"</string>
-    <!-- no translation found for auto_delete_learn_more (7416469042791307994) -->
-    <skip />
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Докладніше про автоматичне видалення"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Автоматично видаляти дані"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Через # місяць}one{Через # місяць}few{Через # місяці}many{Через # місяців}other{Через # місяця}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Ніколи"</string>
