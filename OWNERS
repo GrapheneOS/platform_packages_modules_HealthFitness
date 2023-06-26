@@ -1,10 +1,15 @@
 # Bug component: 1219472
 
-shikhamalhotra@google.com
-azhura@google.com
-ronish@google.com
 anothermark@google.com
-nandana@google.com
+arkivanov@google.com
+azhura@google.com
+jstembridge@google.com
 magdi@google.com
+nandana@google.com
+pratyushmore@google.com
+ronish@google.com
+sameerj@google.com
+shikhamalhotra@google.com
+
 
 include platform/packages/modules/common:/MODULES_OWNERS  # see go/mainline-owners-policy
