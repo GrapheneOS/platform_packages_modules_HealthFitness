@@ -25,10 +25,12 @@ import static android.health.connect.HealthPermissions.READ_HEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.datatypes.units.Length.fromMeters;
 import static android.health.connect.datatypes.units.Power.fromWatts;
+import static android.healthconnect.cts.TestUtils.runShellCommand;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeFalse;
@@ -104,6 +106,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
@@ -118,7 +122,12 @@ public class DataMigrationTest {
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
     private static final String APP_NAME = "Test App";
     private static final String APP_NAME_NEW = "Test App 2";
-
+    private static final String ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG =
+            "enable_pause_state_change_jobs";
+    private static final String ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG =
+            "enable_complete_state_change_jobs";
+    private static final String ENABLE_PAUSE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE = "true";
+    private static final String ENABLE_COMPLETE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE = "false";
     // DEFAULT_PAGE_SIZE should hold the same value as Constants#DEFAULT_PAGE_SIZE
     private static final int DEFAULT_PAGE_SIZE = 1000;
 
@@ -137,6 +146,9 @@ public class DataMigrationTest {
                     mEndTime, ZoneOffset.systemDefault().getRules().getOffset(mEndTime));
     private Context mTargetContext;
     private HealthConnectManager mManager;
+    private String mEnableCompletionJobsBackup;
+    private String mEnablePauseJobsBackup;
+    private String mStateChangeJobAdbDumpsys;
 
     private static <T, E extends RuntimeException> T blockingCall(
             Consumer<OutcomeReceiver<T, E>> action) {
@@ -680,62 +692,115 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void testStartMigrationFromIdleState() {
-        runWithShellPermissionIdentity(
-                () -> {
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(MIGRATION_STATE_IDLE);
-                    TestUtils.startMigration();
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
-                    TestUtils.finishMigration();
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
-                },
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+    public void testStartMigrationFromIdleState() throws IOException {
+        try {
+            enableStateChangeJobs();
+            runWithShellPermissionIdentity(
+                    () -> {
+                        assertStateChangeJobDoesNotExist();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(MIGRATION_STATE_IDLE);
+                        TestUtils.startMigration();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
+                        assertStateChangeJobExists();
+                        TestUtils.finishMigration();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
+                        assertStateChangeJobDoesNotExist();
+                    },
+                    Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        } finally {
+            restoreDeviceConfigs();
+        }
     }
 
     @Test
-    public void testInsertMinDataMigrationSdkExtensionVersion_upgradeRequired() {
+    public void testInsertMinDataMigrationSdkExtensionVersion_upgradeRequired() throws IOException {
         int version = SdkExtensions.getExtensionVersion(Build.VERSION_CODES.UPSIDE_DOWN_CAKE) + 1;
-        runWithShellPermissionIdentity(
-                () -> {
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(MIGRATION_STATE_IDLE);
-                    TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(MIGRATION_STATE_MODULE_UPGRADE_REQUIRED);
-                    TestUtils.startMigration();
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
-                    TestUtils.finishMigration();
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
-                },
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        try {
+            enableStateChangeJobs();
+            runWithShellPermissionIdentity(
+                    () -> {
+                        assertStateChangeJobDoesNotExist();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(MIGRATION_STATE_IDLE);
+                        TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(MIGRATION_STATE_MODULE_UPGRADE_REQUIRED);
+                        assertStateChangeJobExists();
+                        TestUtils.startMigration();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
+                        assertStateChangeJobExists();
+                        TestUtils.finishMigration();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
+                        assertStateChangeJobDoesNotExist();
+                    },
+                    Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        } finally {
+            restoreDeviceConfigs();
+        }
     }
 
     @Test
-    public void testInsertMinDataMigrationSdkExtensionVersion_noUpgradeRequired() {
+    public void testInsertMinDataMigrationSdkExtensionVersion_noUpgradeRequired()
+            throws IOException {
         int version = SdkExtensions.getExtensionVersion(Build.VERSION_CODES.UPSIDE_DOWN_CAKE);
-        runWithShellPermissionIdentity(
-                () -> {
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(MIGRATION_STATE_IDLE);
-                    TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(MIGRATION_STATE_ALLOWED);
-                    TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(MIGRATION_STATE_ALLOWED);
-                    TestUtils.startMigration();
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
-                    TestUtils.finishMigration();
-                    assertThat(TestUtils.getHealthConnectDataMigrationState())
-                            .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
-                },
-                Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        try {
+            enableStateChangeJobs();
+            runWithShellPermissionIdentity(
+                    () -> {
+                        assertStateChangeJobDoesNotExist();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(MIGRATION_STATE_IDLE);
+                        TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(MIGRATION_STATE_ALLOWED);
+                        assertStateChangeJobExists();
+                        TestUtils.startMigration();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
+                        assertStateChangeJobExists();
+                        TestUtils.finishMigration();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
+                        assertStateChangeJobDoesNotExist();
+                    },
+                    Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        } finally {
+            restoreDeviceConfigs();
+        }
+    }
+
+    @Test
+    public void testInsertMinDataMigrationSdkExtensionVersion_jobsDisabled() throws IOException {
+        int version = SdkExtensions.getExtensionVersion(Build.VERSION_CODES.UPSIDE_DOWN_CAKE);
+        try {
+            disableStateChangeJobs();
+            runWithShellPermissionIdentity(
+                    () -> {
+                        assertStateChangeJobDoesNotExist();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(MIGRATION_STATE_IDLE);
+                        TestUtils.insertMinDataMigrationSdkExtensionVersion(version);
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(MIGRATION_STATE_ALLOWED);
+                        assertStateChangeJobDoesNotExist();
+                        TestUtils.startMigration();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS);
+                        assertStateChangeJobDoesNotExist();
+                        TestUtils.finishMigration();
+                        assertThat(TestUtils.getHealthConnectDataMigrationState())
+                                .isEqualTo(HealthConnectDataState.MIGRATION_STATE_COMPLETE);
+                        assertStateChangeJobDoesNotExist();
+                    },
+                    Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
+        } finally {
+            restoreDeviceConfigs();
+        }
     }
 
     @Test
@@ -825,6 +890,95 @@ public class DataMigrationTest {
         mExpect.that(appInfo).isNotNull();
         mExpect.that(appInfo.getName()).isNotEqualTo(APP_NAME_NEW);
         mExpect.that(getBitmapBytes(appInfo.getIcon())).isNotEqualTo(iconBytes);
+    }
+
+    private boolean checkJobExists() throws IOException {
+        String scheduledStateChangeJobPattern =
+                "JOB class com\\.android\\.server\\.healthconnect\\.migration\\"
+                        + ".MigrationStateChangeJob:\\d+/\\d+: [a-f0-9]+ @class com\\"
+                        + ".android\\.server\\.healthconnect\\.migration\\"
+                        + ".MigrationStateChangeJob@android/com\\.android\\.server\\"
+                        + ".healthconnect\\.HealthConnectDailyService";
+
+        String commandOutput = runShellCommand("dumpsys jobscheduler");
+
+        Pattern regexPattern = Pattern.compile(scheduledStateChangeJobPattern);
+        Matcher matcher = regexPattern.matcher(commandOutput);
+        storeStateChangeJobAdbDumpsysOutput(commandOutput);
+        return matcher.find();
+    }
+
+    private void storeStateChangeJobAdbDumpsysOutput(String commandOutput) {
+        String stateChangeJobPattern = ".*MigrationStateChangeJob.*";
+        Pattern regexPattern = Pattern.compile(stateChangeJobPattern);
+        Matcher matcher = regexPattern.matcher(commandOutput);
+        StringBuilder output = new StringBuilder();
+        while (matcher.find()) {
+            output.append(matcher.group()).append("\n");
+        }
+        mStateChangeJobAdbDumpsys = output.toString();
+    }
+
+    private String getHealthFitnessDeviceConfig(String key, String defaultValue)
+            throws IOException {
+        String value = runShellCommand("device_config get health_fitness " + key);
+        return value.isBlank() ? defaultValue : value.strip();
+    }
+
+    private void enableStateChangeJobs() throws IOException {
+        mEnableCompletionJobsBackup =
+                getHealthFitnessDeviceConfig(
+                        ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG,
+                        ENABLE_COMPLETE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+        mEnablePauseJobsBackup =
+                getHealthFitnessDeviceConfig(
+                        ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG,
+                        ENABLE_PAUSE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+        setHealthFitnessDeviceConfig(ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG, "true");
+        setHealthFitnessDeviceConfig(ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG, "true");
+    }
+
+    private void disableStateChangeJobs() throws IOException {
+        mEnableCompletionJobsBackup =
+                getHealthFitnessDeviceConfig(
+                        ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG,
+                        ENABLE_COMPLETE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+        mEnablePauseJobsBackup =
+                getHealthFitnessDeviceConfig(
+                        ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG,
+                        ENABLE_PAUSE_STATE_CHANGE_JOB_DEFAULT_FLAG_VALUE);
+        setHealthFitnessDeviceConfig(ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG, "false");
+        setHealthFitnessDeviceConfig(ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG, "false");
+    }
+
+    private void restoreDeviceConfigs() throws IOException {
+        setHealthFitnessDeviceConfig(
+                ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG, mEnableCompletionJobsBackup);
+        setHealthFitnessDeviceConfig(ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG, mEnablePauseJobsBackup);
+    }
+
+    private void setHealthFitnessDeviceConfig(String key, String value) throws IOException {
+        runShellCommand("device_config put health_fitness " + key + " " + value);
+    }
+
+    private void assertStateChangeJobExists() throws IOException {
+        boolean checkJobExists = checkJobExists();
+        assertWithMessage(
+                        "Expected to find a scheduled MigrationStateChangeJob but not found. ADB"
+                                + " 'dumpsys jobscheduler' output for MigrationStateChangeJob: \n"
+                                + mStateChangeJobAdbDumpsys)
+                .that(checkJobExists)
+                .isTrue();
+    }
+
+    private void assertStateChangeJobDoesNotExist() throws IOException {
+        boolean checkJobExists = checkJobExists();
+        assertWithMessage(
+                        "Did not expect a scheduled MigrationStateChangeJob but found one. ADB"
+                                + " 'dumpsys jobscheduler' output for MigrationStateChangeJob: \n"
+                                + mStateChangeJobAdbDumpsys)
+                .that(checkJobExists)
+                .isFalse();
     }
 
     private void migrate(MigrationEntity... entities) {
