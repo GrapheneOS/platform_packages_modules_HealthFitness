@@ -187,9 +187,4 @@ class MigrationActivity : Hilt_MigrationActivity() {
         return true
     }
 
-    override fun onResume() {
-        super.onResume()
-        val navController = findNavController(R.id.nav_host_fragment)
-        navController.setGraph(R.navigation.migration_nav_graph)
-    }
 }
