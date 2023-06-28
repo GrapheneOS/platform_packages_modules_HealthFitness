@@ -281,7 +281,7 @@ public class HealthConnectWithManagePermissionsTest {
         // Grant permission
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         try {
-            grantHealthPermission(DEFAULT_APP_PACKAGE, /* permissionName= */ null);
+            grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
             fail("Expected IllegalStateException for data sync in progress.");
         } catch (IllegalStateException exception) {
             assertNotNull(exception);
