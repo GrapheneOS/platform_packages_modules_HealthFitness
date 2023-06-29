@@ -43,6 +43,7 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
         private const val AUTO_DELETE_SECTION = "auto_delete_section"
         private const val HEADER = "header"
     }
+
     init {
         this.setPageName(PageName.AUTO_DELETE_PAGE)
     }
@@ -95,7 +96,12 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
         }
 
         mHeaderSection?.removeAll()
-        mHeaderSection?.addPreference(HeaderPreference(requireContext(), requireActivity()))
+        mHeaderSection?.addPreference(
+            HeaderPreference(requireContext(), requireActivity()).also {
+                // prevents a11y readers from announcing that the header is selectable
+                // this does not prevent the link from being clickable
+                it.isSelectable = false
+            })
 
         childFragmentManager.setFragmentResultListener(SET_TO_NEVER_EVENT, this) { _, _ ->
             viewModel.updateAutoDeleteRange(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER)

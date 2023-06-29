@@ -68,9 +68,15 @@ class SeriesDataItemViewBinder(
             logger.logInteraction(DataEntriesElement.DATA_ENTRY_DELETE_BUTTON)
             onDeleteEntryClicked?.onDeleteEntry(data.uuid, data.dataType, index)
         }
-        container.setOnClickListener {
-            logger.logInteraction(DataEntriesElement.DATA_ENTRY_VIEW)
-            onItemClickedListener?.onItemClicked(data.uuid, index)
+        // if the delete button is not showing, we are in the Entry details screen and this item
+        // should not be clickable
+        if (showSecondAction) {
+            container.setOnClickListener {
+                logger.logInteraction(DataEntriesElement.DATA_ENTRY_VIEW)
+                onItemClickedListener?.onItemClicked(data.uuid, index)
+            }
+        } else {
+            container.isClickable = false
         }
     }
 }
