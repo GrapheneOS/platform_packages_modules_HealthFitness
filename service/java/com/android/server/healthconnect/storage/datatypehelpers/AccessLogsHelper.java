@@ -29,7 +29,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.accesslog.AccessLog.OperationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -52,7 +51,7 @@ import java.util.stream.Collectors;
  *
  * @hide
  */
-public final class AccessLogsHelper {
+public final class AccessLogsHelper extends DatabaseHelper {
     public static final String TABLE_NAME = "access_logs_table";
     private static final String RECORD_TYPE_COLUMN_NAME = "record_type";
     private static final String APP_ID_COLUMN_NAME = "app_id";
@@ -137,8 +136,9 @@ public final class AccessLogsHelper {
                                 .toEpochMilli());
     }
 
+    @Override
     @NonNull
-    private List<Pair<String, String>> getColumnInfo() {
+    public List<Pair<String, String>> getColumnInfo() {
         List<Pair<String, String>> columnInfo = new ArrayList<>(NUM_COLS);
         columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY_AUTOINCREMENT));
         columnInfo.add(new Pair<>(APP_ID_COLUMN_NAME, INTEGER_NOT_NULL));
@@ -149,7 +149,10 @@ public final class AccessLogsHelper {
         return columnInfo;
     }
 
-    public void onUpgrade(int oldVersion, int newVersion, SQLiteDatabase db) {}
+    @Override
+    protected String getMainTableName() {
+        return TABLE_NAME;
+    }
 
     public static synchronized AccessLogsHelper getInstance() {
         if (sAccessLogsHelper == null) {
@@ -157,10 +160,5 @@ public final class AccessLogsHelper {
         }
 
         return sAccessLogsHelper;
-    }
-
-    /** Deletes all entries from the database. */
-    public synchronized void clearData(TransactionManager transactionManager) {
-        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
     }
 }
