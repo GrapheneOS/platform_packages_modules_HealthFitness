@@ -28,7 +28,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.datatypes.Device.DeviceType;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
@@ -51,7 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @hide
  */
-public class DeviceInfoHelper {
+public class DeviceInfoHelper extends DatabaseHelper {
     private static final String TABLE_NAME = "device_info_table";
     private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
     private static final String MODEL_COLUMN_NAME = "model";
@@ -103,14 +102,15 @@ public class DeviceInfoHelper {
         }
     }
 
-    // Called on DB update.
-    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {
-        // empty by default
-    }
-
+    @Override
     public synchronized void clearCache() {
         mDeviceInfoMap = null;
         mIdDeviceInfoMap = null;
+    }
+
+    @Override
+    protected String getMainTableName() {
+        return TABLE_NAME;
     }
 
     private synchronized void populateDeviceInfoMap() {
@@ -192,7 +192,7 @@ public class DeviceInfoHelper {
      * <p>PLEASE DON'T USE THIS METHOD TO ADD NEW COLUMNS
      */
     @NonNull
-    private List<Pair<String, String>> getColumnInfo() {
+    protected List<Pair<String, String>> getColumnInfo() {
         ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY));
         columnInfo.add(new Pair<>(MANUFACTURER_COLUMN_NAME, TEXT_NULL));

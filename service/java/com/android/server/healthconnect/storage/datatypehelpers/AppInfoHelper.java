@@ -40,7 +40,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.ApplicationInfoFlags;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -56,7 +55,6 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
-import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
@@ -82,7 +80,7 @@ import java.util.stream.Collectors;
  *
  * @hide
  */
-public final class AppInfoHelper {
+public final class AppInfoHelper extends DatabaseHelper {
     public static final String TABLE_NAME = "application_info_table";
     public static final String APPLICATION_COLUMN_NAME = "app_name";
     public static final String PACKAGE_COLUMN_NAME = "package_name";
@@ -110,15 +108,15 @@ public final class AppInfoHelper {
 
     private AppInfoHelper() {}
 
-    /** Deletes all entries from the database and clears the cache. */
-    public synchronized void clearData(TransactionManager transactionManager) {
-        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
-        clearCache();
-    }
-
+    @Override
     public synchronized void clearCache() {
         mAppInfoMap = null;
         mIdPackageNameMap = null;
+    }
+
+    @Override
+    protected String getMainTableName() {
+        return TABLE_NAME;
     }
 
     /**
@@ -213,12 +211,6 @@ public final class AppInfoHelper {
     }
 
     /**
-     * Called when a db update happens to make any required changes in appInfoHelper respecting
-     * version upgrade.
-     */
-    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
-
-    /**
      * @return id of {@code packageName} or {@link Constants#DEFAULT_LONG} if the id is not found
      */
     public long getAppInfoId(String packageName) {
@@ -227,7 +219,6 @@ public final class AppInfoHelper {
         if (appInfo == null) {
             return DEFAULT_LONG;
         }
-
         return appInfo.getId();
     }
 
@@ -681,8 +672,9 @@ public final class AppInfoHelper {
      *
      * <p>PLEASE DON'T USE THIS METHOD TO ADD NEW COLUMNS
      */
+    @Override
     @NonNull
-    private List<Pair<String, String>> getColumnInfo() {
+    protected List<Pair<String, String>> getColumnInfo() {
         ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY));
         columnInfo.add(new Pair<>(PACKAGE_COLUMN_NAME, TEXT_NOT_NULL_UNIQUE));

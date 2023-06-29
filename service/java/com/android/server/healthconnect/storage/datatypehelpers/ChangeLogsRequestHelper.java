@@ -30,7 +30,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import android.annotation.NonNull;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.util.Pair;
 
@@ -56,7 +55,7 @@ import java.util.List;
  *
  * @hide
  */
-public final class ChangeLogsRequestHelper {
+public final class ChangeLogsRequestHelper extends DatabaseHelper {
     static final int DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS = 32;
     private static final String TABLE_NAME = "change_log_request_table";
     private static final String PACKAGES_TO_FILTERS_COLUMN_NAME = "packages_to_filter";
@@ -68,12 +67,14 @@ public final class ChangeLogsRequestHelper {
 
     private ChangeLogsRequestHelper() {}
 
-    // Called on DB update.
-    public void onUpgrade(int oldVersion, int newVersion, @NonNull SQLiteDatabase db) {}
+    @Override
+    protected String getMainTableName() {
+        return TABLE_NAME;
+    }
 
     @NonNull
     public CreateTableRequest getCreateTableRequest() {
-        return new CreateTableRequest(TABLE_NAME, getColumnsInfo());
+        return new CreateTableRequest(TABLE_NAME, getColumnInfo());
     }
 
     @NonNull
@@ -112,8 +113,9 @@ public final class ChangeLogsRequestHelper {
                                 .toEpochMilli());
     }
 
+    @Override
     @NonNull
-    private List<Pair<String, String>> getColumnsInfo() {
+    protected List<Pair<String, String>> getColumnInfo() {
         List<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY));
         columnInfo.add(new Pair<>(PACKAGES_TO_FILTERS_COLUMN_NAME, TEXT_NOT_NULL));
@@ -173,11 +175,6 @@ public final class ChangeLogsRequestHelper {
         return String.valueOf(
                 TransactionManager.getInitialisedInstance()
                         .insert(new UpsertTableRequest(TABLE_NAME, contentValues)));
-    }
-
-    /** Deletes all entries from the database. */
-    public synchronized void clearData(TransactionManager transactionManager) {
-        transactionManager.delete(new DeleteTableRequest(TABLE_NAME));
     }
 
     /** A class to represent the request corresponding to a token */
