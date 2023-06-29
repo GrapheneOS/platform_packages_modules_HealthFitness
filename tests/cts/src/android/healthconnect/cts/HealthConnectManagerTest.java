@@ -131,13 +131,6 @@ public class HealthConnectManagerTest {
                         .build());
     }
 
-    @Before
-    public void setUp() {
-        // TODO(b/283737434): Update the HC code to use user aware context on permission change.
-        // Temporary fix to set firstGrantTime for the correct user in HSUM.
-        TestUtils.deleteAllStagedRemoteData();
-    }
-
     @After
     public void tearDown() {
         TestUtils.deleteAllStagedRemoteData();

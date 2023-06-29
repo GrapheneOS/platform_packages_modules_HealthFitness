@@ -43,7 +43,6 @@ import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Instant;
@@ -61,13 +60,6 @@ public class SleepSessionRecordTest {
     private static final Instant END_TIME = Instant.ofEpochMilli((long) 1e10 + 1000);
     private static final CharSequence NOTES = "felt sleepy";
     private static final CharSequence TITLE = "Afternoon nap";
-
-    @Before
-    public void setUp() {
-        // TODO(b/283737434): Update the HC code to use user aware context on permission change.
-        // Temporary fix to set firstGrantTime for the correct user in HSUM.
-        TestUtils.deleteAllStagedRemoteData();
-    }
 
     @After
     public void tearDown() throws InterruptedException {

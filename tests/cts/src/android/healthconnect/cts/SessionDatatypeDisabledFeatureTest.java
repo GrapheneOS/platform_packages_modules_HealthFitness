@@ -33,20 +33,12 @@ import com.android.modules.utils.build.SdkLevel;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Instant;
 import java.util.List;
 
 public class SessionDatatypeDisabledFeatureTest {
-    @Before
-    public void setUp() {
-        // TODO(b/283737434): Update the HC code to use user aware context on permission change.
-        // Temporary fix to set firstGrantTime for the correct user in HSUM.
-        TestUtils.deleteAllStagedRemoteData();
-    }
-
     private final UiAutomation mUiAutomation =
             InstrumentationRegistry.getInstrumentation().getUiAutomation();
 

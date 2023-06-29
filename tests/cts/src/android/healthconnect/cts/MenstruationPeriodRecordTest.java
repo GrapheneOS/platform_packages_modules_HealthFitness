@@ -41,7 +41,6 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -59,13 +58,6 @@ public class MenstruationPeriodRecordTest {
     private static final String TAG = "MenstruationPeriodRecordTest";
     private static final Instant START_TIME = Instant.ofEpochMilli((long) 1e9);
     private static final Instant END_TIME = Instant.ofEpochMilli((long) 1e10);
-
-    @Before
-    public void setUp() {
-        // TODO(b/283737434): Update the HC code to use user aware context on permission change.
-        // Temporary fix to set firstGrantTime for the correct user in HSUM.
-        TestUtils.deleteAllStagedRemoteData();
-    }
 
     @After
     public void tearDown() throws InterruptedException {
