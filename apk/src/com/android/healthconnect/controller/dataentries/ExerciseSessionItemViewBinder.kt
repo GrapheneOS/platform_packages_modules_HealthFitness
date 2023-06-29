@@ -79,9 +79,13 @@ class ExerciseSessionItemViewBinder(
             logger.logInteraction(DataEntriesElement.DATA_ENTRY_DELETE_BUTTON)
             onDeleteEntryClicked?.onDeleteEntry(data.uuid, data.dataType, index)
         }
-        container.setOnClickListener {
-            logger.logInteraction(DataEntriesElement.EXERCISE_SESSION_ENTRY_BUTTON)
-            onItemClickedListener?.onItemClicked(data.uuid, index)
+        if (showSecondAction) {
+            container.setOnClickListener {
+                logger.logInteraction(DataEntriesElement.EXERCISE_SESSION_ENTRY_BUTTON)
+                onItemClickedListener?.onItemClicked(data.uuid, index)
+            }
+        } else {
+            container.isClickable = false
         }
     }
 }
