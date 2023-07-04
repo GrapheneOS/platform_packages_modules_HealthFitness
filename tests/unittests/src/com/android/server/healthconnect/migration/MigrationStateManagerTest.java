@@ -71,6 +71,7 @@ import android.os.ext.SdkExtensions;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.migration.MigrationStateManager.IllegalMigrationStateException;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
@@ -79,11 +80,10 @@ import libcore.util.HexEncoding;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 import java.time.Duration;
@@ -96,6 +96,17 @@ import java.util.concurrent.TimeUnit;
 /** Test class for the MigrationStateManager class. */
 @RunWith(AndroidJUnit4.class)
 public class MigrationStateManagerTest {
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(PreferenceHelper.class)
+                    .mockStatic(MigrationStateChangeJob.class)
+                    .mockStatic(HexEncoding.class)
+                    .mockStatic(HealthConnectDeviceConfigManager.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
     @Mock private Context mContext;
     @Mock private PackageManager mPackageManager;
     @Mock private PreferenceHelper mPreferenceHelper;
@@ -105,7 +116,7 @@ public class MigrationStateManagerTest {
     @Mock private MockListener mMockListener;
     @Mock private HealthConnectDeviceConfigManager mHealthConnectDeviceConfigManager;
     private MigrationStateManager mMigrationStateManager;
-    private MockitoSession mStaticMockSession;
+
     private static final UserHandle DEFAULT_USER_HANDLE = UserHandle.of(UserHandle.myUserId());
     private static final long EXECUTION_TIME_BUFFER_MOCK_VALUE =
             TimeUnit.MINUTES.toMillis(
@@ -120,15 +131,6 @@ public class MigrationStateManagerTest {
 
     @Before
     public void setUp() {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(PreferenceHelper.class)
-                        .mockStatic(MigrationStateChangeJob.class)
-                        .mockStatic(HexEncoding.class)
-                        .mockStatic(HealthConnectDeviceConfigManager.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-        MockitoAnnotations.initMocks(this);
         when(mContext.getResources()).thenReturn(mResources);
         when(mResources.getIdentifier(anyString(), anyString(), anyString())).thenReturn(1);
         when(mResources.getString(anyInt())).thenReturn(MOCK_CONFIGURED_PACKAGE);
@@ -142,17 +144,16 @@ public class MigrationStateManagerTest {
                 .thenReturn(NON_IDLE_STATE_TIMEOUT_MOCK_VALUE);
         when(mHealthConnectDeviceConfigManager.getMaxStartMigrationCalls())
                 .thenReturn(MAX_START_MIGRATION_CALLS_MOCK_VALUE);
-        MigrationStateManager.initializeInstance(DEFAULT_USER_HANDLE.getIdentifier());
-        mMigrationStateManager = MigrationStateManager.getInitialisedInstance();
-        mMigrationStateManager.clearListeners();
+        MigrationStateManager.resetInitializedInstanceForTest();
+        mMigrationStateManager =
+                MigrationStateManager.initializeInstance(DEFAULT_USER_HANDLE.getIdentifier());
         mMigrationStateManager.addStateChangedListener(mMockListener::onMigrationStateChanged);
     }
 
     @After
     public void tearDown() {
-        mMigrationStateManager.clearListeners();
+        MigrationStateManager.resetInitializedInstanceForTest();
         clearInvocations(mPreferenceHelper);
-        mStaticMockSession.finishMocking();
     }
 
     /**

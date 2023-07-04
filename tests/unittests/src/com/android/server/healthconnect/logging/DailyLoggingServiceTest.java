@@ -35,6 +35,7 @@ import android.os.Process;
 import android.os.UserHandle;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.logging.DailyLoggingService;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.BloodPressureRecordHelper;
@@ -46,18 +47,26 @@ import com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelpe
 import com.android.server.healthconnect.storage.datatypehelpers.TotalCaloriesBurnedRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.Vo2MaxRecordHelper;
 
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Answers;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 import java.util.List;
 
 public class DailyLoggingServiceTest {
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(HealthFitnessStatsLog.class)
+                    .mockStatic(DatabaseUtils.class)
+                    .mockStatic(TransactionManager.class)
+                    .mockStatic(HealthConnectManager.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Context mContext;
@@ -66,21 +75,11 @@ public class DailyLoggingServiceTest {
     @Mock private PackageInfo mPackageInfoNotHoldingPermission;
     @Mock private PackageInfo mPackageInfoNotConnectedApp;
     private final UserHandle mCurrentUser = Process.myUserHandle();
-    private MockitoSession mStaticMockSession;
     private static final String HEALTH_PERMISSION = "HEALTH_PERMISSION";
     private static final String NOT_HEALTH_PERMISSION = "NOT_HEALTH_PERMISSION";
 
     @Before
     public void mockStatsLog() {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(HealthFitnessStatsLog.class)
-                        .mockStatic(DatabaseUtils.class)
-                        .mockStatic(TransactionManager.class)
-                        .mockStatic(HealthConnectManager.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-        MockitoAnnotations.initMocks(this);
         ExtendedMockito.doReturn(true)
                 .when(() -> HealthConnectManager.isHealthPermission(mContext, HEALTH_PERMISSION));
         ExtendedMockito.doReturn(false)
@@ -100,11 +99,6 @@ public class DailyLoggingServiceTest {
         mPackageInfoNotConnectedApp.requestedPermissions = new String[] {HEALTH_PERMISSION};
         mPackageInfoNotConnectedApp.requestedPermissionsFlags =
                 new int[] {PackageInfo.REQUESTED_PERMISSION_NEVER_FOR_LOCATION};
-    }
-
-    @After
-    public void tearDown() {
-        mStaticMockSession.finishMocking();
     }
 
     @Test

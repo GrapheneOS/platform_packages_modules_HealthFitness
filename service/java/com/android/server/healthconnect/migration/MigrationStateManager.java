@@ -130,11 +130,14 @@ public final class MigrationStateManager {
         }
     }
 
-    /** Clears all registered {@link StateChangedListener}. Used in testing. */
+    /**
+     * Clears the initialized instance such that {@link #initializeInstance} will create a new
+     * instance, for use in tests.
+     */
     @VisibleForTesting
-    void clearListeners() {
-        synchronized (mLock) {
-            mStateChangedListeners.clear();
+    public static void resetInitializedInstanceForTest() {
+        synchronized (sInstanceLock) {
+            sMigrationStateManager = null;
         }
     }
 

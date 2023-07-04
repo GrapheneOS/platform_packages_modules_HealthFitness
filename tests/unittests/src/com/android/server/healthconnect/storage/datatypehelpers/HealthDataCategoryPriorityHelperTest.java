@@ -30,17 +30,16 @@ import android.health.connect.HealthDataCategory;
 
 import androidx.test.runner.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
@@ -63,22 +62,21 @@ public class HealthDataCategoryPriorityHelperTest {
     private static final int APP_ID_PRIORITY_ORDER_COLUMN_INDEX = 2;
     private static final int HEALTH_DATA_CATEGORY_COLUMN_INDEX = 1;
 
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(TransactionManager.class)
+                    .mockStatic(AppInfoHelper.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
     @Mock private Cursor mCursor;
     @Mock private TransactionManager mTransactionManager;
     @Mock private AppInfoHelper mAppInfoHelper;
     private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
-    private MockitoSession mStaticMockSession;
 
     @Before
     public void setUp() throws Exception {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(TransactionManager.class)
-                        .mockStatic(AppInfoHelper.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-        MockitoAnnotations.initMocks(this);
-
         when(TransactionManager.getInitialisedInstance()).thenReturn(mTransactionManager);
         when(mTransactionManager.read(any())).thenReturn(mCursor);
         when(AppInfoHelper.getInstance()).thenReturn(mAppInfoHelper);
@@ -93,7 +91,6 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @After
     public void tearDown() throws Exception {
-        mStaticMockSession.finishMocking();
         mHealthDataCategoryPriorityHelper.clearData(mTransactionManager);
     }
 

@@ -29,7 +29,7 @@ android_test {
         "mts-healthfitness",
         "general-tests"
     ],
-    defaults: ["mts-target-sdk-version-current"],
+    defaults: ["mts-target-sdk-version-current", "modules-utils-testable-device-config-defaults"],
     static_libs: [
         "service-healthfitness.impl",
         "framework-healthfitness.impl",

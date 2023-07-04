@@ -58,7 +58,7 @@ import android.util.ArrayMap;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.migration.MigrationCleaner;
@@ -72,11 +72,10 @@ import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 import java.io.File;
@@ -143,6 +142,16 @@ public class HealthConnectServiceImplTest {
                     "insertMinDataMigrationSdkExtensionVersion",
                     "asBinder");
 
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(Environment.class)
+                    .mockStatic(PreferenceHelper.class)
+                    .mockStatic(LocalManagerRegistry.class)
+                    .mockStatic(UserHandle.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
     @Mock private TransactionManager mTransactionManager;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private MigrationCleaner mMigrationCleaner;
@@ -156,21 +165,11 @@ public class HealthConnectServiceImplTest {
     @Mock IMigrationCallback mCallback;
     private Context mContext;
     private HealthConnectServiceImpl mHealthConnectService;
-    private MockitoSession mStaticMockSession;
     private UserHandle mUserHandle;
     private File mMockDataDirectory;
 
     @Before
     public void setUp() throws Exception {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(Environment.class)
-                        .mockStatic(PreferenceHelper.class)
-                        .mockStatic(LocalManagerRegistry.class)
-                        .mockStatic(UserHandle.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-        MockitoAnnotations.initMocks(this);
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
         mMockDataDirectory = mContext.getDir("mock_data", Context.MODE_PRIVATE);
         when(Environment.getDataDirectory()).thenReturn(mMockDataDirectory);
@@ -197,7 +196,6 @@ public class HealthConnectServiceImplTest {
     public void tearDown() {
         deleteDir(mMockDataDirectory);
         clearInvocations(mPreferenceHelper);
-        mStaticMockSession.finishMocking();
     }
 
     @Test

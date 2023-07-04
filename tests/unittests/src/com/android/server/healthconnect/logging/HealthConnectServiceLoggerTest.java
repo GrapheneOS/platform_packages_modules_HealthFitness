@@ -44,30 +44,18 @@ import static org.mockito.Mockito.times;
 import android.health.HealthFitnessStatsLog;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.MockitoSession;
 
 public class HealthConnectServiceLoggerTest {
 
-    private MockitoSession mStaticMockSession;
-
-    @Before
-    public void mockStatsLog() {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(HealthFitnessStatsLog.class)
-                        .startMocking();
-    }
-
-    @After
-    public void tearDown() {
-        mStaticMockSession.finishMocking();
-    }
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this).mockStatic(HealthFitnessStatsLog.class).build();
 
     @Test
     public void testDoNotLog_HoldsDataManagementPermission() {

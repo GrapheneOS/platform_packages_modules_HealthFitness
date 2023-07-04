@@ -31,17 +31,17 @@ import android.util.ArrayMap;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 import java.io.File;
@@ -79,20 +79,20 @@ public class GrantTimePersistenceUnitTest {
     private static final UserGrantTimeState EMPTY_STATE =
             new UserGrantTimeState(new ArrayMap<>(), new ArrayMap<>(), 3);
 
-    private MockitoSession mStaticMockSession;
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(Environment.class)
+                    .mockStatic(LocalManagerRegistry.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
     private final UserHandle mUser = UserHandle.of(UserHandle.myUserId());
     private File mMockDataDirectory;
     @Mock private AppOpsManagerLocal mAppOpsManagerLocal;
 
     @Before
     public void mockApexEnvironment() {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(Environment.class)
-                        .mockStatic(LocalManagerRegistry.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-
         Context context = InstrumentationRegistry.getContext();
         mMockDataDirectory = context.getDir("mock_data", Context.MODE_PRIVATE);
         Mockito.when(Environment.getDataDirectory()).thenReturn(mMockDataDirectory);
@@ -102,7 +102,6 @@ public class GrantTimePersistenceUnitTest {
 
     @After
     public void tearDown() {
-        mStaticMockSession.finishMocking();
         deleteFile(mMockDataDirectory);
     }
 

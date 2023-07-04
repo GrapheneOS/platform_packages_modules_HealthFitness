@@ -55,19 +55,17 @@ import android.os.UserHandle;
 
 import androidx.test.runner.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectDailyService;
 import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
-import org.mockito.quality.Strictness;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -77,6 +75,16 @@ import java.util.concurrent.TimeUnit;
 
 @RunWith(AndroidJUnit4.class)
 public class MigrationStateChangeJobTest {
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(PreferenceHelper.class)
+                    .mockStatic(MigrationStateManager.class)
+                    .mockStatic(HealthConnectDailyService.class)
+                    .mockStatic(HealthConnectDeviceConfigManager.class)
+                    .build();
+
     @Mock MigrationStateManager mMigrationStateManager;
     @Mock PreferenceHelper mPreferenceHelper;
     @Mock private Context mContext;
@@ -112,19 +120,8 @@ public class MigrationStateChangeJobTest {
                     HealthConnectDeviceConfigManager
                             .MIGRATION_PAUSE_JOB_RUN_INTERVAL_HOURS_DEFAULT_FLAG_VALUE);
 
-    private MockitoSession mStaticMockSession;
-
     @Before
     public void setUp() {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(PreferenceHelper.class)
-                        .mockStatic(MigrationStateManager.class)
-                        .mockStatic(HealthConnectDailyService.class)
-                        .mockStatic(HealthConnectDeviceConfigManager.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-        MockitoAnnotations.initMocks(this);
         when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
         when(mJobScheduler.forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE))
@@ -156,7 +153,6 @@ public class MigrationStateChangeJobTest {
         clearInvocations(mPreferenceHelper);
         clearInvocations(mMigrationStateManager);
         clearInvocations(mHealthConnectDeviceConfigManager);
-        mStaticMockSession.finishMocking();
     }
 
     /** Expected behavior: No changes to the state */

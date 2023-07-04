@@ -33,28 +33,34 @@ import android.os.UserHandle;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.migration.notification.MigrationNotificationSender;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 /** Test class for the MigrationUiStateManager class. */
 @RunWith(AndroidJUnit4.class)
 public class MigrationUiStateManagerTest {
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(PreferenceHelper.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
     @Mock private Context mContext;
     @Mock private MigrationStateManager mMigrationStateManager;
     @Mock private MigrationNotificationSender mMigrationNotificationSender;
     @Mock private PreferenceHelper mPreferenceHelper;
-    private MockitoSession mStaticMockSession;
 
     private MigrationUiStateManager mMigrationUiStateManager;
     private static final UserHandle DEFAULT_USER_HANDLE = UserHandle.of(UserHandle.myUserId());
@@ -63,12 +69,6 @@ public class MigrationUiStateManagerTest {
 
     @Before
     public void setUp() {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(PreferenceHelper.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-        MockitoAnnotations.initMocks(this);
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
 
@@ -84,7 +84,6 @@ public class MigrationUiStateManagerTest {
     @After
     public void tearDown() {
         clearInvocations(mPreferenceHelper);
-        mStaticMockSession.finishMocking();
     }
 
     @Test
