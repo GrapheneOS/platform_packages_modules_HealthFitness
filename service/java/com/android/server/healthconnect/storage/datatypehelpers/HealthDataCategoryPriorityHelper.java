@@ -205,6 +205,12 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     }
 
     @Override
+    protected synchronized void clearData(@NonNull TransactionManager transactionManager) {
+        clearCache();
+        super.clearData(transactionManager);
+    }
+
+    @Override
     public synchronized void clearCache() {
         mHealthDataCategoryToAppIdPriorityMap = null;
     }
