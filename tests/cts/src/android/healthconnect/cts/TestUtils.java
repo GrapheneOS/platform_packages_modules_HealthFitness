@@ -114,6 +114,7 @@ import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
 import android.health.connect.migration.MigrationException;
 import android.os.OutcomeReceiver;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.util.Pair;
 
@@ -121,6 +122,11 @@ import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -1374,6 +1380,29 @@ public class TestUtils {
                 BasalMetabolicRateRecord.class,
                 new RecordTypeInfoTestResponse(
                         BODY_MEASUREMENTS, BASAL_METABOLIC_RATE, new ArrayList<>()));
+    }
+
+    static String runShellCommand(String command) throws IOException {
+        UiAutomation uiAutomation =
+                androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+                        .getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity();
+        final ParcelFileDescriptor stdout = uiAutomation.executeShellCommand(command);
+        StringBuilder output = new StringBuilder();
+
+        try (BufferedReader reader =
+                new BufferedReader(
+                        new InputStreamReader(new FileInputStream(stdout.getFileDescriptor())))) {
+            char[] buffer = new char[4096];
+            int bytesRead;
+            while ((bytesRead = reader.read(buffer)) != -1) {
+                output.append(buffer, 0, bytesRead);
+            }
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        return output.toString();
     }
 
     static final class RecordAndIdentifier {
