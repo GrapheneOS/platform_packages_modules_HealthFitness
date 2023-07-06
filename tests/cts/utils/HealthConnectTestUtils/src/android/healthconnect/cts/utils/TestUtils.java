@@ -119,6 +119,7 @@ import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
 import android.health.connect.migration.MigrationException;
 import android.os.OutcomeReceiver;
+import android.os.ParcelFileDescriptor;
 import android.os.UserHandle;
 import android.util.Log;
 import android.util.Pair;
@@ -129,6 +130,11 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.cts.install.lib.TestApp;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
@@ -1806,6 +1812,29 @@ public class TestUtils {
         for (String perm : healthPerms) {
             grantPermission(testApp.getPackageName(), perm);
         }
+    }
+
+    public static String runShellCommand(String command) throws IOException {
+        UiAutomation uiAutomation =
+                androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+                        .getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity();
+        final ParcelFileDescriptor stdout = uiAutomation.executeShellCommand(command);
+        StringBuilder output = new StringBuilder();
+
+        try (BufferedReader reader =
+                new BufferedReader(
+                        new InputStreamReader(new FileInputStream(stdout.getFileDescriptor())))) {
+            char[] buffer = new char[4096];
+            int bytesRead;
+            while ((bytesRead = reader.read(buffer)) != -1) {
+                output.append(buffer, 0, bytesRead);
+            }
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        return output.toString();
     }
 
     public static final class RecordAndIdentifier {
