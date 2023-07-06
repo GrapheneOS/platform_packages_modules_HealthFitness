@@ -30,7 +30,7 @@ public final class TestUtils {
             } catch (Exception e) {
                 // ignore
             } finally {
-                if (ChronoUnit.SECONDS.between(Instant.now(), startTime) > 1) {
+                if (ChronoUnit.SECONDS.between(startTime, Instant.now()) > 3) {
                     throw new TimeoutException();
                 }
             }

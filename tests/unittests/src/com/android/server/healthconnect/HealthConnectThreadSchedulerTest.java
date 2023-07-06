@@ -57,6 +57,8 @@ public class HealthConnectThreadSchedulerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
+        HealthConnectThreadScheduler.resetThreadPools();
+
         mInternalTaskScheduler = HealthConnectThreadScheduler.sInternalBackgroundExecutor;
         mInternalTaskSchedulerCompletedJobs = mInternalTaskScheduler.getCompletedTaskCount();
         mControllerTaskScheduler = HealthConnectThreadScheduler.sControllerExecutor;
@@ -130,8 +132,6 @@ public class HealthConnectThreadSchedulerTest {
 
     @Test
     public void testHealthConnectSchedulerClear() {
-        HealthConnectThreadScheduler.resetThreadPools();
-        setUp();
         Truth.assertThat(mInternalTaskSchedulerCompletedJobs).isEqualTo(0);
         Truth.assertThat(mControllerTaskSchedulerCompletedJobs).isEqualTo(0);
         Truth.assertThat(mForegroundTaskSchedulerCompletedJobs).isEqualTo(0);
