@@ -374,7 +374,7 @@
     <string name="ovulation_positive" msgid="6588547263126320238">"Có khả năng thụ thai"</string>
     <string name="ovulation_negative" msgid="591588801112312454">"Không có khả năng thụ thai"</string>
     <string name="ovulation_high" msgid="205362931427158291">"Khả năng thụ thai cao"</string>
-    <string name="ovulation_inconclusive" msgid="3447066667631538756">"Không có kết quả"</string>
+    <string name="ovulation_inconclusive" msgid="3447066667631538756">"Không xác định được"</string>
     <string name="milliseconds" msgid="284845884516037268">"{count,plural, =1{1 mili giây}other{# mili giây}}"</string>
     <string name="milliseconds_long" msgid="93246373745977286">"{count,plural, =1{1 mili giây}other{# mili giây}}"</string>
     <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 lần lặp lại}other{# lần lặp lại}}"</string>
