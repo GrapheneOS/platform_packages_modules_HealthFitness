@@ -73,6 +73,7 @@ import androidx.test.runner.AndroidJUnit4;
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
+import com.android.server.healthconnect.TestUtils;
 import com.android.server.healthconnect.migration.MigrationStateManager.IllegalMigrationStateException;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
@@ -92,6 +93,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /** Test class for the MigrationStateManager class. */
 @RunWith(AndroidJUnit4.class)
@@ -151,7 +153,8 @@ public class MigrationStateManagerTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws TimeoutException {
+        TestUtils.waitForAllScheduledTasksToComplete();
         MigrationStateManager.resetInitializedInstanceForTest();
         clearInvocations(mPreferenceHelper);
     }
