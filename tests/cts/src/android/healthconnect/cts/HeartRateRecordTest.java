@@ -621,9 +621,19 @@ public class HeartRateRecordTest {
 
     @Test
     public void testBpmAggregation_groupBy_Duration() throws Exception {
-        Instant start = Instant.now().minusMillis(500);
-        Instant end = Instant.now().plusMillis(2500);
-        insertHeartRateRecordsWithDelay(1000, 3);
+        Instant end = Instant.now();
+        Instant start = end.minusSeconds(3);
+        for (Instant instant = start.plusMillis(500);
+                instant.isBefore(end);
+                instant = instant.plusSeconds(1)) {
+            List<Record> records =
+                    Arrays.asList(
+                            getBaseHeartRateRecord(71, instant, /* offset= */ null),
+                            getBaseHeartRateRecord(72, instant.plusMillis(1), /* offset= */ null),
+                            getBaseHeartRateRecord(73, instant.plusMillis(2), /* offset= */ null));
+            TestUtils.insertRecords(records);
+        }
+
         List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
                 TestUtils.getAggregateResponseGroupByDuration(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -636,7 +646,8 @@ public class HeartRateRecordTest {
                                 .addAggregationType(BPM_AVG)
                                 .build(),
                         Duration.ofSeconds(1));
-        assertThat(responses.size()).isEqualTo(3);
+
+        assertThat(responses).hasSize(3);
         for (AggregateRecordsGroupedByDurationResponse<Long> response : responses) {
             assertThat(response.get(BPM_MAX)).isNotNull();
             assertThat(response.get(BPM_MAX)).isEqualTo(73);
@@ -652,7 +663,6 @@ public class HeartRateRecordTest {
                     .isEqualTo(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()));
             assertThat(response.getStartTime()).isNotNull();
             assertThat(response.getEndTime()).isNotNull();
-            start = start.plus(1, ChronoUnit.SECONDS);
         }
     }
 
@@ -972,20 +982,6 @@ public class HeartRateRecordTest {
         assertThat(requestUsingIds.getRecordIdFilters()).isNotNull();
         List<HeartRateRecord> result = TestUtils.readRecords(requestUsingIds);
         assertThat(result.containsAll(insertedRecords)).isTrue();
-    }
-
-    private void insertHeartRateRecordsWithDelay(long delayInMillis, int times)
-            throws InterruptedException {
-        for (int i = 0; i < times; i++) {
-            List<Record> records =
-                    Arrays.asList(
-                            getBaseHeartRateRecord(71),
-                            getBaseHeartRateRecord(72),
-                            getBaseHeartRateRecord(73));
-
-            TestUtils.insertRecords(records);
-            Thread.sleep(delayInMillis);
-        }
     }
 
     private void insertHeartRateRecordsInPastDays(int numDays) throws InterruptedException {
