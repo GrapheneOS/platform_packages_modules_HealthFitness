@@ -26,7 +26,7 @@ import android.util.ArrayMap;
 
 import androidx.test.runner.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.storage.AutoDeleteService;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
@@ -78,14 +78,11 @@ import com.android.server.healthconnect.storage.datatypehelpers.WheelchairPushes
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -98,6 +95,18 @@ import java.util.Set;
 public class AutoDeleteServiceTest {
     private static final String AUTO_DELETE_DURATION_RECORDS_KEY =
             "auto_delete_duration_records_key";
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(PreferenceHelper.class)
+                    .mockStatic(TransactionManager.class)
+                    .mockStatic(RecordHelperProvider.class)
+                    .mockStatic(AppInfoHelper.class)
+                    .mockStatic(ActivityDateHelper.class)
+                    .mockStatic(HealthDataCategoryPriorityHelper.class)
+                    .build();
+
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private TransactionManager mTransactionManager;
     @Mock private RecordHelperProvider mRecordHelperProvider;
@@ -106,27 +115,6 @@ public class AutoDeleteServiceTest {
     @Mock private ActivityDateHelper mActivityDateHelper;
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     @Mock Context mContext;
-    private MockitoSession mStaticMockSession;
-
-    @Before
-    public void setUp() {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(PreferenceHelper.class)
-                        .mockStatic(TransactionManager.class)
-                        .mockStatic(RecordHelperProvider.class)
-                        .mockStatic(AppInfoHelper.class)
-                        .mockStatic(ActivityDateHelper.class)
-                        .mockStatic(HealthDataCategoryPriorityHelper.class)
-                        .startMocking();
-
-        MockitoAnnotations.initMocks(this);
-    }
-
-    @After
-    public void tearDown() {
-        mStaticMockSession.finishMocking();
-    }
 
     @Test
     public void testSetRecordRetentionPeriodInDays() {

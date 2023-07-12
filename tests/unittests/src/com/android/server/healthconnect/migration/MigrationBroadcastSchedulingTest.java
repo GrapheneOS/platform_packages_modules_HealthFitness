@@ -40,18 +40,17 @@ import android.content.Context;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
 import org.mockito.verification.VerificationMode;
@@ -63,6 +62,16 @@ import java.util.Objects;
 @RunWith(AndroidJUnit4.class)
 public class MigrationBroadcastSchedulingTest {
 
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(MigrationStateManager.class)
+                    .mockStatic(PreferenceHelper.class)
+                    .mockStatic(HealthConnectThreadScheduler.class)
+                    .mockStatic(HealthConnectDeviceConfigManager.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
     @Mock private Context mContext;
     @Mock private JobScheduler mJobScheduler;
     @Mock private MigrationStateManager mMigrationStateManager;
@@ -70,8 +79,6 @@ public class MigrationBroadcastSchedulingTest {
     @Mock private HealthConnectDeviceConfigManager mHealthConnectDeviceConfigManager;
 
     private MigrationBroadcastScheduler mMigrationBroadcastScheduler;
-
-    private MockitoSession mStaticMockSession;
 
     private static final int MIGRATION_STATE_ALLOWED_COUNT_MOCK_VALUE =
             MIGRATION_STATE_ALLOWED_COUNT_DEFAULT_FLAG_VALUE;
@@ -89,17 +96,6 @@ public class MigrationBroadcastSchedulingTest {
 
     @Before
     public void setUp() {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(MigrationStateManager.class)
-                        .mockStatic(PreferenceHelper.class)
-                        .mockStatic(HealthConnectThreadScheduler.class)
-                        .mockStatic(HealthConnectDeviceConfigManager.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-
-        MockitoAnnotations.initMocks(this);
-
         when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
         when(mJobScheduler.forNamespace(MIGRATION_BROADCAST_NAMESPACE)).thenReturn(mJobScheduler);
         when(HealthConnectDeviceConfigManager.getInitialisedInstance())
@@ -112,11 +108,6 @@ public class MigrationBroadcastSchedulingTest {
                 .thenReturn(NON_IDLE_STATE_TIMEOUT_MOCK_VALUE);
 
         mMigrationBroadcastScheduler = Mockito.spy(new MigrationBroadcastScheduler(0));
-    }
-
-    @After
-    public void tearDown() {
-        mStaticMockSession.finishMocking();
     }
 
     @Test

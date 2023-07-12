@@ -71,6 +71,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
@@ -81,13 +82,12 @@ import com.android.server.healthconnect.utils.FilesUtil;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 import java.io.File;
@@ -101,6 +101,18 @@ import java.util.Map;
 public class BackupRestoreTest {
     private static final String DATABASE_NAME = "healthconnect.db";
     private static final String GRANT_TIME_FILE_NAME = "health-permissions-first-grant-times.xml";
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(Environment.class)
+                    .mockStatic(PreferenceHelper.class)
+                    .mockStatic(TransactionManager.class)
+                    .mockStatic(BackupRestore.BackupRestoreJobService.class)
+                    .mockStatic(GrantTimeXmlHelper.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
     @Mock Context mServiceContext;
     @Mock private TransactionManager mTransactionManager;
     @Mock private PreferenceHelper mPreferenceHelper;
@@ -110,23 +122,12 @@ public class BackupRestoreTest {
     @Mock private JobScheduler mJobScheduler;
     @Captor ArgumentCaptor<JobInfo> mJobInfoArgumentCaptor;
     private BackupRestore mBackupRestore;
-    private MockitoSession mStaticMockSession;
     private UserHandle mUserHandle = UserHandle.of(UserHandle.myUserId());
     private File mMockDataDirectory;
     private File mMockBackedDataDirectory;
 
     @Before
     public void setUp() throws Exception {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(Environment.class)
-                        .mockStatic(PreferenceHelper.class)
-                        .mockStatic(TransactionManager.class)
-                        .mockStatic(BackupRestore.BackupRestoreJobService.class)
-                        .mockStatic(GrantTimeXmlHelper.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-        MockitoAnnotations.initMocks(this);
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
         mMockDataDirectory = mContext.getDir("mock_data", Context.MODE_PRIVATE);
         mMockBackedDataDirectory = mContext.getDir("mock_backed_data", Context.MODE_PRIVATE);
@@ -147,7 +148,6 @@ public class BackupRestoreTest {
         FilesUtil.deleteDir(mMockBackedDataDirectory);
         clearInvocations(mPreferenceHelper);
         clearInvocations(mTransactionManager);
-        mStaticMockSession.finishMocking();
     }
 
     @Test

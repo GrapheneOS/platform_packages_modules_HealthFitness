@@ -34,21 +34,28 @@ import android.os.UserHandle;
 
 import androidx.test.core.app.ApplicationProvider;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 public class PermissionPackageChangesOrchestratorTest {
     private static final String SELF_PACKAGE_NAME = "com.android.healthconnect.unittests";
     private static final UserHandle CURRENT_USER = Process.myUserHandle();
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(TransactionManager.class)
+                    .mockStatic(HealthDataCategoryPriorityHelper.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
     private int mCurrentUid;
     private PermissionPackageChangesOrchestrator mOrchestrator;
     private Context mContext;
@@ -61,17 +68,8 @@ public class PermissionPackageChangesOrchestratorTest {
 
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
 
-    private MockitoSession mStaticMockSession;
-
     @Before
     public void setUp() throws PackageManager.NameNotFoundException {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(TransactionManager.class)
-                        .mockStatic(HealthDataCategoryPriorityHelper.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-        MockitoAnnotations.initMocks(this);
         when(HealthDataCategoryPriorityHelper.getInstance())
                 .thenReturn(mHealthDataCategoryPriorityHelper);
         when(TransactionManager.getInitialisedInstance()).thenReturn(mTransactionManager);
@@ -82,11 +80,6 @@ public class PermissionPackageChangesOrchestratorTest {
                 new PermissionPackageChangesOrchestrator(
                         mTracker, mFirstGrantTimeManager, mHelper, mUserHandle);
         setIntentWasRemoved(/* isIntentRemoved= */ false);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        mStaticMockSession.finishMocking();
     }
 
     @Test

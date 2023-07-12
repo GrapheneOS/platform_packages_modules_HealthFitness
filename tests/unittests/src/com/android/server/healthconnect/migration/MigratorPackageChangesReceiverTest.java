@@ -38,21 +38,29 @@ import android.os.UserManager;
 
 import androidx.test.runner.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 @RunWith(AndroidJUnit4.class)
 public class MigratorPackageChangesReceiverTest {
     public static final String INTENT_URI_SCHEME = "package";
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(PreferenceHelper.class)
+                    .mockStatic(MigrationStateManager.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
     @Mock MigrationStateManager mMigrationStateManager;
     @Mock PreferenceHelper mPreferenceHelper;
     @Mock private Context mContext;
@@ -60,19 +68,11 @@ public class MigratorPackageChangesReceiverTest {
     @Mock private UserManager mUserManager;
     @Mock private Intent mIntent;
     @Mock private Uri mUri;
-    private MockitoSession mStaticMockSession;
     private MigratorPackageChangesReceiver mMigratorPackageChangesReceiver;
     private static final UserHandle DEFAULT_USER_HANDLE = UserHandle.of(UserHandle.myUserId());
 
     @Before
     public void setUp() {
-        mStaticMockSession =
-                ExtendedMockito.mockitoSession()
-                        .mockStatic(PreferenceHelper.class)
-                        .mockStatic(MigrationStateManager.class)
-                        .strictness(Strictness.LENIENT)
-                        .startMocking();
-        MockitoAnnotations.initMocks(this);
         when(MigrationStateManager.getInitialisedInstance()).thenReturn(mMigrationStateManager);
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
         mMigratorPackageChangesReceiver =
@@ -86,7 +86,6 @@ public class MigratorPackageChangesReceiverTest {
     public void tearDown() {
         clearInvocations(mPreferenceHelper);
         clearInvocations(mMigrationStateManager);
-        mStaticMockSession.finishMocking();
     }
 
     @Test
