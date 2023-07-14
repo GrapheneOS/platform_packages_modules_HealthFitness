@@ -719,10 +719,10 @@
     <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"ನೀವು Health Connect ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ವ್ಯಾಯಾಮದ ಮಾರ್ಗಗಳಿಗೆ ಆ್ಯಪ್ ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ನಿರ್ವಹಿಸಬಹುದು"</string>
     <string name="back_button" msgid="780519527385993407">"ಹಿಂದಕ್ಕೆ"</string>
     <string name="loading" msgid="2526615755685950317">"ಲೋಡ್ ಆಗುತ್ತಿದೆ…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"ಸಂಯೋಜನೆಯು ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
+    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"ಇಂಟಿಗ್ರೇಶನ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
     <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜನೆಯಾಗಲಿದೆ.\n\nನಿಮ್ಮ ಡೇಟಾ ಮತ್ತು ಅನುಮತಿಗಳು ವರ್ಗಾವಣೆ ಆಗುವಾಗ ಇದು ಸ್ವಲ್ಪ ಸಮಯ ತೆಗೆದುಕೊಳ್ಳಬಹುದು."</string>
     <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"ಪ್ರಕ್ರಿಯೆಯು ಪೂರ್ಣಗೊಂಡಿದೆ ಎಂಬ ನೋಟಿಫಿಕೇಶನ್ ಅನ್ನು ನೀವು ಪಡೆಯುವವರೆಗೂ ಆ್ಯಪ್ ಅನ್ನು ಮುಚ್ಚಬೇಡಿ."</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect ಸಂಯೋಜನೆಯು ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
+    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect ಇಂಟಿಗ್ರೇಶನ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"ಅಪ್‌ಡೇಟ್‌ನ ಅಗತ್ಯವಿದೆ"</string>
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜನೆಯಾಗಲಿದೆ ಹಾಗಾಗಿ ನೀವು ನೇರವಾಗಿ ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಂದ ಅದಕ್ಕೆ ಆ್ಯಕ್ಸೆಸ್ ಪಡೆಯಬಹುದು."</string>
     <string name="update_button" msgid="4544529019832009496">"ಅಪ್‌ಡೇಟ್ ಮಾಡಿ"</string>
@@ -730,46 +730,46 @@
     <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"ಈಗಲೇ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ಸಿಸ್ಟಂ ಅಪ್‌ಡೇಟ್ ಅಗತ್ಯವಿದೆ"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ಮುಂದುವರಿಯುವ ಮೊದಲು, ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಂ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ."</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ನೀವು ಈಗಾಗಲೇ ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಂ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿದ್ದರೆ, ಸಂಯೋಜಿಸುವುದನ್ನು ಮುಂದುವರಿಸಲು ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಲು ಪ್ರಯತ್ನಿಸಿ"</string>
+    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ನೀವು ಈಗಾಗಲೇ ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಂ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿದ್ದರೆ, ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ಮುಂದುವರಿಸಲು ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಲು ಪ್ರಯತ್ನಿಸಿ"</string>
     <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Health Connect ಅಪ್‌ಡೇಟ್ ಅಗತ್ಯವಿದೆ"</string>
     <string name="migration_app_update_needed_action" msgid="3289432528592774601">"ಮುಂದುವರಿಯುವ ಮೊದಲು, Health Connect ಆ್ಯಪ್ ಅನ್ನು ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಗೆ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ."</string>
     <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"ಹೆಚ್ಚು ಸ್ಥಳ ಅಗತ್ಯವಿದೆ"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"ಸಂಯೋಜಿಸುವುದನ್ನು ಮುಂದುವರಿಸಲು Health Connect ಗೆ ನಿಮ್ಮ ಫೋನ್‌ನ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> ಸಂಗ್ರಹಣೆಯ ಸ್ಥಳ ಅಗತ್ಯವಿದೆ.\n\nನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿ ಸ್ವಲ್ಪ ಸ್ಥಳವನ್ನು ತೆರವುಗೊಳಿಸಿ ಮತ್ತು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."</string>
+    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ಮುಂದುವರಿಸಲು Health Connect ಗೆ ನಿಮ್ಮ ಫೋನ್‌ನ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> ಸಂಗ್ರಹಣೆಯ ಸ್ಥಳ ಅಗತ್ಯವಿದೆ.\n\nನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿ ಸ್ವಲ್ಪ ಸ್ಥಳವನ್ನು ತೆರವುಗೊಳಿಸಿ ಮತ್ತು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."</string>
     <string name="try_again_button" msgid="8745496819992160789">"ಪುನಃ ಪ್ರಯತ್ನಿಸಿ"</string>
     <string name="free_up_space_button" msgid="4141013808635654695">"ಸ್ಥಳಾವಕಾಶವನ್ನು ತೆರವುಗೊಳಿಸಿ"</string>
     <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"ಹೆಚ್ಚು ಸ್ಥಳ ಅಗತ್ಯವಿದೆ"</string>
     <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"ಸಂಯೋಜಿಸುವುದನ್ನು ಮುಂದುವರಿಸಲು Health Connect ಗೆ ನಿಮ್ಮ ಫೋನ್‌ನ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> ಸಂಗ್ರಹಣೆಯ ಸ್ಥಳ ಅಗತ್ಯವಿದೆ."</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"ಸಂಯೋಜಿಸುವುದನ್ನು ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ"</string>
+    <string name="migration_paused_screen_title" msgid="8041170155372429894">"ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ"</string>
     <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ಆ್ಯಪ್ Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜನೆಯಾಗುತ್ತಿದ್ದಾಗ ಅದು ಮುಚ್ಚಿದೆ.\n\nಆ್ಯಪ್ ಅನ್ನು ಮತ್ತೆ ತೆರೆಯಲು ಪುನರಾರಂಭಿಸಿ ಎಂಬುದನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಡೇಟಾ ಹಾಗೂ ಅನುಮತಿಗಳನ್ನು ವರ್ಗಾಯಿಸುವುದನ್ನು ಮುಂದುವರಿಸಿ."</string>
     <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ನಿಮ್ಮ Health Connect ಡೇಟಾ ಇರಿಸಿಕೊಳ್ಳಲು <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ಒಳಗಾಗಿ ಇದನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"</string>
     <string name="resume_button" msgid="2255148549862208047">"ಪುನರಾರಂಭಿಸಿ"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"ಸಂಯೋಜನೆಯನ್ನು ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ"</string>
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ"</string>
     <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect ಅನ್ನು Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜಿಸಲಾಗುತ್ತಿದೆ. ಮುಂದುವರಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"ಸಂಯೋಜಿಸುವುದನ್ನು ಪುನರಾರಂಭಿಸಿ"</string>
+    <string name="resume_migration_banner_title" msgid="4443957114824045317">"ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ಪುನರಾರಂಭಿಸಿ"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Android ಸಿಸ್ಟಂನೊಂದಿಗೆ Health Connect ಅನ್ನು ಸಂಯೋಜಿಸುವುದನ್ನು ಮುಂದುವರಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ. ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಇರಿಸಿಕೊಳ್ಳಲು, <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ಒಳಗಾಗಿ ಇದನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Android ಸಿಸ್ಟಂನೊಂದಿಗೆ Health Connect ಅನ್ನು ಸಂಯೋಜಿಸುವುದನ್ನು ಮುಂದುವರಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"ಮುಂದುವರಿಸಿ"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"Health Connect ಸಂಯೋಜಿಸುವುದನ್ನು ಪುನರಾರಂಭಿಸಿ"</string>
+    <string name="resume_migration_notification_title" msgid="8859575633668908327">"Health Connect ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ಪುನರಾರಂಭಿಸಿ"</string>
     <string name="resume_migration_notification_content" msgid="46172108837648715">"ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಇರಿಸಿಕೊಳ್ಳಲು, <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ಒಳಗಾಗಿ ಇದನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"ಆ್ಯಪ್ ಅಪ್‌ಡೇಟ್ ಅಗತ್ಯವಿದೆ"</string>
     <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"Health Connect ನೊಂದಿಗೆ ಕಾರ್ಯ ನಿರ್ವಹಿಸುವುದನ್ನು ಮುಂದುವರಿಸಲು <xliff:g id="APP_NAME">%1$s</xliff:g> ಅಪ್‌ ಟು ಡೇಟ್‌‌ ಆಗಿರುವ ಅಗತ್ಯವಿದೆ"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Health Connect ನೊಂದಿಗೆ ಕಾರ್ಯ ನಿರ್ವಹಿಸುವುದನ್ನು ಮುಂದುವರಿಸಲು ಕೆಲವು ಆ್ಯಪ್‌ಗಳು ಅಪ್‌ ಟು ಡೇಟ್‌‌ ಆಗಿರುವ ಅಗತ್ಯವಿದೆ"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect ಸಂಯೋಜನೆ"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"ನಿಮ್ಮ Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜನೆಗೊಳ್ಳಲು Health Connect ಸಿದ್ಧವಾಗಿದೆ. ನೀವು ಈಗ <xliff:g id="APP_NAME">%1$s</xliff:g> ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಸಂಯೋಜಿಸುವುದು ಪೂರ್ಣವಾಗುವವರೆಗೂ ಕೆಲವು ಫೀಚರ್‌ಗಳು ಕೆಲಸ ಮಾಡದೇ ಇರಬಹುದು."</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"ನಿಮ್ಮ Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜನೆಗೊಳ್ಳಲು Health Connect ಸಿದ್ಧವಾಗಿದೆ. ನೀವು ಈಗ ಆ್ಯಪ್‌ಗಳಿಗೆ ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಸಂಯೋಜಿಸುವುದು ಪೂರ್ಣವಾಗುವವರೆಗೂ ಕೆಲವು ಫೀಚರ್‌ಗಳು ಕೆಲಸ ಮಾಡದೇ ಇರಬಹುದು."</string>
+    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect ಇಂಟಿಗ್ರೇಶನ್"</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"ನಿಮ್ಮ Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಇಂಟಿಗ್ರೇಟ್ ಆಗಲು Health Connect ಸಿದ್ಧವಾಗಿದೆ. ನೀವು ಈಗ <xliff:g id="APP_NAME">%1$s</xliff:g> ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಇಂಟಿಗ್ರೇಶನ್ ಪೂರ್ಣವಾಗುವವರೆಗೂ ಕೆಲವು ಫೀಚರ್‌ಗಳು ಕೆಲಸ ಮಾಡದೇ ಇರಬಹುದು."</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"ನಿಮ್ಮ Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಇಂಟಿಗ್ರೇಟ್ ಆಗಲು Health Connect ಸಿದ್ಧವಾಗಿದೆ. ನೀವು ಈಗ ಆ್ಯಪ್‌ಗಳಿಗೆ ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಇಂಟಿಗ್ರೇಶನ್ ಪೂರ್ಣವಾಗುವವರೆಗೂ ಕೆಲವು ಫೀಚರ್‌ಗಳು ಕೆಲಸ ಮಾಡದೇ ಇರಬಹುದು."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"ಮುಂದುವರಿಸಿ"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"ಸಂಯೋಜನೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect ಸಂಯೋಜನೆಯು ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸಿ"</string>
+    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect ಇಂಟಿಗ್ರೇಶನ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
     <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜನೆಯಾಗಲಿದೆ.\n\nಪ್ರಕ್ರಿಯೆಯು ಪೂರ್ಣಗೊಂಡ ನಂತರ ನೀವು ನೋಟಿಫಿಕೇಶನ್ ಪಡೆಯುವಿರಿ ಮತ್ತು ನೀವು Health Connect ನೊಂದಿಗೆ <xliff:g id="APP_NAME">%1$s</xliff:g> ಬಳಸಬಹುದು."</string>
     <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Android ಸಿಸ್ಟಂನೊಂದಿಗೆ Health Connect ಸಂಯೋಜನೆಯಾಗಲಿದೆ.\n\nಪ್ರಕ್ರಿಯೆಯು ಪೂರ್ಣಗೊಂಡ ನಂತರ ನೀವು ನೋಟಿಫಿಕೇಶನ್ ಪಡೆಯುವಿರಿ, ನಂತರ ನೀವು Health Connect ಅನ್ನು ಬಳಸಬಹುದು."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"ಅರ್ಥವಾಯಿತು"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect ಸಂಯೋಜನೆಯು ಪೂರ್ಣವಾಗಲಿಲ್ಲ"</string>
+    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect ಇಂಟಿಗ್ರೇಶನ್ ಪೂರ್ಣವಾಗಲಿಲ್ಲ"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"ಅದು ಮತ್ತೆ ಲಭ್ಯವಿರುವಾಗ ನೀವು ನೋಟಿಫಿಕೇಶನ್ ಪಡೆಯುವಿರಿ."</string>
     <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"ಅರ್ಥವಾಯಿತು"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Health Connect ಸಂಯೋಜನೆಯು ಪೂರ್ಣವಾಗಲಿಲ್ಲ"</string>
+    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Health Connect ಇಂಟಿಗ್ರೇಶನ್ ಪೂರ್ಣವಾಗಲಿಲ್ಲ"</string>
     <string name="migration_not_complete_notification_action" msgid="757041885992445657">"ಇನ್ನಷ್ಟು ಓದಿ"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect ಸಂಯೋಜನೆ ಪೂರ್ಣಗೊಂಡಿದೆ"</string>
+    <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect ಇಂಟಿಗ್ರೇಶನ್ ಪೂರ್ಣಗೊಂಡಿದೆ"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"ತೆರೆಯಿರಿ"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"ಹೊಸದೇನಿದೆ"</string>
     <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"ಈಗ ನೀವು ನೇರವಾಗಿ ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಂದ Health Connect ಗೆ ಆ್ಯಕ್ಸೆಸ್ ಪಡೆಯಬಹುದು. ಯಾವುದೇ ಸಮಯದಲ್ಲಿ Health Connect ಆ್ಯಪ್ ಅನ್ನು ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ."</string>

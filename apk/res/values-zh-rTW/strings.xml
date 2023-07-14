@@ -100,10 +100,10 @@
     <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"已爬樓層數"</string>
     <string name="floors_climbed_read_content_description" msgid="4730764877684911752">"讀取已爬樓層數資料"</string>
     <string name="floors_climbed_write_content_description" msgid="3480340610185615655">"寫入已爬樓層數資料"</string>
-    <string name="power_uppercase_label" msgid="8027219480901448660">"功率"</string>
-    <string name="power_lowercase_label" msgid="3893286148577044369">"功率"</string>
-    <string name="power_read_content_description" msgid="6821797135406643841">"讀取功率資料"</string>
-    <string name="power_write_content_description" msgid="8091584558688087392">"寫入功率資料"</string>
+    <string name="power_uppercase_label" msgid="8027219480901448660">"能量"</string>
+    <string name="power_lowercase_label" msgid="3893286148577044369">"能量"</string>
+    <string name="power_read_content_description" msgid="6821797135406643841">"讀取能量資料"</string>
+    <string name="power_write_content_description" msgid="8091584558688087392">"寫入能量資料"</string>
     <string name="speed_uppercase_label" msgid="3307049861007518587">"速度"</string>
     <string name="speed_lowercase_label" msgid="3462529886150464647">"速度"</string>
     <string name="speed_read_content_description" msgid="9097089387385110692">"讀取速度資料"</string>
@@ -132,10 +132,10 @@
     <string name="body_fat_lowercase_label" msgid="4090686510477176498">"體脂肪"</string>
     <string name="body_fat_read_content_description" msgid="801664410906939146">"讀取體脂肪資料"</string>
     <string name="body_fat_write_content_description" msgid="4863558071904720577">"寫入體脂肪資料"</string>
-    <string name="body_water_mass_uppercase_label" msgid="7839393299147916863">"身體水含量"</string>
-    <string name="body_water_mass_lowercase_label" msgid="9196249948631920955">"身體水含量"</string>
-    <string name="body_water_mass_read_content_description" msgid="1468266374858854184">"讀取身體水含量資料"</string>
-    <string name="body_water_mass_write_content_description" msgid="8485284654932647383">"寫入身體水含量資料"</string>
+    <string name="body_water_mass_uppercase_label" msgid="7839393299147916863">"身體含水量"</string>
+    <string name="body_water_mass_lowercase_label" msgid="9196249948631920955">"身體含水量"</string>
+    <string name="body_water_mass_read_content_description" msgid="1468266374858854184">"讀取身體含水量資料"</string>
+    <string name="body_water_mass_write_content_description" msgid="8485284654932647383">"寫入身體含水量資料"</string>
     <string name="bone_mass_uppercase_label" msgid="6815438946872228501">"骨質密度"</string>
     <string name="bone_mass_lowercase_label" msgid="5127378263122564055">"骨質密度"</string>
     <string name="bone_mass_read_content_description" msgid="8401070346821477225">"讀取骨質密度資料"</string>

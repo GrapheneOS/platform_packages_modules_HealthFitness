@@ -31,7 +31,7 @@
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> rakendusel on juurdepääs"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> rakendusel on juurdepääs"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Pole"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Sisestuse üksikasjad"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Kirje üksikasjad"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Hiljutine juurdepääs"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Rakendusele Health Connect pole hiljuti ükski rakendus juurde pääsenud"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Kuva kõik hiljutised juurdepääsemised"</string>
