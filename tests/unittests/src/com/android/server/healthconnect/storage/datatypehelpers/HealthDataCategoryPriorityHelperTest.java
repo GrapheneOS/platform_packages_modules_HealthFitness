@@ -31,6 +31,7 @@ import android.health.connect.HealthDataCategory;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.modules.utils.testing.ExtendedMockitoRule;
+import com.android.server.healthconnect.TestUtils;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
@@ -91,6 +92,7 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @After
     public void tearDown() throws Exception {
+        TestUtils.waitForAllScheduledTasksToComplete();
         mHealthDataCategoryPriorityHelper.clearData(mTransactionManager);
     }
 
