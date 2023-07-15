@@ -496,7 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g>睡眠"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"清醒"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"在床上醒來"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"在床上醒著"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"睡眠"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"起床"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"快速眼動睡眠"</string>
