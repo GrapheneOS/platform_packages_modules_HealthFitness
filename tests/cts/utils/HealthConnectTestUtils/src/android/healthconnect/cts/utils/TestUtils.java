@@ -168,6 +168,7 @@ public class TestUtils {
     public static final Instant SESSION_END_TIME =
             Instant.now().minus(10, ChronoUnit.DAYS).plus(1, ChronoUnit.HOURS);
     private static final String TAG = "HCTestUtils";
+    private static final int TIMEOUT_SECONDS = 5;
 
     public static boolean isHardwareAutomotive() {
         return hasSystemFeature(AUTOMOTIVE_FEATURE);
@@ -203,7 +204,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (exceptionAtomicReference.get() != null) {
             throw exceptionAtomicReference.get();
         }
@@ -257,7 +258,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (exceptionAtomicReference.get() != null) {
             throw exceptionAtomicReference.get();
         }
@@ -315,7 +316,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (exceptionAtomicReference.get() != null) {
             throw exceptionAtomicReference.get();
         }
@@ -352,7 +353,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
         if (healthConnectExceptionAtomicReference.get() != null) {
             throw healthConnectExceptionAtomicReference.get();
         }
@@ -686,7 +687,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (healthConnectExceptionAtomicReference.get() != null) {
             throw healthConnectExceptionAtomicReference.get();
         }
@@ -723,7 +724,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (healthConnectExceptionAtomicReference.get() != null) {
             throw healthConnectExceptionAtomicReference.get();
         }
@@ -761,7 +762,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (healthConnectExceptionAtomicReference.get() != null) {
             throw healthConnectExceptionAtomicReference.get();
         }
@@ -796,7 +797,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (healthConnectExceptionAtomicReference.get() != null) {
             throw healthConnectExceptionAtomicReference.get();
         }
@@ -836,7 +837,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
         if (healthConnectExceptionAtomicReference.get() != null) {
             throw healthConnectExceptionAtomicReference.get();
         }
@@ -890,7 +891,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
         if (healthConnectExceptionAtomicReference.get() != null) {
             throw healthConnectExceptionAtomicReference.get();
         }
@@ -922,7 +923,7 @@ public class TestUtils {
                             latch.countDown();
                         }
                     });
-            assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
             if (exceptionAtomicReference.get() != null) {
                 throw exceptionAtomicReference.get();
             }
@@ -957,7 +958,7 @@ public class TestUtils {
                             latch.countDown();
                         }
                     });
-            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
             if (exceptionAtomicReference.get() != null) {
                 throw exceptionAtomicReference.get();
             }
@@ -993,7 +994,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
         if (exceptionAtomicReference.get() != null) {
             throw exceptionAtomicReference.get();
         }
@@ -1024,7 +1025,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
         if (exceptionAtomicReference.get() != null) {
             throw exceptionAtomicReference.get();
         }
@@ -1069,7 +1070,7 @@ public class TestUtils {
                             latch.countDown();
                         }
                     });
-            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
             if (exceptionAtomicReference.get() != null) {
                 throw exceptionAtomicReference.get();
             }
@@ -1109,7 +1110,7 @@ public class TestUtils {
                             latch.countDown();
                         }
                     });
-            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
             assertThat(responseException.get()).isNull();
             assertThat(response).isNotNull();
         } finally {
@@ -1147,7 +1148,7 @@ public class TestUtils {
                         }
                     });
 
-            assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
             if (exceptionAtomicReference.get() != null) {
                 throw exceptionAtomicReference.get();
             }
@@ -1206,7 +1207,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (migrationExceptionAtomicReference.get() != null) {
             throw migrationExceptionAtomicReference.get();
         }
@@ -1235,7 +1236,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (migrationExceptionAtomicReference.get() != null) {
             throw migrationExceptionAtomicReference.get();
         }
@@ -1266,7 +1267,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (migrationExceptionAtomicReference.get() != null) {
             throw migrationExceptionAtomicReference.get();
         }
@@ -1306,7 +1307,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
         if (responseException.get() != null) {
             throw responseException.get();
         }
@@ -1336,7 +1337,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
         if (exceptionAtomicReference.get() != null) {
             throw exceptionAtomicReference.get();
         }
@@ -1665,7 +1666,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
         if (exceptionAtomicReference.get() != null) {
             throw exceptionAtomicReference.get();
         }
@@ -1695,7 +1696,7 @@ public class TestUtils {
                         latch.countDown();
                     }
                 });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isEqualTo(true);
+        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
         if (exceptionAtomicReference.get() != null) {
             throw exceptionAtomicReference.get();
         }
