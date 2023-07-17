@@ -43,6 +43,9 @@ import android.os.UserHandle;
 
 import androidx.test.InstrumentationRegistry;
 
+import com.android.server.healthconnect.TestUtils;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -92,6 +95,11 @@ public class FirstGrantTimeUnitTest {
         mUiAutomation.adoptShellPermissionIdentity(
                 "android.permission.OBSERVE_GRANT_REVOKE_PERMISSIONS");
         mGrantTimeManager = new FirstGrantTimeManager(mContext, mTracker, mDatastore);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        TestUtils.waitForAllScheduledTasksToComplete();
     }
 
     @Test(expected = IllegalArgumentException.class)
