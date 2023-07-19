@@ -291,6 +291,24 @@ public class HealthConnectManager {
      */
     @SystemApi public static final int DATA_DOWNLOAD_COMPLETE = 4;
 
+    /**
+     * Activity action: Launch activity exported by client application that handles onboarding to
+     * Health Connect.
+     *
+     * <p>Health Connect will invoke this intent whenever the user attempts to connect an app that
+     * has exported an activity that responds to this intent. The launched activity is responsible
+     * for making permission requests and any other prerequisites for connecting to Health Connect.
+     *
+     * <p class="note">Applications exporting an activity that is launched by this intent must also
+     * guard it with {@link HealthPermissions#START_ONBOARDING} so that only the system can launch
+     * it.
+     *
+     * @hide
+     */
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_SHOW_ONBOARDING =
+            "android.health.connect.action.SHOW_ONBOARDING";
+
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
     private static volatile Set<String> sHealthPermissions;

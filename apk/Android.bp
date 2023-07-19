@@ -169,7 +169,8 @@ android_app {
     additional_manifests: [
       "HealthPermissionsManifest.xml",
       "ManageHealthPermissionsManifest.xml",
-      "ManageHealthDataManifest.xml"
+      "ManageHealthDataManifest.xml",
+      "StartOnboardingManifest.xml"
     ],
     certificate: ":com.android.healthconnect.controller.certificate",
     static_libs: [
