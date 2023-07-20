@@ -32,7 +32,7 @@ genrule {
 java_library {
     name: "healthfitness-statsd",
     sdk_version: "module_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     srcs: [
         ":statslog-healthfitness-java-gen",
     ],
@@ -65,7 +65,7 @@ java_sdk_library {
     srcs: [":framework-healthfitness-sources"],
     defaults: ["framework-module-defaults"],
     sdk_version: "module_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     apex_available: ["com.android.healthfitness"],
     impl_library_visibility: [
         "//packages/modules/HealthFitness:__subpackages__"

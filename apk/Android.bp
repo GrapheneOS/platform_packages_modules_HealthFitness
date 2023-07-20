@@ -47,7 +47,7 @@ java_library {
     name: "HealthConnectPermissionsApis",
     srcs: [":healthconnectController-permissions-apis"],
     sdk_version: "module_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     libs: [
         "kotlin-annotations",
         "framework-healthfitness.impl" // permissions ui needs access to healthfitness hidden apis.
@@ -65,7 +65,7 @@ java_library {
     name: "HealthConnectMigrationApis",
     srcs: [":healthconnectController-migration-apis"],
     sdk_version: "module_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     libs: [
         "kotlin-annotations",
         "framework-healthfitness.impl" // migration ui needs access to healthfitness hidden apis.
@@ -96,7 +96,7 @@ genrule {
 java_library {
     name: "healthfitness-ui-statsd",
     sdk_version: "module_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     srcs: [
         ":statslog-healthfitness-ui-java-gen",
     ],
@@ -121,7 +121,7 @@ android_library {
     name: "HealthConnectLibrary",
     srcs: [":healthConnectController-sources"],
     sdk_version: "system_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     libs: [
         "kotlin-annotations",
         "framework-healthfitness",
@@ -161,7 +161,7 @@ android_app {
     name: "HealthConnectController",
     srcs: ["src/**/HealthConnectApplication.kt"],
     sdk_version: "module_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     privileged: true,
     privapp_allowlist: ":privapp_allowlist_com.android.healthconnect.controller.xml",
     rename_resources_package: false,

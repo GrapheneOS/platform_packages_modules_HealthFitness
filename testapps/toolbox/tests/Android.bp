@@ -24,8 +24,8 @@ android_test {
     ],
     certificate: "platform",
     defaults: ["modules-utils-testable-device-config-defaults"],
-    sdk_version: "module_current",
-    min_sdk_version: "UpsideDownCake",
+    target_sdk_version: "34",
+    min_sdk_version: "34",
     static_libs: [
         "HealthConnectToolboxLibrary",
         "kotlin-stdlib",

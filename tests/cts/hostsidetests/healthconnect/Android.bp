@@ -26,7 +26,7 @@ android_test_helper_app {
         "cts-healthconnect-lib"
     ],
     sdk_version: "test_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     srcs: [
         "HealthConnectTestHelper/src/**/*.java",
         "HealthConnectTestHelper/src/**/*.kt",
@@ -39,7 +39,7 @@ android_test_helper_app {
     manifest: "HealthConnectTestHelper/CtsHealthConnectTestAppAWithNormalReadWritePermission.xml",
     static_libs: ["cts-healthconnect-lib"],
     sdk_version: "test_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     srcs: ["HealthConnectTestHelper/src/**/*.java"],
 }
 
@@ -48,7 +48,7 @@ android_test_helper_app {
     manifest: "HealthConnectTestHelper/CtsHealthConnectTestAppBWithNormalReadWritePermission.xml",
     static_libs: ["cts-healthconnect-lib"],
     sdk_version: "test_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     srcs: ["HealthConnectTestHelper/src/**/*.java"],
 }
 
@@ -57,7 +57,7 @@ android_test_helper_app {
     manifest: "HealthConnectTestHelper/CtsHealthConnectTestAppWithDataManagePermission.xml",
     static_libs: ["cts-healthconnect-lib"],
     sdk_version: "test_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     srcs: ["HealthConnectTestHelper/src/**/*.java"],
 }
 
@@ -66,7 +66,7 @@ android_test_helper_app {
     manifest: "HealthConnectTestHelper/CtsHealthConnectTestAppWithNoPermission.xml",
     static_libs: ["cts-healthconnect-lib"],
     sdk_version: "test_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     srcs: ["HealthConnectTestHelper/src/**/*.java"],
 }
 
@@ -75,7 +75,7 @@ android_test_helper_app {
     manifest: "HealthConnectTestHelper/CtsHealthConnectTestAppWithWritePermissionsOnly.xml",
     static_libs: ["cts-healthconnect-lib"],
     sdk_version: "test_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     srcs: ["HealthConnectTestHelper/src/**/*.java"],
 }
 
@@ -104,7 +104,7 @@ android_test {
         "mts-healthfitness",
     ],
     sdk_version: "test_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     libs: [
         "android.test.base",
         "android.test.mock",

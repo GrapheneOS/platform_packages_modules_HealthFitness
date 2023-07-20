@@ -41,6 +41,7 @@ android_test_helper_app {
         "general-tests",
     ],
 
-    sdk_version: "system_current",
+    target_sdk_version: "34",
+    min_sdk_version: "34",
 
 }
