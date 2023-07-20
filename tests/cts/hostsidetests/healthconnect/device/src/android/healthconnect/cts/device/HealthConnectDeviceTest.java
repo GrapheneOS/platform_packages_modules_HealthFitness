@@ -363,7 +363,7 @@ public class HealthConnectDeviceTest {
 
         ChangeLogsResponse response = bundle.getParcelable(CHANGE_LOGS_RESPONSE);
 
-        assertThat(response.getUpsertedRecords().size()).isEqualTo(noOfRecordsInsertedByAppA);
+        assertThat(response.getUpsertedRecords()).hasSize(noOfRecordsInsertedByAppA);
         assertThat(
                         response.getUpsertedRecords().stream()
                                 .map(Record::getMetadata)
@@ -371,7 +371,7 @@ public class HealthConnectDeviceTest {
                                 .toList())
                 .containsExactlyElementsIn(listOfRecordIdsInsertedByAppA);
 
-        assertThat(response.getDeletedLogs().size()).isEqualTo(0);
+        assertThat(response.getDeletedLogs()).isEmpty();
 
         bundle =
                 readChangeLogsUsingDataOriginFiltersAs(
@@ -379,8 +379,8 @@ public class HealthConnectDeviceTest {
 
         response = bundle.getParcelable(CHANGE_LOGS_RESPONSE);
 
-        assertThat(response.getUpsertedRecords().size()).isEqualTo(0);
-        assertThat(response.getDeletedLogs().size()).isEqualTo(noOfRecordsInsertedByAppB);
+        assertThat(response.getUpsertedRecords()).isEmpty();
+        assertThat(response.getDeletedLogs()).hasSize(noOfRecordsInsertedByAppB);
     }
 
     @Test
@@ -412,8 +412,8 @@ public class HealthConnectDeviceTest {
                         .map(dataOrigin -> dataOrigin.getPackageName())
                         .collect(Collectors.toList());
 
-        assertThat(newPriorityList.size()).isEqualTo(oldPriorityList.size() + 1);
-        assertThat(newPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName())).isTrue();
+        assertThat(newPriorityList).hasSize(oldPriorityList.size() + 1);
+        assertThat(newPriorityList).contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
     }
 
     @Test
@@ -438,7 +438,7 @@ public class HealthConnectDeviceTest {
                         .map(dataOrigin -> dataOrigin.getPackageName())
                         .collect(Collectors.toList());
 
-        assertThat(oldPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName())).isTrue();
+        assertThat(oldPriorityList).contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
 
         revokePermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), healthPerms.get(0));
 
@@ -450,7 +450,7 @@ public class HealthConnectDeviceTest {
                         .map(dataOrigin -> dataOrigin.getPackageName())
                         .collect(Collectors.toList());
 
-        assertThat(newPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName())).isTrue();
+        assertThat(newPriorityList).contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
 
         grantPermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), healthPerms.get(0));
     }
@@ -477,7 +477,7 @@ public class HealthConnectDeviceTest {
                         .map(dataOrigin -> dataOrigin.getPackageName())
                         .collect(Collectors.toList());
 
-        assertThat(oldPriorityList.contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName())).isTrue();
+        assertThat(oldPriorityList).contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
 
         for (String perm : healthPerms) {
             revokePermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), perm);
@@ -635,7 +635,7 @@ public class HealthConnectDeviceTest {
                         .map(appInfo -> appInfo.getPackageName())
                         .collect(Collectors.toList());
 
-        assertThat(appInfoList.containsAll(pkgNameList)).isTrue();
+        assertThat(appInfoList).containsAtLeastElementsIn(pkgNameList);
     }
 
     @Test
