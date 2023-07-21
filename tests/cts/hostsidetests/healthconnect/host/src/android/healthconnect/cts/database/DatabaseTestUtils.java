@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class DataBaseTestUtils {
+public class DatabaseTestUtils {
     public static final String INSTALL_ARG_FORCE_QUERYABLE = "--force-queryable";
 
     public static final String HC_APEX_RESOURCE_PATH_PREFIX = "/HealthConnectApexFiles/";
@@ -123,7 +123,7 @@ public class DataBaseTestUtils {
         }
         File tempDir = FileUtil.createTempDir("HcHostSideTests");
         File file = new File(tempDir, filenameInResources);
-        InputStream in = DataBaseTestUtils.class.getResourceAsStream(fullResourceName);
+        InputStream in = DatabaseTestUtils.class.getResourceAsStream(fullResourceName);
         if (in == null) {
             throw new IllegalArgumentException("Resource not found: " + fullResourceName);
         }
@@ -384,7 +384,7 @@ public class DataBaseTestUtils {
                                 mTableListCurrentVersion
                                         .get(referTableName)
                                         .getColumnInfoMapping()
-                                        .get(foreignKeyInfo.getForeignKeyName())
+                                        .get(foreignKeyInfo.getForeignKeyReferredColumnName())
                                         .getConstraints();
                         if (!mTableListCurrentVersion
                                         .get(referTableName)
@@ -472,7 +472,7 @@ public class DataBaseTestUtils {
                             mTableListCurrentVersion
                                     .get(referTableName)
                                     .getColumnInfoMapping()
-                                    .get(foreignKeyInfo.getForeignKeyName())
+                                    .get(foreignKeyInfo.getForeignKeyReferredColumnName())
                                     .getConstraints();
                     /**
                      * Checking whether the column to which foreign key has been mapped is primary
@@ -497,6 +497,15 @@ public class DataBaseTestUtils {
                 }
             }
         }
+    }
+
+    /**
+     * @return true if apex version file is present in resources otherwise false.
+     */
+    public static boolean isFilePresentInResources(String filenameInResources) {
+        final String fullResourceName = HC_APEX_RESOURCE_PATH_PREFIX + filenameInResources;
+        InputStream in = DatabaseTestUtils.class.getResourceAsStream(fullResourceName);
+        return in != null;
     }
 }
 
