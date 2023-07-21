@@ -59,20 +59,20 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
     private var searchView: SearchView? = null
     private val viewModel: ConnectedAppsViewModel by viewModels()
 
-    private val allowedAppsCategory: PreferenceGroup? by lazy {
-        preferenceScreen.findPreference(ALLOWED_APPS_CATEGORY)
+    private val allowedAppsCategory: PreferenceGroup by lazy {
+        preferenceScreen.findPreference(ALLOWED_APPS_CATEGORY)!!
     }
-    private val notAllowedAppsCategory: PreferenceGroup? by lazy {
-        preferenceScreen.findPreference(NOT_ALLOWED_APPS)
+    private val notAllowedAppsCategory: PreferenceGroup by lazy {
+        preferenceScreen.findPreference(NOT_ALLOWED_APPS)!!
     }
-    private val inactiveAppsPreference: PreferenceGroup? by lazy {
-        preferenceScreen.findPreference(INACTIVE_APPS)
+    private val inactiveAppsPreference: PreferenceGroup by lazy {
+        preferenceScreen.findPreference(INACTIVE_APPS)!!
     }
-    private val emptySearchResultsPreference: NoSearchResultPreference? by lazy {
-        preferenceScreen.findPreference(EMPTY_SEARCH_RESULT)
+    private val emptySearchResultsPreference: NoSearchResultPreference by lazy {
+        preferenceScreen.findPreference(EMPTY_SEARCH_RESULT)!!
     }
-    private val topIntroPreference: TopIntroPreference? by lazy {
-        preferenceScreen.findPreference(TOP_INTRO_PREF)
+    private val topIntroPreference: TopIntroPreference by lazy {
+        preferenceScreen.findPreference(TOP_INTRO_PREF)!!
     }
 
     private val menuProvider =

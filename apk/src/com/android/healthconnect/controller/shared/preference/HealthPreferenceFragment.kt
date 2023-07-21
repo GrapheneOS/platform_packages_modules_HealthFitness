@@ -72,7 +72,7 @@ abstract class HealthPreferenceFragment : PreferenceFragmentCompat() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         logger.setPageId(pageName)
         val rootView =
             inflater.inflate(R.layout.preference_frame, container, /*attachToRoot */ false)
@@ -96,7 +96,7 @@ abstract class HealthPreferenceFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceComparisonCallback = HealthPreferenceComparisonCallback()
     }
 
-    override fun onCreateAdapter(preferenceScreen: PreferenceScreen?): RecyclerView.Adapter<*> {
+    override fun onCreateAdapter(preferenceScreen: PreferenceScreen): RecyclerView.Adapter<*> {
         val adapter = super.onCreateAdapter(preferenceScreen)
         /* By default, the PreferenceGroupAdapter does setHasStableIds(true). Since each Preference
          * is internally allocated with an auto-incremented ID, it does not allow us to gracefully
