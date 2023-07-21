@@ -19,7 +19,10 @@ package android.healthconnect.cts.database;
 import static android.healthconnect.cts.database.DatabaseTestUtils.assertInstallSucceeds;
 import static android.healthconnect.cts.database.DatabaseTestUtils.checkColumnModification;
 import static android.healthconnect.cts.database.DatabaseTestUtils.checkExistingTableDeletion;
+import static android.healthconnect.cts.database.DatabaseTestUtils.checkForeignKeyModification;
 import static android.healthconnect.cts.database.DatabaseTestUtils.checkIndexModification;
+import static android.healthconnect.cts.database.DatabaseTestUtils.checkNewTableAddition;
+import static android.healthconnect.cts.database.DatabaseTestUtils.checkPrimaryKeyModification;
 import static android.healthconnect.cts.database.DatabaseTestUtils.deleteHcDatabase;
 import static android.healthconnect.cts.database.DatabaseTestUtils.getCurrentHcDatabaseVersion;
 import static android.healthconnect.cts.database.DatabaseTestUtils.isFilePresentInResources;
@@ -125,6 +128,9 @@ public class HealthConnectDatabaseBackwardCompatibilityTest extends BaseHostJUni
         checkTableDeletion(incompatibleChanges);
         checkColumnModifications(incompatibleChanges);
         checkIndexModifications(incompatibleChanges);
+        checkPrimaryKeyModifications(incompatibleChanges);
+        checkForeignKeyModifications(incompatibleChanges);
+        checkNewTableModification(incompatibleChanges);
 
         Assert.assertTrue(
                 "Changes made to the database are backward incompatible"
@@ -175,6 +181,54 @@ public class HealthConnectDatabaseBackwardCompatibilityTest extends BaseHostJUni
         if (!backwardIncompatibleChangeList.isEmpty()) {
             incompatibleChanges.add(
                     "Changes made to the indexes are backward incompatible"
+                            + "\n"
+                            + backwardIncompatibleChangeList
+                            + "\n");
+        }
+    }
+
+    /** Checks for the modification in primary key columns of existing tables. */
+    public void checkPrimaryKeyModifications(List<String> incompatibleChanges) {
+
+        List<String> backwardIncompatibleChangeList = new ArrayList<>();
+        checkPrimaryKeyModification(
+                sPreviousVersionSchema, sCurrentVersionSchema, backwardIncompatibleChangeList);
+
+        if (!backwardIncompatibleChangeList.isEmpty()) {
+            incompatibleChanges.add(
+                    "Changes made to the primary keys are backward incompatible"
+                            + "\n"
+                            + backwardIncompatibleChangeList
+                            + "\n");
+        }
+    }
+
+    /** Checks for the modifications in the foreign keys of existing tables. */
+    public void checkForeignKeyModifications(List<String> incompatibleChanges) {
+
+        List<String> backwardIncompatibleChangeList = new ArrayList<>();
+        checkForeignKeyModification(
+                sPreviousVersionSchema, sCurrentVersionSchema, backwardIncompatibleChangeList);
+
+        if (!backwardIncompatibleChangeList.isEmpty()) {
+            incompatibleChanges.add(
+                    "Changes made to the foreign keys are backward incompatible"
+                            + "\n"
+                            + backwardIncompatibleChangeList
+                            + "\n");
+        }
+    }
+
+    /** Checks for the backward incompatible actions in new tables. */
+    public void checkNewTableModification(List<String> incompatibleChanges) {
+
+        List<String> backwardIncompatibleChangeList = new ArrayList<>();
+        checkNewTableAddition(
+                sPreviousVersionSchema, sCurrentVersionSchema, backwardIncompatibleChangeList);
+
+        if (!backwardIncompatibleChangeList.isEmpty()) {
+            incompatibleChanges.add(
+                    "Foreign keys of the new table are backward incompatible"
                             + "\n"
                             + backwardIncompatibleChangeList
                             + "\n");
