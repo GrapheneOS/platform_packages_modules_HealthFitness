@@ -37,7 +37,7 @@ apex {
     ],
     prebuilts: ["current_sdkinfo"],
     key: "com.android.healthfitness.key",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     certificate: ":com.android.healthfitness.certificate",
     updatable: true,
     bootclasspath_fragments: ["com.android.healthfitness-bootclasspath-fragment"],

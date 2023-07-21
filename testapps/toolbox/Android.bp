@@ -28,7 +28,7 @@ android_library {
     name: "HealthConnectToolboxLibrary",
     srcs: [":healthConnectToolbox-sources"],
     sdk_version: "module_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     libs: ["kotlin-annotations", "framework-healthfitness"],
     static_libs: [
         "kotlin-stdlib",
@@ -46,7 +46,7 @@ android_library {
 android_app {
     name: "HealthConnectToolbox",
     sdk_version: "module_current",
-    min_sdk_version: "UpsideDownCake",
+    min_sdk_version: "34",
     rename_resources_package: false,
     updatable: true,
     certificate: "platform",
