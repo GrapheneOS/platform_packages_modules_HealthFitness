@@ -54,10 +54,10 @@ constructor(
         key = AUTO_DELETE_RANGE_PICKER_PREFERENCE_KEY
     }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder?) {
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        val widgetFrame: ViewGroup = holder?.findViewById(android.R.id.widget_frame) as ViewGroup
+        val widgetFrame: ViewGroup = holder.findViewById(android.R.id.widget_frame) as ViewGroup
         val widgetFrameParent: LinearLayout = widgetFrame.parent as LinearLayout
 
         val iconFrame: LinearLayout? = holder.findViewById(android.R.id.icon_frame) as LinearLayout?

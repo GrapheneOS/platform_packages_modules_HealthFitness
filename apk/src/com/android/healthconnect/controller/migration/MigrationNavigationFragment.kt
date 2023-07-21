@@ -23,7 +23,7 @@ class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return inflater.inflate(R.layout.fragment_migration_navigation, container, false)
     }
 
