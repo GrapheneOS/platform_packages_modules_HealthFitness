@@ -461,6 +461,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                             .getApplicableRecordTypeIds());
                         }
 
+                        long startDateAccess;
                         if (!holdsDataManagementPermission) {
                             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                             if (!isInForeground) {
@@ -475,10 +476,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     RateLimiter.QuotaCategory.QUOTA_CATEGORY_READ,
                                     isInForeground,
                                     builder);
+                            startDateAccess =
+                                    mPermissionHelper
+                                            .getHealthDataStartDateAccessOrThrow(
+                                                    attributionSource.getPackageName(), userHandle)
+                                            .toEpochMilli();
+                        } else {
+                            startDateAccess = request.getStartTime();
                         }
                         callback.onResult(
                                 new AggregateTransactionRequest(
-                                                attributionSource.getPackageName(), request)
+                                                attributionSource.getPackageName(),
+                                                request,
+                                                startDateAccess)
                                         .getAggregateDataResponseParcel());
                         finishDataDeliveryRead(recordTypesToTest, attributionSource);
                         builder.setDataTypesFromRecordTypes(recordTypesToTest)
@@ -579,21 +589,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
                         Trace.traceBegin(TRACE_TAG_READ, TAG_READ);
                         try {
-                            long startDateAccess = request.getStartTime();
+                            long startDateAccessEpochMilli = request.getStartTime();
                             if (!holdsDataManagementPermission) {
-                                Instant startInstant =
-                                        mPermissionHelper.getHealthDataStartDateAccess(
+                                Instant startDateAccessInstant =
+                                        mPermissionHelper.getHealthDataStartDateAccessOrThrow(
                                                 attributionSource.getPackageName(), userHandle);
-                                if (startInstant == null) {
-                                    throwExceptionIncorrectPermissionState();
-                                }
 
                                 // Always set the startDateAccess for local time filter, as for
                                 // local date time we use it in conjunction with the time filter
                                 // start-time
                                 if (request.usesLocalTimeFilter()
-                                        || startInstant.toEpochMilli() > startDateAccess) {
-                                    startDateAccess = startInstant.toEpochMilli();
+                                        || startDateAccessInstant.toEpochMilli()
+                                                > startDateAccessEpochMilli) {
+                                    startDateAccessEpochMilli =
+                                            startDateAccessInstant.toEpochMilli();
                                 }
                             }
                             Pair<List<RecordInternal<?>>, Long> readRecordsResponse =
@@ -601,7 +610,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                             new ReadTransactionRequest(
                                                     attributionSource.getPackageName(),
                                                     request,
-                                                    startDateAccess,
+                                                    startDateAccessEpochMilli,
                                                     enforceSelfRead.get(),
                                                     extraReadPermsToGrantState));
                             builder.setNumberOfRecords(readRecordsResponse.first.size());
@@ -920,13 +929,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                         tryAcquireApiCallQuota(
                                 uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, builder);
-                        Instant startDateInstant =
-                                mPermissionHelper.getHealthDataStartDateAccess(
+                        Instant startDateAccessInstant =
+                                mPermissionHelper.getHealthDataStartDateAccessOrThrow(
                                         attributionSource.getPackageName(), userHandle);
-                        if (startDateInstant == null) {
-                            throwExceptionIncorrectPermissionState();
-                        }
-                        long startDateAccess = startDateInstant.toEpochMilli();
+                        long startDateAccessEpochMilli = startDateAccessInstant.toEpochMilli();
                         final ChangeLogsHelper.ChangeLogsResponse changeLogsResponse =
                                 ChangeLogsHelper.getInstance()
                                         .getChangeLogs(changeLogsTokenRequest, token);
@@ -936,7 +942,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         new ReadTransactionRequest(
                                                 ChangeLogsHelper.getRecordTypeToInsertedUuids(
                                                         changeLogsResponse.getChangeLogsMap()),
-                                                startDateAccess));
+                                                startDateAccessEpochMilli));
                         List<DeletedLog> deletedLogs =
                                 ChangeLogsHelper.getDeletedLogs(
                                         changeLogsResponse.getChangeLogsMap());
@@ -2193,15 +2199,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         if (binderUid != attributionSourceUid) {
             throw new SecurityException("Binder uid must be equal to attribution source uid.");
         }
-    }
-
-    private void throwExceptionIncorrectPermissionState() {
-        throw new IllegalStateException(
-                "Incorrect health permission state, likely"
-                        + " because the calling application's manifest does not specify handling "
-                        + Intent.ACTION_VIEW_PERMISSION_USAGE
-                        + " with "
-                        + HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS);
     }
 
     private void logRecordTypeSpecificUpsertMetrics(

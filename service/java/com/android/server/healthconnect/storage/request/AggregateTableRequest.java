@@ -69,10 +69,12 @@ public class AggregateTableRequest {
     private final AggregationType<?> mAggregationType;
     private final RecordHelper<?> mRecordHelper;
     private final Map<Integer, AggregateResult<?>> mAggregateResults = new ArrayMap<>();
+    private final String mPhysicalTimeColumnName;
     private final String mTimeColumnName;
     // Additional column used for time filtering. End time for interval records,
     // null for other records.
     private final String mEndTimeColumnName;
+    private final long mStartDateAccess;
     private final SqlJoin mSqlJoin;
     private List<Long> mPackageFilters;
     private long mStartTime = DEFAULT_TIME;
@@ -89,9 +91,11 @@ public class AggregateTableRequest {
             AggregateParams params,
             AggregationType<?> aggregationType,
             RecordHelper<?> recordHelper,
+            long startDateAccess,
             boolean useLocalTime) {
         mTableName = params.getTableName();
         mColumnNamesToAggregate = params.getColumnsToFetch();
+        mPhysicalTimeColumnName = params.getPhysicalTimeColumnName();
         mTimeColumnName = params.getTimeColumnName();
         mAggregationType = aggregationType;
         mRecordHelper = recordHelper;
@@ -104,6 +108,7 @@ public class AggregateTableRequest {
         if (mEndTimeColumnName != null) {
             mAdditionalColumnsToFetch.add(mEndTimeColumnName);
         }
+        mStartDateAccess = startDateAccess;
         mUseLocalTime = useLocalTime;
     }
 
@@ -349,12 +354,26 @@ public class AggregateTableRequest {
         WhereClauses whereClauses = new WhereClauses();
         whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
 
+        // Take start access date into account
+        long startTime = mStartTime;
+        // This is an optimization to avoid unnecessary WHERE clause.
+        // - if local time is used, we'll compare the physical time field with mStartDateAccess
+        // - otherwise we'll just update the startTime to mStartDateAccess if it is greater than
+        //   startTime because we'll need to WHERE with that anyway.
+        // This is similar to what's been done in RecordHelper#getReadTableWhereClause()
+        if (mUseLocalTime) {
+            whereClauses.addWhereGreaterThanOrEqualClause(
+                    mPhysicalTimeColumnName, mStartDateAccess);
+        } else {
+            startTime = Math.max(mStartDateAccess, mStartTime);
+        }
+
         if (mEndTimeColumnName != null) {
             // Filter all records which overlap with time filter interval:
             // recordStartTime < filterEndTime and recordEndTime >= filterStartTime
-            whereClauses.addWhereGreaterThanOrEqualClause(mEndTimeColumnName, mStartTime);
+            whereClauses.addWhereGreaterThanOrEqualClause(mEndTimeColumnName, startTime);
         } else {
-            whereClauses.addWhereGreaterThanOrEqualClause(mTimeColumnName, mStartTime);
+            whereClauses.addWhereGreaterThanOrEqualClause(mTimeColumnName, startTime);
         }
         whereClauses.addWhereLessThanClause(mTimeColumnName, mEndTime);
 
