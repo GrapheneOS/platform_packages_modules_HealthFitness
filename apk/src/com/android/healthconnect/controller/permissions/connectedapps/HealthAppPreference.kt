@@ -49,11 +49,11 @@ class HealthAppPreference(context: Context, private val appMetadata: AppMetadata
     }
 
     override fun setOnPreferenceClickListener(
-        onPreferenceClickListener: OnPreferenceClickListener
+        onPreferenceClickListener: OnPreferenceClickListener?
     ) {
         val loggingClickListener = OnPreferenceClickListener {
             logger.logInteraction(logName)
-            onPreferenceClickListener.onPreferenceClick(it)
+            onPreferenceClickListener?.onPreferenceClick(it) ?: false
         }
         super.setOnPreferenceClickListener(loggingClickListener)
     }
@@ -67,7 +67,7 @@ class HealthAppPreference(context: Context, private val appMetadata: AppMetadata
         return preference is HealthAppPreference && appMetadata == preference.appMetadata
     }
 
-    override fun onBindViewHolder(view: PreferenceViewHolder?) {
+    override fun onBindViewHolder(view: PreferenceViewHolder) {
         super.onBindViewHolder(view)
     }
 }
