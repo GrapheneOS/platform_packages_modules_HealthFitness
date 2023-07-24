@@ -36,6 +36,8 @@ class PriorityListAdapter(
     private val viewModel: HealthPermissionTypesViewModel
 ) : RecyclerView.Adapter<PriorityListAdapter.PriorityListItemViewHolder?>() {
 
+    private val POSITION_CHANGED_PAYLOAD = Any()
+
     private var listener: ItemTouchHelper? = null
     private var appMetadataList = appMetadataList.toMutableList()
 
@@ -50,7 +52,22 @@ class PriorityListAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: PriorityListItemViewHolder, position: Int) {
-        viewHolder.bind(position, appMetadataList[position].appName, appMetadataList[position].icon)
+        // This method is needed as it's marked as abstract however it's empty as the logic is
+        // handled in the onBindViewHolder method that accepts a payloads list.
+    }
+
+    override fun onBindViewHolder(
+        viewHolder: PriorityListItemViewHolder,
+        position: Int,
+        payloads: List<Any>
+    ) {
+        viewHolder.bindPosition(position)
+
+        // Only bind the full view when there's no payload objects to avoid re-binding the icon and
+        // touch listener in the middle of a drag event.
+        if (payloads.isEmpty()) {
+            viewHolder.bind(appMetadataList[position].appName, appMetadataList[position].icon)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -62,6 +79,13 @@ class PriorityListAdapter(
         appMetadataList.add(
             if (toPosition > fromPosition + 1) toPosition - 1 else toPosition, movedAppInfo)
         notifyItemMoved(fromPosition, toPosition)
+        if (toPosition < fromPosition) {
+            notifyItemRangeChanged(
+                toPosition, fromPosition - toPosition + 1, POSITION_CHANGED_PAYLOAD)
+        } else {
+            notifyItemRangeChanged(
+                fromPosition, toPosition - fromPosition + 1, POSITION_CHANGED_PAYLOAD)
+        }
         viewModel.setEditedPriorityList(appMetadataList)
         return true
     }
@@ -100,11 +124,7 @@ class PriorityListAdapter(
         // conditions.
         // Drag&drop in accessibility mode (talk back) is implemented as custom actions.
         @SuppressLint("ClickableViewAccessibility")
-        fun bind(appPosition: Int, appName: String?, appIcon: Drawable?) {
-            // Adding 1 to position as position starts from 0 but should show to the user starting
-            // from 1.
-            val positionString: String = NumberFormat.getIntegerInstance().format(appPosition + 1)
-            appPositionView.text = positionString
+        fun bind(appName: String?, appIcon: Drawable?) {
             appNameView.text = appName
             appIconView.setImageDrawable(appIcon)
             dragIconView.setOnTouchListener { _, event ->
@@ -114,6 +134,13 @@ class PriorityListAdapter(
                 }
                 false
             }
+        }
+
+        fun bindPosition(appPosition: Int) {
+            // Adding 1 to position as position starts from 0 but should show to the user starting
+            // from 1.
+            val positionString: String = NumberFormat.getIntegerInstance().format(appPosition + 1)
+            appPositionView.text = positionString
         }
     }
 }
