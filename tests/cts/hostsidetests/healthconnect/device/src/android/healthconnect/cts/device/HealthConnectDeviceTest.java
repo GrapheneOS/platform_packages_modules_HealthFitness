@@ -98,6 +98,8 @@ public class HealthConnectDeviceTest {
     static final String TAG = "HealthConnectDeviceTest";
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
     static final long VERSION_CODE = 1;
+    private static final int ASYNC_RETRIES = 3;
+    private static final int ASYNC_RETRY_DELAY_MILLIS = 500;
 
     static final TestApp APP_A_WITH_READ_WRITE_PERMS =
             new TestApp(
@@ -630,12 +632,26 @@ public class HealthConnectDeviceTest {
                         APP_B_WITH_READ_WRITE_PERMS.getPackageName());
 
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-        List<String> appInfoList =
-                getApplicationInfo().stream()
-                        .map(appInfo -> appInfo.getPackageName())
-                        .collect(Collectors.toList());
 
-        assertThat(appInfoList).containsAtLeastElementsIn(pkgNameList);
+        // Contributor information is updated asynchronously, so retry with delay until the update
+        // finishes (or we run out of retries).
+        for (int i = 1; i <= ASYNC_RETRIES; i++) {
+            List<String> appInfoList =
+                    getApplicationInfo().stream()
+                            .map(appInfo -> appInfo.getPackageName())
+                            .collect(Collectors.toList());
+
+            try {
+                assertThat(appInfoList).containsAtLeastElementsIn(pkgNameList);
+            } catch (AssertionError e) {
+                if (i < ASYNC_RETRIES) {
+                    Thread.sleep(ASYNC_RETRY_DELAY_MILLIS);
+                    continue;
+                }
+
+                throw new AssertionError(e);
+            }
+        }
     }
 
     @Test
