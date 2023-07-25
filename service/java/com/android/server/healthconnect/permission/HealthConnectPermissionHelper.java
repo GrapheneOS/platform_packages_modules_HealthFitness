@@ -23,6 +23,7 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
@@ -214,6 +215,29 @@ public final class HealthConnectPermissionHelper {
         }
 
         return grantTimeDate.minus(GRANT_TIME_TO_START_ACCESS_DATE_PERIOD);
+    }
+
+    /**
+     * Same as {@link #getHealthDataStartDateAccess(String, UserHandle)} except this method also
+     * throws {@link IllegalAccessException} if health permission is in an incorrect state where
+     * first grant time can't be fetch.
+     */
+    @NonNull
+    public Instant getHealthDataStartDateAccessOrThrow(String packageName, UserHandle user) {
+        Instant startDateAccess = getHealthDataStartDateAccess(packageName, user);
+        if (startDateAccess == null) {
+            throwExceptionIncorrectPermissionState();
+        }
+        return startDateAccess;
+    }
+
+    private void throwExceptionIncorrectPermissionState() {
+        throw new IllegalStateException(
+                "Incorrect health permission state, likely"
+                        + " because the calling application's manifest does not specify handling "
+                        + Intent.ACTION_VIEW_PERMISSION_USAGE
+                        + " with "
+                        + HealthConnectManager.CATEGORY_HEALTH_PERMISSIONS);
     }
 
     private void addToPriorityListIfRequired(String packageName, String permissionName) {
