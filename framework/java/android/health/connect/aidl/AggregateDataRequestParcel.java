@@ -61,7 +61,7 @@ public class AggregateDataRequestParcel implements Parcelable {
     // set the duration takes precedence, but there should not be case when both are set.
     private Period mPeriod;
 
-    private boolean mLocalTimeFilter;
+    private final boolean mLocalTimeFilter;
 
     public AggregateDataRequestParcel(AggregateRecordsRequest<?> request) {
         mStartTime = TimeRangeFilterHelper.getFilterStartTimeMillis(request.getTimeRangeFilter());
@@ -124,6 +124,11 @@ public class AggregateDataRequestParcel implements Parcelable {
     @Nullable
     public Period getPeriod() {
         return mPeriod;
+    }
+
+    /** Returns whether this request uses {@link LocalTimeRangeFilter}. */
+    public boolean useLocalTimeFilter() {
+        return mLocalTimeFilter;
     }
 
     @Override

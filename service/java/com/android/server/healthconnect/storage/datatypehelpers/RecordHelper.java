@@ -131,10 +131,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             List<String> packageFilter,
             long startTime,
             long endTime,
+            long startDateAccess,
             boolean useLocalTime) {
         AggregateParams params = getAggregateParams(aggregationType);
+        String startTimeColumnName = getStartTimeColumnName();
+        params.setPhysicalTimeColumnName(startTimeColumnName);
         params.setTimeColumnName(
-                useLocalTime ? getLocalStartTimeColumnName() : getStartTimeColumnName());
+                useLocalTime ? getLocalStartTimeColumnName() : startTimeColumnName);
         params.setExtraTimeColumn(
                 useLocalTime ? getLocalEndTimeColumnName() : getEndTimeColumnName());
         params.setOffsetColumnToFetch(getZoneOffsetColumnName());
@@ -142,17 +145,18 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         if (supportsPriority(mRecordIdentifier, aggregationType.getAggregateOperationType())) {
             List<String> columns =
                     Arrays.asList(
-                            getStartTimeColumnName(),
+                            startTimeColumnName,
                             END_TIME_COLUMN_NAME,
                             APP_INFO_ID_COLUMN_NAME,
                             LAST_MODIFIED_TIME_COLUMN_NAME);
             params.appendAdditionalColumns(columns);
         }
         if (StorageUtils.isDerivedType(mRecordIdentifier)) {
-            params.appendAdditionalColumns(Collections.singletonList(getStartTimeColumnName()));
+            params.appendAdditionalColumns(Collections.singletonList(startTimeColumnName));
         }
 
-        return new AggregateTableRequest(params, aggregationType, this, useLocalTime)
+        return new AggregateTableRequest(
+                        params, aggregationType, this, startDateAccess, useLocalTime)
                 .setPackageFilter(
                         AppInfoHelper.getInstance().getAppInfoIds(packageFilter),
                         APP_INFO_ID_COLUMN_NAME)
@@ -298,10 +302,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
     }
 
-    /**
-     * Returns ReadSingleTableRequest for {@code request} and package name {@code packageName}
-     *
-     */
+    /** Returns ReadSingleTableRequest for {@code request} and package name {@code packageName} */
     public ReadTableRequest getReadTableRequest(
             ReadRecordsRequestParcel request,
             String packageName,

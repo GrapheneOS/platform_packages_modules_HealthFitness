@@ -20,7 +20,6 @@ import android.annotation.NonNull;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.AggregateResult;
 import android.health.connect.TimeRangeFilter;
-import android.health.connect.TimeRangeFilterHelper;
 import android.health.connect.aidl.AggregateDataRequestParcel;
 import android.health.connect.aidl.AggregateDataResponseParcel;
 import android.health.connect.datatypes.AggregationType;
@@ -52,7 +51,9 @@ public final class AggregateTransactionRequest {
     private final TimeRangeFilter mTimeRangeFilter;
 
     public AggregateTransactionRequest(
-            @NonNull String packageName, @NonNull AggregateDataRequestParcel request) {
+            @NonNull String packageName,
+            @NonNull AggregateDataRequestParcel request,
+            long startDateAccess) {
         mPackageName = packageName;
         mAggregateTableRequests = new ArrayList<>(request.getAggregateIds().length);
         mPeriod = request.getPeriod();
@@ -74,7 +75,8 @@ public final class AggregateTransactionRequest {
                                 request.getPackageFilters(),
                                 request.getStartTime(),
                                 request.getEndTime(),
-                                TimeRangeFilterHelper.isLocalTimeFilter(mTimeRangeFilter));
+                                startDateAccess,
+                                request.useLocalTimeFilter());
 
                 if (mDuration != null || mPeriod != null) {
                     aggregateTableRequest.setGroupBy(

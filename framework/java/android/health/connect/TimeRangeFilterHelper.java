@@ -37,7 +37,7 @@ public final class TimeRangeFilterHelper {
 
     /**
      * @return start time epoch milliseconds for Instant time filter and epoch milliseconds using
-     *     system zoneOffset for LocalTime filter
+     *     UTC zoneOffset for LocalTime filter
      */
     public static long getFilterStartTimeMillis(@NonNull TimeRangeFilter timeRangeFilter) {
         if (isLocalTimeFilter(timeRangeFilter)) {
@@ -52,8 +52,8 @@ public final class TimeRangeFilterHelper {
     }
 
     /**
-     * @return end time epoch milliseconds for Instant time filter and epoch milliseconds using
-     *     system zoneOffset for LocalTime filter
+     * @return end time epoch milliseconds for Instant time filter and epoch milliseconds using UTC
+     *     zoneOffset for LocalTime filter
      */
     public static long getFilterEndTimeMillis(@NonNull TimeRangeFilter timeRangeFilter) {
         if (isLocalTimeFilter(timeRangeFilter)) {
