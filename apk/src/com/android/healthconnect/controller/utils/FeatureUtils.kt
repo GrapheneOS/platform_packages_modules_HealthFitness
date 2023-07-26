@@ -7,11 +7,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 interface FeatureUtils {
     fun isSessionTypesEnabled(): Boolean
     fun isExerciseRouteEnabled(): Boolean
     fun isEntryPointsEnabled(): Boolean
+    fun isNewAppPriorityEnabled(): Boolean
+    fun isNewInformationArchitectureEnabled(): Boolean
 }
 
 class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnPropertiesChangedListener {
@@ -40,6 +43,19 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
 
     private var isEntryPointsEnabled =
         DeviceConfig.getBoolean(HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_ENTRY_POINTS_ENABLED, true)
+
+    // TODO (b/292267155) get flag from deviceConfig
+    private var isNewAppPriorityEnabled = false
+    // TODO (b/292267155) get flag from deviceConfig
+    private var isNewInformationArchitectureEnabled = false
+
+    override fun isNewAppPriorityEnabled(): Boolean {
+        return isNewAppPriorityEnabled
+    }
+
+    override fun isNewInformationArchitectureEnabled(): Boolean {
+        return isNewInformationArchitectureEnabled
+    }
 
     override fun isSessionTypesEnabled(): Boolean {
         synchronized(lock) {
@@ -85,6 +101,7 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
 @InstallIn(SingletonComponent::class)
 class FeaturesModule {
     @Provides
+    @Singleton
     fun providesFeatureUtils(@ApplicationContext context: Context): FeatureUtils {
         return FeatureUtilsImpl(context)
     }

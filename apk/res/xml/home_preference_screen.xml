@@ -35,5 +35,9 @@
             android:key="data_and_access"
             android:icon="?attr/dataAndAccessIcon"
             android:title="@string/data_title" />
+        <com.android.healthconnect.controller.shared.preference.HealthPreference
+            android:key="manage_data"
+            android:icon="?attr/manageDataIcon"
+            android:title="@string/manage_data_section"/>
     </PreferenceCategory>
 </PreferenceScreen>

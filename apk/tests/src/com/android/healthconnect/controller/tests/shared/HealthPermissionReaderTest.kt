@@ -7,7 +7,13 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.utils.FeatureUtils
+import com.android.healthconnect.controller.utils.FeaturesModule
 import com.google.common.truth.Truth.assertThat
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.testing.UninstallModules
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -90,6 +96,14 @@ class HealthPermissionReaderTest {
                 override fun isEntryPointsEnabled(): Boolean {
                     return true
                 }
+
+                override fun isNewAppPriorityEnabled(): Boolean {
+                    return false
+                }
+
+                override fun isNewInformationArchitectureEnabled(): Boolean {
+                    return false
+                }
             }
         private val disabledRouteFeature =
             object : FeatureUtils {
@@ -104,6 +118,14 @@ class HealthPermissionReaderTest {
                 override fun isEntryPointsEnabled(): Boolean {
                     return true
                 }
+
+                override fun isNewAppPriorityEnabled(): Boolean {
+                    return true
+                }
+
+                override fun isNewInformationArchitectureEnabled(): Boolean {
+                    return false
+                }
             }
         private val enabledFeatures =
             object : FeatureUtils {
@@ -116,6 +138,14 @@ class HealthPermissionReaderTest {
                 }
                 override fun isEntryPointsEnabled(): Boolean {
                     return true
+                }
+
+                override fun isNewAppPriorityEnabled(): Boolean {
+                    return true
+                }
+
+                override fun isNewInformationArchitectureEnabled(): Boolean {
+                    return false
                 }
             }
     }

@@ -24,6 +24,7 @@
         <item name="dataAndAccessIcon">@drawable/ic_data_and_access</item>
         <item name="seeAllIcon">@drawable/ic_right_arrow</item>
         <item name="recentAccessTimelineDividerDrawable">@drawable/ic_timeline_divider</item>
+        <item name="manageDataIcon">@drawable/ic_build</item>
 
         <!-- App permissions page-->
         <item name="removeAccessForAllAppsIcon">@drawable/ic_remove_access_for_all_apps</item>

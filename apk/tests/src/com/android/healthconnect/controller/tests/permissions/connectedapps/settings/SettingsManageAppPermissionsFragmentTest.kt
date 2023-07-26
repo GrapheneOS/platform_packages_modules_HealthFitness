@@ -35,23 +35,17 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.whenever
-import com.android.healthconnect.controller.utils.FeatureUtils
-import com.android.healthconnect.controller.utils.FeaturesModule
-import dagger.Module
-import dagger.Provides
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.components.SingletonComponent
-import dagger.hilt.testing.TestInstallIn
-import java.time.Instant
-import java.time.ZoneId
-import java.util.Locale
-import java.util.TimeZone
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
+import java.time.Instant
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 
 @HiltAndroidTest
 class SettingsManageAppPermissionsFragmentTest {
@@ -104,14 +98,4 @@ class SettingsManageAppPermissionsFragmentTest {
     }
 }
 
-@Module
-@TestInstallIn(components = [SingletonComponent::class], replaces = [FeaturesModule::class])
-object FakeFeaturesUtilsModule {
-    @Provides
-    fun providesFeaturesUtils() =
-        object : FeatureUtils {
-            override fun isSessionTypesEnabled(): Boolean = true
-            override fun isExerciseRouteEnabled(): Boolean = true
-            override fun isEntryPointsEnabled(): Boolean = true
-        }
-}
+
