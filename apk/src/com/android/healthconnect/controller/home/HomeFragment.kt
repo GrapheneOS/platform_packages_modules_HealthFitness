@@ -43,11 +43,13 @@ import com.android.healthconnect.controller.shared.preference.BannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.FeatureUtils
 import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HomePageElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Duration
+import javax.inject.Inject
 
 /** Home fragment for Health Connect. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -58,6 +60,7 @@ class HomeFragment : Hilt_HomeFragment() {
         private const val RECENT_ACCESS_PREFERENCE_KEY = "recent_access"
         private const val CONNECTED_APPS_PREFERENCE_KEY = "connected_apps"
         private const val MIGRATION_BANNER_PREFERENCE_KEY = "migration_banner"
+        private const val MANAGE_DATA_PREFERENCE_KEY = "manage_data"
 
         @JvmStatic fun newInstance() = HomeFragment()
     }
@@ -65,6 +68,9 @@ class HomeFragment : Hilt_HomeFragment() {
     init {
         this.setPageName(PageName.HOME_PAGE)
     }
+
+    @Inject
+    lateinit var featureUtils: FeatureUtils
 
     private val recentAccessViewModel: RecentAccessViewModel by viewModels()
     private val homeFragmentViewModel: HomeFragmentViewModel by viewModels()
@@ -82,6 +88,10 @@ class HomeFragment : Hilt_HomeFragment() {
         preferenceScreen.findPreference(CONNECTED_APPS_PREFERENCE_KEY)
     }
 
+    private val mManageDataPreference: HealthPreference? by lazy {
+        preferenceScreen.findPreference(MANAGE_DATA_PREFERENCE_KEY)
+    }
+
     private lateinit var migrationBannerSummary: String
     private var migrationBanner: BannerPreference? = null
 
@@ -97,6 +107,16 @@ class HomeFragment : Hilt_HomeFragment() {
         mConnectedAppsPreference?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_connectedAppsFragment)
             true
+        }
+
+        if (featureUtils.isNewAppPriorityEnabled() || featureUtils.isNewInformationArchitectureEnabled()) {
+            mManageDataPreference?.logName = HomePageElement.MANAGE_DATA_BUTTON
+            mManageDataPreference?.setOnPreferenceClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_manageDataFragment)
+                true
+            }
+        } else {
+            preferenceScreen.removePreferenceRecursively(MANAGE_DATA_PREFERENCE_KEY)
         }
 
         migrationBannerSummary = getString(R.string.resume_migration_banner_description_fallback)

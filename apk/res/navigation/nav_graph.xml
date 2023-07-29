@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_homeFragment_to_migrationActivity"
             app:destination="@id/migrationActivity" />
+        <action
+            android:id="@+id/action_homeFragment_to_manageDataFragment"
+            app:destination="@+id/manageDataFragment"/>
     </fragment>
 
     <activity
@@ -110,6 +113,28 @@
             android:id="@+id/action_cant_see_all_apps_to_updated_apps"
             app:destination="@id/update_apps_activity" />
     </fragment>
+
+    <fragment
+        android:id="@+id/manageDataFragment"
+        android:name="com.android.healthconnect.controller.managedata.ManageDataFragment"
+        android:label="@string/manage_data_section">
+        <action
+            android:id="@+id/action_manageData_to_autoDelete"
+            app:destination="@+id/autoDeleteFragment"/>
+        <action
+            android:id="@+id/action_manageData_to_setUnits"
+            app:destination="@+id/setUnitsFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/autoDeleteFragment"
+        android:name="com.android.healthconnect.controller.autodelete.AutoDeleteFragment"
+        android:label="@string/auto_delete_title"/>
+
+    <fragment
+        android:id="@+id/setUnitsFragment"
+        android:name="com.android.healthconnect.controller.dataentries.units.UnitsFragment"
+        android:label="@string/units_title"/>
 
     <activity
         android:id="@+id/playstore_activity"
