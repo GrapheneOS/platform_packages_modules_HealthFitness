@@ -23,6 +23,7 @@
             <!-- Home page -->
             <item type="drawable" name="ic_app_permissions"/>
             <item type="drawable" name="ic_data_and_access"/>
+            <item type="drawable" name="ic_build"/>
 
             <!-- App permissions page -->
             <item type="drawable" name="ic_remove_access_for_all_apps"/>

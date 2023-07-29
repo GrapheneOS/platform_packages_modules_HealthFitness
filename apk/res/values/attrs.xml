@@ -22,6 +22,7 @@
     <attr name="dataAndAccessIcon" format="reference"/>
     <attr name="seeAllIcon" format="reference"/>
     <attr name="recentAccessTimelineDividerDrawable" format="reference" />
+    <attr name="manageDataIcon" format="reference"/>
 
     <!-- App permissions page -->
     <attr name="removeAccessForAllAppsIcon" format="reference"/>

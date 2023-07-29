@@ -27,8 +27,8 @@ import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.R
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.dataTypeToCategory
-import com.android.healthconnect.controller.tests.utils.FakeHealthPermissionAppsUseCase
-import com.android.healthconnect.controller.tests.utils.FakeRecentAccessUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeRecentAccessUseCase
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.MIDNIGHT
 import com.android.healthconnect.controller.tests.utils.NOW
