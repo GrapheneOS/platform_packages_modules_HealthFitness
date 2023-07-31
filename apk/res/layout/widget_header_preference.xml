@@ -15,20 +15,21 @@
 -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/auto_delete_header_content"
+    android:id="@+id/header_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingHorizontal="@dimen/spacing_large"
     android:paddingVertical="@dimen/spacing_small">
 
     <TextView
         android:textAppearance="?attr/textAppearanceSummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/auto_delete_header" />
+        android:id="@+id/header_title" />
 
     <TextView
-        android:id="@+id/link"
+        android:id="@+id/header_link"
         android:textAppearance="?attr/textAppearanceSummary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

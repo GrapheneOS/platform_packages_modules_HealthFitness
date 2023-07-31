@@ -31,12 +31,12 @@ fun convertTextViewIntoLink(
     string: String?,
     start: Int,
     end: Int,
-    onClickListener: View.OnClickListener
+    onClickListener: View.OnClickListener?
 ) {
     val clickableSpan: ClickableSpan =
         object : ClickableSpan() {
             override fun onClick(view: View) {
-                onClickListener.onClick(view)
+                onClickListener?.onClick(view)
             }
 
             override fun updateDrawState(textPaint: TextPaint) {

@@ -96,6 +96,13 @@ constructor(
         _editedPriorityList.postValue(newList)
     }
 
+    fun setEditedAppSources(newList: List<AppMetadata>, category: Int) {
+        _editedPriorityList.postValue(newList)
+        viewModelScope.launch {
+            updatePriorityListUseCase.invoke(newList.map { it.packageName }, category)
+        }
+    }
+
     fun setCategoryLabel(label: String) {
         _categoryLabel.postValue(label)
     }

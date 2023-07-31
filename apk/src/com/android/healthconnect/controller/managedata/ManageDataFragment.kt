@@ -59,8 +59,7 @@ class ManageDataFragment : Hilt_ManageDataFragment() {
         if (featureUtils.isNewAppPriorityEnabled()) {
             mDataSourcesPreference?.logName = ManageDataElement.DATA_SOURCES_AND_PRIORITY_BUTTON
             mDataSourcesPreference?.setOnPreferenceClickListener {
-                // TODO add navigation to new Data Sources fragment
-//                findNavController().navigate(R.id.action_manageData_to_dataSources)
+                findNavController().navigate(R.id.action_manageData_to_dataSources)
                 true
             }
         } else {

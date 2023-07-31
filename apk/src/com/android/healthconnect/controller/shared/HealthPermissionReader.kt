@@ -29,8 +29,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /**
- * Class that read permissions declared by Health Connect clients as a string array in their XML
- * resources. see android.health.connect.HealthPermissions
+ * Class that reads permissions declared by Health Connect clients as a string array in their XML
+ * resources. See android.health.connect.HealthPermissions
  */
 class HealthPermissionReader
 @Inject

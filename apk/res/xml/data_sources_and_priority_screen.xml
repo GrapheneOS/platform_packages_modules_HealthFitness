@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<!--    TODO (b/292266625) add data totals cards -->
+<!--    <PreferenceCategory-->
+<!--        android:key="data_totals_group"-->
+<!--        android:title="@string/data_totals_header"-->
+<!--        android:order="1"/>-->
+    <PreferenceCategory
+        android:key="app_sources_group"
+        android:title="@string/app_sources_header"
+        android:order="2"/>
+    <com.android.settingslib.widget.FooterPreference
+        android:key="data_sources_footer"
+        android:title="@string/data_sources_footer"/>
+
+</PreferenceScreen>
