@@ -24,6 +24,10 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
         private const val PROPERTY_EXERCISE_ROUTE_ENABLED = "exercise_routes_enable"
         private const val PROPERTY_SESSIONS_TYPE_ENABLED = "session_types_enable"
         private const val PROPERTY_ENTRY_POINTS_ENABLED = "entry_points_enable"
+        private const val PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED =
+                "aggregation_source_controls_enable"
+        private const val PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED =
+                "new_information_architecture_enable"
     }
 
     private val lock = Any()
@@ -44,17 +48,21 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
     private var isEntryPointsEnabled =
         DeviceConfig.getBoolean(HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_ENTRY_POINTS_ENABLED, true)
 
-    // TODO (b/292267155) get flag from deviceConfig
-    private var isNewAppPriorityEnabled = false
-    // TODO (b/292267155) get flag from deviceConfig
-    private var isNewInformationArchitectureEnabled = false
+    private var isNewAppPriorityEnabled =
+            DeviceConfig.getBoolean(HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED, true)
+    private var isNewInformationArchitectureEnabled =
+            DeviceConfig.getBoolean(HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED, false)
 
     override fun isNewAppPriorityEnabled(): Boolean {
-        return isNewAppPriorityEnabled
+        synchronized(lock) {
+            return isNewAppPriorityEnabled
+        }
     }
 
     override fun isNewInformationArchitectureEnabled(): Boolean {
-        return isNewInformationArchitectureEnabled
+        synchronized(lock) {
+            return isNewInformationArchitectureEnabled
+        }
     }
 
     override fun isSessionTypesEnabled(): Boolean {
@@ -91,6 +99,12 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
                     PROPERTY_ENTRY_POINTS_ENABLED ->
                         isEntryPointsEnabled =
                             properties.getBoolean(PROPERTY_ENTRY_POINTS_ENABLED, true)
+                    PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED ->
+                        isNewAppPriorityEnabled =
+                                properties.getBoolean(PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED, true)
+                    PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED ->
+                        isNewInformationArchitectureEnabled =
+                                properties.getBoolean(PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED, false)
                 }
             }
         }
