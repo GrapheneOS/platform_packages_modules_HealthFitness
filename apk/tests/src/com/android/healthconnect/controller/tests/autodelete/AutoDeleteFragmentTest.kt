@@ -66,7 +66,7 @@ class AutoDeleteFragmentTest {
                     "Control how long your data is stored in Health\u00A0Connect by scheduling it to delete after a set time"))
             .check(matches(isDisplayed()))
         // Need to provide id as well, otherwise both TextView and TextLinkView are found.
-        onView(allOf(withText("Learn more about auto-delete"), withId(R.id.link)))
+        onView(allOf(withText("Learn more about auto-delete"), withId(R.id.header_link)))
             .check(matches(isDisplayed()))
         onView(withText("Auto-delete data")).check(matches(isDisplayed()))
         onView(withText("After 3 months")).check(matches(isDisplayed()))
@@ -192,6 +192,6 @@ class AutoDeleteFragmentTest {
         launchFragment<AutoDeleteFragment>(Bundle())
 
         // Need to provide id as well, otherwise both TextView and TextLinkView are found.
-        onView(allOf(withText("Learn more about auto-delete"), withId(R.id.link))).perform(click())
+        onView(allOf(withText("Learn more about auto-delete"), withId(R.id.header_link))).perform(click())
     }
 }

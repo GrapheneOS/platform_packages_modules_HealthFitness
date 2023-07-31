@@ -29,7 +29,9 @@ import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDia
 import com.android.healthconnect.controller.autodelete.AutoDeleteConfirmationDialogFragment.Companion.OLD_AUTO_DELETE_RANGE_BUNDLE
 import com.android.healthconnect.controller.autodelete.AutoDeleteRangePickerPreference.Companion.AUTO_DELETE_RANGE_PICKER_PREFERENCE_KEY
 import com.android.healthconnect.controller.autodelete.AutoDeleteRangePickerPreference.Companion.SET_TO_NEVER_EVENT
+import com.android.healthconnect.controller.shared.preference.HeaderPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.DeviceInfoUtilsImpl
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
@@ -97,10 +99,12 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
 
         mHeaderSection?.removeAll()
         mHeaderSection?.addPreference(
-            HeaderPreference(requireContext(), requireActivity()).also {
-                // prevents a11y readers from announcing that the header is selectable
-                // this does not prevent the link from being clickable
-                it.isSelectable = false
+            HeaderPreference(requireContext()).also {
+                it.setHeaderText(getString(R.string.auto_delete_header))
+                it.setHeaderLinkText(getString(R.string.auto_delete_learn_more))
+                it.setHeaderLinkAction {
+                    DeviceInfoUtilsImpl().openHCGetStartedLink(requireActivity())
+                }
             })
 
         childFragmentManager.setFragmentResultListener(SET_TO_NEVER_EVENT, this) { _, _ ->
