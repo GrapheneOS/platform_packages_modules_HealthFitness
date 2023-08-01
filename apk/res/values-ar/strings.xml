@@ -260,7 +260,7 @@
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"مسموح للتطبيق بقراءة البيانات التالية:"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"مسموح له بكتابة بيانات"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"لم يتم السماح لأي تطبيقات."</string>
-    <string name="no_apps_denied" msgid="743327680286446017">"لم يتم رفض أي تطبيقات."</string>
+    <string name="no_apps_denied" msgid="743327680286446017">"لم يتم رفض أي تطبيقات"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"هل تريد إزالة إمكانية وصول كل التطبيقات؟"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"لن يتمكّن أي من تطبيقاتك من الوصول إلى بيانات تطبيق Health Connect أو إضافة بيانات جديدة إليه. لا يؤدي هذا الإجراء إلى حذف أي بيانات حالية.\n\nلا يؤثر هذا الإجراء في الأذونات الأخرى التي قد يمتلكها هذا التطبيق، مثلاً الموقع الجغرافي أو الكاميرا أو الميكروفون."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"إزالة الكل"</string>
