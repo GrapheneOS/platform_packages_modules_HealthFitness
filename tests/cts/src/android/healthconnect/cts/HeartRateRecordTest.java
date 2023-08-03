@@ -1067,18 +1067,16 @@ public class HeartRateRecordTest {
         testMetadataBuilder.setClientRecordId("HRR" + Math.random());
         testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
+        Instant start = Instant.now();
         HeartRateRecord.HeartRateSample heartRateRecord =
-                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
+                new HeartRateRecord.HeartRateSample(10, start.plusMillis(100));
 
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
         heartRateRecords.add(heartRateRecord);
         heartRateRecords.add(heartRateRecord);
 
         return new HeartRateRecord.Builder(
-                        testMetadataBuilder.build(),
-                        Instant.now(),
-                        Instant.now().plusMillis(500),
-                        heartRateRecords)
+                        testMetadataBuilder.build(), start, start.plusMillis(500), heartRateRecords)
                 .build();
     }
 }
