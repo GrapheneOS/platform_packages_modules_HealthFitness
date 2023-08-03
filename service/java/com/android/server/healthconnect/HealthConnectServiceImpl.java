@@ -881,8 +881,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (Exception e) {
                         builder.setHealthDataServiceApiStatusError(ERROR_INTERNAL);
                         tryAndThrowException(callback, e, ERROR_INTERNAL);
-                    }
-                    {
+                    } finally {
                         builder.build().log();
                     }
                 },
