@@ -148,6 +148,7 @@ android_library {
         "SettingsLibMainSwitchPreference",
         "SettingsLibAppPreference",
         "SettingsLibActivityEmbedding",
+        "SettingsLibSettingsSpinner",
         "androidx.core_core",
         "guava",
         "hilt_android",

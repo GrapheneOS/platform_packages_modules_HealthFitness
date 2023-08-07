@@ -23,6 +23,10 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
+
+    /**
+     * Returns a list of [AppMetadata]s that have data in this [HealthPermissionType].
+     */
     suspend operator fun invoke(permissionType: HealthPermissionType): List<AppMetadata> =
         withContext(dispatcher) {
             try {

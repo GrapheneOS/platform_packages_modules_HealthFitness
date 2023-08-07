@@ -122,9 +122,17 @@
             android:id="@+id/action_manageData_to_autoDelete"
             app:destination="@+id/autoDeleteFragment"/>
         <action
+            android:id="@+id/action_manageData_to_dataSources"
+            app:destination="@+id/dataSourcesFragment"/>
+        <action
             android:id="@+id/action_manageData_to_setUnits"
             app:destination="@+id/setUnitsFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/dataSourcesFragment"
+        android:name="com.android.healthconnect.controller.datasources.DataSourcesFragment"
+        android:label="@string/data_sources_and_priority_title"/>
 
     <fragment
         android:id="@+id/autoDeleteFragment"
