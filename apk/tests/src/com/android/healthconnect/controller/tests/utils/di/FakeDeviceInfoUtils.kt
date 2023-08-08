@@ -1,6 +1,7 @@
 package com.android.healthconnect.controller.tests.utils.di
 
 import android.content.Context
+import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 
@@ -21,10 +22,6 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
         return sendFeedbackAvailable
     }
 
-    override fun getFeedbackReporterPackage(context: Context): String? {
-        return null
-    }
-
     override fun isPlayStoreAvailable(context: Context): Boolean {
         return playStoreAvailable
     }
@@ -32,4 +29,8 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
     override fun openHCGetStartedLink(activity: FragmentActivity) {}
 
     override fun openSendFeedbackActivity(activity: FragmentActivity) {}
+
+    override fun isIntentHandlerAvailable(context: Context, intent: Intent): Boolean {
+        return false
+    }
 }
