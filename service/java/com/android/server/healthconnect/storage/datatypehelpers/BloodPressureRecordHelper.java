@@ -128,7 +128,7 @@ public final class BloodPressureRecordHelper
             default:
                 return null;
         }
-        return new AggregateParams(BLOOD_PRESSURE_RECORD_TABLE_NAME, columnNames, TIME_COLUMN_NAME);
+        return new AggregateParams(BLOOD_PRESSURE_RECORD_TABLE_NAME, columnNames);
     }
 
     @Override

@@ -129,9 +129,7 @@ public class StepsCadenceRecordHelper
             case STEPS_CADENCE_RECORD_RATE_MIN:
             case STEPS_CADENCE_RECORD_RATE_MAX:
                 return new AggregateParams(
-                                SERIES_TABLE_NAME,
-                                Collections.singletonList(RATE_COLUMN_NAME),
-                                START_TIME_COLUMN_NAME)
+                                SERIES_TABLE_NAME, Collections.singletonList(RATE_COLUMN_NAME))
                         .setJoin(
                                 new SqlJoin(
                                         SERIES_TABLE_NAME,

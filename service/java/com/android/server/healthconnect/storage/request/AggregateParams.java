@@ -32,7 +32,7 @@ import java.util.Objects;
  *
  * @hide
  */
-public class AggregateParams {
+public final class AggregateParams {
     private final String mTableName;
 
     /**
@@ -60,21 +60,8 @@ public class AggregateParams {
 
     private PriorityAggregationExtraParams mPriorityAggregationExtraParams;
 
-    public AggregateParams(String tableName, List<String> columnsToFetch, String timeColumnName) {
-        this(tableName, columnsToFetch, timeColumnName, null);
-    }
-
     public AggregateParams(String tableName, List<String> columnsToFetch) {
-        this(tableName, columnsToFetch, null, null);
-    }
-
-    public AggregateParams(
-            String tableName,
-            List<String> columnsToFetch,
-            String timeColumnName,
-            Class<?> priorityColumnDataType) {
-        // We ignore constructor time column parameter as it's set separately.
-        this(tableName, columnsToFetch, priorityColumnDataType);
+        this(tableName, columnsToFetch, null);
     }
 
     public AggregateParams(
@@ -149,7 +136,6 @@ public class AggregateParams {
         return mPriorityAggregationExtraParams;
     }
 
-    /** Sets params for priority aggregation. */
     public AggregateParams setExtraTimeColumn(String extraTimeColumn) {
         mExtraTimeColumnName = extraTimeColumn;
         return this;
