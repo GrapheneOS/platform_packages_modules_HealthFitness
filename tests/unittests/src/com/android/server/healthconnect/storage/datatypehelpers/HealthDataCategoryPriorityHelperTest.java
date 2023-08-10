@@ -92,6 +92,8 @@ public class HealthDataCategoryPriorityHelperTest {
                 .thenReturn(APP_ID_PRIORITY_ORDER_COLUMN_INDEX);
 
         mHealthDataCategoryPriorityHelper = HealthDataCategoryPriorityHelper.getInstance();
+        // Clear data in case the singleton is already initialised.
+        mHealthDataCategoryPriorityHelper.clearData(mTransactionManager);
     }
 
     @After
