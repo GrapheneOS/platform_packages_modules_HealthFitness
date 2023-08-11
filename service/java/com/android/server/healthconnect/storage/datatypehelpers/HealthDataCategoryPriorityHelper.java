@@ -190,9 +190,10 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
         // this is because in the time app tried to update the order an app permission might
         // have been removed, and we only store priority order of apps with permission.
         newPriorityOrder.removeIf(priorityOrder -> !currentPriorityOrder.contains(priorityOrder));
-        newPriorityOrder.addAll(currentPriorityOrder);
+
         // Make sure we don't remove any new entries. So append old priority in new priority and
         // remove duplicates
+        newPriorityOrder.addAll(currentPriorityOrder);
         newPriorityOrder = newPriorityOrder.stream().distinct().collect(Collectors.toList());
 
         safelyUpdateDBAndUpdateCache(
