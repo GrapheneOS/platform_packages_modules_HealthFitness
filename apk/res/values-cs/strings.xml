@@ -493,12 +493,12 @@
     <string name="rest" msgid="5937058337671252210">"Odpočinek"</string>
     <string name="pause" msgid="5161459047750335691">"Pozastavit"</string>
     <string name="activity_type_australian_football" msgid="431838050917315084">"Australský fotbal"</string>
-    <string name="sleep_session_default" msgid="7376764686701487196">"Spánek: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
+    <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> spánku"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
-    <string name="sleep_stage_awake" msgid="4526767634444460862">"bdění"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"probuzení v posteli"</string>
+    <string name="sleep_stage_awake" msgid="4526767634444460862">"vzhůru"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"vzhůru v posteli"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"spánek"</string>
-    <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"mimo postel"</string>
+    <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"venku z postele"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM spánek"</string>
     <string name="sleep_stage_light" msgid="1070117964678317880">"lehký spánek"</string>
     <string name="sleep_stage_deep" msgid="3134557407657258364">"hluboký spánek"</string>

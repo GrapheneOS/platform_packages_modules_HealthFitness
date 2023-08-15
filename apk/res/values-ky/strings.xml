@@ -31,7 +31,7 @@
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> колдонмо пайдалана алат"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> колдонмо пайдалана алат"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Жок"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Жазуу тууралуу толук маалымат"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Киргизилген маалыматтын чоо-жайы"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Соңку колдонмолор"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Health Connect\'ти бир да колдонмо пайдаланган жок"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Бардык акыркы кирүүлөрдү көрүү"</string>
@@ -496,7 +496,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> уктадыңыз"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"ойгоо болдуңуз"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"төшөктө ойгоо жатуу"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"төшөктө ойгоо жаттыңыз"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"уктадыңыз"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"төшөктөн турдуңуз"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"тез уйкуда (REM) болдуңуз"</string>

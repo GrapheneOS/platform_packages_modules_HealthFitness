@@ -180,10 +180,10 @@
     <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"ወሲባዊ እንቅስቃሴ"</string>
     <string name="sexual_activity_read_content_description" msgid="4937721417714312007">"ወሲባዊ እንቅስቃሴን ያነባል"</string>
     <string name="sexual_activity_write_content_description" msgid="3063448245882840534">"ወሲባዊ እንቅስቃሴን ይጽፋል"</string>
-    <string name="spotting_uppercase_label" msgid="5106739829390033240">"ከወር አበባ ውጪ የሚኖር የደም ፍሰት"</string>
-    <string name="spotting_lowercase_label" msgid="4361141146039580583">"ከወር አበባ ውጪ የሚኖር የደም ፍሰት"</string>
-    <string name="spotting_read_content_description" msgid="5422420770022357631">"ከወር አበባ ውጪ የሚኖር የደም ፍሰትን ያነባል"</string>
-    <string name="spotting_write_content_description" msgid="9049462631184362964">"ከወር አበባ ውጪ የሚኖር የደም ፍሰትን ይጽፋል"</string>
+    <string name="spotting_uppercase_label" msgid="5106739829390033240">"ከወር አበባ ውጭ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting_lowercase_label" msgid="4361141146039580583">"ከወር አበባ ውጭ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting_read_content_description" msgid="5422420770022357631">"ከወር አበባ ውጭ የሚኖር የደም ፍሰትን ያነባል"</string>
+    <string name="spotting_write_content_description" msgid="9049462631184362964">"ከወር አበባ ውጭ የሚኖር የደም ፍሰትን ይጽፋል"</string>
     <string name="hydration_uppercase_label" msgid="1196083392597480565">"ውሃዘልነት"</string>
     <string name="hydration_lowercase_label" msgid="7793261552870970551">"ውሃዘልነት"</string>
     <string name="hydration_read_content_description" msgid="3255941233933808082">"ውሃዘልነትን ያነባል"</string>
@@ -365,8 +365,8 @@
     <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"ከ<xliff:g id="MIN">%1$s</xliff:g> እስከ <xliff:g id="MAX">%2$s</xliff:g>"</string>
     <string name="sexual_activity_protected" msgid="4259473257597274326">"የተጠበቀ"</string>
     <string name="sexual_activity_unprotected" msgid="2250981470537379807">"ያልተጠበቀ"</string>
-    <string name="spotting" msgid="1637175837078770520">"ከወር አበባ ወቅት ውጪ የሚኖር የደም ፍሰት"</string>
-    <string name="flow_spotting" msgid="832418664953780156">"ከወር አበባ ወቅት ውጪ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting" msgid="1637175837078770520">"ከወር አበባ ወቅት ውጭ የሚኖር የደም ፍሰት"</string>
+    <string name="flow_spotting" msgid="832418664953780156">"ከወር አበባ ወቅት ውጭ የሚኖር የደም ፍሰት"</string>
     <string name="flow_light" msgid="1937543318146228793">"ቀላል ፍሰት"</string>
     <string name="flow_medium" msgid="3783688724668943154">"መካከለኛ ፍሰት"</string>
     <string name="flow_heavy" msgid="8672261792750634294">"ከባድ ፍሰት"</string>
