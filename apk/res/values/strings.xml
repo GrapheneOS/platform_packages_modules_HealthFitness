@@ -1082,7 +1082,8 @@
     <string name="data_totals_header" description="Header for section showing cards with data type totals [CHAR_LIMIT=70]">Data totals</string>
     <string name="app_sources_header" description="Header for section showing apps contributing to the shown totals [CHAR_LIMIT=70]">App sources</string>
     <string name="data_sources_footer" description="Footer note explaining how app sources work [CHAR_LIMIT=NONE]">Add app sources to the list to see how the data totals can change. Removing an app from this list will stop it from contributing to totals, but it will still have write permissions.</string>
-    <string name="data_sources_empty_state" description="Text for the empty state of the data sources screen explaining why there are no apps shown [CHAR_LIMIT=NONE]">No app sources.\nOnce you give app permissions to write <xliff:g example="activity" id="category_name">%1$s</xliff:g> data, sources will show here.</string>
+    <string name="data_sources_empty_state" description="Text for the empty state of the data sources screen explaining why there are no apps shown [CHAR_LIMIT=NONE]">No app sources</string>
+    <string name="data_sources_empty_state_footer" description="Text for the footer of the empty state of the data sources screen [CHAR_LIMIT=NONE]">Once you give app permissions to write <xliff:g example="activity" id="category_name">%1$s</xliff:g> data, sources will show here.</string>
     <string name="data_sources_help_link" description="Text for helper link in the data sources screen taking the user to an article about how sources and prioritization work [CHAR_LIMIT=NONE]">How sources &amp; prioritization work</string>
     <!--  endregion -->
 

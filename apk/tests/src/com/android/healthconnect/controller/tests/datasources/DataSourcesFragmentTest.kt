@@ -81,7 +81,8 @@ class DataSourcesFragmentTest {
         launchFragment<DataSourcesFragment>(Bundle())
 
         onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("No app sources.\nOnce you give app permissions to " +
-                "write activity data, sources will show here.")).check(matches(isDisplayed()))
+        onView(withText("No app sources")).check(matches(isDisplayed()))
+        onView(withText("Once you give app permissions to write activity data, sources will show here."))
+        onView(withText("How sources & prioritization work"))
     }
 }
