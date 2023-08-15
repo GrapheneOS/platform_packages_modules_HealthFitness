@@ -49,10 +49,10 @@ class InactiveAppPreference constructor(context: Context) : AppPreference(contex
         logger.logImpression(logName)
     }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder?) {
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        val widgetFrame: ViewGroup? = holder?.findViewById(android.R.id.widget_frame) as ViewGroup?
+        val widgetFrame: ViewGroup? = holder.findViewById(android.R.id.widget_frame) as ViewGroup?
         widgetFrame?.setOnClickListener(deleteButtonListener)
 
         val widgetFrameParent: ViewGroup? = widgetFrame?.parent as ViewGroup?
