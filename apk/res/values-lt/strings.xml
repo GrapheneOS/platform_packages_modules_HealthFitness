@@ -17,660 +17,772 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
-    <string name="permissions_and_data_header" msgid="8934418632257193297">"Leidimai ir duomenys"</string>
-    <string name="home_subtitle" msgid="7432717346054530246">"Tvarkykite telefone esančius sveikatos ir kūno rengybos duomenis ir valdykite, kurios programos gali juos pasiekti"</string>
-    <string name="data_title" msgid="6928287139074878977">"Duomenys ir prieiga"</string>
-    <string name="all_categories_title" msgid="3963693021187107088">"Visos kategorijos"</string>
-    <string name="see_all_categories" msgid="5620285287530764592">"Žr. visas kategorijas"</string>
-    <string name="no_data" msgid="1120552294863595549">"Nėra jokių duomenų"</string>
-    <string name="connected_apps_title" msgid="5235697695812028208">"Programos leidimai"</string>
-    <string name="connected_apps_subtitle" msgid="3605531955208324416">"Tvarkykite programas ir leidimus"</string>
-    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"Programų, kurioms suteikta prieiga: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>iš <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>
-    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"Programų, kurioms suteikta prieiga: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>"</string>
-    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"Programų, kurioms suteikta prieiga: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>"</string>
-    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"Nėra"</string>
-    <string name="entry_details_title" msgid="3958841079093678765">"Išsami įvedimo informacija"</string>
-    <string name="recent_access_header" msgid="4949473550741167743">"Naujausia prieiga"</string>
-    <string name="no_recent_access" msgid="3009259344780866440">"Nėra neseniai „Health Connect“ pasiekusių programų"</string>
-    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Žr. visus naujausius prieigos duomenis"</string>
-    <string name="recent_access_screen_description" msgid="8895660122430178701">"Peržiūrėkite, kurios programos pasiekė jūsų duomenis per pastarąsias dvidešimt keturias valandas"</string>
-    <string name="today_header" msgid="3128127066599449902">"Šiandien"</string>
-    <string name="yesterday_header" msgid="6148252913497135984">"Vakar"</string>
-    <string name="read_data_access_label" msgid="6637502477626337989">"Skaityti: %s"</string>
-    <string name="write_data_access_label" msgid="2129321999800895193">"Rašyti: %s"</string>
-    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
-    <string name="activity_category_uppercase" msgid="426623789703642935">"Veikla"</string>
-    <string name="activity_category_lowercase" msgid="3890597606215143531">"veikla"</string>
-    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Kūno matavimai"</string>
-    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"kūno matavimai"</string>
-    <string name="sleep_category_uppercase" msgid="3009108865525702992">"Miegas"</string>
-    <string name="sleep_category_lowercase" msgid="3494760663063775639">"miegas"</string>
-    <string name="vitals_category_uppercase" msgid="5215182092874187281">"Gyvybinių funkcijų rodikliai"</string>
-    <string name="vitals_category_lowercase" msgid="6258474646818522701">"gyvybinių funkcijų rodikliai"</string>
-    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"Ciklo stebėjimas"</string>
-    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"ciklo stebėjimas"</string>
-    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"Mityba"</string>
-    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"mityba"</string>
-    <string name="browse_data_category" msgid="8013354207116704288">"Duomenų naršymas"</string>
-    <string name="manage_data_section" msgid="3279837434203736906">"Duomenų tvarkymas"</string>
-    <string name="export_data_button" msgid="4600095858908351359">"Eksportuoti duomenis"</string>
-    <string name="delete_all_data_button" msgid="2191953268634255722">"Ištrinti visus duomenis"</string>
-    <string name="no_categories" msgid="8250090588127237934">"Neturite jokių duomenų sistemoje „Health Connect“"</string>
-    <string name="permission_types_title" msgid="449264809407468231">"Jūsų duomenys"</string>
-    <string name="app_priority_button" msgid="8977479205180396957">"Programos prioritetas"</string>
-    <string name="delete_category_data_button" msgid="6062112760999637736">"Ištrinti „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis"</string>
-    <string name="select_all_apps_title" msgid="4176624521570022159">"Visos programos"</string>
-    <string name="can_read" msgid="7989669150752961504">"Gali skaityti šiuos duomenis: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="can_write" msgid="8278769263589284926">"Gali rašyti šiuos duomenis: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="1582672802567614909">"Neaktyvios programos"</string>
-    <string name="inactive_apps_message" msgid="5673235027162775241">"Šios programos nebegali rašyti „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenų, bet vis dar saugo duomenis sistemoje „Health Connect“"</string>
-    <string name="data_access_empty_message" msgid="4448996647357515914">"Programos nebegali skaityti ar rašyti šio tipo duomenų: <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ir sistemoje „Health Connect“ nėra saugomų šio tipo duomenų: <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>"</string>
-    <string name="data_access_exercise_description" msgid="3461117650889436196">"Į šiuos duomenis įtraukiama informacija, pvz., aktyvumo laikas, pratimo tipas, ratai, pakartojimai, seansai ar plaukimo mostai"</string>
-    <string name="data_access_sleep_description" msgid="6675848226107694375">"Į šiuos duomenis įtraukiama informacija, pvz., miego fazės ir miego seansai"</string>
-    <string name="all_entries_button" msgid="6651429850248301016">"Žr. visus įrašus"</string>
-    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Ištrinti šiuos duomenis"</string>
-    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
-    <string name="permgroupdesc_health" msgid="44553351410718944">"prieiga prie sveikatos duomenų"</string>
-    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Skaityti sudegintų kalorijų duomenis"</string>
-    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Leidžiama programa skaityti sudegintų kalorijų duomenis"</string>
-    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Sudegintų kalorijų aktyviu metu skaičius"</string>
-    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"sudegintų kalorijų aktyviu metu skaičius"</string>
-    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Skaityti sudegintų kalorijų aktyviu metu skaičių"</string>
-    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Rašyti sudegintų kalorijų aktyviu metu skaičių"</string>
-    <string name="exercise_uppercase_label" msgid="8730993778771782694">"Mankšta"</string>
-    <string name="exercise_lowercase_label" msgid="5171299688710039066">"mankšta"</string>
-    <string name="exercise_read_content_description" msgid="167419823931295816">"Skaityti mankštos duomenis"</string>
-    <string name="exercise_write_content_description" msgid="4003820774292503277">"Rašyti mankštos duomenis"</string>
-    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Mankštos maršrutas"</string>
-    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"mankštos maršrutas"</string>
-    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Rašyti mankštos maršrutą"</string>
-    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"Skaityti mankštos maršrutą"</string>
-    <string name="distance_uppercase_label" msgid="1633540262436199877">"Atstumas"</string>
-    <string name="distance_lowercase_label" msgid="1195850163151685303">"atstumas"</string>
-    <string name="distance_read_content_description" msgid="118912330039126690">"Skaityti atstumo duomenis"</string>
-    <string name="distance_write_content_description" msgid="6422928646909649167">"Rašyti atstumo duomenis"</string>
-    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"Aukščio padidėjimas"</string>
-    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"aukščio padidėjimas"</string>
-    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"Skaityti aukščio padidėjimo duomenis"</string>
-    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"Rašyti aukščio padidėjimo duomenis"</string>
-    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"Įveiktų aukštų skaičius"</string>
-    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"įveiktų aukštų skaičius"</string>
-    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"Skaityti įveiktų aukštų skaičiaus duomenis"</string>
-    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"Rašyti įveiktų aukštų skaičiaus duomenis"</string>
-    <string name="power_uppercase_label" msgid="7904465103558163227">"Galia"</string>
-    <string name="power_lowercase_label" msgid="6088931773399520221">"galia"</string>
-    <string name="power_read_content_description" msgid="1695982410978951105">"Skaityti galios duomenis"</string>
-    <string name="power_write_content_description" msgid="2104228389895969584">"Rašyti galios duomenis"</string>
-    <string name="speed_uppercase_label" msgid="5639404638600357388">"Greitis"</string>
-    <string name="speed_lowercase_label" msgid="4052095939564296524">"greitis"</string>
-    <string name="speed_read_content_description" msgid="4083062269928361271">"Skaityti greičio duomenis"</string>
-    <string name="speed_write_content_description" msgid="766285450757233404">"Rašyti greičio duomenis"</string>
-    <string name="steps_uppercase_label" msgid="4487635835111798199">"Žingsniai"</string>
-    <string name="steps_lowercase_label" msgid="8163081166756992688">"žingsniai"</string>
-    <string name="steps_read_content_description" msgid="3439677896784274145">"Skaityti žingsnių duomenis"</string>
-    <string name="steps_write_content_description" msgid="7529071337669135652">"Rašyti žingsnių duomenis"</string>
-    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"Bendras sudegintų kalorijų skaičius"</string>
-    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"bendras sudegintų kalorijų skaičius"</string>
-    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"Skaityti bendrą sudegintų kalorijų skaičių"</string>
-    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"Rašyti bendrą sudegintų kalorijų skaičių"</string>
-    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"Didžiausias deguonies suvartojimo greitis"</string>
-    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"Didžiausias deguonies suvartojimo greitis"</string>
-    <string name="vo2_max_read_content_description" msgid="410954028720491449">"Skaityti didžiausio deguonies suvartojimo greičio duomenis"</string>
-    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"Rašyti didžiausio deguonies suvartojimo greičio duomenis"</string>
-    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"Neįgaliųjų vežimėlio pastūmimai"</string>
-    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"neįgaliųjų vežimėlio pastūmimai"</string>
-    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"Skaityti neįgaliųjų vežimėlio pastūmimų duomenis"</string>
-    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"Rašyti neįgaliųjų vežimėlio pastūmimų duomenis"</string>
-    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"Pagrindinis medžiagų apykaitos greitis"</string>
-    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"pagrindinis medžiagų apykaitos greitis"</string>
-    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"Skaityti pagrindinio medžiagų apykaitos greičio duomenis"</string>
-    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"Rašyti pagrindinio medžiagų apykaitos greičio duomenis"</string>
-    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"Kūno riebalai"</string>
-    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"kūno riebalai"</string>
-    <string name="body_fat_read_content_description" msgid="2237532746343995851">"Skaityti kūno riebalų duomenis"</string>
-    <string name="body_fat_write_content_description" msgid="776793050617721281">"Rašyti kūno riebalų duomenis"</string>
-    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"Kūno vandens masė"</string>
-    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"kūno vandens masė"</string>
-    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"Skaityti kūno vandens masės duomenis"</string>
-    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"Rašyti kūno vandens masės duomenis"</string>
-    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"Kaulų masė"</string>
-    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"kaulų masė"</string>
-    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"Skaityti kaulų masės duomenis"</string>
-    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"Rašyti kaulų masės duomenis"</string>
-    <string name="height_uppercase_label" msgid="3108103104753858170">"Ūgis"</string>
-    <string name="height_lowercase_label" msgid="1581432997449289035">"ūgis"</string>
-    <string name="height_read_content_description" msgid="818540612624517331">"Skaityti ūgio duomenis"</string>
-    <string name="height_write_content_description" msgid="5924859550287826054">"Rašyti ūgio duomenis"</string>
-    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"Klubų apimtis"</string>
-    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"klubų apimtis"</string>
-    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"Skaityti klubų apimties duomenis"</string>
-    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"Rašyti klubų apimties duomenis"</string>
-    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"Liesoji kūno masė"</string>
-    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"liesoji kūno masė"</string>
-    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"Skaityti liesosios kūno masės duomenis"</string>
-    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"Rašyti liesosios kūno masės duomenis"</string>
-    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"Liemens apimtis"</string>
-    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"liemens apimtis"</string>
-    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"Skaityti liemens apimties duomenis"</string>
-    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"Rašyti liemens apimties duomenis"</string>
-    <string name="weight_uppercase_label" msgid="5139159678065242304">"Svoris"</string>
-    <string name="weight_lowercase_label" msgid="5476549439048429652">"svoris"</string>
-    <string name="weight_read_content_description" msgid="9145691331920027184">"Skaityti svorio duomenis"</string>
-    <string name="weight_write_content_description" msgid="1837283361733660524">"Rašyti svorio duomenis"</string>
-    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"Gimdos kaklelio gleivės"</string>
-    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"gimdos kaklelio gleivės"</string>
-    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Skaityti gimdos kaklelio gleivių duomenis"</string>
-    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Rašyti gimdos kaklelio gleivių duomenis"</string>
-    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Tarpmenstruacinis kraujavimas"</string>
-    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"tarpmenstruacinis kraujavimas"</string>
-    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Skaityti tarpmenstruacinio kraujavimo duomenis"</string>
-    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Rašyti tarpmenstruacinio kraujavimo duomenis"</string>
-    <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruacijos"</string>
-    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruacijos"</string>
-    <string name="menstruation_read_content_description" msgid="7208944260757605367">"Skaityti menstruacijų duomenis"</string>
-    <string name="menstruation_write_content_description" msgid="5579059034516400795">"Rašyti menstruacijų duomenis"</string>
-    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"Ovuliacijos testas"</string>
-    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"ovuliacijos testas"</string>
-    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"Skaityti ovuliacijos testo duomenis"</string>
-    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"Rašyti ovuliacijos testo duomenis"</string>
-    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"Seksualinė veikla"</string>
-    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"seksualinė veikla"</string>
-    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"Skaityti seksualinės veiklos duomenis"</string>
-    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"Rašyti seksualinės veiklos duomenis"</string>
-    <string name="spotting_uppercase_label" msgid="374296750601288023">"Tepliojimas"</string>
-    <string name="spotting_lowercase_label" msgid="8482883324403335192">"tepliojimas"</string>
-    <string name="spotting_read_content_description" msgid="4143084456852811187">"Skaityti tepliojimo duomenis"</string>
-    <string name="spotting_write_content_description" msgid="4417069887396336720">"Rašyti tepliojimo duomenis"</string>
-    <string name="hydration_uppercase_label" msgid="8643231963758360012">"Hidratacija"</string>
-    <string name="hydration_lowercase_label" msgid="3003284599251167246">"hidratacija"</string>
-    <string name="hydration_read_content_description" msgid="7246214812861654403">"Skaityti hidratacijos duomenis"</string>
-    <string name="hydration_write_content_description" msgid="1859954348288584034">"Rašyti hidratacijos duomenis"</string>
-    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"Mityba"</string>
-    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"mityba"</string>
-    <string name="nutrition_read_content_description" msgid="1129363005245753193">"Skaityti mitybos duomenis"</string>
-    <string name="nutrition_write_content_description" msgid="5618853263422426282">"Rašyti mitybos duomenis"</string>
-    <string name="sleep_uppercase_label" msgid="5063088411115100109">"Miegas"</string>
-    <string name="sleep_lowercase_label" msgid="7013148357969868421">"miegas"</string>
-    <string name="sleep_read_content_description" msgid="1652070331037708028">"Skaityti miego būsenos duomenis"</string>
-    <string name="sleep_write_content_description" msgid="6212072324500033055">"Rašyti miego būsenos duomenis"</string>
-    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"Bazinė kūno temperatūra"</string>
-    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"bazinė kūno temperatūra"</string>
-    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"Skaityti bazinės kūno temperatūros duomenis"</string>
-    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"Rašyti bazinės kūno temperatūros duomenis"</string>
-    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"Kraujo gliukozė"</string>
-    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"kraujo gliukozė"</string>
-    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"Skaityti kraujo gliukozės duomenis"</string>
-    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"Rašyti kraujo gliukozės duomenis"</string>
-    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"Kraujo spaudimas"</string>
-    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"kraujo spaudimas"</string>
-    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"Skaityti kraujo spaudimo duomenis"</string>
-    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"Rašyti kraujo spaudimo duomenis"</string>
-    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"Kūno temperatūra"</string>
-    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"kūno temperatūra"</string>
-    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"Skaityti kūno temperatūros duomenis"</string>
-    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"Rašyti kūno temperatūros duomenis"</string>
-    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"Pulso dažnis"</string>
-    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"pulso dažnis"</string>
-    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"Skaityti pulso dažnio duomenis"</string>
-    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"Rašyti pulso dažnio duomenis"</string>
-    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"Pulso dažnio kitimas"</string>
-    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"pulso dažnio kitimas"</string>
-    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"Skaityti pulso dažnio kitimo duomenis"</string>
-    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"Rašyti pulso dažnio kitimo duomenis"</string>
-    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"Įsotinimas deguonimi"</string>
-    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"įsotinimas deguonimi"</string>
-    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"Skaityti įsotinimo deguonimi duomenis"</string>
-    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"Rašyti įsotinimo deguonimi duomenis"</string>
-    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"Kvėpavimo dažnis"</string>
-    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"kvėpavimo dažnis"</string>
-    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"Skaityti kvėpavimo dažnio duomenis"</string>
-    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"Rašyti kvėpavimo dažnio duomenis"</string>
-    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"Pulso dažnis ilsintis"</string>
-    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"pulso dažnis ilsintis"</string>
-    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Skaityti pulso dažnio ilsintis duomenis"</string>
-    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Rašyti pulso dažnio ilsintis duomenis"</string>
-    <string name="read_permission_category" msgid="9043802108788434232">"Leidimas „<xliff:g id="APP_NAME">%1$s</xliff:g>“ skaityti"</string>
-    <string name="write_permission_category" msgid="6467076880418458053">"Leidimas „<xliff:g id="APP_NAME">%1$s</xliff:g>“ rašyti"</string>
-    <string name="request_permissions_cancel" msgid="7082122080520578200">"Atšaukti"</string>
-    <string name="request_permissions_allow" msgid="2431904725832574525">"Leisti"</string>
-    <string name="request_permissions_allow_all" msgid="2244683574167733806">"Leisti viską"</string>
-    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"Neleisti"</string>
-    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Pasirinkite duomenis, kuriuos ši programa galės skaityti ar rašyti naudojant „Health Connect“"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Suteikus skaitymo prieigą, ši programa galės skaityti naujus ir pastarųjų trisdešimt dienų duomenis"</string>
-    <string name="request_permissions_header_title" msgid="547885377986067898">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti „Health Connect“?"</string>
-    <string name="request_permissions_rationale" msgid="3547870645483857817">"Kaip „<xliff:g id="APP_NAME">%1$s</xliff:g>“ tvarko jūsų duomenis, sužinosite kūrėjo <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
-    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"privatumo politika"</string>
-    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Pašalinti visus leidimus?"</string>
-    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Pašalinti viską"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>” nebegalės skaityti ar rašyti jokių „Health Connect“ duomenų.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vietovės, vaizdo kameros ar mikrofono."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Taip pat ištrinti „<xliff:g id="APP_NAME">%1$s</xliff:g>“ duomenis iš „Health Connect“"</string>
-    <string name="navigation_next_day" msgid="4940406450355240883">"Kita diena"</string>
-    <string name="navigation_previous_day" msgid="6152692518411256639">"Ankstesnė diena"</string>
-    <string name="default_error" msgid="7047939092442348839">"Kažkas ne taip. Bandykite dar kartą."</string>
-    <string name="health_permission_header_description" msgid="1352043269233254085">"Šį leidimą turinčios programos gali skaityti ir rašyti sveikatos duomenis."</string>
-    <string name="connected_apps_text" msgid="3656264326437387180">"Valdykite, kurios programos gali pasiekti sistemoje „Health Connect“ saugomus duomenis. Palieskite programą, kad peržiūrėtumėte, kokius duomenis ji gali skaityti ar įrašyti."</string>
-    <string name="connected_apps_section_title" msgid="3180510930742701840">"Leidžiama prieiga"</string>
-    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Neleidžiama prieiga"</string>
-    <string name="settings_and_help_header" msgid="56459390338790190">"Nustatymai ir pagalba"</string>
-    <string name="disconnect_all_apps" msgid="8400128470487727928">"Pašalinti visų programų prieigą"</string>
-    <string name="manage_permissions_read_header" msgid="7625997211374656400">"Leidžiama skaityti"</string>
-    <string name="manage_permissions_write_header" msgid="1730061424579902303">"Leidžiama rašyti"</string>
-    <string name="no_apps_allowed" msgid="1006840024939920418">"Neleidžiamos jokios programos"</string>
-    <string name="no_apps_denied" msgid="5248752441339902085">"Neatmesta jokių programų"</string>
-    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Pašalinti visų programų prieigą?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Nė viena iš jūsų programų negalės pasiekti ar pridėti naujų duomenų sistemoje „Health Connect“. Esami duomenys neištrinami.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vietovės, vaizdo kameros ar mikrofono."</string>
-    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Pašalinti viską"</string>
-    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Programos tvarkymas"</string>
-    <string name="delete_app_data" msgid="2694002637558981031">"Ištrinti programos duomenis"</string>
-    <string name="inactive_apps_section_title" msgid="2773413377510525846">"Neaktyvios programos"</string>
-    <string name="inactive_apps_section_message" msgid="5865391169046974428">"Šios programos nebeturi prieigos, bet jų duomenys vis tiek saugomi sistemoje „Health Connect“"</string>
-    <string name="manage_permissions_time_frame" msgid="999373455193059136">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ gali pasiekti duomenis, pridėtus nuo <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
-    <string name="other_android_permissions" msgid="3408425226133353014">"Norėdami valdyti kitus „Android“ leidimus, ką ši programa gali pasiekti, eikite į skiltį „Nustatymai“ &gt; „Programos“"</string>
-    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Duomenims, kuriuos bendrinate su programa „<xliff:g id="APP_NAME">%1$s</xliff:g>”, taikoma šios programos privatumo politika"</string>
-    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Jei norite valdyti kitus „Android“ leidimus, kuriuos ši programa gali pasiekti, eikite į skiltį „Nustatymai“, tada palieskite „Programos“"</string>
-    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Skaityti privatumo politiką"</string>
-    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Pasiekta per pastarąsias 24 val."</string>
-    <string name="app_access_title" msgid="3790585897490185758">"Programos prieiga"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"Šiuo metu neturite įdiegtų suderinamų programų"</string>
-    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Pašalinti programų leidimai"</string>
-    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"„Health Connect“ pašalino „<xliff:g id="APP_DATA">%s</xliff:g>“ leidimus"</string>
-    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"„Health Connect“ pašalino „<xliff:g id="APP_DATA_0">%1$s</xliff:g>“ ir „<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>“ leidimus"</string>
-    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"„Health Connect“ pašalino „<xliff:g id="APP_DATA_0">%1$s</xliff:g>“, „<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>“ ir „<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>“ leidimus"</string>
-    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"„Health Connect“ pašalino „<xliff:g id="APP_DATA_0">%1$s</xliff:g>“, „<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>“, „<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>“ ir kitų programų leidimus"</string>
-    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Žr. išsamią informaciją"</string>
-    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Kodėl „Health Connect“ pašalina programų leidimus"</string>
-    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Jei programa sustabdyta arba pašalinta iš „Google Play“, „Health Connect“ automatiškai pašalina jos leidimus.\n\nTai reiškia, kad programa nebegali pasiekti duomenų, saugomų sistemoje „Health Connect“. Jei šioje programoje yra anksčiau įrašytų duomenų, ji rodoma neaktyvių programų sąraše."</string>
-    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"Supratau"</string>
-    <string name="onboarding_title" msgid="1175348642301557799">"Darbo su klasikinės versijos „Health Connect“ pradžia"</string>
-    <string name="onboarding_description" msgid="4152058007461960500">"Sistemoje „Health Connect“ saugomi jūsų sveikatos ir kūno rengybos duomenys ir galite lengvai sinchronizuoti skirtingas programas telefone"</string>
-    <string name="share_data" msgid="3461840023402996573">"Duomenų bendrinimas su programomis"</string>
-    <string name="share_data_description" msgid="3419415806525775710">"Pasirinkite, kokius duomenis kiekviena programa gali skaityti ar rašyti sistemoje „Health Connect“"</string>
-    <string name="manage_your_settings" msgid="3636705762746537108">"Nustatymų ir privatumo valdymas"</string>
-    <string name="manage_your_settings_description" msgid="3467283105611653797">"Bet kada keiskite programų leidimus ir tvarkykite duomenis"</string>
-    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Grįžti"</string>
-    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Pradėti"</string>
-    <string name="delete_button_content_description" msgid="7102925022391975365">"Ištrinti duomenis"</string>
-    <string name="time_range_title" msgid="3275113129489801443">"Duomenų, kuriuos norite ištrinti, pasirinkimas"</string>
-    <string name="time_range_next_button" msgid="6231771008239100525">"Kitas"</string>
-    <string name="time_range_message_all" msgid="7602288625100089210">"Bus visam laikui ištrinti visi duomenys, pridėti prie „Health Connect“ per pasirinktą laikotarpį"</string>
-    <string name="time_range_message_data_type" msgid="5725562126119560293">"Bus visam laikui ištrinti „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenys, pridėti prie „Health Connect“ per pasirinktą laikotarpį"</string>
-    <string name="time_range_message_category" msgid="7087857058571953831">"Bus visam laikui ištrinti „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenys, pridėti prie „Health Connect“ per pasirinktą laikotarpį"</string>
-    <string name="time_range_message_app_data" msgid="3142036149240792656">"Bus visam laikui ištrinti „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenys, pridėti prie „Health Connect“ per pasirinktą laikotarpį"</string>
-    <string name="time_range_one_day" msgid="3033863003732558121">"Ištrinti pastarųjų dvidešimt keturių valandų duomenis"</string>
-    <string name="time_range_one_week" msgid="353979981636015030">"Ištrinti pastarųjų septynių dienų duomenis"</string>
-    <string name="time_range_one_month" msgid="4830107755328124319">"Ištrinti pastarųjų trisdešimt dienų duomenis"</string>
-    <string name="time_range_all" msgid="4114445623609239143">"Ištrinti visus duomenis"</string>
-    <string name="confirming_question_all" msgid="838765230743574439">"Visam laikui ištrinti visus viso laikotarpio duomenis?"</string>
-    <string name="confirming_question_one_day" msgid="3979341197752186440">"Visam laikui ištrinti visus pastarųjų dvidešimt keturių valandų duomenis?"</string>
-    <string name="confirming_question_one_week" msgid="5753661183304780596">"Visam laikui ištrinti visus pastarųjų septynių dienų duomenis?"</string>
-    <string name="confirming_question_one_month" msgid="6010023183561862892">"Visam laikui ištrinti visus pastarųjų trisdešimt dienų duomenis?"</string>
-    <string name="confirming_question_data_type_all" msgid="982234075886055865">"Visam laikui ištrinti viso laikotarpio „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Visam laikui ištrinti pastarųjų dvidešimt keturių valandų „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Visam laikui ištrinti pastarųjų septynių dienų „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Visam laikui ištrinti pastarųjų trisdešimt dienų „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_category_all" msgid="600051636967007505">"Visam laikui ištrinti viso laikotarpio „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Visam laikui ištrinti pastarųjų dvidešimt keturių valandų „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Visam laikui ištrinti pastarųjų septynių dienų „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Visam laikui ištrinti pastarųjų trisdešimt dienų „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Visam laikui ištrinti viso laikotarpio „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Visam laikui ištrinti pastarųjų dvidešimt keturių valandų „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Visam laikui ištrinti pastarųjų septynių dienų „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Visam laikui ištrinti pastarųjų trisdešimt dienų „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenis?"</string>
-    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Taip pat pašalinkite visus „<xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g>“ leidimus iš „Health Connect“"</string>
-    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"Visam laikui ištrinti visus „<xliff:g id="DATA_TYPE">%1$s</xliff:g>“ duomenis, kuriuos pridėjo programa „<xliff:g id="APP_DATA">%2$s</xliff:g>“?"</string>
-    <string name="confirming_question_single_entry" msgid="2387097225045539359">"Visam laikui ištrinti šį įrašą?"</string>
-    <string name="confirming_question_message" msgid="9090899967996008678">"Prijungtos programos nebegalės pasiekti šių duomenų iš „Health Connect“"</string>
-    <string name="confirming_question_delete_button" msgid="5965438966559454007">"Ištrinti"</string>
-    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"Grįžti"</string>
-    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"Atlikta"</string>
-    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"Uždaryti"</string>
-    <string name="delete_dialog_success_title" msgid="8645983649329184701">"Duomenys ištrinti"</string>
-    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Šie duomenys nebesaugomi sistemoje „Health Connect“."</string>
-    <string name="delete_progress_indicator" msgid="6446736923548413592">"Ištrinami duomenys"</string>
-    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Nepavyko ištrinti duomenų"</string>
-    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Kažkas nepavyko ir „Health Connect“ negalėjo ištrinti jūsų duomenų"</string>
-    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Bandyti dar kartą"</string>
-    <string name="delete_data_notification_title" msgid="5445676878692242897">"Ištrinami „Health Connect“ duomenys"</string>
-    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Ištrinami „Health Connect“ duomenys"</string>
-    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"Duomenų ištrynimas"</string>
-    <string name="data_point_action_content_description" msgid="5272053018514984088">"Duomenų įrašo parinktys"</string>
-    <string name="delete_data_point" msgid="5665536304875634127">"Ištrinti įrašą"</string>
-    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 W}one{# W}few{# W}many{# W}other{# W}}"</string>
-    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 vatas}one{# vatas}few{# vatai}many{# vato}other{# vatų}}"</string>
-    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 žingsnis}one{# žingsnis}few{# žingsniai}many{# žingsnio}other{# žingsnių}}"</string>
-    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 žingsnis per minutę}one{# žingsnis per minutę}few{# žingsniai per minutę}many{# žingsnio per minutę}other{# žingsnių per minutę}}"</string>
-    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 žingsnis per minutę}one{# žingsnis per minutę}few{# žingsniai per minutę}many{# žingsnio per minutę}other{# žingsnių per minutę}}"</string>
-    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 dpm}one{# dpm}few{# dpm}many{# dpm}other{# dpm}}"</string>
-    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 dūžis per minutę}one{# dūžis per minutę}few{# dūžiai per minutę}many{# dūžio per minutę}other{# dūžių per minutę}}"</string>
-    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 myl./val.}one{# myl./val.}few{# myl./val.}many{# myl./val.}other{# myl./val.}}"</string>
-    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 km/val.}one{# km/val.}few{# km/val.}many{# km/val.}other{# km/val.}}"</string>
-    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 mylia per valandą}one{# mylia per valandą}few{# mylios per valandą}many{# mylios per valandą}other{# mylių per valandą}}"</string>
-    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilometras per valandą}one{# kilometras per valandą}few{# kilometrai per valandą}many{# kilometro per valandą}other{# kilometrų per valandą}}"</string>
-    <string name="time_range_long" msgid="2057628562186177263">"nuo <xliff:g id="START_TIME">%1$s</xliff:g> iki <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <string name="date_range_long" msgid="5407008354838746975">"nuo <xliff:g id="START_TIME">%1$s</xliff:g> iki <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 neįgaliųjų vežimėlio pastūmimas}one{# neįgaliųjų vežimėlio pastūmimas}few{# neįgaliųjų vežimėlio pastūmimai}many{# neįgaliųjų vežimėlio pastūmimo}other{# neįgaliųjų vežimėlio pastūmimų}}"</string>
-    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 l}one{# l}few{# l}many{# l}other{# l}}"</string>
-    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 litras}one{# litras}few{# litrai}many{# litro}other{# litrų}}"</string>
-    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 aukštas}one{# aukštas}few{# aukštai}many{# aukšto}other{# aukštų}}"</string>
-    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 m}one{# m}few{# m}many{# m}other{# m}}"</string>
-    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 metras}one{# metras}few{# metrai}many{# metro}other{# metrų}}"</string>
-    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 spm}one{# spm}few{# spm}many{# spm}other{# spm}}"</string>
-    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 sūkis per minutę}one{# sūkis per minutę}few{# sūkiai per minutę}many{# sūkio per minutę}other{# sūkių per minutę}}"</string>
-    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"nuo <xliff:g id="MIN">%1$s</xliff:g> iki <xliff:g id="MAX">%2$s</xliff:g>"</string>
-    <string name="sexual_activity_protected" msgid="8805664653962728953">"Su apsauga"</string>
-    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"Be apsaugos"</string>
-    <string name="spotting" msgid="8367146199172958006">"Tepliojimas"</string>
-    <string name="flow_spotting" msgid="8313480263034209601">"Tepliojimas"</string>
-    <string name="flow_light" msgid="7714669130547926098">"Lengvas kraujavimas"</string>
-    <string name="flow_medium" msgid="1120681378064573572">"Vidutinis kraujavimas"</string>
-    <string name="flow_heavy" msgid="7611846277419291182">"Gausus kraujavimas"</string>
-    <string name="period_day" msgid="7959562867933427299">"<xliff:g id="DAY">%1$d</xliff:g> menstruacijų diena iš <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
-    <string name="ovulation_positive" msgid="2041632905561554787">"Teigiamas"</string>
-    <string name="ovulation_negative" msgid="132669521951412311">"Neigiamas"</string>
-    <string name="ovulation_high" msgid="2591492801425787141">"Aukšta"</string>
-    <string name="ovulation_inconclusive" msgid="1005696731815082564">"Nepakankamas"</string>
-    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 milisek.}one{# milisek.}few{# milisek.}many{# milisek.}other{# milisek.}}"</string>
-    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 milisekundė}one{# milisekundė}few{# milisekundės}many{# milisekundės}other{# milisekundžių}}"</string>
-    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{1 pakartojimas}one{# pakartojimas}few{# pakartojimai}many{# pakartojimo}other{# pakartojimų}}"</string>
-    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{1 pakartojimas}one{# pakartojimas}few{# pakartojimai}many{# pakartojimo}other{# pakartojimų}}"</string>
-    <string name="exercise_segments_header" msgid="5764001270423151097">"Mankštos segmentai"</string>
-    <string name="exercise_laps_header" msgid="3528739404869273165">"Ratai"</string>
-    <string name="back_extension" msgid="326104514905344192">"Atsilenkimai atgal"</string>
-    <string name="badminton" msgid="2562532899799962005">"Badmintonas"</string>
-    <string name="barbell_shoulder_press" msgid="4790926710785260252">"Štangos spaudimas pečiams"</string>
-    <string name="baseball" msgid="8308566726381464543">"Beisbolas"</string>
-    <string name="basketball" msgid="8952312917860615262">"Krepšinis"</string>
-    <string name="bench_press" msgid="5781962507448903312">"Štangos spaudimas ant horizontalaus suolo"</string>
-    <string name="bench_sit_up" msgid="6629466233057360533">"Atsilenkimai ant suolelio"</string>
-    <string name="biking" msgid="4436876005109385438">"Važiavimas dviračiu"</string>
-    <string name="biking_stationary" msgid="1564133322415860603">"Važiavimas stacionariu dviračiu"</string>
-    <string name="boot_camp" msgid="4864496070666289077">"Labai didelio intensyvumo grupinė treniruotė"</string>
-    <string name="boxing" msgid="8018825707590126764">"Boksas"</string>
-    <string name="burpee" msgid="77304431317253801">"Atsispaudimai ir šuoliukai"</string>
-    <string name="calisthenics" msgid="4930331817019806695">"Kalistenika"</string>
-    <string name="cricket" msgid="7003031758224774290">"Kriketas"</string>
-    <string name="crunch" msgid="6261544415692173664">"Atsilenkimai"</string>
-    <string name="dancing" msgid="3316423624850569070">"Šokiai"</string>
-    <string name="deadlift" msgid="8557909109378777398">"Štangos atkėlimas nuo žemės"</string>
-    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"Kairiosios rankos lenkimas su svarmeniu"</string>
-    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"Dešiniosios rankos lenkimas su svarmeniu"</string>
-    <string name="dumbbell_front_raise" msgid="8920061770246990181">"Svarmenų kėlimas priešais save"</string>
-    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"Svarmenų kėlimas į šonus"</string>
-    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"Kair. rankos tiesimas su svarmeniu (tricepsas)"</string>
-    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"Dešin. rankos tiesimas su svarmeniu (tricepsas)"</string>
-    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"Abiejų rankų tiesimas su svarmenimis (tricepsas)"</string>
-    <string name="elliptical" msgid="1139910728613357994">"Treniruotė elipsiniu treniruokliu"</string>
-    <string name="exercise_class" msgid="3152950268488724949">"Mankštos užsiėmimai"</string>
-    <string name="fencing" msgid="3959720630233223214">"Fechtavimasis"</string>
-    <string name="football_american" msgid="7298781679747969920">"Amerikietiškasis futbolas"</string>
-    <string name="football_australian" msgid="7870317627446699678">"Australiškasis futbolas"</string>
-    <string name="forward_twist" msgid="8460027946504405340">"Pasisukimas į priekį"</string>
-    <string name="frisbee_disc" msgid="5075847804492876983">"Lėkščiasvydis"</string>
-    <string name="golf" msgid="4510958024908277043">"Golfas"</string>
-    <string name="guided_breathing" msgid="372842925145421189">"Ritmingas kvėpavimas"</string>
-    <string name="gymnastics" msgid="2805063199546018852">"Gimnastika"</string>
-    <string name="handball" msgid="6228534119454993609">"Rankinis"</string>
-    <string name="high_intensity_interval_training" msgid="9055322569169754042">"Didelio intensyvumo intervalų treniruotė"</string>
-    <string name="hiking" msgid="6287881189679031692">"Žygiavimas"</string>
-    <string name="ice_hockey" msgid="4630546791512436505">"Ledo ritulys"</string>
-    <string name="ice_skating" msgid="8542769978117565715">"Čiuožimas ant ledo"</string>
-    <string name="jumping_jack" msgid="2504446639312960395">"Kareiviški šuoliukai"</string>
-    <string name="jump_rope" msgid="8936923325000005704">"Šokinėjimas su šokdyne"</string>
-    <string name="lat_pull_down" msgid="364838811857721841">"Treniruotė traukos treniruokliu"</string>
-    <string name="lunge" msgid="6863772146202006880">"Įtūpstai"</string>
-    <string name="martial_arts" msgid="3845461867192236399">"Kovos menai"</string>
-    <string name="meditation" msgid="4849671344539060840">"Meditacija"</string>
-    <string name="paddling" msgid="4330237681577599226">"Irklavimas"</string>
-    <string name="paragliding" msgid="7806835513093567376">"Sklandymas"</string>
-    <string name="pilates" msgid="4370654527595128790">"Pilatesas"</string>
-    <string name="plank" msgid="4231877980175820684">"Lenta"</string>
-    <string name="racquetball" msgid="182093198971401585">"Raketbolas"</string>
-    <string name="rock_climbing" msgid="3358436459734554807">"Alpinizmas"</string>
-    <string name="roller_hockey" msgid="6242808606213923201">"Ratukinių pačiūžų ritulys"</string>
-    <string name="rowing" msgid="7445636351111465609">"Irklavimas"</string>
-    <string name="rowing_machine" msgid="7220042462648107203">"Treniruotė irklavimo treniruokliu"</string>
-    <string name="rugby" msgid="1646920222855841135">"Regbis"</string>
-    <string name="running" msgid="6378365874547681747">"Bėgimas"</string>
-    <string name="running_treadmill" msgid="511612213911896573">"Bėgimas ant bėgtakio"</string>
-    <string name="sailing" msgid="5305484742008364839">"Buriavimas"</string>
-    <string name="scuba_diving" msgid="7362376101235225643">"Nardymas su akvalangu"</string>
-    <string name="skating" msgid="7202960228551709866">"Čiuožimas"</string>
-    <string name="skiing" msgid="6959504815950834221">"Slidinėjimas"</string>
-    <string name="snowboarding" msgid="7851044110983514020">"Snieglenčių sportas"</string>
-    <string name="snowshoeing" msgid="89862694372427163">"Vaikščiojimas sniegu"</string>
-    <string name="soccer" msgid="7373749155786409639">"Futbolas"</string>
-    <string name="softball" msgid="931823677533458803">"Mažasis beisbolas"</string>
-    <string name="squash" msgid="3671853878596020550">"Skvošas"</string>
-    <string name="squat" msgid="2624881515323904278">"Pritūpimai"</string>
-    <string name="stair_climbing" msgid="5997490575691347448">"Lipimas laiptais"</string>
-    <string name="stair_climbing_machine" msgid="337627408968910801">"Treniruotė laiptų lipimo treniruokliu"</string>
-    <string name="strength_training" msgid="4720460550476191439">"Jėgos lavinimas"</string>
-    <string name="stretching" msgid="934444878305334284">"Tempimas"</string>
-    <string name="surfing" msgid="9101307462491417943">"Banglenčių sportas"</string>
-    <string name="swimming_open_water" msgid="2739793146160676225">"Plaukimas atvirame vandenyje"</string>
-    <string name="swimming_pool" msgid="4102482265686792256">"Plaukimas baseine"</string>
-    <string name="table_tennis" msgid="2709280256456460422">"Stalo tenisas"</string>
-    <string name="tennis" msgid="385785070472019118">"Tenisas"</string>
-    <string name="upper_twist" msgid="4301453254991464653">"Viršutinės kūno dalies sukiniai"</string>
-    <string name="volleyball" msgid="7995390960159762289">"Tinklinis"</string>
-    <string name="walking" msgid="3758898602213892784">"Ėjimas"</string>
-    <string name="water_polo" msgid="2335613325858558397">"Vandensvydis"</string>
-    <string name="weightlifting" msgid="3048550335371204458">"Sunkioji atletika"</string>
-    <string name="wheelchair" msgid="8943449324228813941">"Važiavimas neįgaliųjų vežimėliu"</string>
-    <string name="workout" msgid="8816526215639000463">"Muzika treniruotei"</string>
-    <string name="yoga" msgid="8350954009879701169">"Joga"</string>
-    <string name="activity_type_australian_football" msgid="6720684447096561188">"Australiškasis futbolas"</string>
-    <string name="sleep_session_default" msgid="766743178056575120">"<xliff:g id="DURATION"> %1$s</xliff:g> miegojimas"</string>
-    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
-    <string name="sleep_stage_awake" msgid="5395946290328510164">"nemiegojimas"</string>
-    <string name="sleep_stage_sleeping" msgid="500845652611651071">"miegas"</string>
-    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"ne lovoje"</string>
-    <string name="sleep_stage_rem" msgid="3689511086544520391">"neramus miegas"</string>
-    <string name="sleep_stage_light" msgid="5625043123367019925">"lengvas miegas"</string>
-    <string name="sleep_stage_deep" msgid="190758395367810380">"gilus miegas"</string>
-    <string name="sleep_stage_unknown" msgid="8435322199201626433">"nežinoma"</string>
-    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g> min."</string>
-    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g> val. <xliff:g id="MIN">%2$s</xliff:g> min."</string>
-    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g> val."</string>
-    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
-    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 valanda}one{# valanda}few{# valandos}many{# valandos}other{# valandų}}"</string>
-    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 minutė}one{# minutė}few{# minutės}many{# minutės}other{# minučių}}"</string>
-    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 ml/(kg·min)}one{# ml/(kg·min)}few{# ml/(kg·min)}many{# ml/(kg·min)}other{# ml/(kg·min)}}"</string>
-    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 mililitras deguonies kūno masės kilogramui per minutę}one{# mililitras deguonies kūno masės kilogramui per minutę}few{# mililitrai deguonies kūno masės kilogramui per minutę}many{# mililitro deguonies kūno masės kilogramui per minutę}other{# mililitrų deguonies kūno masės kilogramui per minutę}}"</string>
-    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Netiesioginės kalorimetrijos modulis"</string>
-    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"Pulso dažnio santykis"</string>
-    <string name="vo2_cooper_test" msgid="1692373650149960549">"Kuperio testas"</string>
-    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"Daugiapakopis kūno rengybos testas"</string>
-    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"„Rockport“ kūno rengybos testas"</string>
-    <string name="vo2_other" msgid="7156255285130439695">"Kita"</string>
-    <string name="mucus_dry" msgid="798150315290557122">"Sausa"</string>
-    <string name="mucus_sticky" msgid="1550935711891429944">"Lipni"</string>
-    <string name="mucus_creamy" msgid="6331121251236727520">"Tiršta"</string>
-    <string name="mucus_watery" msgid="8046086206314018549">"Vandeninga"</string>
-    <string name="mucus_egg_white" msgid="9035599986758478851">"Kiaušinio baltymas"</string>
-    <string name="mucus_unusual" msgid="3168872819443903646">"Neįprasta"</string>
-    <string name="mucus_light" msgid="7872301587428469740">"Negausus"</string>
-    <string name="mucus_medium" msgid="3752514167673201447">"Vidutinis"</string>
-    <string name="mucus_heavy" msgid="585018675901081368">"Gausus"</string>
-    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mm Hg"</string>
-    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> gyvsidabrio stulpelio milimetr."</string>
-    <string name="body_position_standing_up" msgid="8045648865863315072">"Atsistojus"</string>
-    <string name="body_position_sitting_down" msgid="6193290868443102468">"Atsisėdus"</string>
-    <string name="body_position_lying_down" msgid="3349308448798046100">"Gulint"</string>
-    <string name="body_position_reclining" msgid="1761765938932384014">"Atsilošus"</string>
-    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"Kairysis riešas"</string>
-    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"Dešinysis riešas"</string>
-    <string name="blood_pressure_left_arm" msgid="507901624658936247">"Kairysis žastas"</string>
-    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"Dešinysis žastas"</string>
-    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 mmol/l}one{# mmol/l}few{# mmol/l}many{# mmol/l}other{# mmol/l}}"</string>
-    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 milimolis litre}one{# milimolis litre}few{# milimoliai litre}many{# milimolio litre}other{# milimolių litre}}"</string>
-    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"Tarpaudininis skystis"</string>
-    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"Kapiliarinis kraujas"</string>
-    <string name="specimen_source_plasma" msgid="356179067854415315">"Plazma"</string>
-    <string name="specimen_source_serum" msgid="8289671667279817498">"Serumas"</string>
-    <string name="specimen_source_tears" msgid="3680494716420004391">"Ašaros"</string>
-    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"Visos sudėties kraujas"</string>
-    <string name="blood_glucose_general" msgid="2955866138191587220">"Bendra"</string>
-    <string name="blood_glucose_fasting" msgid="1004807809187636134">"Nevalgius"</string>
-    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"Prieš valgį"</string>
-    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"Po valgio"</string>
-    <string name="mealtype_label" msgid="7946924589574443051">"Valgio tipas"</string>
-    <string name="mealtype_unknown" msgid="2559338548170419838">"Nežinoma"</string>
-    <string name="mealtype_breakfast" msgid="2152926220543322905">"Pusryčiai"</string>
-    <string name="mealtype_lunch" msgid="403599819099429864">"Pietūs"</string>
-    <string name="mealtype_dinner" msgid="1755288392201732372">"Vakarienė"</string>
-    <string name="mealtype_snack" msgid="2337826732633152765">"Užkandis"</string>
-    <string name="biotin" msgid="3627884250275404075">"Biotinas"</string>
-    <string name="caffeine" msgid="116658071099408928">"Kofeinas"</string>
-    <string name="calcium" msgid="2421306187949865076">"Kalcis"</string>
-    <string name="chloride" msgid="7490996250510177338">"Chloridas"</string>
-    <string name="cholesterol" msgid="6244346992349630002">"Cholesterolis"</string>
-    <string name="chromium" msgid="1717886909765369185">"Chromas"</string>
-    <string name="copper" msgid="4865917412156527453">"Varis"</string>
-    <string name="dietary_fiber" msgid="6858567136946084886">"Maistinės skaidulos"</string>
-    <string name="energy_consumed_total" msgid="7091055813340207192">"Energija"</string>
-    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"Energija, gaunama iš riebalų"</string>
-    <string name="folate" msgid="8173733292245451456">"Folatai"</string>
-    <string name="folic_acid" msgid="8591315035224265134">"Folio rūgštis"</string>
-    <string name="iodine" msgid="6295585927454501032">"Jodas"</string>
-    <string name="iron" msgid="1829192962959178553">"Geležis"</string>
-    <string name="magnesium" msgid="2378288907103259048">"Magnis"</string>
-    <string name="manganese" msgid="4343136164658896416">"Manganas"</string>
-    <string name="molybdenum" msgid="7771581143656671252">"Molibdenas"</string>
-    <string name="monounsaturated_fat" msgid="4971508136425798604">"Mononesotieji riebalai"</string>
-    <string name="niacin" msgid="2824160609495269089">"Niacinas"</string>
-    <string name="pantothenic_acid" msgid="7995714572397938859">"Pantoteno rūgštis"</string>
-    <string name="phosphorus" msgid="4952419844375433055">"Fosforas"</string>
-    <string name="polyunsaturated_fat" msgid="8066324913175100033">"Polinesotieji riebalai"</string>
-    <string name="potassium" msgid="707209134595635038">"Kalis"</string>
-    <string name="protein" msgid="3822882640861839933">"Baltymai"</string>
-    <string name="riboflavin" msgid="2985915835639186827">"Riboflavinas"</string>
-    <string name="saturated_fat" msgid="9021673028646987453">"Sotieji riebalai"</string>
-    <string name="selenium" msgid="9082380472819491510">"Selenas"</string>
-    <string name="sodium" msgid="8769822050033855464">"Natris"</string>
-    <string name="sugar" msgid="5999057784352629476">"Cukrus"</string>
-    <string name="thiamin" msgid="3709641915459997520">"Tiaminas"</string>
-    <string name="total_carbohydrate" msgid="232426059808514593">"Iš viso angliavandenių"</string>
-    <string name="total_fat" msgid="3978725283210702305">"Iš viso riebalų"</string>
-    <string name="trans_fat" msgid="5328804254745808226">"Transriebalai"</string>
-    <string name="unsaturated_fat" msgid="1068875753519369556">"Nesotieji riebalai"</string>
-    <string name="vitamin_a" msgid="7755534197188927987">"Vitaminas A"</string>
-    <string name="vitamin_b12" msgid="1366392000272833307">"Vitaminas B12"</string>
-    <string name="vitamin_b6" msgid="7372970567028622461">"Vitaminas B6"</string>
-    <string name="vitamin_c" msgid="8347021170400899646">"Vitaminas C"</string>
-    <string name="vitamin_d" msgid="3643353935248181962">"Vitaminas D"</string>
-    <string name="vitamin_e" msgid="2134971402339322071">"Vitaminas E"</string>
-    <string name="vitamin_k" msgid="390827413844437529">"Vitaminas K"</string>
-    <string name="zinc" msgid="1009892754125043398">"Cinkas"</string>
-    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
-    <string name="meal_name" msgid="4909433722102389860">"Pavadinimas"</string>
-    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 g}one{# g}few{# g}many{# g}other{# g}}"</string>
-    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 gramas}one{# gramas}few{# gramai}many{# gramo}other{# gramų}}"</string>
-    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 įpm}one{# įpm}few{# įpm}many{# įpm}other{# įpm}}"</string>
-    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 įkvėpimas per minutę}one{# įkvėpimas per minutę}few{# įkvėpimai per minutę}many{# įkvėpimo per minutę}other{# įkvėpimų per minutę}}"</string>
-    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}one{# kg}few{# kg}many{# kg}other{# kg}}"</string>
-    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 svar.}one{# svar.}few{# svar.}many{# svar.}other{# svar.}}"</string>
-    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 st}one{# st}few{# st}many{# st}other{# st}}"</string>
-    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
-    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 kilogramas}one{# kilogramas}few{# kilogramai}many{# kilogramo}other{# kilogramų}}"</string>
-    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 svaras}one{# svaras}few{# svarai}many{# svaro}other{# svarų}}"</string>
-    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 stonas}one{# stonas}few{# stonai}many{# stono}other{# stonų}}"</string>
-    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
-    <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}one{# ℃}few{# ℃}many{# ℃}other{# ℃}}"</string>
-    <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 laipsnis pagal Celsijų}one{# laipsnis pagal Celsijų}few{# laipsniai pagal Celsijų}many{# laipsnio pagal Celsijų}other{# laipsnių pagal Celsijų}}"</string>
-    <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 tūkst.}one{# tūkst.}few{# tūkst.}many{# tūkst.}other{# tūkst.}}"</string>
-    <string name="temperature_kelvin_long" msgid="6986189366155454098">"{value,plural, =1{1 kelvinas}one{# kelvinas}few{# kelvinai}many{# kelvino}other{# kelvinų}}"</string>
-    <string name="temperature_fahrenheit" msgid="2476056347231267984">"{value,plural, =1{1 ℉}one{# ℉}few{# ℉}many{# ℉}other{# ℉}}"</string>
-    <string name="temperature_fahrenheit_long" msgid="2971978242519651318">"{value,plural, =1{1 Farenheito laipsnis}one{# Farenheito laipsnis}few{# Farenheito laipsniai}many{# Farenheito laipsnio}other{# Farenheito laipsnių}}"</string>
-    <string name="temperature_location_armpit" msgid="7696835579581948830">"Pažastis"</string>
-    <string name="temperature_location_finger" msgid="7351193245180935719">"Pirštas"</string>
-    <string name="temperature_location_forehead" msgid="3368004987230117306">"Kakta"</string>
-    <string name="temperature_location_mouth" msgid="8833157753375108198">"Burna"</string>
-    <string name="temperature_location_rectum" msgid="2691251624275239001">"Tiesioji žarna"</string>
-    <string name="temperature_location_temporal_artery" msgid="1015028774234140913">"Smilkinio arterija"</string>
-    <string name="temperature_location_toe" msgid="3785918672110411401">"Kojos pirštas"</string>
-    <string name="temperature_location_ear" msgid="7361330734290842889">"Ausis"</string>
-    <string name="temperature_location_wrist" msgid="4789557303674138504">"Riešas"</string>
-    <string name="temperature_location_vagina" msgid="7501964407778590798">"Makštis"</string>
-    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 mylia}one{# mylia}few{# mylios}many{# mylios}other{# mylių}}"</string>
-    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}one{# km}few{# km}many{# km}other{# km}}"</string>
-    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 mylia}one{# mylia}few{# mylios}many{# mylios}other{# mylių}}"</string>
-    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 kilometras}one{# kilometras}few{# kilometrai}many{# kilometro}other{# kilometrų}}"</string>
-    <string name="height_cm" msgid="8939976388396204701">"{height,plural, =1{1 cm}one{# cm}few{# cm}many{# cm}other{# cm}}"</string>
-    <string name="height_cm_long" msgid="4322185580842737867">"{height,plural, =1{1 centimetras}one{# centimetras}few{# centimetrai}many{# centimetro}other{# centimetrų}}"</string>
-    <string name="height_in_long" msgid="4690944359939350391">"{height,plural, =1{1 colis}one{# colis}few{# coliai}many{# colio}other{# colių}}"</string>
-    <string name="height_ft_long" msgid="4067044383386766601">"{height,plural, =1{1 pėda}one{# pėda}few{# pėdos}many{# pėdos}other{# pėdų}}"</string>
-    <string name="height_in_compacted" msgid="7320090488312126741">"{height,plural, =1{1″}one{#″}few{#″}many{#″}other{#″}}"</string>
-    <string name="height_ft_compacted" msgid="8869242348732761724">"{height,plural, =1{1′}one{#′}few{#′}many{#′}other{#′}}"</string>
-    <string name="feet_inches_format" msgid="4976828345068983431">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>"</string>
-    <string name="feet_inches_format_long" msgid="3559977708168174809">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>"</string>
-    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 kalorija}one{# kalorija}few{# kalorijos}many{# kalorijos}other{# kalorijų}}"</string>
-    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 kal.}one{# kal.}few{# kal.}many{# kal.}other{# kal.}}"</string>
-    <string name="kj" msgid="5640715521602128434">"{count,plural, =1{1 kJ}one{# kJ}few{# kJ}many{# kJ}other{# kJ}}"</string>
-    <string name="kj_long" msgid="516247759297999467">"{count,plural, =1{1 kilodžaulis}one{# kilodžaulis}few{# kilodžauliai}many{# kilodžaulio}other{# kilodžaulių}}"</string>
-    <string name="percent" formatted="false" msgid="2841159621762576767">"{value,plural, =1{1 %}one{# %}few{# %}many{# %}other{# %}}"</string>
-    <string name="percent_long" msgid="8144935650402894315">"{value,plural, =1{1 procentas}one{# procentas}few{# procentai}many{# procento}other{# procentų}}"</string>
-    <string name="units_title" msgid="4335002706905375844">"Vienetai"</string>
-    <string name="set_units_label" msgid="7358440515698876383">"Duomenų rinkinių peržiūra"</string>
-    <string name="distance_unit_title" msgid="3055365740477222083">"Atstumas"</string>
-    <string name="height_unit_title" msgid="677762136969683850">"Ūgis"</string>
-    <string name="weight_unit_title" msgid="1459327930265888396">"Svoris"</string>
-    <string name="energy_unit_title" msgid="5416534225144126434">"Energija"</string>
-    <string name="temperature_unit_title" msgid="8849488991722636347">"Temperatūra"</string>
-    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Kilometrai"</string>
-    <string name="distance_unit_miles_label" msgid="7055538640044313099">"Mylios"</string>
-    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Centimetrai"</string>
-    <string name="height_unit_feet_label" msgid="5868165630072173182">"Pėdos ir coliai"</string>
-    <string name="weight_unit_pound_label" msgid="5140603717613619894">"Svarai"</string>
-    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Kilogramai"</string>
-    <string name="weight_unit_stone_label" msgid="8143742807230733783">"Stonai"</string>
-    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"Kalorijos"</string>
-    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"Kilodžauliai"</string>
-    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Celsijaus laipsnis"</string>
-    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Farenheito laipsnis"</string>
-    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvino laipsnis"</string>
-    <string name="help_and_feedback" msgid="172484246164803271">"Pagalba ir atsiliepimai"</string>
-    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Jei nematote įdiegtos programos, ji gali būti dar nesuderinama su „Health Connect“"</string>
-    <string name="things_to_try" msgid="5007292603680871491">"Išbandykite šiuos dalykus"</string>
-    <string name="check_for_updates" msgid="8437406613751262779">"Tikrinti, ar yra naujinių"</string>
-    <string name="check_for_updates_description" msgid="1096082466727060156">"Įsitikinkite, kad įdiegtos programos atnaujintos"</string>
-    <string name="see_all_compatible_apps" msgid="7992057176853172184">"Žr. visas suderinamas programas"</string>
-    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Rasti programų sistemoje „Google Play“"</string>
-    <string name="send_feedback" msgid="5208533169043471671">"Siųsti atsiliepimą"</string>
-    <string name="send_feedback_description" msgid="8072260306033182621">"Nurodykite, kurias sveikatos ir mankštos programas norėtumėte naudoti su „Health Connect“"</string>
-    <string name="playstore_app_title" msgid="1735964688871308040">"„Play“ parduotuvė"</string>
-    <string name="auto_delete_button" msgid="7613874709713318627">"Automatinis ištrynimas"</string>
-    <string name="auto_delete_title" msgid="4076931002598655193">"Automatinis ištrynimas"</string>
-    <string name="auto_delete_header" msgid="5258042693870924698">"Valdykite, kiek laiko duomenys saugomi sistemoje „Health Connect“, suplanuodami jų ištrynimą po nustatyto laiko"</string>
-    <string name="auto_delete_learn_more" msgid="3247070192871987847">"Sužinokite daugiau"</string>
-    <string name="auto_delete_section" msgid="9211252344455317906">"Automatinis duomenų ištrynimas"</string>
-    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{Po # mėnesio}one{Po # mėnesio}few{Po # mėnesių}many{Po # mėnesio}other{Po # mėnesių}}"</string>
-    <string name="range_never" msgid="7960509623911908545">"Niekada"</string>
-    <string name="auto_delete_rationale" msgid="5560024057140990346">"Kai pakeičiate šiuos nustatymus, „Health Connect“ ištrina esamus duomenis, kad atspindėtų jūsų naujas nuostatas"</string>
-    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Automatiškai ištrinti duomenis po # mėnesio?}one{Automatiškai ištrinti duomenis po # mėnesio?}few{Automatiškai ištrinti duomenis po # mėnesių?}many{Automatiškai ištrinti duomenis po # mėnesio?}other{Automatiškai ištrinti duomenis po # mėnesių?}}"</string>
-    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesio. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesio duomenys.}one{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesio. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesio duomenys.}few{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesių. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesių duomenys.}many{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesio. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesio duomenys.}other{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesių. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesių duomenys.}}"</string>
-    <string name="set_auto_delete_button" msgid="302211603856152720">"Nustatyti automatinį ištrynimą"</string>
-    <string name="deletion_started_title" msgid="2182642613917857247">"Esami duomenys bus ištrinti"</string>
-    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{„Health Connect“ ištrins visus senesnius nei # mėnesio duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}one{„Health Connect“ ištrins visus senesnius nei # mėnesio duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}few{„Health Connect“ ištrins visus senesnius nei # mėnesių duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}many{„Health Connect“ ištrins visus senesnius nei # mėnesio duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}other{„Health Connect“ ištrins visus senesnius nei # mėnesių duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}}"</string>
-    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Duomenys, kurie bus ištrinti iš šių kategorijų"</string>
-    <string name="deletion_started_done_button" msgid="3502852477322616722">"Atlikta"</string>
-    <string name="priority_dialog_title" msgid="7095478075034320176">"Programų prioriteto nustatymas"</string>
-    <string name="priority_dialog_message" msgid="3340579459066951195">"Jei daugiau nei viena programa pridės <xliff:g id="DATA_TYPE">%s</xliff:g> duomenis, „Health Connect“ pirmenybę teiks sąrašo viršuje esančiai programai. Vilkite programas, kad pakeistumėte jų eiliškumą."</string>
-    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"Išsaugoti"</string>
-    <string name="action_drag_label_move_up" msgid="4672893112356988839">"Perkelti aukštyn"</string>
-    <string name="action_drag_label_move_down" msgid="1092853846151649508">"Perkelti žemyn"</string>
-    <string name="action_drag_label_move_top" msgid="2966656544336625803">"Perkelti į viršų"</string>
-    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"Perkelti į apačią"</string>
-    <string name="search_keywords_home" msgid="9160844866689920918">"mankšta, sveikatingumas"</string>
-    <string name="search_keywords_permissions" msgid="5833608935281551763">"leidimai"</string>
-    <string name="search_keywords_data" msgid="3868299259004497681">"health connect, sveikatos duomenys, sveikatos duomenų kategorijos, prieiga prie duomenų, veikla, kūno matavimai, ciklo stebėjimas, mityba, miegas, gyvybinių funkcijų rodikliai"</string>
-    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"„Health Connect“ &gt; Programos leidimai"</string>
-    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"„Health Connect“ &gt; Duomenys ir prieiga"</string>
-    <string name="search_connected_apps" msgid="6129467632620352061">"Ieškoti programų"</string>
-    <string name="no_results" msgid="4935646951230345730">"Nėra jokių rezultatų"</string>
-    <string name="help" msgid="6096599033945360524">"Pagalba"</string>
-    <string name="request_route_header_title" msgid="1350262014182621609">"Laisti „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti šį mankštos maršrutą sistemoje „Health Connect“?"</string>
-    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Ši programa galės nuskaityti jūsų ankstesnės maršruto vietovės informaciją"</string>
-    <string name="loading" msgid="5416387523241743987">"Įkeliama…"</string>
+    <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Programos prieigos prie sveikatos duomenų tvarkymas"</string>
+    <string name="permissions_and_data_header" msgid="4406105506837487805">"Leidimai ir duomenys"</string>
+    <string name="home_subtitle" msgid="1750033322147357163">"Tvarkykite telefone esančius sveikatos ir kūno rengybos duomenis ir valdykite, kurios programos gali juos pasiekti"</string>
+    <string name="data_title" msgid="4456619761533380816">"Duomenys ir prieiga"</string>
+    <string name="all_categories_title" msgid="1446410643217937926">"Visos kategorijos"</string>
+    <string name="see_all_categories" msgid="5599882403901010434">"Žr. visas kategorijas"</string>
+    <string name="no_data" msgid="1906986019249068659">"Nėra jokių duomenų"</string>
+    <string name="connected_apps_title" msgid="279942692804743223">"Programos leidimai"</string>
+    <string name="connected_apps_subtitle" msgid="8464462995533399175">"Tvarkykite programas ir leidimus"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"Programų, kurioms suteikta prieiga: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>iš <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"Programų, kurioms suteikta prieiga: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"Programų, kurioms suteikta prieiga: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Nėra"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Išsami įvedimo informacija"</string>
+    <string name="backup_title" msgid="211503191266235085">"Atsarginė kopija"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Duomenų šaltiniai ir prioritetas"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Žr. vienetus"</string>
+    <string name="recent_access_header" msgid="7623497371790225888">"Naujausia prieiga"</string>
+    <string name="no_recent_access" msgid="4724297929902441784">"Nėra neseniai „Health Connect“ pasiekusių programų"</string>
+    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Žr. visus naujausius prieigos duomenis"</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"Peržiūrėkite, kurios programos pasiekė jūsų duomenis per pastarąsias dvidešimt keturias valandas"</string>
+    <string name="today_header" msgid="1006837293203834373">"Šiandien"</string>
+    <string name="yesterday_header" msgid="6652176268273681505">"Vakar"</string>
+    <string name="read_data_access_label" msgid="7145747310980361968">"Skaityti: %s"</string>
+    <string name="write_data_access_label" msgid="7955988316773000250">"Rašyti: %s"</string>
+    <string name="data_type_separator" msgid="1299848322898210658">", "</string>
+    <string name="manage_permissions" msgid="8394221950712608160">"Tvarkyti leidimus"</string>
+    <string name="activity_category_uppercase" msgid="136628843341377088">"Veikla"</string>
+    <string name="activity_category_lowercase" msgid="3007220578865400601">"veikla"</string>
+    <string name="body_measurements_category_uppercase" msgid="422923782603313038">"Kūno matavimai"</string>
+    <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"kūno matavimai"</string>
+    <string name="sleep_category_uppercase" msgid="3422452674899706786">"Miegas"</string>
+    <string name="sleep_category_lowercase" msgid="842609634386839011">"miegas"</string>
+    <string name="vitals_category_uppercase" msgid="8982333138032938623">"Gyvybinių funkcijų rodikliai"</string>
+    <string name="vitals_category_lowercase" msgid="4664457787866407963">"gyvybinių funkcijų rodikliai"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="4723200714782660489">"Ciklo stebėjimas"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"ciklo stebėjimas"</string>
+    <string name="nutrition_category_uppercase" msgid="6665096097987741036">"Mityba"</string>
+    <string name="nutrition_category_lowercase" msgid="7804134941649488990">"mityba"</string>
+    <string name="browse_data_category" msgid="4813955610391357638">"Duomenų naršymas"</string>
+    <string name="manage_data_section" msgid="5859629270946511903">"Duomenų tvarkymas"</string>
+    <string name="export_data_button" msgid="7783329820434117744">"Eksportuoti duomenis"</string>
+    <string name="delete_all_data_button" msgid="7238755635416521487">"Ištrinti visus duomenis"</string>
+    <string name="no_categories" msgid="2636778482437506241">"Neturite jokių duomenų sistemoje „Health Connect“"</string>
+    <string name="permission_types_title" msgid="7698058200557389436">"Jūsų duomenys"</string>
+    <string name="app_priority_button" msgid="3126133977893705098">"Programos prioritetas"</string>
+    <string name="delete_category_data_button" msgid="2324773398768267043">"Ištrinti „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis"</string>
+    <string name="select_all_apps_title" msgid="884487568464305913">"Visos programos"</string>
+    <string name="can_read" msgid="4568261079308309564">"Gali skaityti šiuos duomenis: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_write" msgid="5082414937218423823">"Gali rašyti šiuos duomenis: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="inactive_apps" msgid="8956546286760797760">"Neaktyvios programos"</string>
+    <string name="inactive_apps_message" msgid="4666501359079362486">"Šios programos nebegali rašyti „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenų, bet vis dar saugo duomenis sistemoje „Health Connect“"</string>
+    <string name="data_access_empty_message" msgid="9084350402254264452">"Programos nebegali skaityti ar rašyti šio tipo duomenų: <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ir sistemoje „Health Connect“ nėra saugomų šio tipo duomenų: <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>"</string>
+    <string name="data_access_exercise_description" msgid="6868583522699443570">"Į šiuos duomenis įtraukiama informacija, pvz., aktyvumo laikas, pratimo tipas, ratai, pakartojimai, seansai ar plaukimo mostai"</string>
+    <string name="data_access_sleep_description" msgid="74293126050011153">"Į šiuos duomenis įtraukiama informacija, pvz., miego fazės ir miego seansai"</string>
+    <string name="all_entries_button" msgid="5109091107239135235">"Žr. visus įrašus"</string>
+    <string name="delete_permission_type_data_button" msgid="2270819954943391797">"Ištrinti šiuos duomenis"</string>
+    <string name="permgrouplab_health" msgid="468961137496587966">"Health Connect"</string>
+    <string name="permgroupdesc_health" msgid="252080476917407273">"prieiga prie sveikatos duomenų"</string>
+    <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Skaityti sudegintų kalorijų duomenis"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Leidžiama programa skaityti sudegintų kalorijų duomenis"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Sudegintų kalorijų aktyviu metu skaičius"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"sudegintų kalorijų aktyviu metu skaičius"</string>
+    <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Skaityti sudegintų kalorijų aktyviu metu skaičių"</string>
+    <string name="active_calories_burned_write_content_description" msgid="8794383690157452892">"Rašyti sudegintų kalorijų aktyviu metu skaičių"</string>
+    <string name="exercise_uppercase_label" msgid="9174662895529523172">"Mankšta"</string>
+    <string name="exercise_lowercase_label" msgid="7210988327804427943">"mankšta"</string>
+    <string name="exercise_read_content_description" msgid="2079728018078185556">"Skaityti mankštos duomenis"</string>
+    <string name="exercise_write_content_description" msgid="3267630937895011886">"Rašyti mankštos duomenis"</string>
+    <string name="exercise_route_uppercase_label" msgid="6678863538041931754">"Mankštos maršrutas"</string>
+    <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"mankštos maršrutas"</string>
+    <string name="exercise_route_write_content_description" msgid="257809942953352611">"Rašyti mankštos maršrutą"</string>
+    <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Skaityti mankštos maršrutą"</string>
+    <string name="distance_uppercase_label" msgid="1420705424462077174">"Atstumas"</string>
+    <string name="distance_lowercase_label" msgid="2287154001209381379">"atstumas"</string>
+    <string name="distance_read_content_description" msgid="8787235642020285789">"Skaityti atstumo duomenis"</string>
+    <string name="distance_write_content_description" msgid="494549494589487562">"Rašyti atstumo duomenis"</string>
+    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"Įveiktas aukštis"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"aukščio padidėjimas"</string>
+    <string name="elevation_gained_read_content_description" msgid="6018756385903843355">"Skaityti aukščio padidėjimo duomenis"</string>
+    <string name="elevation_gained_write_content_description" msgid="6790199544670231367">"Rašyti aukščio padidėjimo duomenis"</string>
+    <string name="floors_climbed_uppercase_label" msgid="3754372357767832441">"Įveiktų aukštų skaičius"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"įveiktų aukštų skaičius"</string>
+    <string name="floors_climbed_read_content_description" msgid="4730764877684911752">"Skaityti įveiktų aukštų skaičiaus duomenis"</string>
+    <string name="floors_climbed_write_content_description" msgid="3480340610185615655">"Rašyti įveiktų aukštų skaičiaus duomenis"</string>
+    <string name="power_uppercase_label" msgid="8027219480901448660">"Galia"</string>
+    <string name="power_lowercase_label" msgid="3893286148577044369">"galia"</string>
+    <string name="power_read_content_description" msgid="6821797135406643841">"Skaityti galios duomenis"</string>
+    <string name="power_write_content_description" msgid="8091584558688087392">"Rašyti galios duomenis"</string>
+    <string name="speed_uppercase_label" msgid="3307049861007518587">"Greitis"</string>
+    <string name="speed_lowercase_label" msgid="3462529886150464647">"greitis"</string>
+    <string name="speed_read_content_description" msgid="9097089387385110692">"Skaityti greičio duomenis"</string>
+    <string name="speed_write_content_description" msgid="5382921934987959251">"Rašyti greičio duomenis"</string>
+    <string name="steps_uppercase_label" msgid="2581405504646486105">"Žingsniai"</string>
+    <string name="steps_lowercase_label" msgid="706153549312838582">"žingsniai"</string>
+    <string name="steps_read_content_description" msgid="7839297670092769964">"Skaityti žingsnių duomenis"</string>
+    <string name="steps_write_content_description" msgid="6360223825799711659">"Rašyti žingsnių duomenis"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"Bendras sudegintų kalorijų skaičius"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"bendras sudegintų kalorijų skaičius"</string>
+    <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Skaityti bendrą sudegintų kalorijų skaičių"</string>
+    <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Rašyti bendrą sudegintų kalorijų skaičių"</string>
+    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"Didžiausias deguonies suvartojimo greitis"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"Didžiausias deguonies suvartojimo greitis"</string>
+    <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Skaityti didžiausio deguonies suvartojimo greičio duomenis"</string>
+    <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Rašyti didžiausio deguonies suvartojimo greičio duomenis"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Neįgaliųjų vežimėlio pastūmimai"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="8919337990806379687">"neįgaliųjų vežimėlio pastūmimai"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="157304610943976471">"Skaityti neįgaliųjų vežimėlio pastūmimų duomenis"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="2745600707106818641">"Rašyti neįgaliųjų vežimėlio pastūmimų duomenis"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="4802351493928086473">"Pagrindinis medžiagų apykaitos greitis"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7195596626083893231">"pagrindinis medžiagų apykaitos greitis"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="5583222212705234907">"Skaityti pagrindinio medžiagų apykaitos greičio duomenis"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4246137679868953443">"Rašyti pagrindinio medžiagų apykaitos greičio duomenis"</string>
+    <string name="body_fat_uppercase_label" msgid="4618860235119416449">"Kūno riebalai"</string>
+    <string name="body_fat_lowercase_label" msgid="4090686510477176498">"kūno riebalai"</string>
+    <string name="body_fat_read_content_description" msgid="801664410906939146">"Skaityti kūno riebalų duomenis"</string>
+    <string name="body_fat_write_content_description" msgid="4863558071904720577">"Rašyti kūno riebalų duomenis"</string>
+    <string name="body_water_mass_uppercase_label" msgid="7839393299147916863">"Kūno vandens masė"</string>
+    <string name="body_water_mass_lowercase_label" msgid="9196249948631920955">"kūno vandens masė"</string>
+    <string name="body_water_mass_read_content_description" msgid="1468266374858854184">"Skaityti kūno vandens masės duomenis"</string>
+    <string name="body_water_mass_write_content_description" msgid="8485284654932647383">"Rašyti kūno vandens masės duomenis"</string>
+    <string name="bone_mass_uppercase_label" msgid="6815438946872228501">"Kaulų masė"</string>
+    <string name="bone_mass_lowercase_label" msgid="5127378263122564055">"kaulų masė"</string>
+    <string name="bone_mass_read_content_description" msgid="8401070346821477225">"Skaityti kaulų masės duomenis"</string>
+    <string name="bone_mass_write_content_description" msgid="8711285422751587975">"Rašyti kaulų masės duomenis"</string>
+    <string name="height_uppercase_label" msgid="6839543632311723181">"Ūgis"</string>
+    <string name="height_lowercase_label" msgid="6232582306436492752">"ūgis"</string>
+    <string name="height_read_content_description" msgid="7107217731605127715">"Skaityti ūgio duomenis"</string>
+    <string name="height_write_content_description" msgid="6787078298523064040">"Rašyti ūgio duomenis"</string>
+    <string name="hip_circumference_uppercase_label" msgid="553907293616398764">"Klubų apimtis"</string>
+    <string name="hip_circumference_lowercase_label" msgid="5383037100089745103">"klubų apimtis"</string>
+    <string name="hip_circumference_read_content_description" msgid="3960843421475522701">"Skaityti klubų apimties duomenis"</string>
+    <string name="hip_circumference_write_content_description" msgid="3828616223599649051">"Rašyti klubų apimties duomenis"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="1660166073148541008">"Liesoji kūno masė"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="9060417901080844357">"liesoji kūno masė"</string>
+    <string name="lean_body_mass_read_content_description" msgid="3251903339784498051">"Skaityti liesosios kūno masės duomenis"</string>
+    <string name="lean_body_mass_write_content_description" msgid="8778176250058913124">"Rašyti liesosios kūno masės duomenis"</string>
+    <string name="waist_circumference_uppercase_label" msgid="864537723631507381">"Liemens apimtis"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7389714051869012003">"liemens apimtis"</string>
+    <string name="waist_circumference_read_content_description" msgid="7742632529989685413">"Skaityti liemens apimties duomenis"</string>
+    <string name="waist_circumference_write_content_description" msgid="6455311628964793644">"Rašyti liemens apimties duomenis"</string>
+    <string name="weight_uppercase_label" msgid="2240396607601785080">"Svoris"</string>
+    <string name="weight_lowercase_label" msgid="6592458247010013299">"svoris"</string>
+    <string name="weight_read_content_description" msgid="3270514859844811665">"Skaityti svorio duomenis"</string>
+    <string name="weight_write_content_description" msgid="555486014471042366">"Rašyti svorio duomenis"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="7479786340673820763">"Gimdos kaklelio gleivės"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"gimdos kaklelio gleivės"</string>
+    <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Skaityti gimdos kaklelio gleivių duomenis"</string>
+    <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Rašyti gimdos kaklelio gleivių duomenis"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Tarpmenstruacinis kraujavimas"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"tarpmenstruacinis kraujavimas"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Skaityti tarpmenstruacinio kraujavimo duomenis"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="1377719923165234099">"Rašyti tarpmenstruacinio kraujavimo duomenis"</string>
+    <string name="menstruation_uppercase_label" msgid="9119506748428874832">"Menstruacijos"</string>
+    <string name="menstruation_lowercase_label" msgid="8098816978006207242">"menstruacijos"</string>
+    <string name="menstruation_read_content_description" msgid="7710047469771882021">"Skaityti menstruacijų duomenis"</string>
+    <string name="menstruation_write_content_description" msgid="5142669435897047396">"Rašyti menstruacijų duomenis"</string>
+    <string name="ovulation_test_uppercase_label" msgid="1929868571862288837">"Ovuliacijos testas"</string>
+    <string name="ovulation_test_lowercase_label" msgid="93260039417722840">"ovuliacijos testas"</string>
+    <string name="ovulation_test_read_content_description" msgid="8008351738285775840">"Skaityti ovuliacijos testo duomenis"</string>
+    <string name="ovulation_test_write_content_description" msgid="7061493310852203463">"Rašyti ovuliacijos testo duomenis"</string>
+    <string name="sexual_activity_uppercase_label" msgid="1093238473810194127">"Seksualinė veikla"</string>
+    <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"seksualinė veikla"</string>
+    <string name="sexual_activity_read_content_description" msgid="4937721417714312007">"Skaityti seksualinės veiklos duomenis"</string>
+    <string name="sexual_activity_write_content_description" msgid="3063448245882840534">"Rašyti seksualinės veiklos duomenis"</string>
+    <string name="spotting_uppercase_label" msgid="5106739829390033240">"Tepliojimas"</string>
+    <string name="spotting_lowercase_label" msgid="4361141146039580583">"tepliojimas"</string>
+    <string name="spotting_read_content_description" msgid="5422420770022357631">"Skaityti tepliojimo duomenis"</string>
+    <string name="spotting_write_content_description" msgid="9049462631184362964">"Rašyti tepliojimo duomenis"</string>
+    <string name="hydration_uppercase_label" msgid="1196083392597480565">"Hidratacija"</string>
+    <string name="hydration_lowercase_label" msgid="7793261552870970551">"hidratacija"</string>
+    <string name="hydration_read_content_description" msgid="3255941233933808082">"Skaityti hidratacijos duomenis"</string>
+    <string name="hydration_write_content_description" msgid="7549819425875969941">"Rašyti hidratacijos duomenis"</string>
+    <string name="nutrition_uppercase_label" msgid="2352959651072134084">"Mityba"</string>
+    <string name="nutrition_lowercase_label" msgid="4123518952030658702">"mityba"</string>
+    <string name="nutrition_read_content_description" msgid="5820331769605952082">"Skaityti mitybos duomenis"</string>
+    <string name="nutrition_write_content_description" msgid="6690090231218210367">"Rašyti mitybos duomenis"</string>
+    <string name="sleep_uppercase_label" msgid="1458084584315123727">"Miegas"</string>
+    <string name="sleep_lowercase_label" msgid="7795584924503475035">"miegas"</string>
+    <string name="sleep_read_content_description" msgid="7064608272681424436">"Skaityti miego būsenos duomenis"</string>
+    <string name="sleep_write_content_description" msgid="2259414465110376554">"Rašyti miego būsenos duomenis"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4571393253935677019">"Bazinė kūno temperatūra"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="3363829208971016662">"bazinė kūno temperatūra"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3342604362011725500">"Skaityti bazinės kūno temperatūros duomenis"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="1081636817359407622">"Rašyti bazinės kūno temperatūros duomenis"</string>
+    <string name="blood_glucose_uppercase_label" msgid="7462421849184720721">"Kraujo gliukozė"</string>
+    <string name="blood_glucose_lowercase_label" msgid="5036157221577793772">"kraujo gliukozė"</string>
+    <string name="blood_glucose_read_content_description" msgid="563393834563809318">"Skaityti kraujo gliukozės duomenis"</string>
+    <string name="blood_glucose_write_content_description" msgid="7688360165458091174">"Rašyti kraujo gliukozės duomenis"</string>
+    <string name="blood_pressure_uppercase_label" msgid="1091450873620857062">"Kraujo spaudimas"</string>
+    <string name="blood_pressure_lowercase_label" msgid="5857335698134310172">"kraujo spaudimas"</string>
+    <string name="blood_pressure_read_content_description" msgid="8573617892296408887">"Skaityti kraujo spaudimo duomenis"</string>
+    <string name="blood_pressure_write_content_description" msgid="2649850785684226949">"Rašyti kraujo spaudimo duomenis"</string>
+    <string name="body_temperature_uppercase_label" msgid="5104550330313775324">"Kūno temperatūra"</string>
+    <string name="body_temperature_lowercase_label" msgid="324124730971992259">"kūno temperatūra"</string>
+    <string name="body_temperature_read_content_description" msgid="5966765249024688738">"Skaityti kūno temperatūros duomenis"</string>
+    <string name="body_temperature_write_content_description" msgid="5498016171067859369">"Rašyti kūno temperatūros duomenis"</string>
+    <string name="heart_rate_uppercase_label" msgid="4990167215137642430">"Pulso dažnis"</string>
+    <string name="heart_rate_lowercase_label" msgid="693492686337628283">"pulso dažnis"</string>
+    <string name="heart_rate_read_content_description" msgid="4165867166260001259">"Skaityti pulso dažnio duomenis"</string>
+    <string name="heart_rate_write_content_description" msgid="2876667918366409170">"Rašyti pulso dažnio duomenis"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"Pulso dažnio kitimas"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"pulso dažnio kitimas"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="5812707457872629556">"Skaityti pulso dažnio kitimo duomenis"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="3628171603035566114">"Rašyti pulso dažnio kitimo duomenis"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1396254185616418355">"Įsotinimas deguonimi"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="7264179897533866327">"įsotinimas deguonimi"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="4756434113425028212">"Skaityti įsotinimo deguonimi duomenis"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7189901097196830875">"Rašyti įsotinimo deguonimi duomenis"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4609498171205294389">"Kvėpavimo dažnis"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="8138249029197360098">"kvėpavimo dažnis"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8545898979648419722">"Skaityti kvėpavimo dažnio duomenis"</string>
+    <string name="respiratory_rate_write_content_description" msgid="7689533746809591931">"Rašyti kvėpavimo dažnio duomenis"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="5700827752396195453">"Pulso dažnis ilsintis"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="4533866739695973169">"pulso dažnis ilsintis"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1068160055773401020">"Skaityti pulso dažnio ilsintis duomenis"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8848198128082739995">"Rašyti pulso dažnio ilsintis duomenis"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Leidimas „<xliff:g id="APP_NAME">%1$s</xliff:g>“ skaityti"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Leidimas „<xliff:g id="APP_NAME">%1$s</xliff:g>“ rašyti"</string>
+    <string name="request_permissions_cancel" msgid="1787483997235365393">"Atšaukti"</string>
+    <string name="request_permissions_allow" msgid="4201324235711040631">"Leisti"</string>
+    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Leisti viską"</string>
+    <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Neleisti"</string>
+    <string name="request_permissions_header_desc" msgid="5561173070722750153">"Pasirinkite duomenis, kuriuos ši programa galės skaityti ar rašyti naudojant „Health Connect“"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Suteikus skaitymo prieigą, ši programa galės skaityti naujus ir pastarųjų trisdešimt dienų duomenis"</string>
+    <string name="request_permissions_header_title" msgid="4264236128614363479">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti „Health Connect“?"</string>
+    <string name="request_permissions_rationale" msgid="6154280355215802538">"Kaip „<xliff:g id="APP_NAME">%1$s</xliff:g>“ tvarko jūsų duomenis, sužinosite kūrėjo <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
+    <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privatumo politika"</string>
+    <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Pašalinti visus leidimus?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Pašalinti viską"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>” nebegalės skaityti ar rašyti jokių „Health Connect“ duomenų.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vietovės, vaizdo kameros ar mikrofono."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Taip pat ištrinti „<xliff:g id="APP_NAME">%1$s</xliff:g>“ duomenis iš „Health Connect“"</string>
+    <string name="navigation_next_day" msgid="8853443471183944219">"Kita diena"</string>
+    <string name="navigation_selected_day" msgid="2510843479734091348">"Pasirinkta diena"</string>
+    <string name="navigation_previous_day" msgid="718353386484938584">"Ankstesnė diena"</string>
+    <string name="default_error" msgid="7966868260616403475">"Kažkas ne taip. Bandykite dar kartą."</string>
+    <string name="health_permission_header_description" msgid="7497601695462373927">"Šį leidimą turinčios programos gali nuskaityti ir rašyti jūsų sveikatos ir mankštos duomenis."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Valdykite, kurios programos gali pasiekti sistemoje „Health Connect“ saugomus duomenis. Palieskite programą, kad peržiūrėtumėte, kokius duomenis ji gali skaityti ar įrašyti."</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"Leidžiama prieiga"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"Neleidžiama prieiga"</string>
+    <string name="settings_and_help_header" msgid="5749710693017621168">"Nustatymai ir pagalba"</string>
+    <string name="disconnect_all_apps" msgid="748945115977534726">"Pašalinti visų programų prieigą"</string>
+    <string name="manage_permissions_read_header" msgid="2031153753057983683">"Leidžiama skaityti"</string>
+    <string name="manage_permissions_write_header" msgid="6876806848658168370">"Leidžiama rašyti"</string>
+    <string name="no_apps_allowed" msgid="5794833581324128108">"Neleidžiamos jokios programos"</string>
+    <string name="no_apps_denied" msgid="743327680286446017">"Neatmesta jokių programų"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Pašalinti visų programų prieigą?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Nė viena iš jūsų programų negalės pasiekti ar pridėti naujų duomenų prie „Health Connect“. Esami duomenys neištrinami.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vietovės, fotoaparato ar mikrofono."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Pašalinti viską"</string>
+    <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Programos tvarkymas"</string>
+    <string name="delete_app_data" msgid="6890357774873859952">"Ištrinti programos duomenis"</string>
+    <string name="inactive_apps_section_title" msgid="7492812973696378690">"Neaktyvios programos"</string>
+    <string name="inactive_apps_section_message" msgid="2610789262055974739">"Šios programos nebeturi prieigos, bet jų duomenys vis tiek saugomi sistemoje „Health Connect“"</string>
+    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>“ gali nuskaityti duomenis, pridėtus po <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="8051485761573324702">"Norėdami valdyti kitus „Android“ leidimus, ką ši programa gali pasiekti, eikite į skiltį „Nustatymai“ &gt; „Programos“"</string>
+    <string name="manage_permissions_rationale" msgid="9183689798847740274">"Duomenims, kuriuos bendrinate su programa „<xliff:g id="APP_NAME">%1$s</xliff:g>”, taikoma šios programos privatumo politika"</string>
+    <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Jei norite valdyti kitus „Android“ leidimus, kuriuos ši programa gali pasiekti, eikite į skiltį „Nustatymai“, tada palieskite „Programos“"</string>
+    <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Skaityti privatumo politiką"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Pasiekta per pastarąsias 24 val."</string>
+    <string name="app_access_title" msgid="7137018424885371763">"Programos prieiga"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Šiuo metu neturite įdiegtų suderinamų programų"</string>
+    <string name="denied_apps_banner_title" msgid="1997745063608657965">"Pašalinti programų leidimai"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"„Health Connect“ pašalino „<xliff:g id="APP_DATA">%s</xliff:g>“ leidimus"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"„Health Connect“ pašalino „<xliff:g id="APP_DATA_0">%1$s</xliff:g>“ ir „<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>“ leidimus"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="7978499051473471633">"„Health Connect“ pašalino „<xliff:g id="APP_DATA_0">%1$s</xliff:g>“, „<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>“ ir „<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>“ leidimus"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="7249805432604650982">"„Health Connect“ pašalino „<xliff:g id="APP_DATA_0">%1$s</xliff:g>“, „<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>“, „<xliff:g id="APP_DATA_THREE">%3$s</xliff:g>“ ir kitų programų leidimus"</string>
+    <string name="denied_apps_banner_button" msgid="4438480389769298412">"Žr. išsamią informaciją"</string>
+    <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Kodėl „Health Connect“ pašalina programų leidimus"</string>
+    <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Jei programa sustabdyta arba pašalinta iš „Google Play“, „Health Connect“ automatiškai pašalina jos leidimus.\n\nTai reiškia, kad programa nebegali pasiekti duomenų, saugomų sistemoje „Health Connect“. Jei šioje programoje yra anksčiau įrašytų duomenų, ji rodoma neaktyvių programų sąraše."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Supratau"</string>
+    <string name="onboarding_title" msgid="7930941018430608076">"Darbo su klasikinės versijos „Health Connect“ pradžia"</string>
+    <string name="onboarding_description" msgid="4873129122057931161">"Sistemoje „Health Connect“ saugomi jūsų sveikatos ir kūno rengybos duomenys ir galite lengvai sinchronizuoti skirtingas programas telefone"</string>
+    <string name="share_data" msgid="3481932156368883946">"Duomenų bendrinimas su programomis"</string>
+    <string name="share_data_description" msgid="2919871301634375092">"Pasirinkite, kokius duomenis kiekviena programa gali skaityti ar rašyti sistemoje „Health Connect“"</string>
+    <string name="manage_your_settings" msgid="7391184508015127137">"Nustatymų ir privatumo valdymas"</string>
+    <string name="manage_your_settings_description" msgid="557943168930365334">"Bet kada keiskite programų leidimus ir tvarkykite duomenis"</string>
+    <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Grįžti"</string>
+    <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Pradėti"</string>
+    <string name="delete_button_content_description" msgid="9125115327455379618">"Ištrinti duomenis"</string>
+    <string name="time_range_title" msgid="6831605283322600165">"Duomenų, kuriuos norite ištrinti, pasirinkimas"</string>
+    <string name="time_range_next_button" msgid="5849096934896557888">"Kitas"</string>
+    <string name="time_range_message_all" msgid="7280888587242744729">"Bus visam laikui ištrinti visi duomenys, pridėti prie „Health Connect“ per pasirinktą laikotarpį"</string>
+    <string name="time_range_message_data_type" msgid="1896125004829258195">"Bus visam laikui ištrinti „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenys, pridėti prie „Health Connect“ per pasirinktą laikotarpį"</string>
+    <string name="time_range_message_category" msgid="1136451418397326356">"Bus visam laikui ištrinti „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenys, pridėti prie „Health Connect“ per pasirinktą laikotarpį"</string>
+    <string name="time_range_message_app_data" msgid="2590800457710603556">"Bus visam laikui ištrinti „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenys, pridėti prie „Health Connect“ per pasirinktą laikotarpį"</string>
+    <string name="time_range_one_day" msgid="7162709826595446727">"Ištrinti pastarųjų dvidešimt keturių valandų duomenis"</string>
+    <string name="time_range_one_week" msgid="8754523384275645434">"Ištrinti pastarųjų septynių dienų duomenis"</string>
+    <string name="time_range_one_month" msgid="3034747870231999766">"Ištrinti pastarųjų trisdešimt dienų duomenis"</string>
+    <string name="time_range_all" msgid="8167350212705839943">"Ištrinti visus duomenis"</string>
+    <string name="confirming_question_all" msgid="1585414659784742952">"Visam laikui ištrinti visus viso laikotarpio duomenis?"</string>
+    <string name="confirming_question_one_day" msgid="8001434729335611950">"Visam laikui ištrinti visus pastarųjų dvidešimt keturių valandų duomenis?"</string>
+    <string name="confirming_question_one_week" msgid="5441506951423969587">"Visam laikui ištrinti visus pastarųjų septynių dienų duomenis?"</string>
+    <string name="confirming_question_one_month" msgid="4118595547587081940">"Visam laikui ištrinti visus pastarųjų trisdešimt dienų duomenis?"</string>
+    <string name="confirming_question_data_type_all" msgid="1173934949902602037">"Visam laikui ištrinti viso laikotarpio „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="5386681714769751416">"Visam laikui ištrinti pastarųjų dvidešimt keturių valandų „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="8346031951374422501">"Visam laikui ištrinti pastarųjų septynių dienų „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="7110328687576360400">"Visam laikui ištrinti pastarųjų trisdešimt dienų „<xliff:g id="DATA_TYPE">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_category_all" msgid="9182430869247761531">"Visam laikui ištrinti viso laikotarpio „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_category_one_day" msgid="4886776948515472679">"Visam laikui ištrinti pastarųjų dvidešimt keturių valandų „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_category_one_week" msgid="1790565625674277693">"Visam laikui ištrinti pastarųjų septynių dienų „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_category_one_month" msgid="9181788460112796273">"Visam laikui ištrinti pastarųjų trisdešimt dienų „<xliff:g id="CATEGORY">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_app_data_all" msgid="4818571921949673097">"Visam laikui ištrinti viso laikotarpio „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="444028969015975031">"Visam laikui ištrinti pastarųjų dvidešimt keturių valandų „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="2096555081811730496">"Visam laikui ištrinti pastarųjų septynių dienų „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="6438241250825892892">"Visam laikui ištrinti pastarųjų trisdešimt dienų „<xliff:g id="APP_DATA">%s</xliff:g>“ duomenis?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"Taip pat pašalinkite visus „<xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g>“ leidimus iš „Health Connect“"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Visam laikui ištrinti visus „<xliff:g id="DATA_TYPE">%1$s</xliff:g>“ duomenis, kuriuos pridėjo programa „<xliff:g id="APP_DATA">%2$s</xliff:g>“?"</string>
+    <string name="confirming_question_single_entry" msgid="330919962071369305">"Visam laikui ištrinti šį įrašą?"</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"Prijungtos programos nebegalės pasiekti šių duomenų iš „Health Connect“"</string>
+    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Bus ištrinti visi menstruacijų duomenys nuo <xliff:g id="START_DATE">%1$s</xliff:g> iki <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
+    <string name="confirming_question_delete_button" msgid="1999996759507959985">"Ištrinti"</string>
+    <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Grįžti"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Atlikta"</string>
+    <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"Uždaryti"</string>
+    <string name="delete_dialog_success_title" msgid="5009733262743173477">"Duomenys ištrinti"</string>
+    <string name="delete_dialog_success_message" msgid="2451953113522118128">"Šie duomenys nebesaugomi sistemoje „Health Connect“."</string>
+    <string name="delete_progress_indicator" msgid="5799502879065833417">"Ištrinami duomenys"</string>
+    <string name="delete_dialog_failure_title" msgid="1959020721355789496">"Nepavyko ištrinti duomenų"</string>
+    <string name="delete_dialog_failure_message" msgid="7473241488471319963">"Kažkas nepavyko ir „Health Connect“ negalėjo ištrinti jūsų duomenų"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="4323865124609424838">"Bandyti dar kartą"</string>
+    <string name="delete_data_notification_title" msgid="7740230240986343347">"Ištrinami „Health Connect“ duomenys"</string>
+    <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Ištrinami „Health Connect“ duomenys"</string>
+    <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Duomenų ištrynimas"</string>
+    <string name="data_point_action_content_description" msgid="7872439279343967754">"Ištrinti duomenų įrašą"</string>
+    <string name="delete_data_point" msgid="4234569507133768630">"Ištrinti įrašą"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Iš viso: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
+    <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}few{# W}many{# W}other{# W}}"</string>
+    <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 vatas}one{# vatas}few{# vatai}many{# vato}other{# vatų}}"</string>
+    <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 žingsnis}one{# žingsnis}few{# žingsniai}many{# žingsnio}other{# žingsnių}}"</string>
+    <string name="steps_per_minute" msgid="5527133010067502098">"{value,plural, =1{1 žingsnis per minutę}one{# žingsnis per minutę}few{# žingsniai per minutę}many{# žingsnio per minutę}other{# žingsnių per minutę}}"</string>
+    <string name="steps_per_minute_long" msgid="6146224261144843301">"{value,plural, =1{1 žingsnis per minutę}one{# žingsnis per minutę}few{# žingsniai per minutę}many{# žingsnio per minutę}other{# žingsnių per minutę}}"</string>
+    <string name="heart_rate_value" msgid="6936476566204248578">"{count,plural, =1{1 dpm}one{# dpm}few{# dpm}many{# dpm}other{# dpm}}"</string>
+    <string name="heart_rate_long_value" msgid="7865319425119507300">"{count,plural, =1{1 dūžis per minutę}one{# dūžis per minutę}few{# dūžiai per minutę}many{# dūžio per minutę}other{# dūžių per minutę}}"</string>
+    <string name="velocity_speed_miles" msgid="616312758726506781">"{value,plural, =1{1 myl./val.}one{# myl./val.}few{# myl./val.}many{# myl./val.}other{# myl./val.}}"</string>
+    <string name="velocity_speed_km" msgid="2807705003203399350">"{value,plural, =1{1 km/val.}one{# km/val.}few{# km/val.}many{# km/val.}other{# km/val.}}"</string>
+    <string name="velocity_speed_miles_long" msgid="7945167764392834498">"{value,plural, =1{1 mylia per valandą}one{# mylia per valandą}few{# mylios per valandą}many{# mylios per valandą}other{# mylių per valandą}}"</string>
+    <string name="velocity_speed_km_long" msgid="3962310367408338322">"{value,plural, =1{1 kilometras per valandą}one{# kilometras per valandą}few{# kilometrai per valandą}many{# kilometro per valandą}other{# kilometrų per valandą}}"</string>
+    <string name="time_range_long" msgid="5067423945245490288">"nuo <xliff:g id="START_TIME">%1$s</xliff:g> iki <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="6022190423982451176">"nuo <xliff:g id="START_TIME">%1$s</xliff:g> iki <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 neįgaliųjų vežimėlio pastūmimas}one{# neįgaliųjų vežimėlio pastūmimas}few{# neįgaliųjų vežimėlio pastūmimai}many{# neįgaliųjų vežimėlio pastūmimo}other{# neįgaliųjų vežimėlio pastūmimų}}"</string>
+    <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 l}one{# l}few{# l}many{# l}other{# l}}"</string>
+    <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 litras}one{# litras}few{# litrai}many{# litro}other{# litrų}}"</string>
+    <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 aukštas}one{# aukštas}few{# aukštai}many{# aukšto}other{# aukštų}}"</string>
+    <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}one{# m}few{# m}many{# m}other{# m}}"</string>
+    <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metras}one{# metras}few{# metrai}many{# metro}other{# metrų}}"</string>
+    <string name="cycling_rpm" msgid="2271215098150068276">"{count,plural, =1{1 spm}one{# spm}few{# spm}many{# spm}other{# spm}}"</string>
+    <string name="cycling_rpm_long" msgid="4914848042733587007">"{count,plural, =1{1 sūkis per minutę}one{# sūkis per minutę}few{# sūkiai per minutę}many{# sūkio per minutę}other{# sūkių per minutę}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"nuo <xliff:g id="MIN">%1$s</xliff:g> iki <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="4259473257597274326">"Su apsauga"</string>
+    <string name="sexual_activity_unprotected" msgid="2250981470537379807">"Be apsaugos"</string>
+    <string name="spotting" msgid="1637175837078770520">"Tepliojimas"</string>
+    <string name="flow_spotting" msgid="832418664953780156">"Tepliojimas"</string>
+    <string name="flow_light" msgid="1937543318146228793">"Lengvas kraujavimas"</string>
+    <string name="flow_medium" msgid="3783688724668943154">"Vidutinis kraujavimas"</string>
+    <string name="flow_heavy" msgid="8672261792750634294">"Gausus kraujavimas"</string>
+    <string name="period_day" msgid="3821944462093965882">"<xliff:g id="DAY">%1$d</xliff:g> menstruacijų diena iš <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
+    <string name="ovulation_positive" msgid="6588547263126320238">"Teigiamas"</string>
+    <string name="ovulation_negative" msgid="591588801112312454">"Neigiamas"</string>
+    <string name="ovulation_high" msgid="205362931427158291">"Aukšta"</string>
+    <string name="ovulation_inconclusive" msgid="3447066667631538756">"Nepakankamas"</string>
+    <string name="milliseconds" msgid="284845884516037268">"{count,plural, =1{1 milisek.}one{# milisek.}few{# milisek.}many{# milisek.}other{# milisek.}}"</string>
+    <string name="milliseconds_long" msgid="93246373745977286">"{count,plural, =1{1 milisekundė}one{# milisekundė}few{# milisekundės}many{# milisekundės}other{# milisekundžių}}"</string>
+    <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 pakartojimas}one{# pakartojimas}few{# pakartojimai}many{# pakartojimo}other{# pakartojimų}}"</string>
+    <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 pakartojimas}one{# pakartojimas}few{# pakartojimai}many{# pakartojimo}other{# pakartojimų}}"</string>
+    <string name="exercise_segments_header" msgid="2992953017179406012">"Mankštos segmentai"</string>
+    <string name="exercise_laps_header" msgid="117228630553856372">"Ratai"</string>
+    <string name="back_extension" msgid="426518933137440577">"Atsilenkimai atgal"</string>
+    <string name="badminton" msgid="8839727076522086870">"Badmintonas"</string>
+    <string name="barbell_shoulder_press" msgid="3800236222803424251">"Štangos spaudimas pečiams"</string>
+    <string name="baseball" msgid="2520520093470304570">"Beisbolas"</string>
+    <string name="basketball" msgid="1453863811744469210">"Krepšinis"</string>
+    <string name="bench_press" msgid="640506654204391301">"Štangos spaudimas ant horizontalaus suolo"</string>
+    <string name="bench_sit_up" msgid="6601081870476287683">"Atsilenkimai ant suolelio"</string>
+    <string name="biking" msgid="4108296097363777467">"Važiavimas dviračiu"</string>
+    <string name="biking_stationary" msgid="1538524429562124202">"Važiavimas stacionariu dviračiu"</string>
+    <string name="boot_camp" msgid="1554811887379786226">"Labai didelio intensyvumo grupinė treniruotė"</string>
+    <string name="boxing" msgid="2200194516739940317">"Boksas"</string>
+    <string name="burpee" msgid="1434605818712603589">"Atsispaudimai ir šuoliukai"</string>
+    <string name="calisthenics" msgid="9080623890020954493">"Kalistenika"</string>
+    <string name="cricket" msgid="7543586707938752011">"Kriketas"</string>
+    <string name="crunch" msgid="4265356947720591896">"Atsilenkimai"</string>
+    <string name="dancing" msgid="4099572666298130171">"Šokiai"</string>
+    <string name="deadlift" msgid="6880561478635890617">"Štangos atkėlimas nuo žemės"</string>
+    <string name="dumbbell_curl_left_arm" msgid="4453594605921193509">"Kairiosios rankos lenkimas su svarmeniu"</string>
+    <string name="dumbbell_curl_right_arm" msgid="4680998443002425166">"Dešiniosios rankos lenkimas su svarmeniu"</string>
+    <string name="dumbbell_front_raise" msgid="4411281746015904879">"Svarmenų kėlimas priešais save"</string>
+    <string name="dumbbell_lateral_raise" msgid="5839946068429137241">"Svarmenų kėlimas į šonus"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="6756023069611493063">"Kair. rankos tiesimas su svarmeniu (tricepsas)"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="1498470275564554389">"Dešin. rankos tiesimas su svarmeniu (tricepsas)"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="5409860665522903159">"Abiejų rankų tiesimas su svarmenimis (tricepsas)"</string>
+    <string name="elliptical" msgid="5148914059968910839">"Treniruotė elipsiniu treniruokliu"</string>
+    <string name="exercise_class" msgid="32582249527931454">"Mankštos užsiėmimai"</string>
+    <string name="fencing" msgid="410347890025055779">"Fechtavimasis"</string>
+    <string name="football_american" msgid="8564554592554502623">"Amerikietiškasis futbolas"</string>
+    <string name="football_australian" msgid="5524598297723674661">"Australiškasis futbolas"</string>
+    <string name="forward_twist" msgid="2464895720533462566">"Pasisukimas į priekį"</string>
+    <string name="frisbee_disc" msgid="5167617057624738753">"Lėkščiasvydis"</string>
+    <string name="golf" msgid="2726655052150604682">"Golfas"</string>
+    <string name="guided_breathing" msgid="8688586393796970733">"Ritmingas kvėpavimas"</string>
+    <string name="gymnastics" msgid="1122967371410769598">"Gimnastika"</string>
+    <string name="handball" msgid="3088985331906235361">"Rankinis"</string>
+    <string name="high_intensity_interval_training" msgid="8873384314130026442">"Didelio intensyvumo intervalų treniruotė"</string>
+    <string name="hiking" msgid="5477476795295322496">"Žygiavimas"</string>
+    <string name="ice_hockey" msgid="3615167122989198051">"Ledo ritulys"</string>
+    <string name="ice_skating" msgid="8509270149324068230">"Čiuožimas ant ledo"</string>
+    <string name="jumping_jack" msgid="8751015874477795657">"Kareiviški šuoliukai"</string>
+    <string name="jump_rope" msgid="3065249477862282277">"Šokinėjimas su šokdyne"</string>
+    <string name="lat_pull_down" msgid="6974730398913678563">"Treniruotė traukos treniruokliu"</string>
+    <string name="lunge" msgid="6557814816897990529">"Įtūpstai"</string>
+    <string name="martial_arts" msgid="3279383109083496658">"Kovos menai"</string>
+    <string name="meditation" msgid="7578287714544679183">"Meditacija"</string>
+    <string name="paddling" msgid="746868067888160788">"Irklavimas"</string>
+    <string name="paragliding" msgid="8328649138909727690">"Sklandymas"</string>
+    <string name="pilates" msgid="8660903049535347415">"Pilatesas"</string>
+    <string name="plank" msgid="5537839085592473449">"Lenta"</string>
+    <string name="racquetball" msgid="8169482984904052538">"Raketbolas"</string>
+    <string name="rock_climbing" msgid="3123024521372083233">"Alpinizmas"</string>
+    <string name="roller_hockey" msgid="3524872164646176686">"Ratukinių pačiūžų ritulys"</string>
+    <string name="rowing" msgid="615898011726585442">"Irklavimas"</string>
+    <string name="rowing_machine" msgid="4075255566862183370">"Treniruotė irklavimo treniruokliu"</string>
+    <string name="rugby" msgid="5146215118571059267">"Regbis"</string>
+    <string name="running" msgid="5135754380339217169">"Bėgimas"</string>
+    <string name="running_treadmill" msgid="2083354407217486405">"Bėgimas ant bėgtakio"</string>
+    <string name="sailing" msgid="4924304145770903145">"Buriavimas"</string>
+    <string name="scuba_diving" msgid="4548778216122159229">"Nardymas su akvalangu"</string>
+    <string name="skating" msgid="7320438805566302784">"Čiuožimas"</string>
+    <string name="skiing" msgid="6773127614153771204">"Slidinėjimas"</string>
+    <string name="snowboarding" msgid="890584874325367973">"Snieglenčių sportas"</string>
+    <string name="snowshoeing" msgid="8932096199095096139">"Vaikščiojimas sniegu"</string>
+    <string name="soccer" msgid="2631723269673549642">"Futbolas"</string>
+    <string name="softball" msgid="8389418982713908334">"Mažasis beisbolas"</string>
+    <string name="squash" msgid="1588653991323140302">"Skvošas"</string>
+    <string name="squat" msgid="7664163620113834611">"Pritūpimai"</string>
+    <string name="stair_climbing" msgid="4042085961630471238">"Lipimas laiptais"</string>
+    <string name="stair_climbing_machine" msgid="4003983194733092325">"Treniruotė laiptų lipimo treniruokliu"</string>
+    <string name="strength_training" msgid="56772956237540768">"Jėgos lavinimas"</string>
+    <string name="stretching" msgid="8667864173383423787">"Tempimas"</string>
+    <string name="surfing" msgid="7612503593241904984">"Banglenčių sportas"</string>
+    <string name="swimming_open_water" msgid="1030388267758027037">"Plaukimas atvirame vandenyje"</string>
+    <string name="swimming_pool" msgid="1584809250142187550">"Plaukimas baseine"</string>
+    <string name="swimming_freestyle" msgid="5969535751316106638">"Plaukimas laisvu stiliumi"</string>
+    <string name="swimming_backstroke" msgid="7293002996518694035">"Plaukimas nugara"</string>
+    <string name="swimming_breaststroke" msgid="7168282910654289593">"Plaukimas krūtine"</string>
+    <string name="swimming_butterfly" msgid="8553167046220664352">"Drugelis"</string>
+    <string name="swimming_mixed" msgid="4486578691634921168">"Mišrus plaukimas"</string>
+    <string name="swimming_other" msgid="2561131941506955982">"Kita"</string>
+    <string name="table_tennis" msgid="4849741231221974485">"Stalo tenisas"</string>
+    <string name="tennis" msgid="6627063985750125504">"Tenisas"</string>
+    <string name="upper_twist" msgid="3382862516792841928">"Viršutinės kūno dalies sukiniai"</string>
+    <string name="volleyball" msgid="7469885673961163729">"Tinklinis"</string>
+    <string name="walking" msgid="4782496160454621769">"Ėjimas"</string>
+    <string name="water_polo" msgid="2527119748097860708">"Vandensvydis"</string>
+    <string name="weightlifting" msgid="7586735291662318085">"Sunkioji atletika"</string>
+    <string name="wheelchair" msgid="2226734836271500057">"Važiavimas neįgaliųjų vežimėliu"</string>
+    <string name="workout" msgid="8583398837804461839">"Muzika treniruotei"</string>
+    <string name="yoga" msgid="138675430777247097">"Joga"</string>
+    <string name="arm_curl" msgid="1737456878333201848">"Pratimai rankoms traukiant svarmenis prie krūtinės"</string>
+    <string name="ball_slam" msgid="5996773678701283169">"Pritūpimai su kamuoliu"</string>
+    <string name="double_arm_triceps_extension" msgid="4010735719203872078">"Pratimai tricepsams keliant abi rankas"</string>
+    <string name="dumbbell_row" msgid="181791808359752158">"Pratimai su svarmenimis ant suolelio"</string>
+    <string name="front_raise" msgid="1030939481482621384">"Svarmenų kėlimas į priekį"</string>
+    <string name="hip_thrust" msgid="8490916766767408053">"Klubų kėlimas"</string>
+    <string name="hula_hoop" msgid="1651914953207761226">"Lanko sukimas"</string>
+    <string name="kettlebell_swing" msgid="364783119882246413">"Svarmens kėlimas ištiestomis rankomis"</string>
+    <string name="lateral_raise" msgid="1037404943175363734">"Svarmenų kėlimas į šonus ištiestomis rankomis"</string>
+    <string name="leg_curl" msgid="5327470513599472344">"Kojų lenkimas"</string>
+    <string name="leg_extension" msgid="1843556289395164421">"Kojų tiesimas"</string>
+    <string name="leg_press" msgid="4544551493384600086">"Svarmenų stūmimas kojomis"</string>
+    <string name="leg_raise" msgid="3206754140765952088">"Kojų kėlimas"</string>
+    <string name="mountain_climber" msgid="6666288676718010900">"Alpinistas"</string>
+    <string name="pull_up" msgid="4056233737860296184">"Prisitraukimai"</string>
+    <string name="punch" msgid="7915247952566217050">"Smūgiavimas rankomis"</string>
+    <string name="shoulder_press" msgid="4071573271892122319">"Svarmenų stūmimas į viršų"</string>
+    <string name="single_arm_triceps_extension" msgid="4500495528709994121">"Pratimai tricepsams keliant vieną ranką"</string>
+    <string name="sit_up" msgid="1872162440154479950">"Atsilenkimai"</string>
+    <string name="rest" msgid="5937058337671252210">"Poilsis"</string>
+    <string name="pause" msgid="5161459047750335691">"Pristabdyti"</string>
+    <string name="activity_type_australian_football" msgid="431838050917315084">"Australiškasis futbolas"</string>
+    <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> miegojimas"</string>
+    <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
+    <string name="sleep_stage_awake" msgid="4526767634444460862">"nemiegojimas"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"pabudęs lovoje"</string>
+    <string name="sleep_stage_sleeping" msgid="5122840110107303518">"miegas"</string>
+    <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"ne lovoje"</string>
+    <string name="sleep_stage_rem" msgid="1694477904067543104">"neramus miegas"</string>
+    <string name="sleep_stage_light" msgid="1070117964678317880">"lengvas miegas"</string>
+    <string name="sleep_stage_deep" msgid="3134557407657258364">"gilus miegas"</string>
+    <string name="sleep_stage_unknown" msgid="8664190491902295991">"nežinoma"</string>
+    <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min."</string>
+    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> val. <xliff:g id="MIN">%2$s</xliff:g> min."</string>
+    <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> val."</string>
+    <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
+    <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 valanda}one{# valanda}few{# valandos}many{# valandos}other{# valandų}}"</string>
+    <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{1 minutė}one{# minutė}few{# minutės}many{# minutės}other{# minučių}}"</string>
+    <!-- no translation found for day_duration (3965793251448856729) -->
+    <skip />
+    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> ir <xliff:g id="HOURS">%2$s</xliff:g>"</string>
+    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1 diena}one{# diena}few{# dienos}many{# dienos}other{# dienų}}"</string>
+    <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 ml/(kg·min)}one{# ml/(kg·min)}few{# ml/(kg·min)}many{# ml/(kg·min)}other{# ml/(kg·min)}}"</string>
+    <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{1 mililitras deguonies kūno masės kilogramui per minutę}one{# mililitras deguonies kūno masės kilogramui per minutę}few{# mililitrai deguonies kūno masės kilogramui per minutę}many{# mililitro deguonies kūno masės kilogramui per minutę}other{# mililitrų deguonies kūno masės kilogramui per minutę}}"</string>
+    <string name="vo2_metabolic_cart" msgid="4724757223373717896">"Netiesioginės kalorimetrijos modulis"</string>
+    <string name="vo2_heart_rate_ratio" msgid="8707274294125886148">"Pulso dažnio santykis"</string>
+    <string name="vo2_cooper_test" msgid="4713211595719031518">"Kuperio testas"</string>
+    <string name="vo2_multistage_fitness_test" msgid="908967547838751749">"Daugiapakopis kūno rengybos testas"</string>
+    <string name="vo2_rockport_fitness_test" msgid="2951465532122577281">"„Rockport“ kūno rengybos testas"</string>
+    <string name="vo2_other" msgid="5359013487285233550">"Kita"</string>
+    <string name="mucus_dry" msgid="1065582777971603874">"Sausa"</string>
+    <string name="mucus_sticky" msgid="2086025099544529404">"Lipni"</string>
+    <string name="mucus_creamy" msgid="7525290054414941569">"Tiršta"</string>
+    <string name="mucus_watery" msgid="1875540699006472048">"Vandeninga"</string>
+    <string name="mucus_egg_white" msgid="5578512593433767787">"Kiaušinio baltymas"</string>
+    <string name="mucus_unusual" msgid="3987847850745292757">"Neįprasta"</string>
+    <string name="mucus_light" msgid="5309343389013086860">"Negausus"</string>
+    <string name="mucus_medium" msgid="7666848347740570566">"Vidutinis"</string>
+    <string name="mucus_heavy" msgid="7864873650773259133">"Gausus"</string>
+    <string name="blood_pressure" msgid="7892828162554266437">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mm Hg"</string>
+    <string name="blood_pressure_long" msgid="6487761539434451764">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> gyvsidabrio stulpelio milimetr."</string>
+    <string name="body_position_standing_up" msgid="1221924915768574594">"Atsistojus"</string>
+    <string name="body_position_sitting_down" msgid="8053875174780552282">"Atsisėdus"</string>
+    <string name="body_position_lying_down" msgid="1472381098179371143">"Gulint"</string>
+    <string name="body_position_reclining" msgid="5676889701646839079">"Atsilošus"</string>
+    <string name="blood_pressure_left_wrist" msgid="2047244346984766880">"Kairysis riešas"</string>
+    <string name="blood_pressure_right_wrist" msgid="1488133877790549424">"Dešinysis riešas"</string>
+    <string name="blood_pressure_left_arm" msgid="5150436840115504433">"Kairysis žastas"</string>
+    <string name="blood_pressure_right_arm" msgid="8660682684653121430">"Dešinysis žastas"</string>
+    <string name="millimoles_per_liter" msgid="3185457774991908223">"{count,plural, =1{1 mmol/l}one{# mmol/l}few{# mmol/l}many{# mmol/l}other{# mmol/l}}"</string>
+    <string name="millimoles_per_liter_long" msgid="7248942926237335084">"{count,plural, =1{1 milimolis litre}one{# milimolis litre}few{# milimoliai litre}many{# milimolio litre}other{# milimolių litre}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="2201319049828128946">"Tarpaudininis skystis"</string>
+    <string name="specimen_source_capillary_blood" msgid="5525024815754731735">"Kapiliarinis kraujas"</string>
+    <string name="specimen_source_plasma" msgid="8794064916106457747">"Plazma"</string>
+    <string name="specimen_source_serum" msgid="6383820057196352355">"Serumas"</string>
+    <string name="specimen_source_tears" msgid="4368541832400624080">"Ašaros"</string>
+    <string name="specimen_source_whole_blood" msgid="8884838851343307557">"Visos sudėties kraujas"</string>
+    <string name="blood_glucose_general" msgid="7566279829618085436">"Bendra"</string>
+    <string name="blood_glucose_fasting" msgid="2122662399203934350">"Nevalgius"</string>
+    <string name="blood_glucose_before_meal" msgid="5125498172701953751">"Prieš valgį"</string>
+    <string name="blood_glucose_after_meal" msgid="8101398122897992346">"Po valgio"</string>
+    <string name="mealtype_label" msgid="5402474235944051844">"Valgio tipas"</string>
+    <string name="mealtype_unknown" msgid="3024645648636923591">"Nežinoma"</string>
+    <string name="mealtype_breakfast" msgid="119545434987870954">"Pusryčiai"</string>
+    <string name="mealtype_lunch" msgid="6212310262989550906">"Pietūs"</string>
+    <string name="mealtype_dinner" msgid="1896347121249081336">"Vakarienė"</string>
+    <string name="mealtype_snack" msgid="8454859872168781221">"Užkandis"</string>
+    <string name="biotin" msgid="4000818331802478073">"Biotinas"</string>
+    <string name="caffeine" msgid="2847006945615912643">"Kofeinas"</string>
+    <string name="calcium" msgid="4832722858820295752">"Kalcis"</string>
+    <string name="chloride" msgid="2509193544740445654">"Chloridas"</string>
+    <string name="cholesterol" msgid="4261128668088502049">"Cholesterolis"</string>
+    <string name="chromium" msgid="807851794929222026">"Chromas"</string>
+    <string name="copper" msgid="8603012497089601260">"Varis"</string>
+    <string name="dietary_fiber" msgid="6928876454420561553">"Maistinės skaidulos"</string>
+    <string name="energy_consumed_total" msgid="7866804137119190606">"Energija"</string>
+    <string name="energy_consumed_from_fat" msgid="8637734004867176038">"Energija, gaunama iš riebalų"</string>
+    <string name="folate" msgid="7728279545427110321">"Folatai"</string>
+    <string name="folic_acid" msgid="6861953414423667870">"Folio rūgštis"</string>
+    <string name="iodine" msgid="2896913103021799237">"Jodas"</string>
+    <string name="iron" msgid="6134405609706877219">"Geležis"</string>
+    <string name="magnesium" msgid="6157495455437549170">"Magnis"</string>
+    <string name="manganese" msgid="8339856079280400610">"Manganas"</string>
+    <string name="molybdenum" msgid="3762866331212112454">"Molibdenas"</string>
+    <string name="monounsaturated_fat" msgid="1320950160552507057">"Mononesotieji riebalai"</string>
+    <string name="niacin" msgid="8425099536322826837">"Niacinas"</string>
+    <string name="pantothenic_acid" msgid="5310842296212528685">"Pantoteno rūgštis"</string>
+    <string name="phosphorus" msgid="3912318057064021441">"Fosforas"</string>
+    <string name="polyunsaturated_fat" msgid="6386374757897543025">"Polinesotieji riebalai"</string>
+    <string name="potassium" msgid="723134189945209756">"Kalis"</string>
+    <string name="protein" msgid="2731834509320364994">"Baltymai"</string>
+    <string name="riboflavin" msgid="5329306869379867435">"Riboflavinas"</string>
+    <string name="saturated_fat" msgid="3174504848270051265">"Sotieji riebalai"</string>
+    <string name="selenium" msgid="8129594078116221891">"Selenas"</string>
+    <string name="sodium" msgid="7687341876185019438">"Natris"</string>
+    <string name="sugar" msgid="656190285547502122">"Cukrus"</string>
+    <string name="thiamin" msgid="1662446837028039063">"Tiaminas"</string>
+    <string name="total_carbohydrate" msgid="7034043840349284931">"Iš viso angliavandenių"</string>
+    <string name="total_fat" msgid="8193647297427112321">"Iš viso riebalų"</string>
+    <string name="trans_fat" msgid="1059715899517909090">"Transriebalai"</string>
+    <string name="unsaturated_fat" msgid="5495925265449481356">"Nesotieji riebalai"</string>
+    <string name="vitamin_a" msgid="2379293029664252095">"Vitaminas A"</string>
+    <string name="vitamin_b12" msgid="180162813332325098">"Vitaminas B12"</string>
+    <string name="vitamin_b6" msgid="370053149968231667">"Vitaminas B6"</string>
+    <string name="vitamin_c" msgid="5383574357126292194">"Vitaminas C"</string>
+    <string name="vitamin_d" msgid="2717952250555672580">"Vitaminas D"</string>
+    <string name="vitamin_e" msgid="5214468880515744802">"Vitaminas E"</string>
+    <string name="vitamin_k" msgid="2722297637910069736">"Vitaminas K"</string>
+    <string name="zinc" msgid="5211975076671534013">"Cinkas"</string>
+    <string name="nutrient_with_value" msgid="3327198262871257518">"<xliff:g id="NUTRIENT">%1$s</xliff:g>: <xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="6060648788040408308">"Pavadinimas"</string>
+    <string name="gram_short_format" msgid="2355009811799735134">"{count,plural, =1{1 g}one{# g}few{# g}many{# g}other{# g}}"</string>
+    <string name="gram_long_format" msgid="6160392101513066663">"{count,plural, =1{1 gramas}one{# gramas}few{# gramai}many{# gramo}other{# gramų}}"</string>
+    <string name="respiratory_rate_value" msgid="4546418213418344364">"{count,plural, =1{1 įpm}one{# įpm}few{# įpm}many{# įpm}other{# įpm}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3822748008700697049">"{count,plural, =1{1 įkvėpimas per minutę}one{# įkvėpimas per minutę}few{# įkvėpimai per minutę}many{# įkvėpimo per minutę}other{# įkvėpimų per minutę}}"</string>
+    <string name="kilograms_short_label" msgid="9098342853218050689">"{count,plural, =1{1 kg}one{# kg}few{# kg}many{# kg}other{# kg}}"</string>
+    <string name="pounds_short_label" msgid="6256277330455003180">"{count,plural, =1{1 svar.}one{# svar.}few{# svar.}many{# svar.}other{# svar.}}"</string>
+    <string name="stone_short_label" msgid="8377585176530348612">"{count,plural, =1{1 st}one{# st}few{# st}many{# st}other{# st}}"</string>
+    <string name="stone_pound_short_label" msgid="7157344201618366834">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="7883695071156297670">"{count,plural, =1{1 kilogramas}one{# kilogramas}few{# kilogramai}many{# kilogramo}other{# kilogramų}}"</string>
+    <string name="pounds_long_label" msgid="2916697485006416419">"{count,plural, =1{1 svaras}one{# svaras}few{# svarai}many{# svaro}other{# svarų}}"</string>
+    <string name="stone_long_label" msgid="8951426283449456468">"{count,plural, =1{1 stonas}one{# stonas}few{# stonai}many{# stono}other{# stonų}}"</string>
+    <string name="stone_pound_long_label" msgid="1308941435682625204">"{stone_part} {pound_part}"</string>
+    <string name="temperature_celsius" msgid="4552465686251118136">"{value,plural, =1{1 ℃}one{# ℃}few{# ℃}many{# ℃}other{# ℃}}"</string>
+    <string name="temperature_celsius_long" msgid="5789974427381333869">"{value,plural, =1{1 laipsnis pagal Celsijų}one{# laipsnis pagal Celsijų}few{# laipsniai pagal Celsijų}many{# laipsnio pagal Celsijų}other{# laipsnių pagal Celsijų}}"</string>
+    <string name="temperature_kelvin" msgid="4805698375607189394">"{value,plural, =1{1 tūkst.}one{# tūkst.}few{# tūkst.}many{# tūkst.}other{# tūkst.}}"</string>
+    <string name="temperature_kelvin_long" msgid="6078037481989090665">"{value,plural, =1{1 kelvinas}one{# kelvinas}few{# kelvinai}many{# kelvino}other{# kelvinų}}"</string>
+    <string name="temperature_fahrenheit" msgid="8288674479506567057">"{value,plural, =1{1 ℉}one{# ℉}few{# ℉}many{# ℉}other{# ℉}}"</string>
+    <string name="temperature_fahrenheit_long" msgid="1668948424411289521">"{value,plural, =1{1 Farenheito laipsnis}one{# Farenheito laipsnis}few{# Farenheito laipsniai}many{# Farenheito laipsnio}other{# Farenheito laipsnių}}"</string>
+    <string name="temperature_location_armpit" msgid="8359661261125563155">"Pažastis"</string>
+    <string name="temperature_location_finger" msgid="4915449065770967487">"Pirštas"</string>
+    <string name="temperature_location_forehead" msgid="8603219464757434635">"Kakta"</string>
+    <string name="temperature_location_mouth" msgid="1535682736007063471">"Burna"</string>
+    <string name="temperature_location_rectum" msgid="1503082804377850076">"Tiesioji žarna"</string>
+    <string name="temperature_location_temporal_artery" msgid="2830919806910102535">"Smilkinio arterija"</string>
+    <string name="temperature_location_toe" msgid="36730991617372925">"Kojos pirštas"</string>
+    <string name="temperature_location_ear" msgid="7024374111156026034">"Ausis"</string>
+    <string name="temperature_location_wrist" msgid="5290446688282752346">"Riešas"</string>
+    <string name="temperature_location_vagina" msgid="1689485374825231749">"Makštis"</string>
+    <string name="distance_miles" msgid="5419172432458896478">"{dist,plural, =1{1 mylia}one{# mylia}few{# mylios}many{# mylios}other{# mylių}}"</string>
+    <string name="distance_km" msgid="6383736895665100602">"{dist,plural, =1{1 km}one{# km}few{# km}many{# km}other{# km}}"</string>
+    <string name="distance_miles_long" msgid="1830844568614100885">"{dist,plural, =1{1 mylia}one{# mylia}few{# mylios}many{# mylios}other{# mylių}}"</string>
+    <string name="distance_km_long" msgid="6256504627418439859">"{dist,plural, =1{1 kilometras}one{# kilometras}few{# kilometrai}many{# kilometro}other{# kilometrų}}"</string>
+    <string name="height_cm" msgid="94329926270064717">"{height,plural, =1{1 cm}one{# cm}few{# cm}many{# cm}other{# cm}}"</string>
+    <string name="height_cm_long" msgid="2821030110768530948">"{height,plural, =1{1 centimetras}one{# centimetras}few{# centimetrai}many{# centimetro}other{# centimetrų}}"</string>
+    <string name="height_in_long" msgid="6502316324841498419">"{height,plural, =1{1 colis}one{# colis}few{# coliai}many{# colio}other{# colių}}"</string>
+    <string name="height_ft_long" msgid="7551582478724981895">"{height,plural, =1{1 pėda}one{# pėda}few{# pėdos}many{# pėdos}other{# pėdų}}"</string>
+    <string name="height_in_compacted" msgid="6087182983411207466">"{height,plural, =1{1″}one{#″}few{#″}many{#″}other{#″}}"</string>
+    <string name="height_ft_compacted" msgid="1024585112134314039">"{height,plural, =1{1′}one{#′}few{#′}many{#′}other{#′}}"</string>
+    <string name="feet_inches_format" msgid="768610500549967860">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>"</string>
+    <string name="feet_inches_format_long" msgid="5187265716573430363">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>"</string>
+    <string name="calories_long" msgid="7225535148232419419">"{count,plural, =1{1 kalorija}one{# kalorija}few{# kalorijos}many{# kalorijos}other{# kalorijų}}"</string>
+    <string name="calories" msgid="320906359079319632">"{count,plural, =1{1 kal.}one{# kal.}few{# kal.}many{# kal.}other{# kal.}}"</string>
+    <string name="kj" msgid="2742876437259085714">"{count,plural, =1{1 kJ}one{# kJ}few{# kJ}many{# kJ}other{# kJ}}"</string>
+    <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 kilodžaulis}one{# kilodžaulis}few{# kilodžauliai}many{# kilodžaulio}other{# kilodžaulių}}"</string>
+    <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1 %}one{# %}few{# %}many{# %}other{# %}}"</string>
+    <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 procentas}one{# procentas}few{# procentai}many{# procento}other{# procentų}}"</string>
+    <string name="units_cancel" msgid="5947097690625771995">"Atšaukti"</string>
+    <string name="units_title" msgid="6504086463237869339">"Vienetai"</string>
+    <string name="set_units_label" msgid="6566059089772896105">"Duomenų rinkinių peržiūra"</string>
+    <string name="distance_unit_title" msgid="4696952932438418209">"Atstumas"</string>
+    <string name="height_unit_title" msgid="5461594609577078049">"Ūgis"</string>
+    <string name="weight_unit_title" msgid="7405186541678939987">"Svoris"</string>
+    <string name="energy_unit_title" msgid="1714627395963766769">"Energija"</string>
+    <string name="temperature_unit_title" msgid="1973985121774654017">"Temperatūra"</string>
+    <string name="distance_unit_kilometers_label" msgid="1361363017122240294">"Kilometrai"</string>
+    <string name="distance_unit_miles_label" msgid="848850214987608211">"Mylios"</string>
+    <string name="height_unit_centimeters_label" msgid="4096031670561995574">"Centimetrai"</string>
+    <string name="height_unit_feet_label" msgid="3311723678628261399">"Pėdos ir coliai"</string>
+    <string name="weight_unit_pound_label" msgid="8210663393844989211">"Svarai"</string>
+    <string name="weight_unit_kilogram_label" msgid="6623938920860887238">"Kilogramai"</string>
+    <string name="weight_unit_stone_label" msgid="3063787243474847180">"Stonai"</string>
+    <string name="energy_unit_calorie_label" msgid="3412965811470957296">"Kalorijos"</string>
+    <string name="energy_unit_kilojoule_label" msgid="6481196724083455110">"Kilodžauliai"</string>
+    <string name="temperature_unit_celsius_label" msgid="4698347100553808449">"Celsijaus laipsnis"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Farenheito laipsnis"</string>
+    <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvino laipsnis"</string>
+    <string name="help_and_feedback" msgid="4772169905005369871">"Pagalba ir atsiliepimai"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Jei įdiegta programa nerodoma, kol kas ji gali būti nesuderinama su „Health Connect“"</string>
+    <string name="things_to_try" msgid="8200374691546152703">"Išbandykite šiuos dalykus"</string>
+    <string name="check_for_updates" msgid="3841090978657783101">"Tikrinti, ar yra naujinių"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Įsitikinkite, kad įdiegtos programos atnaujintos"</string>
+    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Žr. visas suderinamas programas"</string>
+    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Rasti programų sistemoje „Google Play“"</string>
+    <string name="send_feedback" msgid="7756927746070096780">"Siųsti atsiliepimą"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"Nurodykite, kurias sveikatos ir mankštos programas norėtumėte naudoti su „Health Connect“"</string>
+    <string name="playstore_app_title" msgid="4138464328693481809">"„Play“ parduotuvė"</string>
+    <string name="auto_delete_button" msgid="8536451792268513619">"Automatinis ištrynimas"</string>
+    <string name="auto_delete_title" msgid="8761742828224207826">"Automatinis ištrynimas"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"Valdykite, kiek laiko duomenys saugomi sistemoje „Health Connect“, suplanuodami jų ištrynimą po nustatyto laiko"</string>
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Sužinokite daugiau apie Automatinį ištrynimą"</string>
+    <string name="auto_delete_section" msgid="7732381000331475082">"Automatinis duomenų ištrynimas"</string>
+    <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Po # mėnesio}one{Po # mėnesio}few{Po # mėnesių}many{Po # mėnesio}other{Po # mėnesių}}"</string>
+    <string name="range_never" msgid="4429478261788361233">"Niekada"</string>
+    <string name="range_off" msgid="8178520557618184215">"Išjungta"</string>
+    <string name="auto_delete_rationale" msgid="5255442126521464878">"Kai pakeičiate šiuos nustatymus, „Health Connect“ ištrina esamus duomenis, kad atspindėtų jūsų naujas nuostatas"</string>
+    <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Automatiškai ištrinti duomenis po # mėnesio?}one{Automatiškai ištrinti duomenis po # mėnesio?}few{Automatiškai ištrinti duomenis po # mėnesių?}many{Automatiškai ištrinti duomenis po # mėnesio?}other{Automatiškai ištrinti duomenis po # mėnesių?}}"</string>
+    <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesio. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesio duomenys.}one{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesio. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesio duomenys.}few{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesių. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesių duomenys.}many{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesio. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesio duomenys.}other{„Health Connect“ automatiškai ištrins naujus duomenis po # mėnesių. Tai nustačius taip pat bus ištrinti esami senesni nei # mėnesių duomenys.}}"</string>
+    <string name="set_auto_delete_button" msgid="268450418318199197">"Nustatyti automatinį ištrynimą"</string>
+    <string name="deletion_started_title" msgid="1177766097121885025">"Esami duomenys bus ištrinti"</string>
+    <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{„Health Connect“ ištrins visus senesnius nei # mėnesio duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}one{„Health Connect“ ištrins visus senesnius nei # mėnesio duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}few{„Health Connect“ ištrins visus senesnius nei # mėnesių duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}many{„Health Connect“ ištrins visus senesnius nei # mėnesio duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}other{„Health Connect“ ištrins visus senesnius nei # mėnesių duomenis. Gali praeiti diena, kol šie pakeitimai bus parodyti jūsų prijungtose programose.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="3052940611815658991">"Duomenys, kurie bus ištrinti iš šių kategorijų"</string>
+    <string name="deletion_started_done_button" msgid="1232018689825054257">"Atlikta"</string>
+    <string name="priority_dialog_title" msgid="7360654442596118085">"Programų prioriteto nustatymas"</string>
+    <string name="priority_dialog_message" msgid="6971250365335018184">"Jei daugiau nei viena programa pridės <xliff:g id="DATA_TYPE">%s</xliff:g> duomenis, „Health Connect“ pirmenybę teiks sąrašo viršuje esančiai programai. Vilkite programas, kad pakeistumėte jų eiliškumą."</string>
+    <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Išsaugoti"</string>
+    <string name="action_drag_label_move_up" msgid="4221641798253080966">"Perkelti aukštyn"</string>
+    <string name="action_drag_label_move_down" msgid="3448000958912947588">"Perkelti žemyn"</string>
+    <string name="action_drag_label_move_top" msgid="5114033774108663548">"Perkelti į viršų"</string>
+    <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Perkelti į apačią"</string>
+    <string name="search_keywords_home" msgid="5386515593026555327">"mankšta, sveikatingumas"</string>
+    <string name="search_keywords_permissions" msgid="7821010295153350533">"leidimai"</string>
+    <string name="search_keywords_data" msgid="5359602744325490523">"health connect, sveikatos duomenys, sveikatos duomenų kategorijos, prieiga prie duomenų, veikla, kūno matavimai, ciklo stebėjimas, mityba, miegas, gyvybinių funkcijų rodikliai"</string>
+    <string name="search_breadcrumbs_permissions" msgid="2667471090347475796">"„Health Connect“ &gt; Programos leidimai"</string>
+    <string name="search_breadcrumbs_data" msgid="6635428480372024040">"„Health Connect“ &gt; Duomenys ir prieiga"</string>
+    <string name="search_connected_apps" msgid="8180770761876928851">"Ieškoti programų"</string>
+    <string name="no_results" msgid="4007426147286897998">"Nėra jokių rezultatų"</string>
+    <string name="help" msgid="6028777453152686162">"Pagalba"</string>
+    <string name="request_route_header_title" msgid="6599707039845646714">"Laisti „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti šį mankštos maršrutą sistemoje „Health Connect“?"</string>
+    <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"Ši programa galės nuskaityti jūsų ankstesnės maršruto vietovės informaciją"</string>
+    <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • „<xliff:g id="APP_NAME">%2$s</xliff:g>“"</string>
+    <string name="request_route_info_header_title" msgid="4149969049719763190">"Mankštos maršrutai apima vietovės informaciją"</string>
+    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"Kas gali matyti šiuos duomenis?"</string>
+    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Tik programos, kurioms leidžiate pasiekti mankštos maršrutus"</string>
+    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"Kaip galiu valdyti programų prieigą?"</string>
+    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Programų prieigą prie mankštos maršrutų galite valdyti „Health Connect“ nustatymuose"</string>
+    <string name="back_button" msgid="780519527385993407">"Atgal"</string>
+    <string name="loading" msgid="2526615755685950317">"Įkeliama…"</string>
+    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Vyksta integravimas"</string>
+    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"„Health Connect“ integruojama su „Android“ sistema.\n\nGali šiek tiek užtrukti, kol bus perkelti jūsų duomenys ir leidimai."</string>
+    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Neuždarykite programos, kol negausite pranešimo, kad procesas baigtas."</string>
+    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Vykdomas „Health Connect“ integravimas"</string>
+    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Reikia atnaujinti"</string>
+    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"„Health Connect“ integruojama su „Android“ sistema, kad galėtumėte ją pasiekti tiesiai iš nustatymų."</string>
+    <string name="update_button" msgid="4544529019832009496">"Atnaujinti"</string>
+    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Pradėkite šį atnaujinimą, kad būtų galima ir toliau integruoti „Health Connect“ su jūsų sistemos nustatymais"</string>
+    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Atnaujinti dabar"</string>
+    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Reikalingas sistemos naujinys"</string>
+    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prieš tęsdami atnaujinkite telefono sistemą."</string>
+    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jei jau atnaujinote telefono sistemą, pabandykite iš naujo paleisti telefoną, kad būtų tęsiamas integravimas"</string>
+    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Reikia atnaujinti „Health Connect“"</string>
+    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Prieš tęsdami atnaujinkite programą „Health Connect“ į naujausią versiją."</string>
+    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Reikia daugiau vietos"</string>
+    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"„Health Connect“ reikia <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> saugyklos vietos jūsų telefone, kad būtų tęsiamas integravimas.\n\nAtlaisvinkite telefone šiek tiek vietos ir bandykite dar kartą."</string>
+    <string name="try_again_button" msgid="8745496819992160789">"Bandyti dar kartą"</string>
+    <string name="free_up_space_button" msgid="4141013808635654695">"Atlaisvinti vietos"</string>
+    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"Reikia daugiau vietos"</string>
+    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"„Health Connect“ reikia <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> saugyklos vietos jūsų telefone, kad būtų tęsiamas integravimas."</string>
+    <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integravimas pristabdytas"</string>
+    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Programa „Health Connect“ buvo uždaryta vykdant integravimą su „Android“ sistema.\n\nSpustelėkite „Tęsti“, kad iš naujo atidarytumėte programą ir tęstumėte duomenų ir leidimų perkėlimą."</string>
+    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Kad išsaugotumėte „Health Connect“ duomenis, atlikite tai iki <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="resume_button" msgid="2255148549862208047">"Tęsti"</string>
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Integravimas pristabdytas"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"„Health Connect“ integruojama su „Android“ sistema. Palieskite ir tęskite"</string>
+    <string name="resume_migration_banner_title" msgid="4443957114824045317">"Tęsti integravimą"</string>
+    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Palieskite ir tęskite „Health Connect“ integravimą su „Android“ sistema. Kad išsaugotumėte duomenis, atlikite tai iki <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Palieskite ir tęskite „Health Connect“ integravimą su „Android“ sistema."</string>
+    <string name="resume_migration_banner_button" msgid="2112318760107756469">"Tęsti"</string>
+    <string name="resume_migration_notification_title" msgid="8859575633668908327">"Tęsti „Health Connect“ integravimą"</string>
+    <string name="resume_migration_notification_content" msgid="46172108837648715">"Kad išsaugotumėte duomenis, atlikite tai iki <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Reikalingas programos naujinys"</string>
+    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"Programą „<xliff:g id="APP_NAME">%1$s</xliff:g>“ reikia atnaujinti, kad ir toliau veiktų su „Health Connect“"</string>
+    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Kai kurias programas reikia atnaujinti, kad ir toliau veiktų su „Health Connect“"</string>
+    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Patikrinkite, ar yra naujinių"</string>
+    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"„Health Connect“ integravimas"</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"„Health Connect“ paruošta integruoti su „Android“ sistema. Jei dabar programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ suteiksite prieigą, kai kurios funkcijos gali neveikti, kol bus baigtas integravimas."</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"„Health Connect“ paruošta integruoti su „Android“ sistema. Jei dabar programoms suteiksite prieigą, kai kurios funkcijos gali neveikti, kol bus baigtas integravimas."</string>
+    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Tęsti"</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Pradėti integravimą"</string>
+    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Vykdomas „Health Connect“ integravimas"</string>
+    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"„Health Connect“ integruojama su „Android“ sistema.\n\nGausite pranešimą, kai procesas bus baigtas ir galėsite naudoti „<xliff:g id="APP_NAME">%1$s</xliff:g>“ su „Health Connect“."</string>
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"„Health Connect“ integruojama su „Android“ sistema.\n\nGausite pranešimą, kai procesas bus baigtas ir galėsite naudoti „Health Connect“."</string>
+    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Supratau"</string>
+    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"„Health Connect“ integravimas nebuvo baigtas"</string>
+    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Gausite pranešimą, kai vėl bus pasiekiama."</string>
+    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"Supratau"</string>
+    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"„Health Connect“ integravimas nebuvo baigtas"</string>
+    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"Daugiau"</string>
+    <string name="migration_complete_notification_title" msgid="4988631739109332404">"„Health Connect“ integravimas baigtas"</string>
+    <string name="migration_complete_notification_action" msgid="5350322865206331186">"Atidaryti"</string>
+    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Kas naujo"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Dabar galite pasiekti „Health Connect“ tiesiai iš nustatymų. Bet kuriuo metu pašalinkite „Health Connect“ programą, kad atlaisvintumėte saugyklos vietos."</string>
+    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Supratau"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Bendri duomenys"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Programų šaltiniai"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Pridėkite prie sąrašo programų šaltinių, kad matytumėte, kaip gali keistis bendri duomenys. Pašalinus programą iš sąrašo, ji nebeprisidės prie bendrų duomenų, bet vis tiek turės redagavimo leidimus."</string>
+    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
+    <skip />
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Kaip veikia šaltiniai ir prioritetų nustatymas"</string>
 </resources>

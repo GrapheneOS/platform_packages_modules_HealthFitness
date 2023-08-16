@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"None"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Entry details"</string>
     <string name="backup_title" msgid="211503191266235085">"Backup"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Data sources and priority"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Data sources &amp; priority"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Set units"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Recent access"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"No apps recently accessed Health Connect"</string>
@@ -71,7 +71,7 @@
     <string name="inactive_apps" msgid="8956546286760797760">"Inactive apps"</string>
     <string name="inactive_apps_message" msgid="4666501359079362486">"These apps can no longer write <xliff:g id="DATA_TYPE">%s</xliff:g>, but still have data stored in Health Connect"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Apps can no longer read or write <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> and there is no <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> data stored in Health Connect"</string>
-    <string name="data_access_exercise_description" msgid="6868583522699443570">"This data includes information like active time, exercise type, laps, repetitions, sessions or swimming strokes"</string>
+    <string name="data_access_exercise_description" msgid="6868583522699443570">"This data includes information like active time, exercise type, laps, repetitions, sessions, or swimming strokes"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"This data includes information like sleep stages and sleep sessions"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"See all entries"</string>
     <string name="delete_permission_type_data_button" msgid="2270819954943391797">"Delete this data"</string>
@@ -235,20 +235,20 @@
     <string name="resting_heart_rate_lowercase_label" msgid="4533866739695973169">"resting heart rate"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1068160055773401020">"Read resting heart rate"</string>
     <string name="resting_heart_rate_write_content_description" msgid="8848198128082739995">"Write resting heart rate"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"Allow \'<xliff:g id="APP_NAME">%1$s</xliff:g>\' to read"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"Allow \'<xliff:g id="APP_NAME">%1$s</xliff:g>\' to write"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to read"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to write"</string>
     <string name="request_permissions_cancel" msgid="1787483997235365393">"Cancel"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Allow"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Allow all"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Don\'t allow"</string>
-    <string name="request_permissions_header_desc" msgid="5561173070722750153">"Choose data that you want this app to read or write to Health Connect"</string>
+    <string name="request_permissions_header_desc" msgid="5561173070722750153">"Choose data you want this app to read or write to Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"If you give read access, this app can read new data and data from the past 30 days"</string>
     <string name="request_permissions_header_title" msgid="4264236128614363479">"Allow <xliff:g id="APP_NAME">%1$s</xliff:g> to access Health Connect?"</string>
     <string name="request_permissions_rationale" msgid="6154280355215802538">"You can learn how <xliff:g id="APP_NAME">%1$s</xliff:g> handles your data in the developer\'s <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privacy policy"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Remove all permissions?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Remove all"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> will no longer be able to read or write any data from Health Connect.\n\nThis doesn\'t affect other permissions that this app may have, like location, camera or microphone."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> will no longer be able to read or write any data from Health Connect.\n\nThis doesn\'t affect other permissions this app may have, like location, camera, or microphone."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Also delete <xliff:g id="APP_NAME">%1$s</xliff:g> data from Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Next day"</string>
     <string name="navigation_selected_day" msgid="2510843479734091348">"Selected day"</string>
@@ -258,27 +258,27 @@
     <string name="connected_apps_text" msgid="1177626440966855831">"Control which apps can access data stored in Health Connect. Tap an app to review the data it can read or write."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Allowed access"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Not allowed access"</string>
-    <string name="settings_and_help_header" msgid="5749710693017621168">"Settings and help"</string>
+    <string name="settings_and_help_header" msgid="5749710693017621168">"Settings &amp; help"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"Remove access for all apps"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"Allowed to read"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"Allowed to write"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"No apps allowed"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"No apps denied"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Remove access for all apps?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"None of your apps will be able to access or add new data to Health Connect. This doesn’t delete any existing data.\n\nThis doesn\'t affect other permissions that this app may have, like location, camera or microphone."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"None of your apps will be able to access or add new data to Health Connect. This doesn\'t delete any existing data.\n\nThis doesn\'t affect other permissions this app may have, like location, camera, or microphone."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Remove all"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Manage app"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Delete app data"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Inactive apps"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"These apps no longer have access, but still have data stored in Health Connect"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> can read data added after <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
-    <string name="other_android_permissions" msgid="8051485761573324702">"To manage other Android permissions that this app can access, go to Settings &gt; Apps"</string>
-    <string name="manage_permissions_rationale" msgid="9183689798847740274">"Data that you share with <xliff:g id="APP_NAME">%1$s</xliff:g> is covered by their privacy policy"</string>
+    <string name="other_android_permissions" msgid="8051485761573324702">"To manage other Android permissions this app can access, go to Settings &gt; Apps"</string>
+    <string name="manage_permissions_rationale" msgid="9183689798847740274">"Data you share with <xliff:g id="APP_NAME">%1$s</xliff:g> is covered by their privacy policy"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"To manage other Android permissions this app can access, go to Settings, then tap Apps"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Read privacy policy"</string>
-    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Accessed in last 24 hours"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Accessed in past 24 hours"</string>
     <string name="app_access_title" msgid="7137018424885371763">"App access"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"You currently don\'t have any compatible apps installed"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"You don\'t currently have any compatible apps installed"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Removed app permissions"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect removed permissions for <xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect removed permissions for <xliff:g id="APP_DATA_0">%1$s</xliff:g> and <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
@@ -288,10 +288,10 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Why Health Connect removes app permissions"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"If an app is suspended or removed from Google Play, Health Connect automatically removes its permissions.\n\nThis means the app can no longer access data stored in Health Connect. If this app has previously written data, it appears in the inactive apps list."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Got it"</string>
-    <string name="onboarding_title" msgid="7930941018430608076">"Get started with Health Connect"</string>
+    <string name="onboarding_title" msgid="7930941018430608076">"Get Started with Health Connect"</string>
     <string name="onboarding_description" msgid="4873129122057931161">"Health Connect stores your health and fitness data, giving you a simple way to sync the different apps on your phone"</string>
     <string name="share_data" msgid="3481932156368883946">"Share data with your apps"</string>
-    <string name="share_data_description" msgid="2919871301634375092">"Choose the data that each app can read or write to Health Connect"</string>
+    <string name="share_data_description" msgid="2919871301634375092">"Choose the data each app can read or write to Health Connect"</string>
     <string name="manage_your_settings" msgid="7391184508015127137">"Manage your settings and privacy"</string>
     <string name="manage_your_settings_description" msgid="557943168930365334">"Change app permissions and manage your data at any time"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Go back"</string>
@@ -354,15 +354,15 @@
     <string name="velocity_speed_miles" msgid="616312758726506781">"{value,plural, =1{1 mph}other{# mph}}"</string>
     <string name="velocity_speed_km" msgid="2807705003203399350">"{value,plural, =1{1 km/h}other{# km/h}}"</string>
     <string name="velocity_speed_miles_long" msgid="7945167764392834498">"{value,plural, =1{1 mile per hour}other{# miles per hour}}"</string>
-    <string name="velocity_speed_km_long" msgid="3962310367408338322">"{value,plural, =1{1 kilometre per hour}other{# kilometres per hour}}"</string>
+    <string name="velocity_speed_km_long" msgid="3962310367408338322">"{value,plural, =1{1 kilometer per hour}other{# kilometers per hour}}"</string>
     <string name="time_range_long" msgid="5067423945245490288">"from <xliff:g id="START_TIME">%1$s</xliff:g> to <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="6022190423982451176">"from <xliff:g id="START_TIME">%1$s</xliff:g> to <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 wheelchair push}other{# wheelchair pushes}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 L}other{# L}}"</string>
-    <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 litre}other{# litres}}"</string>
+    <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 liter}other{# liters}}"</string>
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 floor}other{# floors}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}other{# m}}"</string>
-    <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metre}other{# metres}}"</string>
+    <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 meter}other{# meters}}"</string>
     <string name="cycling_rpm" msgid="2271215098150068276">"{count,plural, =1{1 rpm}other{# rpm}}"</string>
     <string name="cycling_rpm_long" msgid="4914848042733587007">"{count,plural, =1{1 revolution per minute}other{# revolutions per minute}}"</string>
     <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"from <xliff:g id="MIN">%1$s</xliff:g> to <xliff:g id="MAX">%2$s</xliff:g>"</string>
@@ -390,13 +390,13 @@
     <string name="baseball" msgid="2520520093470304570">"Baseball"</string>
     <string name="basketball" msgid="1453863811744469210">"Basketball"</string>
     <string name="bench_press" msgid="640506654204391301">"Bench press"</string>
-    <string name="bench_sit_up" msgid="6601081870476287683">"Bench sit-up"</string>
-    <string name="biking" msgid="4108296097363777467">"Cycling"</string>
-    <string name="biking_stationary" msgid="1538524429562124202">"Stationary cycling"</string>
+    <string name="bench_sit_up" msgid="6601081870476287683">"Bench sit up"</string>
+    <string name="biking" msgid="4108296097363777467">"Biking"</string>
+    <string name="biking_stationary" msgid="1538524429562124202">"Biking stationary"</string>
     <string name="boot_camp" msgid="1554811887379786226">"Boot camp"</string>
     <string name="boxing" msgid="2200194516739940317">"Boxing"</string>
     <string name="burpee" msgid="1434605818712603589">"Burpee"</string>
-    <string name="calisthenics" msgid="9080623890020954493">"Callisthenics"</string>
+    <string name="calisthenics" msgid="9080623890020954493">"Calisthenics"</string>
     <string name="cricket" msgid="7543586707938752011">"Cricket"</string>
     <string name="crunch" msgid="4265356947720591896">"Crunch"</string>
     <string name="dancing" msgid="4099572666298130171">"Dancing"</string>
@@ -419,17 +419,17 @@
     <string name="guided_breathing" msgid="8688586393796970733">"Guided breathing"</string>
     <string name="gymnastics" msgid="1122967371410769598">"Gymnastics"</string>
     <string name="handball" msgid="3088985331906235361">"Handball"</string>
-    <string name="high_intensity_interval_training" msgid="8873384314130026442">"High-intensity interval training"</string>
+    <string name="high_intensity_interval_training" msgid="8873384314130026442">"High intensity interval training"</string>
     <string name="hiking" msgid="5477476795295322496">"Hiking"</string>
     <string name="ice_hockey" msgid="3615167122989198051">"Ice hockey"</string>
     <string name="ice_skating" msgid="8509270149324068230">"Ice skating"</string>
     <string name="jumping_jack" msgid="8751015874477795657">"Jumping jack"</string>
-    <string name="jump_rope" msgid="3065249477862282277">"Skipping rope"</string>
+    <string name="jump_rope" msgid="3065249477862282277">"Jump rope"</string>
     <string name="lat_pull_down" msgid="6974730398913678563">"Lat pulldown"</string>
     <string name="lunge" msgid="6557814816897990529">"Lunge"</string>
     <string name="martial_arts" msgid="3279383109083496658">"Martial arts"</string>
     <string name="meditation" msgid="7578287714544679183">"Meditation"</string>
-    <string name="paddling" msgid="746868067888160788">"Canoeing"</string>
+    <string name="paddling" msgid="746868067888160788">"Paddling"</string>
     <string name="paragliding" msgid="8328649138909727690">"Paragliding"</string>
     <string name="pilates" msgid="8660903049535347415">"Pilates"</string>
     <string name="plank" msgid="5537839085592473449">"Plank"</string>
@@ -447,7 +447,7 @@
     <string name="skiing" msgid="6773127614153771204">"Skiing"</string>
     <string name="snowboarding" msgid="890584874325367973">"Snowboarding"</string>
     <string name="snowshoeing" msgid="8932096199095096139">"Snowshoeing"</string>
-    <string name="soccer" msgid="2631723269673549642">"Football"</string>
+    <string name="soccer" msgid="2631723269673549642">"Soccer"</string>
     <string name="softball" msgid="8389418982713908334">"Softball"</string>
     <string name="squash" msgid="1588653991323140302">"Squash"</string>
     <string name="squat" msgid="7664163620113834611">"Squat"</string>
@@ -456,7 +456,7 @@
     <string name="strength_training" msgid="56772956237540768">"Strength training"</string>
     <string name="stretching" msgid="8667864173383423787">"Stretching"</string>
     <string name="surfing" msgid="7612503593241904984">"Surfing"</string>
-    <string name="swimming_open_water" msgid="1030388267758027037">"Open-water swimming"</string>
+    <string name="swimming_open_water" msgid="1030388267758027037">"Open water swimming"</string>
     <string name="swimming_pool" msgid="1584809250142187550">"Pool swimming"</string>
     <string name="swimming_freestyle" msgid="5969535751316106638">"Freestyle"</string>
     <string name="swimming_backstroke" msgid="7293002996518694035">"Backstroke"</string>
@@ -476,7 +476,7 @@
     <string name="yoga" msgid="138675430777247097">"Yoga"</string>
     <string name="arm_curl" msgid="1737456878333201848">"Arm curl"</string>
     <string name="ball_slam" msgid="5996773678701283169">"Ball slam"</string>
-    <string name="double_arm_triceps_extension" msgid="4010735719203872078">"Double-arm triceps extension"</string>
+    <string name="double_arm_triceps_extension" msgid="4010735719203872078">"Double arm triceps extension"</string>
     <string name="dumbbell_row" msgid="181791808359752158">"Dumbbell row"</string>
     <string name="front_raise" msgid="1030939481482621384">"Front raise"</string>
     <string name="hip_thrust" msgid="8490916766767408053">"Hip thrust"</string>
@@ -488,16 +488,16 @@
     <string name="leg_press" msgid="4544551493384600086">"Leg press"</string>
     <string name="leg_raise" msgid="3206754140765952088">"Leg raise"</string>
     <string name="mountain_climber" msgid="6666288676718010900">"Mountain climber"</string>
-    <string name="pull_up" msgid="4056233737860296184">"Pull-up"</string>
+    <string name="pull_up" msgid="4056233737860296184">"Pull up"</string>
     <string name="punch" msgid="7915247952566217050">"Punch"</string>
     <string name="shoulder_press" msgid="4071573271892122319">"Shoulder press"</string>
-    <string name="single_arm_triceps_extension" msgid="4500495528709994121">"Single-arm triceps extension"</string>
-    <string name="sit_up" msgid="1872162440154479950">"Sit-up"</string>
+    <string name="single_arm_triceps_extension" msgid="4500495528709994121">"Single arm triceps extension"</string>
+    <string name="sit_up" msgid="1872162440154479950">"Sit up"</string>
     <string name="rest" msgid="5937058337671252210">"Rest"</string>
     <string name="pause" msgid="5161459047750335691">"Pause"</string>
     <string name="activity_type_australian_football" msgid="431838050917315084">"Australian football"</string>
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> sleeping"</string>
-    <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
+    <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"awake"</string>
     <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"awake in bed"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"sleeping"</string>
@@ -506,10 +506,10 @@
     <string name="sleep_stage_light" msgid="1070117964678317880">"light sleep"</string>
     <string name="sleep_stage_deep" msgid="3134557407657258364">"deep sleep"</string>
     <string name="sleep_stage_unknown" msgid="8664190491902295991">"unknown"</string>
-    <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> m"</string>
-    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> m"</string>
-    <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
-    <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>⁠"</string>
+    <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>m"</string>
+    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
+    <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>h"</string>
+    <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
     <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 hour}other{# hours}}"</string>
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{1 minute}other{# minutes}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
@@ -517,7 +517,7 @@
     <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> and <xliff:g id="HOURS">%2$s</xliff:g>"</string>
     <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1 day}other{# days}}"</string>
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 mL/(kg·min)}other{# mL/(kg·min)}}"</string>
-    <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{1 millilitre of oxygen per kilogram of body mass per minute}other{# millilitres of oxygen per kilogram of body mass per minute}}"</string>
+    <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{1 milliliter of oxygen per kilogram of body mass per minute}other{# milliliters of oxygen per kilogram of body mass per minute}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"Metabolic cart"</string>
     <string name="vo2_heart_rate_ratio" msgid="8707274294125886148">"Heart rate ratio"</string>
     <string name="vo2_cooper_test" msgid="4713211595719031518">"Cooper test"</string>
@@ -544,7 +544,7 @@
     <string name="blood_pressure_left_arm" msgid="5150436840115504433">"Left upper arm"</string>
     <string name="blood_pressure_right_arm" msgid="8660682684653121430">"Right upper arm"</string>
     <string name="millimoles_per_liter" msgid="3185457774991908223">"{count,plural, =1{1 mmol/L}other{# mmol/L}}"</string>
-    <string name="millimoles_per_liter_long" msgid="7248942926237335084">"{count,plural, =1{1 millimole per litre}other{# millimoles per litre}}"</string>
+    <string name="millimoles_per_liter_long" msgid="7248942926237335084">"{count,plural, =1{1 millimole per liter}other{# millimoles per liter}}"</string>
     <string name="specimen_source_interstitial_fluid" msgid="2201319049828128946">"Interstitial fluid"</string>
     <string name="specimen_source_capillary_blood" msgid="5525024815754731735">"Capillary blood"</string>
     <string name="specimen_source_plasma" msgid="8794064916106457747">"Plasma"</string>
@@ -568,7 +568,7 @@
     <string name="cholesterol" msgid="4261128668088502049">"Cholesterol"</string>
     <string name="chromium" msgid="807851794929222026">"Chromium"</string>
     <string name="copper" msgid="8603012497089601260">"Copper"</string>
-    <string name="dietary_fiber" msgid="6928876454420561553">"Dietary fibre"</string>
+    <string name="dietary_fiber" msgid="6928876454420561553">"Dietary fiber"</string>
     <string name="energy_consumed_total" msgid="7866804137119190606">"Energy"</string>
     <string name="energy_consumed_from_fat" msgid="8637734004867176038">"Energy from fat"</string>
     <string name="folate" msgid="7728279545427110321">"Folate"</string>
@@ -617,7 +617,7 @@
     <string name="pounds_long_label" msgid="2916697485006416419">"{count,plural, =1{1 pound}other{# pounds}}"</string>
     <string name="stone_long_label" msgid="8951426283449456468">"{count,plural, =1{1 stone}other{# stones}}"</string>
     <string name="stone_pound_long_label" msgid="1308941435682625204">"{stone_part} {pound_part}"</string>
-    <string name="temperature_celsius" msgid="4552465686251118136">"{value,plural, =1{1℃}other{#℃}}"</string>
+    <string name="temperature_celsius" msgid="4552465686251118136">"{value,plural, =1{1 ℃}other{# ℃}}"</string>
     <string name="temperature_celsius_long" msgid="5789974427381333869">"{value,plural, =1{1 degree Celsius}other{# degrees Celsius}}"</string>
     <string name="temperature_kelvin" msgid="4805698375607189394">"{value,plural, =1{1 K}other{# K}}"</string>
     <string name="temperature_kelvin_long" msgid="6078037481989090665">"{value,plural, =1{1 kelvin}other{# kelvins}}"</string>
@@ -636,21 +636,21 @@
     <string name="distance_miles" msgid="5419172432458896478">"{dist,plural, =1{1 mile}other{# miles}}"</string>
     <string name="distance_km" msgid="6383736895665100602">"{dist,plural, =1{1 km}other{# km}}"</string>
     <string name="distance_miles_long" msgid="1830844568614100885">"{dist,plural, =1{1 mile}other{# miles}}"</string>
-    <string name="distance_km_long" msgid="6256504627418439859">"{dist,plural, =1{1 kilometre}other{# kilometres}}"</string>
+    <string name="distance_km_long" msgid="6256504627418439859">"{dist,plural, =1{1 kilometer}other{# kilometers}}"</string>
     <string name="height_cm" msgid="94329926270064717">"{height,plural, =1{1 cm}other{# cm}}"</string>
-    <string name="height_cm_long" msgid="2821030110768530948">"{height,plural, =1{1 centimetre}other{# centimetres}}"</string>
+    <string name="height_cm_long" msgid="2821030110768530948">"{height,plural, =1{1 centimeter}other{# centimeters}}"</string>
     <string name="height_in_long" msgid="6502316324841498419">"{height,plural, =1{1 inch}other{# inches}}"</string>
     <string name="height_ft_long" msgid="7551582478724981895">"{height,plural, =1{1 foot}other{# feet}}"</string>
     <string name="height_in_compacted" msgid="6087182983411207466">"{height,plural, =1{1″}other{#″}}"</string>
     <string name="height_ft_compacted" msgid="1024585112134314039">"{height,plural, =1{1′}other{#′}}"</string>
-    <string name="feet_inches_format" msgid="768610500549967860">"<xliff:g id="FT">%1$s</xliff:g><xliff:g id="IN">%2$s</xliff:g>⁠"</string>
-    <string name="feet_inches_format_long" msgid="5187265716573430363">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>⁠"</string>
+    <string name="feet_inches_format" msgid="768610500549967860">"<xliff:g id="FT">%1$s</xliff:g><xliff:g id="IN">%2$s</xliff:g>"</string>
+    <string name="feet_inches_format_long" msgid="5187265716573430363">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>"</string>
     <string name="calories_long" msgid="7225535148232419419">"{count,plural, =1{1 calorie}other{# calories}}"</string>
-    <string name="calories" msgid="320906359079319632">"{count,plural, =1{1 cal}other{# cal}}"</string>
+    <string name="calories" msgid="320906359079319632">"{count,plural, =1{1 Cal}other{# Cal}}"</string>
     <string name="kj" msgid="2742876437259085714">"{count,plural, =1{1 kJ}other{# kJ}}"</string>
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 kilojoule}other{# kilojoules}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}other{#%}}"</string>
-    <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 per cent}other{# per cent}}"</string>
+    <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 percent}other{# percent}}"</string>
     <string name="units_cancel" msgid="5947097690625771995">"Cancel"</string>
     <string name="units_title" msgid="6504086463237869339">"Units"</string>
     <string name="set_units_label" msgid="6566059089772896105">"Set data units"</string>
@@ -659,10 +659,10 @@
     <string name="weight_unit_title" msgid="7405186541678939987">"Weight"</string>
     <string name="energy_unit_title" msgid="1714627395963766769">"Energy"</string>
     <string name="temperature_unit_title" msgid="1973985121774654017">"Temperature"</string>
-    <string name="distance_unit_kilometers_label" msgid="1361363017122240294">"Kilometres"</string>
+    <string name="distance_unit_kilometers_label" msgid="1361363017122240294">"Kilometers"</string>
     <string name="distance_unit_miles_label" msgid="848850214987608211">"Miles"</string>
-    <string name="height_unit_centimeters_label" msgid="4096031670561995574">"Centimetres"</string>
-    <string name="height_unit_feet_label" msgid="3311723678628261399">"Feet and inches"</string>
+    <string name="height_unit_centimeters_label" msgid="4096031670561995574">"Centimeters"</string>
+    <string name="height_unit_feet_label" msgid="3311723678628261399">"Feet &amp; Inches"</string>
     <string name="weight_unit_pound_label" msgid="8210663393844989211">"Pounds"</string>
     <string name="weight_unit_kilogram_label" msgid="6623938920860887238">"Kilograms"</string>
     <string name="weight_unit_stone_label" msgid="3063787243474847180">"Stones"</string>
@@ -675,11 +675,11 @@
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"If you can\'t see an installed app, it may not be compatible with Health Connect yet"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Things to try"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Check for updates"</string>
-    <string name="check_for_updates_description" msgid="1347667778199095160">"Make sure that installed apps are up to date"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Make sure installed apps are up-to-date"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"See all compatible apps"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Find apps on Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Send feedback"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Tell us which health and fitness apps you\'d like to work with Health Connect"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"Tell us which health &amp; fitness apps you\'d like to work with Health Connect"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Auto-delete"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Auto-delete"</string>
@@ -698,7 +698,7 @@
     <string name="deletion_started_category_list_section" msgid="3052940611815658991">"Data to be deleted from these"</string>
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Done"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Set app priority"</string>
-    <string name="priority_dialog_message" msgid="6971250365335018184">"If more than one app adds <xliff:g id="DATA_TYPE">%s</xliff:g> data, Health Connect prioritises the app highest in this list. Drag apps to reorder them."</string>
+    <string name="priority_dialog_message" msgid="6971250365335018184">"If more than one app adds <xliff:g id="DATA_TYPE">%s</xliff:g> data, Health Connect prioritizes the app highest in this list. Drag apps to reorder them."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Save"</string>
     <string name="action_drag_label_move_up" msgid="4221641798253080966">"Move up"</string>
     <string name="action_drag_label_move_down" msgid="3448000958912947588">"Move down"</string>
@@ -717,7 +717,7 @@
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
     <string name="request_route_info_header_title" msgid="4149969049719763190">"Exercise routes include location information"</string>
     <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"Who can see this data?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Only apps that you allow to access your exercise routes"</string>
+    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Only apps you allow to access your exercise routes"</string>
     <string name="request_route_info_access_management_title" msgid="3222594923675464852">"How can I manage access?"</string>
     <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"You can manage app access to exercise routes in Health Connect settings"</string>
     <string name="back_button" msgid="780519527385993407">"Back"</string>
@@ -727,7 +727,7 @@
     <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Don\'t close the app until you get a notification that the process is complete."</string>
     <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect integration in progress"</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Update needed"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect is being integrated with the Android system so that you can access it directly from your settings."</string>
+    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect is being integrated with the Android system so you can access it directly from your settings."</string>
     <string name="update_button" msgid="4544529019832009496">"Update"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Start this update so that Health Connect can continue integrating with your system settings"</string>
     <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Update now"</string>
@@ -755,8 +755,8 @@
     <string name="resume_migration_notification_title" msgid="8859575633668908327">"Resume Health Connect integration"</string>
     <string name="resume_migration_notification_content" msgid="46172108837648715">"In order to keep your data, complete this within <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"App update needed"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> needs to be up to date in order to keep working with Health Connect"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Some apps need to be up to date in order to keep working with Health Connect"</string>
+    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> needs to be up-to-date in order to keep working with Health Connect"</string>
+    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Some apps need to be up-to-date in order to keep working with Health Connect"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Check for updates"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect integration"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect is ready to be integrated with your Android system. If you give <xliff:g id="APP_NAME">%1$s</xliff:g> access now, some features may not work until integration is complete."</string>
@@ -784,5 +784,5 @@
     <skip />
     <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
     <skip />
-    <string name="data_sources_help_link" msgid="7740264923634947915">"How sources and prioritisation work"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"How sources &amp; prioritization work"</string>
 </resources>

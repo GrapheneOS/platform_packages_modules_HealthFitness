@@ -17,660 +17,772 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_label" msgid="3670096614980798151">"Health Connect"</string>
-    <string name="permissions_and_data_header" msgid="8934418632257193297">"Odobrenja i podaci"</string>
-    <string name="home_subtitle" msgid="7432717346054530246">"Upravljajte podacima o zdravlju i fitnesu na telefonu i kontrolirajte koje aplikacije im mogu pristupiti"</string>
-    <string name="data_title" msgid="6928287139074878977">"Podaci i pristup"</string>
-    <string name="all_categories_title" msgid="3963693021187107088">"Sve kategorije"</string>
-    <string name="see_all_categories" msgid="5620285287530764592">"Prikaži sve kategorije"</string>
-    <string name="no_data" msgid="1120552294863595549">"Nema podataka"</string>
-    <string name="connected_apps_title" msgid="5235697695812028208">"Odobrenja za aplikaciju"</string>
-    <string name="connected_apps_subtitle" msgid="3605531955208324416">"Upravljajte aplikacijama i odobrenjima"</string>
-    <string name="connected_apps_button_subtitle" msgid="2839546115067201785">"Broj aplikacija koje imaju pristup: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> od <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>
-    <string name="connected_apps_all_apps_connected_subtitle" msgid="5997869084483097032">"Pristup ima sljedeći broj aplikacija: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>"</string>
-    <string name="connected_apps_one_app_connected_subtitle" msgid="6830417104627742131">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplikacija ima pristup"</string>
-    <string name="connected_apps_button_no_permissions_subtitle" msgid="502617575476682636">"Ništa"</string>
-    <string name="entry_details_title" msgid="3958841079093678765">"Detalji unosa"</string>
-    <string name="recent_access_header" msgid="4949473550741167743">"Nedavni pristup"</string>
-    <string name="no_recent_access" msgid="3009259344780866440">"Nijedna aplikacija nije nedavno pristupila Health Connectu"</string>
-    <string name="show_recent_access_entries_button_title" msgid="5940089088828697715">"Prikaži sve nedavne pristupe"</string>
-    <string name="recent_access_screen_description" msgid="8895660122430178701">"Pogledajte koje aplikacije su pristupile vašim podacima u posljednja 24 sata"</string>
-    <string name="today_header" msgid="3128127066599449902">"Danas"</string>
-    <string name="yesterday_header" msgid="6148252913497135984">"Jučer"</string>
-    <string name="read_data_access_label" msgid="6637502477626337989">"Čitanje: %s"</string>
-    <string name="write_data_access_label" msgid="2129321999800895193">"Zapisivanje: %s"</string>
-    <string name="data_type_separator" msgid="7425650044625487749">", "</string>
-    <string name="activity_category_uppercase" msgid="426623789703642935">"Aktivnost"</string>
-    <string name="activity_category_lowercase" msgid="3890597606215143531">"aktivnost"</string>
-    <string name="body_measurements_category_uppercase" msgid="695824369062704936">"Tjelesne mjere"</string>
-    <string name="body_measurements_category_lowercase" msgid="6660908215816070427">"tjelesne mjere"</string>
-    <string name="sleep_category_uppercase" msgid="3009108865525702992">"Spavanje"</string>
-    <string name="sleep_category_lowercase" msgid="3494760663063775639">"spavanje"</string>
-    <string name="vitals_category_uppercase" msgid="5215182092874187281">"Vitalne funkcije"</string>
-    <string name="vitals_category_lowercase" msgid="6258474646818522701">"vitalne funkcije"</string>
-    <string name="cycle_tracking_category_uppercase" msgid="7641437655963579694">"Praćenje ciklusa"</string>
-    <string name="cycle_tracking_category_lowercase" msgid="1691685914173317058">"praćenje ciklusa"</string>
-    <string name="nutrition_category_uppercase" msgid="4315136479349055041">"Ishrana"</string>
-    <string name="nutrition_category_lowercase" msgid="8436719630927259511">"ishrana"</string>
-    <string name="browse_data_category" msgid="8013354207116704288">"Pregledajte podatke"</string>
-    <string name="manage_data_section" msgid="3279837434203736906">"Upravljajte podacima"</string>
-    <string name="export_data_button" msgid="4600095858908351359">"Izvezi podatke"</string>
-    <string name="delete_all_data_button" msgid="2191953268634255722">"Izbriši sve podatke"</string>
-    <string name="no_categories" msgid="8250090588127237934">"Nemate nijedan podatak u Health Connectu"</string>
-    <string name="permission_types_title" msgid="449264809407468231">"Vaši podaci"</string>
-    <string name="app_priority_button" msgid="8977479205180396957">"Prioritet aplikacije"</string>
-    <string name="delete_category_data_button" msgid="6062112760999637736">"Izbriši podatke (<xliff:g id="CATEGORY">%s</xliff:g>)"</string>
-    <string name="select_all_apps_title" msgid="4176624521570022159">"Sve aplikacije"</string>
-    <string name="can_read" msgid="7989669150752961504">"Može čitati podatke (<xliff:g id="PERMISSION_TYPE">%s</xliff:g>)"</string>
-    <string name="can_write" msgid="8278769263589284926">"Može zapisivati podatke (<xliff:g id="PERMISSION_TYPE">%s</xliff:g>)"</string>
-    <string name="inactive_apps" msgid="1582672802567614909">"Neaktivne aplikacije"</string>
-    <string name="inactive_apps_message" msgid="5673235027162775241">"Ove aplikacije više ne mogu zapisivati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>), ali i dalje imaju podatke pohranjene u Health Connectu"</string>
-    <string name="data_access_empty_message" msgid="4448996647357515914">"Aplikacije više ne mogu čitati niti zapisivati podatke (<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>), a u Health Connectu nema pohranjenih podataka tipa \"<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>\"."</string>
-    <string name="data_access_exercise_description" msgid="3461117650889436196">"Podaci sadržavaju informacije kao što su aktivno vrijeme, vrsta vježbanja, krugovi, ponavljanja, sesije ili zamasi u plivanju"</string>
-    <string name="data_access_sleep_description" msgid="6675848226107694375">"Podaci sadržavaju informacije kao što su faze sna i sesije spavanja"</string>
-    <string name="all_entries_button" msgid="6651429850248301016">"Prikaži sve unose"</string>
-    <string name="delete_permission_type_data_button" msgid="3150013410211893663">"Izbriši ove podatke"</string>
-    <string name="permgrouplab_health" msgid="5922812028501112990">"Health Connect"</string>
-    <string name="permgroupdesc_health" msgid="44553351410718944">"pristupanje podacima o zdravlju"</string>
-    <string name="permlab_readCaloriesBurned" msgid="4260937269492812362">"Čitanje potrošenih kalorija"</string>
-    <string name="permdesc_readCaloriesBurned" msgid="8882486671277632202">"Dozvoljava aplikaciji da čita potrošene kalorije"</string>
-    <string name="active_calories_burned_uppercase_label" msgid="4308592653771165268">"Kalorije potrošene kroz aktivnost"</string>
-    <string name="active_calories_burned_lowercase_label" msgid="83099665651384061">"kalorije potrošene kroz aktivnost"</string>
-    <string name="active_calories_burned_read_content_description" msgid="7131752531858840630">"Čitanje kalorija potrošenih kroz aktivnost"</string>
-    <string name="active_calories_burned_write_content_description" msgid="7767888965109950039">"Zapisivanje kalorija potrošenih kroz aktivnost"</string>
-    <string name="exercise_uppercase_label" msgid="8730993778771782694">"Vježbanje"</string>
-    <string name="exercise_lowercase_label" msgid="5171299688710039066">"vježbanje"</string>
-    <string name="exercise_read_content_description" msgid="167419823931295816">"Čitanje podataka o vježbanju"</string>
-    <string name="exercise_write_content_description" msgid="4003820774292503277">"Zapisivanje podataka o vježbanju"</string>
-    <string name="exercise_route_uppercase_label" msgid="1791851610573438294">"Ruta za vježbanje"</string>
-    <string name="exercise_route_lowercase_label" msgid="1338664123812036752">"ruta za vježbanje"</string>
-    <string name="exercise_route_write_content_description" msgid="7016655366757116506">"Zapisivanje rute za vježbanje"</string>
-    <string name="exercise_route_read_content_description" msgid="5143723679813539779">"Čitanje rute vježbe"</string>
-    <string name="distance_uppercase_label" msgid="1633540262436199877">"Udaljenost"</string>
-    <string name="distance_lowercase_label" msgid="1195850163151685303">"udaljenost"</string>
-    <string name="distance_read_content_description" msgid="118912330039126690">"Čitanje udaljenosti"</string>
-    <string name="distance_write_content_description" msgid="6422928646909649167">"Zapisivanje udaljenosti"</string>
-    <string name="elevation_gained_uppercase_label" msgid="100988588842572676">"Savladani uspon"</string>
-    <string name="elevation_gained_lowercase_label" msgid="7341538602145103142">"savladani uspon"</string>
-    <string name="elevation_gained_read_content_description" msgid="7150779511306417207">"Čitanje savladanog uspona"</string>
-    <string name="elevation_gained_write_content_description" msgid="2780042692079416452">"Zapisivanje savladanog uspona"</string>
-    <string name="floors_climbed_uppercase_label" msgid="810786073082265215">"Broj spratova uspona"</string>
-    <string name="floors_climbed_lowercase_label" msgid="5192355688452635150">"broj spratova uspona"</string>
-    <string name="floors_climbed_read_content_description" msgid="7299242151554852446">"Čitanje broja spratova uspona"</string>
-    <string name="floors_climbed_write_content_description" msgid="3150825588435536187">"Zapisivanje broja spratova uspona"</string>
-    <string name="power_uppercase_label" msgid="7904465103558163227">"Snaga"</string>
-    <string name="power_lowercase_label" msgid="6088931773399520221">"snaga"</string>
-    <string name="power_read_content_description" msgid="1695982410978951105">"Čitanje podataka o snazi"</string>
-    <string name="power_write_content_description" msgid="2104228389895969584">"Zapisivanje podataka o snazi"</string>
-    <string name="speed_uppercase_label" msgid="5639404638600357388">"Brzina"</string>
-    <string name="speed_lowercase_label" msgid="4052095939564296524">"brzina"</string>
-    <string name="speed_read_content_description" msgid="4083062269928361271">"Čitanje brzine"</string>
-    <string name="speed_write_content_description" msgid="766285450757233404">"Zapisivanje brzine"</string>
-    <string name="steps_uppercase_label" msgid="4487635835111798199">"Koraci"</string>
-    <string name="steps_lowercase_label" msgid="8163081166756992688">"koraci"</string>
-    <string name="steps_read_content_description" msgid="3439677896784274145">"Čitanje koraka"</string>
-    <string name="steps_write_content_description" msgid="7529071337669135652">"Zapisivanje koraka"</string>
-    <string name="total_calories_burned_uppercase_label" msgid="5798681122038255445">"Ukupno potrošenih kalorija"</string>
-    <string name="total_calories_burned_lowercase_label" msgid="5563576931959212880">"ukupno potrošenih kalorija"</string>
-    <string name="total_calories_burned_read_content_description" msgid="3595003671321055956">"Čitanje ukupno potrošenih kalorija"</string>
-    <string name="total_calories_burned_write_content_description" msgid="8484444328754076149">"Zapisivanje ukupno potrošenih kalorija"</string>
-    <string name="vo2_max_uppercase_label" msgid="7867172617923380097">"Maks. VO2"</string>
-    <string name="vo2_max_lowercase_label" msgid="488901102519742147">"Maks. VO2"</string>
-    <string name="vo2_max_read_content_description" msgid="410954028720491449">"Čitanje maks. VO2"</string>
-    <string name="vo2_max_write_content_description" msgid="1176412611769402575">"Zapisivanje maks. VO2"</string>
-    <string name="wheelchair_pushes_uppercase_label" msgid="2751802270336826632">"Guranja u invalidskim kolicima"</string>
-    <string name="wheelchair_pushes_lowercase_label" msgid="889924007954864942">"guranja u invalidskim kolicima"</string>
-    <string name="wheelchair_pushes_read_content_description" msgid="7037888988795914209">"Čitanje guranja u invalidskim kolicima"</string>
-    <string name="wheelchair_pushes_write_content_description" msgid="918713384749313420">"Zapisivanje guranja u invalidskim kolicima"</string>
-    <string name="basal_metabolic_rate_uppercase_label" msgid="1798507046815243211">"Bazalni metabolizam"</string>
-    <string name="basal_metabolic_rate_lowercase_label" msgid="7379421599289687513">"bazalni metabolizam"</string>
-    <string name="basal_metabolic_rate_read_content_description" msgid="2094071704978944051">"Čitanje bazalnog metabolizma"</string>
-    <string name="basal_metabolic_rate_write_content_description" msgid="4142941291247900748">"Zapisivanje bazalnog metabolizma"</string>
-    <string name="body_fat_uppercase_label" msgid="7226245334374556773">"Tjelesna masnoća"</string>
-    <string name="body_fat_lowercase_label" msgid="8011419187558746483">"tjelesna masnoća"</string>
-    <string name="body_fat_read_content_description" msgid="2237532746343995851">"Čitanje tjelesne masnoće"</string>
-    <string name="body_fat_write_content_description" msgid="776793050617721281">"Zapisivanje tjelesne masnoće"</string>
-    <string name="body_water_mass_uppercase_label" msgid="4672736049790219408">"Masa vode u tijelu"</string>
-    <string name="body_water_mass_lowercase_label" msgid="7200339744685562484">"masa vode u tijelu"</string>
-    <string name="body_water_mass_read_content_description" msgid="3289807519349272928">"Čitanje mase vode u tijelu"</string>
-    <string name="body_water_mass_write_content_description" msgid="6578827757229597128">"Zapisivanje mase vode u tijelu"</string>
-    <string name="bone_mass_uppercase_label" msgid="880463363046475972">"Koštana masa"</string>
-    <string name="bone_mass_lowercase_label" msgid="2262008176369166490">"koštana masa"</string>
-    <string name="bone_mass_read_content_description" msgid="6108610555851261648">"Čitanje koštane mase"</string>
-    <string name="bone_mass_write_content_description" msgid="6911101529956216354">"Zapisivanje koštane mase"</string>
-    <string name="height_uppercase_label" msgid="3108103104753858170">"Visina"</string>
-    <string name="height_lowercase_label" msgid="1581432997449289035">"visina"</string>
-    <string name="height_read_content_description" msgid="818540612624517331">"Čitanje podataka o visini"</string>
-    <string name="height_write_content_description" msgid="5924859550287826054">"Zapisivanje podataka o visini"</string>
-    <string name="hip_circumference_uppercase_label" msgid="8410102137117067658">"Obim kuka"</string>
-    <string name="hip_circumference_lowercase_label" msgid="4191241883758617887">"obim kuka"</string>
-    <string name="hip_circumference_read_content_description" msgid="6634789708483952091">"Čitanje obima kuka"</string>
-    <string name="hip_circumference_write_content_description" msgid="6746602208616366546">"Zapisivanje obima kuka"</string>
-    <string name="lean_body_mass_uppercase_label" msgid="4407142767478482923">"Tjelesna masa bez masti"</string>
-    <string name="lean_body_mass_lowercase_label" msgid="425925873027648260">"tjelesna masa bez masti"</string>
-    <string name="lean_body_mass_read_content_description" msgid="2606604869561975050">"Čitanje tjelesne mase bez masti"</string>
-    <string name="lean_body_mass_write_content_description" msgid="6337083538710405347">"Zapisivanje tjelesne mase bez masti"</string>
-    <string name="waist_circumference_uppercase_label" msgid="3582557549691035463">"Obim struka"</string>
-    <string name="waist_circumference_lowercase_label" msgid="7949326259088797311">"obim struka"</string>
-    <string name="waist_circumference_read_content_description" msgid="5528692930401790052">"Čitanje obima struka"</string>
-    <string name="waist_circumference_write_content_description" msgid="4708540202000920628">"Zapisivanje obima struka"</string>
-    <string name="weight_uppercase_label" msgid="5139159678065242304">"Težina"</string>
-    <string name="weight_lowercase_label" msgid="5476549439048429652">"težina"</string>
-    <string name="weight_read_content_description" msgid="9145691331920027184">"Čitanje težine"</string>
-    <string name="weight_write_content_description" msgid="1837283361733660524">"Zapisivanje težine"</string>
-    <string name="cervical_mucus_uppercase_label" msgid="4959078075525487257">"Cervikalna sluz"</string>
-    <string name="cervical_mucus_lowercase_label" msgid="1743063664987445365">"cervikalna sluz"</string>
-    <string name="cervical_mucus_read_content_description" msgid="9072966573587652917">"Čitanje cervikalne sluzi"</string>
-    <string name="cervical_mucus_write_content_description" msgid="1149785732372542689">"Zapisivanje cervikalne sluzi"</string>
-    <string name="intermenstrual_bleeding_uppercase_label" msgid="5282365477971928961">"Krvarenje između menstruacija"</string>
-    <string name="intermenstrual_bleeding_lowercase_label" msgid="6778401872061584730">"krvarenje između menstruacija"</string>
-    <string name="intermenstrual_bleeding_read_content_description" msgid="4436771830985838699">"Čitanje podataka o krvarenju između menstruacija"</string>
-    <string name="intermenstrual_bleeding_write_content_description" msgid="6338876695125491946">"Zapisivanje podataka o krvarenju između menstruacija"</string>
-    <string name="menstruation_uppercase_label" msgid="785931033429661883">"Menstruacija"</string>
-    <string name="menstruation_lowercase_label" msgid="4745294173229974084">"menstruacija"</string>
-    <string name="menstruation_read_content_description" msgid="7208944260757605367">"Čitanje podataka o menstruaciji"</string>
-    <string name="menstruation_write_content_description" msgid="5579059034516400795">"Zapisivanje podataka o menstruaciji"</string>
-    <string name="ovulation_test_uppercase_label" msgid="4234148081671952425">"Test ovulacije"</string>
-    <string name="ovulation_test_lowercase_label" msgid="8374501631116773706">"test ovulacije"</string>
-    <string name="ovulation_test_read_content_description" msgid="2791186377011334827">"Čitanje podataka o testu ovulacije"</string>
-    <string name="ovulation_test_write_content_description" msgid="115861240319023852">"Zapisivanje podataka o testu ovulacije"</string>
-    <string name="sexual_activity_uppercase_label" msgid="4148877283769895256">"Seksualna aktivnost"</string>
-    <string name="sexual_activity_lowercase_label" msgid="1025506603331243098">"seksualna aktivnost"</string>
-    <string name="sexual_activity_read_content_description" msgid="4766561557670646291">"Čitanje podataka o seksualnoj aktivnosti"</string>
-    <string name="sexual_activity_write_content_description" msgid="5377217057142718308">"Zapisivanje podataka o seksualnoj aktivnosti"</string>
-    <string name="spotting_uppercase_label" msgid="374296750601288023">"Tačkasto krvarenje"</string>
-    <string name="spotting_lowercase_label" msgid="8482883324403335192">"tačkasto krvarenje"</string>
-    <string name="spotting_read_content_description" msgid="4143084456852811187">"Čitanje podataka o tačkastom krvarenju"</string>
-    <string name="spotting_write_content_description" msgid="4417069887396336720">"Zapisivanje podataka o tačkastom krvarenju"</string>
-    <string name="hydration_uppercase_label" msgid="8643231963758360012">"Hidratacija"</string>
-    <string name="hydration_lowercase_label" msgid="3003284599251167246">"hidratacija"</string>
-    <string name="hydration_read_content_description" msgid="7246214812861654403">"Čitanje podataka o hidrataciji"</string>
-    <string name="hydration_write_content_description" msgid="1859954348288584034">"Zapisivanje podataka o hidrataciji"</string>
-    <string name="nutrition_uppercase_label" msgid="5388198262778799598">"Ishrana"</string>
-    <string name="nutrition_lowercase_label" msgid="6308701536994484225">"ishrana"</string>
-    <string name="nutrition_read_content_description" msgid="1129363005245753193">"Čitanje podataka o ishrani"</string>
-    <string name="nutrition_write_content_description" msgid="5618853263422426282">"Zapisivanje podataka o ishrani"</string>
-    <string name="sleep_uppercase_label" msgid="5063088411115100109">"Spavanje"</string>
-    <string name="sleep_lowercase_label" msgid="7013148357969868421">"spavanje"</string>
-    <string name="sleep_read_content_description" msgid="1652070331037708028">"Čitanje podataka o spavanju"</string>
-    <string name="sleep_write_content_description" msgid="6212072324500033055">"Zapisivanje podataka o spavanju"</string>
-    <string name="basal_body_temperature_uppercase_label" msgid="4962952022679763433">"Bazalna tjelesna temperatura"</string>
-    <string name="basal_body_temperature_lowercase_label" msgid="1228854936459809943">"bazalna tjelesna temperatura"</string>
-    <string name="basal_body_temperature_read_content_description" msgid="3595277472530469313">"Čitanje bazalne tjelesne temperature"</string>
-    <string name="basal_body_temperature_write_content_description" msgid="385565496663080144">"Zapisivanje bazalne tjelesne temperature"</string>
-    <string name="blood_glucose_uppercase_label" msgid="4867965694278119501">"Nivo glukoze u krvi"</string>
-    <string name="blood_glucose_lowercase_label" msgid="2316464305840319457">"nivo glukoze u krvi"</string>
-    <string name="blood_glucose_read_content_description" msgid="169618564038658990">"Čitanje nivoa glukoze u krvi"</string>
-    <string name="blood_glucose_write_content_description" msgid="6302971003821909744">"Zapisivanje nivoa glukoze u krvi"</string>
-    <string name="blood_pressure_uppercase_label" msgid="6927198354350282366">"Krvni pritisak"</string>
-    <string name="blood_pressure_lowercase_label" msgid="1064357258358062516">"krvni pritisak"</string>
-    <string name="blood_pressure_read_content_description" msgid="7362432897506667971">"Čitanje krvnog pritiska"</string>
-    <string name="blood_pressure_write_content_description" msgid="2152911698312829898">"Zapisivanje krvnog pritiska"</string>
-    <string name="body_temperature_uppercase_label" msgid="7976729733481857481">"Tjelesna temperatura"</string>
-    <string name="body_temperature_lowercase_label" msgid="3332451914819321556">"tjelesna temperatura"</string>
-    <string name="body_temperature_read_content_description" msgid="2971290828926771581">"Čitanje tjelesne temperature"</string>
-    <string name="body_temperature_write_content_description" msgid="2458360039640458816">"Zapisivanje tjelesne temperature"</string>
-    <string name="heart_rate_uppercase_label" msgid="5614652592086613963">"Puls"</string>
-    <string name="heart_rate_lowercase_label" msgid="1645454148071483901">"puls"</string>
-    <string name="heart_rate_read_content_description" msgid="5508769326371589797">"Čitanje pulsa"</string>
-    <string name="heart_rate_write_content_description" msgid="7310563810602355171">"Zapisivanje pulsa"</string>
-    <string name="heart_rate_variability_uppercase_label" msgid="3874254887614625030">"Promjenjivost pulsa"</string>
-    <string name="heart_rate_variability_lowercase_label" msgid="561137799192279505">"promjenjivost pulsa"</string>
-    <string name="heart_rate_variability_read_content_description" msgid="6058727884799955557">"Čitanje podataka o promjenjivosti pulsa"</string>
-    <string name="heart_rate_variability_write_content_description" msgid="1776007042608904675">"Zapisivanje podataka o promjenjivosti pulsa"</string>
-    <string name="oxygen_saturation_uppercase_label" msgid="1876336911991881005">"Zasićenost kisikom"</string>
-    <string name="oxygen_saturation_lowercase_label" msgid="1273684730912358897">"zasićenost kisikom"</string>
-    <string name="oxygen_saturation_read_content_description" msgid="7488388596965558496">"Čitanje podataka o zasićenosti kisikom"</string>
-    <string name="oxygen_saturation_write_content_description" msgid="7505198722642715247">"Zapisivanje podataka o zasićenosti kisikom"</string>
-    <string name="respiratory_rate_uppercase_label" msgid="4553384098663653920">"Brzina disanja"</string>
-    <string name="respiratory_rate_lowercase_label" msgid="5601823709972594136">"brzina disanja"</string>
-    <string name="respiratory_rate_read_content_description" msgid="8378666062931944195">"Čitanje brzine disanja"</string>
-    <string name="respiratory_rate_write_content_description" msgid="3923578229988997472">"Zapisivanje brzine disanja"</string>
-    <string name="resting_heart_rate_uppercase_label" msgid="3911180077218102091">"Puls u mirovanju"</string>
-    <string name="resting_heart_rate_lowercase_label" msgid="7531277468916297287">"puls u mirovanju"</string>
-    <string name="resting_heart_rate_read_content_description" msgid="1974001334271163790">"Čitanje pulsa u mirovanju"</string>
-    <string name="resting_heart_rate_write_content_description" msgid="8501492133396855153">"Zapisivanje pulsa u mirovanju"</string>
-    <string name="read_permission_category" msgid="9043802108788434232">"Dozvoli aplikaciji \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" čitanje"</string>
-    <string name="write_permission_category" msgid="6467076880418458053">"Dozvoli aplikaciji \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" zapisivanje"</string>
-    <string name="request_permissions_cancel" msgid="7082122080520578200">"Otkaži"</string>
-    <string name="request_permissions_allow" msgid="2431904725832574525">"Dozvoli"</string>
-    <string name="request_permissions_allow_all" msgid="2244683574167733806">"Dozvoli sve"</string>
-    <string name="request_permissions_dont_allow" msgid="8901576103701032432">"Nemoj dozvoliti"</string>
-    <string name="request_permissions_header_desc" msgid="5753544536663743243">"Odaberite koje podatke želite da ova aplikacija čita ili zapisuje u Health Connectu"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="7563746309438919293">"Ako joj odobrite čitanje podataka, ova aplikacija će moći čitati nove podatke i podatke iz posljednjih 30 dana"</string>
-    <string name="request_permissions_header_title" msgid="547885377986067898">"Dozvoliti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Health Connectu?"</string>
-    <string name="request_permissions_rationale" msgid="3547870645483857817">"Možete saznati kako <xliff:g id="APP_NAME">%1$s</xliff:g> obrađuje vaše podatke u programerovim <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
-    <string name="request_permissions_privacy_policy" msgid="2632620084625307783">"pravilima privatnosti"</string>
-    <string name="permissions_disconnect_dialog_title" msgid="4612685175446798383">"Ukloniti sva odobrenja?"</string>
-    <string name="permissions_disconnect_dialog_disconnect" msgid="2630309099920548178">"Ukloni sve"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="5532438515588273748">"<xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti zapisivati podatke iz Health Connecta.\n\nOvo ne utiče na druga odobrenja koja ova aplikacija može imati, kao što su lokacija, kamera ili mikrofon."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="3405722328391033494">"Izbriši i podatke aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> iz Health Connecta"</string>
-    <string name="navigation_next_day" msgid="4940406450355240883">"Sljedeći dan"</string>
-    <string name="navigation_previous_day" msgid="6152692518411256639">"Prethodni dan"</string>
-    <string name="default_error" msgid="7047939092442348839">"Nešto nije uredu. Pokušajte ponovo."</string>
-    <string name="health_permission_header_description" msgid="1352043269233254085">"Aplikacije s ovim odobrenjem mogu čitati i zapisivati vaše podatke o zdravlju."</string>
-    <string name="connected_apps_text" msgid="3656264326437387180">"Kontrolirajte koje aplikacije mogu pristupiti podacima pohranjenim u Health Connectu. Dodirnite aplikaciju da pregledate podatke kojima ona ima pristup za čitanje ili pisanje."</string>
-    <string name="connected_apps_section_title" msgid="3180510930742701840">"Dozvoljeni pristup"</string>
-    <string name="not_connected_apps_section_title" msgid="8707733712437608463">"Nedozvoljen pristup"</string>
-    <string name="settings_and_help_header" msgid="56459390338790190">"Postavke i pomoć"</string>
-    <string name="disconnect_all_apps" msgid="8400128470487727928">"Ukloni pristup za sve aplikacije"</string>
-    <string name="manage_permissions_read_header" msgid="7625997211374656400">"Dozvoljeno čitanje"</string>
-    <string name="manage_permissions_write_header" msgid="1730061424579902303">"Dozvoljeno zapisivanje"</string>
-    <string name="no_apps_allowed" msgid="1006840024939920418">"Nije dozvoljena nijedna aplikacija"</string>
-    <string name="no_apps_denied" msgid="5248752441339902085">"Nije odbijena nijedna aplikacija"</string>
-    <string name="permissions_disconnect_all_dialog_title" msgid="4184100600179071493">"Ukloniti pristup za sve aplikacije?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="188398111066699829">"Nijedna od vaših aplikacija neće moći dodati nove podatke u Health Connect niti će im moći pristupiti. Ovim se neće izbrisati postojeći podaci.\n\nOvo ne utiče na druga odobrenja koja ova aplikacija može imati, kao što su lokacija, kamera ili mikrofon."</string>
-    <string name="permissions_disconnect_all_dialog_disconnect" msgid="8542880173588947321">"Ukloni sve"</string>
-    <string name="manage_permissions_manage_app_header" msgid="3223410093337448784">"Upravljajte aplikacijom"</string>
-    <string name="delete_app_data" msgid="2694002637558981031">"Izbriši podatke aplikacije"</string>
-    <string name="inactive_apps_section_title" msgid="2773413377510525846">"Neaktivne aplikacije"</string>
-    <string name="inactive_apps_section_message" msgid="5865391169046974428">"Ove aplikacije više nemaju pristup, ali su im podaci i dalje pohranjeni u Health Connectu"</string>
-    <string name="manage_permissions_time_frame" msgid="999373455193059136">"<xliff:g id="APP_NAME">%1$s</xliff:g> može pristupiti podacima koji su dodani nakon datuma <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
-    <string name="other_android_permissions" msgid="3408425226133353014">"Da upravljate drugim odobrenjima za Android kojima ova aplikacija može pristupiti, idite u Postavke &gt; Aplikacije"</string>
-    <string name="manage_permissions_rationale" msgid="3159759998704130034">"Podatke koje dijelite s aplikacijom <xliff:g id="APP_NAME">%1$s</xliff:g> pokrivaju njena pravila privatnosti"</string>
-    <string name="other_android_permissions_content_description" msgid="4980418846778370352">"Da upravljate drugim odobrenjima za Android kojima ova aplikacija može pristupiti, idite u Postavke, a zatim dodirnite Aplikacije"</string>
-    <string name="manage_permissions_learn_more" msgid="8137141655140907242">"Pročitajte pravila privatnosti"</string>
-    <string name="app_perms_content_provider_24h" msgid="6254183883704363488">"Pristupljeno u posljednja 24 sata"</string>
-    <string name="app_access_title" msgid="3790585897490185758">"Pristup aplikacije"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="632395777233852573">"Trenutno nemate nijednu instaliranu kompatibilnu aplikaciju"</string>
-    <string name="denied_apps_banner_title" msgid="8792819254447116237">"Odobrenja za aplikaciju su uklonjena"</string>
-    <string name="denied_apps_banner_message_one_app" msgid="768339383233748811">"Health Connect je uklonio odobrenja za aplikaciju <xliff:g id="APP_DATA">%s</xliff:g>"</string>
-    <string name="denied_apps_banner_message_two_apps" msgid="4668329081257129504">"Health Connect je uklonio odobrenja za aplikacije <xliff:g id="APP_DATA_0">%1$s</xliff:g> i <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
-    <string name="denied_apps_banner_message_three_apps" msgid="1864809568089917658">"Health Connect je uklonio odobrenja za aplikacije <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> i <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
-    <string name="denied_apps_banner_message_many_apps" msgid="9068677028598069251">"Health Connect je uklonio odobrenja za aplikacije <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> i druge aplikacije"</string>
-    <string name="denied_apps_banner_button" msgid="2185333719667993637">"Prikaži detalje"</string>
-    <string name="denied_apps_dialog_title" msgid="4153321577696518871">"Zašto Health Connect uklanja odobrenja za aplikaciju"</string>
-    <string name="denied_apps_dialog_message" msgid="8093442625336147649">"Ako se aplikacija obustavi ili ukloni s Google Playa, Health Connect automatski uklanja njena odobrenja.\n\nTo znači da aplikacija više neće moći pristupati podacima koji su pohranjeni u Health Connectu. Ako je ova aplikacija prethodno bilježila podatke, pojavit će se na listi neaktivnih aplikacija."</string>
-    <string name="denied_apps_dialog_got_it_button" msgid="5655570219176756282">"Razumijem"</string>
-    <string name="onboarding_title" msgid="1175348642301557799">"Počnite koristiti Health Connect"</string>
-    <string name="onboarding_description" msgid="4152058007461960500">"Health Connect pohranjuje vaše podatke o zdravlju i fitnesu i pruža vam jednostavan način da sinhronizirate različite aplikacije na telefonu"</string>
-    <string name="share_data" msgid="3461840023402996573">"Dijelite podatke sa svojim aplikacijama"</string>
-    <string name="share_data_description" msgid="3419415806525775710">"Odaberite podatke koje svaka aplikacija može čitati ili zapisivati u Health Connectu"</string>
-    <string name="manage_your_settings" msgid="3636705762746537108">"Upravljajte postavkama i privatnošću"</string>
-    <string name="manage_your_settings_description" msgid="3467283105611653797">"Promijenite odobrenja za aplikaciju i upravljajte podacima u bilo kojem trenutku"</string>
-    <string name="onboarding_go_back_button_text" msgid="3210166202874798263">"Nazad"</string>
-    <string name="onboarding_get_started_button_text" msgid="8129430529958579096">"Započnite"</string>
-    <string name="delete_button_content_description" msgid="7102925022391975365">"Brisanje podataka"</string>
-    <string name="time_range_title" msgid="3275113129489801443">"Odaberite podatke za brisanje"</string>
-    <string name="time_range_next_button" msgid="6231771008239100525">"Naprijed"</string>
-    <string name="time_range_message_all" msgid="7602288625100089210">"Ovim će se trajno izbrisati svi podaci dodani u Health Connect u odabranom vremenskom periodu"</string>
-    <string name="time_range_message_data_type" msgid="5725562126119560293">"Ovim će se trajno izbrisati svi podaci (<xliff:g id="DATA_TYPE">%s</xliff:g>) dodani u Health Connect u odabranom vremenskom periodu"</string>
-    <string name="time_range_message_category" msgid="7087857058571953831">"Ovim će se trajno izbrisati svi podaci (<xliff:g id="CATEGORY">%s</xliff:g>) dodani u Health Connect u odabranom vremenskom periodu"</string>
-    <string name="time_range_message_app_data" msgid="3142036149240792656">"Ovim će se trajno izbrisati svi podaci (<xliff:g id="APP_DATA">%s</xliff:g>) dodani u Health Connect u odabranom vremenskom periodu"</string>
-    <string name="time_range_one_day" msgid="3033863003732558121">"Izbriši posljednja 24 sata"</string>
-    <string name="time_range_one_week" msgid="353979981636015030">"Izbriši posljednjih 7 dana"</string>
-    <string name="time_range_one_month" msgid="4830107755328124319">"Izbriši posljednjih 30 dana"</string>
-    <string name="time_range_all" msgid="4114445623609239143">"Izbriši sve podatke"</string>
-    <string name="confirming_question_all" msgid="838765230743574439">"Trajno izbrisati sve podatke svih perioda?"</string>
-    <string name="confirming_question_one_day" msgid="3979341197752186440">"Trajno izbrisati sve podatke od posljednja 24 h?"</string>
-    <string name="confirming_question_one_week" msgid="5753661183304780596">"Trajno izbrisati sve podatke od posljednjih 7 dana?"</string>
-    <string name="confirming_question_one_month" msgid="6010023183561862892">"Trajno izbrisati sve podatke od posljednjih 30 dana?"</string>
-    <string name="confirming_question_data_type_all" msgid="982234075886055865">"Trajno izbrisati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>) svih perioda?"</string>
-    <string name="confirming_question_data_type_one_day" msgid="1483306823060506251">"Trajno izbrisati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>) od posljednja 24 h?"</string>
-    <string name="confirming_question_data_type_one_week" msgid="6644474583842260240">"Trajno izbrisati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>) od posljednjih 7 dana?"</string>
-    <string name="confirming_question_data_type_one_month" msgid="6034331657027658580">"Trajno izbrisati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>) od posljednjih 30 dana?"</string>
-    <string name="confirming_question_category_all" msgid="600051636967007505">"Trajno izbrisati podatke (<xliff:g id="CATEGORY">%s</xliff:g>) svih perioda?"</string>
-    <string name="confirming_question_category_one_day" msgid="2007459080213219162">"Trajno izbrisati podatke (<xliff:g id="CATEGORY">%s</xliff:g>) od posljednja 24 h?"</string>
-    <string name="confirming_question_category_one_week" msgid="5956505469070552598">"Trajno izbrisati podatke (<xliff:g id="CATEGORY">%s</xliff:g>) od posljednjih 7 dana?"</string>
-    <string name="confirming_question_category_one_month" msgid="5702658875898785779">"Trajno izbrisati podatke (<xliff:g id="CATEGORY">%s</xliff:g>) od posljednjih 30 dana?"</string>
-    <string name="confirming_question_app_data_all" msgid="5185676455415023881">"Trajno izbrisati podatke (<xliff:g id="APP_DATA">%s</xliff:g>) svih perioda?"</string>
-    <string name="confirming_question_app_data_one_day" msgid="2336564229352862191">"Trajno izbrisati podatke (<xliff:g id="APP_DATA">%s</xliff:g>) od posljednja 24 h?"</string>
-    <string name="confirming_question_app_data_one_week" msgid="8163195822684506204">"Trajno izbrisati podatke (<xliff:g id="APP_DATA">%s</xliff:g>) od posljednjih 7 dana?"</string>
-    <string name="confirming_question_app_data_one_month" msgid="5420885344245437529">"Trajno izbrisati podatke (<xliff:g id="APP_DATA">%s</xliff:g>) od posljednjih 30 dana?"</string>
-    <string name="confirming_question_app_remove_all_permissions" msgid="4163951541557318907">"Ukloni i sva odobrenja za aplikaciju <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> iz Health Connecta"</string>
-    <string name="confirming_question_data_type_from_app_all" msgid="2401110200188944189">"Trajno izbrisati sve podatke koje je aplikacija <xliff:g id="APP_DATA">%2$s</xliff:g> dodala za kategoriju: <xliff:g id="DATA_TYPE">%1$s</xliff:g>?"</string>
-    <string name="confirming_question_single_entry" msgid="2387097225045539359">"Trajno izbrisati ovaj unos?"</string>
-    <string name="confirming_question_message" msgid="9090899967996008678">"Povezane aplikacije više neće moći pristupiti ovim podacima iz Health Connecta"</string>
-    <string name="confirming_question_delete_button" msgid="5965438966559454007">"Izbriši"</string>
-    <string name="confirming_question_go_back_button" msgid="8327737273714344126">"Nazad"</string>
-    <string name="delete_dialog_success_got_it_button" msgid="7047702858296315515">"Gotovo"</string>
-    <string name="delete_dialog_failure_close_button" msgid="3292041400565047454">"Zatvori"</string>
-    <string name="delete_dialog_success_title" msgid="8645983649329184701">"Podaci su izbrisani"</string>
-    <string name="delete_dialog_success_message" msgid="1412434616763639749">"Ovi podaci se više ne pohranjuju u Health Connectu."</string>
-    <string name="delete_progress_indicator" msgid="6446736923548413592">"Brisanje vaših podataka"</string>
-    <string name="delete_dialog_failure_title" msgid="8470255645003288845">"Brisanje podataka nije uspjelo"</string>
-    <string name="delete_dialog_failure_message" msgid="722958589350385071">"Nešto nije uredu i Health Connect nije uspio izbrisati vaše podatke"</string>
-    <string name="delete_dialog_failure_try_again_button" msgid="5464157312148414090">"Pokušaj ponovo"</string>
-    <string name="delete_data_notification_title" msgid="5445676878692242897">"Brisanje podataka Health Connecta"</string>
-    <string name="delete_data_notification_ticker_text" msgid="4403315916374833260">"Brisanje podataka Health Connecta"</string>
-    <string name="delete_data_notification_channel_name" msgid="986983974753666935">"Brisanje podataka"</string>
-    <string name="data_point_action_content_description" msgid="5272053018514984088">"Opcije unosa podataka"</string>
-    <string name="delete_data_point" msgid="5665536304875634127">"Izbriši unos"</string>
-    <string name="watt_format" msgid="3038252503945855876">"{value,plural, =1{1 W}one{# W}few{# W}other{# W}}"</string>
-    <string name="watt_format_long" msgid="3271741840170693540">"{value,plural, =1{1 vat}one{# vat}few{# vata}other{# vati}}"</string>
-    <string name="steps_value" msgid="138727529175001302">"{count,plural, =1{1 korak}one{# korak}few{# koraka}other{# koraka}}"</string>
-    <string name="steps_per_minute" msgid="3715756224052775772">"{value,plural, =1{1 korak/min}one{# korak/min}few{# koraka/min}other{# koraka/min}}"</string>
-    <string name="steps_per_minute_long" msgid="7425812718538252927">"{value,plural, =1{1 korak u minuti}one{# korak u minuti}few{# koraka u minuti}other{# koraka u minuti}}"</string>
-    <string name="heart_rate_value" msgid="6135628263531270624">"{count,plural, =1{1 otk/min}one{# otk/min}few{# otk/min}other{# otk/min}}"</string>
-    <string name="heart_rate_long_value" msgid="5948707252315418819">"{count,plural, =1{1 otkucaj u minuti}one{# otkucaj u minuti}few{# otkucaja u minuti}other{# otkucaja u minuti}}"</string>
-    <string name="velocity_speed_miles" msgid="5133962331172607172">"{value,plural, =1{1 mi/h}one{# mi/h}few{# mi/h}other{# mi/h}}"</string>
-    <string name="velocity_speed_km" msgid="4705976195794094261">"{value,plural, =1{1 km/h}one{# km/h}few{# km/h}other{# km/h}}"</string>
-    <string name="velocity_speed_miles_long" msgid="9189290712569177941">"{value,plural, =1{1 milja na sat}one{# milja na sat}few{# milje na sat}other{# milja na sat}}"</string>
-    <string name="velocity_speed_km_long" msgid="735350294678539358">"{value,plural, =1{1 kilometar na sat}one{# kilometar na sat}few{# kilometra na sat}other{# kilometara na sat}}"</string>
-    <string name="time_range_long" msgid="2057628562186177263">"od <xliff:g id="START_TIME">%1$s</xliff:g> do <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <string name="date_range_long" msgid="5407008354838746975">"od <xliff:g id="START_TIME">%1$s</xliff:g> do <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <string name="wheelchair_pushes" msgid="4148251178633825429">"{count,plural, =1{1 guranje u invalidskim kolicima}one{# guranje u invalidskim kolicima}few{# guranja u invalidskim kolicima}other{# guranja u invalidskim kolicima}}"</string>
-    <string name="liter" msgid="731979204626025251">"{count,plural, =1{1 l}one{# l}few{# l}other{# l}}"</string>
-    <string name="liter_long" msgid="7990617316502470494">"{count,plural, =1{1 litra}one{# litra}few{# litre}other{# litri}}"</string>
-    <string name="floors_climbed" msgid="4959065562753503155">"{count,plural, =1{1 sprat}one{# sprat}few{# sprata}other{# spratova}}"</string>
-    <string name="elevation_meters" msgid="6038005925172317213">"{count,plural, =1{1 m}one{# m}few{# m}other{# m}}"</string>
-    <string name="elevation_meters_long" msgid="8569504639047580721">"{count,plural, =1{1 metar}one{# metar}few{# metra}other{# metara}}"</string>
-    <string name="cycling_rpm" msgid="695951810426620592">"{count,plural, =1{1 o/min}one{# o/min}few{# o/min}other{# o/min}}"</string>
-    <string name="cycling_rpm_long" msgid="7197162211135406418">"{count,plural, =1{1 obrtaj u minuti}one{# obrtaj u minuti}few{# obrtaja u minuti}other{# obrtaja u minuti}}"</string>
-    <string name="cycling_cadence_series_range_long" msgid="2954142244404102123">"od <xliff:g id="MIN">%1$s</xliff:g> do <xliff:g id="MAX">%2$s</xliff:g>"</string>
-    <string name="sexual_activity_protected" msgid="8805664653962728953">"Sa zaštitom"</string>
-    <string name="sexual_activity_unprotected" msgid="2622692924114318326">"Bez zaštite"</string>
-    <string name="spotting" msgid="8367146199172958006">"Tačkasto krvarenje"</string>
-    <string name="flow_spotting" msgid="8313480263034209601">"Tačkasto krvarenje"</string>
-    <string name="flow_light" msgid="7714669130547926098">"Slabo krvarenje"</string>
-    <string name="flow_medium" msgid="1120681378064573572">"Srednje krvarenje"</string>
-    <string name="flow_heavy" msgid="7611846277419291182">"Obilno krvarenje"</string>
-    <string name="period_day" msgid="7959562867933427299">"<xliff:g id="DAY">%1$d</xliff:g>. dan menstruacije od <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
-    <string name="ovulation_positive" msgid="2041632905561554787">"Pozitivan"</string>
-    <string name="ovulation_negative" msgid="132669521951412311">"Negativan"</string>
-    <string name="ovulation_high" msgid="2591492801425787141">"Visoko"</string>
-    <string name="ovulation_inconclusive" msgid="1005696731815082564">"Nejasno"</string>
-    <string name="milliseconds" msgid="4611097244235280496">"{count,plural, =1{1 ms}one{# ms}few{# ms}other{# ms}}"</string>
-    <string name="milliseconds_long" msgid="9057021997446565322">"{count,plural, =1{1 milisekunda}one{# milisekunda}few{# milisekunde}other{# milisekundi}}"</string>
-    <string name="repetitions" msgid="4587353674840831821">"{count,plural, =1{1 ponavljanje}one{# ponavljanje}few{# ponavljanja}other{# ponavljanja}}"</string>
-    <string name="repetitions_long" msgid="7804644352206563">"{count,plural, =1{1 ponavljanje}one{# ponavljanje}few{# ponavljanja}other{# ponavljanja}}"</string>
-    <string name="exercise_segments_header" msgid="5764001270423151097">"Segmenti vježbe"</string>
-    <string name="exercise_laps_header" msgid="3528739404869273165">"Krugovi"</string>
-    <string name="back_extension" msgid="326104514905344192">"Istezanje leđa"</string>
-    <string name="badminton" msgid="2562532899799962005">"Badminton"</string>
-    <string name="barbell_shoulder_press" msgid="4790926710785260252">"Dizanje tegova iz nivoa ramena"</string>
-    <string name="baseball" msgid="8308566726381464543">"Bejzbol"</string>
-    <string name="basketball" msgid="8952312917860615262">"Košarka"</string>
-    <string name="bench_press" msgid="5781962507448903312">"Potisak s klupe"</string>
-    <string name="bench_sit_up" msgid="6629466233057360533">"Trbušnjak na klupi"</string>
-    <string name="biking" msgid="4436876005109385438">"Vožnja bicikla"</string>
-    <string name="biking_stationary" msgid="1564133322415860603">"Stacionarni bicikl"</string>
-    <string name="boot_camp" msgid="4864496070666289077">"Kamp za obuku"</string>
-    <string name="boxing" msgid="8018825707590126764">"Boks"</string>
-    <string name="burpee" msgid="77304431317253801">"Burpee"</string>
-    <string name="calisthenics" msgid="4930331817019806695">"Kalistenika"</string>
-    <string name="cricket" msgid="7003031758224774290">"Kriket"</string>
-    <string name="crunch" msgid="6261544415692173664">"Polutrbušnjak"</string>
-    <string name="dancing" msgid="3316423624850569070">"Plesanje"</string>
-    <string name="deadlift" msgid="8557909109378777398">"Mrtvo dizanje"</string>
-    <string name="dumbbell_curl_left_arm" msgid="6977521655769527498">"Pregib s bučicama lijevom rukom"</string>
-    <string name="dumbbell_curl_right_arm" msgid="9204249218476110133">"Pregib s bučicama desnom rukom"</string>
-    <string name="dumbbell_front_raise" msgid="8920061770246990181">"Prednje dizanje bučica"</string>
-    <string name="dumbbell_lateral_raise" msgid="833028889359388774">"Bočno dizanje bučica"</string>
-    <string name="dumbbell_triceps_extension_left_arm" msgid="799421937603502132">"Triceps ekstenzija bučicama lijevom rukom"</string>
-    <string name="dumbbell_triceps_extension_right_arm" msgid="7008618071433830628">"Triceps ekstenzija bučicama desnom rukom"</string>
-    <string name="dumbbell_triceps_extension_two_arm" msgid="8885501981122069848">"Triceps ekstenzija bučicama s dvije ruke"</string>
-    <string name="elliptical" msgid="1139910728613357994">"Eliptični bicikl"</string>
-    <string name="exercise_class" msgid="3152950268488724949">"Časovi vježbanja"</string>
-    <string name="fencing" msgid="3959720630233223214">"Mačevanje"</string>
-    <string name="football_american" msgid="7298781679747969920">"Američki fudbal"</string>
-    <string name="football_australian" msgid="7870317627446699678">"Australijski fudbal"</string>
-    <string name="forward_twist" msgid="8460027946504405340">"Iskorak s okretom"</string>
-    <string name="frisbee_disc" msgid="5075847804492876983">"Frizbi"</string>
-    <string name="golf" msgid="4510958024908277043">"Golf"</string>
-    <string name="guided_breathing" msgid="372842925145421189">"Vodič za disanje"</string>
-    <string name="gymnastics" msgid="2805063199546018852">"Gimnastika"</string>
-    <string name="handball" msgid="6228534119454993609">"Rukomet"</string>
-    <string name="high_intensity_interval_training" msgid="9055322569169754042">"Intervalni trening visokog intenziteta"</string>
-    <string name="hiking" msgid="6287881189679031692">"Pješačenje"</string>
-    <string name="ice_hockey" msgid="4630546791512436505">"Hokej na ledu"</string>
-    <string name="ice_skating" msgid="8542769978117565715">"Klizanje na ledu"</string>
-    <string name="jumping_jack" msgid="2504446639312960395">"Skok sa širenjem ruku i nogu"</string>
-    <string name="jump_rope" msgid="8936923325000005704">"Preskakanje užeta"</string>
-    <string name="lat_pull_down" msgid="364838811857721841">"Povlačenje na lat mašini"</string>
-    <string name="lunge" msgid="6863772146202006880">"Iskorak"</string>
-    <string name="martial_arts" msgid="3845461867192236399">"Borilačke vještine"</string>
-    <string name="meditation" msgid="4849671344539060840">"Meditacija"</string>
-    <string name="paddling" msgid="4330237681577599226">"Veslanje"</string>
-    <string name="paragliding" msgid="7806835513093567376">"Paraglajding"</string>
-    <string name="pilates" msgid="4370654527595128790">"Pilates"</string>
-    <string name="plank" msgid="4231877980175820684">"Izdržaj"</string>
-    <string name="racquetball" msgid="182093198971401585">"Reketbol"</string>
-    <string name="rock_climbing" msgid="3358436459734554807">"Penjanje uz stijene"</string>
-    <string name="roller_hockey" msgid="6242808606213923201">"Hokej na rolerima"</string>
-    <string name="rowing" msgid="7445636351111465609">"Veslanje"</string>
-    <string name="rowing_machine" msgid="7220042462648107203">"Sprava za veslanje"</string>
-    <string name="rugby" msgid="1646920222855841135">"Ragbi"</string>
-    <string name="running" msgid="6378365874547681747">"Trčanje"</string>
-    <string name="running_treadmill" msgid="511612213911896573">"Trčanje na pokretnoj traci"</string>
-    <string name="sailing" msgid="5305484742008364839">"Jedrenje"</string>
-    <string name="scuba_diving" msgid="7362376101235225643">"Ronjenje s bocama"</string>
-    <string name="skating" msgid="7202960228551709866">"Klizanje"</string>
-    <string name="skiing" msgid="6959504815950834221">"Skijanje"</string>
-    <string name="snowboarding" msgid="7851044110983514020">"Snowboarding"</string>
-    <string name="snowshoeing" msgid="89862694372427163">"Hodanje na krpljama"</string>
-    <string name="soccer" msgid="7373749155786409639">"Fudbal"</string>
-    <string name="softball" msgid="931823677533458803">"Softbol"</string>
-    <string name="squash" msgid="3671853878596020550">"Skvoš"</string>
-    <string name="squat" msgid="2624881515323904278">"Čučanj"</string>
-    <string name="stair_climbing" msgid="5997490575691347448">"Penjanje uz stepenice"</string>
-    <string name="stair_climbing_machine" msgid="337627408968910801">"Mašina za penjanje uz stepenice"</string>
-    <string name="strength_training" msgid="4720460550476191439">"Trening snage"</string>
-    <string name="stretching" msgid="934444878305334284">"Istezanje"</string>
-    <string name="surfing" msgid="9101307462491417943">"Surfanje"</string>
-    <string name="swimming_open_water" msgid="2739793146160676225">"Plivanje u otvorenim vodama"</string>
-    <string name="swimming_pool" msgid="4102482265686792256">"Plivanje u bazenu"</string>
-    <string name="table_tennis" msgid="2709280256456460422">"Stoni tenis"</string>
-    <string name="tennis" msgid="385785070472019118">"Tenis"</string>
-    <string name="upper_twist" msgid="4301453254991464653">"Okret gornjeg dijela tijela"</string>
-    <string name="volleyball" msgid="7995390960159762289">"Odbojka"</string>
-    <string name="walking" msgid="3758898602213892784">"Pješačenje"</string>
-    <string name="water_polo" msgid="2335613325858558397">"Vaterpolo"</string>
-    <string name="weightlifting" msgid="3048550335371204458">"Dizanje tegova"</string>
-    <string name="wheelchair" msgid="8943449324228813941">"Invalidska kolica"</string>
-    <string name="workout" msgid="8816526215639000463">"Trening"</string>
-    <string name="yoga" msgid="8350954009879701169">"Joga"</string>
-    <string name="activity_type_australian_football" msgid="6720684447096561188">"Australijski fudbal"</string>
-    <string name="sleep_session_default" msgid="766743178056575120">"spavanje u trajanju od <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
-    <string name="sleep_stage_default" msgid="7111310820579541968">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
-    <string name="sleep_stage_awake" msgid="5395946290328510164">"budni"</string>
-    <string name="sleep_stage_sleeping" msgid="500845652611651071">"spavanje"</string>
-    <string name="sleep_stage_out_of_bed" msgid="6787355947362327383">"ustali iz kreveta"</string>
-    <string name="sleep_stage_rem" msgid="3689511086544520391">"REM faza spavanja"</string>
-    <string name="sleep_stage_light" msgid="5625043123367019925">"plitko spavanje"</string>
-    <string name="sleep_stage_deep" msgid="190758395367810380">"duboko spavanje"</string>
-    <string name="sleep_stage_unknown" msgid="8435322199201626433">"nepoznato"</string>
-    <string name="minute_duration" msgid="491738815989490481">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
-    <string name="hour_minute_duration_short" msgid="8417355840541929649">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
-    <string name="hour_duration" msgid="336334091239099072">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
-    <string name="hour_minute_duration_accessibility" msgid="4380319329658120062">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
-    <string name="hour_duration_accessibility" msgid="8037441573850347375">"{count,plural, =1{1 sat}one{# sat}few{# sata}other{# sati}}"</string>
-    <string name="minute_duration_accessibility" msgid="2409828173017564144">"{count,plural, =1{1 minuta}one{# minuta}few{# minute}other{# minuta}}"</string>
-    <string name="vo2_max" msgid="9010053102311278194">"{value,plural, =1{1 mL/(kg·min)}one{# mL/(kg·min)}few{# mL/(kg·min)}other{# mL/(kg·min)}}"</string>
-    <string name="vo2_max_long" msgid="2028203290582321110">"{value,plural, =1{1 mililitar kisika po kilogramu tjelesne mase u minuti}one{# mililitar kisika po kilogramu tjelesne mase u minuti}few{# mililitra kisika po kilogramu tjelesne mase u minuti}other{# mililitara kisika po kilogramu tjelesne mase u minuti}}"</string>
-    <string name="vo2_metabolic_cart" msgid="3831307270979534301">"Metabolička kolica"</string>
-    <string name="vo2_heart_rate_ratio" msgid="6482555805954225988">"Omjer pulsa"</string>
-    <string name="vo2_cooper_test" msgid="1692373650149960549">"Kuperov test"</string>
-    <string name="vo2_multistage_fitness_test" msgid="6062802012318501600">"Višestepeni fitnes test"</string>
-    <string name="vo2_rockport_fitness_test" msgid="6210377990417612886">"Rockport fitnes test"</string>
-    <string name="vo2_other" msgid="7156255285130439695">"Drugo"</string>
-    <string name="mucus_dry" msgid="798150315290557122">"Suho"</string>
-    <string name="mucus_sticky" msgid="1550935711891429944">"Ljepljivo"</string>
-    <string name="mucus_creamy" msgid="6331121251236727520">"Kremasto"</string>
-    <string name="mucus_watery" msgid="8046086206314018549">"Vodenasto"</string>
-    <string name="mucus_egg_white" msgid="9035599986758478851">"Bjelance"</string>
-    <string name="mucus_unusual" msgid="3168872819443903646">"Neobično"</string>
-    <string name="mucus_light" msgid="7872301587428469740">"Slabo"</string>
-    <string name="mucus_medium" msgid="3752514167673201447">"Srednje"</string>
-    <string name="mucus_heavy" msgid="585018675901081368">"Obilno"</string>
-    <string name="blood_pressure" msgid="5997173579668733931">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mmHg"</string>
-    <string name="blood_pressure_long" msgid="1423162081321056098">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> milimetara živinog stuba"</string>
-    <string name="body_position_standing_up" msgid="8045648865863315072">"Stojeći"</string>
-    <string name="body_position_sitting_down" msgid="6193290868443102468">"Sjedeći"</string>
-    <string name="body_position_lying_down" msgid="3349308448798046100">"Ležeći"</string>
-    <string name="body_position_reclining" msgid="1761765938932384014">"U nagnutom položaju"</string>
-    <string name="blood_pressure_left_wrist" msgid="4437780272482574688">"Zglob lijeve šake"</string>
-    <string name="blood_pressure_right_wrist" msgid="5145136036864054220">"Zglob desne šake"</string>
-    <string name="blood_pressure_left_arm" msgid="507901624658936247">"Lijeva nadlaktica"</string>
-    <string name="blood_pressure_right_arm" msgid="1089013781458804996">"Desna nadlaktica"</string>
-    <string name="millimoles_per_liter" msgid="3227570763486933183">"{count,plural, =1{1 mmol/l}one{# mmol/l}few{# mmol/l}other{# mmol/l}}"</string>
-    <string name="millimoles_per_liter_long" msgid="6808823315735709067">"{count,plural, =1{1 milimol po litru}one{# milimol po litru}few{# milimola po litru}other{# milimola po litru}}"</string>
-    <string name="specimen_source_interstitial_fluid" msgid="3842382456844622074">"Intersticijska tekućina"</string>
-    <string name="specimen_source_capillary_blood" msgid="7155562119015861372">"Kapilarna krv"</string>
-    <string name="specimen_source_plasma" msgid="356179067854415315">"Plazma"</string>
-    <string name="specimen_source_serum" msgid="8289671667279817498">"Serum"</string>
-    <string name="specimen_source_tears" msgid="3680494716420004391">"Suze"</string>
-    <string name="specimen_source_whole_blood" msgid="1302756259157194021">"Cijela krv"</string>
-    <string name="blood_glucose_general" msgid="2955866138191587220">"Opće"</string>
-    <string name="blood_glucose_fasting" msgid="1004807809187636134">"Post"</string>
-    <string name="blood_glucose_before_meal" msgid="7321251465123150347">"Prije obroka"</string>
-    <string name="blood_glucose_after_meal" msgid="3946745765463573565">"Nakon obroka"</string>
-    <string name="mealtype_label" msgid="7946924589574443051">"Vrsta obroka"</string>
-    <string name="mealtype_unknown" msgid="2559338548170419838">"Nepoznato"</string>
-    <string name="mealtype_breakfast" msgid="2152926220543322905">"Doručak"</string>
-    <string name="mealtype_lunch" msgid="403599819099429864">"Ručak"</string>
-    <string name="mealtype_dinner" msgid="1755288392201732372">"Večera"</string>
-    <string name="mealtype_snack" msgid="2337826732633152765">"Užina"</string>
-    <string name="biotin" msgid="3627884250275404075">"Biotin"</string>
-    <string name="caffeine" msgid="116658071099408928">"Kofein"</string>
-    <string name="calcium" msgid="2421306187949865076">"Kalcij"</string>
-    <string name="chloride" msgid="7490996250510177338">"Hlorid"</string>
-    <string name="cholesterol" msgid="6244346992349630002">"Holesterol"</string>
-    <string name="chromium" msgid="1717886909765369185">"Hrom"</string>
-    <string name="copper" msgid="4865917412156527453">"Bakar"</string>
-    <string name="dietary_fiber" msgid="6858567136946084886">"Prehrambena vlakna"</string>
-    <string name="energy_consumed_total" msgid="7091055813340207192">"Energija"</string>
-    <string name="energy_consumed_from_fat" msgid="5746039415956745428">"Energija iz masti"</string>
-    <string name="folate" msgid="8173733292245451456">"Folat"</string>
-    <string name="folic_acid" msgid="8591315035224265134">"Folna kiselina"</string>
-    <string name="iodine" msgid="6295585927454501032">"Jod"</string>
-    <string name="iron" msgid="1829192962959178553">"Željezo"</string>
-    <string name="magnesium" msgid="2378288907103259048">"Magnezij"</string>
-    <string name="manganese" msgid="4343136164658896416">"mangan"</string>
-    <string name="molybdenum" msgid="7771581143656671252">"Molibden"</string>
-    <string name="monounsaturated_fat" msgid="4971508136425798604">"Mononezasićene masti"</string>
-    <string name="niacin" msgid="2824160609495269089">"Niacin"</string>
-    <string name="pantothenic_acid" msgid="7995714572397938859">"Pantotenska kiselina"</string>
-    <string name="phosphorus" msgid="4952419844375433055">"Fosfor"</string>
-    <string name="polyunsaturated_fat" msgid="8066324913175100033">"Polinezasićene masti"</string>
-    <string name="potassium" msgid="707209134595635038">"Kalij"</string>
-    <string name="protein" msgid="3822882640861839933">"Proteini"</string>
-    <string name="riboflavin" msgid="2985915835639186827">"Riboflavin"</string>
-    <string name="saturated_fat" msgid="9021673028646987453">"Zasićene masti"</string>
-    <string name="selenium" msgid="9082380472819491510">"Selen"</string>
-    <string name="sodium" msgid="8769822050033855464">"Natrij"</string>
-    <string name="sugar" msgid="5999057784352629476">"Šećer"</string>
-    <string name="thiamin" msgid="3709641915459997520">"Tiamin"</string>
-    <string name="total_carbohydrate" msgid="232426059808514593">"Ukupno ugljikohidrata"</string>
-    <string name="total_fat" msgid="3978725283210702305">"Ukupno masti"</string>
-    <string name="trans_fat" msgid="5328804254745808226">"Trans masti"</string>
-    <string name="unsaturated_fat" msgid="1068875753519369556">"Nezasićene masti"</string>
-    <string name="vitamin_a" msgid="7755534197188927987">"Vitamin A"</string>
-    <string name="vitamin_b12" msgid="1366392000272833307">"Vitamin B12"</string>
-    <string name="vitamin_b6" msgid="7372970567028622461">"Vitamin B6"</string>
-    <string name="vitamin_c" msgid="8347021170400899646">"Vitamin C"</string>
-    <string name="vitamin_d" msgid="3643353935248181962">"Vitamin D"</string>
-    <string name="vitamin_e" msgid="2134971402339322071">"Vitamin E"</string>
-    <string name="vitamin_k" msgid="390827413844437529">"Vitamin K"</string>
-    <string name="zinc" msgid="1009892754125043398">"Cink"</string>
-    <string name="nutrient_with_value" msgid="1368569847327834479">"<xliff:g id="NUTRIENT">%1$s</xliff:g>:<xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
-    <string name="meal_name" msgid="4909433722102389860">"Naziv"</string>
-    <string name="gram_short_format" msgid="5070017285803939836">"{count,plural, =1{1 g}one{# g}few{# g}other{# g}}"</string>
-    <string name="gram_long_format" msgid="2701869452855193331">"{count,plural, =1{1 gram}one{# gram}few{# grama}other{# grama}}"</string>
-    <string name="respiratory_rate_value" msgid="4770260418901424862">"{count,plural, =1{1 udisaj/min}one{# udisaj/min}few{# udisaja/min}other{# udisaja/min}}"</string>
-    <string name="respiratory_rate_value_long" msgid="3980365384181856940">"{count,plural, =1{1 udisaj u minuti}one{# udisaj u minuti}few{# udisaja u minuti}other{# udisaja u minuti}}"</string>
-    <string name="kilograms_short_label" msgid="8545064251099734089">"{count,plural, =1{1 kg}one{# kg}few{# kg}other{# kg}}"</string>
-    <string name="pounds_short_label" msgid="4061481118724247794">"{count,plural, =1{1 lb}one{# lb}few{# lb}other{# lb}}"</string>
-    <string name="stone_short_label" msgid="6814441736900237535">"{count,plural, =1{1 st}one{# st}few{# st}other{# st}}"</string>
-    <string name="stone_pound_short_label" msgid="2238101867607927054">"{stone_part} {pound_part}"</string>
-    <string name="kilograms_long_label" msgid="469298748511590170">"{count,plural, =1{1 kilogram}one{# kilogram}few{# kilograma}other{# kilograma}}"</string>
-    <string name="pounds_long_label" msgid="9194527891153003933">"{count,plural, =1{1 funta}one{# funta}few{# funte}other{# funti}}"</string>
-    <string name="stone_long_label" msgid="4053870387805972697">"{count,plural, =1{1 stone}one{# stone}few{# stonea}other{# stoneova}}"</string>
-    <string name="stone_pound_long_label" msgid="2500593915192658086">"{stone_part} {pound_part}"</string>
-    <string name="temperature_celsius" msgid="6916459677920711831">"{value,plural, =1{1 ℃}one{# ℃}few{# ℃}other{# ℃}}"</string>
-    <string name="temperature_celsius_long" msgid="7126159036083431638">"{value,plural, =1{1 stepen Celzijusa}one{# stepen Celzijusa}few{# stepena Celzijusa}other{# stepeni Celzijusa}}"</string>
-    <string name="temperature_kelvin" msgid="7510729190865020289">"{value,plural, =1{1 K}one{# K}few{# K}other{# K}}"</string>
-    <string name="temperature_kelvin_long" msgid="6986189366155454098">"{value,plural, =1{1 kelvin}one{# kelvin}few{# kelvina}other{# kelvina}}"</string>
-    <string name="temperature_fahrenheit" msgid="2476056347231267984">"{value,plural, =1{1 ℉}one{# ℉}few{# ℉}other{# ℉}}"</string>
-    <string name="temperature_fahrenheit_long" msgid="2971978242519651318">"{value,plural, =1{1 stepen Farenhajta}one{# stepen Farenhajta}few{# stepena Farenhajta}other{# stepeni Farenhajta}}"</string>
-    <string name="temperature_location_armpit" msgid="7696835579581948830">"Pazuh"</string>
-    <string name="temperature_location_finger" msgid="7351193245180935719">"Prst"</string>
-    <string name="temperature_location_forehead" msgid="3368004987230117306">"Čelo"</string>
-    <string name="temperature_location_mouth" msgid="8833157753375108198">"Usta"</string>
-    <string name="temperature_location_rectum" msgid="2691251624275239001">"Rektum"</string>
-    <string name="temperature_location_temporal_artery" msgid="1015028774234140913">"Sljepoočna arterija"</string>
-    <string name="temperature_location_toe" msgid="3785918672110411401">"Nožni prst"</string>
-    <string name="temperature_location_ear" msgid="7361330734290842889">"Uho"</string>
-    <string name="temperature_location_wrist" msgid="4789557303674138504">"Zglob šake"</string>
-    <string name="temperature_location_vagina" msgid="7501964407778590798">"Vagina"</string>
-    <string name="distance_miles" msgid="2357357092314420912">"{dist,plural, =1{1 milja}one{# milja}few{# milje}other{# milja}}"</string>
-    <string name="distance_km" msgid="411871319039389297">"{dist,plural, =1{1 km}one{# km}few{# km}other{# km}}"</string>
-    <string name="distance_miles_long" msgid="3754739640134562413">"{dist,plural, =1{1 milja}one{# milja}few{# milje}other{# milja}}"</string>
-    <string name="distance_km_long" msgid="1702836391705517609">"{dist,plural, =1{1 kilometar}one{# kilometar}few{# kilometra}other{# kilometara}}"</string>
-    <string name="height_cm" msgid="8939976388396204701">"{height,plural, =1{1 cm}one{# cm}few{# cm}other{# cm}}"</string>
-    <string name="height_cm_long" msgid="4322185580842737867">"{height,plural, =1{1 centimetar}one{# centimetar}few{# centimetra}other{# centimetara}}"</string>
-    <string name="height_in_long" msgid="4690944359939350391">"{height,plural, =1{1 inč}one{# inč}few{# inča}other{# inča}}"</string>
-    <string name="height_ft_long" msgid="4067044383386766601">"{height,plural, =1{1 stopa}one{# stopa}few{# stope}other{# stopa}}"</string>
-    <string name="height_in_compacted" msgid="7320090488312126741">"{height,plural, =1{1\"}one{#\"}few{#\"}other{#\"}}"</string>
-    <string name="height_ft_compacted" msgid="8869242348732761724">"{height,plural, =1{1\"}one{#\"}few{#\"}other{#\"}}"</string>
-    <string name="feet_inches_format" msgid="4976828345068983431">"<xliff:g id="FT">%1$s</xliff:g><xliff:g id="IN">%2$s</xliff:g>⁠"</string>
-    <string name="feet_inches_format_long" msgid="3559977708168174809">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>⁠"</string>
-    <string name="calories_long" msgid="3636635044382367818">"{count,plural, =1{1 kalorija}one{# kalorije}few{# kalorija}other{# kalorija}}"</string>
-    <string name="calories" msgid="1646804751247540818">"{count,plural, =1{1 kalorija}one{# kalorija}few{# kalorije}other{# kalorija}}"</string>
-    <string name="kj" msgid="5640715521602128434">"{count,plural, =1{1 kJ}one{# kJ}few{# kJ}other{# kJ}}"</string>
-    <string name="kj_long" msgid="516247759297999467">"{count,plural, =1{1 kilodžul}one{# kilodžul}few{# kilodžula}other{# kilodžula}}"</string>
-    <string name="percent" formatted="false" msgid="2841159621762576767">"{value,plural, =1{1%}one{#%}few{#%}other{#%}}"</string>
-    <string name="percent_long" msgid="8144935650402894315">"{value,plural, =1{1 posto}one{# posto}few{# posto}other{# posto}}"</string>
-    <string name="units_title" msgid="4335002706905375844">"Jedinice"</string>
-    <string name="set_units_label" msgid="7358440515698876383">"Postavite jedinice podataka"</string>
-    <string name="distance_unit_title" msgid="3055365740477222083">"Udaljenost"</string>
-    <string name="height_unit_title" msgid="677762136969683850">"Visina"</string>
-    <string name="weight_unit_title" msgid="1459327930265888396">"Težina"</string>
-    <string name="energy_unit_title" msgid="5416534225144126434">"Energija"</string>
-    <string name="temperature_unit_title" msgid="8849488991722636347">"Temperatura"</string>
-    <string name="distance_unit_kilometers_label" msgid="232915118326510583">"Kilometri"</string>
-    <string name="distance_unit_miles_label" msgid="7055538640044313099">"Milje"</string>
-    <string name="height_unit_centimeters_label" msgid="1483294030680338546">"Centimetri"</string>
-    <string name="height_unit_feet_label" msgid="5868165630072173182">"Stope i inči"</string>
-    <string name="weight_unit_pound_label" msgid="5140603717613619894">"Funte"</string>
-    <string name="weight_unit_kilogram_label" msgid="8493459003366797794">"Kilogrami"</string>
-    <string name="weight_unit_stone_label" msgid="8143742807230733783">"Kamenovi"</string>
-    <string name="energy_unit_calorie_label" msgid="7297204205050028877">"Kalorije"</string>
-    <string name="energy_unit_kilojoule_label" msgid="2672175602151103090">"Kilodžuli"</string>
-    <string name="temperature_unit_celsius_label" msgid="3397448675591716842">"Celzijus"</string>
-    <string name="temperature_unit_fahrenheit_label" msgid="1110665745798404292">"Farenhajt"</string>
-    <string name="temperature_unit_kelvin_label" msgid="8302797473293617230">"Kelvin"</string>
-    <string name="help_and_feedback" msgid="172484246164803271">"Pomoć i povratne informacije"</string>
-    <string name="cant_see_all_your_apps_description" msgid="8853061265206442343">"Ako ne vidite instaliranu aplikaciju, moguće je da još uvijek nije kompatibilna s Health Connectom"</string>
-    <string name="things_to_try" msgid="5007292603680871491">"Stvari koje možete isprobati"</string>
-    <string name="check_for_updates" msgid="8437406613751262779">"Provjerite ima li ažuriranja"</string>
-    <string name="check_for_updates_description" msgid="1096082466727060156">"Provjerite jesu li instalirane aplikacije ažurne"</string>
-    <string name="see_all_compatible_apps" msgid="7992057176853172184">"Prikaži sve kompatibilne aplikacije"</string>
-    <string name="see_all_compatible_apps_description" msgid="6680705314883603963">"Pronalaženje aplikacija na Google Playu"</string>
-    <string name="send_feedback" msgid="5208533169043471671">"Pošaljite povratne informacije"</string>
-    <string name="send_feedback_description" msgid="8072260306033182621">"Recite nam koje aplikacije za zdravlje i fitnes želite da funkcioniraju s Health Connectom"</string>
-    <string name="playstore_app_title" msgid="1735964688871308040">"Play trgovina"</string>
-    <string name="auto_delete_button" msgid="7613874709713318627">"Automatsko brisanje"</string>
-    <string name="auto_delete_title" msgid="4076931002598655193">"Automatsko brisanje"</string>
-    <string name="auto_delete_header" msgid="5258042693870924698">"Kontrolirajte koliko dugo se vaši podaci pohranjuju u Health Connectu zakazivanjem brisanja nakon postavljenog vremena"</string>
-    <string name="auto_delete_learn_more" msgid="3247070192871987847">"Saznajte više"</string>
-    <string name="auto_delete_section" msgid="9211252344455317906">"Automatsko brisanje podataka"</string>
-    <string name="range_after_x_months" msgid="3146757448628487162">"{count,plural, =1{Nakon # mjeseca}one{Nakon # mjeseca}few{Nakon # mjeseca}other{Nakon # mjeseci}}"</string>
-    <string name="range_never" msgid="7960509623911908545">"Nikada"</string>
-    <string name="auto_delete_rationale" msgid="5560024057140990346">"Kada promijenite ove postavke, Health Connect briše postojeće podatke kako bi odražavao nove postavke"</string>
-    <string name="confirming_question_x_months" msgid="7123054917665581228">"{count,plural, =1{Automatski izbrisati podatke nakon # mjeseca?}one{Automatski izbrisati podatke nakon # mjeseca?}few{Automatski izbrisati podatke nakon # mjeseca?}other{Automatski izbrisati podatke nakon # mjeseci?}}"</string>
-    <string name="confirming_message_x_months" msgid="920929862997354600">"{count,plural, =1{Health Connect će automatski izbrisati nove podatke nakon # mjeseca. Ovom postavkom će se također izbrisati postojeći podaci stariji od # mjeseca.}one{Health Connect će automatski izbrisati nove podatke nakon # mjeseca. Ovom postavkom će se također izbrisati postojeći podaci stariji od # mjeseca.}few{Health Connect će automatski izbrisati nove podatke nakon # mjeseca. Ovom postavkom će se također izbrisati postojeći podaci stariji od # mjeseca.}other{Health Connect će automatski izbrisati nove podatke nakon # mjeseci. Ovom postavkom će se također izbrisati postojeći podaci stariji od # mjeseci.}}"</string>
-    <string name="set_auto_delete_button" msgid="302211603856152720">"Postavi automatsko brisanje"</string>
-    <string name="deletion_started_title" msgid="2182642613917857247">"Postojeći podaci će se izbrisati"</string>
-    <string name="deletion_started_x_months" msgid="399255633214696136">"{count,plural, =1{Health Connect će izbrisati sve podatke starije od # mjeseca. Može proći jedan dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}one{Health Connect će izbrisati sve podatke starije od # mjeseca. Može proći jedan dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}few{Health Connect će izbrisati sve podatke starije od # mjeseca. Može proći jedan dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}other{Health Connect će izbrisati sve podatke starije od # mjeseci. Može proći jedan dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}}"</string>
-    <string name="deletion_started_category_list_section" msgid="6286759641880692887">"Podaci koji će se izbrisati"</string>
-    <string name="deletion_started_done_button" msgid="3502852477322616722">"Gotovo"</string>
-    <string name="priority_dialog_title" msgid="7095478075034320176">"Postavite prioritet aplikacija"</string>
-    <string name="priority_dialog_message" msgid="3340579459066951195">"Ako više aplikacija doda podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>), Health Connect daje prioritet aplikaciji koja je na najvišem položaju na ovoj listi. Prevucite aplikacije da im promijenite redoslijed."</string>
-    <string name="priority_dialog_positive_button" msgid="2662350313421657980">"Sačuvaj"</string>
-    <string name="action_drag_label_move_up" msgid="4672893112356988839">"Pomjeranje nagore"</string>
-    <string name="action_drag_label_move_down" msgid="1092853846151649508">"Pomjeranje nadolje"</string>
-    <string name="action_drag_label_move_top" msgid="2966656544336625803">"Pomjeranje na vrh"</string>
-    <string name="action_drag_label_move_bottom" msgid="5411704363387095937">"Pomjeranje na dno"</string>
-    <string name="search_keywords_home" msgid="9160844866689920918">"fitnes, wellness"</string>
-    <string name="search_keywords_permissions" msgid="5833608935281551763">"odobrenja"</string>
-    <string name="search_keywords_data" msgid="3868299259004497681">"Health Connect, zdravstveni podaci, zdravstvene kategorije, pristup podacima, aktivnost, tjelesne mjere, praćenje ciklusa, prehrana, spavanje, vitalne funkcije"</string>
-    <string name="search_breadcrumbs_permissions" msgid="6148716768508490165">"Health Connect &gt; Odobrenja za aplikaciju"</string>
-    <string name="search_breadcrumbs_data" msgid="1342835340148853026">"Health Connect &gt; Podaci i pristup"</string>
-    <string name="search_connected_apps" msgid="6129467632620352061">"Pretraživanje aplikacija"</string>
-    <string name="no_results" msgid="4935646951230345730">"Nema rezultata"</string>
-    <string name="help" msgid="6096599033945360524">"Pomoć"</string>
-    <string name="request_route_header_title" msgid="1350262014182621609">"Dozvoliti <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupi ovoj ruti za vježbanje u Health Connectu?"</string>
-    <string name="request_route_disclaimer_notice" msgid="2361651711073625314">"Ova aplikacija će moći čitati vašu prošlu lokaciju na ruti"</string>
-    <string name="loading" msgid="5416387523241743987">"Učitavanje…"</string>
+    <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Upravljajte pristupom aplikacije zdravstvenim podacima"</string>
+    <string name="permissions_and_data_header" msgid="4406105506837487805">"Odobrenja i podaci"</string>
+    <string name="home_subtitle" msgid="1750033322147357163">"Upravljajte podacima o zdravlju i fitnesu na telefonu i kontrolirajte koje aplikacije im mogu pristupiti"</string>
+    <string name="data_title" msgid="4456619761533380816">"Podaci i pristup"</string>
+    <string name="all_categories_title" msgid="1446410643217937926">"Sve kategorije"</string>
+    <string name="see_all_categories" msgid="5599882403901010434">"Prikaz svih kategorija"</string>
+    <string name="no_data" msgid="1906986019249068659">"Nema podataka"</string>
+    <string name="connected_apps_title" msgid="279942692804743223">"Odobrenja za aplikaciju"</string>
+    <string name="connected_apps_subtitle" msgid="8464462995533399175">"Upravljajte aplikacijama i odobrenjima"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"Broj aplikacija koje imaju pristup: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> od <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>"</string>
+    <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"Pristup ima sljedeći broj aplikacija: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>"</string>
+    <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplikacija ima pristup"</string>
+    <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ništa"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Detalji unosa"</string>
+    <string name="backup_title" msgid="211503191266235085">"Sigurnosna kopija"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Izvori podataka i prioritet"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Postavite jedinice"</string>
+    <string name="recent_access_header" msgid="7623497371790225888">"Nedavni pristup"</string>
+    <string name="no_recent_access" msgid="4724297929902441784">"Nijedna aplikacija nije nedavno pristupila Health Connectu"</string>
+    <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Prikaz svih nedavnih pristupa"</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"Pogledajte koje aplikacije su pristupile vašim podacima u posljednja 24 sata"</string>
+    <string name="today_header" msgid="1006837293203834373">"Danas"</string>
+    <string name="yesterday_header" msgid="6652176268273681505">"Jučer"</string>
+    <string name="read_data_access_label" msgid="7145747310980361968">"Čitanje: %s"</string>
+    <string name="write_data_access_label" msgid="7955988316773000250">"Zapisivanje: %s"</string>
+    <string name="data_type_separator" msgid="1299848322898210658">", "</string>
+    <string name="manage_permissions" msgid="8394221950712608160">"Upravljajte odobrenjima"</string>
+    <string name="activity_category_uppercase" msgid="136628843341377088">"Aktivnost"</string>
+    <string name="activity_category_lowercase" msgid="3007220578865400601">"aktivnost"</string>
+    <string name="body_measurements_category_uppercase" msgid="422923782603313038">"Tjelesne mjere"</string>
+    <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"tjelesne mjere"</string>
+    <string name="sleep_category_uppercase" msgid="3422452674899706786">"Spavanje"</string>
+    <string name="sleep_category_lowercase" msgid="842609634386839011">"spavanje"</string>
+    <string name="vitals_category_uppercase" msgid="8982333138032938623">"Vitalne funkcije"</string>
+    <string name="vitals_category_lowercase" msgid="4664457787866407963">"vitalne funkcije"</string>
+    <string name="cycle_tracking_category_uppercase" msgid="4723200714782660489">"Praćenje ciklusa"</string>
+    <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"praćenje ciklusa"</string>
+    <string name="nutrition_category_uppercase" msgid="6665096097987741036">"Ishrana"</string>
+    <string name="nutrition_category_lowercase" msgid="7804134941649488990">"ishrana"</string>
+    <string name="browse_data_category" msgid="4813955610391357638">"Pregledajte podatke"</string>
+    <string name="manage_data_section" msgid="5859629270946511903">"Upravljajte podacima"</string>
+    <string name="export_data_button" msgid="7783329820434117744">"Izvezi podatke"</string>
+    <string name="delete_all_data_button" msgid="7238755635416521487">"Izbriši sve podatke"</string>
+    <string name="no_categories" msgid="2636778482437506241">"Nemate nijedan podatak u Health Connectu"</string>
+    <string name="permission_types_title" msgid="7698058200557389436">"Vaši podaci"</string>
+    <string name="app_priority_button" msgid="3126133977893705098">"Prioritet aplikacije"</string>
+    <string name="delete_category_data_button" msgid="2324773398768267043">"Izbriši podatke (<xliff:g id="CATEGORY">%s</xliff:g>)"</string>
+    <string name="select_all_apps_title" msgid="884487568464305913">"Sve aplikacije"</string>
+    <string name="can_read" msgid="4568261079308309564">"Može čitati podatke (<xliff:g id="PERMISSION_TYPE">%s</xliff:g>)"</string>
+    <string name="can_write" msgid="5082414937218423823">"Može zapisivati podatke (<xliff:g id="PERMISSION_TYPE">%s</xliff:g>)"</string>
+    <string name="inactive_apps" msgid="8956546286760797760">"Neaktivne aplikacije"</string>
+    <string name="inactive_apps_message" msgid="4666501359079362486">"Ove aplikacije više ne mogu zapisivati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>), ali i dalje imaju podatke pohranjene u Health Connectu"</string>
+    <string name="data_access_empty_message" msgid="9084350402254264452">"Aplikacije više ne mogu čitati niti zapisivati podatke (<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>), a u Health Connectu nema pohranjenih podataka tipa \"<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>\"."</string>
+    <string name="data_access_exercise_description" msgid="6868583522699443570">"Podaci sadržavaju informacije kao što su aktivno vrijeme, vrsta vježbanja, krugovi, ponavljanja, sesije ili zamasi u plivanju"</string>
+    <string name="data_access_sleep_description" msgid="74293126050011153">"Podaci sadržavaju informacije kao što su faze sna i sesije spavanja"</string>
+    <string name="all_entries_button" msgid="5109091107239135235">"Prikaži sve unose"</string>
+    <string name="delete_permission_type_data_button" msgid="2270819954943391797">"Izbriši ove podatke"</string>
+    <string name="permgrouplab_health" msgid="468961137496587966">"Health Connect"</string>
+    <string name="permgroupdesc_health" msgid="252080476917407273">"pristupanje podacima o zdravlju"</string>
+    <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Čitanje potrošenih kalorija"</string>
+    <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Dozvoljava aplikaciji da čita potrošene kalorije"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Kalorije potrošene kroz aktivnost"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"kalorije potrošene kroz aktivnost"</string>
+    <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Čitanje kalorija potrošenih kroz aktivnost"</string>
+    <string name="active_calories_burned_write_content_description" msgid="8794383690157452892">"Zapisivanje kalorija potrošenih kroz aktivnost"</string>
+    <string name="exercise_uppercase_label" msgid="9174662895529523172">"Vježbanje"</string>
+    <string name="exercise_lowercase_label" msgid="7210988327804427943">"vježbanje"</string>
+    <string name="exercise_read_content_description" msgid="2079728018078185556">"Čitanje podataka o vježbanju"</string>
+    <string name="exercise_write_content_description" msgid="3267630937895011886">"Zapisivanje podataka o vježbanju"</string>
+    <string name="exercise_route_uppercase_label" msgid="6678863538041931754">"Ruta za vježbanje"</string>
+    <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"ruta za vježbanje"</string>
+    <string name="exercise_route_write_content_description" msgid="257809942953352611">"Zapisivanje rute za vježbanje"</string>
+    <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Čitanje rute vježbe"</string>
+    <string name="distance_uppercase_label" msgid="1420705424462077174">"Udaljenost"</string>
+    <string name="distance_lowercase_label" msgid="2287154001209381379">"udaljenost"</string>
+    <string name="distance_read_content_description" msgid="8787235642020285789">"Čitanje udaljenosti"</string>
+    <string name="distance_write_content_description" msgid="494549494589487562">"Zapisivanje udaljenosti"</string>
+    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"Savladani uspon"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"savladani uspon"</string>
+    <string name="elevation_gained_read_content_description" msgid="6018756385903843355">"Čitanje savladanog uspona"</string>
+    <string name="elevation_gained_write_content_description" msgid="6790199544670231367">"Zapisivanje savladanog uspona"</string>
+    <string name="floors_climbed_uppercase_label" msgid="3754372357767832441">"Broj spratova uspona"</string>
+    <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"broj spratova uspona"</string>
+    <string name="floors_climbed_read_content_description" msgid="4730764877684911752">"Čitanje broja spratova uspona"</string>
+    <string name="floors_climbed_write_content_description" msgid="3480340610185615655">"Zapisivanje broja spratova uspona"</string>
+    <string name="power_uppercase_label" msgid="8027219480901448660">"Snaga"</string>
+    <string name="power_lowercase_label" msgid="3893286148577044369">"snaga"</string>
+    <string name="power_read_content_description" msgid="6821797135406643841">"Čitanje podataka o snazi"</string>
+    <string name="power_write_content_description" msgid="8091584558688087392">"Zapisivanje podataka o snazi"</string>
+    <string name="speed_uppercase_label" msgid="3307049861007518587">"Brzina"</string>
+    <string name="speed_lowercase_label" msgid="3462529886150464647">"brzina"</string>
+    <string name="speed_read_content_description" msgid="9097089387385110692">"Čitanje brzine"</string>
+    <string name="speed_write_content_description" msgid="5382921934987959251">"Zapisivanje brzine"</string>
+    <string name="steps_uppercase_label" msgid="2581405504646486105">"Koraci"</string>
+    <string name="steps_lowercase_label" msgid="706153549312838582">"koraci"</string>
+    <string name="steps_read_content_description" msgid="7839297670092769964">"Čitanje koraka"</string>
+    <string name="steps_write_content_description" msgid="6360223825799711659">"Zapisivanje koraka"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"Ukupno potrošenih kalorija"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"ukupno potrošenih kalorija"</string>
+    <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Čitanje ukupno potrošenih kalorija"</string>
+    <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Zapisivanje ukupno potrošenih kalorija"</string>
+    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"Maks. VO2"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"Maks. VO2"</string>
+    <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Čitanje maks. VO2"</string>
+    <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Zapisivanje maks. VO2"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Guranja u invalidskim kolicima"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="8919337990806379687">"guranja u invalidskim kolicima"</string>
+    <string name="wheelchair_pushes_read_content_description" msgid="157304610943976471">"Čitanje guranja u invalidskim kolicima"</string>
+    <string name="wheelchair_pushes_write_content_description" msgid="2745600707106818641">"Zapisivanje guranja u invalidskim kolicima"</string>
+    <string name="basal_metabolic_rate_uppercase_label" msgid="4802351493928086473">"Bazalni metabolizam"</string>
+    <string name="basal_metabolic_rate_lowercase_label" msgid="7195596626083893231">"bazalni metabolizam"</string>
+    <string name="basal_metabolic_rate_read_content_description" msgid="5583222212705234907">"Čitanje bazalnog metabolizma"</string>
+    <string name="basal_metabolic_rate_write_content_description" msgid="4246137679868953443">"Zapisivanje bazalnog metabolizma"</string>
+    <string name="body_fat_uppercase_label" msgid="4618860235119416449">"Tjelesna masnoća"</string>
+    <string name="body_fat_lowercase_label" msgid="4090686510477176498">"tjelesna masnoća"</string>
+    <string name="body_fat_read_content_description" msgid="801664410906939146">"Čitanje tjelesne masnoće"</string>
+    <string name="body_fat_write_content_description" msgid="4863558071904720577">"Zapisivanje tjelesne masnoće"</string>
+    <string name="body_water_mass_uppercase_label" msgid="7839393299147916863">"Masa vode u tijelu"</string>
+    <string name="body_water_mass_lowercase_label" msgid="9196249948631920955">"masa vode u tijelu"</string>
+    <string name="body_water_mass_read_content_description" msgid="1468266374858854184">"Čitanje mase vode u tijelu"</string>
+    <string name="body_water_mass_write_content_description" msgid="8485284654932647383">"Zapisivanje mase vode u tijelu"</string>
+    <string name="bone_mass_uppercase_label" msgid="6815438946872228501">"Koštana masa"</string>
+    <string name="bone_mass_lowercase_label" msgid="5127378263122564055">"koštana masa"</string>
+    <string name="bone_mass_read_content_description" msgid="8401070346821477225">"Čitanje koštane mase"</string>
+    <string name="bone_mass_write_content_description" msgid="8711285422751587975">"Zapisivanje koštane mase"</string>
+    <string name="height_uppercase_label" msgid="6839543632311723181">"Visina"</string>
+    <string name="height_lowercase_label" msgid="6232582306436492752">"visina"</string>
+    <string name="height_read_content_description" msgid="7107217731605127715">"Čitanje podataka o visini"</string>
+    <string name="height_write_content_description" msgid="6787078298523064040">"Zapisivanje podataka o visini"</string>
+    <string name="hip_circumference_uppercase_label" msgid="553907293616398764">"Obim kuka"</string>
+    <string name="hip_circumference_lowercase_label" msgid="5383037100089745103">"obim kuka"</string>
+    <string name="hip_circumference_read_content_description" msgid="3960843421475522701">"Čitanje obima kuka"</string>
+    <string name="hip_circumference_write_content_description" msgid="3828616223599649051">"Zapisivanje obima kuka"</string>
+    <string name="lean_body_mass_uppercase_label" msgid="1660166073148541008">"Tjelesna masa bez masti"</string>
+    <string name="lean_body_mass_lowercase_label" msgid="9060417901080844357">"tjelesna masa bez masti"</string>
+    <string name="lean_body_mass_read_content_description" msgid="3251903339784498051">"Čitanje tjelesne mase bez masti"</string>
+    <string name="lean_body_mass_write_content_description" msgid="8778176250058913124">"Zapisivanje tjelesne mase bez masti"</string>
+    <string name="waist_circumference_uppercase_label" msgid="864537723631507381">"Obim struka"</string>
+    <string name="waist_circumference_lowercase_label" msgid="7389714051869012003">"obim struka"</string>
+    <string name="waist_circumference_read_content_description" msgid="7742632529989685413">"Čitanje obima struka"</string>
+    <string name="waist_circumference_write_content_description" msgid="6455311628964793644">"Zapisivanje obima struka"</string>
+    <string name="weight_uppercase_label" msgid="2240396607601785080">"Težina"</string>
+    <string name="weight_lowercase_label" msgid="6592458247010013299">"težina"</string>
+    <string name="weight_read_content_description" msgid="3270514859844811665">"Čitanje težine"</string>
+    <string name="weight_write_content_description" msgid="555486014471042366">"Zapisivanje težine"</string>
+    <string name="cervical_mucus_uppercase_label" msgid="7479786340673820763">"Cervikalna sluz"</string>
+    <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"cervikalna sluz"</string>
+    <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Čitanje cervikalne sluzi"</string>
+    <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Zapisivanje cervikalne sluzi"</string>
+    <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Krvarenje između menstruacija"</string>
+    <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"krvarenje između menstruacija"</string>
+    <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Čitanje podataka o krvarenju između menstruacija"</string>
+    <string name="intermenstrual_bleeding_write_content_description" msgid="1377719923165234099">"Zapisivanje podataka o krvarenju između menstruacija"</string>
+    <string name="menstruation_uppercase_label" msgid="9119506748428874832">"Menstruacija"</string>
+    <string name="menstruation_lowercase_label" msgid="8098816978006207242">"menstruacija"</string>
+    <string name="menstruation_read_content_description" msgid="7710047469771882021">"Čitanje podataka o menstruaciji"</string>
+    <string name="menstruation_write_content_description" msgid="5142669435897047396">"Zapisivanje podataka o menstruaciji"</string>
+    <string name="ovulation_test_uppercase_label" msgid="1929868571862288837">"Test ovulacije"</string>
+    <string name="ovulation_test_lowercase_label" msgid="93260039417722840">"test ovulacije"</string>
+    <string name="ovulation_test_read_content_description" msgid="8008351738285775840">"Čitanje podataka o testu ovulacije"</string>
+    <string name="ovulation_test_write_content_description" msgid="7061493310852203463">"Zapisivanje podataka o testu ovulacije"</string>
+    <string name="sexual_activity_uppercase_label" msgid="1093238473810194127">"Seksualna aktivnost"</string>
+    <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"seksualna aktivnost"</string>
+    <string name="sexual_activity_read_content_description" msgid="4937721417714312007">"Čitanje podataka o seksualnoj aktivnosti"</string>
+    <string name="sexual_activity_write_content_description" msgid="3063448245882840534">"Zapisivanje podataka o seksualnoj aktivnosti"</string>
+    <string name="spotting_uppercase_label" msgid="5106739829390033240">"Tačkasto krvarenje"</string>
+    <string name="spotting_lowercase_label" msgid="4361141146039580583">"tačkasto krvarenje"</string>
+    <string name="spotting_read_content_description" msgid="5422420770022357631">"Čitanje podataka o tačkastom krvarenju"</string>
+    <string name="spotting_write_content_description" msgid="9049462631184362964">"Zapisivanje podataka o tačkastom krvarenju"</string>
+    <string name="hydration_uppercase_label" msgid="1196083392597480565">"Hidratacija"</string>
+    <string name="hydration_lowercase_label" msgid="7793261552870970551">"hidratacija"</string>
+    <string name="hydration_read_content_description" msgid="3255941233933808082">"Čitanje podataka o hidrataciji"</string>
+    <string name="hydration_write_content_description" msgid="7549819425875969941">"Zapisivanje podataka o hidrataciji"</string>
+    <string name="nutrition_uppercase_label" msgid="2352959651072134084">"Ishrana"</string>
+    <string name="nutrition_lowercase_label" msgid="4123518952030658702">"ishrana"</string>
+    <string name="nutrition_read_content_description" msgid="5820331769605952082">"Čitanje podataka o ishrani"</string>
+    <string name="nutrition_write_content_description" msgid="6690090231218210367">"Zapisivanje podataka o ishrani"</string>
+    <string name="sleep_uppercase_label" msgid="1458084584315123727">"Spavanje"</string>
+    <string name="sleep_lowercase_label" msgid="7795584924503475035">"spavanje"</string>
+    <string name="sleep_read_content_description" msgid="7064608272681424436">"Čitanje podataka o spavanju"</string>
+    <string name="sleep_write_content_description" msgid="2259414465110376554">"Zapisivanje podataka o spavanju"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4571393253935677019">"Bazalna tjelesna temperatura"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="3363829208971016662">"bazalna tjelesna temperatura"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3342604362011725500">"Čitanje bazalne tjelesne temperature"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="1081636817359407622">"Zapisivanje bazalne tjelesne temperature"</string>
+    <string name="blood_glucose_uppercase_label" msgid="7462421849184720721">"Nivo glukoze u krvi"</string>
+    <string name="blood_glucose_lowercase_label" msgid="5036157221577793772">"nivo glukoze u krvi"</string>
+    <string name="blood_glucose_read_content_description" msgid="563393834563809318">"Čitanje nivoa glukoze u krvi"</string>
+    <string name="blood_glucose_write_content_description" msgid="7688360165458091174">"Zapisivanje nivoa glukoze u krvi"</string>
+    <string name="blood_pressure_uppercase_label" msgid="1091450873620857062">"Krvni pritisak"</string>
+    <string name="blood_pressure_lowercase_label" msgid="5857335698134310172">"krvni pritisak"</string>
+    <string name="blood_pressure_read_content_description" msgid="8573617892296408887">"Čitanje krvnog pritiska"</string>
+    <string name="blood_pressure_write_content_description" msgid="2649850785684226949">"Zapisivanje krvnog pritiska"</string>
+    <string name="body_temperature_uppercase_label" msgid="5104550330313775324">"Tjelesna temperatura"</string>
+    <string name="body_temperature_lowercase_label" msgid="324124730971992259">"tjelesna temperatura"</string>
+    <string name="body_temperature_read_content_description" msgid="5966765249024688738">"Čitanje tjelesne temperature"</string>
+    <string name="body_temperature_write_content_description" msgid="5498016171067859369">"Zapisivanje tjelesne temperature"</string>
+    <string name="heart_rate_uppercase_label" msgid="4990167215137642430">"Puls"</string>
+    <string name="heart_rate_lowercase_label" msgid="693492686337628283">"puls"</string>
+    <string name="heart_rate_read_content_description" msgid="4165867166260001259">"Čitanje pulsa"</string>
+    <string name="heart_rate_write_content_description" msgid="2876667918366409170">"Zapisivanje pulsa"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"Promjenjivost pulsa"</string>
+    <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"promjenjivost pulsa"</string>
+    <string name="heart_rate_variability_read_content_description" msgid="5812707457872629556">"Čitanje podataka o promjenjivosti pulsa"</string>
+    <string name="heart_rate_variability_write_content_description" msgid="3628171603035566114">"Zapisivanje podataka o promjenjivosti pulsa"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1396254185616418355">"Zasićenost kisikom"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="7264179897533866327">"zasićenost kisikom"</string>
+    <string name="oxygen_saturation_read_content_description" msgid="4756434113425028212">"Čitanje podataka o zasićenosti kisikom"</string>
+    <string name="oxygen_saturation_write_content_description" msgid="7189901097196830875">"Zapisivanje podataka o zasićenosti kisikom"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4609498171205294389">"Brzina disanja"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="8138249029197360098">"brzina disanja"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8545898979648419722">"Čitanje brzine disanja"</string>
+    <string name="respiratory_rate_write_content_description" msgid="7689533746809591931">"Zapisivanje brzine disanja"</string>
+    <string name="resting_heart_rate_uppercase_label" msgid="5700827752396195453">"Puls u mirovanju"</string>
+    <string name="resting_heart_rate_lowercase_label" msgid="4533866739695973169">"puls u mirovanju"</string>
+    <string name="resting_heart_rate_read_content_description" msgid="1068160055773401020">"Čitanje pulsa u mirovanju"</string>
+    <string name="resting_heart_rate_write_content_description" msgid="8848198128082739995">"Zapisivanje pulsa u mirovanju"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Dozvoli aplikaciji \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" čitanje"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Dozvoli aplikaciji \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" zapisivanje"</string>
+    <string name="request_permissions_cancel" msgid="1787483997235365393">"Otkaži"</string>
+    <string name="request_permissions_allow" msgid="4201324235711040631">"Dozvoli"</string>
+    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Dozvoli sve"</string>
+    <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Nemoj dozvoliti"</string>
+    <string name="request_permissions_header_desc" msgid="5561173070722750153">"Odaberite koje podatke želite da ova aplikacija čita ili zapisuje u Health Connectu"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Ako joj odobrite čitanje podataka, ova aplikacija će moći čitati nove podatke i podatke iz posljednjih 30 dana"</string>
+    <string name="request_permissions_header_title" msgid="4264236128614363479">"Dozvoliti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Health Connectu?"</string>
+    <string name="request_permissions_rationale" msgid="6154280355215802538">"Možete saznati kako <xliff:g id="APP_NAME">%1$s</xliff:g> obrađuje vaše podatke u programerovim <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
+    <string name="request_permissions_privacy_policy" msgid="228503452643555737">"pravilima privatnosti"</string>
+    <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Ukloniti sva odobrenja?"</string>
+    <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Ukloni sve"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti zapisivati podatke iz Health Connecta.\n\nOvo ne utiče na druga odobrenja koja ova aplikacija može imati, kao što su lokacija, kamera ili mikrofon."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Izbriši i podatke aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> iz Health Connecta"</string>
+    <string name="navigation_next_day" msgid="8853443471183944219">"Sljedeći dan"</string>
+    <string name="navigation_selected_day" msgid="2510843479734091348">"Odabrani dan"</string>
+    <string name="navigation_previous_day" msgid="718353386484938584">"Prethodni dan"</string>
+    <string name="default_error" msgid="7966868260616403475">"Nešto nije uredu. Pokušajte ponovo."</string>
+    <string name="health_permission_header_description" msgid="7497601695462373927">"Aplikacije s ovim odobrenjem mogu čitati i zapisivati vaše podatke o zdravlju i fitnesu."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Kontrolirajte koje aplikacije mogu pristupiti podacima pohranjenim u Health Connectu. Dodirnite aplikaciju da pregledate podatke kojima ona ima pristup za čitanje ili pisanje."</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"Dozvoljen pristup"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"Nedozvoljen pristup"</string>
+    <string name="settings_and_help_header" msgid="5749710693017621168">"Postavke i pomoć"</string>
+    <string name="disconnect_all_apps" msgid="748945115977534726">"Ukloni pristup za sve aplikacije"</string>
+    <string name="manage_permissions_read_header" msgid="2031153753057983683">"Dozvoljeno čitanje"</string>
+    <string name="manage_permissions_write_header" msgid="6876806848658168370">"Dozvoljeno zapisivanje"</string>
+    <string name="no_apps_allowed" msgid="5794833581324128108">"Nije dozvoljena nijedna aplikacija"</string>
+    <string name="no_apps_denied" msgid="743327680286446017">"Nije odbijena nijedna aplikacija"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Ukloniti pristup za sve aplikacije?"</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Nijedna od vaših aplikacija neće moći dodati nove podatke u Health Connect niti će im moći pristupiti. Ovim se ne brišu postojeći podaci.\n\nOvo ne utiče na druga odobrenja koja ova aplikacija može imati, kao što su lokacija, kamera ili mikrofon."</string>
+    <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Ukloni sve"</string>
+    <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Upravljajte aplikacijom"</string>
+    <string name="delete_app_data" msgid="6890357774873859952">"Izbriši podatke aplikacije"</string>
+    <string name="inactive_apps_section_title" msgid="7492812973696378690">"Neaktivne aplikacije"</string>
+    <string name="inactive_apps_section_message" msgid="2610789262055974739">"Ove aplikacije više nemaju pristup, ali su im podaci i dalje pohranjeni u Health Connectu"</string>
+    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> može čitati podatke koji su dodani nakon dana <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <string name="other_android_permissions" msgid="8051485761573324702">"Da upravljate drugim odobrenjima za Android kojima ova aplikacija može pristupiti, idite u Postavke &gt; Aplikacije"</string>
+    <string name="manage_permissions_rationale" msgid="9183689798847740274">"Podatke koje dijelite s aplikacijom <xliff:g id="APP_NAME">%1$s</xliff:g> pokrivaju njena pravila privatnosti"</string>
+    <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Da upravljate drugim odobrenjima za Android kojima ova aplikacija može pristupiti, idite u Postavke, a zatim dodirnite Aplikacije"</string>
+    <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Pročitajte pravila privatnosti"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Pristupljeno u posljednja 24 sata"</string>
+    <string name="app_access_title" msgid="7137018424885371763">"Pristup aplikacije"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Trenutno nemate instaliranu nijednu kompatibilnu aplikaciju"</string>
+    <string name="denied_apps_banner_title" msgid="1997745063608657965">"Odobrenja za aplikaciju su uklonjena"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect je uklonio odobrenja za aplikaciju <xliff:g id="APP_DATA">%s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect je uklonio odobrenja za aplikacije <xliff:g id="APP_DATA_0">%1$s</xliff:g> i <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="7978499051473471633">"Health Connect je uklonio odobrenja za aplikacije <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> i <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="7249805432604650982">"Health Connect je uklonio odobrenja za aplikacije <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> i druge aplikacije"</string>
+    <string name="denied_apps_banner_button" msgid="4438480389769298412">"Prikaži detalje"</string>
+    <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Zašto Health Connect uklanja odobrenja za aplikaciju"</string>
+    <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ako se aplikacija obustavi ili ukloni s Google Playa, Health Connect automatski uklanja njena odobrenja.\n\nTo znači da aplikacija više neće moći pristupati podacima koji su pohranjeni u Health Connectu. Ako je ova aplikacija prethodno bilježila podatke, pojavit će se na listi neaktivnih aplikacija."</string>
+    <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Razumijem"</string>
+    <string name="onboarding_title" msgid="7930941018430608076">"Počnite koristiti Health Connect"</string>
+    <string name="onboarding_description" msgid="4873129122057931161">"Health Connect pohranjuje vaše podatke o zdravlju i fitnesu i pruža vam jednostavan način da sinhronizirate različite aplikacije na telefonu"</string>
+    <string name="share_data" msgid="3481932156368883946">"Dijelite podatke sa svojim aplikacijama"</string>
+    <string name="share_data_description" msgid="2919871301634375092">"Odaberite podatke koje svaka aplikacija može čitati ili zapisivati u Health Connectu"</string>
+    <string name="manage_your_settings" msgid="7391184508015127137">"Upravljajte postavkama i privatnošću"</string>
+    <string name="manage_your_settings_description" msgid="557943168930365334">"Promijenite odobrenja za aplikaciju i upravljajte podacima u bilo kojem trenutku"</string>
+    <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Nazad"</string>
+    <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Započnite"</string>
+    <string name="delete_button_content_description" msgid="9125115327455379618">"Brisanje podataka"</string>
+    <string name="time_range_title" msgid="6831605283322600165">"Odaberite podatke za brisanje"</string>
+    <string name="time_range_next_button" msgid="5849096934896557888">"Naprijed"</string>
+    <string name="time_range_message_all" msgid="7280888587242744729">"Ovim će se trajno izbrisati svi podaci dodani u Health Connect u odabranom vremenskom periodu"</string>
+    <string name="time_range_message_data_type" msgid="1896125004829258195">"Ovim će se trajno izbrisati svi podaci (<xliff:g id="DATA_TYPE">%s</xliff:g>) dodani u Health Connect u odabranom vremenskom periodu"</string>
+    <string name="time_range_message_category" msgid="1136451418397326356">"Ovim će se trajno izbrisati svi podaci (<xliff:g id="CATEGORY">%s</xliff:g>) dodani u Health Connect u odabranom vremenskom periodu"</string>
+    <string name="time_range_message_app_data" msgid="2590800457710603556">"Ovim će se trajno izbrisati svi podaci (<xliff:g id="APP_DATA">%s</xliff:g>) dodani u Health Connect u odabranom vremenskom periodu"</string>
+    <string name="time_range_one_day" msgid="7162709826595446727">"Izbriši posljednja 24 sata"</string>
+    <string name="time_range_one_week" msgid="8754523384275645434">"Izbriši posljednjih 7 dana"</string>
+    <string name="time_range_one_month" msgid="3034747870231999766">"Izbriši posljednjih 30 dana"</string>
+    <string name="time_range_all" msgid="8167350212705839943">"Izbriši sve podatke"</string>
+    <string name="confirming_question_all" msgid="1585414659784742952">"Trajno izbrisati sve podatke svih perioda?"</string>
+    <string name="confirming_question_one_day" msgid="8001434729335611950">"Trajno izbrisati sve podatke od posljednja 24 h?"</string>
+    <string name="confirming_question_one_week" msgid="5441506951423969587">"Trajno izbrisati sve podatke od posljednjih 7 dana?"</string>
+    <string name="confirming_question_one_month" msgid="4118595547587081940">"Trajno izbrisati sve podatke od posljednjih 30 dana?"</string>
+    <string name="confirming_question_data_type_all" msgid="1173934949902602037">"Trajno izbrisati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>) svih perioda?"</string>
+    <string name="confirming_question_data_type_one_day" msgid="5386681714769751416">"Trajno izbrisati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>) od posljednja 24 h?"</string>
+    <string name="confirming_question_data_type_one_week" msgid="8346031951374422501">"Trajno izbrisati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>) od posljednjih 7 dana?"</string>
+    <string name="confirming_question_data_type_one_month" msgid="7110328687576360400">"Trajno izbrisati podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>) od posljednjih 30 dana?"</string>
+    <string name="confirming_question_category_all" msgid="9182430869247761531">"Trajno izbrisati podatke (<xliff:g id="CATEGORY">%s</xliff:g>) svih perioda?"</string>
+    <string name="confirming_question_category_one_day" msgid="4886776948515472679">"Trajno izbrisati podatke (<xliff:g id="CATEGORY">%s</xliff:g>) od posljednja 24 h?"</string>
+    <string name="confirming_question_category_one_week" msgid="1790565625674277693">"Trajno izbrisati podatke (<xliff:g id="CATEGORY">%s</xliff:g>) od posljednjih 7 dana?"</string>
+    <string name="confirming_question_category_one_month" msgid="9181788460112796273">"Trajno izbrisati podatke (<xliff:g id="CATEGORY">%s</xliff:g>) od posljednjih 30 dana?"</string>
+    <string name="confirming_question_app_data_all" msgid="4818571921949673097">"Trajno izbrisati podatke (<xliff:g id="APP_DATA">%s</xliff:g>) svih perioda?"</string>
+    <string name="confirming_question_app_data_one_day" msgid="444028969015975031">"Trajno izbrisati podatke (<xliff:g id="APP_DATA">%s</xliff:g>) od posljednja 24 h?"</string>
+    <string name="confirming_question_app_data_one_week" msgid="2096555081811730496">"Trajno izbrisati podatke (<xliff:g id="APP_DATA">%s</xliff:g>) od posljednjih 7 dana?"</string>
+    <string name="confirming_question_app_data_one_month" msgid="6438241250825892892">"Trajno izbrisati podatke (<xliff:g id="APP_DATA">%s</xliff:g>) od posljednjih 30 dana?"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"Ukloni i sva odobrenja za aplikaciju <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> iz Health Connecta"</string>
+    <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Trajno izbrisati sve podatke koje je aplikacija <xliff:g id="APP_DATA">%2$s</xliff:g> dodala za kategoriju: <xliff:g id="DATA_TYPE">%1$s</xliff:g>?"</string>
+    <string name="confirming_question_single_entry" msgid="330919962071369305">"Trajno izbrisati ovaj unos?"</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"Povezane aplikacije više neće moći pristupiti ovim podacima iz Health Connecta"</string>
+    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Ovim će se izbrisati svi unosi o menstruaciji od dana <xliff:g id="START_DATE">%1$s</xliff:g> do dana <xliff:g id="END_DATE">%2$s</xliff:g>"</string>
+    <string name="confirming_question_delete_button" msgid="1999996759507959985">"Izbriši"</string>
+    <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Nazad"</string>
+    <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Gotovo"</string>
+    <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"Zatvori"</string>
+    <string name="delete_dialog_success_title" msgid="5009733262743173477">"Podaci su izbrisani"</string>
+    <string name="delete_dialog_success_message" msgid="2451953113522118128">"Ovi podaci se više ne pohranjuju u Health Connectu."</string>
+    <string name="delete_progress_indicator" msgid="5799502879065833417">"Brisanje vaših podataka"</string>
+    <string name="delete_dialog_failure_title" msgid="1959020721355789496">"Brisanje podataka nije uspjelo"</string>
+    <string name="delete_dialog_failure_message" msgid="7473241488471319963">"Nešto nije uredu i Health Connect nije uspio izbrisati vaše podatke"</string>
+    <string name="delete_dialog_failure_try_again_button" msgid="4323865124609424838">"Pokušaj ponovo"</string>
+    <string name="delete_data_notification_title" msgid="7740230240986343347">"Brisanje podataka Health Connecta"</string>
+    <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Brisanje podataka Health Connecta"</string>
+    <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Brisanje podataka"</string>
+    <string name="data_point_action_content_description" msgid="7872439279343967754">"Izbriši unos podataka"</string>
+    <string name="delete_data_point" msgid="4234569507133768630">"Izbriši unos"</string>
+    <string name="aggregation_total" msgid="5641333638662325184">"Ukupno: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
+    <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}few{# W}other{# W}}"</string>
+    <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 vat}one{# vat}few{# vata}other{# vati}}"</string>
+    <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 korak}one{# korak}few{# koraka}other{# koraka}}"</string>
+    <string name="steps_per_minute" msgid="5527133010067502098">"{value,plural, =1{1 korak/min}one{# korak/min}few{# koraka/min}other{# koraka/min}}"</string>
+    <string name="steps_per_minute_long" msgid="6146224261144843301">"{value,plural, =1{1 korak u minuti}one{# korak u minuti}few{# koraka u minuti}other{# koraka u minuti}}"</string>
+    <string name="heart_rate_value" msgid="6936476566204248578">"{count,plural, =1{1 otk/min}one{# otk/min}few{# otk/min}other{# otk/min}}"</string>
+    <string name="heart_rate_long_value" msgid="7865319425119507300">"{count,plural, =1{1 otkucaj u minuti}one{# otkucaj u minuti}few{# otkucaja u minuti}other{# otkucaja u minuti}}"</string>
+    <string name="velocity_speed_miles" msgid="616312758726506781">"{value,plural, =1{1 mi/h}one{# mi/h}few{# mi/h}other{# mi/h}}"</string>
+    <string name="velocity_speed_km" msgid="2807705003203399350">"{value,plural, =1{1 km/h}one{# km/h}few{# km/h}other{# km/h}}"</string>
+    <string name="velocity_speed_miles_long" msgid="7945167764392834498">"{value,plural, =1{1 milja na sat}one{# milja na sat}few{# milje na sat}other{# milja na sat}}"</string>
+    <string name="velocity_speed_km_long" msgid="3962310367408338322">"{value,plural, =1{1 kilometar na sat}one{# kilometar na sat}few{# kilometra na sat}other{# kilometara na sat}}"</string>
+    <string name="time_range_long" msgid="5067423945245490288">"od <xliff:g id="START_TIME">%1$s</xliff:g> do <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="date_range_long" msgid="6022190423982451176">"od <xliff:g id="START_TIME">%1$s</xliff:g> do <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
+    <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 guranje u invalidskim kolicima}one{# guranje u invalidskim kolicima}few{# guranja u invalidskim kolicima}other{# guranja u invalidskim kolicima}}"</string>
+    <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 l}one{# l}few{# l}other{# l}}"</string>
+    <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 litra}one{# litra}few{# litre}other{# litri}}"</string>
+    <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 sprat}one{# sprat}few{# sprata}other{# spratova}}"</string>
+    <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}one{# m}few{# m}other{# m}}"</string>
+    <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metar}one{# metar}few{# metra}other{# metara}}"</string>
+    <string name="cycling_rpm" msgid="2271215098150068276">"{count,plural, =1{1 o/min}one{# o/min}few{# o/min}other{# o/min}}"</string>
+    <string name="cycling_rpm_long" msgid="4914848042733587007">"{count,plural, =1{1 obrtaj u minuti}one{# obrtaj u minuti}few{# obrtaja u minuti}other{# obrtaja u minuti}}"</string>
+    <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"od <xliff:g id="MIN">%1$s</xliff:g> do <xliff:g id="MAX">%2$s</xliff:g>"</string>
+    <string name="sexual_activity_protected" msgid="4259473257597274326">"Sa zaštitom"</string>
+    <string name="sexual_activity_unprotected" msgid="2250981470537379807">"Bez zaštite"</string>
+    <string name="spotting" msgid="1637175837078770520">"Tačkasto krvarenje"</string>
+    <string name="flow_spotting" msgid="832418664953780156">"Tačkasto krvarenje"</string>
+    <string name="flow_light" msgid="1937543318146228793">"Slabo krvarenje"</string>
+    <string name="flow_medium" msgid="3783688724668943154">"Srednje krvarenje"</string>
+    <string name="flow_heavy" msgid="8672261792750634294">"Obilno krvarenje"</string>
+    <string name="period_day" msgid="3821944462093965882">"<xliff:g id="DAY">%1$d</xliff:g>. dan menstruacije od <xliff:g id="TOTAL_LENGTH">%2$d</xliff:g>"</string>
+    <string name="ovulation_positive" msgid="6588547263126320238">"Pozitivan"</string>
+    <string name="ovulation_negative" msgid="591588801112312454">"Negativan"</string>
+    <string name="ovulation_high" msgid="205362931427158291">"Visoko"</string>
+    <string name="ovulation_inconclusive" msgid="3447066667631538756">"Nejasno"</string>
+    <string name="milliseconds" msgid="284845884516037268">"{count,plural, =1{1 ms}one{# ms}few{# ms}other{# ms}}"</string>
+    <string name="milliseconds_long" msgid="93246373745977286">"{count,plural, =1{1 milisekunda}one{# milisekunda}few{# milisekunde}other{# milisekundi}}"</string>
+    <string name="repetitions" msgid="5092687490665962229">"{count,plural, =1{1 ponavljanje}one{# ponavljanje}few{# ponavljanja}other{# ponavljanja}}"</string>
+    <string name="repetitions_long" msgid="9056502282298182438">"{count,plural, =1{1 ponavljanje}one{# ponavljanje}few{# ponavljanja}other{# ponavljanja}}"</string>
+    <string name="exercise_segments_header" msgid="2992953017179406012">"Segmenti vježbe"</string>
+    <string name="exercise_laps_header" msgid="117228630553856372">"Krugovi"</string>
+    <string name="back_extension" msgid="426518933137440577">"Istezanje leđa"</string>
+    <string name="badminton" msgid="8839727076522086870">"Badminton"</string>
+    <string name="barbell_shoulder_press" msgid="3800236222803424251">"Dizanje tegova iz nivoa ramena"</string>
+    <string name="baseball" msgid="2520520093470304570">"Bejzbol"</string>
+    <string name="basketball" msgid="1453863811744469210">"Košarka"</string>
+    <string name="bench_press" msgid="640506654204391301">"Potisak s klupe"</string>
+    <string name="bench_sit_up" msgid="6601081870476287683">"Trbušnjak na klupi"</string>
+    <string name="biking" msgid="4108296097363777467">"Vožnja bicikla"</string>
+    <string name="biking_stationary" msgid="1538524429562124202">"Stacionarni bicikl"</string>
+    <string name="boot_camp" msgid="1554811887379786226">"Kamp za obuku"</string>
+    <string name="boxing" msgid="2200194516739940317">"Boks"</string>
+    <string name="burpee" msgid="1434605818712603589">"Burpee"</string>
+    <string name="calisthenics" msgid="9080623890020954493">"Kalistenika"</string>
+    <string name="cricket" msgid="7543586707938752011">"Kriket"</string>
+    <string name="crunch" msgid="4265356947720591896">"Polutrbušnjak"</string>
+    <string name="dancing" msgid="4099572666298130171">"Plesanje"</string>
+    <string name="deadlift" msgid="6880561478635890617">"Mrtvo dizanje"</string>
+    <string name="dumbbell_curl_left_arm" msgid="4453594605921193509">"Pregib s bučicama lijevom rukom"</string>
+    <string name="dumbbell_curl_right_arm" msgid="4680998443002425166">"Pregib s bučicama desnom rukom"</string>
+    <string name="dumbbell_front_raise" msgid="4411281746015904879">"Prednje dizanje bučica"</string>
+    <string name="dumbbell_lateral_raise" msgid="5839946068429137241">"Bočno dizanje bučica"</string>
+    <string name="dumbbell_triceps_extension_left_arm" msgid="6756023069611493063">"Triceps ekstenzija bučicama lijevom rukom"</string>
+    <string name="dumbbell_triceps_extension_right_arm" msgid="1498470275564554389">"Triceps ekstenzija bučicama desnom rukom"</string>
+    <string name="dumbbell_triceps_extension_two_arm" msgid="5409860665522903159">"Triceps ekstenzija bučicama s dvije ruke"</string>
+    <string name="elliptical" msgid="5148914059968910839">"Eliptični bicikl"</string>
+    <string name="exercise_class" msgid="32582249527931454">"Časovi vježbanja"</string>
+    <string name="fencing" msgid="410347890025055779">"Mačevanje"</string>
+    <string name="football_american" msgid="8564554592554502623">"Američki fudbal"</string>
+    <string name="football_australian" msgid="5524598297723674661">"Australijski fudbal"</string>
+    <string name="forward_twist" msgid="2464895720533462566">"Iskorak s okretom"</string>
+    <string name="frisbee_disc" msgid="5167617057624738753">"Frizbi"</string>
+    <string name="golf" msgid="2726655052150604682">"Golf"</string>
+    <string name="guided_breathing" msgid="8688586393796970733">"Vodič za disanje"</string>
+    <string name="gymnastics" msgid="1122967371410769598">"Gimnastika"</string>
+    <string name="handball" msgid="3088985331906235361">"Rukomet"</string>
+    <string name="high_intensity_interval_training" msgid="8873384314130026442">"Intervalni trening visokog intenziteta"</string>
+    <string name="hiking" msgid="5477476795295322496">"Pješačenje"</string>
+    <string name="ice_hockey" msgid="3615167122989198051">"Hokej na ledu"</string>
+    <string name="ice_skating" msgid="8509270149324068230">"Klizanje na ledu"</string>
+    <string name="jumping_jack" msgid="8751015874477795657">"Skok sa širenjem ruku i nogu"</string>
+    <string name="jump_rope" msgid="3065249477862282277">"Preskakanje užeta"</string>
+    <string name="lat_pull_down" msgid="6974730398913678563">"Povlačenje na lat mašini"</string>
+    <string name="lunge" msgid="6557814816897990529">"Iskorak"</string>
+    <string name="martial_arts" msgid="3279383109083496658">"Borilačke vještine"</string>
+    <string name="meditation" msgid="7578287714544679183">"Meditacija"</string>
+    <string name="paddling" msgid="746868067888160788">"Veslanje"</string>
+    <string name="paragliding" msgid="8328649138909727690">"Paraglajding"</string>
+    <string name="pilates" msgid="8660903049535347415">"Pilates"</string>
+    <string name="plank" msgid="5537839085592473449">"Izdržaj"</string>
+    <string name="racquetball" msgid="8169482984904052538">"Reketbol"</string>
+    <string name="rock_climbing" msgid="3123024521372083233">"Penjanje uz stijene"</string>
+    <string name="roller_hockey" msgid="3524872164646176686">"Hokej na rolerima"</string>
+    <string name="rowing" msgid="615898011726585442">"Veslanje"</string>
+    <string name="rowing_machine" msgid="4075255566862183370">"Sprava za veslanje"</string>
+    <string name="rugby" msgid="5146215118571059267">"Ragbi"</string>
+    <string name="running" msgid="5135754380339217169">"Trčanje"</string>
+    <string name="running_treadmill" msgid="2083354407217486405">"Trčanje na pokretnoj traci"</string>
+    <string name="sailing" msgid="4924304145770903145">"Jedrenje"</string>
+    <string name="scuba_diving" msgid="4548778216122159229">"Ronjenje s bocama"</string>
+    <string name="skating" msgid="7320438805566302784">"Klizanje"</string>
+    <string name="skiing" msgid="6773127614153771204">"Skijanje"</string>
+    <string name="snowboarding" msgid="890584874325367973">"Snowboarding"</string>
+    <string name="snowshoeing" msgid="8932096199095096139">"Hodanje na krpljama"</string>
+    <string name="soccer" msgid="2631723269673549642">"Fudbal"</string>
+    <string name="softball" msgid="8389418982713908334">"Softbol"</string>
+    <string name="squash" msgid="1588653991323140302">"Skvoš"</string>
+    <string name="squat" msgid="7664163620113834611">"Čučanj"</string>
+    <string name="stair_climbing" msgid="4042085961630471238">"Penjanje uz stepenice"</string>
+    <string name="stair_climbing_machine" msgid="4003983194733092325">"Mašina za penjanje uz stepenice"</string>
+    <string name="strength_training" msgid="56772956237540768">"Trening snage"</string>
+    <string name="stretching" msgid="8667864173383423787">"Istezanje"</string>
+    <string name="surfing" msgid="7612503593241904984">"Surfanje"</string>
+    <string name="swimming_open_water" msgid="1030388267758027037">"Plivanje u otvorenim vodama"</string>
+    <string name="swimming_pool" msgid="1584809250142187550">"Plivanje u bazenu"</string>
+    <string name="swimming_freestyle" msgid="5969535751316106638">"Slobodni stil"</string>
+    <string name="swimming_backstroke" msgid="7293002996518694035">"Leđni stil"</string>
+    <string name="swimming_breaststroke" msgid="7168282910654289593">"Prsni stil"</string>
+    <string name="swimming_butterfly" msgid="8553167046220664352">"Delfin"</string>
+    <string name="swimming_mixed" msgid="4486578691634921168">"Mješovito"</string>
+    <string name="swimming_other" msgid="2561131941506955982">"Drugo"</string>
+    <string name="table_tennis" msgid="4849741231221974485">"Stoni tenis"</string>
+    <string name="tennis" msgid="6627063985750125504">"Tenis"</string>
+    <string name="upper_twist" msgid="3382862516792841928">"Okret gornjeg dijela tijela"</string>
+    <string name="volleyball" msgid="7469885673961163729">"Odbojka"</string>
+    <string name="walking" msgid="4782496160454621769">"Pješačenje"</string>
+    <string name="water_polo" msgid="2527119748097860708">"Vaterpolo"</string>
+    <string name="weightlifting" msgid="7586735291662318085">"Dizanje tegova"</string>
+    <string name="wheelchair" msgid="2226734836271500057">"Invalidska kolica"</string>
+    <string name="workout" msgid="8583398837804461839">"Trening"</string>
+    <string name="yoga" msgid="138675430777247097">"Joga"</string>
+    <string name="arm_curl" msgid="1737456878333201848">"Pregib rukama"</string>
+    <string name="ball_slam" msgid="5996773678701283169">"Udarci loptom"</string>
+    <string name="double_arm_triceps_extension" msgid="4010735719203872078">"Triceps ekstenzija s dvije ruke"</string>
+    <string name="dumbbell_row" msgid="181791808359752158">"Veslanje bučicama"</string>
+    <string name="front_raise" msgid="1030939481482621384">"Prednje dizanje"</string>
+    <string name="hip_thrust" msgid="8490916766767408053">"Potisak kuka"</string>
+    <string name="hula_hoop" msgid="1651914953207761226">"Hulahop"</string>
+    <string name="kettlebell_swing" msgid="364783119882246413">"Zamah s girjom"</string>
+    <string name="lateral_raise" msgid="1037404943175363734">"Bočno dizanje"</string>
+    <string name="leg_curl" msgid="5327470513599472344">"Pregib nogama"</string>
+    <string name="leg_extension" msgid="1843556289395164421">"Istezanje nogama"</string>
+    <string name="leg_press" msgid="4544551493384600086">"Potisak nogama"</string>
+    <string name="leg_raise" msgid="3206754140765952088">"Dizanje nogama"</string>
+    <string name="mountain_climber" msgid="6666288676718010900">"Penjač"</string>
+    <string name="pull_up" msgid="4056233737860296184">"Zgib s dlanovima prema van"</string>
+    <string name="punch" msgid="7915247952566217050">"Udarac šakom"</string>
+    <string name="shoulder_press" msgid="4071573271892122319">"Rameni potisak"</string>
+    <string name="single_arm_triceps_extension" msgid="4500495528709994121">"Triceps ekstenzija s jednom rukom"</string>
+    <string name="sit_up" msgid="1872162440154479950">"Trbušnjaci sa savijenim nogama"</string>
+    <string name="rest" msgid="5937058337671252210">"Odmor"</string>
+    <string name="pause" msgid="5161459047750335691">"Pauziranje"</string>
+    <string name="activity_type_australian_football" msgid="431838050917315084">"Australijski fudbal"</string>
+    <string name="sleep_session_default" msgid="7376764686701487196">"spavanje u trajanju od <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
+    <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
+    <string name="sleep_stage_awake" msgid="4526767634444460862">"budni"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"budni u krevetu"</string>
+    <string name="sleep_stage_sleeping" msgid="5122840110107303518">"spavanje"</string>
+    <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"ustali iz kreveta"</string>
+    <string name="sleep_stage_rem" msgid="1694477904067543104">"REM faza spavanja"</string>
+    <string name="sleep_stage_light" msgid="1070117964678317880">"plitko spavanje"</string>
+    <string name="sleep_stage_deep" msgid="3134557407657258364">"duboko spavanje"</string>
+    <string name="sleep_stage_unknown" msgid="8664190491902295991">"nepoznato"</string>
+    <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
+    <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
+    <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
+    <string name="hour_minute_duration_accessibility" msgid="1863356122145811614">"<xliff:g id="HOURS">%1$s</xliff:g> <xliff:g id="MINUTES">%2$s</xliff:g>"</string>
+    <string name="hour_duration_accessibility" msgid="4944782597053107276">"{count,plural, =1{1 sat}one{# sat}few{# sata}other{# sati}}"</string>
+    <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{1 minuta}one{# minuta}few{# minute}other{# minuta}}"</string>
+    <!-- no translation found for day_duration (3965793251448856729) -->
+    <skip />
+    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> i <xliff:g id="HOURS">%2$s</xliff:g>"</string>
+    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1 dan}one{# dan}few{# dana}other{# dana}}"</string>
+    <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 mL/(kg·min)}one{# mL/(kg·min)}few{# mL/(kg·min)}other{# mL/(kg·min)}}"</string>
+    <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{1 mililitar kisika po kilogramu tjelesne mase u minuti}one{# mililitar kisika po kilogramu tjelesne mase u minuti}few{# mililitra kisika po kilogramu tjelesne mase u minuti}other{# mililitara kisika po kilogramu tjelesne mase u minuti}}"</string>
+    <string name="vo2_metabolic_cart" msgid="4724757223373717896">"Metabolička kolica"</string>
+    <string name="vo2_heart_rate_ratio" msgid="8707274294125886148">"Omjer pulsa"</string>
+    <string name="vo2_cooper_test" msgid="4713211595719031518">"Kuperov test"</string>
+    <string name="vo2_multistage_fitness_test" msgid="908967547838751749">"Višestepeni fitnes test"</string>
+    <string name="vo2_rockport_fitness_test" msgid="2951465532122577281">"Rockport fitnes test"</string>
+    <string name="vo2_other" msgid="5359013487285233550">"Drugo"</string>
+    <string name="mucus_dry" msgid="1065582777971603874">"Suho"</string>
+    <string name="mucus_sticky" msgid="2086025099544529404">"Ljepljivo"</string>
+    <string name="mucus_creamy" msgid="7525290054414941569">"Kremasto"</string>
+    <string name="mucus_watery" msgid="1875540699006472048">"Vodenasto"</string>
+    <string name="mucus_egg_white" msgid="5578512593433767787">"Bjelance"</string>
+    <string name="mucus_unusual" msgid="3987847850745292757">"Neobično"</string>
+    <string name="mucus_light" msgid="5309343389013086860">"Slabo"</string>
+    <string name="mucus_medium" msgid="7666848347740570566">"Srednje"</string>
+    <string name="mucus_heavy" msgid="7864873650773259133">"Obilno"</string>
+    <string name="blood_pressure" msgid="7892828162554266437">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> mmHg"</string>
+    <string name="blood_pressure_long" msgid="6487761539434451764">"<xliff:g id="SYSTOLIC">%1$s</xliff:g>/<xliff:g id="DIASTOLIC">%2$s</xliff:g> milimetara živinog stuba"</string>
+    <string name="body_position_standing_up" msgid="1221924915768574594">"Stojeći"</string>
+    <string name="body_position_sitting_down" msgid="8053875174780552282">"Sjedeći"</string>
+    <string name="body_position_lying_down" msgid="1472381098179371143">"Ležeći"</string>
+    <string name="body_position_reclining" msgid="5676889701646839079">"U nagnutom položaju"</string>
+    <string name="blood_pressure_left_wrist" msgid="2047244346984766880">"Zglob lijeve šake"</string>
+    <string name="blood_pressure_right_wrist" msgid="1488133877790549424">"Zglob desne šake"</string>
+    <string name="blood_pressure_left_arm" msgid="5150436840115504433">"Lijeva nadlaktica"</string>
+    <string name="blood_pressure_right_arm" msgid="8660682684653121430">"Desna nadlaktica"</string>
+    <string name="millimoles_per_liter" msgid="3185457774991908223">"{count,plural, =1{1 mmol/l}one{# mmol/l}few{# mmol/l}other{# mmol/l}}"</string>
+    <string name="millimoles_per_liter_long" msgid="7248942926237335084">"{count,plural, =1{1 milimol po litru}one{# milimol po litru}few{# milimola po litru}other{# milimola po litru}}"</string>
+    <string name="specimen_source_interstitial_fluid" msgid="2201319049828128946">"Intersticijska tekućina"</string>
+    <string name="specimen_source_capillary_blood" msgid="5525024815754731735">"Kapilarna krv"</string>
+    <string name="specimen_source_plasma" msgid="8794064916106457747">"Plazma"</string>
+    <string name="specimen_source_serum" msgid="6383820057196352355">"Serum"</string>
+    <string name="specimen_source_tears" msgid="4368541832400624080">"Suze"</string>
+    <string name="specimen_source_whole_blood" msgid="8884838851343307557">"Cijela krv"</string>
+    <string name="blood_glucose_general" msgid="7566279829618085436">"Opće"</string>
+    <string name="blood_glucose_fasting" msgid="2122662399203934350">"Post"</string>
+    <string name="blood_glucose_before_meal" msgid="5125498172701953751">"Prije obroka"</string>
+    <string name="blood_glucose_after_meal" msgid="8101398122897992346">"Nakon obroka"</string>
+    <string name="mealtype_label" msgid="5402474235944051844">"Vrsta obroka"</string>
+    <string name="mealtype_unknown" msgid="3024645648636923591">"Nepoznato"</string>
+    <string name="mealtype_breakfast" msgid="119545434987870954">"Doručak"</string>
+    <string name="mealtype_lunch" msgid="6212310262989550906">"Ručak"</string>
+    <string name="mealtype_dinner" msgid="1896347121249081336">"Večera"</string>
+    <string name="mealtype_snack" msgid="8454859872168781221">"Užina"</string>
+    <string name="biotin" msgid="4000818331802478073">"Biotin"</string>
+    <string name="caffeine" msgid="2847006945615912643">"Kofein"</string>
+    <string name="calcium" msgid="4832722858820295752">"Kalcij"</string>
+    <string name="chloride" msgid="2509193544740445654">"Hlorid"</string>
+    <string name="cholesterol" msgid="4261128668088502049">"Holesterol"</string>
+    <string name="chromium" msgid="807851794929222026">"Hrom"</string>
+    <string name="copper" msgid="8603012497089601260">"Bakar"</string>
+    <string name="dietary_fiber" msgid="6928876454420561553">"Prehrambena vlakna"</string>
+    <string name="energy_consumed_total" msgid="7866804137119190606">"Energija"</string>
+    <string name="energy_consumed_from_fat" msgid="8637734004867176038">"Energija iz masti"</string>
+    <string name="folate" msgid="7728279545427110321">"Folat"</string>
+    <string name="folic_acid" msgid="6861953414423667870">"Folna kiselina"</string>
+    <string name="iodine" msgid="2896913103021799237">"Jod"</string>
+    <string name="iron" msgid="6134405609706877219">"Željezo"</string>
+    <string name="magnesium" msgid="6157495455437549170">"Magnezij"</string>
+    <string name="manganese" msgid="8339856079280400610">"mangan"</string>
+    <string name="molybdenum" msgid="3762866331212112454">"Molibden"</string>
+    <string name="monounsaturated_fat" msgid="1320950160552507057">"Mononezasićene masti"</string>
+    <string name="niacin" msgid="8425099536322826837">"Niacin"</string>
+    <string name="pantothenic_acid" msgid="5310842296212528685">"Pantotenska kiselina"</string>
+    <string name="phosphorus" msgid="3912318057064021441">"Fosfor"</string>
+    <string name="polyunsaturated_fat" msgid="6386374757897543025">"Polinezasićene masti"</string>
+    <string name="potassium" msgid="723134189945209756">"Kalij"</string>
+    <string name="protein" msgid="2731834509320364994">"Proteini"</string>
+    <string name="riboflavin" msgid="5329306869379867435">"Riboflavin"</string>
+    <string name="saturated_fat" msgid="3174504848270051265">"Zasićene masti"</string>
+    <string name="selenium" msgid="8129594078116221891">"Selen"</string>
+    <string name="sodium" msgid="7687341876185019438">"Natrij"</string>
+    <string name="sugar" msgid="656190285547502122">"Šećer"</string>
+    <string name="thiamin" msgid="1662446837028039063">"Tiamin"</string>
+    <string name="total_carbohydrate" msgid="7034043840349284931">"Ukupno ugljikohidrata"</string>
+    <string name="total_fat" msgid="8193647297427112321">"Ukupno masti"</string>
+    <string name="trans_fat" msgid="1059715899517909090">"Trans masti"</string>
+    <string name="unsaturated_fat" msgid="5495925265449481356">"Nezasićene masti"</string>
+    <string name="vitamin_a" msgid="2379293029664252095">"Vitamin A"</string>
+    <string name="vitamin_b12" msgid="180162813332325098">"Vitamin B12"</string>
+    <string name="vitamin_b6" msgid="370053149968231667">"Vitamin B6"</string>
+    <string name="vitamin_c" msgid="5383574357126292194">"Vitamin C"</string>
+    <string name="vitamin_d" msgid="2717952250555672580">"Vitamin D"</string>
+    <string name="vitamin_e" msgid="5214468880515744802">"Vitamin E"</string>
+    <string name="vitamin_k" msgid="2722297637910069736">"Vitamin K"</string>
+    <string name="zinc" msgid="5211975076671534013">"Cink"</string>
+    <string name="nutrient_with_value" msgid="3327198262871257518">"<xliff:g id="NUTRIENT">%1$s</xliff:g>:<xliff:g id="AMOUNT">%2$s</xliff:g>"</string>
+    <string name="meal_name" msgid="6060648788040408308">"Naziv"</string>
+    <string name="gram_short_format" msgid="2355009811799735134">"{count,plural, =1{1 g}one{# g}few{# g}other{# g}}"</string>
+    <string name="gram_long_format" msgid="6160392101513066663">"{count,plural, =1{1 gram}one{# gram}few{# grama}other{# grama}}"</string>
+    <string name="respiratory_rate_value" msgid="4546418213418344364">"{count,plural, =1{1 udisaj/min}one{# udisaj/min}few{# udisaja/min}other{# udisaja/min}}"</string>
+    <string name="respiratory_rate_value_long" msgid="3822748008700697049">"{count,plural, =1{1 udisaj u minuti}one{# udisaj u minuti}few{# udisaja u minuti}other{# udisaja u minuti}}"</string>
+    <string name="kilograms_short_label" msgid="9098342853218050689">"{count,plural, =1{1 kg}one{# kg}few{# kg}other{# kg}}"</string>
+    <string name="pounds_short_label" msgid="6256277330455003180">"{count,plural, =1{1 lb}one{# lb}few{# lb}other{# lb}}"</string>
+    <string name="stone_short_label" msgid="8377585176530348612">"{count,plural, =1{1 st}one{# st}few{# st}other{# st}}"</string>
+    <string name="stone_pound_short_label" msgid="7157344201618366834">"{stone_part} {pound_part}"</string>
+    <string name="kilograms_long_label" msgid="7883695071156297670">"{count,plural, =1{1 kilogram}one{# kilogram}few{# kilograma}other{# kilograma}}"</string>
+    <string name="pounds_long_label" msgid="2916697485006416419">"{count,plural, =1{1 funta}one{# funta}few{# funte}other{# funti}}"</string>
+    <string name="stone_long_label" msgid="8951426283449456468">"{count,plural, =1{1 stone}one{# stone}few{# stonea}other{# stoneova}}"</string>
+    <string name="stone_pound_long_label" msgid="1308941435682625204">"{stone_part} {pound_part}"</string>
+    <string name="temperature_celsius" msgid="4552465686251118136">"{value,plural, =1{1 ℃}one{# ℃}few{# ℃}other{# ℃}}"</string>
+    <string name="temperature_celsius_long" msgid="5789974427381333869">"{value,plural, =1{1 stepen Celzijusa}one{# stepen Celzijusa}few{# stepena Celzijusa}other{# stepeni Celzijusa}}"</string>
+    <string name="temperature_kelvin" msgid="4805698375607189394">"{value,plural, =1{1 K}one{# K}few{# K}other{# K}}"</string>
+    <string name="temperature_kelvin_long" msgid="6078037481989090665">"{value,plural, =1{1 kelvin}one{# kelvin}few{# kelvina}other{# kelvina}}"</string>
+    <string name="temperature_fahrenheit" msgid="8288674479506567057">"{value,plural, =1{1 ℉}one{# ℉}few{# ℉}other{# ℉}}"</string>
+    <string name="temperature_fahrenheit_long" msgid="1668948424411289521">"{value,plural, =1{1 stepen Farenhajta}one{# stepen Farenhajta}few{# stepena Farenhajta}other{# stepeni Farenhajta}}"</string>
+    <string name="temperature_location_armpit" msgid="8359661261125563155">"Pazuh"</string>
+    <string name="temperature_location_finger" msgid="4915449065770967487">"Prst"</string>
+    <string name="temperature_location_forehead" msgid="8603219464757434635">"Čelo"</string>
+    <string name="temperature_location_mouth" msgid="1535682736007063471">"Usta"</string>
+    <string name="temperature_location_rectum" msgid="1503082804377850076">"Rektum"</string>
+    <string name="temperature_location_temporal_artery" msgid="2830919806910102535">"Sljepoočna arterija"</string>
+    <string name="temperature_location_toe" msgid="36730991617372925">"Nožni prst"</string>
+    <string name="temperature_location_ear" msgid="7024374111156026034">"Uho"</string>
+    <string name="temperature_location_wrist" msgid="5290446688282752346">"Zglob šake"</string>
+    <string name="temperature_location_vagina" msgid="1689485374825231749">"Vagina"</string>
+    <string name="distance_miles" msgid="5419172432458896478">"{dist,plural, =1{1 milja}one{# milja}few{# milje}other{# milja}}"</string>
+    <string name="distance_km" msgid="6383736895665100602">"{dist,plural, =1{1 km}one{# km}few{# km}other{# km}}"</string>
+    <string name="distance_miles_long" msgid="1830844568614100885">"{dist,plural, =1{1 milja}one{# milja}few{# milje}other{# milja}}"</string>
+    <string name="distance_km_long" msgid="6256504627418439859">"{dist,plural, =1{1 kilometar}one{# kilometar}few{# kilometra}other{# kilometara}}"</string>
+    <string name="height_cm" msgid="94329926270064717">"{height,plural, =1{1 cm}one{# cm}few{# cm}other{# cm}}"</string>
+    <string name="height_cm_long" msgid="2821030110768530948">"{height,plural, =1{1 centimetar}one{# centimetar}few{# centimetra}other{# centimetara}}"</string>
+    <string name="height_in_long" msgid="6502316324841498419">"{height,plural, =1{1 inč}one{# inč}few{# inča}other{# inča}}"</string>
+    <string name="height_ft_long" msgid="7551582478724981895">"{height,plural, =1{1 stopa}one{# stopa}few{# stope}other{# stopa}}"</string>
+    <string name="height_in_compacted" msgid="6087182983411207466">"{height,plural, =1{1\"}one{#\"}few{#\"}other{#\"}}"</string>
+    <string name="height_ft_compacted" msgid="1024585112134314039">"{height,plural, =1{1\"}one{#\"}few{#\"}other{#\"}}"</string>
+    <string name="feet_inches_format" msgid="768610500549967860">"<xliff:g id="FT">%1$s</xliff:g><xliff:g id="IN">%2$s</xliff:g>⁠"</string>
+    <string name="feet_inches_format_long" msgid="5187265716573430363">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>⁠"</string>
+    <string name="calories_long" msgid="7225535148232419419">"{count,plural, =1{1 kalorija}one{# kalorije}few{# kalorija}other{# kalorija}}"</string>
+    <string name="calories" msgid="320906359079319632">"{count,plural, =1{1 kalorija}one{# kalorija}few{# kalorije}other{# kalorija}}"</string>
+    <string name="kj" msgid="2742876437259085714">"{count,plural, =1{1 kJ}one{# kJ}few{# kJ}other{# kJ}}"</string>
+    <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 kilodžul}one{# kilodžul}few{# kilodžula}other{# kilodžula}}"</string>
+    <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}one{#%}few{#%}other{#%}}"</string>
+    <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 posto}one{# posto}few{# posto}other{# posto}}"</string>
+    <string name="units_cancel" msgid="5947097690625771995">"Otkaži"</string>
+    <string name="units_title" msgid="6504086463237869339">"Jedinice"</string>
+    <string name="set_units_label" msgid="6566059089772896105">"Postavite jedinice podataka"</string>
+    <string name="distance_unit_title" msgid="4696952932438418209">"Udaljenost"</string>
+    <string name="height_unit_title" msgid="5461594609577078049">"Visina"</string>
+    <string name="weight_unit_title" msgid="7405186541678939987">"Težina"</string>
+    <string name="energy_unit_title" msgid="1714627395963766769">"Energija"</string>
+    <string name="temperature_unit_title" msgid="1973985121774654017">"Temperatura"</string>
+    <string name="distance_unit_kilometers_label" msgid="1361363017122240294">"Kilometri"</string>
+    <string name="distance_unit_miles_label" msgid="848850214987608211">"Milje"</string>
+    <string name="height_unit_centimeters_label" msgid="4096031670561995574">"Centimetri"</string>
+    <string name="height_unit_feet_label" msgid="3311723678628261399">"Stope i inči"</string>
+    <string name="weight_unit_pound_label" msgid="8210663393844989211">"Funte"</string>
+    <string name="weight_unit_kilogram_label" msgid="6623938920860887238">"Kilogrami"</string>
+    <string name="weight_unit_stone_label" msgid="3063787243474847180">"Stone"</string>
+    <string name="energy_unit_calorie_label" msgid="3412965811470957296">"Kalorije"</string>
+    <string name="energy_unit_kilojoule_label" msgid="6481196724083455110">"Kilodžuli"</string>
+    <string name="temperature_unit_celsius_label" msgid="4698347100553808449">"Celzijus"</string>
+    <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Farenhajt"</string>
+    <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvin"</string>
+    <string name="help_and_feedback" msgid="4772169905005369871">"Pomoć i povratne informacije"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ako ne vidite instaliranu aplikaciju, možda još uvijek nije kompatibilna s Health Connectom"</string>
+    <string name="things_to_try" msgid="8200374691546152703">"Stvari koje možete isprobati"</string>
+    <string name="check_for_updates" msgid="3841090978657783101">"Provjerite ima li ažuriranja"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Provjerite jesu li instalirane aplikacije ažurne"</string>
+    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Vidite sve kompatibilne aplikacije"</string>
+    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Pronađite aplikacije na Google Playu"</string>
+    <string name="send_feedback" msgid="7756927746070096780">"Pošaljite povratne informacije"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"Recite nam koje aplikacije za zdravlje i fitnes želite da funkcioniraju s Health Connectom"</string>
+    <string name="playstore_app_title" msgid="4138464328693481809">"Play trgovina"</string>
+    <string name="auto_delete_button" msgid="8536451792268513619">"Automatsko brisanje"</string>
+    <string name="auto_delete_title" msgid="8761742828224207826">"Automatsko brisanje"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"Kontrolirajte koliko dugo se vaši podaci pohranjuju u Health Connectu zakazivanjem brisanja nakon postavljenog vremena"</string>
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Saznajte više o automatskom brisanju"</string>
+    <string name="auto_delete_section" msgid="7732381000331475082">"Automatsko brisanje podataka"</string>
+    <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Nakon # mjeseca}one{Nakon # mjeseca}few{Nakon # mjeseca}other{Nakon # mjeseci}}"</string>
+    <string name="range_never" msgid="4429478261788361233">"Nikada"</string>
+    <string name="range_off" msgid="8178520557618184215">"Isključeno"</string>
+    <string name="auto_delete_rationale" msgid="5255442126521464878">"Kada promijenite ove postavke, Health Connect briše postojeće podatke kako bi odražavao nove postavke"</string>
+    <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Automatski izbrisati podatke nakon # mjeseca?}one{Automatski izbrisati podatke nakon # mjeseca?}few{Automatski izbrisati podatke nakon # mjeseca?}other{Automatski izbrisati podatke nakon # mjeseci?}}"</string>
+    <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect će automatski izbrisati nove podatke nakon # mjeseca. Ovom postavkom će se također izbrisati postojeći podaci stariji od # mjeseca.}one{Health Connect će automatski izbrisati nove podatke nakon # mjeseca. Ovom postavkom će se također izbrisati postojeći podaci stariji od # mjeseca.}few{Health Connect će automatski izbrisati nove podatke nakon # mjeseca. Ovom postavkom će se također izbrisati postojeći podaci stariji od # mjeseca.}other{Health Connect će automatski izbrisati nove podatke nakon # mjeseci. Ovom postavkom će se također izbrisati postojeći podaci stariji od # mjeseci.}}"</string>
+    <string name="set_auto_delete_button" msgid="268450418318199197">"Postavi automatsko brisanje"</string>
+    <string name="deletion_started_title" msgid="1177766097121885025">"Postojeći podaci će se izbrisati"</string>
+    <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect će izbrisati sve podatke starije od # mjeseca. Može proći jedan dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}one{Health Connect će izbrisati sve podatke starije od # mjeseca. Može proći jedan dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}few{Health Connect će izbrisati sve podatke starije od # mjeseca. Može proći jedan dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}other{Health Connect će izbrisati sve podatke starije od # mjeseci. Može proći jedan dan dok se ove promjene ne prikažu u vašim povezanim aplikacijama.}}"</string>
+    <string name="deletion_started_category_list_section" msgid="3052940611815658991">"Podaci koji će se izbrisati"</string>
+    <string name="deletion_started_done_button" msgid="1232018689825054257">"Gotovo"</string>
+    <string name="priority_dialog_title" msgid="7360654442596118085">"Postavite prioritet aplikacija"</string>
+    <string name="priority_dialog_message" msgid="6971250365335018184">"Ako više aplikacija doda podatke (<xliff:g id="DATA_TYPE">%s</xliff:g>), Health Connect daje prioritet aplikaciji koja je na vrhu liste. Prevucite aplikacije da im promijenite redoslijed."</string>
+    <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Sačuvaj"</string>
+    <string name="action_drag_label_move_up" msgid="4221641798253080966">"Pomjeranje nagore"</string>
+    <string name="action_drag_label_move_down" msgid="3448000958912947588">"Pomjeranje nadolje"</string>
+    <string name="action_drag_label_move_top" msgid="5114033774108663548">"Pomjeranje na vrh"</string>
+    <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Pomjeranje na dno"</string>
+    <string name="search_keywords_home" msgid="5386515593026555327">"fitnes, wellness"</string>
+    <string name="search_keywords_permissions" msgid="7821010295153350533">"odobrenja"</string>
+    <string name="search_keywords_data" msgid="5359602744325490523">"Health Connect, zdravstveni podaci, zdravstvene kategorije, pristup podacima, aktivnost, tjelesne mjere, praćenje ciklusa, prehrana, spavanje, vitalne funkcije"</string>
+    <string name="search_breadcrumbs_permissions" msgid="2667471090347475796">"Health Connect &gt; Odobrenja za aplikaciju"</string>
+    <string name="search_breadcrumbs_data" msgid="6635428480372024040">"Health Connect &gt; Podaci i pristup"</string>
+    <string name="search_connected_apps" msgid="8180770761876928851">"Pretraživanje aplikacija"</string>
+    <string name="no_results" msgid="4007426147286897998">"Nema rezultata"</string>
+    <string name="help" msgid="6028777453152686162">"Pomoć"</string>
+    <string name="request_route_header_title" msgid="6599707039845646714">"Dozvoliti <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupi ovoj ruti za vježbanje u Health Connectu?"</string>
+    <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"Ova aplikacija će moći čitati vašu prošlu lokaciju na ruti"</string>
+    <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
+    <string name="request_route_info_header_title" msgid="4149969049719763190">"Rute za vježbanje uključuju informacije o lokacijama"</string>
+    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"Ko može vidjeti ove podatke?"</string>
+    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Samo aplikacije kojima dozvolite pristup rutama za vježbanje"</string>
+    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"Kako mogu upravljati pristupom?"</string>
+    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Možete upravljati pristupom aplikacija rutama za vježbanje u postavkama Health Connecta"</string>
+    <string name="back_button" msgid="780519527385993407">"Nazad"</string>
+    <string name="loading" msgid="2526615755685950317">"Učitavanje…"</string>
+    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integracija je u toku"</string>
+    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect se integrira s Android sistemom.\n\nMože proći neko vrijeme dok se podaci i odobrenja ne prenesu."</string>
+    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Nemojte zatvarati aplikaciju dok ne dobijete obavještenje da je postupak završen."</string>
+    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Integracija Health Connecta je u toku"</string>
+    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Potrebno je ažuriranje"</string>
+    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect se integrira s Android sistemom da mu možete pristupiti direktno iz postavki."</string>
+    <string name="update_button" msgid="4544529019832009496">"Ažuriraj"</string>
+    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Pokrenite ovo ažuriranje da Health Connect može nastaviti s integracijom s postavkama sistema"</string>
+    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Ažuriraj sada"</string>
+    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebno je ažuriranje sistema"</string>
+    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prije nego što nastavite, ažurirajte sistem telefona."</string>
+    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ako ste već ažurirali sistem telefona, pokušajte s ponovnim pokretanjem telefona da nastavite s integracijom"</string>
+    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Potrebno je ažurirati Health Connect"</string>
+    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Prije nego što nastavite, ažurirajte aplikaciju Health Connect na najnoviju verziju."</string>
+    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Potrebno je više prostora"</string>
+    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect treba <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> prostora za pohranu na telefonu da nastavi s integracijom.\n\nOslobodite prostor na telefonu i pokušajte ponovo."</string>
+    <string name="try_again_button" msgid="8745496819992160789">"Pokušajte ponovo"</string>
+    <string name="free_up_space_button" msgid="4141013808635654695">"Oslobodite prostor"</string>
+    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"Potrebno je više prostora"</string>
+    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Health Connect treba <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> prostora za pohranu na telefonu da nastavi s integracijom."</string>
+    <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integracija je pauzirana"</string>
+    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Aplikacija Health Connect se zatvorila tokom integracije s Android sistemom.\n\nKliknite na Nastavi da ponovo otvorite aplikaciju i nastavite s prijenosom podataka i odobrenja."</string>
+    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Da sačuvate podatke Health Connecta, izvršite ovo u roku od <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="resume_button" msgid="2255148549862208047">"Nastavi"</string>
+    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Integracija je pauzirana"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect se integrira sa sistemom Android. Dodirnite da nastavite"</string>
+    <string name="resume_migration_banner_title" msgid="4443957114824045317">"Nastavite s integracijom"</string>
+    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Dodirnite da nastavite integrirati Health Connect s Android sistemom. Da sačuvate podatke, izvršite ovo u roku od <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Dodirnite da nastavite integrirati Health Connect s Android sistemom."</string>
+    <string name="resume_migration_banner_button" msgid="2112318760107756469">"Nastavi"</string>
+    <string name="resume_migration_notification_title" msgid="8859575633668908327">"Nastavite s integracijom Health Connecta"</string>
+    <string name="resume_migration_notification_content" msgid="46172108837648715">"Da sačuvate podatke, izvršite ovo u roku od <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Potrebno je ažuriranje aplikacije"</string>
+    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"Potrebno je ažurirati aplikaciju <xliff:g id="APP_NAME">%1$s</xliff:g> da nastavi funkcionirati s Health Connectom"</string>
+    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Potrebno je ažurirati neke aplikacije da nastave funkcionirati s Health Connectom"</string>
+    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Provjerite ima li ažuriranja"</string>
+    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integracija Health Connecta"</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect je spreman za integraciju s Android sistemom. Ako sada date pristup aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g>, neke funkcije možda neće funkcionirati dok se ne završi integracija."</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect je spreman za integraciju s Android sistemom. Ako sada date pristup aplikacijama, neke funkcije možda neće funkcionirati dok se ne završi integracija."</string>
+    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Nastavi"</string>
+    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Pokreni integraciju"</string>
+    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integracija Health Connecta je u toku"</string>
+    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect se integrira s Android sistemom.\n\nDobit ćete obavještenje kada se postupak završi i možete koristiti aplikaciju <xliff:g id="APP_NAME">%1$s</xliff:g> s Health Connectom."</string>
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect se integrira s Android sistemom.\n\nDobit ćete obavještenje kada se postupak završi i možete koristiti Health Connect."</string>
+    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Razumijem"</string>
+    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Integracija Health Connecta nije završena"</string>
+    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Dobit ćete obavještenje kada integracija ponovo bude dostupna."</string>
+    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"Razumijem"</string>
+    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Integracija Health Connecta nije završena"</string>
+    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"Pročitajte više"</string>
+    <string name="migration_complete_notification_title" msgid="4988631739109332404">"Integracija Health Connecta je završena"</string>
+    <string name="migration_complete_notification_action" msgid="5350322865206331186">"Otvori"</string>
+    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Šta je novo"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Sada možete pristupiti Health Connectu direktno iz postavki. Deinstalirajte aplikaciju Health Connect bilo kada da oslobodite prostor za pohranu."</string>
+    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Razumijem"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Ukupni podaci"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Izvori aplikacija"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Dodajte izvore aplikacija na listu da vidite kako se ukupni podaci mogu promijeniti. Uklanjanje aplikacije s liste će zaustaviti njen doprinos u ukupnim podacima, ali će i dalje imati odobrenja za pisanje."</string>
+    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
+    <skip />
+    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
+    <skip />
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Kako funkcioniraju izvori i dodjeljivanje prioriteta"</string>
 </resources>
