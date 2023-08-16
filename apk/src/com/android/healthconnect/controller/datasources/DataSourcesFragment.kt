@@ -31,6 +31,7 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
         private const val APP_SOURCES_PREFERENCE_KEY = "app_sources"
         private const val FOOTER_PREFERENCE_KEY = "data_sources_footer"
         private const val EMPTY_STATE_HEADER_PREFERENCE_KEY = "empty_state_header"
+        private const val EMPTY_STATE_FOOTER_PREFERENCE_KEY = "empty_state_footer"
 
         private val dataSourcesCategories = arrayListOf(
                 HealthDataCategory.ACTIVITY,
@@ -107,6 +108,7 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
         } else {
             // Remove empty state
             preferenceScreen.removePreferenceRecursively(EMPTY_STATE_HEADER_PREFERENCE_KEY)
+            preferenceScreen.removePreferenceRecursively(EMPTY_STATE_FOOTER_PREFERENCE_KEY)
             setCategoriesVisibility(true)
             healthPermissionsViewModel.setEditedPriorityList(appSources)
             appSourcesPreferenceGroup?.addPreference(
@@ -120,7 +122,15 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
 
     private fun setupEmptyState(category: Int) {
         setCategoriesVisibility(false)
-        preferenceScreen.addPreference(getHeaderPreference(category))
+        preferenceScreen.addPreference(getHeaderPreference())
+        preferenceScreen.addPreference(FooterPreference(context)
+                .also {
+                    it.title = getString(R.string.data_sources_empty_state_footer,
+                            getString(category.lowercaseTitle()))
+                    it.setLearnMoreText(getString(R.string.data_sources_help_link))
+                    it.setLearnMoreAction { DeviceInfoUtilsImpl().openHCGetStartedLink(requireActivity())}
+                    it.key = EMPTY_STATE_FOOTER_PREFERENCE_KEY
+                })
     }
 
     private fun setCategoriesVisibility(isVisible: Boolean) {
@@ -129,16 +139,11 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
         footerPreference?.isVisible = isVisible
     }
 
-    private fun getHeaderPreference(category: Int): HeaderPreference {
+    private fun getHeaderPreference(): HeaderPreference {
 
         return HeaderPreference(requireContext()).also {
             it.setHeaderText(
-                    getString(R.string.data_sources_empty_state,
-                            getString(category.lowercaseTitle())))
-            it.setHeaderLinkText(getString(R.string.data_sources_help_link))
-            it.setHeaderLinkAction {
-                DeviceInfoUtilsImpl().openHCGetStartedLink(requireActivity())
-            }
+                    getString(R.string.data_sources_empty_state))
             it.key = EMPTY_STATE_HEADER_PREFERENCE_KEY
         }
     }
