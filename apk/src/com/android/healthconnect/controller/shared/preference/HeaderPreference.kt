@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
+import android.view.View
 import android.view.View.OnClickListener
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
@@ -59,6 +60,11 @@ class HeaderPreference constructor(context: Context) :
         headerTitle.text = headerText
 
         headerLink = holder.findViewById(R.id.header_link) as TextView
-        convertTextViewIntoLink(headerLink, headerLinkText, 0, headerLinkText!!.length, linkAction)
+        if (headerLinkText != null) {
+            headerLink.visibility = View.VISIBLE
+            convertTextViewIntoLink(headerLink, headerLinkText, 0, headerLinkText!!.length, linkAction)
+        } else {
+            headerLink.visibility = View.GONE
+        }
     }
 }
