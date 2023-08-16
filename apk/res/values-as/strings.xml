@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> টা এপে এক্সেছ কৰিব পাৰে"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"নাই"</string>
     <string name="entry_details_title" msgid="590184849040247850">"প্ৰৱিষ্টিৰ সবিশেষ"</string>
+    <string name="backup_title" msgid="211503191266235085">"বেকআপ"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"ডেটাৰ উৎস আৰু অগ্ৰাধিকাৰ"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"একক ছেট কৰক"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"শেহতীয়া এক্সেছ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"শেহতীয়াকৈ কোনো এপে Health Connect এক্সেছ কৰা নাই"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"আটাইবোৰ শেহতীয়া এক্সেছ চাওক"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect একত্ৰিত কৰাটো সম্পূৰ্ণ হৈছে"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"খোলক"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"নতুন কি আছে"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"আপুনি এতিয়া আপোনাৰ ছেটিঙৰ পৰা পোনপটীয়াকৈ Health Connect এক্সেছ কৰিব পাৰে। যিকোনো সময়তে Health Connect এপ্‌টো আনইনষ্টল কৰক।"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"আপুনি এতিয়া আপোনাৰ ছেটিঙৰ পৰা পোনপটীয়াকৈ Health Connect এক্সেছ কৰিব পাৰে। ষ্ট’ৰেজৰ ঠাই খালী কৰিবলৈ যিকোনো সময়তে Health Connect এপ্‌টো আনইনষ্টল কৰক।"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"বুজি পালোঁ"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"মুঠত ডেটা"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"এপৰ উৎস"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"তথ্যৰ মুঠ কেনেকৈ সলনি হ’ব পাৰে সেয়া চাবলৈ তালিকাত এপৰ উৎস যোগ দিয়ক। এই সূচীৰ পৰা এটা এপ্‌ আঁতৰাই দিলে ই মুঠত অৱদান যোগোৱা বন্ধ কৰিব, কিন্তু তথাপি ইয়াৰ লিখাৰ অনুমতি থাকিব।"</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"এপৰ উৎস দেখুওৱা নাই।\n আপুনি <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ডেটা লিখিবলৈ এপক অনুমতি দিয়াৰ পাছত, সমল ইয়াত দেখা পোৱা যাব।"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"ডেটাৰ উৎস আৰু অগ্ৰাধিকাৰে কেনেকৈ কাম কৰে"</string>
 </resources>

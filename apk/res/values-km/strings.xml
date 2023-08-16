@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"កម្មវិធី <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> មានសិទ្ធិចូលប្រើប្រាស់"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"គ្មាន"</string>
     <string name="entry_details_title" msgid="590184849040247850">"ព័ត៌មានលម្អិតអំពីធាតុ"</string>
+    <string name="backup_title" msgid="211503191266235085">"បម្រុង​ទុក"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"ប្រភពទិន្នន័យ និងអាទិភាព"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"កំណត់ឯកតា"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"ការចូលប្រើថ្មីៗ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"មិនមានកម្មវិធីណាមួយបានចូលប្រើ Health Connect ថ្មីៗនេះទេ"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"មើលគ្រប់ការចូលប្រើប្រាស់ថ្មីៗនេះ"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"ការរួមបញ្ចូល Health Connect បានបញ្ចប់"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"បើក"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"អ្វី​ដែលថ្មី"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"ឥឡូវនេះ អ្នកអាចចូលប្រើ Health Connect ដោយផ្ទាល់​ពីការកំណត់របស់អ្នក​បានហើយ។ លុបកម្មវិធី Health Connect បានគ្រប់ពេល។"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"ឥឡូវនេះ អ្នកអាចចូលប្រើ Health Connect ដោយផ្ទាល់​ពីការកំណត់របស់អ្នក​បានហើយ។ លុបកម្មវិធី Health Connect បានគ្រប់ពេល ដើម្បីបង្កើនទំហំផ្ទុក។"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"យល់ហើយ"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"ចំនួនទិន្នន័យសរុប"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"ប្រភពកម្មវិធី"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"បញ្ចូល​ប្រភពកម្មវិធី​ទៅក្នុងបញ្ជី ដើម្បីមើលពីរបៀបដែលចំនួនទិន្នន័យសរុប​អាចផ្លាស់ប្ដូរ។ ការដក​កម្មវិធីចេញពី​បញ្ជីនេះនឹង​បញ្ឈប់កម្មវិធីនេះពី​ការចូលរួមចំណែក​ដល់ចំនួនសរុប ប៉ុន្តែកម្មវិធីនេះ​នឹងនៅតែមាន​ការអនុញ្ញាតឱ្យសរសេរ។"</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"មិនមាន​ប្រភពកម្មវិធីទេ។\nនៅពេល​អ្នកផ្ដល់​ការអនុញ្ញាតកម្មវិធី​ឱ្យសរសេរទិន្នន័យ<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ប្រភពនឹង​បង្ហាញនៅទីនេះ។"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"របៀបដែល​ប្រភព និងការកំណត់អាទិភាព​ដំណើរការ"</string>
 </resources>

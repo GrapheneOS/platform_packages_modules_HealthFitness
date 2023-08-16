@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"無"</string>
     <string name="entry_details_title" msgid="590184849040247850">"項目詳情"</string>
+    <string name="backup_title" msgid="211503191266235085">"備份"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"資料來源和優先次序"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"設定單位"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"近期存取記錄"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"最近沒有應用程式存取 Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"查看所有近期存取記錄"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect 整合完成"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"開啟"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"新功能"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"你現可直接從設定頁面存取 Health Connect，亦可隨時解除安裝 Health Connect 應用程式。"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"你現可直接從設定頁面存取 Health Connect，亦可隨時解除安裝 Health Connect 應用程式騰出儲存空間。"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"知道了"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"資料總數"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"應用程式來源"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"在清單中新增應用程式來源，即可查看資料總數的變化。從此清單中移除某個應用程式後，相關資料就不會計入總數，但應用程式仍具有寫入權限。"</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"沒有任何應用程式來源。\n當你授予應用程式寫入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>資料的權限後，系統就會在這裡顯示來源。"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"來源和優先次序的運作方式"</string>
 </resources>

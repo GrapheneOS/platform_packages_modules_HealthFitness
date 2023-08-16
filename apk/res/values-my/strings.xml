@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"အက်ပ် <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ခုတွင် သုံးခွင့်ရှိသည်"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"မရှိ"</string>
     <string name="entry_details_title" msgid="590184849040247850">"ထည့်သွင်းမှု အသေးစိတ်"</string>
+    <string name="backup_title" msgid="211503191266235085">"အရန်သိမ်းရန်"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"ဒေတာရင်းမြစ်နှင့် ဦးစားပေး"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"ယူနစ်သတ်မှတ်ရန်"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"မကြာသေးမီက အသုံးပြုမှု"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"မည်သည်အက်ပ်မျှ Health Connect ကို မကြာသေးမီကသုံးမထားပါ"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"မကြာသေးမီက သုံးခွင့်အားလုံး ကြည့်ရန်"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect ပေါင်းစည်းမှု ပြီးသွားပါပြီ"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"ဖွင့်ရန်"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"ဘာတွေထူးသလဲ"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Health Connect ကို ဆက်တင်များမှ တိုက်ရိုက်သုံးနိုင်ပါပြီ။ Health Connect အက်ပ်ကို အချိန်မရွေး ပရိုဂရမ် ဖယ်ရှားနိုင်သည်။"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Health Connect ကို ဆက်တင်များမှ တိုက်ရိုက်သုံးနိုင်ပါပြီ။ သိုလှောင်ခန်း နေရာလွတ်ပြုလုပ်ရန် Health Connect အက်ပ်ကို အချိန်မရွေး ဖယ်ရှားနိုင်သည်။"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"ရပြီ"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"ဒေတာစုစုပေါင်း"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"အက်ပ်ရင်းမြစ်များ"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"ဒေတာစုစုပေါင်း မည်သို့ပြောင်းလဲနိုင်ကြောင်း မြင်ရရန် အက်ပ်ရင်းမြစ်များကို စာရင်းတွင် ထည့်နိုင်သည်။ အက်ပ်ကို စာရင်းမှဖယ်ရှားခြင်းသည် စုစုပေါင်းတွင် ၎င်းပံ့ပိုးပါဝင်နေသည်ကို ရပ်လိုက်မည်ဖြစ်သော်လည်း ရေးခွင့်များရှိပါဦးမည်။"</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"အက်ပ်ရင်းမြစ် မရှိပါ။\n<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ဒေတာရေးရန် အက်ပ်ခွင့်ပြုချက်များ ပေးလိုက်ပါက ရင်းမြစ်များကို ဤနေရာတွင် ပြမည်။"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"ရင်းမြစ်များနှင့် ဦးစားပေးခြင်း အလုပ်လုပ်ပုံ"</string>
 </resources>

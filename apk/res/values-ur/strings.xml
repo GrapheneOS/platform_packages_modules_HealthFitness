@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ایپ کو رسائی حاصل ہے"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"کوئی نہیں"</string>
     <string name="entry_details_title" msgid="590184849040247850">"اندراج کی تفصیلات"</string>
+    <string name="backup_title" msgid="211503191266235085">"بیک اپ لیں"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"ڈیٹا کے ذرائع اور ترجیح"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"یونٹس سیٹ کریں"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"حالیہ رسائی"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"فی الحال کسی بھی ایپ نے Health Connect تک رسائی حاصل نہیں کی"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"تمام حالیہ رسائی دیکھیں"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect کا انضمام مکمل ہو گیا"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"کھولیں"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"نیا کیا ہے"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"اب آپ اپنی ترتیبات سے براہ راست Health Connect تک رسائی حاصل کر سکتے ہیں۔ Health Connect ایپ کو کسی بھی وقت اَن انسٹال کریں۔"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"اب آپ اپنی ترتیبات سے براہ راست Health Connect تک رسائی حاصل کر سکتے ہیں۔ اسٹوریج کی جگہ خالی کرنے کے لیے کسی بھی وقت Health Connect ایپ کو اَن انسٹال کریں۔"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"سمجھ آ گئی"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"ڈیٹا کی کل تعداد"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"ایپ کے ذرائع"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"ایپ کے ذرائع کو فہرست میں شامل کریں یہ دیکھنے کے لیے کہ ڈیٹا کا کل کیسے تبدیل ہو سکتا ہے۔ اس فہرست سے کسی ایپ کو ہٹانے سے وہ کل میں تعاون کرنے سے روک دے گا لیکن اس کے پاس تحریر کرنے کی اجازتیں ابھی بھی ہوں گی۔"</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"ایپ کے ذرائع نہیں ہیں۔\n ایک بار جب آپ ایپ <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> کو ڈیٹا لکھنے کی اجازتیں دیتے ہیں تو ذرائع یہاں دکھائی دیں گے۔"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"ذرائع اور ترجیح کیسے کام کرتے ہیں"</string>
 </resources>

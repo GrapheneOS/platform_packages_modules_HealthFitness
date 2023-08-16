@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> แอปมีสิทธิ์เข้าถึง"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ไม่มี"</string>
     <string name="entry_details_title" msgid="590184849040247850">"รายละเอียดรายการ"</string>
+    <string name="backup_title" msgid="211503191266235085">"การสำรองข้อมูล"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"แหล่งข้อมูลและลำดับความสำคัญ"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"ตั้งค่าหน่วย"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"การเข้าถึงล่าสุด"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"ไม่มีแอปที่เข้าถึง Health Connect เมื่อเร็วๆ นี้"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"ดูการเข้าถึงล่าสุดทั้งหมด"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"การผสานรวม Health Connect เสร็จสมบูรณ์"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"เปิด"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"มีอะไรใหม่"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"ตอนนี้คุณสามารถเข้าถึง Health Connect โดยตรงจากการตั้งค่า ถอนการติดตั้งแอป Health Connect ได้ทุกเมื่อ"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"ตอนนี้คุณสามารถเข้าถึง Health Connect โดยตรงจากการตั้งค่า ถอนการติดตั้งแอป Health Connect ได้ทุกเมื่อเพื่อเพิ่มพื้นที่เก็บข้อมูล"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"รับทราบ"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"ผลรวมของข้อมูล"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"แหล่งที่มาของแอป"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"เพิ่มแหล่งที่มาของแอปในรายการเพื่อดูว่าผลรวมของข้อมูลจะเปลี่ยนแปลงไปอย่างไร การนำแอปออกจากรายการนี้จะทำให้แอปนั้นไม่มีส่วนในผลรวม แต่จะยังมีสิทธิ์เขียนอยู่"</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"ไม่มีแหล่งที่มาของแอป\nเมื่อคุณให้สิทธิ์แก่แอปในการเขียนข้อมูล <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> แล้ว แหล่งที่มาจะแสดงขึ้นที่นี่"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"แหล่งที่มาและลำดับความสำคัญทำงานอย่างไร"</string>
 </resources>

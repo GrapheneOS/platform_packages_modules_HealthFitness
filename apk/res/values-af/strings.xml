@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> app het toegang"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Geen"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Invoerbesonderhede"</string>
+    <string name="backup_title" msgid="211503191266235085">"Rugsteun"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Databronne en -prioriteit"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Stel eenhede"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Onlangse toegang"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Geen apps het onlangs toegang tot Health Connect gekry nie"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Sien alle onlangse toegang"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect-integrasie is voltooi"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Oop"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Wat’s nuut"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Jy kan nou direk van jou instellings af toegang tot Health Connect kry. Deïnstalleer die Health Connect-app enige tyd."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Jy kan nou direk van jou instellings af toegang tot Health Connect kry. Deïnstalleer die Health Connect-app enige tyd om bergingspasie beskikbaar te maak."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Het dit"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Datatotale"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Appbronne"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Voeg appbronne by die lys om te sien hoe die datatotale kan verander. ’n App sal ophou om tot die totale by te dra wanneer dit van hierdie lys af verwyder word, maar dit sal steeds skryftoestemmings hê."</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"Geen appbronne nie.\nBronne sal hier gewys word nadat jy apptoestemmings gegee het om <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>-data te skryf."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Hoe bronne en prioritisering werk"</string>
 </resources>

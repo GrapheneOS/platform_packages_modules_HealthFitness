@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>টি অ্যাপের অ্যাক্সেস আছে"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"কোনওটিই নয়"</string>
     <string name="entry_details_title" msgid="590184849040247850">"এন্ট্রি সংক্রান্ত বিবরণ"</string>
+    <string name="backup_title" msgid="211503191266235085">"ব্যাক-আপ নিন"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"ডেটা সোর্স এবং প্রায়োরিটি"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"ইউনিট সেট করুন"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"সাম্প্রতিক অ্যাক্সেস"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"সম্প্রতি কোনও অ্যাপ Health Connect অ্যাক্সেস করেনি"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"সাম্প্রতিক সব অ্যাক্সেস দেখুন"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect ইন্টিগ্রেশন সম্পূর্ণ হয়েছে"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"খুলুন"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"নতুন কী রয়েছে"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"আপনি এখন নিজের সেটিংস থেকে সরাসরি Health Connect অ্যাক্সেস করতে পারবেন। যেকোনও সময় Health Connect অ্যাপ আনইনস্টল করুন।"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"আপনি এখন সেটিংস থেকে সরাসরি Health Connect অ্যাক্সেস করতে পারবেন। স্টোরেজ স্পেস খালি করতে, যেকোনও সময় Health Connect অ্যাপ আনইনস্টল করুন।"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"বুঝেছি"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"ডেটা টোটাল"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"অ্যাপ সোর্স"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"ডেটা টোটাল কীভাবে পরিবর্তন হয় তা দেখতে, তালিকায় অ্যাপ সোর্স যোগ করুন। এই তালিকা থেকে কোনও অ্যাপ সরিয়ে দিলে টোটালে এটি আর কন্ট্রিবিউট করতে পারবে না, কিন্তু এরপরেও এটির রাইট পার্মিশন থাকবে।"</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"কোনও অ্যাপ সোর্স নেই।\nআপনি একবার অ্যাপকে <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ডেটা এডিট করার অনুমতি দিলে, সোর্স এখানে দেখা যাবে।"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"সোর্স এবং প্রায়োরিটি কীভাবে কাজ করে"</string>
 </resources>

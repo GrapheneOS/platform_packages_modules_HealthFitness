@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> वटा एपलाई अनुमति दिइएको छ"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"कुनै पनि एप कनेक्ट गरिएको छैन"</string>
     <string name="entry_details_title" msgid="590184849040247850">"इन्ट्रीसम्बन्धी विवरणहरू"</string>
+    <string name="backup_title" msgid="211503191266235085">"ब्याकअप गर्नुहोस्"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"डेटाका स्रोत तथा प्राथमिकता"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"एकाइ सेट गर्नुहोस्"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"हालसालै हेर्ने र प्रयोग गर्ने एप"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"कुनै पनि एपले हालसालै Health Connect प्रयोग गरेको छैन"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"हालसालै डेटा रिड र राइट गरेका सबै एपहरू हेर्नुहोस्"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect इन्टिग्रेट गर्ने प्रक्रिया पूरा भयो"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"खोल्नुहोस्"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"नयाँ के छ"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"तपाईं अब सीधै सेटिङबाटै Health Connect प्रयोग गर्न सक्नुहुन्छ। जुनसुकै बेला Health Connect एप अनइन्स्टल गर्नुहोस्।"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"तपाईं अब सेटिङमा गई सीधै Health Connect एक्सेस गर्न सक्नुहुन्छ। जुनसुकै बेला Health Connect एप अनइन्स्टल गरेर भण्डारणमा ठाउँ खाली गर्नुहोस्।"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"बुझेँ"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"कुल डेटा"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"एपका स्रोतहरू"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"कुल डेटा कसरी परिवर्तन हुन्छ भनी हेर्न सूचीमा एपका स्रोतहरू हाल्नुहोस्। यो सूचीबाट एप हटाउनुभयो भने कुल डेटामा यसले गर्ने योगदान रोकिने छ तर यो एपसँग भने राइट गर्ने अनुमति रहिरहने छ।"</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"कुनै पनि एपका स्रोतहरू छैनन्।\nतपाईंले एपलाई <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> डेटा राइट गर्ने अनुमति दिएपछि स्रोतहरू यहाँ देखाइने छन्।"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"स्रोत तथा प्राथमिकताले काम गर्ने तरिका"</string>
 </resources>

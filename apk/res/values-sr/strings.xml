@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> апликација има приступ"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ништа"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Детаљи уноса"</string>
+    <string name="backup_title" msgid="211503191266235085">"Резервна копија"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Извори података и приоритет"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Подеси јединице"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Недавни приступ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Ниједна апликација није недавно приступила Повезивању здравља"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Прикажи сав недавни приступ"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Интеграција Повезивања здравља је довршена"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Отвори"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Шта је ново"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Сада можете да приступате Повезивању здравља директно из подешавања. Деинсталирајте апликацију Повезивање здравља у било ком тренутку."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Сада можете да приступате Повезивању здравља директно из подешавања. Деинсталирајте апликацију Повезивање здравља у било ком тренутку да бисте ослободили меморијски простор."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Важи"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Укупна количина података"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Извори апликација"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Додајте изворе апликација на листу да бисте видели како укупна количина података може да се промени. Ако уклоните апликацију са ове листе, она више неће моћи да се рачуна за укупну количину, али ће и даље имати дозволе за писање."</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"Нема извора апликација.\nКада дате дозволе за апликације за уписивање података из категорије<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, извори ће се приказивати овде."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Како извори и одређивање приоритета раде"</string>
 </resources>

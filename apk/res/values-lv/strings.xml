@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> lietotnei ir piekļuve"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Nav"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Detalizēta informācija par ierakstu"</string>
+    <string name="backup_title" msgid="211503191266235085">"Dublēšana"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Datu avoti un prioritāte"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Iestatīt vienības"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Nesena piekļuve"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Neviena lietotne pēdējā laikā nav piekļuvusi platformai Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Skatīt visus nesenas piekļuves gadījumus"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect integrēšana ir pabeigta"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Atvērt"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Jaunumi"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Tagad varat piekļūt lietotnei Health Connect tieši no iestatījumiem. Jebkurā brīdī varat atinstalēt lietotni Health Connect."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Tagad varat piekļūt lietotnei Health Connect tieši no iestatījumiem. Jebkurā brīdī varat atinstalēt lietotni Health Connect, ja nepieciešams atbrīvot krātuves vietu."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Labi"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Datu kopsummas"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Avoti (lietotnes)"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Pievienojiet sarakstam avotus (lietotnes), lai novērotu, kā datu kopsummas var mainīties. Ja noņemsiet lietotni no šī saraksta, tās dati vairs netiks ieskaitīti kopsummās, taču tai joprojām būs rakstīšanas atļaujas."</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"Nav neviena avota (lietotnes).\nKad piešķirsiet lietotņu atļaujas rakstīt datus kategorijā <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, avoti tiks rādīti šeit."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Avotu un prioritātes noteikšanas principi"</string>
 </resources>

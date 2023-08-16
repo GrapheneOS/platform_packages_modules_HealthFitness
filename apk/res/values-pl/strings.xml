@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplikacja ma dostęp"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Brak"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Szczegóły wpisu"</string>
+    <string name="backup_title" msgid="211503191266235085">"Kopia zapasowa"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Źródła danych i priorytety"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Jednostki zestawu"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Ostatni dostęp"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Żadne aplikacje nie uzyskiwały ostatnio dostępu do Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Zobacz wszystkie ostatnie przypadki dostępu"</string>
@@ -496,7 +499,7 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"Sen: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="NAME">%2$s</xliff:g> <xliff:g id="DURATION">%1$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"Brak snu:"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"wybudzenie"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"Wybudzenie:"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"Sen:"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"Poza łóżkiem:"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM:"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Ukończono integrację Health Connect"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Otwórz"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Nowości"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Możesz teraz korzystać z Health Connect bezpośrednio przez ustawienia. Aplikację Health Connect możesz odinstalować w dowolnym momencie."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Możesz teraz korzystać z Health Connect bezpośrednio przez ustawienia. Aplikację Health Connect możesz odinstalować w dowolnym momencie, aby zwolnić dostępne miejsce."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"OK"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Suma danych"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Źródła aplikacji"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Dodawaj źródła aplikacji do listy, aby widzieć, jak zmieniają się sumy danych. Usunięcie aplikacji z tej listy zatrzyma jej podliczanie w sumie danych, ale wciąż będzie mieć uprawnienia do zapisu."</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"Brak źródeł aplikacji.\nKiedy nadasz aplikacji uprawnienia do zapisywania <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> danych, źródła pojawią się tutaj."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Jak działają priorytety źródeł"</string>
 </resources>

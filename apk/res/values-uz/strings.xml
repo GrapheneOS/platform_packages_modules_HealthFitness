@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> ta ilovaga ruxsat berilgan"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Hech biri"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Qayd tafsilotlari"</string>
+    <string name="backup_title" msgid="211503191266235085">"Zaxiralash"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Axborot manbalari va tartiblanishi"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Birliklarni belgilash"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Oxirgi kirish"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Yaqin orada hech qanday ilova Health Connect ilovasiga ulanmagan"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Barcha oxirgi ruxsatlarni koʻrish"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect integratsiya tamomlandi"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Ochish"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Nima yangiliklar"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Endi Health Connect ilovasidan bevosita sozlamalar orqali foydalanishingiz mumkin. Istalgan vaqt Health Connect ilovasini oʻchirib tashlashingiz mumkin."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Endi Health Connect ilovasidan bevosita sozlamalar orqali foydalanishingiz mumkin. Xotirada joy ochish uchun istalgan vaqt Health Connect ilovasini oʻchirib tashlash mumkin."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"OK"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Axborotlar sarhisobi"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Ilova manbalari"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Axborotlar sarhisobi qanday oʻzgarishini koʻrish uchun roʻyxatga ilova manbalarini kiriting. Ilova roʻyxatdan olib tashlansa, sarhisobga taʼsir qilishi tugatiladi, lekin ilovaning axborot yozish ruxsati saqlanib qoladi."</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"Ilova manbalari topilmadi.\nIlovaga <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> axborotini yozish ruxsatini berishingiz bilan manbalar shu yerda chiqadi."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Manbalar qanday tartiblanishi haqida"</string>
 </resources>
