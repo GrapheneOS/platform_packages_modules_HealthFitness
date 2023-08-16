@@ -82,8 +82,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 /** Unit test class for {@link HealthConnectServiceImpl} */
 @RunWith(AndroidJUnit4.class)
@@ -193,7 +195,8 @@ public class HealthConnectServiceImplTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws TimeoutException {
+        TestUtils.waitForAllScheduledTasksToComplete();
         deleteDir(mMockDataDirectory);
         clearInvocations(mPreferenceHelper);
     }
@@ -492,10 +495,12 @@ public class HealthConnectServiceImplTest {
                 if (file.isDirectory()) {
                     deleteDir(file);
                 } else {
-                    file.delete();
+                    assertThat(file.delete()).isTrue();
                 }
             }
         }
-        assertThat(dir.delete()).isTrue();
+        assertWithMessage("Directory is not empty, Files present = " + Arrays.toString(dir.list()))
+                .that(dir.delete())
+                .isTrue();
     }
 }
