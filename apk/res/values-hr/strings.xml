@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplikacija ima pristup"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ništa"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Pojedinosti o unosu"</string>
+    <string name="backup_title" msgid="211503191266235085">"Sigurnosna kopija"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Izvori podataka i prioritet"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Postavi jedinice"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Nedavni pristup"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Nijedna aplikacija nije pristupila Health Connectu u posljednje vrijeme"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Pogledajte sve nedavne pristupe"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Dovršena je integracija Health Connecta"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Otvori"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Novosti"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Sada aplikaciji Health Connect možete pristupiti izravno putem postavki. Deinstalirajte aplikaciju Health Connect kad god želite."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Sada aplikaciji Health Connect možete pristupiti izravno putem postavki. Deinstalirajte aplikaciju Health Connect kad god želite da biste oslobodili prostor za pohranu."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Shvaćam"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Ukupne vrijednosti podataka"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Izvori aplikacije"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Dodajte izvore aplikacije na popis da biste vidjeli kako se ukupne vrijednosti podataka mogu promijeniti. Uklanjanjem aplikacije s tog popisa prestat će pridonošenje ukupnim vrijednostima, no i dalje će imati dopuštenja za pisanje."</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"Nema izvora aplikacija.\nNakon što date dopuštenja aplikacije da biste pisali podatke <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, izvori će se ovdje pojaviti."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Kako funkcioniraju izvori i prioritizacija"</string>
 </resources>

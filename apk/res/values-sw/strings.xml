@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"Programu <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> inaweza kufikia"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Hamna"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Maelezo ya kipengee"</string>
+    <string name="backup_title" msgid="211503191266235085">"Hifadhi nakala"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Vyanzo vya data na kipaumbele"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Weka vipimo"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Ufikiaji wa hivi karibuni"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Hakuna programu zilizofikia Health Connect hivi karibuni"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Angalia ruhusa zote za ufikiaji za karibuni"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Programu ya Health Connect imemaliza kujumuishwa"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Fungua"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Mambo mapya"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Sasa unaweza kufikia programu ya Health Connect moja kwa moja kupitia mipangilio yako. Ondoa programu ya Health Connect wakati wowote."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Sasa unaweza kufikia programu ya Health Connect moja kwa moja kupitia mipangilio yako. Ondoa programu ya Health Connect wakati wowote ili upate nafasi ya kuhifadhi."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Nimeelewa"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Jumla ya data"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Vyanzo vya programu"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Weka vyanzo vya data kwenye orodha ili uone jinsi jumla ya data inavyobadilika. Kuondoa programu kwenye orodha hii kutaisimamisha kuchangia kwenye jumla, lakini bado itakuwa na ruhusa za kuandika."</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"Hamna vyanzo vya programu.\nUkishaipa programu ruhusa za kuandika data ya <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, vyanzo vitaonekana hapa."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Jinsi vyanzo na uwekaji kipaumbele vinavyofanya kazi"</string>
 </resources>

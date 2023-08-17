@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> برنامه دسترسی دارد"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"هیچ‌کدام"</string>
     <string name="entry_details_title" msgid="590184849040247850">"جزئیات ورود"</string>
+    <string name="backup_title" msgid="211503191266235085">"پشتیبان‌گیری"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"منابع داده و اولویت"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"تنظیم واحدها"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"دسترسی اخیر"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"هیچ برنامه‌ای اخیراً به Health Connect دسترسی نداشته است"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"دیدن همه دسترسی‌های اخیر"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"یکپارچه‌سازی Health Connect تکمیل شد"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"باز کردن"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"ویژگی‌های جدید"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"اکنون می‌توانید مستقیماً از تنظیمات به Health Connect دسترسی داشته باشید. هروقت خواستید برنامه Health Connect را حذف نصب کنید."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"اکنون می‌توانید مستقیماً از تنظیمات به Health Connect دسترسی داشته باشید. هروقت خواستید برنامه Health Connect را حذف نصب کنید تا فضای ذخیره‌سازی آزاد شود."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"متوجه‌ام"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"مجموع داده"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"منابع برنامه"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"منابع برنامه را به فهرست اضافه کنید تا ببینید که مجموع داده‌ها چگونه می‌تواند تغییر کند. برداشتن برنامه از این فهرست باعث می‌شود که آن برنامه دیگر در مجموع دخیل نباشد، اما همچنان اجازه نوشتن خواهد داشت."</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"منابع برنامه وجود ندارد.\nپس‌از اینکه به برنامه اجازه نوشتن داده‌های <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> می‌دهید، منابع در اینجا نشان داده می‌شود."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"نحوه عملکرد منابع و اولویت‌بندی"</string>
 </resources>

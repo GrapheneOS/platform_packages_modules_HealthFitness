@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> መተግበሪያ መዳረሻ አለው"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ምንም"</string>
     <string name="entry_details_title" msgid="590184849040247850">"የግቤት ዝርዝሮች"</string>
+    <string name="backup_title" msgid="211503191266235085">"ምትኬ"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"የውሂብ ምንጮች እና ቅድሚያ"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"ምደባዎችን አቀናብር"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"የቅርብ ጊዜ መዳረሻ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"በቅርብ ጊዜ ምንም መተግበሪያዎች የጤና አገናኝን አልደረሱበትም"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"ሁሉንም የቅርብ ጊዜ መድረሶች ይመልከቱ"</string>
@@ -180,10 +183,10 @@
     <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"ወሲባዊ እንቅስቃሴ"</string>
     <string name="sexual_activity_read_content_description" msgid="4937721417714312007">"ወሲባዊ እንቅስቃሴን ያነባል"</string>
     <string name="sexual_activity_write_content_description" msgid="3063448245882840534">"ወሲባዊ እንቅስቃሴን ይጽፋል"</string>
-    <string name="spotting_uppercase_label" msgid="5106739829390033240">"ከወር አበባ ውጪ የሚኖር የደም ፍሰት"</string>
-    <string name="spotting_lowercase_label" msgid="4361141146039580583">"ከወር አበባ ውጪ የሚኖር የደም ፍሰት"</string>
-    <string name="spotting_read_content_description" msgid="5422420770022357631">"ከወር አበባ ውጪ የሚኖር የደም ፍሰትን ያነባል"</string>
-    <string name="spotting_write_content_description" msgid="9049462631184362964">"ከወር አበባ ውጪ የሚኖር የደም ፍሰትን ይጽፋል"</string>
+    <string name="spotting_uppercase_label" msgid="5106739829390033240">"ከወር አበባ ውጭ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting_lowercase_label" msgid="4361141146039580583">"ከወር አበባ ውጭ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting_read_content_description" msgid="5422420770022357631">"ከወር አበባ ውጭ የሚኖር የደም ፍሰትን ያነባል"</string>
+    <string name="spotting_write_content_description" msgid="9049462631184362964">"ከወር አበባ ውጭ የሚኖር የደም ፍሰትን ይጽፋል"</string>
     <string name="hydration_uppercase_label" msgid="1196083392597480565">"ውሃዘልነት"</string>
     <string name="hydration_lowercase_label" msgid="7793261552870970551">"ውሃዘልነት"</string>
     <string name="hydration_read_content_description" msgid="3255941233933808082">"ውሃዘልነትን ያነባል"</string>
@@ -365,8 +368,8 @@
     <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"ከ<xliff:g id="MIN">%1$s</xliff:g> እስከ <xliff:g id="MAX">%2$s</xliff:g>"</string>
     <string name="sexual_activity_protected" msgid="4259473257597274326">"የተጠበቀ"</string>
     <string name="sexual_activity_unprotected" msgid="2250981470537379807">"ያልተጠበቀ"</string>
-    <string name="spotting" msgid="1637175837078770520">"ከወር አበባ ወቅት ውጪ የሚኖር የደም ፍሰት"</string>
-    <string name="flow_spotting" msgid="832418664953780156">"ከወር አበባ ወቅት ውጪ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting" msgid="1637175837078770520">"ከወር አበባ ወቅት ውጭ የሚኖር የደም ፍሰት"</string>
+    <string name="flow_spotting" msgid="832418664953780156">"ከወር አበባ ወቅት ውጭ የሚኖር የደም ፍሰት"</string>
     <string name="flow_light" msgid="1937543318146228793">"ቀላል ፍሰት"</string>
     <string name="flow_medium" msgid="3783688724668943154">"መካከለኛ ፍሰት"</string>
     <string name="flow_heavy" msgid="8672261792750634294">"ከባድ ፍሰት"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"የጤና አገናኝ ውህደት ተጠናቅቋል"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"ክፈት"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"ምን አዲስ ነገር አለ"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"አሁን የጤና አገናኝን በቀጥታ ከቅንብሮችዎ መድረስ ይችላሉ። የጤና አገናኝ መተግበሪያን በማንኛውም ጊዜ ያራግፉ።"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"አሁን የጤና አገናኝን በቀጥታ ከቅንብሮችዎ መድረስ ይችላሉ። የማከማቻ ቦታ ነፃ ለማድረግ የጤና አገናኝ መተግበሪያን በማንኛውም ጊዜ ያራግፉ።"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"ገባኝ"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"የውሂብ ጠቅላላ"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"የመተግበሪያ ምንጮች"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"እንዴት የውሂብ ጠቅላላው ሊለወጥ እንደሚችል ለመመልከት የመተግበሪያ ምንጮችን ወደ ዝርዝሩ ያክሉ። አንድ መተግበሪያን ከዚህ ዝርዝር ማስወገድ ለጠቅላላው አስተዋጽዖ ከማድረግ ያቆማል፣ ነገር ግን የመፃፍ ፈቃዶችን ይኖረዋል።"</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"ምንም የመተግበሪያ ምንጮች የሉም።\nአንዴ ለ<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ውሂብ ለመፃፍ የመተግበሪያ ፈቃዶች ከሰጡ በኋላ ምንጮች እዚህ ይታያሉ።"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"ምንጮች እና ቅድሚያ አሰጣጥ እንዴት እንደሚሰሩ"</string>
 </resources>

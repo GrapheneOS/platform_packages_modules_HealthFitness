@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> додаток має доступ"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Немає"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Деталі запису"</string>
+    <string name="backup_title" msgid="211503191266235085">"Резервне копіювання"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Джерела даних і пріоритет"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Вибрати одиниці вимірювання"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Нещодавній доступ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Немає додатків, які нещодавно використовували Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Переглянути всі нещодавні випадки доступу"</string>
@@ -772,6 +775,11 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Інтеграцію Health Connect завершено"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Відкрити"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Що нового"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Тепер ви можете відкривати Health Connect просто в налаштуваннях. Видалити додаток Health Connect можна будь-коли."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Тепер ви можете відкривати Health Connect просто в налаштуваннях. Додаток Health Connect можна будь-коли видалити, щоб звільнити місце в пам’яті."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"OK"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Підсумок даних"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Додатки-джерела"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Включіть до списку додатки-джерела, щоб побачити, як змінюватимуться при цьому підсумкові дані. Якщо видалити додаток із цього списку, його дані більше не включатимуться до підсумку, однак він і надалі матиме дозвіл на запис."</string>
+    <string name="data_sources_empty_state" msgid="8943473963067037305">"Немає додатків-джерел.\nВони з’являться тут, коли ви надасте додатку дозвіл на запис даних у категорії \"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>\"."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Як працюють джерела й пріоритети"</string>
 </resources>
