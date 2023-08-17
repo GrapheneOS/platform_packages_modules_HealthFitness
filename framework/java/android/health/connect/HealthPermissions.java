@@ -120,6 +120,17 @@ public final class HealthPermissions {
      */
     @SystemApi
     public static final String HEALTH_PERMISSION_GROUP = "android.permission-group.HEALTH";
+
+    /**
+     * Allows an application to read health data (of any type) in background.
+     *
+     * <p>Protection level: dangerous.
+     *
+     * @hide
+     */
+    public static final String READ_HEALTH_DATA_IN_BACKGROUND =
+            "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND";
+
     /**
      * Allows an application to read the user's active calories burned data.
      *
