@@ -155,7 +155,7 @@ class HomeFragment : Hilt_HomeFragment() {
             MigrationState.MODULE_UPGRADE_REQUIRED,
             MigrationState.APP_UPGRADE_REQUIRED -> {
                 migrationBanner = getMigrationBanner()
-                preferenceScreen.addPreference(migrationBanner)
+                preferenceScreen.addPreference(migrationBanner as BannerPreference)
             }
             MigrationState.COMPLETE -> {
                 maybeShowWhatsNewDialog(requireContext())

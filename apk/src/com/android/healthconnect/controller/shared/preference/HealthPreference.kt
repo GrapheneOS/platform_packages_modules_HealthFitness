@@ -55,11 +55,11 @@ constructor(context: Context, attrs: AttributeSet? = null) :
     //    }
 
     override fun setOnPreferenceClickListener(
-        onPreferenceClickListener: OnPreferenceClickListener
+        onPreferenceClickListener: OnPreferenceClickListener?
     ) {
         val loggingClickListener = OnPreferenceClickListener {
             logger.logInteraction(logName)
-            onPreferenceClickListener.onPreferenceClick(it)
+            onPreferenceClickListener?.onPreferenceClick(it) ?: false
         }
         super.setOnPreferenceClickListener(loggingClickListener)
     }
