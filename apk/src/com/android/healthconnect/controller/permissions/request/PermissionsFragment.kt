@@ -102,7 +102,7 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         logger.setPageId(pageName)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
