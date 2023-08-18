@@ -172,16 +172,19 @@ public class HealthConnectServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        mContext = InstrumentationRegistry.getInstrumentation().getContext();
+        when(UserHandle.of(anyInt())).thenCallRealMethod();
+        mUserHandle = UserHandle.of(UserHandle.myUserId());
+        when(mServiceContext.getPackageManager()).thenReturn(mPackageManager);
+        when(mServiceContext.getUser()).thenReturn(mUserHandle);
+
+        mContext =
+                new HealthConnectUserContext(
+                        InstrumentationRegistry.getInstrumentation().getContext(), mUserHandle);
         mMockDataDirectory = mContext.getDir("mock_data", Context.MODE_PRIVATE);
         when(Environment.getDataDirectory()).thenReturn(mMockDataDirectory);
         when(PreferenceHelper.getInstance()).thenReturn(mPreferenceHelper);
         when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
                 .thenReturn(mAppOpsManagerLocal);
-        when(UserHandle.of(anyInt())).thenCallRealMethod();
-        mUserHandle = UserHandle.of(UserHandle.myUserId());
-        when(mServiceContext.getPackageManager()).thenReturn(mPackageManager);
-        when(mServiceContext.getUser()).thenReturn(mUserHandle);
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -202,7 +205,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testInstatiated_attachesMigrationCleanerToMigrationStateManager() {
+    public void testInstantiated_attachesMigrationCleanerToMigrationStateManager() {
         verify(mMigrationCleaner).attachTo(mMigrationStateManager);
     }
 
@@ -499,7 +502,11 @@ public class HealthConnectServiceImplTest {
                 }
             }
         }
-        assertWithMessage("Directory is not empty, Files present = " + Arrays.toString(dir.list()))
+        assertWithMessage(
+                        "Directory "
+                                + dir.getAbsolutePath()
+                                + " is not empty, Files present = "
+                                + Arrays.toString(dir.list()))
                 .that(dir.delete())
                 .isTrue();
     }
