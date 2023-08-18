@@ -17,6 +17,7 @@
 package com.android.server.healthconnect;
 
 import android.annotation.NonNull;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.ratelimiter.RateLimiter.QuotaBucket;
@@ -39,6 +40,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * @hide
  */
+@SuppressLint("MissingPermission")
 public class HealthConnectDeviceConfigManager implements DeviceConfig.OnPropertiesChangedListener {
     private static Set<String> sFlagsToTrack = new ArraySet<>();
     private static final String EXERCISE_ROUTE_FEATURE_FLAG = "exercise_routes_enable";
@@ -113,6 +115,9 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     public static final String ENABLE_MIGRATION_NOTIFICATIONS_FLAG =
             "enable_migration_notifications";
 
+    @VisibleForTesting
+    public static final String BACKGROUND_READ_FEATURE_FLAG = "background_read_enable";
+
     private static final boolean SESSION_DATATYPE_DEFAULT_FLAG_VALUE = true;
     private static final boolean EXERCISE_ROUTE_DEFAULT_FLAG_VALUE = true;
     public static final boolean ENABLE_RATE_LIMITER_DEFAULT_FLAG_VALUE = true;
@@ -153,6 +158,8 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
 
     @VisibleForTesting
     public static final boolean ENABLE_MIGRATION_NOTIFICATIONS_DEFAULT_FLAG_VALUE = true;
+
+    @VisibleForTesting public static final boolean BACKGROUND_READ_DEFAULT_FLAG_VALUE = false;
 
     private static HealthConnectDeviceConfigManager sDeviceConfigManager;
     private final ReentrantReadWriteLock mLock = new ReentrantReadWriteLock();
@@ -256,6 +263,13 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                     ENABLE_MIGRATION_NOTIFICATIONS_FLAG,
                     ENABLE_MIGRATION_NOTIFICATIONS_DEFAULT_FLAG_VALUE);
 
+    @GuardedBy("mLock")
+    private boolean mBackgroundReadFeatureEnabled =
+            DeviceConfig.getBoolean(
+                    HEALTH_FITNESS_NAMESPACE,
+                    BACKGROUND_READ_FEATURE_FLAG,
+                    BACKGROUND_READ_DEFAULT_FLAG_VALUE);
+
     @NonNull
     @VisibleForTesting(visibility = VisibleForTesting.Visibility.PACKAGE)
     public static void initializeInstance(Context context) {
@@ -292,6 +306,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         sFlagsToTrack.add(ENABLE_PAUSE_STATE_CHANGE_JOBS_FLAG);
         sFlagsToTrack.add(ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG);
         sFlagsToTrack.add(ENABLE_MIGRATION_NOTIFICATIONS_FLAG);
+        sFlagsToTrack.add(BACKGROUND_READ_FEATURE_FLAG);
     }
 
     /** Returns if operations with exercise route are enabled. */
@@ -448,6 +463,16 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         mLock.readLock().lock();
         try {
             return mEnableMigrationNotifications;
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns whether reading in background is enabled or not. */
+    public boolean isBackgroundReadFeatureEnabled() {
+        mLock.readLock().lock();
+        try {
+            return mBackgroundReadFeatureEnabled;
         } finally {
             mLock.readLock().unlock();
         }
@@ -642,6 +667,12 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                                 properties.getBoolean(
                                         ENABLE_MIGRATION_NOTIFICATIONS_FLAG,
                                         ENABLE_MIGRATION_NOTIFICATIONS_DEFAULT_FLAG_VALUE);
+                        break;
+                    case BACKGROUND_READ_FEATURE_FLAG:
+                        mBackgroundReadFeatureEnabled =
+                                properties.getBoolean(
+                                        BACKGROUND_READ_FEATURE_FLAG,
+                                        BACKGROUND_READ_DEFAULT_FLAG_VALUE);
                         break;
                 }
             } finally {
