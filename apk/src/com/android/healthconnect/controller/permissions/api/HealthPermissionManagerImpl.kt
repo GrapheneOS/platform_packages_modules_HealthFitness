@@ -39,6 +39,6 @@ class HealthPermissionManagerImpl @Inject constructor(private val manager: Healt
     }
 
     override fun loadStartAccessDate(packageName: String?): Instant? {
-        return manager.getHealthDataHistoricalAccessStartDate(packageName)
+        return packageName?.let { manager.getHealthDataHistoricalAccessStartDate(it) }
     }
 }
