@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Totais de dados"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Origens de apps"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Adicione origens de apps à lista para ver como os totais de dados podem mudar. Se remover uma app desta lista, a app deixa de contribuir para os totais, mas continua a ter autorizações de escrita."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Sem origens de apps"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Assim que conceder autorizações da app para escrever dados de <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, as origens vão ser apresentadas aqui."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Como funcionam as origens e a atribuição de prioridade"</string>
 </resources>

@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Izingqikithi zedatha"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Umthombo we-app"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Engeza imithombo ye-app ohlwini ukuze ubone ukuthi amanani edatha angashintsha kanjani. Ukukhipha i-app ukusuka kulolu hlu kuzolumisa ekunikeleni izingqikithi, kodwa lusazoba nezimvume zokubhala."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Ayikho imithombo ye-app"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Ngemva kokunika i-app izimvume zokubhala idatha ye-<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, imithombo izovela lapha."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Indlela imithombo nomsebenzi wokwenza kube okubalulekile"</string>
 </resources>

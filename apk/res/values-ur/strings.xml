@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"ڈیٹا کی کل تعداد"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"ایپ کے ذرائع"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"ایپ کے ذرائع کو فہرست میں شامل کریں یہ دیکھنے کے لیے کہ ڈیٹا کا کل کیسے تبدیل ہو سکتا ہے۔ اس فہرست سے کسی ایپ کو ہٹانے سے وہ کل میں تعاون کرنے سے روک دے گا لیکن اس کے پاس تحریر کرنے کی اجازتیں ابھی بھی ہوں گی۔"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"ایپ کا کوئی ذریعہ نہیں ہے"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"ایک بار جب آپ ایپ کو <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ڈیٹا لکھنے کی اجازتیں دیتے ہیں تو ذرائع یہاں دکھائی دیں گے۔"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ذرائع اور ترجیح کیسے کام کرتے ہیں"</string>
 </resources>

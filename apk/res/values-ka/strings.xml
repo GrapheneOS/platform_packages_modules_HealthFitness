@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"მონაცემთა ჯამი"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"აპის წყაროები"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"დაამატეთ აპის წყაროები სიაში, რათა ნახოთ, როგორ შეიძლება შეიცვალოს მონაცემთა ჯამი. ამ სიიდან აპის ამოშლა შეაჩერებს მას, შეიტანოს წვლილი სრულ რაოდენობაში, მაგრამ მას მაინც ექნება ჩაწერის ნებართვები."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"აპის წყარო არ არის"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"მას შემდეგ, რაც მიანიჭებთ აპს <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>-ის მონაცემების ჩაწერის ნებართვას, წყაროები აქ გამოჩნდება."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"როგორ მუშაობს წყაროები და პრიორიტეტები"</string>
 </resources>

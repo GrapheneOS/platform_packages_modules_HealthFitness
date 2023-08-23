@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"ডেটা টোটাল"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"অ্যাপ সোর্স"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"ডেটা টোটাল কীভাবে পরিবর্তন হয় তা দেখতে, তালিকায় অ্যাপ সোর্স যোগ করুন। এই তালিকা থেকে কোনও অ্যাপ সরিয়ে দিলে টোটালে এটি আর কন্ট্রিবিউট করতে পারবে না, কিন্তু এরপরেও এটির রাইট পার্মিশন থাকবে।"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"কোনও অ্যাপের সোর্স নেই"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ডেটা লেখার জন্য আপনি অ্যাপকে অনুমতি দিলে, এখানে সোর্স দেখা যাবে।"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"সোর্স এবং প্রায়োরিটি কীভাবে কাজ করে"</string>
 </resources>

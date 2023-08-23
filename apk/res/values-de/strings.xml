@@ -775,15 +775,12 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect-Integration abgeschlossen"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Öffnen"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Das ist neu"</string>
-    <!-- no translation found for migration_whats_new_dialog_content (1271560399054864488) -->
-    <skip />
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Der Zugriff auf Health Connect ist jetzt direkt über deine Einstellungen möglich. Du kannst die Health Connect App jederzeit deinstallieren, um Speicherplatz freizugeben."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Ok"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Gesamtwerte für Daten"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"App-Quellen"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Füge der Liste App-Quellen hinzu, um zu sehen, wie sich die Gesamtwerte für Daten ändern können. Wenn du eine App aus dieser Liste entfernst, wird sie nicht mehr in den Gesamtwerten berücksichtigt, verfügt aber weiterhin über die Schreibberechtigung."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Keine App-Quellen"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Wenn du App-Berechtigungen zum Schreiben von „<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>“-Daten erteilst, werden die Quellen hier angezeigt."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"So funktionieren Quellen und Priorisierung"</string>
 </resources>

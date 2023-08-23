@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"データの合計"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"アプリのソース"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"アプリのソースをリストに追加して、データの合計がどのように変わるかを確認します。このリストからアプリを削除すると、合計が変化することはなくなりますが、書き込み権限は付与されたままになります。"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"アプリのソースがありません。"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> のデータを書き込む権限をアプリに付与すると、ソースがここに表示されます。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ソースと優先度の仕組み"</string>
 </resources>

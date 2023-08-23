@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Datu kopsummas"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Avoti (lietotnes)"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Pievienojiet sarakstam avotus (lietotnes), lai novērotu, kā datu kopsummas var mainīties. Ja noņemsiet lietotni no šī saraksta, tās dati vairs netiks ieskaitīti kopsummās, taču tai joprojām būs rakstīšanas atļaujas."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Nav neviena avota (lietotnes)"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kad piešķirsiet lietotņu atļaujas rakstīt datus kategorijā “<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>”, avoti tiks rādīti šeit."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Avotu un prioritātes noteikšanas principi"</string>
 </resources>

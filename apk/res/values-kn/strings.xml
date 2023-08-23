@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"ಡೇಟಾ ಟೋಟಲ್‌ಗಳು"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"ಆ್ಯಪ್ ಮೂಲಗಳು"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"ಡೇಟಾ ಟೋಟಲ್‌ಗಳು ಹೇಗೆ ಬದಲಾಗಬಲ್ಲವು ಎಂಬುದನ್ನು ನೋಡಲು ಆ್ಯಪ್ ಮೂಲಗಳನ್ನು ಪಟ್ಟಿಗೆ ಸೇರಿಸಿ. ಆ್ಯಪ್ ಒಂದನ್ನು ಈ ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕುವುದರಿಂದ ಅದು ಟೋಟಲ್‌ಗಳಿಗೆ ಕೊಡುಗೆ ನೀಡುವುದು ನಿಂತುಹೋಗುತ್ತದೆ, ಆದರೆ ಅದು ಈಗಲೂ ರೈಟ್ ಅನುಮತಿಗಳನ್ನು ಹೊಂದಿರುತ್ತದೆ."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"ಯಾವುದೇ ಆ್ಯಪ್ ಮೂಲಗಳಿಲ್ಲ"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"ನೀವು <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ಡೇಟಾವನ್ನು ರೈಟ್ ಮಾಡಲು ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಗಳನ್ನು ನೀಡಿದ ನಂತರ, ಮೂಲಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ಮೂಲಗಳು ಮತ್ತು ಆದ್ಯತೆ ನೀಡುವಿಕೆ ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತವೆ"</string>
 </resources>

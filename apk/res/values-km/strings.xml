@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"ចំនួនទិន្នន័យសរុប"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"ប្រភពកម្មវិធី"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"បញ្ចូល​ប្រភពកម្មវិធី​ទៅក្នុងបញ្ជី ដើម្បីមើលពីរបៀបដែលចំនួនទិន្នន័យសរុប​អាចផ្លាស់ប្ដូរ។ ការដក​កម្មវិធីចេញពី​បញ្ជីនេះនឹង​បញ្ឈប់កម្មវិធីនេះពី​ការចូលរួមចំណែក​ដល់ចំនួនសរុប ប៉ុន្តែកម្មវិធីនេះ​នឹងនៅតែមាន​ការអនុញ្ញាតឱ្យសរសេរ។"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"មិនមានប្រភពកម្មវិធី"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"នៅពេល​អ្នកផ្ដល់​ការអនុញ្ញាតកម្មវិធី​ឱ្យសរសេរទិន្នន័យ <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ប្រភពនឹង​បង្ហាញនៅទីនេះ។"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"របៀបដែល​ប្រភព និងការកំណត់អាទិភាព​ដំណើរការ"</string>
 </resources>

@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"মুঠত ডেটা"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"এপৰ উৎস"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"তথ্যৰ মুঠ কেনেকৈ সলনি হ’ব পাৰে সেয়া চাবলৈ তালিকাত এপৰ উৎস যোগ দিয়ক। এই সূচীৰ পৰা এটা এপ্‌ আঁতৰাই দিলে ই মুঠত অৱদান যোগোৱা বন্ধ কৰিব, কিন্তু তথাপি ইয়াৰ লিখাৰ অনুমতি থাকিব।"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"এপৰ কোনো উৎস নাই"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"আপুনি এপক <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>ৰ ডেটা লিখিবলৈ অনুমতি দিলে, তাৰ উৎসসমূহ ইয়াত দেখা পোৱা যাব।"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ডেটাৰ উৎস আৰু অগ্ৰাধিকাৰে কেনেকৈ কাম কৰে"</string>
 </resources>

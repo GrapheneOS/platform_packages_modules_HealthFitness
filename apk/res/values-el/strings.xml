@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Σύνολα δεδομένων"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Πηγές εφαρμογών"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Προσθέστε πηγές εφαρμογών στη λίστα για να δείτε πώς μπορούν να αλλάξουν τα σύνολα δεδομένων. Εάν καταργήσετε μια εφαρμογή από αυτήν τη λίστα, η εφαρμογή θα σταματήσει να συνεισφέρει στα σύνολα, αλλά θα εξακολουθεί να έχει άδειες εγγραφής."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Δεν υπάρχουν πηγές εφαρμογών"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Μόλις παραχωρήσετε άδειες εφαρμογών για την εγγραφή δεδομένων <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, οι πηγές θα εμφανίζονται εδώ."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Πώς λειτουργούν οι πηγές και η προτεραιότητα"</string>
 </resources>

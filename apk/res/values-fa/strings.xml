@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"مجموع داده"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"منابع برنامه"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"منابع برنامه را به فهرست اضافه کنید تا ببینید که مجموع داده‌ها چگونه می‌تواند تغییر کند. برداشتن برنامه از این فهرست باعث می‌شود که آن برنامه دیگر در مجموع دخیل نباشد، اما همچنان اجازه نوشتن خواهد داشت."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"منبع برنامه‌ای وجود ندارد"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"پس‌از اینکه به برنامه اجازه نوشتن داده‌های <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> می‌دهید، منابع در اینجا نشان داده می‌شود."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"نحوه عملکرد منابع و اولویت‌بندی"</string>
 </resources>

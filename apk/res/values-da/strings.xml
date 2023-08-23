@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Samlede data"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Appkilder"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Føj appkilder til listen for at se, hvordan de samlede data kan ændre sig. Hvis du fjerner en app fra denne liste, vil den ikke længere bidrage til de samlede data, men den vil stadig have skrivetilladelser."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Ingen appkilder"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Når du har givet apptilladelser til at skrive <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> data, vises kilderne her."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Sådan fungerer kilder og prioritering"</string>
 </resources>

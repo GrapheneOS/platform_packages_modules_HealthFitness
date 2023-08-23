@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Jumlah data"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Sumber apl"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Tambahkan sumber apl pada senarai tersebut untuk melihat cara jumlah data berubah. Pengalihan keluar apl daripada senarai ini akan menghentikan apl daripada menyumbang kepada jumlah tersebut tetapi apl masih memiliki kebenaran tulis."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Tiada sumber apl"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Sebaik sahaja anda memberikan kebenaran apl untuk menulis data <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, sumber akan dipaparkan di sini."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cara sumber &amp; keutamaan berfungsi"</string>
 </resources>

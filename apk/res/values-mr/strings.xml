@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"डेटा बेरीज"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"अ‍ॅप स्रोत"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"एकूण डेटा कसा बदलू शकतो हे पाहण्यासाठी सूचीमध्ये ॲप स्रोत जोडा. या सूचीमधून ॲप काढून टाकल्याने ते बेरजेमध्ये योगदान देण्यापासून थांबेल, पण तरीही त्याला राइट परवानग्या असतील."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"कोणतीही ॲप स्रोत नाहीत"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"तुम्ही ॲपला <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> डेटा राइट करण्याच्या परवानग्या दिल्यावर, स्रोत येथे दाखवली जातील."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"स्रोत &amp; प्राधान्य देणे कसे काम करते"</string>
 </resources>

@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Mga kabuuan ng data"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Mga source ng app"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Magdagdag ng mga source ng app sa listahan para makita kung paano posibleng magbago ang mga kabuuan ng data. Kapag naalis ang isang app sa listahang ito, mapipigilan ito sa pag-ambag sa mga kabuuan, pero magkakaroon pa rin ito ng mga write permission."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Walang source ng app"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kapag nagbigay ka na ng mga pahintulot sa app na mag-write ng data na <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, lalabas dito ang mga source."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Paano gumagana ang mga source at pagbibigay ng priyoridad"</string>
 </resources>

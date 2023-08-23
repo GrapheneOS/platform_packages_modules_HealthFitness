@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"డేటా మొత్తాలు"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"యాప్ సోర్స్‌లు"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"డేటా మొత్తాలు ఎలా మారతాయో చూడటానికి యాప్ సోర్స్‌లను లిస్ట్‌కు జోడించండి. ఈ లిస్ట్ నుండి యాప్‌ను తీసివేయడం వలన అది మొత్తాలకు కంట్రిబ్యూట్ చేయకుండా ఆపివేయబడుతుంది, కానీ అది ఇప్పటికీ రైట్ అనుమతులను కలిగి ఉంటుంది."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"యాప్ సోర్స్‌లు లేవు"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"మీరు <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> డేటాను రాయడానికి యాప్ అనుమతులు ఇచ్చిన తర్వాత, సోర్స్‌లు ఇక్కడ చూపబడతాయి."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"సోర్స్‌లు &amp; ప్రాధాన్యత ఎలా పని చేస్తాయి"</string>
 </resources>

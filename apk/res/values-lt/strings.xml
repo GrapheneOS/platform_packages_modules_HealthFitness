@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Bendri duomenys"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Programų šaltiniai"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Pridėkite prie sąrašo programų šaltinių, kad matytumėte, kaip gali keistis bendri duomenys. Pašalinus programą iš sąrašo, ji nebeprisidės prie bendrų duomenų, bet vis tiek turės redagavimo leidimus."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Nėra programų šaltinių"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kai suteiksite programos leidimus įrašyti kategorijos „<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>“ duomenis, šaltiniai bus rodomi čia."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Kaip veikia šaltiniai ir prioritetų nustatymas"</string>
 </resources>

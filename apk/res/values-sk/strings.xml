@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Celkové hodnoty údajov"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Zdrojové aplikácie"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Pridajte zdrojové aplikácie do zoznamu a zistite, ako sa celkové hodnoty údajov môžu meniť. Ak aplikáciu odstránite z tohto zoznamu, už nebude prispievať k celkovým hodnotám, ale stále bude mať povolenia na zápis."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Žiadne zdroje týkajúce sa aplikácií"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Tu sa budú zobrazovať zdroje, keď udelíte povolenia aplikácie zapisovať údaje v kategórii <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Ako fungujú zdroje a priorizácia"</string>
 </resources>

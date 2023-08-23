@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"ဒေတာစုစုပေါင်း"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"အက်ပ်ရင်းမြစ်များ"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"ဒေတာစုစုပေါင်း မည်သို့ပြောင်းလဲနိုင်ကြောင်း မြင်ရရန် အက်ပ်ရင်းမြစ်များကို စာရင်းတွင် ထည့်နိုင်သည်။ အက်ပ်ကို စာရင်းမှဖယ်ရှားခြင်းသည် စုစုပေါင်းတွင် ၎င်းပံ့ပိုးပါဝင်နေသည်ကို ရပ်လိုက်မည်ဖြစ်သော်လည်း ရေးခွင့်များရှိပါဦးမည်။"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"အက်ပ်ရင်းမြစ်များ မရှိပါ"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ဒေတာရေးရန် အက်ပ်ခွင့်ပြုချက်များ ပေးလိုက်ပါက ရင်းမြစ်များကို ဤနေရာတွင် ပြမည်။"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ရင်းမြစ်များနှင့် ဦးစားပေးခြင်း အလုပ်လုပ်ပုံ"</string>
 </resources>

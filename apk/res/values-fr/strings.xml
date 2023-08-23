@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Totaux de données"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Sources d\'applications"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Ajoutez des sources d\'applications à la liste pour voir comment les totaux de données peuvent changer. Supprimer une application de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours d\'autorisations d\'écriture."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Aucune source d\'application"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Une fois que vous aurez accordé des autorisations d\'application pour écrire des données <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, des sources s\'afficheront ici."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Fonctionnement de la priorisation des sources"</string>
 </resources>

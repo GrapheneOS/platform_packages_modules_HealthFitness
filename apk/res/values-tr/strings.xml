@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Veri toplamları"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Uygulama kaynakları"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Veri toplamlarının nasıl değişebileceğini görmek için listeye uygulama kaynakları ekleyin. Bir uygulamayı bu listeden kaldırdığınızda artık o uygulama toplamları etkilemeyecek, ancak yazma izinleri yine de olacaktır."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Uygulama kaynağı yok"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Uygulamaya <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> verisi yazma izni verdiğinizde kaynaklar burada gösterilir."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Kaynaklar ve önceliklendirme nasıl çalışır?"</string>
 </resources>

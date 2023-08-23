@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Өгөгдлийн нийт дүн"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Аппын эх сурвалж"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Өгөгдлийн нийт дүн хэрхэн өөрчлөгдөж болохыг харахын тулд жагсаалтад аппын эх сурвалж нэмнэ үү. Энэ жагсаалтаас апп хасах нь үүнийг нийт дүнд хувь нэмэр оруулахыг зогсоох хэдий ч энэ нь бичих зөвшөөрөлтэй хэвээр байна."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Аппын ямар ч эх сурвалж байхгүй"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Таныг аппад <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>-н өгөгдлийг бичих зөвшөөрөл өгсний дараа эх сурвалжийг энд харуулна."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Эх сурвалж болон чухалчлал хэрхэн ажилладаг вэ?"</string>
 </resources>

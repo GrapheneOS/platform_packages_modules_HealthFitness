@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"የውሂብ ጠቅላላ"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"የመተግበሪያ ምንጮች"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"እንዴት የውሂብ ጠቅላላው ሊለወጥ እንደሚችል ለመመልከት የመተግበሪያ ምንጮችን ወደ ዝርዝሩ ያክሉ። አንድ መተግበሪያን ከዚህ ዝርዝር ማስወገድ ለጠቅላላው አስተዋጽዖ ከማድረግ ያቆማል፣ ነገር ግን የመፃፍ ፈቃዶችን ይኖረዋል።"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"ምንም የመተግበሪያ ምንጮች የሉም"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"አንዴ የ<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ውሂብን እንዲጽፍ የመተግበሪያ ፈቃዶችን ከሰጡ ምንጮች እዚህ ይታያሉ።"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ምንጮች እና ቅድሚያ አሰጣጥ እንዴት እንደሚሰሩ"</string>
 </resources>

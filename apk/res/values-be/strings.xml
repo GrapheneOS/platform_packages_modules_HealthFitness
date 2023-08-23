@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Сумарныя паказчыкі"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Праграмы – крыніцы даных"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Дадайце праграмы-крыніцы ў спіс, каб пабачыць, як зменяцца сумарныя паказчыкі. Калі выдаліць праграму з гэтага спіса, даныя з яе не будуць брацца пад увагу пры разліку сумарных паказчыкаў, але дадзеныя ёй дазволы на запіс не адклікаюцца."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Няма праграм – крыніц даных"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Тут у якасці крыніц будуць паказвацца праграмы, якім вы дазволіце запісваць даныя катэгорыі \"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>\"."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Як працуюць крыніцы даных і прыярытэт"</string>
 </resources>

@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"数据总值"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"应用来源"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"将应用来源添加到列表中，查看数据总值如何变化。从该列表中删除某应用后，相应应用的数据将不再计入总值，但该应用仍具有写入权限。"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"没有任何应用来源"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"您为应用授予写入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>数据的权限后，系统就会在这里显示来源。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"来源和优先级的运作方式"</string>
 </resources>

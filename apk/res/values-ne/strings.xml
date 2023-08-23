@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"कुल डेटा"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"एपका स्रोतहरू"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"कुल डेटा कसरी परिवर्तन हुन्छ भनी हेर्न सूचीमा एपका स्रोतहरू हाल्नुहोस्। यो सूचीबाट एप हटाउनुभयो भने कुल डेटामा यसले गर्ने योगदान रोकिने छ तर यो एपसँग भने राइट गर्ने अनुमति रहिरहने छ।"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"डेटाको स्रोतका रूपमा कुनै पनि एप उपलब्ध छैन"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"तपाईंले एपलाई <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> सम्बन्धी डेटा राइट गर्ने अनुमति दिएपछि स्रोतहरू यहाँ देखिने छन्।"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"स्रोत तथा प्राथमिकताले काम गर्ने तरिका"</string>
 </resources>

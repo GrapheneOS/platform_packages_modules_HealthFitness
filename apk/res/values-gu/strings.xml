@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"ડેટાની કુલ સંખ્યા"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"ઍપ સૉર્સ"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"ડેટાની કુલ સંખ્યામાં કેવી રીતે ફેરફાર થઈ શકે છે તે જોવા માટે સૂચિમાં ઍપ સૉર્સ ઉમેરો. આ સૂચિમાંથી કોઈ ઍપ કાઢી નાખવાથી, તે ઍપ કુલ સંખ્યામાં યોગદાન આપતી અટકી જશે, પરંતુ તે હજી પણ રાઇટ પરવાનગી ધરાવશે."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"કોઈ ઍપ સૉર્સ નથી"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"એકવાર તમે ઍપને <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>નો ડેટા લખવાની પરવાનગીઓ આપો, ત્યાર બાદ સૉર્સ અહીં દેખાશે."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"સૉર્સના &amp; પ્રાધાન્યતા આપવાના સેટિંગની કાર્ય કરવાની રીત"</string>
 </resources>

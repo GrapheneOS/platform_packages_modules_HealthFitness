@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Totali dei dati"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Origini di app"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Aggiungi origini di app all\'elenco per vedere come i totali dei dati possono cambiare. Se rimuovi un\'app da questo elenco, non potrà più contribuire ai totali, ma continuerà ad avere i permessi di scrittura."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Nessuna origine di app"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Dopo aver concesso all\'app le autorizzazioni di scrittura di dati <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, le origini verranno visualizzate qui."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Come funzionano le origini e la prioritizzazione"</string>
 </resources>

@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"දත්ත එකතු"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"යෙදුම් මූලාශ්‍ර"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"දත්ත එකතුව වෙනස් විය හැකි ආකාරය බැලීමට ලැයිස්තුවට යෙදුම් මූලාශ්‍ර එක් කරන්න. මෙම ලැයිස්තුවෙන් යෙදුමක් ඉවත් කිරීමෙන් එය එකතුවට දායක වීම නවත්වනු ඇති නමුත්, එයට තවමත් ලිවීමේ අවසර ඇත."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"යෙදුම් මූලාශ්‍ර නැත"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> දත්ත ලිවීමට ඔබ යෙදුම් අවසර දුන් පසු මූලාශ්‍ර මෙහි පෙන්වනු ලැබේ."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"මූලාශ්‍ර සහ ප්‍රමුඛතා දීම ක්‍රියා කරන ආකාරය"</string>
 </resources>

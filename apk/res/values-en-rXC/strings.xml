@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‏‏‎‎‏‏‎‏‏‎‏‎‏‏‏‏‎‏‎‏‏‎‏‎‏‎‎‏‏‏‏‏‎‏‏‎‏‎‎‎‎‏‎‎‎‏‏‎‎‎‎‎‏‎‏‏‎‏‏‎‎‏‎Data totals‎‏‎‎‏‎"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‎‏‏‎‎‎‎‎‎‎‎‏‏‏‎‎‎‏‎‏‎‏‏‏‎‎‎‎‎‏‎‎‏‎‎‏‏‏‏‎‏‎‏‎‎‏‏‏‎‏‏‎‏‏‏‏‎‏‎‎‎‏‎App sources‎‏‎‎‏‎"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‎‏‏‎‎‏‎‎‎‎‎‏‎‎‎‏‏‏‏‎‏‏‎‎‎‏‏‏‏‏‎‎‏‎‎‎‎‏‏‎‎‏‎‎‎‎‎‏‎‏‏‏‏‎‏‏‏‏‏‏‏‏‎Add app sources to the list to see how the data totals can change. Removing an app from this list will stop it from contributing to totals, but it will still have write permissions.‎‏‎‎‏‎"</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‎‏‏‏‎‏‎‎‏‎‏‏‏‎‎‏‏‏‎‏‏‎‎‎‎‎‏‏‏‏‎‏‎‏‎‏‎‎‏‎‎‏‎‏‎‏‎‎‏‎‏‏‎‎‏‎‎‏‏‎‏‎‎‎No app sources‎‏‎‎‏‎"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‏‏‏‎‏‏‏‏‏‏‏‎‏‏‏‏‎‎‎‏‎‎‏‎‎‎‎‎‎‎‏‎‎‏‎‎‎‏‎‏‎‎‎‏‎‎‏‎‏‏‏‎‏‏‏‏‏‎‎‏‏‎‎Once you give app permissions to write ‎‏‎‎‏‏‎<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>‎‏‎‎‏‏‏‎ data, sources will show here.‎‏‎‎‏‎"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‏‎‏‏‎‎‎‏‏‎‎‏‏‏‏‏‏‏‏‏‎‏‎‏‏‎‏‏‎‏‎‏‎‏‏‏‏‎‎‎‏‏‏‏‏‎‎‎‎‎‎‏‏‏‎‎‎‏‎‏‎‏‏‎‏‎‏‎‏‎‏‏‏‎‏‎‎‏‎‏‏‎How sources &amp; prioritization work‎‏‎‎‏‎"</string>
 </resources>

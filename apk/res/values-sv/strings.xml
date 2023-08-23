@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Sammanställd data"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Appkällor"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Lägg till appkällor här för att se hur det kan påverka den sammanställda datan. Om du tar bort en app från den här listan slutar den att bidra till sammanställningen, men den har fortfarande skrivbehörigheter."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Inga appkällor"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"När du ger appar behörighet att skriva <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>-data visas källorna här."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Så fungerar källor och prioritering"</string>
 </resources>

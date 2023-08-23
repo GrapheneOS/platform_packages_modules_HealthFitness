@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Adatösszesítések"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Alkalmazásforrások"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Adjon alkalmazásforrásokat a listához annak megtekintéséhez, hogy miként változhatnak az adatösszesítések. Ha eltávolít egy alkalmazást erről a listáról, akkor a továbbiakban az app adatai már nem szerepelnek az összesítésben, de az app írási engedélye megmarad."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Nincsenek alkalmazásforrások"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Miután alkalmazásengedélyeket adott a(z) <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> kategóriájú adatok írására, itt jelennek meg a források."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Hogyan működnek a források és a priorizálás?"</string>
 </resources>

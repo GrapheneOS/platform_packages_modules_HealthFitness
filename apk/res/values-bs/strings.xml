@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Ukupni podaci"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Izvori aplikacija"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Dodajte izvore aplikacija na listu da vidite kako se ukupni podaci mogu promijeniti. Uklanjanje aplikacije s liste će zaustaviti njen doprinos u ukupnim podacima, ali će i dalje imati odobrenja za pisanje."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Nema nijednog izvora aplikacija"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Nakon što dodate odobrenja za aplikaciju da zapisuje podatke iz kategorije <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, izvori će se prikazivati ovdje."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Kako funkcioniraju izvori i dodjeljivanje prioriteta"</string>
 </resources>

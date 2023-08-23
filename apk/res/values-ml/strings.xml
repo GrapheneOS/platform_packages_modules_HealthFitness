@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"ഡാറ്റയുടെ ആകെത്തുക"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"ആപ്പ് ഉറവിടങ്ങൾ"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"ഡാറ്റയുടെ ആകെത്തുക എങ്ങനെ മാറുമെന്ന് കാണാൻ ആപ്പ് ഉറവിടങ്ങൾ ലിസ്റ്റിലേക്ക് ചേർക്കുക. ഈ ലിസ്റ്റിൽ നിന്ന് ഒരു ആപ്പ് നീക്കം ചെയ്യുന്നത്, മൊത്തം തുകയിലേക്ക് അത് സംഭാവന ചെയ്യുന്നത് നിർത്തും, എന്നാൽ അതിന് തുടർന്നും റൈറ്റ് അനുമതികൾ ഉണ്ടായിരിക്കും."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"ആപ്പ് ഉറവിടങ്ങൾ ഒന്നുമില്ല"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ഡാറ്റ റൈറ്റ് ചെയ്യുന്നതിന് നിങ്ങൾ ആപ്പ് അനുമതികൾ നൽകിയാൽ, ഉറവിടങ്ങൾ ഇവിടെ കാണിക്കുന്നതാണ്."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ഉറവിടങ്ങളും മുൻഗണനകളും എങ്ങനെ പ്രവർത്തിക്കുന്നു"</string>
 </resources>
