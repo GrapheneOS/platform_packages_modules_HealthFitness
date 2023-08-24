@@ -20,6 +20,7 @@
     <!-- Health-related permissions. -->
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
     <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED"/>
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"/>
 
     <application>
         <uses-library android:name="android.test.runner"/>
@@ -39,5 +40,14 @@
                 <action android:name="any.action"/>
             </intent-filter>
         </activity>
+
+        <receiver android:name=".TestAppReceiver"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="action.READ_RECORDS_FOR_OTHER_APP" />
+                <action android:name="action.AGGREGATE" />
+                <action android:name="action.GET_CHANGE_LOGS" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
