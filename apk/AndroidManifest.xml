@@ -29,6 +29,9 @@
     <uses-permission android:name="android.permission.health.START_ONBOARDING" />
     <!-- Used to enable and update safety-center entry points  -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Used to show permissions for apps that have not declared VIEW_PERMISSION_USAGE but
+     still have at least one permission granted -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
 
     <application
         android:name=".HealthConnectApplication"
