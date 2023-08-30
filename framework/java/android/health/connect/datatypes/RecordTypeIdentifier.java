@@ -337,11 +337,11 @@ public final class RecordTypeIdentifier {
     public static final int RECORD_TYPE_EXERCISE_SESSION = 37;
 
     /**
-     * Captures user sleep session. Each session requires start and end time and a list of {@link
-     * SleepSessionRecord.Stage}.
+     * Captures the user's sleep length and its stages. Each record represents a time interval for a
+     * full sleep session.
      *
-     * <p>Each {@link SleepSessionRecord.Stage} interval should be between the start time and the
-     * end time of the session. Stages within one session must not overlap.
+     * <p>All {@link SleepSessionRecord.Stage} time intervals should fall within the sleep session
+     * interval. Time intervals for stages don't need to be continuous but shouldn't overlap.
      *
      * @see SleepSessionRecord
      */
