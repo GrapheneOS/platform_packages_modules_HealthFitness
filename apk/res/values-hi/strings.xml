@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"डेटा सोर्स की कुल संख्या"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"ऐप्लिकेशन सोर्स"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"सूची में सोर्स के तौर पर कोई ऐप्लिकेशन जोड़ें, ताकि देखा जा सके कि डेटा सोर्स की कुल संख्या में कैसे बदलाव होता है. सूची से किसी भी ऐप्लिकेशन को हटाने पर, डेटा के कुल सोर्स में कोई डेटा नहीं जाएगा. हालांकि, ऐप्लिकेशन के पास अब भी डेटा में बदलाव करने की अनुमति होगी."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"डेटा सोर्स के तौर पर कोई ऐप्लिकेशन मौजूद नहीं है"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"ऐप्लिकेशन को <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> के डेटा में बदलाव करने की अनुमति देने पर, सोर्स यहां दिखेंगे."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"सोर्स और प्राथमिकता की सेटिंग कैसे काम करती है"</string>
 </resources>

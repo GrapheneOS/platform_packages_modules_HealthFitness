@@ -71,7 +71,7 @@
     <string name="inactive_apps" msgid="8956546286760797760">"Neaktivní aplikace"</string>
     <string name="inactive_apps_message" msgid="4666501359079362486">"Tyto aplikace již nemohou zapisovat data typu <xliff:g id="DATA_TYPE">%s</xliff:g>, ale stále mají data uložená ve službě Health Connect"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Aplikace už nemohou číst ani zapisovat typ dat <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> a v aplikaci Health Connect nejsou uložena žádná data typu <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>"</string>
-    <string name="data_access_exercise_description" msgid="6868583522699443570">"Tato data zahrnují informace jako čas aktivity, typ cvičení, počet kol, počet sérií nebo počet plaveckých temp"</string>
+    <string name="data_access_exercise_description" msgid="6868583522699443570">"Tato data zahrnují informace jako čas aktivity, druh cvičení, počet kol, počet sérií nebo počet plaveckých temp"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Tato data zahrnují informace jako fáze spánku a období spánku"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Zobrazit všechny záznamy"</string>
     <string name="delete_permission_type_data_button" msgid="2270819954943391797">"Smazat tato data"</string>
