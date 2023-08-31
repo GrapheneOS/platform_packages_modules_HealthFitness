@@ -36,7 +36,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/no_data"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textAppearance="?attr/textAppearanceSummaryLarge"/>
 
     <TextView
         android:id="@+id/error_view"
@@ -44,11 +45,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/default_error"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textAppearance="?attr/textAppearanceSummaryLarge"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/data_entries_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    
 </LinearLayout>
