@@ -16,12 +16,15 @@
 
 package com.android.server.healthconnect;
 
+import android.os.UserHandle;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 
 public final class TestUtils {
+    public static final UserHandle TEST_USER = UserHandle.of(UserHandle.myUserId());
 
     public static void waitForTaskToFinishSuccessfully(Runnable task) throws TimeoutException {
         Instant startTime = Instant.now();
