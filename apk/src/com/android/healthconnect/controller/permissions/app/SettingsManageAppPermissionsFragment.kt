@@ -33,18 +33,16 @@
  */
 package com.android.healthconnect.controller.permissions.app
 
-import android.app.Activity
 import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
-import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceGroup
 import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.migration.MigrationActivity
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.MIGRATION_ACTIVITY_INTENT
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationInProgressDialog
@@ -68,6 +66,7 @@ import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
+import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -94,7 +93,9 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private lateinit var packageName: String
-    private val viewModel: AppPermissionViewModel by viewModels()
+    private lateinit var appName: String
+    private var isPackageSupported = true
+    private val viewModel: AppPermissionViewModel by activityViewModels()
     private val permissionMap: MutableMap<HealthPermission, SwitchPreference> = mutableMapOf()
     private val migrationViewModel: MigrationViewModel by viewModels()
 
@@ -209,37 +210,49 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     private fun setupHeader() {
         viewModel.appInfo.observe(viewLifecycleOwner) { appMetadata ->
             packageName = appMetadata.packageName
-            setupAllowAllPreference(appMetadata.appName)
+            appName = appMetadata.appName
+            setupAllowAllPreference()
             setupFooter(appMetadata.appName)
             header?.apply {
-                setIcon(appMetadata.icon)
-                setTitle(appMetadata.appName)
+                icon = appMetadata.icon
+                title = appMetadata.appName
             }
         }
     }
 
     private fun setupFooter(appName: String) {
-        viewModel.atLeastOnePermissionGranted.observe(viewLifecycleOwner) { isAtLeastOneGranted ->
-            updateFooter(isAtLeastOneGranted, appName)
-        }
-    }
-
-    private fun setupAllowAllPreference(appName: String) {
-        allowAllPreference?.addOnSwitchChangeListener { preference, grantAll ->
-            if (preference.isPressed) {
-                if (grantAll) {
-                    viewModel.grantAllPermissions(packageName)
-                } else {
-                    showRevokeAllPermissions(appName)
-                }
+        if (viewModel.isPackageSupported(packageName)) {
+            viewModel.atLeastOnePermissionGranted.observe(viewLifecycleOwner) { isAtLeastOneGranted ->
+                updateFooter(isAtLeastOneGranted, appName)
             }
-        }
-        viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
-            allowAllPreference?.isChecked = isAllGranted
+        } else {
+            preferenceScreen.removePreferenceRecursively(FOOTER)
         }
     }
 
-    private fun showRevokeAllPermissions(appName: String) {
+    private val onSwitchChangeListener = OnMainSwitchChangeListener { switchView, isChecked ->
+        if (isChecked) {
+            val permissionsUpdated = viewModel.grantAllPermissions(packageName)
+            if (!permissionsUpdated) {
+                switchView.isChecked = false
+                Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            showRevokeAllPermissions()
+        }
+    }
+
+    private fun setupAllowAllPreference() {
+        allowAllPreference?.addOnSwitchChangeListener(onSwitchChangeListener)
+        viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) {
+            isAllGranted ->
+            allowAllPreference?.removeOnSwitchChangeListener(onSwitchChangeListener)
+            allowAllPreference?.isChecked = isAllGranted
+            allowAllPreference?.addOnSwitchChangeListener(onSwitchChangeListener)
+        }
+    }
+
+    private fun showRevokeAllPermissions() {
         childFragmentManager.setFragmentResultListener(
             DisconnectDialogFragment.DISCONNECT_CANCELED_EVENT, this) { _, _ ->
                 allowAllPreference?.isChecked = true
@@ -251,6 +264,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
                     Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
                         .show()
                 }
+
                 if (bundle.containsKey(DisconnectDialogFragment.KEY_DELETE_DATA) &&
                     bundle.getBoolean(DisconnectDialogFragment.KEY_DELETE_DATA)) {
                     viewModel.deleteAppData(packageName, appName)
@@ -264,6 +278,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     private fun updatePermissions(permissions: List<HealthPermission>) {
         readPermissionCategory?.removeAll()
         writePermissionCategory?.removeAll()
+
         permissionMap.clear()
 
         permissions
@@ -304,6 +319,10 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
                 permissionMap[permission] = switchPreference
                 category?.addPreference(switchPreference)
             }
+
+        // Hide category if it contains no permissions
+        readPermissionCategory?.apply { isVisible = (preferenceCount != 0) }
+        writePermissionCategory?.apply { isVisible = (preferenceCount != 0) }
     }
 
     private fun updateFooter(isAtLeastOneGranted: Boolean, appName: String) {

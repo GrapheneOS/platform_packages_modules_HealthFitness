@@ -16,11 +16,20 @@
 package com.android.healthconnect.controller.tests.permissions.connectedapps.settings
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
+import android.content.pm.ActivityInfo
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
@@ -38,6 +47,7 @@ import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -50,7 +60,8 @@ import java.util.TimeZone
 @HiltAndroidTest
 class SettingsManageAppPermissionsFragmentTest {
 
-    @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
 
     @BindValue
     val viewModel: AppPermissionViewModel = Mockito.mock(AppPermissionViewModel::class.java)
@@ -77,6 +88,11 @@ class SettingsManageAppPermissionsFragmentTest {
                     TEST_APP_NAME,
                     context.getDrawable(R.drawable.health_connect_logo)))
         }
+
+    }
+
+    @Test
+    fun fragment_starts() {
         val writePermission =
             HealthPermission(HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)
         val readPermission =
@@ -85,16 +101,136 @@ class SettingsManageAppPermissionsFragmentTest {
             MutableLiveData(listOf(writePermission, readPermission))
         }
         whenever(viewModel.grantedPermissions).then { MutableLiveData(setOf(writePermission)) }
-    }
 
-    @Test
-    fun fragment_starts() {
-        launchFragment<SettingsManageAppPermissionsFragment>(
+        val scenario = launchFragment<SettingsManageAppPermissionsFragment>(
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME))
+        scenario.onActivity { activity -> activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT }
 
         onView(withText("Allow all")).check(matches(isDisplayed()))
         onView(withText("Allowed to read")).check(matches(isDisplayed()))
         onView(withText("Allowed to write")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun doesNotShowWriteHeader_whenNoWritePermissions() {
+        val readPermission =
+            HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.READ)
+        whenever(viewModel.appPermissions).then {
+            MutableLiveData(listOf(readPermission))
+        }
+        whenever(viewModel.grantedPermissions).then { MutableLiveData(setOf(readPermission)) }
+
+        val scenario = launchFragment<SettingsManageAppPermissionsFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME))
+        scenario.onActivity { activity -> activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT }
+
+        onView(withText("Allow all")).check(matches(isDisplayed()))
+        onView(withText("Allowed to read")).check(matches(isDisplayed()))
+        onView(withText("Allowed to write")).check(doesNotExist())
+    }
+
+    @Test
+    fun doesNotShowReadHeader_whenNoReadPermissions() {
+        val writePermission =
+            HealthPermission(HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)
+        whenever(viewModel.appPermissions).then {
+            MutableLiveData(listOf(writePermission))
+        }
+        whenever(viewModel.grantedPermissions).then { MutableLiveData(setOf(writePermission)) }
+
+        val scenario = launchFragment<SettingsManageAppPermissionsFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME))
+        scenario.onActivity { activity -> activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT }
+
+        onView(withText("Allow all")).check(matches(isDisplayed()))
+        onView(withText("Allowed to read")).check(doesNotExist())
+        onView(withText("Allowed to write")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun unsupportedPackage_grantedPermissionsNotLoaded_onOrientationChange() {
+        val readStepsPermission = HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.READ)
+        val writeSleepPermission = HealthPermission(HealthPermissionType.SLEEP, PermissionsAccessType.WRITE)
+
+        whenever(viewModel.appPermissions).then {
+            MutableLiveData(listOf(readStepsPermission, writeSleepPermission))
+        }
+        whenever(viewModel.grantedPermissions).then {
+            MutableLiveData(setOf(writeSleepPermission, readStepsPermission))
+        }
+        whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
+
+        val scenario = launchFragment<SettingsManageAppPermissionsFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME))
+        scenario.onActivity { activity -> activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT }
+
+        onView(withText("Allow all")).check(matches(isDisplayed()))
+        onView(withText("Sleep")).check(matches(isDisplayed()))
+        onView(withText("Steps")).check(matches(isDisplayed()))
+        onView(withText("Sleep")).perform(click())
+        onView(withText("Sleep")).check(matches(not(isChecked())))
+
+        scenario.onActivity { activity -> activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE }
+        onIdle()
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+        onIdle()
+        onView(withText("Sleep")).perform(scrollTo()).check(matches(not(isChecked())))
+    }
+
+    @Test
+    fun unsupportedPackage_doesNotShowFooter() {
+        val readStepsPermission = HealthPermission(HealthPermissionType.STEPS, PermissionsAccessType.READ)
+        val writeSleepPermission = HealthPermission(HealthPermissionType.SLEEP, PermissionsAccessType.WRITE)
+
+        whenever(viewModel.appPermissions).then {
+            MutableLiveData(listOf(readStepsPermission, writeSleepPermission))
+        }
+        whenever(viewModel.grantedPermissions).then {
+            MutableLiveData(setOf(writeSleepPermission, readStepsPermission))
+        }
+        whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
+
+        val scenario = launchFragment<SettingsManageAppPermissionsFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME))
+        scenario.onActivity { activity -> activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT }
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+        onView(
+            withText(
+                "$TEST_APP_NAME can read data added after October 20, 2022" +
+                        "\n\n" +
+                        "Data you share with $TEST_APP_NAME is covered by their privacy policy"))
+        .check(doesNotExist())
+        onView(withText("Read privacy policy")).check(doesNotExist())
+    }
+
+    @Test
+    fun supportedPackage_showsFooter() {
+        val writePermission =
+            HealthPermission(HealthPermissionType.EXERCISE, PermissionsAccessType.WRITE)
+        val readPermission =
+            HealthPermission(HealthPermissionType.DISTANCE, PermissionsAccessType.READ)
+        whenever(viewModel.appPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        whenever(viewModel.grantedPermissions).then { MutableLiveData(setOf(writePermission)) }
+        whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
+
+        val scenario = launchFragment<SettingsManageAppPermissionsFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME))
+        scenario.onActivity { activity -> activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT }
+
+        onView(
+            withText(
+                "$TEST_APP_NAME can read data added after October 20, 2022" +
+                        "\n\n" +
+                        "Data you share with $TEST_APP_NAME is covered by their privacy policy"))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+        onView(withText("Read privacy policy")).perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 }
 
