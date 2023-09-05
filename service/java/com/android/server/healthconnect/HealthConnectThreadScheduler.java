@@ -186,6 +186,9 @@ public final class HealthConnectThreadScheduler {
         Objects.requireNonNull(activityManager);
         List<ActivityManager.RunningAppProcessInfo> runningAppProcesses =
                 activityManager.getRunningAppProcesses();
+        if (runningAppProcesses == null) {
+            return false;
+        }
         for (ActivityManager.RunningAppProcessInfo info : runningAppProcesses) {
             if (info.uid == uid
                     && info.importance
