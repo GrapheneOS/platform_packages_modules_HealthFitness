@@ -69,7 +69,7 @@
     <string name="inactive_apps_message" msgid="4666501359079362486">"Aplikasi ini tidak dapat menulis data <xliff:g id="DATA_TYPE">%s</xliff:g> lagi, tetapi masih memiliki data yang disimpan di Health Connect"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Aplikasi tidak dapat lagi membaca dan menulis <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, dan tidak ada data <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> yang disimpan di Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Data ini termasuk informasi seperti waktu aktif, jenis olahraga, putaran, repetisi, sesi, atau gaya renang"</string>
-    <string name="data_access_sleep_description" msgid="74293126050011153">"Data ini termasuk informasi seperti tahapan tidur dan sesi tidur"</string>
+    <string name="data_access_sleep_description" msgid="74293126050011153">"Data ini termasuk informasi seperti fase tidur dan sesi tidur"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Lihat semua entri"</string>
     <string name="delete_permission_type_data_button" msgid="2270819954943391797">"Hapus data ini"</string>
     <string name="permgrouplab_health" msgid="468961137496587966">"Health Connect"</string>
