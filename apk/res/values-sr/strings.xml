@@ -224,10 +224,10 @@
     <string name="oxygen_saturation_lowercase_label" msgid="7264179897533866327">"засићеност кисеоником"</string>
     <string name="oxygen_saturation_read_content_description" msgid="4756434113425028212">"Читање података о засићености кисеоником"</string>
     <string name="oxygen_saturation_write_content_description" msgid="7189901097196830875">"Уписивање података о засићености кисеоником"</string>
-    <string name="respiratory_rate_uppercase_label" msgid="4609498171205294389">"Респираторна брзина"</string>
-    <string name="respiratory_rate_lowercase_label" msgid="8138249029197360098">"респираторна брзина"</string>
-    <string name="respiratory_rate_read_content_description" msgid="8545898979648419722">"Читање података о респираторној брзини"</string>
-    <string name="respiratory_rate_write_content_description" msgid="7689533746809591931">"Уписивање података о респираторној брзини"</string>
+    <string name="respiratory_rate_uppercase_label" msgid="4609498171205294389">"Брзина дисања"</string>
+    <string name="respiratory_rate_lowercase_label" msgid="8138249029197360098">"брзина дисања"</string>
+    <string name="respiratory_rate_read_content_description" msgid="8545898979648419722">"Читање података о брзини дисања"</string>
+    <string name="respiratory_rate_write_content_description" msgid="7689533746809591931">"Уписивање података о брзини дисања"</string>
     <string name="resting_heart_rate_uppercase_label" msgid="5700827752396195453">"Пулс у мировању"</string>
     <string name="resting_heart_rate_lowercase_label" msgid="4533866739695973169">"пулс у мировању"</string>
     <string name="resting_heart_rate_read_content_description" msgid="1068160055773401020">"Читање података о пулсу у мировању"</string>
