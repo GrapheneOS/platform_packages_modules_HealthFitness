@@ -121,8 +121,17 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
                                 + userHandle);
             }
 
-            mPermissionHelper.revokeAllHealthPermissions(
-                    packageName, "Health permissions usage activity has been removed.", userHandle);
+            try {
+                mPermissionHelper.revokeAllHealthPermissions(
+                        packageName,
+                        "Health permissions usage activity has been removed.",
+                        userHandle);
+            } catch (IllegalArgumentException ex) {
+                // Catch IllegalArgumentException to fix a crash (b/24679220) due to race condition
+                // in case this `revokeAllHealthPermissions()` method is called right after the
+                // client app is uninstalled.
+                Slog.e(TAG, "Revoking all health permissions failed", ex);
+            }
         }
     }
 
