@@ -22,6 +22,10 @@ import static android.healthconnect.cts.TestUtils.isHardwareAutomotive;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static java.time.ZoneOffset.UTC;
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.HOURS;
+
 import android.content.Context;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
@@ -796,10 +800,10 @@ public class StepsRecordTest {
         List<Record> record =
                 Arrays.asList(
                         new StepsRecord.Builder(
-                                new Metadata.Builder().build(),
-                                start,
-                                start.plus(1, ChronoUnit.HOURS),
-                                600)
+                                        new Metadata.Builder().build(),
+                                        start,
+                                        start.plus(1, HOURS),
+                                        600)
                                 .build());
         AggregateRecordsRequest<Long> request =
                 new AggregateRecordsRequest.Builder<Long>(
@@ -872,14 +876,14 @@ public class StepsRecordTest {
         Instant start = Instant.now().minus(1, ChronoUnit.DAYS);
         Instant end = Instant.now();
         for (int i = 0; i < 10; i++) {
-            Instant st = start.plus(i, ChronoUnit.HOURS);
+            Instant st = start.plus(i, HOURS);
             List<Record> records =
                     Arrays.asList(
                             new StepsRecord.Builder(
-                                    new Metadata.Builder().build(),
-                                    st,
-                                    st.plus(1, ChronoUnit.HOURS),
-                                    1000)
+                                            new Metadata.Builder().build(),
+                                            st,
+                                            st.plus(1, HOURS),
+                                            1000)
                                     .build());
             TestUtils.insertRecords(records);
             Thread.sleep(100);
@@ -918,12 +922,12 @@ public class StepsRecordTest {
         List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
                 TestUtils.getAggregateResponseGroupByDuration(
                         new AggregateRecordsRequest.Builder<Long>(
-                                new TimeInstantRangeFilter.Builder()
-                                        .setStartTime(end.minus(24, ChronoUnit.HOURS))
-                                        .setEndTime(
-                                                end.minus(22, ChronoUnit.HOURS)
-                                                        .minus(30, ChronoUnit.MINUTES))
-                                        .build())
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(end.minus(24, HOURS))
+                                                .setEndTime(
+                                                        end.minus(22, HOURS)
+                                                                .minus(30, ChronoUnit.MINUTES))
+                                                .build())
                                 .addAggregationType(STEPS_COUNT_TOTAL)
                                 .build(),
                         Duration.ofHours(1));
@@ -1159,6 +1163,75 @@ public class StepsRecordTest {
         testAggregationLocalTimeOffset(ZoneOffset.ofHours(4));
     }
 
+    @Test
+    public void testAggregateGroupByMonthPeriod_slicedCorrectly() throws Exception {
+        Instant startTime = Instant.now().minus(40, DAYS);
+        LocalDateTime startLocalTime =
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(startTime.toEpochMilli()), UTC);
+        Instant endTime = startTime.plus(35, DAYS);
+        LocalDateTime endLocalTime =
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(endTime.toEpochMilli()), UTC);
+        Instant bucketBoundary = startLocalTime.plusMonths(1).toInstant(UTC);
+        int stepsCount1 = 123;
+        int stepsCount2 = 456;
+        int stepsCount3 = 789;
+        int stepsCount4 = 951;
+
+        // CTS tests only have permission to read data from past 30 days
+        StepsRecord month1Steps1 =
+                getStepsRecord(
+                        Instant.now(),
+                        stepsCount1,
+                        /* daysPast= */ 30,
+                        /* durationHours= */ 1,
+                        UTC);
+        StepsRecord month1Steps2 =
+                getStepsRecord(
+                        bucketBoundary.minus(1, HOURS),
+                        stepsCount2,
+                        /* daysPast= */ 0,
+                        /* durationHours= */ 1,
+                        UTC);
+        StepsRecord month2Steps1 =
+                getStepsRecord(
+                        bucketBoundary,
+                        stepsCount3,
+                        /* daysPast= */ 0,
+                        /* durationHours= */ 1,
+                        UTC);
+        StepsRecord month2Steps2 =
+                getStepsRecord(
+                        endTime.minus(1, HOURS),
+                        stepsCount4,
+                        /* daysPast= */ 0,
+                        /* durationHours= */ 1,
+                        UTC);
+        TestUtils.insertRecords(
+                Arrays.asList(month1Steps1, month1Steps2, month2Steps1, month2Steps2));
+
+        // Due to the Parcel implementation, we have to set local time at UTC zone
+        AggregateRecordsRequest<Long> request =
+                new AggregateRecordsRequest.Builder<Long>(
+                                new LocalTimeRangeFilter.Builder()
+                                        .setStartTime(startLocalTime)
+                                        .setEndTime(endLocalTime)
+                                        .build())
+                        .addAggregationType(STEPS_COUNT_TOTAL)
+                        .build();
+        List<AggregateRecordsGroupedByPeriodResponse<Long>> aggregateResponse =
+                TestUtils.getAggregateResponseGroupByPeriod(request, Period.ofMonths(1));
+
+        assertThat(aggregateResponse.size()).isEqualTo(2);
+        assertThat(aggregateResponse.get(0).getStartTime()).isEqualTo(startLocalTime);
+        assertThat(aggregateResponse.get(0).getEndTime()).isEqualTo(startLocalTime.plusMonths(1));
+        assertThat(aggregateResponse.get(0).get(STEPS_COUNT_TOTAL))
+                .isEqualTo(stepsCount1 + stepsCount2);
+        assertThat(aggregateResponse.get(1).getStartTime()).isEqualTo(startLocalTime.plusMonths(1));
+        assertThat(aggregateResponse.get(1).getEndTime()).isEqualTo(endLocalTime);
+        assertThat(aggregateResponse.get(1).get(STEPS_COUNT_TOTAL))
+                .isEqualTo(stepsCount3 + stepsCount4);
+    }
+
     private void testAggregationLocalTimeOffset(ZoneOffset offset) throws InterruptedException {
         LocalDateTime endTimeLocal = LocalDateTime.now(offset);
         LocalDateTime startTimeLocal = endTimeLocal.minusDays(4);
@@ -1308,12 +1381,11 @@ public class StepsRecordTest {
         TestUtils.insertRecords(
                 List.of(
                         getStepsRecord(instant, 10, 5, 1, ZoneOffset.ofHours(2)),
-                        getStepsRecord(
-                                instant.plus(3, ChronoUnit.HOURS), 10, 5, 13, ZoneOffset.UTC),
+                        getStepsRecord(instant.plus(3, HOURS), 10, 5, 13, ZoneOffset.UTC),
                         getStepsRecord(instant, 20, 4, 1, ZoneOffset.ofHours(3)),
-                        getStepsRecord(instant.plus(4, ChronoUnit.HOURS), 10, 4, 3, ZoneOffset.UTC),
+                        getStepsRecord(instant.plus(4, HOURS), 10, 4, 3, ZoneOffset.UTC),
                         getStepsRecord(instant, 30, 3, 1, ZoneOffset.ofHours(5)),
-                        getStepsRecord(instant.plus(5, ChronoUnit.HOURS), 10, 3, 3, ZoneOffset.UTC),
+                        getStepsRecord(instant.plus(5, HOURS), 10, 3, 3, ZoneOffset.UTC),
                         getStepsRecord(instant, 10, 2, 1, ZoneOffset.ofHours(2)),
                         getStepsRecord(instant, 40, 1, 1, ZoneOffset.UTC)));
         List<AggregateRecordsGroupedByDurationResponse<Long>> responses =
@@ -1465,8 +1537,7 @@ public class StepsRecordTest {
                 new StepsRecord.Builder(
                         new Metadata.Builder().build(),
                         time.minus(daysPast, ChronoUnit.DAYS),
-                        time.minus(daysPast, ChronoUnit.DAYS)
-                                .plus(durationInHours, ChronoUnit.HOURS),
+                        time.minus(daysPast, ChronoUnit.DAYS).plus(durationInHours, HOURS),
                         count);
         if (offset != null) {
             builder.setStartZoneOffset(offset).setEndZoneOffset(offset);
