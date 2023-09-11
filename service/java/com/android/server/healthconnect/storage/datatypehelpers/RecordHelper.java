@@ -389,15 +389,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Returns List of Internal records from the cursor */
-    @SuppressWarnings("unchecked")
     public List<RecordInternal<?>> getInternalRecords(Cursor cursor, int requestSize) {
-        return getInternalRecords(cursor, requestSize, null);
+        return getInternalRecords(cursor, requestSize, /* packageNamesByAppIds= */ null);
     }
 
     /** Returns List of Internal records from the cursor */
     @SuppressWarnings("unchecked")
     public List<RecordInternal<?>> getInternalRecords(
-            Cursor cursor, int requestSize, Map<Long, String> packageNamesByAppIds) {
+            Cursor cursor, int requestSize, @Nullable Map<Long, String> packageNamesByAppIds) {
         Trace.traceBegin(TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetInternalRecords"));
         List<RecordInternal<?>> recordInternalList = new ArrayList<>();
 
@@ -425,8 +424,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
                 DeviceInfoHelper.getInstance().populateRecordWithValue(deviceInfoId, record);
                 long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
-                AppInfoHelper.getInstance()
-                        .populateRecordWithValue(appInfoId, record, packageNamesByAppIds);
+                String packageName =
+                        packageNamesByAppIds != null
+                                ? packageNamesByAppIds.get(appInfoId)
+                                : AppInfoHelper.getInstance().getPackageName(appInfoId);
+                record.setPackageName(packageName);
                 populateRecordValue(cursor, record);
 
                 prevStartTime = currentStartTime;
