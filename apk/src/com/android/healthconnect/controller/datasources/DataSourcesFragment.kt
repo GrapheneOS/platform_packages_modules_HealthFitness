@@ -17,10 +17,14 @@ import android.health.connect.HealthDataCategory
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MediatorLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_KEY
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.AggregationCardsState
 import com.android.healthconnect.controller.datasources.appsources.AppSourcesPreference
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
@@ -31,7 +35,9 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.CardContainerPreference
 import com.android.healthconnect.controller.shared.preference.HeaderPreference
+import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsImpl
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.settingslib.widget.FooterPreference
@@ -102,6 +108,7 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
         super.onResume()
         healthPermissionsViewModel.loadData(currentCategorySelection)
         healthPermissionsViewModel.loadAppsWithData(currentCategorySelection)
+        dataSourcesViewModel.loadPotentialAppSources(currentCategorySelection)
         dataSourcesViewModel.loadMostRecentAggregations()
     }
 
@@ -113,10 +120,21 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
 
         healthPermissionsViewModel.loadData(currentCategorySelection)
         healthPermissionsViewModel.loadAppsWithData(currentCategorySelection)
+        dataSourcesViewModel.loadPotentialAppSources(currentCategorySelection)
 
         // we only show DataTotalsCards if the current selection is Activity
         if (currentCategorySelection == HealthDataCategory.ACTIVITY) {
             dataSourcesViewModel.loadMostRecentAggregations()
+        }
+
+        dataSourcesViewModel.potentialAppSources.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is PotentialAppSourcesState.Loading -> {}
+                is PotentialAppSourcesState.LoadingFailed -> {}
+                is PotentialAppSourcesState.WithData -> {
+                    updateAddApp(state.appSources.isNotEmpty())
+                }
+            }
         }
 
         mediator.observe(viewLifecycleOwner) { (priorityListState, aggregationInfoState) ->
@@ -163,6 +181,28 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
                 })
 
         nonEmptyFooterPreference?.isVisible = true
+    }
+
+
+    private fun updateAddApp(shouldAdd: Boolean) {
+        appSourcesPreferenceGroup?.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
+
+        if (shouldAdd) {
+            appSourcesPreferenceGroup?.addPreference(
+                HealthPreference(requireContext()).also {
+                    it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.addIcon)
+                    it.title = getString(R.string.data_sources_add_app)
+                    it.key = ADD_AN_APP_PREFERENCE_KEY
+                    it.order = 100 // Arbitrary number to ensure the button is added at the end of the priority list
+                    it.setOnPreferenceClickListener {
+                        findNavController().navigate(
+                            R.id.action_dataSourcesFragment_to_addAnAppFragment,
+                            bundleOf(CATEGORY_KEY to currentCategorySelection))
+                        true
+                    }
+                }
+            )
+        }
     }
 
     private fun updateCards(cardInfos: List<AggregationCardInfo>) {
@@ -245,6 +285,7 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
 
                 healthPermissionsViewModel.loadData(currentCategory)
                 healthPermissionsViewModel.loadAppsWithData(currentCategory)
+                dataSourcesViewModel.loadPotentialAppSources(currentCategory)
                 dataSourcesViewModel.setCurrentSelection(currentCategory)
                 if (currentCategory == HealthDataCategory.ACTIVITY) {
                     dataTotalsPreferenceGroup?.isVisible = true

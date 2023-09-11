@@ -19,8 +19,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.datasources.api.LoadPotentialPriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.LoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,7 +32,8 @@ import javax.inject.Inject
 class DataSourcesViewModel
 @Inject
 constructor(
-    private val loadDatesWithDataUseCase: LoadMostRecentAggregationsUseCase
+    private val loadDatesWithDataUseCase: LoadMostRecentAggregationsUseCase,
+    private val loadAppSourcesUseCase: LoadPotentialPriorityListUseCase
 ): ViewModel() {
 
     companion object {
@@ -40,6 +43,11 @@ constructor(
 
     val aggregationCardsData: LiveData<AggregationCardsState>
         get() = _aggregationCardsData
+
+    private val _potentialAppSources = MutableLiveData<PotentialAppSourcesState>()
+
+    val potentialAppSources: LiveData<PotentialAppSourcesState>
+        get() = _potentialAppSources
 
     private var currentSelection = HealthDataCategory.ACTIVITY
 
@@ -64,10 +72,31 @@ constructor(
         }
     }
 
+    fun loadPotentialAppSources(category: Int) {
+        _potentialAppSources.postValue(PotentialAppSourcesState.Loading)
+        viewModelScope.launch {
+            when (val appSourcesResult = loadAppSourcesUseCase.invoke(category)) {
+                is UseCaseResults.Success ->
+                    _potentialAppSources.postValue(PotentialAppSourcesState.WithData(appSourcesResult.data))
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Failed to load possible priority list candidates", appSourcesResult.exception)
+                    _potentialAppSources.postValue(PotentialAppSourcesState.LoadingFailed)
+                }
+
+            }
+        }
+    }
+
     sealed class AggregationCardsState {
         object Loading: AggregationCardsState()
         object LoadingFailed: AggregationCardsState()
         data class WithData(val dataTotals: List<AggregationCardInfo>) : AggregationCardsState()
+    }
+
+    sealed class PotentialAppSourcesState {
+        object Loading: PotentialAppSourcesState()
+        object LoadingFailed: PotentialAppSourcesState()
+        data class WithData(val appSources: List<AppMetadata>): PotentialAppSourcesState()
     }
 
 }

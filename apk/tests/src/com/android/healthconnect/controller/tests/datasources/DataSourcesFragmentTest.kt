@@ -32,6 +32,7 @@ import com.android.healthconnect.controller.dataentries.FormattedEntry
 import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.datasources.DataSourcesFragment
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.AggregationCardsState
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
@@ -39,6 +40,7 @@ import com.android.healthconnect.controller.permissiontypes.HealthPermissionType
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
+import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.atPosition
@@ -95,12 +97,16 @@ class DataSourcesFragmentTest {
         whenever(dataSourcesViewModel.aggregationCardsData).then {
             MutableLiveData<AggregationCardsState>(AggregationCardsState.WithData(listOf()))
         }
+        whenever(dataSourcesViewModel.potentialAppSources).then {
+            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf()))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
         onIdle()
 
         onView(withText("Activity")).check(matches(isDisplayed()))
         onView(withText("Data totals")).check(doesNotExist())
         onView(withText("App sources")).check(matches(isDisplayed()))
+        onView(withText("Add an app")).check(doesNotExist())
         onView(withText("Add app sources to the list to see how the data " +
                 "totals can change. Removing an app from this list will stop it " +
                 "from contributing to totals, but it will still have write permissions."))
@@ -131,6 +137,9 @@ class DataSourcesFragmentTest {
                     Instant.parse("2022-10-19T07:06:05.432Z")
             ))))
         }
+        whenever(dataSourcesViewModel.potentialAppSources).then {
+            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf()))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
 
         onView(withText("Activity")).check(matches(isDisplayed()))
@@ -138,6 +147,7 @@ class DataSourcesFragmentTest {
         onView(withText("1234 steps")).check(matches(isDisplayed()))
         onView(withText("October 19")).check(matches(isDisplayed()))
         onView(withText("App sources")).check(matches(isDisplayed()))
+        onView(withText("Add an app")).check(doesNotExist())
         onView(withText("Add app sources to the list to see how the data " +
                 "totals can change. Removing an app from this list will stop it " +
                 "from contributing to totals, but it will still have write permissions."))
@@ -168,6 +178,9 @@ class DataSourcesFragmentTest {
                 Instant.parse("2020-10-19T07:06:05.432Z")
             ))))
         }
+        whenever(dataSourcesViewModel.potentialAppSources).then {
+            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf()))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
         onView(withText("Data totals")).check(matches(isDisplayed()))
         onView(withText("1234 steps")).check(matches(isDisplayed()))
@@ -186,6 +199,9 @@ class DataSourcesFragmentTest {
         whenever(dataSourcesViewModel.aggregationCardsData).then {
             MutableLiveData<AggregationCardsState>(AggregationCardsState.WithData(listOf()))
         }
+        whenever(dataSourcesViewModel.potentialAppSources).then {
+            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf()))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
 
         onView(withText("Activity")).check(matches(isDisplayed()))
@@ -194,6 +210,42 @@ class DataSourcesFragmentTest {
             .check(matches(isDisplayed()))
         onView(withText("How sources & prioritization work"))
             .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun addAnApp_shownWhenPotentialAppsExist() {
+        whenever(healthPermissionTypesViewModel.priorityList).then {
+            MutableLiveData<PriorityListState>(
+                PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        whenever(healthPermissionTypesViewModel.editedPriorityList).then {
+            MutableLiveData(listOf(TEST_APP, TEST_APP_2))
+        }
+        whenever(dataSourcesViewModel.aggregationCardsData).then {
+            MutableLiveData<AggregationCardsState>(AggregationCardsState.WithData(listOf()))
+        }
+        whenever(dataSourcesViewModel.potentialAppSources).then {
+            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf(TEST_APP_3)))
+        }
+        launchFragment<DataSourcesFragment>(Bundle())
+        onIdle()
+
+        onView(withText("Activity")).check(matches(isDisplayed()))
+        onView(withText("Data totals")).check(doesNotExist())
+        onView(withText("App sources")).check(matches(isDisplayed()))
+        onView(withText("Add an app")).check(matches(isDisplayed()))
+        onView(withText("Add app sources to the list to see how the data " +
+                "totals can change. Removing an app from this list will stop it " +
+                "from contributing to totals, but it will still have write permissions."))
+            .check(matches(isDisplayed()))
+
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(matches(atPosition(0, allOf(hasDescendant(withText("1")),
+                hasDescendant(withText(TEST_APP_NAME))))))
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(matches(atPosition(1, allOf(hasDescendant(withText("2")),
+                hasDescendant(withText(TEST_APP_NAME_2))))))
     }
 
     @Test
@@ -208,6 +260,9 @@ class DataSourcesFragmentTest {
         }
         whenever(dataSourcesViewModel.aggregationCardsData).then {
             MutableLiveData<AggregationCardsState>(AggregationCardsState.Loading)
+        }
+        whenever(dataSourcesViewModel.potentialAppSources).then {
+            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf(TEST_APP_3)))
         }
         launchFragment<DataSourcesFragment>(Bundle())
 
@@ -225,6 +280,9 @@ class DataSourcesFragmentTest {
         }
         whenever(dataSourcesViewModel.aggregationCardsData).then {
             MutableLiveData<AggregationCardsState>(AggregationCardsState.WithData(listOf()))
+        }
+        whenever(dataSourcesViewModel.potentialAppSources).then {
+            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf(TEST_APP_3)))
         }
         launchFragment<DataSourcesFragment>(Bundle())
         onIdle()
