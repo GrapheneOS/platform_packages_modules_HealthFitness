@@ -13,19 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory
-        android:key="data_totals_group"
-        android:title="@string/data_totals_header"
-        android:order="1"
-        app:isPreferenceVisible="false"/>
-    <PreferenceCategory
-        android:key="app_sources_group"
-        android:title="@string/app_sources_header"
-        android:order="2"/>
-    <com.android.settingslib.widget.FooterPreference
-        android:key="data_sources_footer"
-        android:title="@string/data_sources_footer"/>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/card_container"
+    android:layout_marginHorizontal="@dimen/spacing_normal"
+    android:layout_marginVertical="@dimen/spacing_normal">
 
-</PreferenceScreen>
+</androidx.constraintlayout.widget.ConstraintLayout>

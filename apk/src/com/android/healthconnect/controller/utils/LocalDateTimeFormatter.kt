@@ -18,6 +18,9 @@ import android.text.format.DateFormat.*
 import com.android.healthconnect.controller.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 /** Formatter for printing time and time ranges. */
@@ -25,6 +28,10 @@ class LocalDateTimeFormatter @Inject constructor(@ApplicationContext private val
 
     private val timeFormat by lazy { getTimeFormat(context) }
     private val longDateFormat by lazy { getLongDateFormat(context) }
+    private val shortDateFormat by lazy {
+        val systemFormat = getBestDateTimePattern(Locale.getDefault(), "dMMMM")
+        DateTimeFormatter.ofPattern(systemFormat, Locale.getDefault())
+    }
 
     /** Returns localized time. */
     fun formatTime(instant: Instant): String {
@@ -34,6 +41,11 @@ class LocalDateTimeFormatter @Inject constructor(@ApplicationContext private val
     /** Returns localized long versions of date. */
     fun formatLongDate(instant: Instant): String {
         return longDateFormat.format(instant.toEpochMilli())
+    }
+
+    /** Returns localized short versions of date, such as "15 August" */
+    fun formatDateWithoutYear(instant: Instant): String {
+        return instant.atZone(ZoneId.systemDefault()).format(shortDateFormat)
     }
 
     /** Returns localized time range. */
