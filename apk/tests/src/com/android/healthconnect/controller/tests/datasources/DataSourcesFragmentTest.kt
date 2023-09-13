@@ -36,7 +36,7 @@ import com.android.healthconnect.controller.datasources.DataSourcesViewModel.Pot
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.AggregationCardsState
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
-import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel.PriorityListState
+import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel.NewPriorityListState
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
@@ -86,9 +86,9 @@ class DataSourcesFragmentTest {
 
     @Test
     fun twoSources_noDataTotals_isDisplayed() {
-        whenever(healthPermissionTypesViewModel.priorityList).then {
-            MutableLiveData<PriorityListState>(
-                    PriorityListState.WithData(
+        whenever(healthPermissionTypesViewModel.newPriorityList).then {
+            MutableLiveData<NewPriorityListState>(
+                    NewPriorityListState.WithData(true,
                             listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
@@ -122,9 +122,9 @@ class DataSourcesFragmentTest {
 
     @Test
     fun twoSources_oneDataTotal_withinLastYear_isDisplayed() {
-        whenever(healthPermissionTypesViewModel.priorityList).then {
-            MutableLiveData<PriorityListState>(
-                    PriorityListState.WithData(
+        whenever(healthPermissionTypesViewModel.newPriorityList).then {
+            MutableLiveData<NewPriorityListState>(
+                    NewPriorityListState.WithData(true,
                             listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
@@ -163,9 +163,9 @@ class DataSourcesFragmentTest {
 
     @Test
     fun oneDataTotal_olderThanOneYear_displaysYear() {
-        whenever(healthPermissionTypesViewModel.priorityList).then {
-            MutableLiveData<PriorityListState>(
-                PriorityListState.WithData(
+        whenever(healthPermissionTypesViewModel.newPriorityList).then {
+            MutableLiveData<NewPriorityListState>(
+                NewPriorityListState.WithData(true,
                     listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
@@ -189,9 +189,9 @@ class DataSourcesFragmentTest {
 
     @Test
     fun noSources_displaysEmptyState() {
-        whenever(healthPermissionTypesViewModel.priorityList).then {
-            MutableLiveData<PriorityListState>(
-                    PriorityListState.WithData(listOf()))
+        whenever(healthPermissionTypesViewModel.newPriorityList).then {
+            MutableLiveData<NewPriorityListState>(
+                    NewPriorityListState.WithData(true, listOf()))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
             MutableLiveData<List<AppMetadata>>(listOf())
@@ -214,9 +214,9 @@ class DataSourcesFragmentTest {
 
     @Test
     fun addAnApp_shownWhenPotentialAppsExist() {
-        whenever(healthPermissionTypesViewModel.priorityList).then {
-            MutableLiveData<PriorityListState>(
-                PriorityListState.WithData(
+        whenever(healthPermissionTypesViewModel.newPriorityList).then {
+            MutableLiveData<NewPriorityListState>(
+                NewPriorityListState.WithData(true,
                     listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
@@ -250,9 +250,9 @@ class DataSourcesFragmentTest {
 
     @Test
     fun atLeastOneSourceLoading_showsLoading() {
-        whenever(healthPermissionTypesViewModel.priorityList).then {
-            MutableLiveData<PriorityListState>(
-                PriorityListState.WithData(
+        whenever(healthPermissionTypesViewModel.newPriorityList).then {
+            MutableLiveData<NewPriorityListState>(
+                NewPriorityListState.WithData(true,
                     listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
@@ -271,9 +271,9 @@ class DataSourcesFragmentTest {
 
     @Test
     fun atLeastOneSourceLoadingFailed_showsError() {
-        whenever(healthPermissionTypesViewModel.priorityList).then {
-            MutableLiveData<PriorityListState>(
-                PriorityListState.LoadingFailed)
+        whenever(healthPermissionTypesViewModel.newPriorityList).then {
+            MutableLiveData<NewPriorityListState>(
+                NewPriorityListState.LoadingFailed(true))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
             MutableLiveData(listOf(TEST_APP, TEST_APP_2))

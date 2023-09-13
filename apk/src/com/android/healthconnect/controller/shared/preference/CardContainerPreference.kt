@@ -55,6 +55,7 @@ class CardContainerPreference constructor(
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         val container = holder.itemView as ConstraintLayout
+        container.removeAllViews()
 
         if (this.mAggregationCardInfo.isEmpty() || this.mAggregationCardInfo.size > 2) {
             return

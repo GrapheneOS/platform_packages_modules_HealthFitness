@@ -28,7 +28,7 @@ import com.android.healthconnect.controller.datasources.DataSourcesViewModel.Pot
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.AggregationCardsState
 import com.android.healthconnect.controller.datasources.appsources.AppSourcesPreference
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
-import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel.PriorityListState
+import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel.NewPriorityListState
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
@@ -84,7 +84,7 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
         preferenceScreen.findPreference(NON_EMPTY_FOOTER_PREFERENCE_KEY)
     }
 
-    private val mediator = MediatorLiveData<Pair<PriorityListState?, AggregationCardsState?>>()
+    private val mediator = MediatorLiveData<Pair<NewPriorityListState?, AggregationCardsState?>>()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -95,8 +95,10 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
 
         setupSpinnerPreference()
 
-        mediator.addSource(healthPermissionsViewModel.priorityList) { result ->
-            mediator.value = Pair(result, mediator.value?.second)
+        mediator.addSource(healthPermissionsViewModel.newPriorityList) { result ->
+            if (result.shouldObserve) {
+                mediator.value = Pair(result, mediator.value?.second)
+            }
         }
 
         mediator.addSource(dataSourcesViewModel.aggregationCardsData) { result ->
@@ -107,7 +109,6 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
     override fun onResume() {
         super.onResume()
         healthPermissionsViewModel.loadData(currentCategorySelection)
-        healthPermissionsViewModel.loadAppsWithData(currentCategorySelection)
         dataSourcesViewModel.loadPotentialAppSources(currentCategorySelection)
         dataSourcesViewModel.loadMostRecentAggregations()
     }
@@ -119,7 +120,6 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
         currentCategorySelection = dataSourcesCategories[dataSourcesCategoriesStrings.indexOf(currentStringSelection)]
 
         healthPermissionsViewModel.loadData(currentCategorySelection)
-        healthPermissionsViewModel.loadAppsWithData(currentCategorySelection)
         dataSourcesViewModel.loadPotentialAppSources(currentCategorySelection)
 
         // we only show DataTotalsCards if the current selection is Activity
@@ -139,29 +139,30 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
 
         mediator.observe(viewLifecycleOwner) { (priorityListState, aggregationInfoState) ->
             when {
-                priorityListState is PriorityListState.Loading ||
+                priorityListState is NewPriorityListState.Loading ||
                         aggregationInfoState is AggregationCardsState.Loading ->
                     setLoading(true)
 
-                priorityListState is PriorityListState.LoadingFailed ||
+                priorityListState is NewPriorityListState.LoadingFailed ||
                         aggregationInfoState is AggregationCardsState.LoadingFailed-> {
                     setLoading(false)
                     setError(true)
                 }
 
-                priorityListState is PriorityListState.WithData &&
+                priorityListState is NewPriorityListState.WithData &&
                         aggregationInfoState is AggregationCardsState.WithData -> {
-                            setLoading(false)
-                            val priorityList = priorityListState.priorityList
-                            val cardInfos = aggregationInfoState.dataTotals
 
-                            if (priorityList.isEmpty()) {
-                                addEmptyState()
-                            } else {
-                                updatePriorityList(priorityList)
-                                updateCards(cardInfos)
-                            }
-                        }
+                    setLoading(false)
+                    val priorityList = priorityListState.priorityList
+                    val cardInfos = aggregationInfoState.dataTotals
+
+                    if (priorityList.isEmpty()) {
+                        addEmptyState()
+                    } else {
+                        updatePriorityList(priorityList)
+                        updateCards(cardInfos)
+                    }
+                }
             }
 
         }
@@ -284,7 +285,6 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
                 currentCategorySelection = dataSourcesCategories[position]
 
                 healthPermissionsViewModel.loadData(currentCategory)
-                healthPermissionsViewModel.loadAppsWithData(currentCategory)
                 dataSourcesViewModel.loadPotentialAppSources(currentCategory)
                 dataSourcesViewModel.setCurrentSelection(currentCategory)
                 if (currentCategory == HealthDataCategory.ACTIVITY) {
