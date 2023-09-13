@@ -25,7 +25,7 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Vse kategorije"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Pokaži vse kategorije"</string>
     <string name="no_data" msgid="1906986019249068659">"Ni podatkov"</string>
-    <string name="connected_apps_title" msgid="279942692804743223">"Dovoljenja za aplikacijo"</string>
+    <string name="connected_apps_title" msgid="279942692804743223">"Dovoljenja za aplikacije"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Upravljanje aplikacij in dovoljenj"</string>
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"Dostop ima toliko aplikacij: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> od <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>."</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"Dostop ima toliko aplikacij: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>."</string>
@@ -275,7 +275,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Preberite pravilnik o zasebnosti"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Dostop v zadnjih 24 urah"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Dostop aplikacije"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Trenutno nimate nameščene nobene združljive aplikacije"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Trenutno nimate nameščene nobene združljive aplikacije."</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Odstranjena dovoljenja za aplikacije"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Storitev Health Connect je odstranila dovoljenja za aplikacijo <xliff:g id="APP_DATA">%s</xliff:g>."</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Storitev Health Connect je odstranila dovoljenja za aplikaciji <xliff:g id="APP_DATA_0">%1$s</xliff:g> in <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>."</string>
