@@ -74,6 +74,9 @@
         <item name="moreSpaceNeededIcon">@drawable/ic_storage</item>
         <item name="updateNeededIcon">@drawable/ic_system_security_update</item>
 
+        <!-- Data sources & priority -->
+        <item name="addIcon">@drawable/ic_add</item>
+
         <!-- END REGION -->
 
         <!-- REGION DIALOG GRAVITY -->
@@ -98,6 +101,7 @@
         <item name="textAppearanceLabelSmall">@style/TextAppearance.HealthConnect.Label.Small</item>
         <item name="textAppearanceSubheader">@style/TextAppearance.HealthConnect.Subheader</item>
         <item name="textAppearanceSubheader2">@style/TextAppearance.HealthConnect.Subheader2</item>
+        <item name="textAppearanceSubheader3">@style/TextAppearance.HealthConnect.Subheader3</item>
         <item name="textAppearanceRouteRequest">@style/TextAppearance.HealthConnect.RouteRequest</item>
 
         <!-- Buttons -->

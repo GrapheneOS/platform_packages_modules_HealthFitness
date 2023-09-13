@@ -13,9 +13,15 @@
  */
 package com.android.healthconnect.controller.utils
 
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /** Time source that uses the system time. */
 object SystemTimeSource : TimeSource {
@@ -31,5 +37,15 @@ object SystemTimeSource : TimeSource {
         return Instant.ofEpochMilli(currentTimeMillis())
             .atZone(deviceZoneOffset())
             .toLocalDateTime()
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+class SystemTimeSourceModule {
+    @Provides
+    @Singleton
+    fun providesSystemTimeSourceModule(): TimeSource {
+        return SystemTimeSource
     }
 }

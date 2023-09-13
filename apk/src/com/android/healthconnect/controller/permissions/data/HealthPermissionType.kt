@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.permissions.data
 
 import android.health.connect.HealthPermissionCategory
 
+// TODO (b/299880830) possibly rename "category" to something else
 enum class HealthPermissionType(val category: Int) {
     // ACTIVITY
     ACTIVE_CALORIES_BURNED(HealthPermissionCategory.ACTIVE_CALORIES_BURNED),
