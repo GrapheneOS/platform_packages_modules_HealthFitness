@@ -21,7 +21,7 @@ import android.health.connect.accesslog.AccessLog
 import android.util.Log
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.utils.SystemTimeSource
+import com.android.healthconnect.controller.utils.TimeSource
 import java.time.Duration
 import java.time.Instant
 import javax.inject.Inject
@@ -35,14 +35,13 @@ class LoadRecentAccessUseCase
 @Inject
 constructor(
     private val manager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    private val timeSource: TimeSource
 ) : ILoadRecentAccessUseCase {
 
     companion object {
         private const val TAG = "LoadRecentAccessUseCase"
     }
-
-    private val timeSource = SystemTimeSource
 
     /** Returns a list of apps that have recently accessed Health Connect */
     override suspend fun invoke(): List<AccessLog> =

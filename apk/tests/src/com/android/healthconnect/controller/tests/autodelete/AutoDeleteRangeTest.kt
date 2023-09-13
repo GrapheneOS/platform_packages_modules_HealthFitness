@@ -19,26 +19,15 @@ import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.autoDeleteRangeEnd
 import com.android.healthconnect.controller.autodelete.autoDeleteRangeStart
 import com.android.healthconnect.controller.autodelete.fromNumberOfMonths
-import com.android.healthconnect.controller.tests.utils.NOW
+import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
 import com.google.common.truth.Truth.assertThat
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZoneOffset
 import org.junit.Assert.assertThrows
 import org.junit.Test
+import java.time.Instant
 
 class AutoDeleteRangeTest {
-    private val timeSource: TimeSource =
-        object : TimeSource {
-            override fun currentTimeMillis(): Long = NOW.toEpochMilli()
-            override fun deviceZoneOffset(): ZoneId = ZoneOffset.UTC
-            override fun currentLocalDateTime(): LocalDateTime =
-                Instant.ofEpochMilli(currentTimeMillis())
-                    .atZone(deviceZoneOffset())
-                    .toLocalDateTime()
-        }
+    private val timeSource: TimeSource = TestTimeSource
 
     @Test
     fun numberOfMonths_rangeNever_returnCorrectValue() {

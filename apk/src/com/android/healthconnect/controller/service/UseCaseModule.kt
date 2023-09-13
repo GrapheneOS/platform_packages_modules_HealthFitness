@@ -25,6 +25,7 @@ import com.android.healthconnect.controller.recentaccess.LoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
+import com.android.healthconnect.controller.utils.TimeSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,9 +38,10 @@ class UseCaseModule {
     @Provides
     fun providesLoadRecentAccessUseCase(
         manager: HealthConnectManager,
-        @IoDispatcher dispatcher: CoroutineDispatcher
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        timeSource: TimeSource
     ): ILoadRecentAccessUseCase {
-        return LoadRecentAccessUseCase(manager, dispatcher)
+        return LoadRecentAccessUseCase(manager, dispatcher, timeSource)
     }
 
     @Provides
