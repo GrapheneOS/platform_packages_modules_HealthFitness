@@ -20,7 +20,7 @@
     <string name="app_label" msgid="4768580772453324183">"Connexion santé"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"Gérez l\'accès des applications aux données relatives à la santé"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Autorisations et données"</string>
-    <string name="home_subtitle" msgid="1750033322147357163">"Gérez les données de santé et d\'activité physique sur votre téléphone, et contrôlez les applications qui peuvent y accéder"</string>
+    <string name="home_subtitle" msgid="1750033322147357163">"Gérez les données de santé et d\'activité physique sur votre téléphone et contrôlez les applications qui peuvent y accéder"</string>
     <string name="data_title" msgid="4456619761533380816">"Données et accès"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Toutes les catégories"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Afficher toutes les catégories"</string>
@@ -677,7 +677,7 @@
     <string name="check_for_updates" msgid="3841090978657783101">"Rechercher des mises à jour"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Assurez-vous que les applications installées sont à jour"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Voir toutes les applications compatibles"</string>
-    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Trouver des applications sur Google Play"</string>
+    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Trouvez des applications sur Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Envoyer des commentaires"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Dites-nous quelles applications de santé et de mise en forme vous aimeriez utiliser avec Connexion santé"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
