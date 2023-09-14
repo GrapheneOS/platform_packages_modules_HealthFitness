@@ -72,6 +72,7 @@ public final class AggregateTransactionRequest {
                 AggregateTableRequest aggregateTableRequest =
                         recordHelper.getAggregateTableRequest(
                                 aggregationType,
+                                packageName,
                                 request.getPackageFilters(),
                                 request.getStartTime(),
                                 request.getEndTime(),

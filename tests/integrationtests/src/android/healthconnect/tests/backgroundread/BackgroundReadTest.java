@@ -18,15 +18,16 @@ package android.healthconnect.tests.backgroundread;
 
 import static android.health.connect.HealthConnectException.ERROR_SECURITY;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
+import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.cts.utils.TestUtils.getDeviceConfigValue;
+import static android.healthconnect.cts.utils.TestUtils.sendCommandToTestAppReceiver;
+import static android.healthconnect.cts.utils.TestUtils.setDeviceConfigValue;
 import static android.healthconnect.test.app.TestAppReceiver.ACTION_AGGREGATE;
 import static android.healthconnect.test.app.TestAppReceiver.ACTION_GET_CHANGE_LOGS;
 import static android.healthconnect.test.app.TestAppReceiver.ACTION_GET_CHANGE_LOG_TOKEN;
 import static android.healthconnect.test.app.TestAppReceiver.ACTION_READ_RECORDS_FOR_OTHER_APP;
 import static android.healthconnect.test.app.TestAppReceiver.EXTRA_RECORD_COUNT;
 import static android.healthconnect.test.app.TestAppReceiver.EXTRA_TOKEN;
-import static android.healthconnect.tests.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.tests.TestUtils.getDeviceConfigValue;
-import static android.healthconnect.tests.TestUtils.setDeviceConfigValue;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -35,16 +36,14 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Objects.requireNonNull;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.InsertRecordsResponse;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.units.Energy;
+import android.healthconnect.cts.utils.TestReceiver;
 import android.healthconnect.test.app.BlockingOutcomeReceiver;
-import android.healthconnect.test.app.TestAppReceiver;
-import android.healthconnect.tests.TestReceiver;
 import android.os.Bundle;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -63,8 +62,6 @@ import java.util.concurrent.Executors;
 public class BackgroundReadTest {
 
     private static final String PKG_TEST_APP = "android.healthconnect.test.app";
-    private static final String TEST_APP_RECEIVER =
-            PKG_TEST_APP + "." + TestAppReceiver.class.getSimpleName();
     private static final String FEATURE_FLAG = "background_read_enable";
 
     private Context mContext;
@@ -95,7 +92,7 @@ public class BackgroundReadTest {
         revokeBackgroundReadPermissionForTestApp();
         insertRecords();
 
-        sendCommandToTestAppReceiver(ACTION_READ_RECORDS_FOR_OTHER_APP);
+        sendCommandToTestAppReceiver(mContext, ACTION_READ_RECORDS_FOR_OTHER_APP);
 
         final Bundle result = TestReceiver.getResult();
         assertThat(result).isNotNull();
@@ -109,7 +106,7 @@ public class BackgroundReadTest {
         grantBackgroundReadPermissionForTestApp();
         insertRecords();
 
-        sendCommandToTestAppReceiver(ACTION_READ_RECORDS_FOR_OTHER_APP);
+        sendCommandToTestAppReceiver(mContext, ACTION_READ_RECORDS_FOR_OTHER_APP);
 
         final Bundle result = TestReceiver.getResult();
         assertThat(result).isNotNull();
@@ -138,7 +135,7 @@ public class BackgroundReadTest {
     public void testAggregate_inBackgroundWithoutPermission_securityError() {
         revokeBackgroundReadPermissionForTestApp();
 
-        sendCommandToTestAppReceiver(ACTION_AGGREGATE);
+        sendCommandToTestAppReceiver(mContext, ACTION_AGGREGATE);
 
         assertSecurityError();
     }
@@ -147,7 +144,7 @@ public class BackgroundReadTest {
     public void testAggregate_inBackgroundWithPermission_success() {
         grantBackgroundReadPermissionForTestApp();
 
-        sendCommandToTestAppReceiver(ACTION_AGGREGATE);
+        sendCommandToTestAppReceiver(mContext, ACTION_AGGREGATE);
 
         assertSuccess();
     }
@@ -158,7 +155,7 @@ public class BackgroundReadTest {
 
         final Bundle extras = new Bundle();
         extras.putString(EXTRA_TOKEN, "token");
-        sendCommandToTestAppReceiver(ACTION_GET_CHANGE_LOGS, extras);
+        sendCommandToTestAppReceiver(mContext, ACTION_GET_CHANGE_LOGS, extras);
 
         assertSecurityError();
     }
@@ -166,27 +163,15 @@ public class BackgroundReadTest {
     @Test
     public void testGetChangeLogs_inBackgroundWithPermission_success() {
         revokeBackgroundReadPermissionForTestApp();
-        sendCommandToTestAppReceiver(ACTION_GET_CHANGE_LOG_TOKEN);
+        sendCommandToTestAppReceiver(mContext, ACTION_GET_CHANGE_LOG_TOKEN);
         final String token = requireNonNull(TestReceiver.getResult()).getString(EXTRA_TOKEN);
         grantBackgroundReadPermissionForTestApp();
 
         final Bundle extras = new Bundle();
         extras.putString(EXTRA_TOKEN, token);
-        sendCommandToTestAppReceiver(ACTION_GET_CHANGE_LOGS, extras);
+        sendCommandToTestAppReceiver(mContext, ACTION_GET_CHANGE_LOGS, extras);
 
         assertSuccess();
-    }
-
-    private void sendCommandToTestAppReceiver(String action) {
-        sendCommandToTestAppReceiver(action, /*extras=*/ null);
-    }
-
-    private void sendCommandToTestAppReceiver(String action, Bundle extras) {
-        final Intent intent = new Intent(action).setClassName(PKG_TEST_APP, TEST_APP_RECEIVER);
-        if (extras != null) {
-            intent.putExtras(extras);
-        }
-        mContext.sendBroadcast(intent);
     }
 
     private void grantBackgroundReadPermissionForTestApp() {

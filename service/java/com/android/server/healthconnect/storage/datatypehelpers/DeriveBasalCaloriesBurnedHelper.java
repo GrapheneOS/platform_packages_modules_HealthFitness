@@ -24,6 +24,7 @@ import static com.android.server.healthconnect.storage.datatypehelpers.LeanBodyM
 import static com.android.server.healthconnect.storage.datatypehelpers.LeanBodyMassRecordHelper.MASS_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.WeightRecordHelper.WEIGHT_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.WeightRecordHelper.WEIGHT_RECORD_TABLE_NAME;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.NonNull;
 import android.database.Cursor;
@@ -148,7 +149,7 @@ public final class DeriveBasalCaloriesBurnedHelper {
                         new ReadTableRequest(BASAL_METABOLIC_RATE_RECORD_TABLE_NAME)
                                 .setColumnNames(List.of(BASAL_METABOLIC_RATE_COLUMN_NAME))
                                 .setWhereClause(
-                                        new WhereClauses()
+                                        new WhereClauses(AND)
                                                 .addWhereLessThanOrEqualClause(
                                                         mTimeColumnName, intervalStartTime))
                                 .setLimit(1)
@@ -319,7 +320,7 @@ public final class DeriveBasalCaloriesBurnedHelper {
                 new ReadTableRequest(tableName)
                         .setColumnNames(List.of(colName, mTimeColumnName))
                         .setWhereClause(
-                                new WhereClauses()
+                                new WhereClauses(AND)
                                         .addWhereBetweenTimeClause(
                                                 mTimeColumnName,
                                                 intervalStartTime,
@@ -330,7 +331,7 @@ public final class DeriveBasalCaloriesBurnedHelper {
                                         new ReadTableRequest(tableName)
                                                 .setColumnNames(List.of(colName, mTimeColumnName))
                                                 .setWhereClause(
-                                                        new WhereClauses()
+                                                        new WhereClauses(AND)
                                                                 .addWhereLessThanOrEqualClause(
                                                                         mTimeColumnName,
                                                                         intervalStartTime))

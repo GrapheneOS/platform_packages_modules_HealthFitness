@@ -34,6 +34,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getIntegerAndConvertToBoolean;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -323,7 +324,7 @@ public final class ExerciseSessionRecordHelper
         }
 
         WhereClauses sessionsWithAccessibleRouteClause =
-                new WhereClauses()
+                new WhereClauses(AND)
                         .addWhereInClauseWithoutQuotes(
                                 UUID_COLUMN_NAME, StorageUtils.getListOfHexString(uuids))
                         .addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
@@ -412,7 +413,7 @@ public final class ExerciseSessionRecordHelper
         sessionsIdsRequest.setColumnNames(List.of(PRIMARY_COLUMN_NAME));
         sessionsIdsRequest.setWhereClause(clauseToFilterSessionIds);
 
-        WhereClauses inClause = new WhereClauses();
+        WhereClauses inClause = new WhereClauses(AND);
         inClause.addWhereInSQLRequestClause(PARENT_KEY_COLUMN_NAME, sessionsIdsRequest);
         routeReadRequest.setWhereClause(inClause);
         return routeReadRequest;

@@ -28,6 +28,7 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.InsertRecordsResponse;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsResponse;
 import android.health.connect.TimeInstantRangeFilter;
@@ -37,13 +38,24 @@ import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.units.Energy;
+import android.health.connect.datatypes.units.Mass;
 import android.os.Bundle;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /** Receives requests from test cases. Required to perform API calls in background. */
 public class TestAppReceiver extends BroadcastReceiver {
+    public static final String ACTION_INSERT_STEPS_RECORDS = "action.INSERT_STEPS_RECORDS";
+    public static final String ACTION_INSERT_WEIGHT_RECORDS = "action.INSERT_WEIGHT_RECORDS";
     public static final String ACTION_READ_RECORDS_FOR_OTHER_APP =
             "action.READ_RECORDS_FOR_OTHER_APP";
     public static final String ACTION_AGGREGATE = "action.AGGREGATE";
@@ -54,31 +66,64 @@ public class TestAppReceiver extends BroadcastReceiver {
     public static final String EXTRA_RESULT_ERROR_CODE = "extra.ERROR_CODE";
     public static final String EXTRA_RESULT_ERROR_MESSAGE = "extra.ERROR_MESSAGE";
     public static final String EXTRA_RECORD_COUNT = "extra.RECORD_COUNT";
+    public static final String EXTRA_RECORD_IDS = "extra.RECORD_IDS";
+
+    /**
+     * This is used to represent either times for InstantRecords or start times for IntervalRecords.
+     */
+    public static final String EXTRA_TIMES = "extra.TIMES";
+
+    public static final String EXTRA_END_TIMES = "extra.END_TIMES";
+
+    /** Represents a list of values in {@code long}. */
+    public static final String EXTRA_RECORD_VALUES = "extra.RECORD_VALUES";
+
     public static final String EXTRA_TOKEN = "extra.TOKEN";
-    private static final String PKG_TEST_SUITE = "android.healthconnect.integrationtests";
-    private static final String TEST_SUITE_RECEIVER = "android.healthconnect.tests.TestReceiver";
+    public static final String EXTRA_SENDER_PACKAGE_NAME = "extra.SENDER_PACKAGE_NAME";
+    private static final String TEST_SUITE_RECEIVER =
+            "android.healthconnect.cts.utils.TestReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         switch (intent.getAction()) {
+            case ACTION_INSERT_STEPS_RECORDS:
+                insertStepsRecords(context, intent);
+                break;
+            case ACTION_INSERT_WEIGHT_RECORDS:
+                insertWeightRecords(context, intent);
+                break;
             case ACTION_READ_RECORDS_FOR_OTHER_APP:
-                readRecordsForOtherApp(context);
+                readRecordsForOtherApp(context, intent);
                 break;
             case ACTION_AGGREGATE:
-                aggregate(context);
+                aggregate(context, intent);
                 break;
             case ACTION_GET_CHANGE_LOG_TOKEN:
-                getChangeLogToken(context);
+                getChangeLogToken(context, intent);
                 break;
             case ACTION_GET_CHANGE_LOGS:
-                getChangeLogs(context, intent.getStringExtra(EXTRA_TOKEN));
+                getChangeLogs(context, intent);
                 break;
             default:
                 throw new IllegalStateException("Unsupported command: " + intent.getAction());
         }
     }
 
-    private void readRecordsForOtherApp(Context context) {
+    private static void insertStepsRecords(Context context, Intent intent) {
+        BlockingOutcomeReceiver<InsertRecordsResponse> outcome = new BlockingOutcomeReceiver<>();
+        getHealthConnectManager(context)
+                .insertRecords(createStepsRecords(intent), newSingleThreadExecutor(), outcome);
+        sendInsertRecordsResult(context, intent, outcome);
+    }
+
+    private static void insertWeightRecords(Context context, Intent intent) {
+        BlockingOutcomeReceiver<InsertRecordsResponse> outcome = new BlockingOutcomeReceiver<>();
+        getHealthConnectManager(context)
+                .insertRecords(createWeightRecords(intent), newSingleThreadExecutor(), outcome);
+        sendInsertRecordsResult(context, intent, outcome);
+    }
+
+    private void readRecordsForOtherApp(Context context, Intent intent) {
         final BlockingOutcomeReceiver<ReadRecordsResponse<ActiveCaloriesBurnedRecord>> outcome =
                 new BlockingOutcomeReceiver<>();
 
@@ -88,23 +133,16 @@ public class TestAppReceiver extends BroadcastReceiver {
                                         ActiveCaloriesBurnedRecord.class)
                                 .addDataOrigins(
                                         new DataOrigin.Builder()
-                                                .setPackageName(PKG_TEST_SUITE)
+                                                .setPackageName(getSenderPackageName(intent))
                                                 .build())
                                 .build(),
                         newSingleThreadExecutor(),
                         outcome);
 
-        final HealthConnectException error = outcome.getError();
-        if (error == null) {
-            final Bundle extras = new Bundle();
-            extras.putInt(EXTRA_RECORD_COUNT, outcome.getResult().getRecords().size());
-            sendSuccess(context, extras);
-        } else {
-            sendError(context, error);
-        }
+        sendReadRecordsResult(context, intent, outcome);
     }
 
-    private void aggregate(Context context) {
+    private void aggregate(Context context, Intent intent) {
         final BlockingOutcomeReceiver<AggregateRecordsResponse<Energy>> outcome =
                 new BlockingOutcomeReceiver<>();
 
@@ -120,10 +158,10 @@ public class TestAppReceiver extends BroadcastReceiver {
                         newSingleThreadExecutor(),
                         outcome);
 
-        sendResult(context, outcome);
+        sendResult(context, intent, outcome);
     }
 
-    private void getChangeLogToken(Context context) {
+    private void getChangeLogToken(Context context, Intent intent) {
         final BlockingOutcomeReceiver<ChangeLogTokenResponse> outcome =
                 new BlockingOutcomeReceiver<>();
 
@@ -139,13 +177,14 @@ public class TestAppReceiver extends BroadcastReceiver {
         if (error == null) {
             final Bundle extras = new Bundle();
             extras.putString(EXTRA_TOKEN, outcome.getResult().getToken());
-            sendSuccess(context, extras);
+            sendSuccess(context, intent, extras);
         } else {
-            sendError(context, error);
+            sendError(context, intent, error);
         }
     }
 
-    private void getChangeLogs(Context context, String token) {
+    private void getChangeLogs(Context context, Intent intent) {
+        String token = intent.getStringExtra(EXTRA_TOKEN);
         final BlockingOutcomeReceiver<ChangeLogsResponse> outcome = new BlockingOutcomeReceiver<>();
 
         getHealthConnectManager(context)
@@ -154,39 +193,123 @@ public class TestAppReceiver extends BroadcastReceiver {
                         newSingleThreadExecutor(),
                         outcome);
 
-        sendResult(context, outcome);
+        sendResult(context, intent, outcome);
     }
 
-    private HealthConnectManager getHealthConnectManager(Context context) {
+    private static HealthConnectManager getHealthConnectManager(Context context) {
         return requireNonNull(context.getSystemService(HealthConnectManager.class));
     }
 
-    private void sendResult(Context context, BlockingOutcomeReceiver<?> outcomeReceiver) {
-        final HealthConnectException error = outcomeReceiver.getError();
-        if (error == null) {
-            sendSuccess(context);
-        } else {
-            sendError(context, error);
+    private static void sendReadRecordsResult(
+            Context context,
+            Intent intent,
+            BlockingOutcomeReceiver<? extends ReadRecordsResponse<?>> outcome) {
+        final HealthConnectException error = outcome.getError();
+        if (error != null) {
+            sendError(context, intent, error);
+            return;
         }
+
+        final Bundle extras = new Bundle();
+        extras.putInt(EXTRA_RECORD_COUNT, outcome.getResult().getRecords().size());
+        sendSuccess(context, intent, extras);
     }
 
-    private void sendSuccess(Context context) {
-        context.sendBroadcast(getSuccessIntent());
+    private static void sendInsertRecordsResult(
+            Context context,
+            Intent intent,
+            BlockingOutcomeReceiver<? extends InsertRecordsResponse> outcome) {
+        final HealthConnectException error = outcome.getError();
+        if (error != null) {
+            sendError(context, intent, error);
+            return;
+        }
+
+        final Bundle extras = new Bundle();
+        List<? extends Record> records = outcome.getResult().getRecords();
+        ArrayList<String> recordIds =
+                new ArrayList<>(
+                        records.stream()
+                                .map(Record::getMetadata)
+                                .map(Metadata::getId)
+                                .collect(Collectors.toList()));
+        extras.putStringArrayList(EXTRA_RECORD_IDS, recordIds);
+        extras.putInt(EXTRA_RECORD_COUNT, records.size());
+        sendSuccess(context, intent, extras);
     }
 
-    private void sendSuccess(Context context, Bundle extras) {
-        context.sendBroadcast(getSuccessIntent().putExtras(extras));
+    private static void sendResult(
+            Context context, Intent intent, BlockingOutcomeReceiver<?> outcomeReceiver) {
+        final HealthConnectException error = outcomeReceiver.getError();
+        if (error != null) {
+            sendError(context, intent, error);
+            return;
+        }
+        sendSuccess(context, intent);
     }
 
-    private Intent getSuccessIntent() {
-        return new Intent(ACTION_RESULT_SUCCESS).setClassName(PKG_TEST_SUITE, TEST_SUITE_RECEIVER);
+    private static void sendSuccess(Context context, Intent intent) {
+        context.sendBroadcast(getSuccessIntent(intent));
     }
 
-    private void sendError(Context context, HealthConnectException error) {
+    private static void sendSuccess(Context context, Intent intent, Bundle extras) {
+        context.sendBroadcast(getSuccessIntent(intent).putExtras(extras));
+    }
+
+    private static Intent getSuccessIntent(Intent intent) {
+        return new Intent(ACTION_RESULT_SUCCESS)
+                .setClassName(getSenderPackageName(intent), TEST_SUITE_RECEIVER);
+    }
+
+    private static void sendError(Context context, Intent intent, HealthConnectException error) {
         context.sendBroadcast(
                 new Intent(ACTION_RESULT_ERROR)
-                        .setClassName(PKG_TEST_SUITE, TEST_SUITE_RECEIVER)
+                        .setClassName(getSenderPackageName(intent), TEST_SUITE_RECEIVER)
                         .putExtra(EXTRA_RESULT_ERROR_CODE, error.getErrorCode())
                         .putExtra(EXTRA_RESULT_ERROR_MESSAGE, error.getMessage()));
+    }
+
+    private static List<Record> createStepsRecords(Intent intent) {
+        List<Instant> startTimes = getTimes(intent, EXTRA_TIMES);
+        List<Instant> endTimes = getTimes(intent, EXTRA_END_TIMES);
+        long[] values = intent.getLongArrayExtra(EXTRA_RECORD_VALUES);
+
+        List<Record> result = new ArrayList<>();
+        for (int i = 0; i < startTimes.size(); i++) {
+            result.add(createStepsRecord(startTimes.get(i), endTimes.get(i), values[i]));
+        }
+        return result;
+    }
+
+    private static StepsRecord createStepsRecord(Instant startTime, Instant endTime, long steps) {
+        return new StepsRecord.Builder(new Metadata.Builder().build(), startTime, endTime, steps)
+                .build();
+    }
+
+    private static List<Record> createWeightRecords(Intent intent) {
+        List<Instant> times = getTimes(intent, EXTRA_TIMES);
+        long[] values = intent.getLongArrayExtra(EXTRA_RECORD_VALUES);
+
+        List<Record> result = new ArrayList<>();
+        for (int i = 0; i < times.size(); i++) {
+            result.add(createWeightRecord(times.get(i), values[i]));
+        }
+        return result;
+    }
+
+    private static WeightRecord createWeightRecord(Instant time, long weight) {
+        return new WeightRecord.Builder(
+                        new Metadata.Builder().build(), time, Mass.fromGrams((double) weight))
+                .build();
+    }
+
+    private static List<Instant> getTimes(Intent intent, String key) {
+        return Arrays.stream(intent.getLongArrayExtra(key))
+                .mapToObj(Instant::ofEpochMilli)
+                .collect(Collectors.toList());
+    }
+
+    private static String getSenderPackageName(Intent intent) {
+        return intent.getStringExtra(EXTRA_SENDER_PACKAGE_NAME);
     }
 }

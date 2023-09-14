@@ -24,6 +24,7 @@ import static com.android.server.healthconnect.storage.datatypehelpers.InstantRe
 import static com.android.server.healthconnect.storage.datatypehelpers.InstantRecordHelper.TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.LOCAL_DATE_TIME_START_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.NonNull;
 import android.database.Cursor;
@@ -83,7 +84,7 @@ public final class DeriveTotalCaloriesBurnedHelper {
                 transactionManager.read(
                         new ReadTableRequest(ACTIVE_CALORIES_BURNED_RECORD_TABLE_NAME)
                                 .setWhereClause(
-                                        new WhereClauses()
+                                        new WhereClauses(AND)
                                                 .addWhereBetweenTimeClause(
                                                         mIntervalStartTimeColumnName,
                                                         mStartTime,
@@ -96,7 +97,7 @@ public final class DeriveTotalCaloriesBurnedHelper {
                 transactionManager.read(
                         new ReadTableRequest(BASAL_METABOLIC_RATE_RECORD_TABLE_NAME)
                                 .setWhereClause(
-                                        new WhereClauses()
+                                        new WhereClauses(AND)
                                                 .addWhereBetweenTimeClause(
                                                         mInstantRecordTimeColumnName,
                                                         mStartTime,

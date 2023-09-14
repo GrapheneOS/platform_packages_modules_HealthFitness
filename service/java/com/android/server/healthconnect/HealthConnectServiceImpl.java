@@ -572,10 +572,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callerPackageName = Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName =
+                Objects.requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, READ_DATA)
-                        .setPackageName(callerPackageName);
+                        .setPackageName(callingPackageName);
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -612,7 +613,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 Slog.d(
                                         TAG,
                                         "Enforce self read for package "
-                                                + callerPackageName
+                                                + callingPackageName
                                                 + ":"
                                                 + enforceSelfRead);
                             }
@@ -630,7 +631,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             if (!holdsDataManagementPermission) {
                                 Instant startDateAccessInstant =
                                         mPermissionHelper.getHealthDataStartDateAccessOrThrow(
-                                                callerPackageName, userHandle);
+                                                callingPackageName, userHandle);
 
                                 // Always set the startDateAccess for local time filter, as for
                                 // local date time we use it in conjunction with the time filter
@@ -645,7 +646,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
                             ReadTransactionRequest readTransactionRequest =
                                     new ReadTransactionRequest(
-                                            callerPackageName,
+                                            callingPackageName,
                                             request,
                                             startDateAccessEpochMilli,
                                             enforceSelfRead,
@@ -688,14 +689,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 Trace.traceBegin(
                                         TRACE_TAG_READ_SUBTASKS, TAG_READ.concat("AddAccessLog"));
                                 AccessLogsHelper.getInstance()
-                                        .addAccessLog(callerPackageName, recordTypes, READ);
+                                        .addAccessLog(callingPackageName, recordTypes, READ);
                                 Trace.traceEnd(TRACE_TAG_READ_SUBTASKS);
                             }
                             callback.onResult(
                                     new ReadRecordsResponseParcel(
                                             new RecordsParcel(records), pageToken));
                             if (requiresLogging) {
-                                logRecordTypeSpecificReadMetrics(records, callerPackageName);
+                                logRecordTypeSpecificReadMetrics(records, callingPackageName);
                             }
                             logger.setDataTypesFromRecordInternals(records)
                                     .setHealthDataServiceApiStatusSuccess();
@@ -705,7 +706,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             if (ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME.equals(
                                     exception.typeName())) {
                                 if (Constants.DEBUG) {
-                                    Slog.d(TAG, "No app info recorded for " + callerPackageName);
+                                    Slog.d(TAG, "No app info recorded for " + callingPackageName);
                                 }
                                 callback.onResult(
                                         new ReadRecordsResponseParcel(

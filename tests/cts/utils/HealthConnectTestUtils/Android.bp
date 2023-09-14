@@ -20,7 +20,8 @@
       name: "cts-healthconnect-utils",
       srcs: [
             "src/**/*.java",
-            "src/**/*.kt"
+            "src/**/*.kt",
+            ":healthfitness-permissions-testapp-srcs",
       ],
       static_libs: [
                    "androidx.appcompat_appcompat",

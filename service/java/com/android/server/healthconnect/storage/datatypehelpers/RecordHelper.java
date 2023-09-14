@@ -34,6 +34,8 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getDedupeByteBuffer;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.supportsPriority;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.OR;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -41,6 +43,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.AggregateResult;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
+import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
@@ -74,7 +77,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Parent class for all the helper classes for all the records
@@ -131,38 +133,55 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      */
     public final AggregateTableRequest getAggregateTableRequest(
             AggregationType<?> aggregationType,
-            List<String> packageFilter,
+            String callingPackage,
+            List<String> packageFilters,
             long startTime,
             long endTime,
             long startDateAccess,
             boolean useLocalTime) {
+        AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
         AggregateParams params = getAggregateParams(aggregationType);
-        String startTimeColumnName = getStartTimeColumnName();
-        params.setPhysicalTimeColumnName(startTimeColumnName);
-        params.setTimeColumnName(
-                useLocalTime ? getLocalStartTimeColumnName() : startTimeColumnName);
-        params.setExtraTimeColumn(
-                useLocalTime ? getLocalEndTimeColumnName() : getEndTimeColumnName());
+        String physicalTimeColumnName = getStartTimeColumnName();
+        String startTimeColumnName =
+                useLocalTime ? getLocalStartTimeColumnName() : physicalTimeColumnName;
+        String endTimeColumnName =
+                useLocalTime ? getLocalEndTimeColumnName() : getEndTimeColumnName();
+        params.setTimeColumnName(startTimeColumnName);
+        params.setExtraTimeColumn(endTimeColumnName);
         params.setOffsetColumnToFetch(getZoneOffsetColumnName());
 
         if (supportsPriority(mRecordIdentifier, aggregationType.getAggregateOperationType())) {
             List<String> columns =
                     Arrays.asList(
-                            startTimeColumnName,
+                            physicalTimeColumnName,
                             END_TIME_COLUMN_NAME,
                             APP_INFO_ID_COLUMN_NAME,
                             LAST_MODIFIED_TIME_COLUMN_NAME);
             params.appendAdditionalColumns(columns);
         }
         if (StorageUtils.isDerivedType(mRecordIdentifier)) {
-            params.appendAdditionalColumns(Collections.singletonList(startTimeColumnName));
+            params.appendAdditionalColumns(Collections.singletonList(physicalTimeColumnName));
         }
 
-        return new AggregateTableRequest(
-                        params, aggregationType, this, startDateAccess, useLocalTime)
-                .setPackageFilter(
-                        AppInfoHelper.getInstance().getAppInfoIds(packageFilter),
-                        APP_INFO_ID_COLUMN_NAME)
+        WhereClauses whereClauses = new WhereClauses(AND);
+        // filters by package names
+        whereClauses.addWhereInLongsClause(
+                APP_INFO_ID_COLUMN_NAME, appInfoHelper.getAppInfoIds(packageFilters));
+        // filter by start date access
+        whereClauses.addNestedWhereClauses(
+                getFilterByStartAccessDateWhereClauses(
+                        appInfoHelper.getAppInfoId(callingPackage), startDateAccess));
+        // start/end time filter
+        whereClauses.addWhereLessThanClause(startTimeColumnName, endTime);
+        if (endTimeColumnName != null) {
+            // for IntervalRecord, filters by overlapping
+            whereClauses.addWhereGreaterThanOrEqualClause(endTimeColumnName, startTime);
+        } else {
+            // for InstantRecord, filters by whether time falls into [startTime, endTime)
+            whereClauses.addWhereGreaterThanOrEqualClause(startTimeColumnName, startTime);
+        }
+
+        return new AggregateTableRequest(params, aggregationType, this, whereClauses, useLocalTime)
                 .setTimeFilter(startTime, endTime);
     }
 
@@ -308,7 +327,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     /** Returns ReadSingleTableRequest for {@code request} and package name {@code packageName} */
     public ReadTableRequest getReadTableRequest(
             ReadRecordsRequestParcel request,
-            String packageName,
+            String callingPackageName,
             boolean enforceSelfRead,
             long startDateAccess,
             Map<String, Boolean> extraPermsState) {
@@ -316,13 +335,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setJoinClause(getJoinForReadRequest())
                 .setWhereClause(
                         getReadTableWhereClause(
-                                request, packageName, enforceSelfRead, startDateAccess))
+                                request, callingPackageName, enforceSelfRead, startDateAccess))
                 .setOrderBy(getOrderByClause(request))
                 .setLimit(getLimitSize(request))
                 .setRecordHelper(this)
                 .setExtraReadRequests(
                         getExtraDataReadRequests(
-                                request, packageName, startDateAccess, extraPermsState));
+                                request, callingPackageName, startDateAccess, extraPermsState));
     }
 
     /**
@@ -356,7 +375,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return new ReadTableRequest(getMainTableName())
                 .setJoinClause(getJoinForReadRequest())
                 .setWhereClause(
-                        new WhereClauses()
+                        new WhereClauses(AND)
                                 .addWhereInClauseWithoutQuotes(
                                         UUID_COLUMN_NAME, StorageUtils.getListOfHexString(uuids))
                                 .addWhereLaterThanTimeClause(
@@ -663,28 +682,33 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
     }
 
-    WhereClauses getReadTableWhereClause(
+    final WhereClauses getReadTableWhereClause(
             ReadRecordsRequestParcel request,
-            String packageName,
+            String callingPackageName,
             boolean enforceSelfRead,
-            long startDateAccess) {
-        if (request.getRecordIdFiltersParcel() == null) {
-            List<Long> appIds =
-                    AppInfoHelper.getInstance().getAppInfoIds(request.getPackageFilters()).stream()
+            long startDateAccessMillis) {
+        AppInfoHelper appInfoHelper = AppInfoHelper.getInstance();
+        long callingAppInfoId = appInfoHelper.getAppInfoId(callingPackageName);
+
+        RecordIdFiltersParcel recordIdFiltersParcel = request.getRecordIdFiltersParcel();
+        if (recordIdFiltersParcel == null) {
+            List<Long> appInfoIds =
+                    appInfoHelper.getAppInfoIds(request.getPackageFilters()).stream()
                             .distinct()
-                            .collect(Collectors.toList());
+                            .toList();
             if (enforceSelfRead) {
-                appIds =
-                        AppInfoHelper.getInstance()
-                                .getAppInfoIds(Collections.singletonList(packageName));
+                appInfoIds = Collections.singletonList(callingAppInfoId);
             }
-            if (appIds.size() == 1 && appIds.get(0) == DEFAULT_INT) {
+            if (appInfoIds.size() == 1 && appInfoIds.get(0) == DEFAULT_INT) {
                 throw new TypeNotPresentException(TYPE_NOT_PRESENT_PACKAGE_NAME, new Throwable());
             }
 
-            WhereClauses clauses =
-                    new WhereClauses().addWhereInLongsClause(APP_INFO_ID_COLUMN_NAME, appIds);
+            WhereClauses clauses = new WhereClauses(AND);
 
+            // package names filter
+            clauses.addWhereInLongsClause(APP_INFO_ID_COLUMN_NAME, appInfoIds);
+
+            // page token filter
             PageTokenWrapper pageToken =
                     PageTokenUtil.decode(request.getPageToken(), request.isAscending());
             if (pageToken.isTimestampSet()) {
@@ -696,43 +720,73 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 }
             }
 
-            if (request.usesLocalTimeFilter()) {
-                clauses.addWhereGreaterThanOrEqualClause(getStartTimeColumnName(), startDateAccess);
-                clauses.addWhereBetweenClause(
-                        getLocalStartTimeColumnName(),
-                        request.getStartTime(),
-                        request.getEndTime());
-            } else {
-                clauses.addWhereBetweenTimeClause(
-                        getStartTimeColumnName(), startDateAccess, request.getEndTime());
+            // start/end time filter
+            String timeColumnName =
+                    request.usesLocalTimeFilter()
+                            ? getLocalStartTimeColumnName()
+                            : getStartTimeColumnName();
+            long startTimeMillis = request.getStartTime();
+            long endTimeMillis = request.getEndTime();
+            if (startTimeMillis != DEFAULT_LONG) {
+                clauses.addWhereGreaterThanOrEqualClause(timeColumnName, startTimeMillis);
             }
+            if (endTimeMillis != DEFAULT_LONG) {
+                clauses.addWhereLessThanClause(timeColumnName, endTimeMillis);
+            }
+
+            // start date access
+            clauses.addNestedWhereClauses(
+                    getFilterByStartAccessDateWhereClauses(
+                            callingAppInfoId, startDateAccessMillis));
 
             return clauses;
         }
 
         // Since for now we don't support mixing IDs and filters, we need to look for IDs now
         List<UUID> ids =
-                request.getRecordIdFiltersParcel().getRecordIdFilters().stream()
+                recordIdFiltersParcel.getRecordIdFilters().stream()
                         .map(
                                 (recordIdFilter) ->
-                                        StorageUtils.getUUIDFor(recordIdFilter, packageName))
-                        .collect(Collectors.toList());
-        WhereClauses whereClauses =
-                new WhereClauses()
+                                        StorageUtils.getUUIDFor(recordIdFilter, callingPackageName))
+                        .toList();
+        WhereClauses filterByIdsWhereClauses =
+                new WhereClauses(AND)
                         .addWhereInClauseWithoutQuotes(
                                 UUID_COLUMN_NAME, StorageUtils.getListOfHexString(ids));
 
         if (enforceSelfRead) {
-            long id = AppInfoHelper.getInstance().getAppInfoId(packageName);
-            if (id == DEFAULT_LONG) {
+            if (callingAppInfoId == DEFAULT_LONG) {
                 throw new TypeNotPresentException(TYPE_NOT_PRESENT_PACKAGE_NAME, new Throwable());
             }
-            whereClauses.addWhereInLongsClause(
-                    APP_INFO_ID_COLUMN_NAME, Collections.singletonList(id));
-            return whereClauses.addWhereLaterThanTimeClause(
-                    getStartTimeColumnName(), startDateAccess);
+            // if self read is enforced, startDateAccess must not be applied.
+            return filterByIdsWhereClauses.addWhereInLongsClause(
+                    APP_INFO_ID_COLUMN_NAME, Collections.singletonList(callingAppInfoId));
+        } else {
+            return filterByIdsWhereClauses.addNestedWhereClauses(
+                    getFilterByStartAccessDateWhereClauses(
+                            callingAppInfoId, startDateAccessMillis));
         }
-        return whereClauses;
+    }
+
+    /**
+     * Returns a {@link WhereClauses} that takes in to account start date access date & reading own
+     * data.
+     */
+    private WhereClauses getFilterByStartAccessDateWhereClauses(
+            long callingAppInfoId, long startDateAccessMillis) {
+        WhereClauses resultWhereClauses = new WhereClauses(OR);
+
+        // if the data point belongs to the calling app, then we should not enforce startDateAccess
+        resultWhereClauses.addWhereEqualsClause(
+                APP_INFO_ID_COLUMN_NAME, String.valueOf(callingAppInfoId));
+
+        // Otherwise, we should enforce startDateAccess. Also we must use physical time column
+        // regardless whether local time filter is used or not.
+        String physicalTimeColumn = getStartTimeColumnName();
+        resultWhereClauses.addWhereGreaterThanOrEqualClause(
+                physicalTimeColumn, startDateAccessMillis);
+
+        return resultWhereClauses;
     }
 
     abstract String getZoneOffsetColumnName();

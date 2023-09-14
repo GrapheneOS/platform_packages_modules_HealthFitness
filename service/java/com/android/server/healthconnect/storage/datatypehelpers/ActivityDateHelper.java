@@ -19,6 +19,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -98,7 +99,7 @@ public final class ActivityDateHelper extends DatabaseHelper {
         return readDates(
                 new ReadTableRequest(TABLE_NAME)
                         .setWhereClause(
-                                new WhereClauses()
+                                new WhereClauses(AND)
                                         .addWhereInIntsClause(
                                                 RECORD_TYPE_ID_COLUMN_NAME, recordTypeIds))
                         .setColumnNames(List.of(EPOCH_DAYS_COLUMN_NAME))

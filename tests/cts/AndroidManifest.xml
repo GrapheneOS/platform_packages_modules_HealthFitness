@@ -34,6 +34,9 @@
               <action android:name="android.health.connect.action.SHOW_MIGRATION_INFO"/>
           </intent-filter>
       </activity>
+
+      <receiver android:name="android.healthconnect.cts.utils.TestReceiver"
+          android:exported="true"/>
     </application>
 
     <!-- To get visibility of the app with health permissions definitions,
@@ -48,6 +51,7 @@
     <queries>
         <package android:name="android.healthconnect.cts.app"/>
         <package android:name="android.healthconnect.cts.app2"/>
+        <package android:name="android.healthconnect.test.app"/>
     </queries>
 
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
