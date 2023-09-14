@@ -20,6 +20,7 @@ import androidx.preference.PreferenceViewHolder
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.permissions.connectedapps.ComparablePreference
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
@@ -28,8 +29,10 @@ class AppSourcesPreference
 constructor(
         context: Context,
         val viewModel: HealthPermissionTypesViewModel,
-        val category: @HealthDataCategoryInt Int): Preference(context) {
+        val category: @HealthDataCategoryInt Int):
+    Preference(context), ComparablePreference {
 
+    private var priorityList: List<AppMetadata> = listOf()
     init {
         layoutResource = R.layout.widget_linear_layout_preference
     }
@@ -37,7 +40,7 @@ constructor(
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        val priorityList: List<AppMetadata> = viewModel.editedPriorityList.value ?: emptyList()
+        priorityList = viewModel.editedPriorityList.value ?: emptyList()
         val priorityListView = holder.findViewById(R.id.linear_layout_recycle_view) as RecyclerView
         val adapter = AppSourcesAdapter(priorityList, viewModel, category)
 
@@ -48,5 +51,15 @@ constructor(
         adapter.setOnItemDragStartedListener(priorityListMover)
         priorityListMover.attachToRecyclerView(priorityListView)
 
+    }
+
+    override fun isSameItem(preference: Preference): Boolean {
+        return preference is AppSourcesPreference &&
+                this == preference
+    }
+
+    override fun hasSameContents(preference: Preference): Boolean {
+        return preference is AppSourcesPreference &&
+                preference.priorityList == this.priorityList
     }
 }
