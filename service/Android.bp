@@ -40,6 +40,7 @@ java_sdk_library {
         "framework-sdkextensions",
         "framework-configinfrastructure",
         "keepanno-annotations",
+        "modules-utils-preconditions",
     ],
     static_libs: [
         "guava",

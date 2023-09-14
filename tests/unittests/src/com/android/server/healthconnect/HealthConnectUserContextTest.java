@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage;
+package com.android.server.healthconnect;
 
 import android.os.UserHandle;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.server.healthconnect.HealthConnectUserContext;
 
 import com.google.common.truth.Truth;
 
