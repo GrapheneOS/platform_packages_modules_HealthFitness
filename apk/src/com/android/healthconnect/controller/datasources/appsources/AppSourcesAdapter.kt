@@ -69,7 +69,7 @@ class AppSourcesAdapter(
             notifyItemRangeChanged(
                     fromPosition, toPosition - fromPosition + 1, POSITION_CHANGED_PAYLOAD)
         }
-        viewModel.setEditedAppSources(appMetadataList, category)
+        viewModel.updatePriorityList(category, appMetadataList.map { it.packageName })
         return true
     }
 
