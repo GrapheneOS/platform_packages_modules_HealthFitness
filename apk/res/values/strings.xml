@@ -133,6 +133,7 @@
     <string name="exercise_route_lowercase_label" description="Lowercase label used to show the user's exercise route [CHAR_LIMIT=50]">exercise route</string>
     <string name="exercise_route_write_content_description" description="Content description for switch that enables permissions for writing the user's exercise route [CHAR_LIMIT=NONE]">Write exercise route</string>
     <string name="exercise_route_read_content_description" description="Content description for switch that enables permissions for reading the user's exercise route [CHAR_LIMIT=NONE]">Read exercise route</string>
+    <string name="exercise_routes_all_read_content_description" description="Content description for switch that enables permissions for reading all user's exercise routes [CHAR_LIMIT=NONE]">Read all exercise routes</string>
 
     <string name="distance_uppercase_label" description="Uppercase label used to show the user's distance data [CHAR_LIMIT=50]">Distance</string>
     <string name="distance_lowercase_label" description="Lowercase label used to show the user's distance data [CHAR_LIMIT=50]">distance</string>

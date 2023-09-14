@@ -11,11 +11,18 @@ import javax.inject.Singleton
 
 interface FeatureUtils {
     fun isSessionTypesEnabled(): Boolean
+
     fun isExerciseRouteEnabled(): Boolean
+
+    fun isExerciseRouteReadAllEnabled(): Boolean
+
     fun isEntryPointsEnabled(): Boolean
+
     fun isNewAppPriorityEnabled(): Boolean
+
     fun isNewInformationArchitectureEnabled(): Boolean
-    fun isBackgroundReadEnabled() : Boolean
+
+    fun isBackgroundReadEnabled(): Boolean
 }
 
 class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnPropertiesChangedListener {
@@ -23,12 +30,14 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
     companion object {
         private const val HEALTH_FITNESS_FLAGS_NAMESPACE = DeviceConfig.NAMESPACE_HEALTH_FITNESS
         private const val PROPERTY_EXERCISE_ROUTE_ENABLED = "exercise_routes_enable"
+        private const val PROPERTY_EXERCISE_ROUTE_READ_ALL_ENABLED =
+            "exercise_routes_read_all_enable"
         private const val PROPERTY_SESSIONS_TYPE_ENABLED = "session_types_enable"
         private const val PROPERTY_ENTRY_POINTS_ENABLED = "entry_points_enable"
         private const val PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED =
-                "aggregation_source_controls_enable"
+            "aggregation_source_controls_enable"
         private const val PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED =
-                "new_information_architecture_enable"
+            "new_information_architecture_enable"
     }
 
     private val lock = Any()
@@ -46,13 +55,19 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
         DeviceConfig.getBoolean(
             HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_EXERCISE_ROUTE_ENABLED, true)
 
+    private var isExerciseRouteReadAllEnabled =
+        DeviceConfig.getBoolean(
+            HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_EXERCISE_ROUTE_READ_ALL_ENABLED, true)
+
     private var isEntryPointsEnabled =
         DeviceConfig.getBoolean(HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_ENTRY_POINTS_ENABLED, true)
 
     private var isNewAppPriorityEnabled =
-            DeviceConfig.getBoolean(HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED, false)
+        DeviceConfig.getBoolean(
+            HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED, false)
     private var isNewInformationArchitectureEnabled =
-            DeviceConfig.getBoolean(HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED, false)
+        DeviceConfig.getBoolean(
+            HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED, false)
 
     override fun isNewAppPriorityEnabled(): Boolean {
         synchronized(lock) {
@@ -75,6 +90,12 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
     override fun isExerciseRouteEnabled(): Boolean {
         synchronized(lock) {
             return isExerciseRouteEnabled
+        }
+    }
+
+    override fun isExerciseRouteReadAllEnabled(): Boolean {
+        synchronized(lock) {
+            return isExerciseRouteReadAllEnabled
         }
     }
 
@@ -108,10 +129,11 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
                             properties.getBoolean(PROPERTY_ENTRY_POINTS_ENABLED, true)
                     PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED ->
                         isNewAppPriorityEnabled =
-                                properties.getBoolean(PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED, true)
+                            properties.getBoolean(PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED, true)
                     PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED ->
                         isNewInformationArchitectureEnabled =
-                                properties.getBoolean(PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED, false)
+                            properties.getBoolean(
+                                PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED, false)
                 }
             }
         }
