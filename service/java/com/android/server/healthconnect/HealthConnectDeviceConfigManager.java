@@ -118,6 +118,10 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     @VisibleForTesting
     public static final String BACKGROUND_READ_FEATURE_FLAG = "background_read_enable";
 
+    @VisibleForTesting
+    public static final String ENABLE_AGGREGATION_SOURCE_CONTROLS_FLAG =
+            "aggregation_source_controls_enable";
+
     private static final boolean SESSION_DATATYPE_DEFAULT_FLAG_VALUE = true;
     private static final boolean EXERCISE_ROUTE_DEFAULT_FLAG_VALUE = true;
     public static final boolean ENABLE_RATE_LIMITER_DEFAULT_FLAG_VALUE = true;
@@ -160,6 +164,9 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     public static final boolean ENABLE_MIGRATION_NOTIFICATIONS_DEFAULT_FLAG_VALUE = true;
 
     @VisibleForTesting public static final boolean BACKGROUND_READ_DEFAULT_FLAG_VALUE = false;
+
+    @VisibleForTesting
+    public static final boolean ENABLE_AGGREGATION_SOURCE_CONTROLS_DEFAULT_FLAG_VALUE = false;
 
     private static HealthConnectDeviceConfigManager sDeviceConfigManager;
     private final ReentrantReadWriteLock mLock = new ReentrantReadWriteLock();
@@ -270,6 +277,13 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                     BACKGROUND_READ_FEATURE_FLAG,
                     BACKGROUND_READ_DEFAULT_FLAG_VALUE);
 
+    @GuardedBy("mLock")
+    private boolean mAggregationSourceControlsEnabled =
+            DeviceConfig.getBoolean(
+                    HEALTH_FITNESS_NAMESPACE,
+                    ENABLE_AGGREGATION_SOURCE_CONTROLS_FLAG,
+                    ENABLE_AGGREGATION_SOURCE_CONTROLS_DEFAULT_FLAG_VALUE);
+
     @NonNull
     @VisibleForTesting(visibility = VisibleForTesting.Visibility.PACKAGE)
     public static void initializeInstance(Context context) {
@@ -307,6 +321,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         sFlagsToTrack.add(ENABLE_COMPLETE_STATE_CHANGE_JOBS_FLAG);
         sFlagsToTrack.add(ENABLE_MIGRATION_NOTIFICATIONS_FLAG);
         sFlagsToTrack.add(BACKGROUND_READ_FEATURE_FLAG);
+        sFlagsToTrack.add(ENABLE_AGGREGATION_SOURCE_CONTROLS_FLAG);
     }
 
     /** Returns if operations with exercise route are enabled. */
@@ -473,6 +488,16 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
         mLock.readLock().lock();
         try {
             return mBackgroundReadFeatureEnabled;
+        } finally {
+            mLock.readLock().unlock();
+        }
+    }
+
+    /** Returns whether the new aggregation source control feature is enabled or not. */
+    public boolean isAggregationSourceControlsEnabled() {
+        mLock.readLock().lock();
+        try {
+            return mAggregationSourceControlsEnabled;
         } finally {
             mLock.readLock().unlock();
         }
@@ -674,6 +699,11 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                                         BACKGROUND_READ_FEATURE_FLAG,
                                         BACKGROUND_READ_DEFAULT_FLAG_VALUE);
                         break;
+                    case ENABLE_AGGREGATION_SOURCE_CONTROLS_FLAG:
+                        mAggregationSourceControlsEnabled =
+                                properties.getBoolean(
+                                        ENABLE_AGGREGATION_SOURCE_CONTROLS_FLAG,
+                                        ENABLE_AGGREGATION_SOURCE_CONTROLS_DEFAULT_FLAG_VALUE);
                 }
             } finally {
                 mLock.writeLock().unlock();
