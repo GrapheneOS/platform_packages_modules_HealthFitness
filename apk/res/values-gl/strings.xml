@@ -780,9 +780,7 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Totais dos datos"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Fontes de aplicacións"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Engade fontes de aplicacións á lista para ver como poden cambiar os totais dos datos. Se quitas unha aplicación da lista, deixará de contribuír aos totais, pero seguirá tendo permisos de escritura."</string>
-    <!-- no translation found for data_sources_empty_state (1899652759274805556) -->
-    <skip />
-    <!-- no translation found for data_sources_empty_state_footer (8933950342291569638) -->
-    <skip />
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Non hai ningunha aplicación como fonte de datos"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"As fontes mostraranse aquí en canto lles concedas permisos ás aplicacións para escribir datos sobre <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Funcionamento das fontes e da priorización"</string>
 </resources>
