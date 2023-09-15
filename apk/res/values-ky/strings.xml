@@ -611,7 +611,7 @@
     <string name="respiratory_rate_value_long" msgid="3822748008700697049">"{count,plural, =1{Мүнөтүнө 1 дем алуу}other{Мүнөтүнө # дем алуу}}"</string>
     <string name="kilograms_short_label" msgid="9098342853218050689">"{count,plural, =1{1 кг}other{# кг}}"</string>
     <string name="pounds_short_label" msgid="6256277330455003180">"{count,plural, =1{1 фунт}other{# фунт}}"</string>
-    <string name="stone_short_label" msgid="8377585176530348612">"{count,plural, =1{1 ст}other{# ст}}"</string>
+    <string name="stone_short_label" msgid="8377585176530348612">"{count,plural, =1{1 с}other{# с}}"</string>
     <string name="stone_pound_short_label" msgid="7157344201618366834">"{stone_part} {pound_part}"</string>
     <string name="kilograms_long_label" msgid="7883695071156297670">"{count,plural, =1{1 килограмм}other{# килограмм}}"</string>
     <string name="pounds_long_label" msgid="2916697485006416419">"{count,plural, =1{1 фунт}other{# фунт}}"</string>
@@ -677,7 +677,7 @@
     <string name="check_for_updates" msgid="3841090978657783101">"Жаңыртууларды карап көрүү"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Орнотулган колдонмолордун версиясы жаңы болушу керек"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Бардык шайкеш колдонмолорду көрүү"</string>
-    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play\'де колдонмо издөө"</string>
+    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play\'де колдонмо издеп көрүңүз"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Пикир билдирүү"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Health Connect кызматында кайсы ден соолук жана дене-бойду чыңдаган колдонмолорду пайдалангыңыз келет?"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
