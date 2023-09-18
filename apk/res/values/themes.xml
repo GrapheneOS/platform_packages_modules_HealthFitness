@@ -103,6 +103,7 @@
         <item name="textAppearanceSubheader2">@style/TextAppearance.HealthConnect.Subheader2</item>
         <item name="textAppearanceSubheader3">@style/TextAppearance.HealthConnect.Subheader3</item>
         <item name="textAppearanceRouteRequest">@style/TextAppearance.HealthConnect.RouteRequest</item>
+        <item name="textAppearancePreferenceCategory">@style/PreferenceCategoryTitleTextStyle.HealthConnect</item>
 
         <!-- Buttons -->
         <item name="dialogButtonFull">@style/Widget.HealthConnect.DialogButton.Full</item>
@@ -120,6 +121,7 @@
         <item name="android:checkboxStyle">@style/Widget.HealthConnect.CheckBox</item>
         <item name="chipStyle">@style/Widget.HealthConnect.RadioButton.Chip</item>
         <item name="spinnerStyle">@style/Widget.HealthConnect.CalendarSpinner</item>
+        <item name="tabStyle">@style/Widget.HealthConnect.TabLayout</item>
         <!-- END REGION -->
 
         <!-- REGION DIMENSIONS -->

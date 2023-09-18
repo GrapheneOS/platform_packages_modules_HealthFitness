@@ -30,10 +30,6 @@
     <PreferenceCategory
         android:key="manage_app"
         android:title="@string/manage_permissions_manage_app_header">
-        <com.android.healthconnect.controller.shared.preference.HealthPreference
-            android:key="delete_app_data"
-            android:title="@string/delete_app_data"
-            android:icon="?attr/deleteIcon" />
     </PreferenceCategory>
     <com.android.settingslib.widget.FooterPreference
         android:key="connected_app_footer"
