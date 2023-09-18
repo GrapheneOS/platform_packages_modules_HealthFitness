@@ -95,11 +95,13 @@
             <item type="style" name="TextAppearance.HealthConnect.Subheader2"/>
             <item type="style" name="TextAppearance.HealthConnect.Subheader3"/>
             <item type="style" name="TextAppearance.HealthConnect.RouteRequest"/>
+            <item type="style" name="PreferenceCategoryTitleTextStyle.HealthConnect"/>
 
             <item type="style" name="Widget.HealthConnect.Button"/>
             <item type="style" name="Widget.HealthConnect.CheckBox"/>
             <item type="style" name="Widget.HealthConnect.RadioButton.Chip"/>
             <item type="style" name="Widget.HealthConnect.CalendarSpinner"/>
+            <item type="style" name="Widget.HealthConnect.TabLayout"/>
             <!-- END REGION -->
 
             <!-- REGION DIMENSIONS -->

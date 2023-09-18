@@ -360,6 +360,7 @@
     <string name="permissions_disconnect_all_dialog_message" description="Text informing the user that all apps will no longer be able to read or write data after the permissions have been removed. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">None of your apps will be able to access or add new data to Health&#160;Connect. This doesn\'t delete any existing data.\n\nThis doesn\'t affect other permissions this app may have, like location, camera, or microphone.</string>
     <string name="permissions_disconnect_all_dialog_disconnect" description="Label for dialog button to confirm removal of all permissions for all apps [CHAR_LIMIT=20]">Remove all</string>
     <string name="manage_permissions_manage_app_header" description="Title shown for section to manage app [CHAR_LIMIT=40]">Manage app</string>
+    <string name="see_app_data" description="Label of a button that opens the app data screen. [CHAR_LIMIT=40]">See app data</string>
     <string name="delete_app_data" description="Label of a button that deletes data written by given app. [CHAR_LIMIT=40]">Delete app data</string>
     <string name="inactive_apps_section_title" description="Title shown for section of inactive apps [CHAR_LIMIT=40]">Inactive apps</string>
     <string name="inactive_apps_section_message" description="Description text shown in the inactive apps section that explains what inactive apps are [CHAR_LIMIT=NONE]">These apps no longer have access, but still have data stored in Health&#160;Connect</string>
@@ -467,7 +468,8 @@
     <!--endregion-->
 
     <!-- region Data entries -->
-    <string name="data_entry_header" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g></string>
+    <string name="data_entry_header_with_source_app" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g> • <xliff:g example="Run tracker" id="app_data">%2$s</xliff:g></string>
+    <string name="data_entry_header_without_source_app" translatable="false"><xliff:g example="14:41" id="time">%1$s</xliff:g></string>
     <string name="data_point_action_content_description" description="Content description for the menu button of an individual data entry [CHAR LIMIT=NONE]">Delete data entry</string>
     <string name="delete_data_point" description="Menu option for deleting an individual data entry [CHAR LIMIT=50]">Delete entry</string>
     <string name="aggregation_total" description="Description before the total value. For instance, Total: 1000 steps. [CHAR LIMIT=50]">Total: <xliff:g id="total_value" example="1000 steps">%s</xliff:g></string>
@@ -1086,6 +1088,20 @@
     <string name="data_sources_empty_state_footer" description="Text for the footer of the empty state of the data sources screen [CHAR_LIMIT=NONE]">Once you give app permissions to write <xliff:g example="activity" id="category_name">%1$s</xliff:g> data, sources will show here.</string>
     <string name="data_sources_help_link" description="Text for helper link in the data sources screen taking the user to an article about how sources and prioritization work [CHAR_LIMIT=NONE]">How sources &amp; prioritization work</string>
     <string name="data_sources_add_app" description="Title for preference in the data sources screen used to add an app to the list of data sources [CHAR_LIMIT=NONE]">Add an app</string>
+    <!--  endregion -->
+
+    <!-- region App data -->
+    <string name="app_data_title" description="Title of screen that shows the data of a certain app.">App data</string>
+    <!--  endregion -->
+
+    <!-- region App entries -->
+    <string name="date_picker_day" description="Dropdown option that indicates that one day's worth of data is displayed.">Day</string>
+    <string name="date_picker_week" description="Dropdown option that indicates that one week's worth of data is displayed.">Week</string>
+    <string name="date_picker_month" description="Dropdown option that indicates that one month's worth of data is displayed.">Month</string>
+    <string name="this_week_header" description="Header in the list of dataentries to differentiate between entries from this week and last week. [CHAR LIMIT=50]">This week</string>
+    <string name="last_week_header" description="Header in the list of data entries to differentiate between entries from this week and last week. [CHAR LIMIT=50]">Last week</string>
+    <string name="this_month_header" description="Header in the list of data entries to differentiate between entries from this month and last month. [CHAR LIMIT=50]">This month</string>
+    <string name="last_month_header" description="Header in the list of data entries to differentiate between entries from this month and last month. [CHAR LIMIT=50]">Last month</string>
     <!--  endregion -->
 
 </resources>

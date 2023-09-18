@@ -230,4 +230,20 @@
         <item name="android:foreground">@drawable/filter_chip_button_ripple</item>
     </style>
 
+    <style name="Widget.HealthConnect.TabLayout" parent="@style/Widget.Material3.TabLayout">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="tabMaxWidth">0dp</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorHeight">0dp</item>
+        <item name="tabSelectedTextColor">?android:attr/textColorPrimary</item>
+        <item name="tabTextColor">?android:attr/textColorSecondary</item>
+        <item name="tabBackground">@drawable/tab_background</item>
+        <item name="tabTextAppearance">?attr/textAppearanceSubheader</item>
+    </style>
+
+    <style name="PreferenceCategoryTitleTextStyle.HealthConnect">
+        <item name="android:textAppearance">?attr/preferenceCategoryTitleTextAppearance</item>
+        <item name="android:textColor">?attr/preferenceCategoryTitleTextColor</item>
+    </style>
 </resources>
