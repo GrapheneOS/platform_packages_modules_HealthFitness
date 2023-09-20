@@ -1573,7 +1573,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         callback.onSuccess();
                     } catch (Exception e) {
                         Slog.e(TAG, "Exception: ", e);
-                        // TODO(b/263897830): Verify migration state and send errors properly
                         tryAndThrowException(callback, e, MigrationException.ERROR_INTERNAL, null);
                     }
                 });
