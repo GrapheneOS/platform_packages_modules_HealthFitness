@@ -128,6 +128,8 @@ open class AppDataFragment : Hilt_AppDataFragment() {
                                 HealthPermissionStrings.fromPermissionType(permissionType)
                                     .uppercaseLabel)
                             it.setOnPreferenceClickListener {
+                                // TODO(b/281811925): Add in upcoming cl.
+                                // it.logName = AppDataElement.PERMISSION_TYPE_BUTTON
                                 findNavController()
                                     .navigate(
                                         R.id.action_appData_to_appEntries,

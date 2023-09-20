@@ -104,6 +104,7 @@ constructor(
     }
 
     private fun bindDateTextView(view: View) {
+        // TODO(b/291249677): Add log in upcoming CL.
         selectedDateView = view.findViewById(R.id.selected_date) as TextView
         logger.logImpression(DataEntriesElement.SELECT_DATE_BUTTON)
         selectedDateView.setOnClickListener {

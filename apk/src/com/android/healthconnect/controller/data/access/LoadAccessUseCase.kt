@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.android.healthconnect.controller.dataaccess
+package com.android.healthconnect.controller.data.access
 
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -31,7 +30,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 @Singleton
-class LoadDataAccessUseCase
+class LoadAccessUseCase
 @Inject
 constructor(
     private val loadPermissionTypeContributorAppsUseCase: LoadPermissionTypeContributorAppsUseCase,
@@ -40,10 +39,10 @@ constructor(
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
-    /** Returns a map of [DataAccessAppState] to apps. */
+    /** Returns a map of [AppAccessState] to apps. */
     suspend operator fun invoke(
         permissionType: HealthPermissionType
-    ): UseCaseResults<Map<DataAccessAppState, List<AppMetadata>>> =
+    ): UseCaseResults<Map<AppAccessState, List<AppMetadata>>> =
         withContext(dispatcher) {
             try {
                 val appsWithHealthPermissions: List<String> =
@@ -81,11 +80,10 @@ constructor(
 
                 val appAccess =
                     mapOf(
-                        DataAccessAppState.Read to
-                            alphabeticallySortedMetadataList(readAppMetadataSet),
-                        DataAccessAppState.Write to
+                        AppAccessState.Read to alphabeticallySortedMetadataList(readAppMetadataSet),
+                        AppAccessState.Write to
                             alphabeticallySortedMetadataList(writeAppMetadataSet),
-                        DataAccessAppState.Inactive to
+                        AppAccessState.Inactive to
                             alphabeticallySortedMetadataList(inactiveAppMetadataSet))
                 UseCaseResults.Success(appAccess)
             } catch (ex: Exception) {
