@@ -28,12 +28,12 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.datasources.DataSourcesFragment
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel
-import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.AggregationCardsState
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel.NewPriorityListState
@@ -50,28 +50,26 @@ import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
-import java.time.Instant
-import java.time.ZoneId
-import java.util.Locale
-import java.util.TimeZone
 
 @HiltAndroidTest
 class DataSourcesFragmentTest {
 
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
+    @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @BindValue
     val healthPermissionTypesViewModel: HealthPermissionTypesViewModel =
-            Mockito.mock(HealthPermissionTypesViewModel::class.java)
+        Mockito.mock(HealthPermissionTypesViewModel::class.java)
     @BindValue
-    val dataSourcesViewModel: DataSourcesViewModel =
-            Mockito.mock(DataSourcesViewModel::class.java)
+    val dataSourcesViewModel: DataSourcesViewModel = Mockito.mock(DataSourcesViewModel::class.java)
 
     @Before
     fun setup() {
@@ -79,17 +77,14 @@ class DataSourcesFragmentTest {
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
         hiltRule.inject()
-        whenever(dataSourcesViewModel.getCurrentSelection()).then {
-            HealthDataCategory.ACTIVITY
-        }
+        whenever(dataSourcesViewModel.getCurrentSelection()).then { HealthDataCategory.ACTIVITY }
     }
 
     @Test
     fun twoSources_noDataTotals_isDisplayed() {
         whenever(healthPermissionTypesViewModel.newPriorityList).then {
             MutableLiveData<NewPriorityListState>(
-                    NewPriorityListState.WithData(true,
-                            listOf(TEST_APP, TEST_APP_2)))
+                NewPriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
             MutableLiveData(listOf(TEST_APP, TEST_APP_2))
@@ -107,35 +102,48 @@ class DataSourcesFragmentTest {
         onView(withText("Data totals")).check(doesNotExist())
         onView(withText("App sources")).check(matches(isDisplayed()))
         onView(withText("Add an app")).check(doesNotExist())
-        onView(withText("Add app sources to the list to see how the data " +
-                "totals can change. Removing an app from this list will stop it " +
-                "from contributing to totals, but it will still have write permissions."))
-                .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Add app sources to the list to see how the data " +
+                        "totals can change. Removing an app from this list will stop it " +
+                        "from contributing to totals, but it will still have write permissions."))
+            .check(matches(isDisplayed()))
 
         onView(withId(R.id.linear_layout_recycle_view))
-                .check(matches(atPosition(0, allOf(hasDescendant(withText("1")),
-                        hasDescendant(withText(TEST_APP_NAME))))))
+            .check(
+                matches(
+                    atPosition(
+                        0,
+                        allOf(
+                            hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))))))
         onView(withId(R.id.linear_layout_recycle_view))
-                .check(matches(atPosition(1, allOf(hasDescendant(withText("2")),
-                        hasDescendant(withText(TEST_APP_NAME_2))))))
+            .check(
+                matches(
+                    atPosition(
+                        1,
+                        allOf(
+                            hasDescendant(withText("2")),
+                            hasDescendant(withText(TEST_APP_NAME_2))))))
     }
 
     @Test
     fun twoSources_oneDataTotal_withinLastYear_isDisplayed() {
         whenever(healthPermissionTypesViewModel.newPriorityList).then {
             MutableLiveData<NewPriorityListState>(
-                    NewPriorityListState.WithData(true,
-                            listOf(TEST_APP, TEST_APP_2)))
+                NewPriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
             MutableLiveData(listOf(TEST_APP, TEST_APP_2))
         }
         whenever(dataSourcesViewModel.aggregationCardsData).then {
-            MutableLiveData<AggregationCardsState>(AggregationCardsState.WithData(listOf(AggregationCardInfo(
-                    HealthPermissionType.STEPS,
-                    FormattedEntry.FormattedAggregation("1234 steps", "1234 steps", "TestApp"),
-                    Instant.parse("2022-10-19T07:06:05.432Z")
-            ))))
+            MutableLiveData<AggregationCardsState>(
+                AggregationCardsState.WithData(
+                    listOf(
+                        AggregationCardInfo(
+                            HealthPermissionType.STEPS,
+                            FormattedEntry.FormattedAggregation(
+                                "1234 steps", "1234 steps", "TestApp"),
+                            Instant.parse("2022-10-19T07:06:05.432Z")))))
         }
         whenever(dataSourcesViewModel.potentialAppSources).then {
             MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf()))
@@ -148,35 +156,48 @@ class DataSourcesFragmentTest {
         onView(withText("October 19")).check(matches(isDisplayed()))
         onView(withText("App sources")).check(matches(isDisplayed()))
         onView(withText("Add an app")).check(doesNotExist())
-        onView(withText("Add app sources to the list to see how the data " +
-                "totals can change. Removing an app from this list will stop it " +
-                "from contributing to totals, but it will still have write permissions."))
-                .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Add app sources to the list to see how the data " +
+                        "totals can change. Removing an app from this list will stop it " +
+                        "from contributing to totals, but it will still have write permissions."))
+            .check(matches(isDisplayed()))
 
         onView(withId(R.id.linear_layout_recycle_view))
-                .check(matches(atPosition(0, allOf(hasDescendant(withText("1")),
-                        hasDescendant(withText(TEST_APP_NAME))))))
+            .check(
+                matches(
+                    atPosition(
+                        0,
+                        allOf(
+                            hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))))))
         onView(withId(R.id.linear_layout_recycle_view))
-                .check(matches(atPosition(1, allOf(hasDescendant(withText("2")),
-                        hasDescendant(withText(TEST_APP_NAME_2))))))
+            .check(
+                matches(
+                    atPosition(
+                        1,
+                        allOf(
+                            hasDescendant(withText("2")),
+                            hasDescendant(withText(TEST_APP_NAME_2))))))
     }
 
     @Test
     fun oneDataTotal_olderThanOneYear_displaysYear() {
         whenever(healthPermissionTypesViewModel.newPriorityList).then {
             MutableLiveData<NewPriorityListState>(
-                NewPriorityListState.WithData(true,
-                    listOf(TEST_APP, TEST_APP_2)))
+                NewPriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
             MutableLiveData(listOf(TEST_APP, TEST_APP_2))
         }
         whenever(dataSourcesViewModel.aggregationCardsData).then {
-            MutableLiveData<AggregationCardsState>(AggregationCardsState.WithData(listOf(AggregationCardInfo(
-                HealthPermissionType.STEPS,
-                FormattedEntry.FormattedAggregation("1234 steps", "1234 steps", "TestApp"),
-                Instant.parse("2020-10-19T07:06:05.432Z")
-            ))))
+            MutableLiveData<AggregationCardsState>(
+                AggregationCardsState.WithData(
+                    listOf(
+                        AggregationCardInfo(
+                            HealthPermissionType.STEPS,
+                            FormattedEntry.FormattedAggregation(
+                                "1234 steps", "1234 steps", "TestApp"),
+                            Instant.parse("2020-10-19T07:06:05.432Z")))))
         }
         whenever(dataSourcesViewModel.potentialAppSources).then {
             MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf()))
@@ -190,8 +211,7 @@ class DataSourcesFragmentTest {
     @Test
     fun noSources_displaysEmptyState() {
         whenever(healthPermissionTypesViewModel.newPriorityList).then {
-            MutableLiveData<NewPriorityListState>(
-                    NewPriorityListState.WithData(true, listOf()))
+            MutableLiveData<NewPriorityListState>(NewPriorityListState.WithData(true, listOf()))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
             MutableLiveData<List<AppMetadata>>(listOf())
@@ -206,18 +226,18 @@ class DataSourcesFragmentTest {
 
         onView(withText("Activity")).check(matches(isDisplayed()))
         onView(withText("No app sources")).check(matches(isDisplayed()))
-        onView(withText("Once you give app permissions to write activity data, sources will show here."))
+        onView(
+                withText(
+                    "Once you give app permissions to write activity data, sources will show here."))
             .check(matches(isDisplayed()))
-        onView(withText("How sources & prioritization work"))
-            .check(matches(isDisplayed()))
+        onView(withText("How sources & prioritization work")).check(matches(isDisplayed()))
     }
 
     @Test
     fun addAnApp_shownWhenPotentialAppsExist() {
         whenever(healthPermissionTypesViewModel.newPriorityList).then {
             MutableLiveData<NewPriorityListState>(
-                NewPriorityListState.WithData(true,
-                    listOf(TEST_APP, TEST_APP_2)))
+                NewPriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
             MutableLiveData(listOf(TEST_APP, TEST_APP_2))
@@ -226,7 +246,8 @@ class DataSourcesFragmentTest {
             MutableLiveData<AggregationCardsState>(AggregationCardsState.WithData(listOf()))
         }
         whenever(dataSourcesViewModel.potentialAppSources).then {
-            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf(TEST_APP_3)))
+            MutableLiveData<PotentialAppSourcesState>(
+                PotentialAppSourcesState.WithData(listOf(TEST_APP_3)))
         }
         launchFragment<DataSourcesFragment>(Bundle())
         onIdle()
@@ -235,25 +256,35 @@ class DataSourcesFragmentTest {
         onView(withText("Data totals")).check(doesNotExist())
         onView(withText("App sources")).check(matches(isDisplayed()))
         onView(withText("Add an app")).check(matches(isDisplayed()))
-        onView(withText("Add app sources to the list to see how the data " +
-                "totals can change. Removing an app from this list will stop it " +
-                "from contributing to totals, but it will still have write permissions."))
+        onView(
+                withText(
+                    "Add app sources to the list to see how the data " +
+                        "totals can change. Removing an app from this list will stop it " +
+                        "from contributing to totals, but it will still have write permissions."))
             .check(matches(isDisplayed()))
 
         onView(withId(R.id.linear_layout_recycle_view))
-            .check(matches(atPosition(0, allOf(hasDescendant(withText("1")),
-                hasDescendant(withText(TEST_APP_NAME))))))
+            .check(
+                matches(
+                    atPosition(
+                        0,
+                        allOf(
+                            hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))))))
         onView(withId(R.id.linear_layout_recycle_view))
-            .check(matches(atPosition(1, allOf(hasDescendant(withText("2")),
-                hasDescendant(withText(TEST_APP_NAME_2))))))
+            .check(
+                matches(
+                    atPosition(
+                        1,
+                        allOf(
+                            hasDescendant(withText("2")),
+                            hasDescendant(withText(TEST_APP_NAME_2))))))
     }
 
     @Test
     fun atLeastOneSourceLoading_showsLoading() {
         whenever(healthPermissionTypesViewModel.newPriorityList).then {
             MutableLiveData<NewPriorityListState>(
-                NewPriorityListState.WithData(true,
-                    listOf(TEST_APP, TEST_APP_2)))
+                NewPriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
             MutableLiveData(listOf(TEST_APP, TEST_APP_2))
@@ -262,7 +293,8 @@ class DataSourcesFragmentTest {
             MutableLiveData<AggregationCardsState>(AggregationCardsState.Loading)
         }
         whenever(dataSourcesViewModel.potentialAppSources).then {
-            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf(TEST_APP_3)))
+            MutableLiveData<PotentialAppSourcesState>(
+                PotentialAppSourcesState.WithData(listOf(TEST_APP_3)))
         }
         launchFragment<DataSourcesFragment>(Bundle())
 
@@ -272,8 +304,7 @@ class DataSourcesFragmentTest {
     @Test
     fun atLeastOneSourceLoadingFailed_showsError() {
         whenever(healthPermissionTypesViewModel.newPriorityList).then {
-            MutableLiveData<NewPriorityListState>(
-                NewPriorityListState.LoadingFailed(true))
+            MutableLiveData<NewPriorityListState>(NewPriorityListState.LoadingFailed(true))
         }
         whenever(healthPermissionTypesViewModel.editedPriorityList).then {
             MutableLiveData(listOf(TEST_APP, TEST_APP_2))
@@ -282,10 +313,12 @@ class DataSourcesFragmentTest {
             MutableLiveData<AggregationCardsState>(AggregationCardsState.WithData(listOf()))
         }
         whenever(dataSourcesViewModel.potentialAppSources).then {
-            MutableLiveData<PotentialAppSourcesState>(PotentialAppSourcesState.WithData(listOf(TEST_APP_3)))
+            MutableLiveData<PotentialAppSourcesState>(
+                PotentialAppSourcesState.WithData(listOf(TEST_APP_3)))
         }
         launchFragment<DataSourcesFragment>(Bundle())
         onIdle()
 
-        onView(withId(R.id.error_view)).check(matches(isDisplayed()))    }
+        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+    }
 }

@@ -110,7 +110,7 @@ constructor(
     ): Boolean =
         recordTypeInfoMap.values.firstOrNull {
             fromHealthPermissionCategory(it.permissionCategory) == permissionType &&
-                    it.contributingPackages.isNotEmpty()
+                it.contributingPackages.isNotEmpty()
         } != null
 
     private fun hasDataByApp(
@@ -120,10 +120,10 @@ constructor(
     ): Boolean =
         recordTypeInfoMap.values.firstOrNull {
             fromHealthPermissionCategory(it.permissionCategory) == permissionType &&
-                    it.contributingPackages.isNotEmpty() &&
-                    it.contributingPackages
-                        .map { contributingApp -> contributingApp.packageName }
-                        .contains(packageName)
+                it.contributingPackages.isNotEmpty() &&
+                it.contributingPackages
+                    .map { contributingApp -> contributingApp.packageName }
+                    .contains(packageName)
         } != null
 }
 

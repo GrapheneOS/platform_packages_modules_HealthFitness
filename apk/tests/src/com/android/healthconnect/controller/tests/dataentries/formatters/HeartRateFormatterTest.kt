@@ -18,7 +18,7 @@ package com.android.healthconnect.controller.tests.dataentries.formatters
 import android.content.Context
 import android.health.connect.datatypes.HeartRateRecord
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord

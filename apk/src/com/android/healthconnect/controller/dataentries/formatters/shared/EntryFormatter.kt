@@ -17,8 +17,8 @@ package com.android.healthconnect.controller.dataentries.formatters.shared
 
 import android.content.Context
 import android.health.connect.datatypes.Record
-import com.android.healthconnect.controller.dataentries.FormattedEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 
 /** Abstract formatter for Records to Formatted Entries. */

@@ -152,10 +152,10 @@ import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYP
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_YOGA
 import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
-import com.android.healthconnect.controller.dataentries.FormattedEntry.SessionHeader
+import com.android.healthconnect.controller.data.entries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.ExerciseSessionEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSessionDetail
+import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationLong
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationShort
 import com.android.healthconnect.controller.dataentries.formatters.shared.BaseFormatter

@@ -41,10 +41,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.SeriesDataEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSessionEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.ExerciseSessionEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.SleepSessionEntry
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.Loading
@@ -91,7 +91,8 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(emptyList())))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = SLEEP, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(
+                permissionType = SLEEP, entryId = "1", showDataOrigin = true))
 
         onView(withId(R.id.loading)).check(matches(not(isDisplayed())))
     }
@@ -101,7 +102,8 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(LoadingFailed))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = SLEEP, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(
+                permissionType = SLEEP, entryId = "1", showDataOrigin = true))
 
         onView(withId(R.id.error_view)).check(matches(isDisplayed()))
     }
@@ -111,7 +113,8 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(Loading))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = SLEEP, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(
+                permissionType = SLEEP, entryId = "1", showDataOrigin = true))
 
         onView(withId(R.id.loading)).check(matches(isDisplayed()))
     }
@@ -133,7 +136,8 @@ class DataEntryDetailsFragmentTest {
                                 notes = "notes")))))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = SLEEP, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(
+                permissionType = SLEEP, entryId = "1", showDataOrigin = true))
 
         onView(withText("07:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
         onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
@@ -149,7 +153,8 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = SLEEP, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(
+                permissionType = SLEEP, entryId = "1", showDataOrigin = true))
 
         onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
         onView(withText("6 hour light sleeping")).check(matches(isDisplayed()))
@@ -162,7 +167,8 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = HEART_RATE, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(
+                permissionType = HEART_RATE, entryId = "1", showDataOrigin = true))
 
         onView(withText("07:06 - 8:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
         onView(withText("100 bpm")).check(matches(isDisplayed()))
@@ -173,7 +179,8 @@ class DataEntryDetailsFragmentTest {
         val list = buildList { add(getFormattedExerciseSession(showSession = true)) }
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = EXERCISE, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(
+                permissionType = EXERCISE, entryId = "1", showDataOrigin = true))
 
         onView(withText("12 hour running")).check(matches(isDisplayed()))
         onView(withId(R.id.map_view)).check(matches(isDisplayed()))
@@ -184,7 +191,8 @@ class DataEntryDetailsFragmentTest {
         val list = buildList { add(getFormattedExerciseSession(showSession = false)) }
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(permissionType = EXERCISE, entryId = "1"))
+            DataEntryDetailsFragment.createBundle(
+                permissionType = EXERCISE, entryId = "1", showDataOrigin = true))
 
         onView(withText("12 hour running")).check(matches(isDisplayed()))
         onView(withId(R.id.map_view)).check(matches(not(isDisplayed())))

@@ -32,7 +32,7 @@ import android.health.connect.datatypes.units.Energy
 import android.health.connect.datatypes.units.Length
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
 import com.android.healthconnect.controller.dataentries.formatters.StepsFormatter
 import com.android.healthconnect.controller.dataentries.formatters.TotalCaloriesBurnedFormatter
