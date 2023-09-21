@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.dataaccess
+package com.android.healthconnect.controller.data.access
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessScreenState.Error
-import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessScreenState.WithData
+import com.android.healthconnect.controller.data.access.AccessViewModel.AccessScreenState.Error
+import com.android.healthconnect.controller.data.access.AccessViewModel.AccessScreenState.WithData
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
@@ -30,24 +30,26 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-/** View model for [HealthDataAccessFragment]. */
+/**
+ * View model for the Access tab in [EntriesAccessFragment] and
+ * [com.android.healthconnect.controller.dataaccess.HealthDataAccessFragment].
+ */
 @HiltViewModel
-class HealthDataAccessViewModel
-@Inject
-constructor(private val loadDataAccessUseCase: LoadDataAccessUseCase) : ViewModel() {
+class AccessViewModel @Inject constructor(private val loadAccessUseCase: LoadAccessUseCase) :
+    ViewModel() {
 
-    private val _appMetadataMap = MutableLiveData<DataAccessScreenState>()
+    private val _appMetadataMap = MutableLiveData<AccessScreenState>()
 
-    val appMetadataMap: LiveData<DataAccessScreenState>
+    val appMetadataMap: LiveData<AccessScreenState>
         get() = _appMetadataMap
 
     fun loadAppMetaDataMap(permissionType: HealthPermissionType) {
         val appsMap = _appMetadataMap.value
         if (appsMap is WithData && appsMap.appMetadata.isEmpty()) {
-            _appMetadataMap.postValue(DataAccessScreenState.Loading)
+            _appMetadataMap.postValue(AccessScreenState.Loading)
         }
         viewModelScope.launch {
-            when (val result = loadDataAccessUseCase.invoke(permissionType)) {
+            when (val result = loadAccessUseCase.invoke(permissionType)) {
                 is UseCaseResults.Success -> {
                     _appMetadataMap.postValueIfUpdated(WithData(result.data))
                 }
@@ -59,12 +61,12 @@ constructor(private val loadDataAccessUseCase: LoadDataAccessUseCase) : ViewMode
     }
 
     /** Represents DataAccessFragment state. */
-    sealed class DataAccessScreenState {
-        object Loading : DataAccessScreenState()
+    sealed class AccessScreenState {
+        object Loading : AccessScreenState()
 
-        object Error : DataAccessScreenState()
+        object Error : AccessScreenState()
 
-        data class WithData(val appMetadata: Map<DataAccessAppState, List<AppMetadata>>) :
-            DataAccessScreenState()
+        data class WithData(val appMetadata: Map<AppAccessState, List<AppMetadata>>) :
+            AccessScreenState()
     }
 }

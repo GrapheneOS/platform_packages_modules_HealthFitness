@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2022 The Android Open Source Project
+/*
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.tests.dataaccess
+package com.android.healthconnect.controller.tests.data.access
 
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
@@ -45,7 +45,7 @@ import org.junit.Test
 import org.mockito.Mockito
 
 @HiltAndroidTest
-class HealthDataAccessFragmentTest {
+class AccessFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
@@ -59,7 +59,7 @@ class HealthDataAccessFragmentTest {
     @Test
     fun dataAccessFragment_noSections_noneDisplayed() {
         whenever(viewModel.appMetadataMap).then {
-            MutableLiveData<AccessScreenState>(WithData(emptyMap()))
+            MutableLiveData<AccessViewModel.AccessScreenState>(WithData(emptyMap()))
         }
         launchFragment<HealthDataAccessFragment>(distanceBundle())
 
@@ -131,7 +131,7 @@ class HealthDataAccessFragmentTest {
                 AppAccessState.Write to emptyList(),
                 AppAccessState.Inactive to listOf(AppMetadata("package1", "appName1", null)))
         whenever(viewModel.appMetadataMap).then {
-            MutableLiveData<AccessScreenState>(WithData(map))
+            MutableLiveData<AccessViewModel.AccessScreenState>(WithData(map))
         }
         launchFragment<HealthDataAccessFragment>(distanceBundle())
 

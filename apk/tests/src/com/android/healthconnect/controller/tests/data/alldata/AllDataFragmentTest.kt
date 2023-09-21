@@ -13,11 +13,9 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.tests.data.appdata
+package com.android.healthconnect.controller.tests.data.alldata
 
-import android.content.Intent
 import android.health.connect.HealthDataCategory
-import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -25,16 +23,10 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.appdata.AppDataFragment
-import com.android.healthconnect.controller.data.appdata.AppDataViewModel
+import com.android.healthconnect.controller.data.alldata.AllDataFragment
+import com.android.healthconnect.controller.data.alldata.AllDataViewModel
 import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
-import com.android.healthconnect.controller.permissions.shared.Constants
-import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
-import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
@@ -46,33 +38,22 @@ import org.junit.Test
 import org.mockito.Mockito
 
 @HiltAndroidTest
-class AppDataFragmentTest {
+class AllDataFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @BindValue val appDataViewModel: AppDataViewModel = Mockito.mock(AppDataViewModel::class.java)
+    @BindValue val allDataViewModel: AllDataViewModel = Mockito.mock(AllDataViewModel::class.java)
 
     @Before
     fun setup() {
         hiltRule.inject()
-        val context = InstrumentationRegistry.getInstrumentation().context
-        whenever(appDataViewModel.appInfo).then {
-            MutableLiveData(
-                AppMetadata(
-                    TEST_APP_PACKAGE_NAME,
-                    TEST_APP_NAME,
-                    context.getDrawable(R.drawable.health_connect_logo)))
-        }
     }
 
     @Test
     fun allDataFragment_noData_noDataMessageDisplayed() {
-        whenever(appDataViewModel.appData).then {
-            MutableLiveData(AppDataViewModel.AppDataState.WithData(listOf()))
+        whenever(allDataViewModel.allData).then {
+            MutableLiveData(AllDataViewModel.AllDataState.WithData(listOf()))
         }
-        launchFragment<AppDataFragment>(
-            bundleOf(
-                Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                Constants.EXTRA_APP_NAME to TEST_APP_NAME))
+        launchFragment<AllDataFragment>()
 
         onView(withText("No data")).check(matches(isDisplayed()))
         onView(withText("Data from apps with access to Health Connect will show here"))
@@ -80,10 +61,10 @@ class AppDataFragmentTest {
     }
 
     @Test
-    fun appDataFragment_dataPresent_populatedDataTypesDisplayed() {
-        whenever(appDataViewModel.appData).then {
+    fun allDataFragment_dataPresent_populatedDataTypesDisplayed() {
+        whenever(allDataViewModel.allData).then {
             MutableLiveData(
-                AppDataViewModel.AppDataState.WithData(
+                AllDataViewModel.AllDataState.WithData(
                     listOf(
                         PermissionTypesPerCategory(
                             HealthDataCategory.ACTIVITY,
@@ -98,10 +79,7 @@ class AppDataFragmentTest {
                                 HealthPermissionType.MENSTRUATION,
                                 HealthPermissionType.SEXUAL_ACTIVITY)))))
         }
-        launchFragment<AppDataFragment>(
-            bundleOf(
-                Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                Constants.EXTRA_APP_NAME to TEST_APP_NAME))
+        launchFragment<AllDataFragment>()
 
         onView(withText("Activity")).check(matches(isDisplayed()))
         onView(withText("Distance")).check(matches(isDisplayed()))
@@ -113,5 +91,6 @@ class AppDataFragmentTest {
         onView(withText("Sexual activity")).perform(scrollTo()).check(matches(isDisplayed()))
 
         onView(withText("Body measurements")).check(doesNotExist())
+        onView(withText("No data")).check(doesNotExist())
     }
 }

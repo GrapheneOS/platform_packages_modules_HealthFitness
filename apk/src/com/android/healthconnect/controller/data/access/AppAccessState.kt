@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.dataaccess
+package com.android.healthconnect.controller.data.access
 
 /** Represents app data access state. */
-sealed class DataAccessAppState {
-    object Read : DataAccessAppState()
-    object Write : DataAccessAppState()
-    object Inactive : DataAccessAppState()
+sealed class AppAccessState {
+    object Read : AppAccessState()
+
+    object Write : AppAccessState()
+
+    object Inactive : AppAccessState()
 }
