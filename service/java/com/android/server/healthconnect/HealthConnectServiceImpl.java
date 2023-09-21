@@ -23,6 +23,7 @@ import static android.health.connect.Constants.READ;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 import static android.health.connect.HealthConnectException.ERROR_SECURITY;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
+import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES;
@@ -158,7 +159,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -192,6 +192,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private static final int TRACE_TAG_READ_SUBTASKS = TAG_READ_SUBTASKS.hashCode();
 
     private final TransactionManager mTransactionManager;
+    private final HealthConnectDeviceConfigManager mDeviceConfigManager;
     private final HealthConnectPermissionHelper mPermissionHelper;
     private final FirstGrantTimeManager mFirstGrantTimeManager;
     private final Context mContext;
@@ -209,6 +210,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     HealthConnectServiceImpl(
             TransactionManager transactionManager,
+            HealthConnectDeviceConfigManager deviceConfigManager,
             HealthConnectPermissionHelper permissionHelper,
             MigrationCleaner migrationCleaner,
             FirstGrantTimeManager firstGrantTimeManager,
@@ -216,13 +218,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MigrationUiStateManager migrationUiStateManager,
             Context context) {
         mTransactionManager = transactionManager;
+        mDeviceConfigManager = deviceConfigManager;
         mPermissionHelper = permissionHelper;
         mFirstGrantTimeManager = firstGrantTimeManager;
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
         mMigrationStateManager = migrationStateManager;
-        mDataPermissionEnforcer = new DataPermissionEnforcer(mPermissionManager, mContext);
+        mDataPermissionEnforcer =
+                new DataPermissionEnforcer(mPermissionManager, mContext, deviceConfigManager);
         mAppOpsManagerLocal = LocalManagerRegistry.getManager(AppOpsManagerLocal.class);
         mBackupRestore =
                 new BackupRestore(mFirstGrantTimeManager, mMigrationStateManager, mContext);
@@ -454,8 +458,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         if (!holdsDataManagementPermission) {
                             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                             if (!isInForeground) {
-                                throwSecurityException(
-                                        attributionSource.getPackageName()
+                                mDataPermissionEnforcer.enforceBackgroundReadRestrictions(
+                                        uid,
+                                        pid,
+                                        /*errorMessage=*/ attributionSource.getPackageName()
                                                 + "must be in foreground to call aggregate method");
                             }
                             mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
@@ -543,24 +549,34 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         enforceIsForegroundUser(userHandle);
                         verifyPackageNameFromUid(uid, attributionSource);
                         throwExceptionIfDataSyncInProgress();
-                        AtomicBoolean enforceSelfRead = new AtomicBoolean();
+
+                        boolean enforceSelfRead = false;
+
                         if (!holdsDataManagementPermission) {
-                            boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
-                            // If requesting app has only write permission allowed but no read
-                            // permission for the record type or if app is not in foreground then
-                            // allow to read its own records.
-                            enforceSelfRead.set(
-                                    mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
-                                                    request.getRecordType(), attributionSource)
-                                            || !isInForeground);
+                            final boolean isInForeground =
+                                    mAppOpsManagerLocal.isUidInForeground(uid);
+
+                            if (mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
+                                    request.getRecordType(), attributionSource)) {
+                                // If read permission is missing but write permission is granted,
+                                // then enforce self read
+                                enforceSelfRead = true;
+                            } else if (!isInForeground) {
+                                // If Background Read feature is disabled
+                                // or READ_HEALTH_DATA_IN_BACKGROUND permission is not granted,
+                                // then enforce self read
+                                enforceSelfRead = isOnlySelfReadInBackgroundAllowed(uid, pid);
+                            }
+
                             if (Constants.DEBUG) {
                                 Slog.d(
                                         TAG,
                                         "Enforce self read for package "
                                                 + attributionSource.getPackageName()
                                                 + ":"
-                                                + enforceSelfRead.get());
+                                                + enforceSelfRead);
                             }
+
                             tryAcquireApiCallQuota(
                                     uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
                         }
@@ -595,7 +611,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     attributionSource.getPackageName(),
                                                     request,
                                                     startDateAccessEpochMilli,
-                                                    enforceSelfRead.get(),
+                                                    enforceSelfRead,
                                                     extraReadPermsToGrantState));
                             logger.setNumberOfRecords(readRecordsResponse.first.size());
                             long pageToken =
@@ -622,7 +638,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             // If an app is reading only its own data then it is not recorded in
                             // access logs.
                             boolean requiresLogging =
-                                    !holdsDataManagementPermission && !enforceSelfRead.get();
+                                    !holdsDataManagementPermission && !enforceSelfRead;
                             if (requiresLogging) {
                                 Trace.traceBegin(
                                         TRACE_TAG_READ_SUBTASKS, TAG_READ.concat("AddAccessLog"));
@@ -881,6 +897,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         checkParamsNonNull(attributionSource, request, callback);
 
         final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES)
@@ -893,17 +910,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         enforceIsForegroundUser(userHandle);
                         verifyPackageNameFromUid(uid, attributionSource);
                         throwExceptionIfDataSyncInProgress();
+
+                        boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+                        if (!isInForeground) {
+                            mDataPermissionEnforcer.enforceBackgroundReadRestrictions(
+                                    uid,
+                                    pid,
+                                    /*errorMessage=*/ attributionSource.getPackageName()
+                                            + "must be in foreground to call getChangeLogs method");
+                        }
+
                         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
                                 ChangeLogsRequestHelper.getRequest(
                                         attributionSource.getPackageName(), request.getToken());
                         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                                 changeLogsTokenRequest.getRecordTypes(), attributionSource);
-                        boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
-                        if (!isInForeground) {
-                            throwSecurityException(
-                                    attributionSource.getPackageName()
-                                            + " must be in foreground to read the change logs");
-                        }
                         tryAcquireApiCallQuota(
                                 uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
                         Instant startDateAccessInstant =
@@ -2099,12 +2120,25 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     private boolean hasDataManagementPermission(int uid, int pid) {
-        return mContext.checkPermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid)
-                == PERMISSION_GRANTED;
+        return isPermissionGranted(MANAGE_HEALTH_DATA_PERMISSION, uid, pid);
+    }
+
+    /**
+     * Returns true if Background Read feature is disabled or {@link
+     * HealthPermissions#READ_HEALTH_DATA_IN_BACKGROUND} permission is not granted for the provided
+     * uid and pid, false otherwise.
+     */
+    private boolean isOnlySelfReadInBackgroundAllowed(int uid, int pid) {
+        return !mDeviceConfigManager.isBackgroundReadFeatureEnabled()
+                || !isPermissionGranted(READ_HEALTH_DATA_IN_BACKGROUND, uid, pid);
     }
 
     private void finishDataDeliveryRead(int recordTypeId, AttributionSource attributionSource) {
         finishDataDeliveryRead(Collections.singletonList(recordTypeId), attributionSource);
+    }
+
+    private boolean isPermissionGranted(String permission, int uid, int pid) {
+        return mContext.checkPermission(permission, pid, uid) == PERMISSION_GRANTED;
     }
 
     private void finishDataDeliveryRead(

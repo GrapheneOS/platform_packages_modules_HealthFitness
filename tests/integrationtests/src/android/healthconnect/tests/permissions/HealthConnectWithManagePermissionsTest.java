@@ -17,6 +17,7 @@
 package android.healthconnect.tests.permissions;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
+import static android.healthconnect.tests.TestUtils.deleteAllStagedRemoteData;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -82,12 +83,12 @@ public class HealthConnectWithManagePermissionsTest {
         revokePermissionViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2);
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2);
-        PermissionsTestUtils.deleteAllStagedRemoteData();
+        deleteAllStagedRemoteData();
     }
 
     @After
     public void tearDown() {
-        PermissionsTestUtils.deleteAllStagedRemoteData();
+        deleteAllStagedRemoteData();
     }
 
     @Test
@@ -287,7 +288,7 @@ public class HealthConnectWithManagePermissionsTest {
             assertNotNull(exception);
         }
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
-        PermissionsTestUtils.deleteAllStagedRemoteData();
+        deleteAllStagedRemoteData();
 
         // Revoke permission
         runWithShellPermissionIdentity(

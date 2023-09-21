@@ -110,6 +110,7 @@ public class HealthConnectManagerService extends SystemService {
         mHealthConnectService =
                 new HealthConnectServiceImpl(
                         mTransactionManager,
+                        HealthConnectDeviceConfigManager.getInitialisedInstance(),
                         permissionHelper,
                         migrationCleaner,
                         firstGrantTimeManager,

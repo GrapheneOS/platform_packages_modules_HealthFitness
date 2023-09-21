@@ -16,6 +16,7 @@
 
 package android.healthconnect.tests.backuprestore;
 
+import static android.healthconnect.tests.TestUtils.deleteAllStagedRemoteData;
 import static android.os.ParcelFileDescriptor.MODE_READ_ONLY;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -54,7 +55,6 @@ import org.junit.runner.RunWith;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -144,25 +144,6 @@ public class BackupRestoreTest {
 
         verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
         deleteAllStagedRemoteData();
-    }
-
-    private void deleteAllStagedRemoteData()
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        try {
-            assertThat(mService).isNotNull();
-
-            InstrumentationRegistry.getInstrumentation()
-                    .getUiAutomation()
-                    .adoptShellPermissionIdentity(
-                            "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
-            // TODO(b/241542162): Avoid using reflection as a workaround once test apis can be
-            //  run in tests.
-            mService.getClass().getMethod("deleteAllStagedRemoteData").invoke(mService);
-        } finally {
-            InstrumentationRegistry.getInstrumentation()
-                    .getUiAutomation()
-                    .dropShellPermissionIdentity();
-        }
     }
 
     private File getBackupDataDir() {

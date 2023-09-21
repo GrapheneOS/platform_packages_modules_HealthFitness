@@ -128,6 +128,8 @@ public final class HealthPermissions {
      *
      * @hide
      */
+    // TODO (b/299897306): Specify a label for the permission in HealthPermissionsManifest.xml when
+    // exposing this constant. Also search for 299897306 and remove workarounds.
     public static final String READ_HEALTH_DATA_IN_BACKGROUND =
             "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND";
 

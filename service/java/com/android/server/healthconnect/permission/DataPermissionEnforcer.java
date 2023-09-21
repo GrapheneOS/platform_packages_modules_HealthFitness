@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.permission;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 
 import android.annotation.NonNull;
 import android.content.AttributionSource;
@@ -29,6 +30,7 @@ import android.permission.PermissionManager;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
@@ -45,10 +47,15 @@ import java.util.Set;
 public class DataPermissionEnforcer {
     private final PermissionManager mPermissionManager;
     private final Context mContext;
+    private final HealthConnectDeviceConfigManager mDeviceConfigManager;
 
-    public DataPermissionEnforcer(PermissionManager permissionManager, Context context) {
+    public DataPermissionEnforcer(
+            @NonNull PermissionManager permissionManager,
+            @NonNull Context context,
+            @NonNull HealthConnectDeviceConfigManager deviceConfigManager) {
         mPermissionManager = permissionManager;
         mContext = context;
+        mDeviceConfigManager = deviceConfigManager;
     }
 
     /** Enforces default write permissions for given recordTypeIds */
@@ -143,6 +150,19 @@ public class DataPermissionEnforcer {
         throw new SecurityException(
                 "Caller requires one of the following permissions: "
                         + String.join(", ", permissions));
+    }
+
+    /**
+     * Checks the Background Read feature flags, enforces {@link
+     * HealthPermissions#READ_HEALTH_DATA_IN_BACKGROUND} permission if the flag is enabled,
+     * otherwise throws {@link SecurityException}.
+     */
+    public void enforceBackgroundReadRestrictions(int uid, int pid, @NonNull String errorMessage) {
+        if (mDeviceConfigManager.isBackgroundReadFeatureEnabled()) {
+            mContext.enforcePermission(READ_HEALTH_DATA_IN_BACKGROUND, pid, uid, errorMessage);
+        } else {
+            throw new SecurityException(errorMessage);
+        }
     }
 
     /**
