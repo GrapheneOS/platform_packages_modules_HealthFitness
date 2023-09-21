@@ -1098,18 +1098,23 @@
     <!--  endregion -->
 
     <!-- region App data -->
-    <string name="app_data_title" description="Title of screen that shows the data of a certain app.">App data</string>
-    <string name="no_data_footer" description="Footer displayed on the empty data browse screen if no data has been written to Health Connect.">Data from apps with access to Health Connect will show here</string>
+    <string name="app_data_title" description="Title of screen that shows the data of a certain app. [CHAR_LIMIT=50]">App data</string>
+    <string name="no_data_footer" description="Footer displayed on the empty data browse screen if no data has been written to Health Connect. [CHAR_LIMIT=NONE]">Data from apps with access to Health Connect will show here</string>
     <!--  endregion -->
 
     <!-- region App entries -->
-    <string name="date_picker_day" description="Dropdown option that indicates that one day's worth of data is displayed.">Day</string>
-    <string name="date_picker_week" description="Dropdown option that indicates that one week's worth of data is displayed.">Week</string>
-    <string name="date_picker_month" description="Dropdown option that indicates that one month's worth of data is displayed.">Month</string>
+    <string name="date_picker_day" description="Dropdown option that indicates that one day's worth of data is displayed. [CHAR_LIMIT=50]">Day</string>
+    <string name="date_picker_week" description="Dropdown option that indicates that one week's worth of data is displayed. [CHAR_LIMIT=50]">Week</string>
+    <string name="date_picker_month" description="Dropdown option that indicates that one month's worth of data is displayed. [CHAR_LIMIT=50]">Month</string>
     <string name="this_week_header" description="Header in the list of dataentries to differentiate between entries from this week and last week. [CHAR LIMIT=50]">This week</string>
     <string name="last_week_header" description="Header in the list of data entries to differentiate between entries from this week and last week. [CHAR LIMIT=50]">Last week</string>
     <string name="this_month_header" description="Header in the list of data entries to differentiate between entries from this month and last month. [CHAR LIMIT=50]">This month</string>
     <string name="last_month_header" description="Header in the list of data entries to differentiate between entries from this month and last month. [CHAR LIMIT=50]">Last month</string>
+    <!--  endregion -->
+
+    <!-- region Entries + Access -->
+    <string name="tab_entries" description="Tab that navigates to the data entries screen. [CHAR_LIMIT=50]">Entries</string>
+    <string name="tab_access" description="Tab that navigates to the screen that shows which apps have access to the given data type. [CHAR_LIMIT=50]">Access</string>
     <!--  endregion -->
 
 </resources>

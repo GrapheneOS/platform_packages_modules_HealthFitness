@@ -16,6 +16,17 @@
 package com.android.healthconnect.controller.service
 
 import android.health.connect.HealthConnectManager
+import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDataUseCase
+import com.android.healthconnect.controller.data.entries.api.LoadDataAggregationsUseCase
+import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesUseCase
+import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
+import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataUseCase
+import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
+import com.android.healthconnect.controller.dataentries.formatters.MenstruationPeriodFormatter
+import com.android.healthconnect.controller.dataentries.formatters.StepsFormatter
+import com.android.healthconnect.controller.dataentries.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
@@ -60,5 +71,43 @@ class UseCaseModule {
             queryRecentAccessUseCase,
             appInfoReader,
             dispatcher)
+    }
+
+    @Provides
+    fun providesLoadDataEntriesUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        loadEntriesHelper: LoadEntriesHelper
+    ): ILoadDataEntriesUseCase {
+        return LoadDataEntriesUseCase(dispatcher, loadEntriesHelper)
+    }
+
+    @Provides
+    fun providesLoadDataAggregationsUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        stepsFormatter: StepsFormatter,
+        totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
+        distanceFormatter: DistanceFormatter,
+        healthConnectManager: HealthConnectManager,
+        appInfoReader: AppInfoReader,
+        loadEntriesHelper: LoadEntriesHelper
+    ): ILoadDataAggregationsUseCase {
+        return LoadDataAggregationsUseCase(
+            loadEntriesHelper,
+            stepsFormatter,
+            totalCaloriesBurnedFormatter,
+            distanceFormatter,
+            healthConnectManager,
+            appInfoReader,
+            dispatcher)
+    }
+
+    @Provides
+    fun providesLoadMenstruationDataUseCase(
+        @IoDispatcher dispatcher: CoroutineDispatcher,
+        menstruationPeriodFormatter: MenstruationPeriodFormatter,
+        loadEntriesHelper: LoadEntriesHelper
+    ): ILoadMenstruationDataUseCase {
+        return LoadMenstruationDataUseCase(
+            loadEntriesHelper, menstruationPeriodFormatter, dispatcher)
     }
 }
