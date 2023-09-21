@@ -14,13 +14,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/spinner_item_title"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/no_data_layout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:drawableEnd="@drawable/arrow_drop_down"
-    android:drawablePadding="@dimen/spacing_xsmall"
-    android:ellipsize="end"
-    android:gravity="center"
-    android:maxLines="1"
-    android:textColor="?attr/colorOnSurface" />
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:clipToPadding="false">
+
+    <TextView
+        android:id="@+id/no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/spacing_normal"
+        android:text="@string/no_data"
+        android:textAppearance="?attr/textAppearanceHeadline6" />
+</LinearLayout>
