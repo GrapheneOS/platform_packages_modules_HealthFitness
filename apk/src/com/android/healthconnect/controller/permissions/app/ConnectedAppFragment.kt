@@ -39,6 +39,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
@@ -208,9 +209,11 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
                     it.icon =
                         AttributeResolver.getDrawable(requireContext(), R.attr.dataAndAccessIcon)
                     it.setOnPreferenceClickListener {
-                        val deletionType = DeletionType.DeletionTypeAppData(packageName, appName)
-                        childFragmentManager.setFragmentResult(
-                            START_DELETION_EVENT, bundleOf(DELETION_TYPE to deletionType))
+                        findNavController()
+                            .navigate(
+                                R.id.action_connectedApp_to_appData,
+                                bundleOf(
+                                    EXTRA_PACKAGE_NAME to packageName, EXTRA_APP_NAME to appName))
                         true
                     }
                 })
@@ -304,9 +307,9 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
                                     packageName, permission, checked)
                             if (!permissionUpdated) {
                                 Toast.makeText(
-                                    requireContext(),
-                                    R.string.default_error,
-                                    Toast.LENGTH_SHORT)
+                                        requireContext(),
+                                        R.string.default_error,
+                                        Toast.LENGTH_SHORT)
                                     .show()
                             }
                             allowAllPreference?.addOnSwitchChangeListener(onSwitchChangeListener)
@@ -323,7 +326,7 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
 
     private fun setupFooter() {
         appPermissionViewModel.atLeastOnePermissionGranted.observe(viewLifecycleOwner) {
-                isAtLeastOneGranted ->
+            isAtLeastOneGranted ->
             updateFooter(isAtLeastOneGranted)
         }
     }
@@ -331,12 +334,12 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
     private fun updateFooter(isAtLeastOneGranted: Boolean) {
         var title =
             getString(R.string.other_android_permissions) +
-                    PARAGRAPH_SEPARATOR +
-                    getString(R.string.manage_permissions_rationale, appName)
+                PARAGRAPH_SEPARATOR +
+                getString(R.string.manage_permissions_rationale, appName)
         var contentDescription =
             getString(R.string.other_android_permissions_content_description) +
-                    PARAGRAPH_SEPARATOR +
-                    getString(R.string.manage_permissions_rationale, appName)
+                PARAGRAPH_SEPARATOR +
+                getString(R.string.manage_permissions_rationale, appName)
 
         if (isAtLeastOneGranted) {
             val dataAccessDate = appPermissionViewModel.loadAccessDate(packageName)

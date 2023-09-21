@@ -14,7 +14,7 @@
 package com.android.healthconnect.controller.dataentries.formatters.shared
 
 import android.health.connect.datatypes.Record
-import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
 
 /** Record formatter used by use cases to format Records into Formatted Entries. */
 interface Formatter<T : Record> {

@@ -27,7 +27,7 @@ import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYP
 import android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_OTHER_WORKOUT
 import android.health.connect.datatypes.units.Length
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
@@ -62,17 +62,13 @@ class ExerciseSessionFormatterTest {
 
     @Test
     fun formatValue() = runBlocking {
-        assertThat(
-                formatter.formatValue(
-                    getRecord(type = EXERCISE_SESSION_TYPE_BIKING)))
+        assertThat(formatter.formatValue(getRecord(type = EXERCISE_SESSION_TYPE_BIKING)))
             .isEqualTo("16 m, Cycling")
     }
 
     @Test
     fun formatA11yValue() = runBlocking {
-        assertThat(
-                formatter.formatA11yValue(
-                    getRecord(type = EXERCISE_SESSION_TYPE_BIKING)))
+        assertThat(formatter.formatA11yValue(getRecord(type = EXERCISE_SESSION_TYPE_BIKING)))
             .isEqualTo("16 minutes, Cycling")
     }
 

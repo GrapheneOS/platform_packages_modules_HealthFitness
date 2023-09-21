@@ -56,7 +56,7 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.Vo2MaxRecord
 import android.health.connect.datatypes.WeightRecord
 import android.health.connect.datatypes.WheelchairPushesRecord
-import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.ActiveCaloriesBurnedFormatter
 import com.android.healthconnect.controller.dataentries.formatters.BasalBodyTemperatureFormatter
 import com.android.healthconnect.controller.dataentries.formatters.BasalMetabolicRateFormatter
@@ -142,8 +142,8 @@ constructor(
     private val heartRateVariabilityRmssdFormatter: HeartRateVariabilityRmssdFormatter,
 ) {
 
-    suspend fun format(record: Record): FormattedEntry {
-        val appName = getAppName(record)
+    suspend fun format(record: Record, showDataOrigin: Boolean = true): FormattedEntry {
+        val appName: String = if (showDataOrigin) getAppName(record) else ""
         return when (record) {
             is HeartRateRecord -> heartRateFormatter.format(record, appName)
             is StepsRecord -> stepsFormatter.format(record, appName)

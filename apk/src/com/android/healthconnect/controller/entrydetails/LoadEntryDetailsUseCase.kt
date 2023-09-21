@@ -18,7 +18,7 @@ import android.health.connect.ReadRecordsRequestUsingIds
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryDetailsFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -46,7 +46,7 @@ constructor(
         } else if (results.size > 1) {
             throw IllegalStateException("Multiple records found with the same id: ${input.entryId}")
         } else {
-            formatEntry(results[0])
+            formatEntry(results[0], input.showDataOrigin)
         }
     }
 
@@ -60,14 +60,18 @@ constructor(
         return response.records.orEmpty()
     }
 
-    private suspend fun formatEntry(record: Record): List<FormattedEntry> {
+    private suspend fun formatEntry(record: Record, showDataOrigin: Boolean): List<FormattedEntry> {
         return buildList {
             // header
-            add(entryFormatter.format(record))
+            add(entryFormatter.format(record, showDataOrigin))
             // details
             addAll(entryDetailsFormatter.formatDetails(record))
         }
     }
 }
 
-data class LoadDataEntryInput(val permissionType: HealthPermissionType, val entryId: String)
+data class LoadDataEntryInput(
+    val permissionType: HealthPermissionType,
+    val entryId: String,
+    val showDataOrigin: Boolean
+)

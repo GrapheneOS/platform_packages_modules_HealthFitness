@@ -18,7 +18,9 @@ package com.android.healthconnect.controller.data.appdata
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceCategory
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
@@ -36,6 +38,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
 
     companion object {
         private const val TAG = "AppDataFragmentTag"
+        const val PERMISSION_TYPE_KEY = "permission_type_key"
     }
 
     init {
@@ -124,20 +127,16 @@ open class AppDataFragment : Hilt_AppDataFragment() {
                             it.setTitle(
                                 HealthPermissionStrings.fromPermissionType(permissionType)
                                     .uppercaseLabel)
-                            // TODO(b/281811925): Add in upcoming cl.
-                            // it.logName = AppDataElement.PERMISSION_TYPE_BUTTON
-                            //                            it.setOnPreferenceClickListener {
-                            //                                findNavController()
-                            //                                    .navigate(
-                            //
-                            // R.id.action_appData_to_appEntries,
-                            //                                        bundleOf(EXTRA_PACKAGE_NAME to
-                            // packageName, Constants.EXTRA_APP_NAME to appName,
-                            //
-                            // HealthPermissionTypesFragment.PERMISSION_TYPE_KEY to permissionType
-                            //                                        ))
-                            //                                true
-                            //                            }
+                            it.setOnPreferenceClickListener {
+                                findNavController()
+                                    .navigate(
+                                        R.id.action_appData_to_appEntries,
+                                        bundleOf(
+                                            EXTRA_PACKAGE_NAME to packageName,
+                                            Constants.EXTRA_APP_NAME to appName,
+                                            PERMISSION_TYPE_KEY to permissionType))
+                                true
+                            }
                         })
                 }
         }
