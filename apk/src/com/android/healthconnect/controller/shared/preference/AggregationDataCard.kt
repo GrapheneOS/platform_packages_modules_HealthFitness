@@ -30,9 +30,7 @@ import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
 import java.time.Instant
 
-/**
- * A custom card to display the latest available data aggregations.
- */
+/** A custom card to display the latest available data aggregations. */
 class AggregationDataCard
 @JvmOverloads
 constructor(
@@ -56,7 +54,7 @@ constructor(
         cardTitle.text = cardInfo.aggregation.aggregation
         val totalDate = cardInfo.date
         if (isLessThanOneYearAgo(totalDate)) {
-            cardDate.text = dateFormatter.formatDateWithoutYear(totalDate)
+            cardDate.text = dateFormatter.formatShortDate(totalDate)
         } else {
             cardDate.text = dateFormatter.formatLongDate(totalDate)
         }
@@ -66,29 +64,57 @@ constructor(
 
         // Rearrange the textViews based on the type of card
         if (cardType == CardTypeEnum.SMALL_CARD) {
-            constraintSet.connect(R.id.card_title_number, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
-            constraintSet.connect(R.id.card_title_number, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-            constraintSet.connect(R.id.card_title_number, ConstraintSet.BOTTOM, R.id.card_date, ConstraintSet.TOP)
+            constraintSet.connect(
+                R.id.card_title_number,
+                ConstraintSet.START,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.START)
+            constraintSet.connect(
+                R.id.card_title_number,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP)
+            constraintSet.connect(
+                R.id.card_title_number, ConstraintSet.BOTTOM, R.id.card_date, ConstraintSet.TOP)
 
-            constraintSet.connect(R.id.card_date, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
-            constraintSet.connect(R.id.card_date, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
-            constraintSet.connect(R.id.card_date, ConstraintSet.TOP, R.id.card_title_number, ConstraintSet.BOTTOM)
-
+            constraintSet.connect(
+                R.id.card_date, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            constraintSet.connect(
+                R.id.card_date, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+            constraintSet.connect(
+                R.id.card_date, ConstraintSet.TOP, R.id.card_title_number, ConstraintSet.BOTTOM)
         } else {
-            constraintSet.connect(R.id.card_title_number, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
-            constraintSet.connect(R.id.card_title_number, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-            constraintSet.connect(R.id.card_title_number, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+            constraintSet.connect(
+                R.id.card_title_number,
+                ConstraintSet.START,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.START)
+            constraintSet.connect(
+                R.id.card_title_number,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP)
+            constraintSet.connect(
+                R.id.card_title_number,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM)
 
-            constraintSet.connect(R.id.card_date, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
-            constraintSet.connect(R.id.card_date, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-            constraintSet.connect(R.id.card_date, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+            constraintSet.connect(
+                R.id.card_date, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+            constraintSet.connect(
+                R.id.card_date, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            constraintSet.connect(
+                R.id.card_date, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
         }
 
         constraintSet.applyTo(titleAndDateContainer)
     }
 
     private fun isLessThanOneYearAgo(instant: Instant): Boolean {
-        val oneYearAgo = timeSource.currentLocalDateTime()
+        val oneYearAgo =
+            timeSource
+                .currentLocalDateTime()
                 .minusYears(1)
                 .toLocalDate()
                 .atStartOfDay(timeSource.deviceZoneOffset())

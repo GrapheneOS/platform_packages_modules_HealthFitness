@@ -31,14 +31,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.data.entries.FormattedEntry.ExerciseSessionEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.SleepSessionEntry
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Empty
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.Loading
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.LoadingFailed
 import com.android.healthconnect.controller.dataentries.DataEntriesFragmentViewModel.DataEntriesFragmentState.WithData
-import com.android.healthconnect.controller.dataentries.FormattedEntry.ExerciseSessionEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.SleepSessionEntry
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.END_TIME
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
@@ -87,7 +88,8 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 findNavController()
                     .navigate(
                         R.id.action_dataEntriesFragment_to_dataEntryDetailsFragment,
-                        DataEntryDetailsFragment.createBundle(permissionType, id))
+                        DataEntryDetailsFragment.createBundle(
+                            permissionType, id, showDataOrigin = true))
             }
         }
     }
@@ -158,7 +160,7 @@ class DataEntriesFragment : Hilt_DataEntriesFragment() {
                 .setViewBinder(FormattedDataEntry::class.java, entryViewBinder)
                 .setViewBinder(SleepSessionEntry::class.java, sleepSessionViewBinder)
                 .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
-                .setViewBinder(FormattedEntry.SeriesDataEntry::class.java, seriesDataItemViewBinder)
+                .setViewBinder(SeriesDataEntry::class.java, seriesDataItemViewBinder)
                 .setViewBinder(FormattedAggregation::class.java, aggregationViewBinder)
                 .build()
         entriesRecyclerView =

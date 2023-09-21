@@ -59,6 +59,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
+import javax.inject.Inject
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
@@ -66,15 +67,13 @@ import org.junit.Test
 import org.mockito.Matchers.*
 import org.mockito.Mockito
 import org.mockito.Mockito.*
-import javax.inject.Inject
 
 @HiltAndroidTest
 class ConnectedAppFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @BindValue val viewModel: AppPermissionViewModel = mock(AppPermissionViewModel::class.java)
-    @Inject
-    lateinit var fakeFeatureUtils: FeatureUtils
+    @Inject lateinit var fakeFeatureUtils: FeatureUtils
 
     @Before
     fun setup() {
@@ -116,13 +115,13 @@ class ConnectedAppFragmentTest {
         scenario.onActivity { activity: TestActivity ->
             val fragment =
                 activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                        as ConnectedAppFragment
+                    as ConnectedAppFragment
             val readCategory =
                 fragment.preferenceScreen.findPreference("read_permission_category")
-                        as PreferenceCategory?
+                    as PreferenceCategory?
             val writeCategory =
                 fragment.preferenceScreen.findPreference("write_permission_category")
-                        as PreferenceCategory?
+                    as PreferenceCategory?
             assertThat(readCategory?.preferenceCount).isEqualTo(0)
             assertThat(writeCategory?.preferenceCount).isEqualTo(0)
         }
@@ -143,13 +142,13 @@ class ConnectedAppFragmentTest {
         scenario.onActivity { activity: TestActivity ->
             val fragment =
                 activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                        as ConnectedAppFragment
+                    as ConnectedAppFragment
             val readCategory =
                 fragment.preferenceScreen.findPreference("read_permission_category")
-                        as PreferenceCategory?
+                    as PreferenceCategory?
             val writeCategory =
                 fragment.preferenceScreen.findPreference("write_permission_category")
-                        as PreferenceCategory?
+                    as PreferenceCategory?
             assertThat(readCategory?.preferenceCount).isEqualTo(1)
             assertThat(writeCategory?.preferenceCount).isEqualTo(0)
         }
@@ -172,13 +171,13 @@ class ConnectedAppFragmentTest {
         scenario.onActivity { activity: TestActivity ->
             val fragment =
                 activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                        as ConnectedAppFragment
+                    as ConnectedAppFragment
             val readCategory =
                 fragment.preferenceScreen.findPreference("read_permission_category")
-                        as PreferenceCategory?
+                    as PreferenceCategory?
             val writeCategory =
                 fragment.preferenceScreen.findPreference("write_permission_category")
-                        as PreferenceCategory?
+                    as PreferenceCategory?
             assertThat(readCategory?.preferenceCount).isEqualTo(0)
             assertThat(writeCategory?.preferenceCount).isEqualTo(1)
         }
@@ -203,13 +202,13 @@ class ConnectedAppFragmentTest {
         scenario.onActivity { activity: TestActivity ->
             val fragment =
                 activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                        as ConnectedAppFragment
+                    as ConnectedAppFragment
             val readCategory =
                 fragment.preferenceScreen.findPreference("read_permission_category")
-                        as PreferenceCategory?
+                    as PreferenceCategory?
             val writeCategory =
                 fragment.preferenceScreen.findPreference("write_permission_category")
-                        as PreferenceCategory?
+                    as PreferenceCategory?
             assertThat(readCategory?.preferenceCount).isEqualTo(1)
             assertThat(writeCategory?.preferenceCount).isEqualTo(1)
         }
@@ -238,10 +237,10 @@ class ConnectedAppFragmentTest {
         scenario.onActivity { activity: TestActivity ->
             val fragment =
                 activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                        as ConnectedAppFragment
+                    as ConnectedAppFragment
             val mainSwitchPreference =
                 fragment.preferenceScreen.findPreference("allow_all_preference")
-                        as MainSwitchPreference?
+                    as MainSwitchPreference?
 
             assertThat(mainSwitchPreference?.isChecked).isTrue()
         }
@@ -265,11 +264,11 @@ class ConnectedAppFragmentTest {
         scenario.onActivity { activity: TestActivity ->
             val fragment =
                 activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                        as ConnectedAppFragment
+                    as ConnectedAppFragment
 
             val mainSwitchPreference =
                 fragment.preferenceScreen.findPreference("allow_all_preference")
-                        as MainSwitchPreference?
+                    as MainSwitchPreference?
 
             assertThat(mainSwitchPreference?.isChecked).isFalse()
         }
@@ -343,8 +342,8 @@ class ConnectedAppFragmentTest {
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
 
         onView(
-            withText(
-                "$TEST_APP_NAME can read data added after October 20, 2022" +
+                withText(
+                    "$TEST_APP_NAME can read data added after October 20, 2022" +
                         "\n\n" +
                         "To manage other Android permissions this app can " +
                         "access, go to Settings > Apps" +

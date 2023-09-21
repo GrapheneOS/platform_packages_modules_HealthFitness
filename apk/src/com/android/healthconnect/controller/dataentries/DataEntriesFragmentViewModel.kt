@@ -20,7 +20,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
+import com.android.healthconnect.controller.data.entries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
@@ -49,6 +50,7 @@ constructor(
     private val _dataEntries = MutableLiveData<DataEntriesFragmentState>()
     val dataEntries: LiveData<DataEntriesFragmentState>
         get() = _dataEntries
+
     val currentSelectedDate = MutableLiveData<Instant>()
 
     fun loadData(permissionType: HealthPermissionType, selectedDate: Instant) {
@@ -119,8 +121,11 @@ constructor(
 
     sealed class DataEntriesFragmentState {
         object Loading : DataEntriesFragmentState()
+
         object Empty : DataEntriesFragmentState()
+
         object LoadingFailed : DataEntriesFragmentState()
+
         data class WithData(val entries: List<FormattedEntry>) : DataEntriesFragmentState()
     }
 }
