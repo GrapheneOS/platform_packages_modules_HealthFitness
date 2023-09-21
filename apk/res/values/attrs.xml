@@ -75,6 +75,9 @@
     <attr name="moreSpaceNeededIcon" format="reference"/>
     <attr name="updateNeededIcon" format="reference"/>
 
+    <!-- Data sources & priority -->
+    <attr name="addIcon" format="reference"/>
+
     <!-- END REGION -->
 
     <!-- REGION DIALOG GRAVITY -->
@@ -100,7 +103,9 @@
     <attr name="textAppearanceLabelSmall" format="reference"/>
     <attr name="textAppearanceSubheader" format="reference"/>
     <attr name="textAppearanceSubheader2" format="reference"/>
+    <attr name="textAppearanceSubheader3" format="reference"/>
     <attr name="textAppearanceRouteRequest" format="reference"/>
+    <attr name="textAppearancePreferenceCategory" format="reference"/>
 
     <!-- Buttons -->
     <attr name="dialogButtonFull" format="reference"/>

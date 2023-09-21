@@ -26,7 +26,7 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.SpeedRecord
 import android.health.connect.datatypes.StepsCadenceRecord
-import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.CyclingPedalingCadenceFormatter
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateFormatter

@@ -27,14 +27,13 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.shared.dataTypeToCategory
-import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.Instant
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RecentAccessViewModel
@@ -43,6 +42,7 @@ constructor(
     private val appInfoReader: AppInfoReader,
     private val loadHealthPermissionApps: ILoadHealthPermissionApps,
     private val loadRecentAccessUseCase: ILoadRecentAccessUseCase,
+    private val timeSource: TimeSource
 ) : ViewModel() {
 
     companion object {
@@ -54,14 +54,14 @@ constructor(
     val recentAccessApps: LiveData<RecentAccessState>
         get() = _recentAccessApps
 
-    fun loadRecentAccessApps(maxNumEntries: Int = -1, timeSource: TimeSource = SystemTimeSource) {
+    fun loadRecentAccessApps(maxNumEntries: Int = -1) {
         // Don't show loading if data was loaded before just refresh.
         if (_recentAccessApps.value !is RecentAccessState.WithData) {
             _recentAccessApps.postValue(Loading)
         }
         viewModelScope.launch {
             try {
-                val clusters = getRecentAccessAppsClusters(maxNumEntries, timeSource)
+                val clusters = getRecentAccessAppsClusters(maxNumEntries)
                 _recentAccessApps.postValueIfUpdated(RecentAccessState.WithData(clusters))
             } catch (ex: Exception) {
                 _recentAccessApps.postValueIfUpdated(RecentAccessState.Error)
@@ -70,8 +70,7 @@ constructor(
     }
 
     private suspend fun getRecentAccessAppsClusters(
-        maxNumEntries: Int,
-        timeSource: TimeSource
+        maxNumEntries: Int
     ): List<RecentAccessEntry> {
         val accessLogs = loadRecentAccessUseCase.invoke()
         val connectedApps = loadHealthPermissionApps.invoke()
@@ -81,7 +80,7 @@ constructor(
                 .orEmpty()
                 .map { connectedAppMetadata -> connectedAppMetadata.appMetadata.packageName }
 
-        val clusters = clusterEntries(accessLogs, maxNumEntries, timeSource)
+        val clusters = clusterEntries(accessLogs, maxNumEntries)
         val filteredClusters = mutableListOf<RecentAccessEntry>()
         clusters.forEach {
             if (inactiveApps.contains(it.metadata.packageName)) {
@@ -103,8 +102,7 @@ constructor(
 
     private suspend fun clusterEntries(
         accessLogs: List<AccessLog>,
-        maxNumEntries: Int,
-        timeSource: TimeSource = SystemTimeSource
+        maxNumEntries: Int
     ): List<RecentAccessEntry> {
         if (accessLogs.isEmpty()) {
             return listOf()
@@ -121,9 +119,9 @@ constructor(
             if (currentCluster == null) {
                 // If no cluster started for this app yet, init one with the current log
                 currentDataAccessEntryClusters.put(
-                    currentPackageName, initDataAccessEntryCluster(currentLog, timeSource))
+                    currentPackageName, initDataAccessEntryCluster(currentLog))
             } else if (logBelongsToCluster(currentLog, currentCluster)) {
-                updateDataAccessEntryCluster(currentCluster, currentLog, timeSource)
+                updateDataAccessEntryCluster(currentCluster, currentLog)
             } else {
                 // Log doesn't belong to current cluster. Convert current cluster to UI entry and
                 // remove
@@ -134,7 +132,7 @@ constructor(
                 currentDataAccessEntryClusters.remove(currentPackageName)
 
                 currentDataAccessEntryClusters.put(
-                    currentPackageName, initDataAccessEntryCluster(currentLog, timeSource))
+                    currentPackageName, initDataAccessEntryCluster(currentLog))
 
                 // If we have enough entries already and all clusters that are still being
                 // accumulated are
@@ -165,8 +163,7 @@ constructor(
     }
 
     private suspend fun initDataAccessEntryCluster(
-        accessLog: AccessLog,
-        timeSource: TimeSource = SystemTimeSource
+        accessLog: AccessLog
     ): DataAccessEntryCluster {
         val newCluster =
             DataAccessEntryCluster(
@@ -177,7 +174,7 @@ constructor(
                         metadata =
                             appInfoReader.getAppMetadata(packageName = accessLog.packageName)))
 
-        updateDataAccessEntryCluster(newCluster, accessLog, timeSource)
+        updateDataAccessEntryCluster(newCluster, accessLog)
         return newCluster
     }
 
@@ -192,8 +189,7 @@ constructor(
 
     private fun updateDataAccessEntryCluster(
         cluster: DataAccessEntryCluster,
-        accessLog: AccessLog,
-        timeSource: TimeSource = SystemTimeSource
+        accessLog: AccessLog
     ) {
         val midnight =
             timeSource

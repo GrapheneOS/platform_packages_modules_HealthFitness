@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
+import com.android.healthconnect.controller.tests.permissions.HealthPermissionConstants
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Before
@@ -52,7 +53,13 @@ class HealthDataCategoryExtensionsTest {
     @Test
     fun allHealthPermission_haveParentCategory() {
         val allPermissions = HealthConnectManager.getHealthPermissions(context)
-        allPermissions.forEach { permissionString ->
+        for (permissionString in allPermissions) {
+            if (permissionString == HealthPermissionConstants.READ_HEALTH_DATA_IN_BACKGROUND) {
+                // TODO(b/299897306): Remove this exception case when we have strings properly
+                //  defined for the Background Read permission
+                continue
+            }
+
             val healthPermission = HealthPermission.fromPermissionString(permissionString)
             assertThat(
                     HEALTH_DATA_CATEGORIES.any {

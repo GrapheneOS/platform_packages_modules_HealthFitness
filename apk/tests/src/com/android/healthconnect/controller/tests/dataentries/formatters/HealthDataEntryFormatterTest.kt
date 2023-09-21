@@ -17,8 +17,8 @@ package com.android.healthconnect.controller.tests.dataentries.formatters
 
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.SeriesDataEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord

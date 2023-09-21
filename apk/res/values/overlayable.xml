@@ -67,6 +67,9 @@
             <item type="drawable" name="ic_storage"/>
             <item type="drawable" name="ic_system_security_update"/>
 
+            <!-- Data sources & priority -->
+            <item type="drawable" name="ic_add"/>
+
             <!-- END REGION -->
 
             <!-- REGION DIALOG GRAVITY -->
@@ -89,12 +92,16 @@
             <item type="style" name="TextAppearance.HealthConnect.Headline2"/>
             <item type="style" name="TextAppearance.HealthConnect.Label.Small"/>
             <item type="style" name="TextAppearance.HealthConnect.Subheader"/>
+            <item type="style" name="TextAppearance.HealthConnect.Subheader2"/>
+            <item type="style" name="TextAppearance.HealthConnect.Subheader3"/>
             <item type="style" name="TextAppearance.HealthConnect.RouteRequest"/>
+            <item type="style" name="PreferenceCategoryTitleTextStyle.HealthConnect"/>
 
             <item type="style" name="Widget.HealthConnect.Button"/>
             <item type="style" name="Widget.HealthConnect.CheckBox"/>
             <item type="style" name="Widget.HealthConnect.RadioButton.Chip"/>
             <item type="style" name="Widget.HealthConnect.CalendarSpinner"/>
+            <item type="style" name="Widget.HealthConnect.TabLayout"/>
             <!-- END REGION -->
 
             <!-- REGION DIMENSIONS -->

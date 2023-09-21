@@ -13,11 +13,17 @@
  */
 package com.android.healthconnect.controller.tests.utils
 
+import com.android.healthconnect.controller.utils.SystemTimeSourceModule
 import com.android.healthconnect.controller.utils.TimeSource
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.components.SingletonComponent
+import dagger.hilt.testing.TestInstallIn
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset.UTC
+import javax.inject.Singleton
 
 /** Time source for testing purposes. */
 object TestTimeSource : TimeSource {
@@ -27,4 +33,12 @@ object TestTimeSource : TimeSource {
 
     override fun currentLocalDateTime(): LocalDateTime =
         Instant.ofEpochMilli(currentTimeMillis()).atZone(deviceZoneOffset()).toLocalDateTime()
+}
+
+@Module
+@TestInstallIn(components = [SingletonComponent::class], replaces = [SystemTimeSourceModule::class])
+object TestTimeSourceModule {
+    @Provides
+    @Singleton
+    fun providesTestTimeSource() : TimeSource = TestTimeSource
 }

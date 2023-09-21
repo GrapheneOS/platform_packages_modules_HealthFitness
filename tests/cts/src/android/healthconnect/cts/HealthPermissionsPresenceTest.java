@@ -113,6 +113,8 @@ import java.util.Set;
 public class HealthPermissionsPresenceTest {
     private static final Set<String> HEALTH_PERMISSIONS =
             Set.of(
+                    // TODO(b/299897306): Replace with a constant when it is exposed
+                    "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND",
                     READ_ACTIVE_CALORIES_BURNED,
                     READ_DISTANCE,
                     READ_ELEVATION_GAINED,

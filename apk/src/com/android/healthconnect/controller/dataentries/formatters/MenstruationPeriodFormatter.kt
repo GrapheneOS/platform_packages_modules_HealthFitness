@@ -22,7 +22,7 @@ import android.content.Context
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedDataEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.utils.toLocalDate
@@ -40,11 +40,15 @@ constructor(
     @ApplicationContext private val context: Context
 ) {
 
-    suspend fun format(day: Instant, record: MenstruationPeriodRecord): FormattedDataEntry {
+    suspend fun format(
+        day: Instant,
+        record: MenstruationPeriodRecord,
+        showDataOrigin: Boolean = true
+    ): FormattedDataEntry {
         val dayOfPeriod = dayOfPeriod(record, day)
         val totalDays = totalDaysOfPeriod(record)
         val title = context.getString(R.string.period_day, dayOfPeriod, totalDays)
-        val appName = getAppName(record)
+        val appName = if (showDataOrigin) getAppName(record) else ""
 
         return FormattedDataEntry(
             uuid = record.metadata.id,

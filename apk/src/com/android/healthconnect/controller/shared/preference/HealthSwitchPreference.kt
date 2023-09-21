@@ -58,8 +58,7 @@ open class HealthSwitchPreference(context: Context) : SwitchPreference(context) 
             } else if (newValue is Boolean) {
                 logger.logInteraction(logNameActive, UIAction.ACTION_TOGGLE_OFF)
             }
-            onPreferenceChangeListener?.onPreferenceChange(preference, newValue)
-            true
+            onPreferenceChangeListener?.onPreferenceChange(preference, newValue)!!
         }
         super.setOnPreferenceChangeListener(loggingClickListener)
     }

@@ -38,11 +38,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Captures user sleep session. Each session requires start and end time and a list of {@link
- * Stage}.
+ * Captures the user's sleep length and its stages. Each record represents a time interval for a
+ * full sleep session.
  *
- * <p>Each {@link Stage} interval should be between the start time and the end time of the session.
- * Stages within one session must not overlap.
+ * <p>All {@link Stage} time intervals should fall within the sleep session interval. Time intervals
+ * for stages don't need to be continuous but shouldn't overlap.
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION)
 public final class SleepSessionRecord extends IntervalRecord {

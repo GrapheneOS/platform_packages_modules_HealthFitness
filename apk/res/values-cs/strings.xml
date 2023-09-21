@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"Přístup má <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplikace"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Žádné"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Podrobnosti o záznamu"</string>
+    <string name="backup_title" msgid="211503191266235085">"Záloha"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Zdroje dat a priorita"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Nastavit jednotky"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Nedávný přístup"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Žádné aplikace ke službě Health Connect v poslední době nepřistupovaly"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Zobrazit veškerý nedávný přístup"</string>
@@ -68,7 +71,7 @@
     <string name="inactive_apps" msgid="8956546286760797760">"Neaktivní aplikace"</string>
     <string name="inactive_apps_message" msgid="4666501359079362486">"Tyto aplikace již nemohou zapisovat data typu <xliff:g id="DATA_TYPE">%s</xliff:g>, ale stále mají data uložená ve službě Health Connect"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Aplikace už nemohou číst ani zapisovat typ dat <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> a v aplikaci Health Connect nejsou uložena žádná data typu <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>"</string>
-    <string name="data_access_exercise_description" msgid="6868583522699443570">"Tato data zahrnují informace jako čas aktivity, typ cvičení, počet kol, počet sérií nebo počet plaveckých temp"</string>
+    <string name="data_access_exercise_description" msgid="6868583522699443570">"Tato data zahrnují informace jako čas aktivity, druh cvičení, počet kol, počet sérií nebo počet plaveckých temp"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Tato data zahrnují informace jako fáze spánku a období spánku"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Zobrazit všechny záznamy"</string>
     <string name="delete_permission_type_data_button" msgid="2270819954943391797">"Smazat tato data"</string>
@@ -493,12 +496,12 @@
     <string name="rest" msgid="5937058337671252210">"Odpočinek"</string>
     <string name="pause" msgid="5161459047750335691">"Pozastavit"</string>
     <string name="activity_type_australian_football" msgid="431838050917315084">"Australský fotbal"</string>
-    <string name="sleep_session_default" msgid="7376764686701487196">"Spánek: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
+    <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> spánku"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
-    <string name="sleep_stage_awake" msgid="4526767634444460862">"bdění"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"probuzení v posteli"</string>
+    <string name="sleep_stage_awake" msgid="4526767634444460862">"vzhůru"</string>
+    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"vzhůru v posteli"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"spánek"</string>
-    <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"mimo postel"</string>
+    <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"venku z postele"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM spánek"</string>
     <string name="sleep_stage_light" msgid="1070117964678317880">"lehký spánek"</string>
     <string name="sleep_stage_deep" msgid="3134557407657258364">"hluboký spánek"</string>
@@ -772,6 +775,12 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Integrace Health Connect je dokončena"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Otevřít"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Co je nového"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Službu Health Connect teď můžete používat přímo z nastavení. Aplikaci Health Connect můžete kdykoli odinstalovat."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Aplikaci Health Connect teď můžete používat přímo z nastavení. Pokud budete potřebovat uvolnit úložný prostor, můžete ji kdykoliv odinstalovat."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Rozumím"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Celková data"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Zdroje aplikací"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Přidejte na seznam zdroje aplikací, abyste zjistili, jak se mohou měnit celková data. Když aplikaci odstraníte ze seznamu, přestane přispívat k celkovým údajům, ale nadále bude mít oprávnění k zápisu."</string>
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Žádné zdroje aplikací"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Jakmile aplikacím udělíte oprávnění k zápisu dat z kategorie <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, zobrazí se zde zdroje."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Jak fungují zdroje a určování priorit"</string>
 </resources>

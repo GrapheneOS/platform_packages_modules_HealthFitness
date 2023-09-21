@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> колдонмо пайдалана алат"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Жок"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Киргизилген маалыматтын чоо-жайы"</string>
+    <string name="backup_title" msgid="211503191266235085">"Камдык көчүрмөнү сактоо"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Маалымат булактары жана маанилүүлүгү"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Бирдиктерди тууралоо"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Соңку колдонмолор"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Health Connect\'ти бир да колдонмо пайдаланган жок"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Бардык акыркы кирүүлөрдү көрүү"</string>
@@ -608,7 +611,7 @@
     <string name="respiratory_rate_value_long" msgid="3822748008700697049">"{count,plural, =1{Мүнөтүнө 1 дем алуу}other{Мүнөтүнө # дем алуу}}"</string>
     <string name="kilograms_short_label" msgid="9098342853218050689">"{count,plural, =1{1 кг}other{# кг}}"</string>
     <string name="pounds_short_label" msgid="6256277330455003180">"{count,plural, =1{1 фунт}other{# фунт}}"</string>
-    <string name="stone_short_label" msgid="8377585176530348612">"{count,plural, =1{1 ст}other{# ст}}"</string>
+    <string name="stone_short_label" msgid="8377585176530348612">"{count,plural, =1{1 с}other{# с}}"</string>
     <string name="stone_pound_short_label" msgid="7157344201618366834">"{stone_part} {pound_part}"</string>
     <string name="kilograms_long_label" msgid="7883695071156297670">"{count,plural, =1{1 килограмм}other{# килограмм}}"</string>
     <string name="pounds_long_label" msgid="2916697485006416419">"{count,plural, =1{1 фунт}other{# фунт}}"</string>
@@ -674,7 +677,7 @@
     <string name="check_for_updates" msgid="3841090978657783101">"Жаңыртууларды карап көрүү"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Орнотулган колдонмолордун версиясы жаңы болушу керек"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Бардык шайкеш колдонмолорду көрүү"</string>
-    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play\'де колдонмо издөө"</string>
+    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play\'де колдонмо издеп көрүңүз"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Пикир билдирүү"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Health Connect кызматында кайсы ден соолук жана дене-бойду чыңдаган колдонмолорду пайдалангыңыз келет?"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
@@ -772,6 +775,12 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect интеграциясы аяктады"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Ачуу"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Эмне жаңылык"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Эми Health Connect\'ти түздөн-түз параметрлериңизден ача аласыз. Health Connect колдонмосун каалаган убакта чыгарып салсаңыз болот."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Эми Health Connect\'ке түздөн-түз параметрлериңизден кире аласыз. Сактагычтан орун бошотуу үчүн Health Connect колдонмосун каалаган убакта чыгарып салсаңыз болот."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Түшүндүм"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Жалпы көрсөткүчтөр"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Колдонмолор"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Жалпы көрсөткүчтөр кандайча өзгөрө турганын көрүү үчүн тизмеге колдонмолорду кошуңуз. Бул тизмеден колдонмону өчүрсөңүз, ал маалымат кошо албай калат, бирок жаза берет."</string>
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Колдонмолор жок"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> маалыматын жазууга уруксат берген колдонмолоруңуз бул жерде көрсөтүлөт."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Булактар жана маанилүүлүк кандайча иштейт"</string>
 </resources>

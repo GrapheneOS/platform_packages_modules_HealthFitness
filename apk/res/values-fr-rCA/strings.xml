@@ -20,7 +20,7 @@
     <string name="app_label" msgid="4768580772453324183">"Connexion santé"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"Gérez l\'accès des applications aux données relatives à la santé"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Autorisations et données"</string>
-    <string name="home_subtitle" msgid="1750033322147357163">"Gérez les données de santé et d\'activité physique sur votre téléphone, et contrôlez les applications qui peuvent y accéder"</string>
+    <string name="home_subtitle" msgid="1750033322147357163">"Gérez les données de santé et d\'activité physique sur votre téléphone et contrôlez les applications qui peuvent y accéder"</string>
     <string name="data_title" msgid="4456619761533380816">"Données et accès"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Toutes les catégories"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Afficher toutes les catégories"</string>
@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> application a accès"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Aucune"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Détails de l\'entrée"</string>
+    <string name="backup_title" msgid="211503191266235085">"Sauvegarde"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Sources de données et priorité"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Configurer les unités"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Accès récents"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Aucune application n\'a accédé à Connexion santé dernièrement"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Afficher les accès récents"</string>
@@ -674,7 +677,7 @@
     <string name="check_for_updates" msgid="3841090978657783101">"Rechercher des mises à jour"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Assurez-vous que les applications installées sont à jour"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Voir toutes les applications compatibles"</string>
-    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Trouver des applications sur Google Play"</string>
+    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Trouvez des applications sur Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Envoyer des commentaires"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Dites-nous quelles applications de santé et de mise en forme vous aimeriez utiliser avec Connexion santé"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
@@ -772,6 +775,12 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Intégration terminée pour Connexion santé"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Ouvrir"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Nouveautés"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Vous pouvez désormais accéder à Connexion santé directement à partir de vos paramètres. Désinstallez l\'application Connexion santé à tout moment."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Vous pouvez désormais accéder à Connexion santé directement à partir de vos paramètres. Désinstallez l\'application Connexion santé à tout moment pour libérer de l\'espace de stockage."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"OK"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Totaux de données"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Sources d\'applications"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Ajouter des sources d\'applications à la liste pour voir comment les totaux de données peuvent changer. Le retrait d\'une application de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours des autorisations d\'écriture."</string>
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Aucune source d\'applications"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Une fois que vous aurez autorisé l\'application à écrire les données de catégorie <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, les sources s\'afficheront ici."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Fonctionnement des sources et de la hiérarchisation"</string>
 </resources>

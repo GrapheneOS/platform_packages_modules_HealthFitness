@@ -25,13 +25,16 @@
     <string name="all_categories_title" msgid="1446410643217937926">"Vse kategorije"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Pokaži vse kategorije"</string>
     <string name="no_data" msgid="1906986019249068659">"Ni podatkov"</string>
-    <string name="connected_apps_title" msgid="279942692804743223">"Dovoljenja za aplikacijo"</string>
+    <string name="connected_apps_title" msgid="279942692804743223">"Dovoljenja za aplikacije"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Upravljanje aplikacij in dovoljenj"</string>
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"Dostop ima toliko aplikacij: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> od <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>."</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"Dostop ima toliko aplikacij: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>."</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"Dostop ima <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplikacija."</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Brez"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Podrobnosti vnosa"</string>
+    <string name="backup_title" msgid="211503191266235085">"Varnostno kopiranje"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Podatkovni viri in prednost"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Nastavitev enot"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Nedavni dostop"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Nobena aplikacija ni nedavno dostopala do storitve Health Connect."</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Pokaži vse nedavne dostope"</string>
@@ -275,7 +278,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Preberite pravilnik o zasebnosti"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Dostop v zadnjih 24 urah"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Dostop aplikacije"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Trenutno nimate nameščene nobene združljive aplikacije"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Trenutno nimate nameščene nobene združljive aplikacije."</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Odstranjena dovoljenja za aplikacije"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Storitev Health Connect je odstranila dovoljenja za aplikacijo <xliff:g id="APP_DATA">%s</xliff:g>."</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Storitev Health Connect je odstranila dovoljenja za aplikaciji <xliff:g id="APP_DATA_0">%1$s</xliff:g> in <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>."</string>
@@ -772,6 +775,12 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Integracija aplikacije Health Connect je dokončana"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"Odpri"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Novosti"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Do aplikacije Health Connect lahko zdaj dostopate neposredno v nastavitvah. Aplikacijo Health Connect lahko kadar koli odmestite."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Do aplikacije Health Connect lahko zdaj dostopate neposredno v nastavitvah. Aplikacijo Health Connect lahko kadar koli odmestite, da sprostite prostor za shranjevanje."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Razumem"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Skupne količine podatkov"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Aplikacijski viri"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Dodajte aplikacijske vire na seznam, da boste videli, kako se skupne količine podatkov lahko spreminjajo. Če aplikacijo odstranite s seznama, ne bo več prispevala k skupnim količinam podatkov, vendar bo še naprej imela dovoljenja za zapisovanje."</string>
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Ni virov aplikacij."</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Ko boste aplikacijam dodelili dovoljenja za zapisovanje podatkov vrste »<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>«, bodo viri prikazani tukaj."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Kako delujejo viri in dodeljevanje prednosti"</string>
 </resources>

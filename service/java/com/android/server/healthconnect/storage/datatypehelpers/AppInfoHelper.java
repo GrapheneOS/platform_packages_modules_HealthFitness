@@ -195,22 +195,6 @@ public final class AppInfoHelper extends DatabaseHelper {
     }
 
     /**
-     * Populates record with package name
-     *
-     * @param appInfoId rowId from {@code application_info_table }
-     * @param record The record to be populated with package name
-     * @param idPackageNameMap the map from which to get the package name
-     */
-    public void populateRecordWithValue(
-            long appInfoId, @NonNull RecordInternal<?> record, Map<Long, String> idPackageNameMap) {
-        if (idPackageNameMap != null) {
-            record.setPackageName(idPackageNameMap.get(appInfoId));
-            return;
-        }
-        record.setPackageName(getIdPackageNameMap().get(appInfoId));
-    }
-
-    /**
      * @return id of {@code packageName} or {@link Constants#DEFAULT_LONG} if the id is not found
      */
     public long getAppInfoId(String packageName) {
@@ -258,7 +242,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         List<String> packageNames = new ArrayList<>();
         packageIds.forEach(
                 (packageId) -> {
-                    String packageName = getIdPackageNameMap().get(packageId);
+                    String packageName = getPackageName(packageId);
                     requireNonNull(packageName);
 
                     packageNames.add(packageName);

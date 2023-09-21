@@ -18,7 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedAggregation
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.DataEntriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger

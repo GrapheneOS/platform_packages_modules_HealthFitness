@@ -16,8 +16,6 @@
 
 package android.healthconnect.tests.permissions;
 
-import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
-
 import static com.google.common.truth.Truth.assertThat;
 
 
@@ -79,16 +77,5 @@ public class PermissionsTestUtils {
                     }
                 });
         assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
-    }
-
-    public static void deleteAllStagedRemoteData() {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        runWithShellPermissionIdentity(
-                () ->
-                        // TODO(b/241542162): Avoid reflection once TestApi can be called from CTS
-                        service.getClass().getMethod("deleteAllStagedRemoteData").invoke(service),
-                "android.permission.DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA");
     }
 }

@@ -22,6 +22,7 @@ import androidx.preference.PreferenceCategory
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -43,10 +44,12 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.di.FakeFeatureUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.safeEq
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.whenever
+import com.android.healthconnect.controller.utils.FeatureUtils
 import com.android.settingslib.widget.MainSwitchPreference
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -56,6 +59,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
+import javax.inject.Inject
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
@@ -68,8 +72,8 @@ import org.mockito.Mockito.*
 class ConnectedAppFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-
     @BindValue val viewModel: AppPermissionViewModel = mock(AppPermissionViewModel::class.java)
+    @Inject lateinit var fakeFeatureUtils: FeatureUtils
 
     @Before
     fun setup() {
@@ -77,6 +81,7 @@ class ConnectedAppFragmentTest {
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
         hiltRule.inject()
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewInformationArchitectureEnabled(false)
 
         whenever(viewModel.revokeAllPermissionsState).then { MutableLiveData(NotStarted) }
         whenever(viewModel.allAppPermissionsGranted).then { MutableLiveData(false) }
@@ -120,6 +125,7 @@ class ConnectedAppFragmentTest {
             assertThat(readCategory?.preferenceCount).isEqualTo(0)
             assertThat(writeCategory?.preferenceCount).isEqualTo(0)
         }
+        onView(withText("See app data")).check(doesNotExist())
     }
 
     @Test
@@ -147,6 +153,8 @@ class ConnectedAppFragmentTest {
             assertThat(writeCategory?.preferenceCount).isEqualTo(0)
         }
         onView(withText("Distance")).check(matches(isDisplayed()))
+        onView(withText("See app data")).check(doesNotExist())
+        onView(withText("Delete app data")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -174,6 +182,7 @@ class ConnectedAppFragmentTest {
             assertThat(writeCategory?.preferenceCount).isEqualTo(1)
         }
         onView(withText("Exercise")).check(matches(isDisplayed()))
+        onView(withText("See app data")).check(doesNotExist())
     }
 
     @Test
@@ -205,6 +214,7 @@ class ConnectedAppFragmentTest {
         }
         onView(withText("Exercise")).check(matches(isDisplayed()))
         onView(withText("Distance")).check(matches(isDisplayed()))
+        onView(withText("See app data")).check(doesNotExist())
     }
 
     @Test
@@ -234,6 +244,7 @@ class ConnectedAppFragmentTest {
 
             assertThat(mainSwitchPreference?.isChecked).isTrue()
         }
+        onView(withText("See app data")).check(doesNotExist())
     }
 
     @Test
@@ -276,6 +287,7 @@ class ConnectedAppFragmentTest {
         onView(withText("Allow all")).perform(click())
 
         onView(withText("Remove all permissions?")).check(matches(isDisplayed()))
+        onView(withText("See app data")).check(doesNotExist())
     }
 
     @Test
@@ -297,6 +309,7 @@ class ConnectedAppFragmentTest {
 
         onView(withText("Exercise")).check(matches(not(isChecked())))
         onView(withText("Distance")).check(matches(not(isChecked())))
+        onView(withText("See app data")).check(doesNotExist())
     }
 
     @Test
@@ -339,5 +352,23 @@ class ConnectedAppFragmentTest {
             .perform(scrollTo())
             .check(matches(isDisplayed()))
         onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun seeAppData_isEnabled_buttonDisplayed() {
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewInformationArchitectureEnabled(true)
+        val writePermission = HealthPermission(EXERCISE, WRITE)
+        val readPermission = HealthPermission(DISTANCE, READ)
+        whenever(viewModel.appPermissions).then {
+            MutableLiveData(listOf(writePermission, readPermission))
+        }
+        whenever(viewModel.grantedPermissions).then {
+            MutableLiveData(setOf(writePermission, readPermission))
+        }
+        whenever(viewModel.allAppPermissionsGranted).then { MutableLiveData(true) }
+        launchFragment<ConnectedAppFragment>(
+            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME))
+        onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Delete app data")).check(doesNotExist())
     }
 }

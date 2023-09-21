@@ -18,7 +18,7 @@ import android.health.connect.datatypes.InstantRecord
 import android.health.connect.datatypes.IntervalRecord
 import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
@@ -58,11 +58,19 @@ abstract class BaseFormatter<T : Record>(private val context: Context) : Formatt
     }
 
     private fun getHeader(record: T, appName: String): String {
-        return context.getString(R.string.data_entry_header, getFormattedTime(record), appName)
+        if (appName == "")
+            return context.getString(
+                R.string.data_entry_header_without_source_app, getFormattedTime(record))
+        return context.getString(
+            R.string.data_entry_header_with_source_app, getFormattedTime(record), appName)
     }
 
     private fun getHeaderA11y(record: T, appName: String): String {
-        return context.getString(R.string.data_entry_header, getFormattedA11yTime(record), appName)
+        if (appName == "")
+            return context.getString(
+                R.string.data_entry_header_without_source_app, getFormattedTime(record))
+        return context.getString(
+            R.string.data_entry_header_with_source_app, getFormattedA11yTime(record), appName)
     }
 
     private fun getFormattedTime(record: T): String {

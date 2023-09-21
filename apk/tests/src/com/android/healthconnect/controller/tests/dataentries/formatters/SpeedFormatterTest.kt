@@ -19,7 +19,7 @@ import android.content.Context
 import android.health.connect.datatypes.SpeedRecord
 import android.health.connect.datatypes.units.Velocity
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.dataentries.FormattedEntry.FormattedSessionDetail
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.dataentries.formatters.SpeedFormatter
 import com.android.healthconnect.controller.dataentries.units.DistanceUnit
 import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS

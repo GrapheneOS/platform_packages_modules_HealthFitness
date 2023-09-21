@@ -95,9 +95,11 @@ public class AggregateDataResponseParcel implements Parcelable {
             mAggregateRecordsResponses.add(new AggregateRecordsResponse<>(result));
         }
 
-        int period = in.readInt();
-        if (period != DEFAULT_INT) {
-            mPeriod = Period.ofDays(period);
+        int periodDays = in.readInt();
+        if (periodDays != DEFAULT_INT) {
+            int periodMonths = in.readInt();
+            int periodYears = in.readInt();
+            mPeriod = Period.of(periodYears, periodMonths, periodDays);
         }
 
         long duration = in.readLong();
@@ -185,14 +187,13 @@ public class AggregateDataResponseParcel implements Parcelable {
                 new ArrayList<>();
 
         LocalDateTime groupBoundary = ((LocalTimeRangeFilter) mTimeRangeFilter).getStartTime();
-        long mDelta = getPeriodDeltaInDays(mPeriod);
         for (AggregateRecordsResponse<?> aggregateRecordsResponse : mAggregateRecordsResponses) {
             aggregateRecordsGroupedByPeriodResponses.add(
                     new AggregateRecordsGroupedByPeriodResponse<>(
                             groupBoundary,
-                            groupBoundary.plusDays(mDelta),
+                            groupBoundary.plus(mPeriod),
                             aggregateRecordsResponse.getAggregateResults()));
-            groupBoundary = groupBoundary.plusDays(mDelta);
+            groupBoundary = groupBoundary.plus(mPeriod);
         }
 
         if (!aggregateRecordsGroupedByPeriodResponses.isEmpty()) {
@@ -241,6 +242,8 @@ public class AggregateDataResponseParcel implements Parcelable {
 
         if (mPeriod != null) {
             dest.writeInt(mPeriod.getDays());
+            dest.writeInt(mPeriod.getMonths());
+            dest.writeInt(mPeriod.getYears());
         } else {
             dest.writeInt(DEFAULT_INT);
         }

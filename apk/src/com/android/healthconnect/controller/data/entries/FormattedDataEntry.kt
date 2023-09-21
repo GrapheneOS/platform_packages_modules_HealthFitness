@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2022 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -13,7 +13,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.dataentries
+package com.android.healthconnect.controller.data.entries
 
 import android.health.connect.datatypes.ExerciseRoute
 import com.android.healthconnect.controller.shared.DataType
@@ -76,4 +76,8 @@ sealed class FormattedEntry(open val uuid: String) {
         val aggregationA11y: String,
         val contributingApps: String
     ) : FormattedEntry(aggregation)
+
+    data class EntryDateSectionHeader(
+        val date: String,
+    ) : FormattedEntry(date)
 }

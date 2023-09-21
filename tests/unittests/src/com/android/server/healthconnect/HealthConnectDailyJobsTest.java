@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage;
+package com.android.server.healthconnect;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -24,7 +24,6 @@ import static org.mockito.Mockito.when;
 import android.app.job.JobScheduler;
 import android.content.Context;
 
-import com.android.server.healthconnect.HealthConnectDailyJobs;
 
 import org.junit.Before;
 import org.junit.Test;

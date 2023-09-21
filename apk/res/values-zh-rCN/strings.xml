@@ -32,6 +32,9 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 个应用拥有访问权限"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"无"</string>
     <string name="entry_details_title" msgid="590184849040247850">"详细数据"</string>
+    <string name="backup_title" msgid="211503191266235085">"备份"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"数据源和优先级"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"设置单位"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"近期数据访问情况"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"最近没有任何应用访问 Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"查看近期的所有数据访问情况"</string>
@@ -670,7 +673,7 @@
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"开尔文"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"帮助和反馈"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"如果您看不到某个已安装的应用，可能是因为该应用与 Health Connect 尚不兼容"</string>
-    <string name="things_to_try" msgid="8200374691546152703">"可以尝试的方法"</string>
+    <string name="things_to_try" msgid="8200374691546152703">"可以尝试的操作"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"检查是否有更新"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"确保安装的应用是最新版本"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"查看所有兼容应用"</string>
@@ -772,6 +775,12 @@
     <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect 集成已完成"</string>
     <string name="migration_complete_notification_action" msgid="5350322865206331186">"打开"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"新增功能"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"现在，您可以直接在设置中访问 Health Connect，也可以随时卸载 Health Connect 应用。"</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"现在，您可以直接在设置中访问 Health Connect，也可以随时卸载 Health Connect 应用以释放存储空间。"</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"知道了"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"数据总值"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"应用来源"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"将应用来源添加到列表中，查看数据总值如何变化。从该列表中删除某应用后，相应应用的数据将不再计入总值，但该应用仍具有写入权限。"</string>
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"没有任何应用来源"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"您为应用授予写入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>数据的权限后，系统就会在这里显示来源。"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"来源和优先级的运作方式"</string>
 </resources>

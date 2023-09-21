@@ -19,6 +19,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.tests.permissions.HealthPermissionConstants
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -43,6 +44,12 @@ class HealthPermissionStringsTest {
     fun allHealthPermissionsHaveStrings() {
         val allPermissions = HealthConnectManager.getHealthPermissions(context)
         for (permission in allPermissions) {
+            if (permission == HealthPermissionConstants.READ_HEALTH_DATA_IN_BACKGROUND) {
+                // TODO(b/299897306): Remove this exception case when we have strings properly
+                //  defined for the Background Read permission
+                continue
+            }
+
             val type = HealthPermission.fromPermissionString(permission).healthPermissionType
             assertThat(HealthPermissionStrings.fromPermissionType(type)).isNotNull()
         }

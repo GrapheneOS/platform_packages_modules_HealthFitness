@@ -25,7 +25,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataaccess.HealthDataAccessViewModel.DataAccessScreenState
+import com.android.healthconnect.controller.data.access.AccessViewModel
+import com.android.healthconnect.controller.data.access.AccessViewModel.AccessScreenState
+import com.android.healthconnect.controller.data.access.AppAccessState
 import com.android.healthconnect.controller.deletion.DeletionConstants.DELETION_TYPE
 import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
 import com.android.healthconnect.controller.deletion.DeletionConstants.START_DELETION_EVENT
@@ -72,7 +74,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
 
-    private val viewModel: HealthDataAccessViewModel by viewModels()
+    private val viewModel: AccessViewModel by viewModels()
 
     private lateinit var permissionType: HealthPermissionType
 
@@ -172,13 +174,13 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
         viewModel.loadAppMetaDataMap(permissionType)
         viewModel.appMetadataMap.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is DataAccessScreenState.Loading -> {
+                is AccessScreenState.Loading -> {
                     setLoading(isLoading = true)
                 }
-                is DataAccessScreenState.Error -> {
+                is AccessScreenState.Error -> {
                     setError(hasError = true)
                 }
-                is DataAccessScreenState.WithData -> {
+                is AccessScreenState.WithData -> {
                     setLoading(isLoading = false, animate = false)
                     updateDataAccess(state.appMetadata)
                 }
@@ -199,33 +201,33 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
         }
     }
 
-    private fun updateDataAccess(appMetadataMap: Map<DataAccessAppState, List<AppMetadata>>) {
+    private fun updateDataAccess(appMetadataMap: Map<AppAccessState, List<AppMetadata>>) {
         mCanReadSection?.removeAll()
         mCanWriteSection?.removeAll()
         mInactiveSection?.removeAll()
 
-        if (appMetadataMap.containsKey(DataAccessAppState.Read)) {
-            if (appMetadataMap[DataAccessAppState.Read]!!.isEmpty()) {
+        if (appMetadataMap.containsKey(AppAccessState.Read)) {
+            if (appMetadataMap[AppAccessState.Read]!!.isEmpty()) {
                 mCanReadSection?.isVisible = false
             } else {
                 mCanReadSection?.isVisible = true
-                appMetadataMap[DataAccessAppState.Read]!!.forEach { _appMetadata ->
+                appMetadataMap[AppAccessState.Read]!!.forEach { _appMetadata ->
                     mCanReadSection?.addPreference(createAppPreference(_appMetadata))
                 }
             }
         }
-        if (appMetadataMap.containsKey(DataAccessAppState.Write)) {
-            if (appMetadataMap[DataAccessAppState.Write]!!.isEmpty()) {
+        if (appMetadataMap.containsKey(AppAccessState.Write)) {
+            if (appMetadataMap[AppAccessState.Write]!!.isEmpty()) {
                 mCanWriteSection?.isVisible = false
             } else {
                 mCanWriteSection?.isVisible = true
-                appMetadataMap[DataAccessAppState.Write]!!.forEach { _appMetadata ->
+                appMetadataMap[AppAccessState.Write]!!.forEach { _appMetadata ->
                     mCanWriteSection?.addPreference(createAppPreference(_appMetadata))
                 }
             }
         }
-        if (appMetadataMap.containsKey(DataAccessAppState.Inactive)) {
-            if (appMetadataMap[DataAccessAppState.Inactive]!!.isEmpty()) {
+        if (appMetadataMap.containsKey(AppAccessState.Inactive)) {
+            if (appMetadataMap[AppAccessState.Inactive]!!.isEmpty()) {
                 mInactiveSection?.isVisible = false
             } else {
                 mInactiveSection?.isVisible = true
@@ -236,7 +238,7 @@ class HealthDataAccessFragment : Hilt_HealthDataAccessFragment() {
                                 R.string.inactive_apps_message,
                                 getString(fromPermissionType(permissionType).lowercaseLabel))
                     })
-                appMetadataMap[DataAccessAppState.Inactive]?.forEach { _appMetadata ->
+                appMetadataMap[AppAccessState.Inactive]?.forEach { _appMetadata ->
                     mInactiveSection?.addPreference(
                         InactiveAppPreference(requireContext()).also {
                             it.title = _appMetadata.appName

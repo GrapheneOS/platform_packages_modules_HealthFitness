@@ -35,9 +35,7 @@ package com.android.healthconnect.controller.permissions.shared
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
+import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -46,6 +44,7 @@ import com.android.healthconnect.controller.navigation.DestinationChangedListene
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
 import com.android.healthconnect.controller.onboarding.OnboardingActivityContract
 import com.android.healthconnect.controller.onboarding.OnboardingActivityContract.Companion.INTENT_RESULT_CANCELLED
+import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,6 +58,7 @@ class SettingsActivity : Hilt_SettingsActivity() {
     }
 
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
+    private val viewModel: AppPermissionViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,23 +73,27 @@ class SettingsActivity : Hilt_SettingsActivity() {
             openOnboardingActivity.launch(1)
         }
 
+        val packageName = intent.getStringExtra(
+            EXTRA_PACKAGE_NAME)!!
+
+        viewModel.shouldNavigateToFragment.observe(this) { shouldNavigate ->
+            maybeNavigateToFragment(shouldNavigate)
+        }
+
+        viewModel.loadShouldNavigateToFragment(packageName)
+
+    }
+
+    private fun maybeNavigateToFragment(shouldNavigate: Boolean) {
         val navController = findNavController(R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener(DestinationChangedListener(this))
-        if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
-            enforceRationalIntent(intent.getStringExtra(EXTRA_PACKAGE_NAME)!!)
+        if (shouldNavigate) {
             navController.navigate(
                 R.id.action_deeplink_to_settingsManageAppPermissionsFragment,
                 bundleOf(EXTRA_PACKAGE_NAME to intent.getStringExtra(EXTRA_PACKAGE_NAME)))
         }
-    }
-
-    private fun enforceRationalIntent(appPackageName: String) {
-        val rationalIntentDeclared = healthPermissionReader.isRationalIntentDeclared(appPackageName)
-        if (!rationalIntentDeclared) {
-            Log.e(TAG, "App should support rational intent!")
-            // posting finish() on the next main loop iteration to prevent a blank screen
-            // if the activity has been started for the first time (b/284327172)
-            Handler(Looper.getMainLooper()).post(this::finish)
+        else {
+            finish()
         }
     }
 

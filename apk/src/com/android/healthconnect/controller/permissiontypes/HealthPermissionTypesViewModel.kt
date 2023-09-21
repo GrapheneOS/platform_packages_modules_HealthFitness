@@ -57,6 +57,8 @@ constructor(
     private val _editedPriorityList = MutableLiveData<List<AppMetadata>>()
     private val _categoryLabel = MutableLiveData<String>()
 
+    private val _newPriorityList = MutableLiveData<NewPriorityListState>()
+
     /** Provides a list of [HealthPermissionType]s displayed in [HealthPermissionTypesFragment]. */
     val permissionTypesData: LiveData<PermissionTypesState>
         get() = _permissionTypesData
@@ -67,6 +69,9 @@ constructor(
      */
     val priorityList: LiveData<PriorityListState>
         get() = _priorityList
+
+    val newPriorityList: LiveData<NewPriorityListState>
+        get() = _newPriorityList
 
     /** Provides a list of apps with data in [HealthPermissionTypesFragment]. */
     val appsWithData: LiveData<AppsWithDataFragmentState>
@@ -96,13 +101,6 @@ constructor(
         _editedPriorityList.postValue(newList)
     }
 
-    fun setEditedAppSources(newList: List<AppMetadata>, category: Int) {
-        _editedPriorityList.postValue(newList)
-        viewModelScope.launch {
-            updatePriorityListUseCase.invoke(newList.map { it.packageName }, category)
-        }
-    }
-
     fun setCategoryLabel(label: String) {
         _categoryLabel.postValue(label)
     }
@@ -111,6 +109,7 @@ constructor(
         _permissionTypesData.postValue(PermissionTypesState.Loading)
         _priorityList.postValue(PriorityListState.Loading)
 
+        _newPriorityList.postValue(NewPriorityListState.Loading(true))
         viewModelScope.launch {
             val permissionTypes = loadPermissionTypesUseCase.invoke(category)
             _permissionTypesData.postValue(PermissionTypesState.WithData(permissionTypes))
@@ -123,10 +122,19 @@ constructor(
                         } else {
                             PriorityListState.WithData(result.data)
                         })
+
+                    _newPriorityList.postValue(
+                        if (result.data.isEmpty()) {
+                            NewPriorityListState.WithData(true, listOf())
+                        } else {
+                            NewPriorityListState.WithData(true, result.data)
+                        })
+
                 }
                 is UseCaseResults.Failed -> {
                     Log.e(TAG, "Load error ", result.exception)
                     _priorityList.postValue(PriorityListState.LoadingFailed)
+                    _newPriorityList.postValue(NewPriorityListState.LoadingFailed(true))
                 }
             }
         }
@@ -159,11 +167,14 @@ constructor(
 
     fun updatePriorityList(category: @HealthDataCategoryInt Int, newPriorityList: List<String>) {
         _priorityList.postValue(PriorityListState.Loading)
+        _newPriorityList.postValue(NewPriorityListState.Loading(false))
+
         viewModelScope.launch {
             updatePriorityListUseCase.invoke(newPriorityList, category)
             val appMetadataList: List<AppMetadata> =
                 newPriorityList.map { appInfoReader.getAppMetadata(it) }
             _priorityList.postValue(PriorityListState.WithData(appMetadataList))
+            _newPriorityList.postValue(NewPriorityListState.Loading(false))
         }
     }
 
@@ -182,5 +193,15 @@ constructor(
     sealed class AppsWithDataFragmentState {
         object Loading : AppsWithDataFragmentState()
         data class WithData(val appsWithData: List<AppMetadata>) : AppsWithDataFragmentState()
+    }
+
+    sealed class NewPriorityListState(open val shouldObserve: Boolean) {
+        data class Loading(override val shouldObserve: Boolean):
+            NewPriorityListState(shouldObserve)
+        data class LoadingFailed(override val shouldObserve: Boolean):
+            NewPriorityListState(shouldObserve)
+        data class WithData(
+            override val shouldObserve: Boolean,
+            val priorityList: List<AppMetadata>): NewPriorityListState(shouldObserve)
     }
 }
