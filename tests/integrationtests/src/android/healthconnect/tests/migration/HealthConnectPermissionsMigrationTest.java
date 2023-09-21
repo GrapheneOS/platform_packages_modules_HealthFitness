@@ -19,6 +19,7 @@ package android.healthconnect.tests.migration;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.health.connect.HealthPermissions.READ_ACTIVE_CALORIES_BURNED;
 import static android.health.connect.HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
+import static android.healthconnect.tests.TestUtils.deleteAllStagedRemoteData;
 
 import static com.android.compatibility.common.util.FeatureUtil.AUTOMOTIVE_FEATURE;
 import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature;
@@ -71,12 +72,12 @@ public class HealthConnectPermissionsMigrationTest {
         revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, null);
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, READ_ACTIVE_CALORIES_BURNED);
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, WRITE_ACTIVE_CALORIES_BURNED);
-        PermissionsTestUtils.deleteAllStagedRemoteData();
+        deleteAllStagedRemoteData();
     }
 
     @After
     public void tearDown() {
-        PermissionsTestUtils.deleteAllStagedRemoteData();
+        deleteAllStagedRemoteData();
     }
 
     @Test

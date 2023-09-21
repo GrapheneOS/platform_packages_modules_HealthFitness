@@ -23,6 +23,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Co
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.ACTIVE_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.BLOOD_GLUCOSE
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.tests.permissions.HealthPermissionConstants
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Before
@@ -52,7 +53,13 @@ class HealthPermissionTest {
     @Test
     fun fromPermissionString_canParseAllHealthPermissions() {
         val allPermissions = HealthConnectManager.getHealthPermissions(context)
-        allPermissions.forEach { permissionString ->
+        for (permissionString in allPermissions) {
+            if (permissionString == HealthPermissionConstants.READ_HEALTH_DATA_IN_BACKGROUND) {
+                // TODO(b/299897306): Remove this exception case when we have strings properly
+                //  defined for the Background Read permission
+                continue
+            }
+
             assertThat(fromPermissionString(permissionString).toString())
                 .isEqualTo(permissionString)
         }
