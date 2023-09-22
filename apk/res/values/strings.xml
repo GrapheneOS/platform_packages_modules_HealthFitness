@@ -111,6 +111,13 @@
     <!--endregion-->
 
     <!-- region permission ui labels -->
+
+    <!-- Other health permissions -->
+    <string name="background_read_uppercase_label" description="Uppercase label used to show background reading permission. [CHAR_LIMIT=50]">Background reading</string>
+    <string name="background_read_lowercase_label" description="Lowercase label used to show background reading permission. [CHAR_LIMIT=50]">background reading</string>
+    <string name="background_read_description" description="Content description for switch that enables permissions for reading health data in the background  [CHAR_LIMIT=50]">Read health data in the background</string>
+    <!--endregion-->
+
     <!-- region Activity data types -->
     <string name="active_calories_burned_uppercase_label" description="Uppercase label used to show the user's active calories burned data [CHAR_LIMIT=50]">Active calories burned</string>
     <string name="active_calories_burned_lowercase_label" description="Lowercase label used to show the user's active calories burned data [CHAR_LIMIT=50]">active calories burned</string>

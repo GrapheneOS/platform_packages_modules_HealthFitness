@@ -15,6 +15,7 @@ class FakeFeatureUtils : FeatureUtils {
     private var isEntryPointsEnabled = true
     private var isNewAppPriorityEnabled = false
     private var isNewInformationArchitectureEnabled = false
+    private var isBackgroundReadEnabled = false
 
     fun setIsSessionTypesEnabled(boolean: Boolean) {
         isSessionTypesEnabled = boolean
@@ -36,6 +37,10 @@ class FakeFeatureUtils : FeatureUtils {
         isNewInformationArchitectureEnabled = boolean
     }
 
+    fun setIsBackgroundReadEnabled(isBackgroundReadEnabled: Boolean) {
+        this.isBackgroundReadEnabled = isBackgroundReadEnabled
+    }
+
     override fun isNewAppPriorityEnabled(): Boolean {
         return isNewAppPriorityEnabled
     }
@@ -54,6 +59,10 @@ class FakeFeatureUtils : FeatureUtils {
 
     override fun isEntryPointsEnabled(): Boolean {
         return isEntryPointsEnabled
+    }
+
+    override fun isBackgroundReadEnabled(): Boolean {
+        return isBackgroundReadEnabled
     }
 
 }

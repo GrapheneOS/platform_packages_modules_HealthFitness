@@ -15,6 +15,7 @@ interface FeatureUtils {
     fun isEntryPointsEnabled(): Boolean
     fun isNewAppPriorityEnabled(): Boolean
     fun isNewInformationArchitectureEnabled(): Boolean
+    fun isBackgroundReadEnabled() : Boolean
 }
 
 class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnPropertiesChangedListener {
@@ -80,6 +81,12 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
     override fun isEntryPointsEnabled(): Boolean {
         synchronized(lock) {
             return isEntryPointsEnabled
+        }
+    }
+
+    override fun isBackgroundReadEnabled(): Boolean {
+        synchronized(lock) {
+            return false
         }
     }
 
