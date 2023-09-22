@@ -268,6 +268,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Tiada apl anda yang boleh mengakses atau menambahkan data baharu pada Health Connect. Tindakan ini tidak memadamkan mana-mana data sedia ada.\n\nTindakan ini tidak menjejaskan kebenaran lain yang apl ini mungkin ada seperti lokasi, kamera atau mikrofon."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Alih keluar semua"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Urus apl"</string>
+    <string name="see_app_data" msgid="3951030076195119476">"Lihat data apl"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Padamkan data apl"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Apl yang tidak aktif"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Apl ini tidak lagi mempunyai akses, tetapi masih mempunyai data yang disimpan dalam Health Connect"</string>
@@ -783,4 +784,15 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Tiada sumber apl"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Sebaik sahaja anda memberikan kebenaran apl untuk menulis data <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, sumber akan dipaparkan di sini."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cara sumber &amp; keutamaan berfungsi"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"Tambahkan apl"</string>
+    <string name="app_data_title" msgid="6499967982291000837">"Data apl"</string>
+    <!-- no translation found for no_data_footer (4777297654713673100) -->
+    <skip />
+    <string name="date_picker_day" msgid="3076687507968958991">"Hari"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Minggu"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Bulan"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Minggu ini"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"Minggu lalu"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Bulan ini"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"Bulan lepas"</string>
 </resources>

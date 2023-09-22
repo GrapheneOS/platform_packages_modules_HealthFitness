@@ -268,6 +268,8 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Ükski teie rakendus ei pääse Health Connecti andmetele juurde ega saa uusi andmeid lisada. Olemasolevaid andmeid see ei kustuta.\n\nSee ei mõjuta muid selle rakenduse õiguseid, nagu asukoha, kaamera või mikrofoni kasutamise luba."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Eemalda kõik"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Rakenduse haldamine"</string>
+    <!-- no translation found for see_app_data (3951030076195119476) -->
+    <skip />
     <string name="delete_app_data" msgid="6890357774873859952">"Kustuta rakenduse andmed"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Inaktiivsed rakendused"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Nendel rakendustel pole enam juurdepääsu, kuid nende andmed on endiselt Health Connecti salvestatud."</string>
@@ -674,9 +676,9 @@
     <string name="help_and_feedback" msgid="4772169905005369871">"Abi ja tagasiside"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Kui te installitud rakendust ei näe, ei pruugi see veel Health Connectiga ühilduda"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Asjad, mida proovida"</string>
-    <string name="check_for_updates" msgid="3841090978657783101">"Otsi värskendusi"</string>
+    <string name="check_for_updates" msgid="3841090978657783101">"Otsige värskendusi"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Veenduge, et installitud rakendused oleksid ajakohased"</string>
-    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Kuva kõik ühilduvad rakendused"</string>
+    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Vaadake kõiki ühilduvaid rakendusi"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Otsige rakendusi Google Playst"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Tagasiside saatmine"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Öelge meile, milliseid tervise- ja treeningurakendusi soovite Health Connectiga kasutada"</string>
@@ -783,4 +785,23 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Rakendusallikaid ei ole"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kui annate rakendusele loa kirjutada kategooria <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> andmeid, kuvatakse siin allikad."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Kuidas toimivad allikad ja prioriteetsus?"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"Rakenduse lisamine"</string>
+    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <skip />
+    <!-- no translation found for no_data_footer (4777297654713673100) -->
+    <skip />
+    <!-- no translation found for date_picker_day (3076687507968958991) -->
+    <skip />
+    <!-- no translation found for date_picker_week (1038805538316142229) -->
+    <skip />
+    <!-- no translation found for date_picker_month (3560692391260778560) -->
+    <skip />
+    <!-- no translation found for this_week_header (1280121922548216973) -->
+    <skip />
+    <!-- no translation found for last_week_header (5194448963146719382) -->
+    <skip />
+    <!-- no translation found for this_month_header (2452395268894677189) -->
+    <skip />
+    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <skip />
 </resources>

@@ -268,6 +268,8 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"헬스 커넥트에 액세스하거나 새 데이터를 추가할 수 있는 앱이 없습니다. 기존 데이터는 삭제되지 않습니다.\n\n위치, 카메라, 마이크 등 이 앱에 부여된 다른 권한은 영향을 받지 않습니다."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"전체 삭제"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"앱 관리"</string>
+    <!-- no translation found for see_app_data (3951030076195119476) -->
+    <skip />
     <string name="delete_app_data" msgid="6890357774873859952">"앱 데이터 삭제"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"비활성 앱"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"앱의 액세스 권한은 취소되었지만 데이터는 계속해서 헬스 커넥트에 저장됩니다."</string>
@@ -679,7 +681,7 @@
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"호환 앱 모두 보기"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play에서 앱을 찾아보세요."</string>
     <string name="send_feedback" msgid="7756927746070096780">"의견 보내기"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"헬스 커넥트와 함께 어떤 건강/피트니스 앱을 사용할지 알려주세요."</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"헬스 커넥트와 함께 어떤 건강/피트니스 앱을 사용하고 싶으신지 알려주세요."</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play 스토어"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"자동 삭제"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"자동 삭제"</string>
@@ -783,4 +785,23 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"앱 소스 없음"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> 데이터를 쓸 수 있는 권한을 앱에 부여하면 소스가 여기에 표시됩니다."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"소스 및 우선순위 지정의 작동 방식"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"앱 추가하기"</string>
+    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <skip />
+    <!-- no translation found for no_data_footer (4777297654713673100) -->
+    <skip />
+    <!-- no translation found for date_picker_day (3076687507968958991) -->
+    <skip />
+    <!-- no translation found for date_picker_week (1038805538316142229) -->
+    <skip />
+    <!-- no translation found for date_picker_month (3560692391260778560) -->
+    <skip />
+    <!-- no translation found for this_week_header (1280121922548216973) -->
+    <skip />
+    <!-- no translation found for last_week_header (5194448963146719382) -->
+    <skip />
+    <!-- no translation found for this_month_header (2452395268894677189) -->
+    <skip />
+    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <skip />
 </resources>
