@@ -670,7 +670,7 @@
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"开尔文"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"帮助和反馈"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"如果您看不到某个已安装的应用，可能是因为该应用与 Health Connect 尚不兼容"</string>
-    <string name="things_to_try" msgid="8200374691546152703">"可以尝试的方法"</string>
+    <string name="things_to_try" msgid="8200374691546152703">"可以尝试的操作"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"检查是否有更新"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"确保安装的应用是最新版本"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"查看所有兼容应用"</string>
