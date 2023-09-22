@@ -36,7 +36,6 @@
         <item name="android:textFontWeight">500</item>
         <item name="android:textSize">14sp</item>
         <item name="android:lineHeight">20sp</item>
-        <item name="android:letterSpacing">0.025</item>
     </style>
 
     <!-- Preference title 400/18/24-->

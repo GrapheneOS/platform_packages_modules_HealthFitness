@@ -56,10 +56,13 @@ import static android.health.connect.HealthPermissionCategory.WHEELCHAIR_PUSHES;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.SystemApi;
+import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.health.connect.datatypes.ExerciseRoute;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -752,12 +755,12 @@ public final class HealthPermissions {
     }
 
     /**
-     * @return {@link HealthDataCategory} for {@code permissionName}. -1 if permission category for
-     *     {@code permissionName} is not found
+     * @return {@link HealthDataCategory} for a WRITE {@code permissionName}. -1 if permission
+     *     category for {@code permissionName} is not found (or if {@code permissionName} is READ)
      * @hide
      */
     @HealthDataCategory.Type
-    public static int getHealthDataCategory(@Nullable String permissionName) {
+    public static int getHealthDataCategoryForWritePermission(@Nullable String permissionName) {
         if (sWriteHealthPermissionToHealthDataCategoryMap.isEmpty()) {
             populateWriteHealthPermissionToHealthDataCategoryMap();
         }
@@ -803,6 +806,50 @@ public final class HealthPermissions {
                         + "PermissionCategory : "
                         + permissionCategory);
         return healthWritePermission;
+    }
+
+    /**
+     * Returns a set of dataCategories for which this package has WRITE permissions
+     *
+     * @hide
+     */
+    @NonNull
+    public static Set<Integer> getDataCategoriesWithWritePermissionsForPackage(
+            @NonNull PackageInfo packageInfo, @NonNull Context context) {
+
+        Set<Integer> dataCategoriesWithPermissions = new HashSet<>();
+
+        for (int i = 0; i < packageInfo.requestedPermissions.length; i++) {
+            String currPerm = packageInfo.requestedPermissions[i];
+            if (!HealthConnectManager.isHealthPermission(context, currPerm)) {
+                continue;
+            }
+            if ((packageInfo.requestedPermissionsFlags[i]
+                            & PackageInfo.REQUESTED_PERMISSION_GRANTED)
+                    == 0) {
+                continue;
+            }
+
+            int dataCategory = getHealthDataCategoryForWritePermission(currPerm);
+            if (dataCategory >= 0) {
+                dataCategoriesWithPermissions.add(dataCategory);
+            }
+        }
+
+        return dataCategoriesWithPermissions;
+    }
+
+    /**
+     * Returns true if this package has at least one granted WRITE permission for this category.
+     *
+     * @hide
+     */
+    public static boolean getPackageHasWriteHealthPermissionsForCategory(
+            @NonNull PackageInfo packageInfo,
+            @HealthDataCategory.Type int dataCategory,
+            @NonNull Context context) {
+        return getDataCategoriesWithWritePermissionsForPackage(packageInfo, context)
+                .contains(dataCategory);
     }
 
     private static synchronized void populateHealthPermissionToHealthPermissionCategoryMap() {
