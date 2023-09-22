@@ -676,7 +676,7 @@
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"호환 앱 모두 보기"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play에서 앱을 찾아보세요."</string>
     <string name="send_feedback" msgid="7756927746070096780">"의견 보내기"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"헬스 커넥트와 함께 어떤 건강/피트니스 앱을 사용할지 알려주세요."</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"헬스 커넥트와 함께 어떤 건강/피트니스 앱을 사용하고 싶으신지 알려주세요."</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play 스토어"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"자동 삭제"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"자동 삭제"</string>
