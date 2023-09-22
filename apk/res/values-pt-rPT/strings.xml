@@ -268,6 +268,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Nenhuma das suas apps vai poder aceder ou adicionar novos dados à Saúde Connect. Isto não elimina os dados existentes.\n\nIsto não afeta outras autorizações que esta app possa ter, como Localização, Câmara ou Microfone."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Remover tudo"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Faça a gestão da app"</string>
+    <string name="see_app_data" msgid="3951030076195119476">"Ver dados de apps"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Apagar dados da app"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Apps inativas"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Estas apps já não têm acesso, mas ainda têm dados armazenados na Saúde Connect"</string>
@@ -783,4 +784,15 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Sem origens de apps"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Assim que conceder autorizações da app para escrever dados de <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, as origens vão ser apresentadas aqui."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Como funcionam as origens e a atribuição de prioridade"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"Adicionar app"</string>
+    <string name="app_data_title" msgid="6499967982291000837">"Dados de apps"</string>
+    <!-- no translation found for no_data_footer (4777297654713673100) -->
+    <skip />
+    <string name="date_picker_day" msgid="3076687507968958991">"Dia"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Semana"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Mês"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Esta semana"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"Semana passada"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Este mês"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"Mês passado"</string>
 </resources>
