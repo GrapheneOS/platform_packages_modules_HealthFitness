@@ -459,6 +459,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         long startDateAccess;
                         if (!holdsDataManagementPermission) {
                             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+                            logger.setCallerForegroundState(isInForeground);
+
                             if (!isInForeground) {
                                 mDataPermissionEnforcer.enforceBackgroundReadRestrictions(
                                         uid,
@@ -558,6 +560,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         if (!holdsDataManagementPermission) {
                             final boolean isInForeground =
                                     mAppOpsManagerLocal.isUidInForeground(uid);
+
+                            logger.setCallerForegroundState(isInForeground);
 
                             tryAcquireApiCallQuota(
                                     uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
@@ -929,6 +933,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         throwExceptionIfDataSyncInProgress();
 
                         boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+                        logger.setCallerForegroundState(isInForeground);
+
                         if (!isInForeground) {
                             mDataPermissionEnforcer.enforceBackgroundReadRestrictions(
                                     uid,
