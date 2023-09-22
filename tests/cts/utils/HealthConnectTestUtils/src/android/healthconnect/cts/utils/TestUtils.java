@@ -38,6 +38,8 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static java.util.Objects.requireNonNull;
+
 import android.app.UiAutomation;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -122,7 +124,6 @@ import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;
 import android.os.UserHandle;
 import android.util.Log;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
@@ -159,7 +160,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class TestUtils {
+public final class TestUtils {
     public static final String MANAGE_HEALTH_PERMISSION =
             HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
@@ -176,39 +177,15 @@ public class TestUtils {
 
     public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
             throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        return getChangeLogToken(request, context);
+        return getChangeLogToken(request, ApplicationProvider.getApplicationContext());
     }
 
     public static ChangeLogTokenResponse getChangeLogToken(
             ChangeLogTokenRequest request, Context context) throws InterruptedException {
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<ChangeLogTokenResponse> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-        service.getChangeLogToken(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ChangeLogTokenResponse result) {
-                        response.set(result);
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                        exceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
-        }
-        return response.get();
+        HealthConnectReceiver<ChangeLogTokenResponse> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager(context)
+                .getChangeLogToken(request, Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse();
     }
 
     public static String insertRecordAndGetId(Record record) throws InterruptedException {
@@ -230,41 +207,17 @@ public class TestUtils {
      * @return inserted records
      */
     public static List<Record> insertRecords(List<Record> records) throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        return insertRecords(records, context);
+        return insertRecords(records, ApplicationProvider.getApplicationContext());
     }
 
     public static List<Record> insertRecords(List<Record> records, Context context)
             throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<List<Record>> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-        service.insertRecords(
-                records,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(InsertRecordsResponse result) {
-                        response.set(result.getRecords());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                        exceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
-        }
-        assertThat(response.get()).hasSize(records.size());
-
-        return response.get();
+        HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager(context)
+                .insertRecords(records, Executors.newSingleThreadExecutor(), receiver);
+        List<Record> returnedRecords = receiver.getResponse().getRecords();
+        assertThat(returnedRecords).hasSize(records.size());
+        return returnedRecords;
     }
 
     public static List<RecordTypeAndRecordIds> insertRecordsAndGetIds(
@@ -290,75 +243,28 @@ public class TestUtils {
     }
 
     public static void updateRecords(List<Record> records) throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        updateRecords(records, context);
+        updateRecords(records, ApplicationProvider.getApplicationContext());
     }
 
     public static void updateRecords(List<Record> records, Context context)
             throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-
-        service.updateRecords(
-                records,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        exceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
-        }
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager(context)
+                .updateRecords(records, Executors.newSingleThreadExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
     }
 
     public static ChangeLogsResponse getChangeLogs(ChangeLogsRequest changeLogsRequest)
             throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        return getChangeLogs(changeLogsRequest, context);
+        return getChangeLogs(changeLogsRequest, ApplicationProvider.getApplicationContext());
     }
 
     public static ChangeLogsResponse getChangeLogs(
             ChangeLogsRequest changeLogsRequest, Context context) throws InterruptedException {
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<ChangeLogsResponse> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        service.getChangeLogs(
-                changeLogsRequest,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ChangeLogsResponse result) {
-                        response.set(result);
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        healthConnectExceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-
-        return response.get();
+        HealthConnectReceiver<ChangeLogsResponse> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager(context)
+                .getChangeLogs(changeLogsRequest, Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse();
     }
 
     public static Device buildDevice() {
@@ -664,184 +570,59 @@ public class TestUtils {
 
     public static <T> AggregateRecordsResponse<T> getAggregateResponse(
             AggregateRecordsRequest<T> request) throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<AggregateRecordsResponse<T>> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        service.aggregate(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(AggregateRecordsResponse<T> result) {
-                        response.set(result);
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException healthConnectException) {
-                        healthConnectExceptionAtomicReference.set(healthConnectException);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-
-        return response.get();
+        HealthConnectReceiver<AggregateRecordsResponse<T>> receiver =
+                new HealthConnectReceiver<AggregateRecordsResponse<T>>();
+        getHealthConnectManager().aggregate(request, Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse();
     }
 
     public static <T> AggregateRecordsResponse<T> getAggregateResponse(
             AggregateRecordsRequest<T> request, List<Record> recordsToInsert)
             throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
         if (recordsToInsert != null) {
             insertRecords(recordsToInsert);
         }
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<AggregateRecordsResponse<T>> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        service.aggregate(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(AggregateRecordsResponse<T> result) {
-                        response.set(result);
-                        latch.countDown();
-                    }
 
-                    @Override
-                    public void onError(HealthConnectException healthConnectException) {
-                        healthConnectExceptionAtomicReference.set(healthConnectException);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-
-        return response.get();
+        HealthConnectReceiver<AggregateRecordsResponse<T>> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager().aggregate(request, Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse();
     }
 
     public static <T>
             List<AggregateRecordsGroupedByDurationResponse<T>> getAggregateResponseGroupByDuration(
                     AggregateRecordsRequest<T> request, Duration duration)
                     throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<List<AggregateRecordsGroupedByDurationResponse<T>>> response =
-                new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        service.aggregateGroupByDuration(
-                request,
-                duration,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(
-                            List<AggregateRecordsGroupedByDurationResponse<T>> result) {
-                        response.set(result);
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException healthConnectException) {
-                        healthConnectExceptionAtomicReference.set(healthConnectException);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-        return response.get();
+        HealthConnectReceiver<List<AggregateRecordsGroupedByDurationResponse<T>>> receiver =
+                new HealthConnectReceiver<>();
+        getHealthConnectManager()
+                .aggregateGroupByDuration(
+                        request, duration, Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse();
     }
 
     public static <T>
             List<AggregateRecordsGroupedByPeriodResponse<T>> getAggregateResponseGroupByPeriod(
                     AggregateRecordsRequest<T> request, Period period) throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<List<AggregateRecordsGroupedByPeriodResponse<T>>> response =
-                new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        service.aggregateGroupByPeriod(
-                request,
-                period,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(List<AggregateRecordsGroupedByPeriodResponse<T>> result) {
-                        response.set(result);
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException healthConnectException) {
-                        healthConnectExceptionAtomicReference.set(healthConnectException);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-
-        return response.get();
+        HealthConnectReceiver<List<AggregateRecordsGroupedByPeriodResponse<T>>> receiver =
+                new HealthConnectReceiver<>();
+        getHealthConnectManager()
+                .aggregateGroupByPeriod(
+                        request, period, Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse();
     }
 
     public static <T extends Record> List<T> readRecords(ReadRecordsRequest<T> request)
             throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        return readRecords(request, context);
+        return readRecords(request, ApplicationProvider.getApplicationContext());
     }
 
     public static <T extends Record> List<T> readRecords(
             ReadRecordsRequest<T> request, Context context) throws InterruptedException {
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(service).isNotNull();
         assertThat(request.getRecordType()).isNotNull();
-        AtomicReference<List<T>> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        service.readRecords(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ReadRecordsResponse<T> result) {
-                        response.set(result.getRecords());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        Log.e(TAG, exception.getMessage());
-                        healthConnectExceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-        return response.get();
+        HealthConnectReceiver<ReadRecordsResponse<T>> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager(context)
+                .readRecords(request, Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse().getRecords();
     }
 
     public static <T extends Record> void assertRecordNotFound(String uuid, Class<T> recordType)
@@ -864,69 +645,23 @@ public class TestUtils {
                 .isNotEmpty();
     }
 
-    public static <T extends Record> Pair<List<T>, Long> readRecordsWithPagination(
+    public static <T extends Record> ReadRecordsResponse<T> readRecordsWithPagination(
             ReadRecordsRequest<T> request) throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(service).isNotNull();
-        AtomicReference<List<T>> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        AtomicReference<Long> pageToken = new AtomicReference<>();
-        service.readRecords(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ReadRecordsResponse<T> result) {
-                        response.set(result.getRecords());
-                        pageToken.set(result.getNextPageToken());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        healthConnectExceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-        return Pair.create(response.get(), pageToken.get());
+        HealthConnectReceiver<ReadRecordsResponse<T>> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager()
+                .readRecords(request, Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse();
     }
 
     public static void setAutoDeletePeriod(int period) throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
         try {
-            Context context = ApplicationProvider.getApplicationContext();
-            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-            CountDownLatch latch = new CountDownLatch(1);
-            assertThat(service).isNotNull();
-            AtomicReference<HealthConnectException> exceptionAtomicReference =
-                    new AtomicReference<>();
-            service.setRecordRetentionPeriodInDays(
-                    period,
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<>() {
-                        @Override
-                        public void onResult(Void result) {
-                            latch.countDown();
-                        }
-
-                        @Override
-                        public void onError(HealthConnectException healthConnectException) {
-                            exceptionAtomicReference.set(healthConnectException);
-                            latch.countDown();
-                        }
-                    });
-            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-            if (exceptionAtomicReference.get() != null) {
-                throw exceptionAtomicReference.get();
-            }
+            HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+            getHealthConnectManager()
+                    .setRecordRetentionPeriodInDays(
+                            period, Executors.newSingleThreadExecutor(), receiver);
+            receiver.verifyNoExceptionOrThrow();
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
@@ -937,31 +672,10 @@ public class TestUtils {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
         try {
-            Context context = ApplicationProvider.getApplicationContext();
-            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-            CountDownLatch latch = new CountDownLatch(1);
-            AtomicReference<HealthConnectException> exceptionAtomicReference =
-                    new AtomicReference<>();
-            assertThat(service).isNotNull();
-            service.deleteRecords(
-                    request,
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<>() {
-                        @Override
-                        public void onResult(Void result) {
-                            latch.countDown();
-                        }
-
-                        @Override
-                        public void onError(HealthConnectException healthConnectException) {
-                            exceptionAtomicReference.set(healthConnectException);
-                            latch.countDown();
-                        }
-                    });
-            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-            if (exceptionAtomicReference.get() != null) {
-                throw exceptionAtomicReference.get();
-            }
+            HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+            getHealthConnectManager()
+                    .deleteRecords(request, Executors.newSingleThreadExecutor(), receiver);
+            receiver.verifyNoExceptionOrThrow();
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
@@ -969,66 +683,25 @@ public class TestUtils {
 
     public static void verifyDeleteRecords(List<RecordIdFilter> request)
             throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        verifyDeleteRecords(request, context);
+        verifyDeleteRecords(request, ApplicationProvider.getApplicationContext());
     }
 
     public static void verifyDeleteRecords(List<RecordIdFilter> request, Context context)
             throws InterruptedException {
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-        assertThat(service).isNotNull();
-        service.deleteRecords(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException healthConnectException) {
-                        exceptionAtomicReference.set(healthConnectException);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
-        }
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager(context)
+                .deleteRecords(request, Executors.newSingleThreadExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
     }
 
     public static void verifyDeleteRecords(
             Class<? extends Record> recordType, TimeInstantRangeFilter timeRangeFilter)
             throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(service).isNotNull();
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-
-        service.deleteRecords(
-                recordType,
-                timeRangeFilter,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException healthConnectException) {
-                        exceptionAtomicReference.set(healthConnectException);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
-        }
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager()
+                .deleteRecords(
+                        recordType, timeRangeFilter, Executors.newSingleThreadExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
     }
 
     public static void deleteRecords(List<Record> records) throws InterruptedException {
@@ -1046,35 +719,10 @@ public class TestUtils {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
         try {
-            Context context = ApplicationProvider.getApplicationContext();
-            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-            assertThat(service).isNotNull();
-
-            CountDownLatch latch = new CountDownLatch(1);
-            AtomicReference<List<AccessLog>> response = new AtomicReference<>();
-            AtomicReference<HealthConnectException> exceptionAtomicReference =
-                    new AtomicReference<>();
-            service.queryAccessLogs(
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<List<AccessLog>, HealthConnectException>() {
-
-                        @Override
-                        public void onResult(List<AccessLog> result) {
-                            response.set(result);
-                            latch.countDown();
-                        }
-
-                        @Override
-                        public void onError(@NonNull HealthConnectException exception) {
-                            exceptionAtomicReference.set(exception);
-                            latch.countDown();
-                        }
-                    });
-            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-            if (exceptionAtomicReference.get() != null) {
-                throw exceptionAtomicReference.get();
-            }
-            return response.get();
+            HealthConnectReceiver<List<AccessLog>> receiver = new HealthConnectReceiver<>();
+            getHealthConnectManager()
+                    .queryAccessLogs(Executors.newSingleThreadExecutor(), receiver);
+            return receiver.getResponse();
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
@@ -1084,39 +732,15 @@ public class TestUtils {
             throws InterruptedException, NullPointerException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-        AtomicReference<Map<Class<? extends Record>, RecordTypeInfoResponse>> response =
-                new AtomicReference<>();
-        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
         try {
-            Context context = ApplicationProvider.getApplicationContext();
-            CountDownLatch latch = new CountDownLatch(1);
-            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-            assertThat(service).isNotNull();
-            service.queryAllRecordTypesInfo(
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<
-                            Map<Class<? extends Record>, RecordTypeInfoResponse>,
-                            HealthConnectException>() {
-                        @Override
-                        public void onResult(
-                                Map<Class<? extends Record>, RecordTypeInfoResponse> result) {
-                            response.set(result);
-                            latch.countDown();
-                        }
-
-                        @Override
-                        public void onError(HealthConnectException exception) {
-                            responseException.set(exception);
-                            latch.countDown();
-                        }
-                    });
-            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-            assertThat(responseException.get()).isNull();
-            assertThat(response).isNotNull();
+            HealthConnectReceiver<Map<Class<? extends Record>, RecordTypeInfoResponse>> receiver =
+                    new HealthConnectReceiver<>();
+            getHealthConnectManager()
+                    .queryAllRecordTypesInfo(Executors.newSingleThreadExecutor(), receiver);
+            return receiver.getResponse();
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
-        return response.get();
     }
 
     public static List<LocalDate> getActivityDates(List<Class<? extends Record>> recordTypes)
@@ -1124,36 +748,10 @@ public class TestUtils {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
         try {
-            Context context = ApplicationProvider.getApplicationContext();
-            HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-            CountDownLatch latch = new CountDownLatch(1);
-            assertThat(service).isNotNull();
-            AtomicReference<List<LocalDate>> response = new AtomicReference<>();
-            AtomicReference<HealthConnectException> exceptionAtomicReference =
-                    new AtomicReference<>();
-            service.queryActivityDates(
-                    recordTypes,
-                    Executors.newSingleThreadExecutor(),
-                    new OutcomeReceiver<>() {
-                        @Override
-                        public void onResult(List<LocalDate> result) {
-                            response.set(result);
-                            latch.countDown();
-                        }
-
-                        @Override
-                        public void onError(HealthConnectException exception) {
-                            exceptionAtomicReference.set(exception);
-                            latch.countDown();
-                        }
-                    });
-
-            assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-            if (exceptionAtomicReference.get() != null) {
-                throw exceptionAtomicReference.get();
-            }
-
-            return response.get();
+            HealthConnectReceiver<List<LocalDate>> receiver = new HealthConnectReceiver<>();
+            getHealthConnectManager()
+                    .queryActivityDates(recordTypes, Executors.newSingleThreadExecutor(), receiver);
+            return receiver.getResponse();
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
@@ -1186,97 +784,28 @@ public class TestUtils {
     }
 
     public static void startMigration() throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<MigrationException> migrationExceptionAtomicReference =
-                new AtomicReference<>();
-        service.startMigration(
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<Void, MigrationException>() {
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(MigrationException exception) {
-                        migrationExceptionAtomicReference.set(exception);
-                        Log.e(TAG, exception.getMessage());
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (migrationExceptionAtomicReference.get() != null) {
-            throw migrationExceptionAtomicReference.get();
-        }
+        MigrationReceiver receiver = new MigrationReceiver();
+        getHealthConnectManager().startMigration(Executors.newSingleThreadExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
     }
 
     public static void finishMigration() throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<MigrationException> migrationExceptionAtomicReference =
-                new AtomicReference<>();
-        service.finishMigration(
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<Void, MigrationException>() {
-
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(MigrationException exception) {
-                        migrationExceptionAtomicReference.set(exception);
-                        Log.e(TAG, exception.getMessage());
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (migrationExceptionAtomicReference.get() != null) {
-            throw migrationExceptionAtomicReference.get();
-        }
+        MigrationReceiver receiver = new MigrationReceiver();
+        getHealthConnectManager().finishMigration(Executors.newSingleThreadExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
     }
 
     public static void insertMinDataMigrationSdkExtensionVersion(int version)
             throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        CountDownLatch latch = new CountDownLatch(1);
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<MigrationException> migrationExceptionAtomicReference =
-                new AtomicReference<>();
-        service.insertMinDataMigrationSdkExtensionVersion(
-                version,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(MigrationException exception) {
-                        migrationExceptionAtomicReference.set(exception);
-                        Log.e(TAG, exception.getMessage());
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (migrationExceptionAtomicReference.get() != null) {
-            throw migrationExceptionAtomicReference.get();
-        }
+        MigrationReceiver receiver = new MigrationReceiver();
+        getHealthConnectManager()
+                .insertMinDataMigrationSdkExtensionVersion(
+                        version, Executors.newSingleThreadExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
     }
 
     public static void deleteAllStagedRemoteData() {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
+        HealthConnectManager service = getHealthConnectManager();
         runWithShellPermissionIdentity(
                 () ->
                         // TODO(b/241542162): Avoid reflection once TestApi can be called from CTS
@@ -1285,63 +814,17 @@ public class TestUtils {
     }
 
     public static int getHealthConnectDataMigrationState() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-        AtomicReference<HealthConnectDataState> returnedHealthConnectDataState =
-                new AtomicReference<>();
-        AtomicReference<HealthConnectException> responseException = new AtomicReference<>();
-        service.getHealthConnectDataState(
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(HealthConnectDataState healthConnectDataState) {
-                        returnedHealthConnectDataState.set(healthConnectDataState);
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(@NonNull HealthConnectException exception) {
-                        responseException.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-        if (responseException.get() != null) {
-            throw responseException.get();
-        }
-        return returnedHealthConnectDataState.get().getDataMigrationState();
+        HealthConnectReceiver<HealthConnectDataState> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager()
+                .getHealthConnectDataState(Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse().getDataMigrationState();
     }
 
     public static List<AppInfo> getApplicationInfo() throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        CountDownLatch latch = new CountDownLatch(1);
-        assertThat(service).isNotNull();
-        AtomicReference<List<AppInfo>> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-        service.getContributorApplicationsInfo(
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(ApplicationInfoResponse result) {
-                        response.set(result.getApplicationInfoList());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        exceptionAtomicReference.set(exception);
-                        Log.e(TAG, exception.getMessage());
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
-        }
-        return response.get();
+        HealthConnectReceiver<ApplicationInfoResponse> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager()
+                .getContributorApplicationsInfo(Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse().getApplicationInfoList();
     }
 
     public static <T extends Record> T getRecordById(List<T> list, String id) {
@@ -1643,69 +1126,25 @@ public class TestUtils {
 
     public static FetchDataOriginsPriorityOrderResponse fetchDataOriginsPriorityOrder(
             int dataCategory) throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<FetchDataOriginsPriorityOrderResponse> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-        service.fetchDataOriginsPriorityOrder(
-                dataCategory,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(FetchDataOriginsPriorityOrderResponse result) {
-                        response.set(result);
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        exceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
-        }
-        return response.get();
+        HealthConnectReceiver<FetchDataOriginsPriorityOrderResponse> receiver =
+                new HealthConnectReceiver<>();
+        getHealthConnectManager()
+                .fetchDataOriginsPriorityOrder(
+                        dataCategory, Executors.newSingleThreadExecutor(), receiver);
+        return receiver.getResponse();
     }
 
     public static void updateDataOriginPriorityOrder(UpdateDataOriginPriorityOrderRequest request)
             throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<HealthConnectException> exceptionAtomicReference = new AtomicReference<>();
-        service.updateDataOriginPriorityOrder(
-                request,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException healthConnectException) {
-                        exceptionAtomicReference.set(healthConnectException);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isEqualTo(true);
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
-        }
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager()
+                .updateDataOriginPriorityOrder(
+                        request, Executors.newSingleThreadExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
     }
 
     public static void grantPermission(String pkgName, String permission) {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
+        HealthConnectManager service = getHealthConnectManager();
         runWithShellPermissionIdentity(
                 () ->
                         service.getClass()
@@ -1715,9 +1154,7 @@ public class TestUtils {
     }
 
     public static void revokePermission(String pkgName, String permission) {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
+        HealthConnectManager service = getHealthConnectManager();
         runWithShellPermissionIdentity(
                 () ->
                         service.getClass()
@@ -1838,6 +1275,16 @@ public class TestUtils {
         return output.toString();
     }
 
+    @NonNull
+    private static HealthConnectManager getHealthConnectManager() {
+        return getHealthConnectManager(ApplicationProvider.getApplicationContext());
+    }
+
+    @NonNull
+    private static HealthConnectManager getHealthConnectManager(Context context) {
+        return requireNonNull(context.getSystemService(HealthConnectManager.class));
+    }
+
     public static final class RecordAndIdentifier {
         private final int mId;
         private final Record mRecordClass;
@@ -1900,4 +1347,41 @@ public class TestUtils {
             return mRecordIds;
         }
     }
+
+    private static class TestReceiver<T, E extends RuntimeException>
+            implements OutcomeReceiver<T, E> {
+        private final CountDownLatch mLatch = new CountDownLatch(1);
+        private final AtomicReference<T> mResponse = new AtomicReference<>();
+        private final AtomicReference<E> mException = new AtomicReference<>();
+
+        public T getResponse() throws InterruptedException {
+            verifyNoExceptionOrThrow();
+            return mResponse.get();
+        }
+
+        public void verifyNoExceptionOrThrow() throws InterruptedException {
+            assertThat(mLatch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
+            if (mException.get() != null) {
+                throw mException.get();
+            }
+        }
+
+        @Override
+        public void onResult(T result) {
+            mResponse.set(result);
+            mLatch.countDown();
+        }
+
+        @Override
+        public void onError(@NonNull E error) {
+            mException.set(error);
+            Log.e(TAG, error.getMessage());
+            mLatch.countDown();
+        }
+    }
+
+    private static final class HealthConnectReceiver<T>
+            extends TestReceiver<T, HealthConnectException> {}
+
+    private static final class MigrationReceiver extends TestReceiver<Void, MigrationException> {}
 }

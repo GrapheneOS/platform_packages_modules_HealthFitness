@@ -19,6 +19,7 @@ package android.healthconnect.cts;
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.cts.utils.TestUtils.isHardwareAutomotive;
+import static android.healthconnect.cts.utils.TestUtils.readRecordsWithPagination;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -36,6 +37,7 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
+import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
@@ -48,7 +50,6 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.utils.TestUtils;
 import android.platform.test.annotations.AppModeFull;
-import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
@@ -246,12 +247,12 @@ public class StepsRecordTest {
         List<Record> recordList =
                 Arrays.asList(getStepsRecord_minusDays(1), getStepsRecord_minusDays(2));
         TestUtils.insertRecords(recordList);
-        Pair<List<StepsRecord>, Long> newStepsRecords =
-                TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<StepsRecord> response =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setPageSize(1)
                                 .build());
-        assertThat(newStepsRecords.first.size()).isEqualTo(1);
+        assertThat(response.getRecords()).hasSize(1);
     }
 
     @Test
@@ -313,20 +314,21 @@ public class StepsRecordTest {
         assertThat(requestUsingFilters.isAscending()).isTrue();
         assertThat(requestUsingFilters.getPageSize()).isEqualTo(1);
         assertThat(requestUsingFilters.getTimeRangeFilter()).isNull();
-        Pair<List<StepsRecord>, Long> oldStepsRecord =
-                TestUtils.readRecordsWithPagination(requestUsingFilters);
-        assertThat(oldStepsRecord.first.size()).isEqualTo(1);
+        ReadRecordsResponse<StepsRecord> oldStepsRecord =
+                readRecordsWithPagination(requestUsingFilters);
+        assertThat(oldStepsRecord.getRecords()).hasSize(1);
         ReadRecordsRequestUsingFilters<StepsRecord> requestUsingFiltersNew =
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                         .setPageSize(1)
-                        .setPageToken(oldStepsRecord.second)
+                        .setPageToken(oldStepsRecord.getNextPageToken())
                         .build();
         assertThat(requestUsingFiltersNew.getPageSize()).isEqualTo(1);
-        assertThat(requestUsingFiltersNew.getPageToken()).isEqualTo(oldStepsRecord.second);
+        assertThat(requestUsingFiltersNew.getPageToken())
+                .isEqualTo(oldStepsRecord.getNextPageToken());
         assertThat(requestUsingFiltersNew.getTimeRangeFilter()).isNull();
-        Pair<List<StepsRecord>, Long> newStepsRecords =
-                TestUtils.readRecordsWithPagination(requestUsingFiltersNew);
-        assertThat(newStepsRecords.first.size()).isEqualTo(1);
+        ReadRecordsResponse<StepsRecord> newStepsRecords =
+                readRecordsWithPagination(requestUsingFiltersNew);
+        assertThat(newStepsRecords.getRecords()).hasSize(1);
     }
 
     @Test
@@ -338,22 +340,21 @@ public class StepsRecordTest {
                         getStepsRecord_minusDays(3),
                         getStepsRecord_minusDays(4));
         TestUtils.insertRecords(recordList);
-        Pair<List<StepsRecord>, Long> oldStepsRecord =
-                TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<StepsRecord> page1 =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setPageSize(1)
                                 .setAscending(false)
                                 .build());
-        assertThat(oldStepsRecord.first.size()).isEqualTo(1);
-        Pair<List<StepsRecord>, Long> newStepsRecords =
-                TestUtils.readRecordsWithPagination(
+        assertThat(page1.getRecords()).hasSize(1);
+        ReadRecordsResponse<StepsRecord> page2 =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setPageSize(1)
-                                .setPageToken(oldStepsRecord.second)
+                                .setPageToken(page1.getNextPageToken())
                                 .build());
-        assertThat(newStepsRecords.first.size()).isEqualTo(1);
-        assertThat(newStepsRecords.second).isNotEqualTo(oldStepsRecord.second);
-        assertThat(newStepsRecords.second).isLessThan(oldStepsRecord.second);
+        assertThat(page2.getRecords()).hasSize(1);
+        assertThat(page2.getNextPageToken()).isNotEqualTo(page1.getNextPageToken());
     }
 
     @Test
@@ -361,22 +362,19 @@ public class StepsRecordTest {
         List<Record> recordList =
                 Arrays.asList(TestUtils.getStepsRecord(), TestUtils.getStepsRecord());
         TestUtils.insertRecords(recordList);
-        Pair<List<StepsRecord>, Long> oldStepsRecord =
-                TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<StepsRecord> prevPage =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
-        Pair<List<StepsRecord>, Long> newStepsRecord;
-        while (oldStepsRecord.second != -1) {
-            newStepsRecord =
-                    TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<StepsRecord> nextPage;
+        while (prevPage.getNextPageToken() != -1) {
+            nextPage =
+                    readRecordsWithPagination(
                             new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
-                                    .setPageToken(oldStepsRecord.second)
+                                    .setPageToken(prevPage.getNextPageToken())
                                     .build());
-            if (newStepsRecord.second != -1) {
-                assertThat(newStepsRecord.second).isGreaterThan(oldStepsRecord.second);
-            }
-            oldStepsRecord = newStepsRecord;
+            prevPage = nextPage;
         }
-        assertThat(oldStepsRecord.second).isEqualTo(-1);
+        assertThat(prevPage.getNextPageToken()).isEqualTo(-1);
     }
 
     @Test
@@ -389,21 +387,21 @@ public class StepsRecordTest {
                         getStepsRecord_minusDays(3),
                         getStepsRecord_minusDays(4));
         TestUtils.insertRecords(recordList);
-        Pair<List<StepsRecord>, Long> oldStepsRecord =
-                TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<StepsRecord> oldStepsRecord =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setPageSize(1)
                                 .setAscending(false)
                                 .build());
-        assertThat(oldStepsRecord.first.size()).isEqualTo(1);
+        assertThat(oldStepsRecord.getRecords()).hasSize(1);
         try {
             ReadRecordsRequestUsingFilters<StepsRecord> requestUsingFilters =
                     new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                             .setPageSize(1)
-                            .setPageToken(oldStepsRecord.second)
+                            .setPageToken(oldStepsRecord.getNextPageToken())
                             .setAscending(true)
                             .build();
-            TestUtils.readRecordsWithPagination(requestUsingFilters);
+            readRecordsWithPagination(requestUsingFilters);
             Assert.fail(
                     "IllegalStateException  expected when both page token and page order is set");
         } catch (Exception exception) {
@@ -421,21 +419,21 @@ public class StepsRecordTest {
                         getStepsRecord_minusDays(3),
                         getStepsRecord_minusDays(4));
         TestUtils.insertRecords(recordList);
-        Pair<List<StepsRecord>, Long> oldStepsRecord =
-                TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<StepsRecord> oldStepsRecord =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setPageSize(1)
                                 .setAscending(false)
                                 .build());
-        assertThat(oldStepsRecord.first.size()).isEqualTo(1);
+        assertThat(oldStepsRecord.getRecords()).hasSize(1);
         try {
             ReadRecordsRequestUsingFilters<StepsRecord> requestUsingFilters =
                     new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                             .setPageSize(1)
-                            .setPageToken(oldStepsRecord.second)
+                            .setPageToken(oldStepsRecord.getNextPageToken())
                             .setAscending(false)
                             .build();
-            TestUtils.readRecordsWithPagination(requestUsingFilters);
+            readRecordsWithPagination(requestUsingFilters);
             Assert.fail(
                     "IllegalStateException  expected when both page token and page order is set");
         } catch (Exception exception) {
@@ -528,33 +526,33 @@ public class StepsRecordTest {
                                 ZoneOffset.MIN,
                                 70));
         TestUtils.insertRecords(testRecord);
-        Pair<List<StepsRecord>, Long> newStepsRecords =
-                TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<StepsRecord> newStepsRecords =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setTimeRangeFilter(filter)
                                 .setPageSize(1)
                                 .build());
-        assertThat(newStepsRecords.first.size()).isEqualTo(1);
-        assertThat(newStepsRecords.first.get(0).getCount()).isEqualTo(70);
+        assertThat(newStepsRecords.getRecords()).hasSize(1);
+        assertThat(newStepsRecords.getRecords().get(0).getCount()).isEqualTo(70);
         newStepsRecords =
-                TestUtils.readRecordsWithPagination(
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setTimeRangeFilter(filter)
                                 .setPageSize(1)
-                                .setPageToken(newStepsRecords.second)
+                                .setPageToken(newStepsRecords.getNextPageToken())
                                 .build());
-        assertThat(newStepsRecords.first.size()).isEqualTo(1);
-        assertThat(newStepsRecords.first.get(0).getCount()).isEqualTo(50);
+        assertThat(newStepsRecords.getRecords()).hasSize(1);
+        assertThat(newStepsRecords.getRecords().get(0).getCount()).isEqualTo(50);
         newStepsRecords =
-                TestUtils.readRecordsWithPagination(
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setTimeRangeFilter(filter)
                                 .setPageSize(1)
-                                .setPageToken(newStepsRecords.second)
+                                .setPageToken(newStepsRecords.getNextPageToken())
                                 .build());
-        assertThat(newStepsRecords.first.size()).isEqualTo(1);
-        assertThat(newStepsRecords.first.get(0).getCount()).isEqualTo(20);
-        assertThat(newStepsRecords.second).isEqualTo(-1);
+        assertThat(newStepsRecords.getRecords()).hasSize(1);
+        assertThat(newStepsRecords.getRecords().get(0).getCount()).isEqualTo(20);
+        assertThat(newStepsRecords.getNextPageToken()).isEqualTo(-1);
     }
 
     @Test
