@@ -20,6 +20,7 @@
 
     <permission
         android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
+        android:label="@string/background_read_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
