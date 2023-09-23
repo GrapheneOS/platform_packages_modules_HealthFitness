@@ -18,15 +18,12 @@
 
 package com.android.healthconnect.controller.tests.shared
 
-import android.content.Context
-import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory.ACTIVITY
 import android.health.connect.HealthDataCategory.BODY_MEASUREMENTS
 import android.health.connect.HealthDataCategory.CYCLE_TRACKING
 import android.health.connect.HealthDataCategory.NUTRITION
 import android.health.connect.HealthDataCategory.SLEEP
 import android.health.connect.HealthDataCategory.VITALS
-import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -35,31 +32,32 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
-import com.android.healthconnect.controller.tests.permissions.HealthPermissionConstants
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import javax.inject.Inject
 import org.junit.Assert.assertThrows
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
+@HiltAndroidTest
 class HealthDataCategoryExtensionsTest {
 
-    private lateinit var context: Context
+    @get:Rule val hiltRule = HiltAndroidRule(this)
+
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     @Before
     fun setup() {
-        context = InstrumentationRegistry.getInstrumentation().context
+        hiltRule.inject()
     }
 
     @Test
     fun allHealthPermission_haveParentCategory() {
-        val allPermissions = HealthConnectManager.getHealthPermissions(context)
+        val allPermissions = healthPermissionReader.getHealthPermissions()
         for (permissionString in allPermissions) {
-            if (permissionString == HealthPermissionConstants.READ_HEALTH_DATA_IN_BACKGROUND) {
-                // TODO(b/299897306): Remove this exception case when we have strings properly
-                //  defined for the Background Read permission
-                continue
-            }
-
             val healthPermission = HealthPermission.fromPermissionString(permissionString)
             assertThat(
                     HEALTH_DATA_CATEGORIES.any {

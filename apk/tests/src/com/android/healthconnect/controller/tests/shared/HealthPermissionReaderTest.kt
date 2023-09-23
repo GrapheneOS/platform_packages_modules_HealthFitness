@@ -6,31 +6,39 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.UNSUPPORTED_TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.di.FakeFeatureUtils
 import com.android.healthconnect.controller.utils.FeatureUtils
-import com.android.healthconnect.controller.utils.FeaturesModule
 import com.google.common.truth.Truth.assertThat
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.testing.UninstallModules
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
+@HiltAndroidTest
 @OptIn(ExperimentalCoroutinesApi::class)
 class HealthPermissionReaderTest {
+
+    @get:Rule val hiltRule = HiltAndroidRule(this)
+
+    @Inject lateinit var permissionReader: HealthPermissionReader
+    @Inject lateinit var fakeFeatureUtils: FeatureUtils
     private lateinit var context: Context
 
     @Before
     fun setup() {
+        hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
     }
 
     @Test
     fun getDeclaredPermissions_hidesSessionTypesIfDisabled() = runTest {
-        val permissionReader = HealthPermissionReader(context, disabledSessionFeature)
+        (fakeFeatureUtils as FakeFeatureUtils).setIsSessionTypesEnabled(false)
 
         assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
             .doesNotContain(
@@ -49,7 +57,7 @@ class HealthPermissionReaderTest {
 
     @Test
     fun getDeclaredPermissions_hidesExerciseRouteIfDisabled() = runTest {
-        val permissionReader = HealthPermissionReader(context, disabledRouteFeature)
+        (fakeFeatureUtils as FakeFeatureUtils).setIsExerciseRoutesEnabled(false)
 
         assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
             .doesNotContain(listOf(HealthPermissions.WRITE_EXERCISE_ROUTE.toHealthPermission()))
@@ -65,8 +73,22 @@ class HealthPermissionReaderTest {
     }
 
     @Test
+    fun getDeclaredPermissions_filtersOutBackgroundReadPermission() = runTest {
+        (fakeFeatureUtils as FakeFeatureUtils).setIsBackgroundReadEnabled(true)
+
+        assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
+            .containsExactly(
+                HealthPermissions.WRITE_EXERCISE_ROUTE.toHealthPermission(),
+                HealthPermissions.READ_EXERCISE.toHealthPermission(),
+                HealthPermissions.WRITE_EXERCISE.toHealthPermission(),
+                HealthPermissions.WRITE_SLEEP.toHealthPermission(),
+                HealthPermissions.READ_SLEEP.toHealthPermission(),
+                HealthPermissions.READ_ACTIVE_CALORIES_BURNED.toHealthPermission(),
+                HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED.toHealthPermission())
+    }
+
+    @Test
     fun getDeclaredPermissions_returnsAllPermissions() = runTest {
-        val permissionReader = HealthPermissionReader(context, enabledFeatures)
 
         assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
             .doesNotContain(listOf(HealthPermissions.WRITE_EXERCISE_ROUTE.toHealthPermission()))
@@ -82,72 +104,27 @@ class HealthPermissionReaderTest {
                 HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED.toHealthPermission())
     }
 
-    companion object {
-        private val disabledSessionFeature =
-            object : FeatureUtils {
-                override fun isSessionTypesEnabled(): Boolean {
-                    return false
-                }
+    @Test
+    fun isRationalIntentDeclared_withIntent_returnsTrue() {
+        assertThat(permissionReader.isRationalIntentDeclared(TEST_APP_PACKAGE_NAME)).isTrue()
+    }
 
-                override fun isExerciseRouteEnabled(): Boolean {
-                    return true
-                }
+    @Test
+    fun isRationalIntentDeclared_noIntent_returnsTrue() {
+        assertThat(permissionReader.isRationalIntentDeclared(UNSUPPORTED_TEST_APP_PACKAGE_NAME))
+            .isFalse()
+    }
 
-                override fun isEntryPointsEnabled(): Boolean {
-                    return true
-                }
+    @Test
+    fun getAppsWithHealthPermissions_returnsSupportedApps() = runTest {
+        assertThat(permissionReader.getAppsWithHealthPermissions())
+            .containsAtLeast(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
+    }
 
-                override fun isNewAppPriorityEnabled(): Boolean {
-                    return false
-                }
-
-                override fun isNewInformationArchitectureEnabled(): Boolean {
-                    return false
-                }
-            }
-        private val disabledRouteFeature =
-            object : FeatureUtils {
-                override fun isSessionTypesEnabled(): Boolean {
-                    return true
-                }
-
-                override fun isExerciseRouteEnabled(): Boolean {
-                    return false
-                }
-
-                override fun isEntryPointsEnabled(): Boolean {
-                    return true
-                }
-
-                override fun isNewAppPriorityEnabled(): Boolean {
-                    return true
-                }
-
-                override fun isNewInformationArchitectureEnabled(): Boolean {
-                    return false
-                }
-            }
-        private val enabledFeatures =
-            object : FeatureUtils {
-                override fun isSessionTypesEnabled(): Boolean {
-                    return true
-                }
-
-                override fun isExerciseRouteEnabled(): Boolean {
-                    return true
-                }
-                override fun isEntryPointsEnabled(): Boolean {
-                    return true
-                }
-
-                override fun isNewAppPriorityEnabled(): Boolean {
-                    return true
-                }
-
-                override fun isNewInformationArchitectureEnabled(): Boolean {
-                    return false
-                }
-            }
+    @Test
+    fun getAppsWithHealthPermissions_doesNotReturnUnsupportedApps() = runTest {
+        assertThat(permissionReader.getAppsWithHealthPermissions())
+            .doesNotContain(UNSUPPORTED_TEST_APP_PACKAGE_NAME)
     }
 
     private fun String.toHealthPermission(): HealthPermission {

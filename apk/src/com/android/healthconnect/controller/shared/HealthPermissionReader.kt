@@ -25,6 +25,7 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.utils.FeatureUtils
+import com.google.common.annotations.VisibleForTesting
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -54,6 +55,12 @@ constructor(
             listOf(
                 HealthPermissions.WRITE_EXERCISE_ROUTE,
             )
+
+        private val backgroundReadPermissions =
+            listOf(
+                // TODO (b/300270771) use the permission reference.
+                "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND",
+            )
     }
 
     suspend fun getAppsWithHealthPermissions(): List<String> {
@@ -78,7 +85,7 @@ constructor(
             val healthPermissions = getHealthPermissions()
             appInfo.requestedPermissions
                 ?.filter { it in healthPermissions }
-                ?.map { permission -> parsePermission(permission) }
+                ?.mapNotNull { permission -> parsePermission(permission) }
                 .orEmpty()
         } catch (e: NameNotFoundException) {
             emptyList()
@@ -102,18 +109,27 @@ constructor(
         return intent
     }
 
-    private fun parsePermission(permission: String): HealthPermission {
-        return HealthPermission.fromPermissionString(permission)
+    private fun parsePermission(permission: String): HealthPermission? {
+        return try {
+            HealthPermission.fromPermissionString(permission)
+        } catch (e: IllegalArgumentException) {
+            null
+        }
     }
 
-    private fun getHealthPermissions(): List<String> {
+    @VisibleForTesting
+    fun getHealthPermissions(): List<String> {
         val permissions =
             context.packageManager
                 .queryPermissionsByGroup("android.permission-group.HEALTH", 0)
                 .map { permissionInfo -> permissionInfo.name }
-        return permissions.filterNot { permission ->
-            shouldHideExerciseRoute(permission) || shouldHideSessionTypes(permission)
-        }
+        return permissions.filterNot { permission -> shouldHidePermission(permission) }
+    }
+
+    private fun shouldHidePermission(permission: String): Boolean {
+        return shouldHideExerciseRoute(permission) ||
+            shouldHideSessionTypes(permission) ||
+            shouldHideBackgroundReadPermission(permission)
     }
 
     private fun shouldHideExerciseRoute(permission: String): Boolean {
@@ -122,6 +138,10 @@ constructor(
 
     private fun shouldHideSessionTypes(permission: String): Boolean {
         return permission in sessionTypePermissions && !featureUtils.isSessionTypesEnabled()
+    }
+
+    private fun shouldHideBackgroundReadPermission(permission: String): Boolean {
+        return permission in backgroundReadPermissions && !featureUtils.isBackgroundReadEnabled()
     }
 
     private fun getRationaleIntent(packageName: String? = null): Intent {
