@@ -268,6 +268,8 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Żadna aplikacja nie będzie już mogła korzystać z danych z Health Connect ani dodawać nowych danych. Istniejące dane nie zostaną usunięte.\n\nNie wpływa na to na inne uprawnienia, które może mieć ta aplikacja, np. dotyczące lokalizacji, aparatu czy mikrofonu."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Usuń wszystko"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Zarządzaj aplikacją"</string>
+    <!-- no translation found for see_app_data (3951030076195119476) -->
+    <skip />
     <string name="delete_app_data" msgid="6890357774873859952">"Usuń dane aplikacji"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Nieaktywne aplikacje"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Te aplikacje nie mają już dostępu, ale ich dane wciąż są przechowywane w Health Connect"</string>
@@ -783,4 +785,23 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Brak źródeł aplikacji"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kiedy nadasz aplikacji uprawnienia do zapisywania danych <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, źródła pojawią się tutaj."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Jak działają priorytety źródeł"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"Dodaj aplikację"</string>
+    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <skip />
+    <!-- no translation found for no_data_footer (4777297654713673100) -->
+    <skip />
+    <!-- no translation found for date_picker_day (3076687507968958991) -->
+    <skip />
+    <!-- no translation found for date_picker_week (1038805538316142229) -->
+    <skip />
+    <!-- no translation found for date_picker_month (3560692391260778560) -->
+    <skip />
+    <!-- no translation found for this_week_header (1280121922548216973) -->
+    <skip />
+    <!-- no translation found for last_week_header (5194448963146719382) -->
+    <skip />
+    <!-- no translation found for this_month_header (2452395268894677189) -->
+    <skip />
+    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <skip />
 </resources>

@@ -268,6 +268,8 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Egyik alkalmazása sem férhet majd hozzá a Health Connect-adatokhoz, és nem is adhat majd hozzá új adatokat a Health Connecthez. A művelettel nem törlődnek a meglévő adatok.\n\nEz nem befolyásolja azokat az egyéb (például a helyadatokhoz, a kamerához vagy a mikrofonhoz tartozó) engedélyeket, amelyekkel ez az alkalmazás esetleg rendelkezik."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Összes eltávolítása"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Alkalmazás kezelése"</string>
+    <!-- no translation found for see_app_data (3951030076195119476) -->
+    <skip />
     <string name="delete_app_data" msgid="6890357774873859952">"Alkalmazásadatok törlése"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Inaktív alkalmazások"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Ezeknek az alkalmazásoknak már nincs hozzáférésük, de továbbra is tárolnak adatokat a Health Connect szolgáltatásban."</string>
@@ -783,4 +785,23 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Nincsenek alkalmazásforrások"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Miután alkalmazásengedélyeket adott a(z) <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> kategóriájú adatok írására, itt jelennek meg a források."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Hogyan működnek a források és a priorizálás?"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"Alkalmazás hozzáadása"</string>
+    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <skip />
+    <!-- no translation found for no_data_footer (4777297654713673100) -->
+    <skip />
+    <!-- no translation found for date_picker_day (3076687507968958991) -->
+    <skip />
+    <!-- no translation found for date_picker_week (1038805538316142229) -->
+    <skip />
+    <!-- no translation found for date_picker_month (3560692391260778560) -->
+    <skip />
+    <!-- no translation found for this_week_header (1280121922548216973) -->
+    <skip />
+    <!-- no translation found for last_week_header (5194448963146719382) -->
+    <skip />
+    <!-- no translation found for this_month_header (2452395268894677189) -->
+    <skip />
+    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <skip />
 </resources>
