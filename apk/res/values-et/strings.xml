@@ -671,9 +671,9 @@
     <string name="help_and_feedback" msgid="4772169905005369871">"Abi ja tagasiside"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Kui te installitud rakendust ei näe, ei pruugi see veel Health Connectiga ühilduda"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Asjad, mida proovida"</string>
-    <string name="check_for_updates" msgid="3841090978657783101">"Otsi värskendusi"</string>
+    <string name="check_for_updates" msgid="3841090978657783101">"Otsige värskendusi"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Veenduge, et installitud rakendused oleksid ajakohased"</string>
-    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Kuva kõik ühilduvad rakendused"</string>
+    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Vaadake kõiki ühilduvaid rakendusi"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Otsige rakendusi Google Playst"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Tagasiside saatmine"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Öelge meile, milliseid tervise- ja treeningurakendusi soovite Health Connectiga kasutada"</string>

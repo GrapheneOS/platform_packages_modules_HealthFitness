@@ -674,7 +674,7 @@
     <string name="check_for_updates" msgid="3841090978657783101">"Comprobar si hay actualizaciones"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Asegúrate de que las apps instaladas estén actualizadas"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Ver todas las apps compatibles"</string>
-    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Buscar apps en Google Play"</string>
+    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Busca apps en Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Enviar comentarios"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Dinos qué apps de salud y fitness quieres usar con Health Connect"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
