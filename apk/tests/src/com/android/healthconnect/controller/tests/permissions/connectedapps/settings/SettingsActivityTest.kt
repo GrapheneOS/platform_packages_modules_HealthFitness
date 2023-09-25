@@ -120,7 +120,7 @@ class SettingsActivityTest {
     }
 
     @Test
-    fun settingsActivityFinishes_ifNoRationaleIntent_andNoPermissions() {
+    fun settingsActivityFinishes_whenNoPackageName_ifNoRationaleIntent_andNoPermissions() {
         val intent = Intent(context, SettingsActivity::class.java)
         val bundle = Bundle()
         bundle.putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
@@ -140,7 +140,7 @@ class SettingsActivityTest {
     }
 
     @Test
-    fun settingsActivity_navigatesToFragment_ifRationaleIntentDeclared() {
+    fun settingsActivity_navigatesToAppPermissionsFragment_ifRationaleIntentDeclared() {
         val intent = Intent(context, SettingsActivity::class.java)
         val bundle = Bundle()
         bundle.putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
@@ -159,7 +159,7 @@ class SettingsActivityTest {
     }
 
     @Test
-    fun settingsActivity_navigatesToFragment_ifNoRationaleIntentDeclared_andGrantedPermission() {
+    fun settingsActivity_navigatesToAppPermissionsFragment_ifNoRationaleIntentDeclared_andGrantedPermission() {
         val intent = Intent(context, SettingsActivity::class.java)
         val bundle = Bundle()
         bundle.putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
@@ -174,6 +174,16 @@ class SettingsActivityTest {
 
         ActivityScenario.launch<SettingsActivity>(intent).use { scenario ->
             onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    fun settingsActivity_navigatesToManagePermissionsFragment_ifNoPackageName() {
+        val intent = Intent(context, SettingsActivity::class.java)
+
+        ActivityScenario.launch<SettingsActivity>(intent).use { scenario ->
+            onView(withText("Apps with this permission can read and write your" +
+                    " health and fitness data.")).check(matches(isDisplayed()))
         }
     }
 
