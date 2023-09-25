@@ -16,8 +16,8 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static com.android.server.healthconnect.TestUtils.TEST_USER;
 import static com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper.STEPS_TABLE_NAME;
+import static com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -31,6 +31,7 @@ import com.android.server.healthconnect.HealthConnectUserContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,14 +53,20 @@ public class RecordHelperTest {
     public void setup() throws Exception {
         HealthConnectUserContext context = testRule.getUserContext();
         mTransactionManager = TransactionManager.getInstance(context);
-        mTransactionTestUtils = new TransactionTestUtils(context, TEST_USER);
+        mTransactionTestUtils = new TransactionTestUtils(context, mTransactionManager);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+    }
+
+    @After
+    public void tearDown() {
+        DatabaseHelper.clearAllData(mTransactionManager);
+        TransactionManager.clearInstance();
     }
 
     @Test
     public void getInternalRecords_insertThenRead_recordReturned() {
         RecordHelper<?> helper = new StepsRecordHelper();
-        String uid = mTransactionTestUtils.insertStepsRecord(4000, 5000, 100);
+        String uid = mTransactionTestUtils.insertRecords(createStepsRecord(4000, 5000, 100)).get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
             List<RecordInternal<?>> records = helper.getInternalRecords(cursor, 1);

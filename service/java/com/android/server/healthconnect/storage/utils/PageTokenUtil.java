@@ -25,6 +25,8 @@ import static com.android.internal.util.Preconditions.checkArgument;
  *
  * @hide
  */
+// TODO(b/296846629): Move this util to under framework/, so we can use this on client side, and use
+//  this in {@link ReadRecordsRequestUsingFilters}
 public final class PageTokenUtil {
     static final long MAX_ALLOWED_TIME_MILLIS = (1L << 44) - 1;
     static final long MAX_ALLOWED_OFFSET = (1 << 18) - 1;

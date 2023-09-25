@@ -141,6 +141,10 @@ public class ReadRecordsRequestParcel implements Parcelable {
         return mPageToken;
     }
 
+    /**
+     * {@code mPageToken} should contain the correct value for {@code mAscending}. Only use this
+     * directly if {@code pageToken} is not set.
+     */
     public boolean isAscending() {
         return mAscending;
     }
