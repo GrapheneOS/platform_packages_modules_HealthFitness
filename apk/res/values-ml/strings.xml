@@ -268,6 +268,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"നിങ്ങളുടെ ആപ്പുകൾക്കൊന്നും Health Connect ആക്‌സസ് ചെയ്യാനോ അതിലേക്ക് പുതിയ ഡാറ്റ ചേർക്കാനോ കഴിയില്ല. ഇത് നിലവിലുള്ള ഡാറ്റയൊന്നും ഇല്ലാതാക്കുന്നില്ല.\n\nലൊക്കേഷൻ, ക്യാമറ, മൈക്രോഫോൺ എന്നിവ പോലെ ഈ ആപ്പിന് ഉണ്ടായിരിക്കാവുന്ന മറ്റ് അനുമതികളെയൊന്നും ഇത് ബാധിക്കുന്നില്ല."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"എല്ലാം നീക്കം ചെയ്യൂ"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"ആപ്പ് മാനേജ് ചെയ്യുക"</string>
+    <string name="see_app_data" msgid="3951030076195119476">"ആപ്പ് ഡാറ്റ കാണുക"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"ആപ്പ് ഡാറ്റ ഇല്ലാതാക്കുക"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"നിഷ്‌ക്രിയമായ ആപ്പുകൾ"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"ഈ ആപ്പുകൾക്ക് ഇനി ആക്‌സസ് ഇല്ല, എന്നാലും Health Connect-ൽ ഇപ്പോഴും ഡാറ്റ സംഭരിച്ചിട്ടുണ്ട്"</string>
@@ -783,4 +784,15 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"ആപ്പ് ഉറവിടങ്ങൾ ഒന്നുമില്ല"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ഡാറ്റ റൈറ്റ് ചെയ്യുന്നതിന് നിങ്ങൾ ആപ്പ് അനുമതികൾ നൽകിയാൽ, ഉറവിടങ്ങൾ ഇവിടെ കാണിക്കുന്നതാണ്."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ഉറവിടങ്ങളും മുൻഗണനകളും എങ്ങനെ പ്രവർത്തിക്കുന്നു"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"ആപ്പ് ചേർക്കുക"</string>
+    <string name="app_data_title" msgid="6499967982291000837">"ആപ്പ് ഡാറ്റ"</string>
+    <!-- no translation found for no_data_footer (4777297654713673100) -->
+    <skip />
+    <string name="date_picker_day" msgid="3076687507968958991">"ദിവസം"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"ആഴ്‌ച"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"മാസം"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"ഈ ആഴ്‌ച"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"കഴിഞ്ഞ ആഴ്‌ച"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"ഈ മാസം"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"കഴിഞ്ഞ മാസം"</string>
 </resources>

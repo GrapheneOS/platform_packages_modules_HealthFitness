@@ -268,6 +268,8 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"ไม่มีแอปที่เข้าถึงหรือเพิ่มข้อมูลใหม่ใน Health Connect ได้ การดำเนินการนี้จะไม่ลบข้อมูลที่มีอยู่\n\nอีกทั้งไม่มีผลกับสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงตำแหน่ง กล้อง หรือไมโครโฟน"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"นำออกทั้งหมด"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"จัดการแอป"</string>
+    <!-- no translation found for see_app_data (3951030076195119476) -->
+    <skip />
     <string name="delete_app_data" msgid="6890357774873859952">"ลบข้อมูลแอป"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"แอปที่ไม่ได้ใช้งาน"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"แอปเหล่านี้ไม่มีสิทธิ์เข้าถึงอีกต่อไป แต่จะยังคงมีข้อมูลจัดเก็บอยู่ใน Health Connect"</string>
@@ -783,4 +785,23 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"ไม่มีแหล่งที่มาของแอป"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"เมื่อคุณให้สิทธิ์แก่แอปในการเขียนข้อมูล <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> แล้ว แหล่งที่มาจะแสดงขึ้นที่นี่"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"แหล่งที่มาและลำดับความสำคัญทำงานอย่างไร"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"เพิ่มแอป"</string>
+    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <skip />
+    <!-- no translation found for no_data_footer (4777297654713673100) -->
+    <skip />
+    <!-- no translation found for date_picker_day (3076687507968958991) -->
+    <skip />
+    <!-- no translation found for date_picker_week (1038805538316142229) -->
+    <skip />
+    <!-- no translation found for date_picker_month (3560692391260778560) -->
+    <skip />
+    <!-- no translation found for this_week_header (1280121922548216973) -->
+    <skip />
+    <!-- no translation found for last_week_header (5194448963146719382) -->
+    <skip />
+    <!-- no translation found for this_month_header (2452395268894677189) -->
+    <skip />
+    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <skip />
 </resources>

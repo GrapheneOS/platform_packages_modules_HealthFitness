@@ -268,6 +268,8 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"உங்களிடமுள்ள எந்தவொரு ஆப்ஸாலும் Health Connectடில் புதிய தரவைச் சேர்க்க/அணுக முடியாது. ஏற்கெனவே உள்ள தரவு எதையும் இது நீக்காது.\n\nஇது இந்த ஆப்ஸுக்கு இருக்கக்கூடிய பிற அனுமதிகளை (இருப்பிடம், கேமரா, மைக்ரோஃபோன் போன்றவை) பாதிக்காது."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"அனைத்தையும் அகற்று"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"ஆப்ஸை நிர்வகித்தல்"</string>
+    <!-- no translation found for see_app_data (3951030076195119476) -->
+    <skip />
     <string name="delete_app_data" msgid="6890357774873859952">"ஆப்ஸ் தரவை நீக்கு"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"செயலில் இல்லாத ஆப்ஸ்"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"இந்த ஆப்ஸுக்கு இனி அணுகல் இருக்காது என்றாலும் அவை சேமித்த தரவு Health Connectடில் அப்படியே இருக்கும்"</string>
@@ -673,7 +675,7 @@
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"கெல்வின்"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"உதவி &amp; கருத்து"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"நிறுவப்பட்ட ஓர் ஆப்ஸ் காட்டப்படவில்லை எனில், அது Health Connect ஆப்ஸுடன் இன்னும் இணங்காமல் இருக்கக்கூடும்"</string>
-    <string name="things_to_try" msgid="8200374691546152703">"பயன்படுத்திப் பார்க்க வேண்டியவை"</string>
+    <string name="things_to_try" msgid="8200374691546152703">"இவற்றைப் பாருங்கள்"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"புதுப்பிப்புகளைக் காட்டு"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"நிறுவப்பட்டுள்ள ஆப்ஸ் சமீபத்தியவையாக உள்ளதை உறுதிசெய்யும்"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"இணக்கமான ஆப்ஸ் அனைத்தையும் காட்டு"</string>
@@ -783,4 +785,23 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"ஆப்ஸ் தகவல்கள் எதுவுமில்லை"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> தரவை எழுதுவதற்கு நீங்கள் ஆப்ஸ் அனுமதிகள் வழங்கியதும் அவை இங்கே காட்டப்படும்."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"மூலங்களும் முன்னுரிமையும் செயல்படும் விதம்"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"ஆப்ஸைச் சேர்த்தல்"</string>
+    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <skip />
+    <!-- no translation found for no_data_footer (4777297654713673100) -->
+    <skip />
+    <!-- no translation found for date_picker_day (3076687507968958991) -->
+    <skip />
+    <!-- no translation found for date_picker_week (1038805538316142229) -->
+    <skip />
+    <!-- no translation found for date_picker_month (3560692391260778560) -->
+    <skip />
+    <!-- no translation found for this_week_header (1280121922548216973) -->
+    <skip />
+    <!-- no translation found for last_week_header (5194448963146719382) -->
+    <skip />
+    <!-- no translation found for this_month_header (2452395268894677189) -->
+    <skip />
+    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <skip />
 </resources>
