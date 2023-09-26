@@ -73,14 +73,16 @@ class SettingsActivity : Hilt_SettingsActivity() {
             openOnboardingActivity.launch(1)
         }
 
-        val packageName = intent.getStringExtra(
-            EXTRA_PACKAGE_NAME)!!
+        if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
+            val packageName = intent.getStringExtra(
+                EXTRA_PACKAGE_NAME)!!
 
-        viewModel.shouldNavigateToFragment.observe(this) { shouldNavigate ->
-            maybeNavigateToFragment(shouldNavigate)
+            viewModel.shouldNavigateToFragment.observe(this) { shouldNavigate ->
+                maybeNavigateToFragment(shouldNavigate)
+            }
+
+            viewModel.loadShouldNavigateToFragment(packageName)
         }
-
-        viewModel.loadShouldNavigateToFragment(packageName)
 
     }
 

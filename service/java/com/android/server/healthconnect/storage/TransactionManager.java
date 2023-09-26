@@ -17,13 +17,15 @@
 package com.android.server.healthconnect.storage;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
-import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
+import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 import static android.health.connect.Constants.PARENT_KEY;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
+
+import static com.google.common.collect.Iterables.getOnlyElement;
 
 import android.annotation.NonNull;
 import android.content.Context;
@@ -51,6 +53,8 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
+
+import com.google.common.annotations.VisibleForTesting;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -253,53 +257,43 @@ public final class TransactionManager {
      * @param request a read request.
      * @return List of records read {@link RecordInternal} from table based on ids.
      */
-    public List<RecordInternal<?>> readRecords(@NonNull ReadTransactionRequest request)
+    public List<RecordInternal<?>> readRecordsByIds(@NonNull ReadTransactionRequest request)
             throws SQLiteException {
         List<RecordInternal<?>> recordInternals = new ArrayList<>();
-        request.getReadRequests()
-                .forEach(
-                        (readTableRequest -> {
-                            if (readTableRequest.getRecordHelper().isRecordOperationsEnabled()) {
-                                try (Cursor cursor = read(readTableRequest)) {
-                                    Objects.requireNonNull(readTableRequest.getRecordHelper());
-                                    List<RecordInternal<?>> internalRecords =
-                                            readTableRequest
-                                                    .getRecordHelper()
-                                                    .getInternalRecords(cursor, DEFAULT_PAGE_SIZE);
-
-                                    populateInternalRecordsWithExtraData(
-                                            internalRecords, readTableRequest);
-
-                                    recordInternals.addAll(internalRecords);
-                                }
-                            }
-                        }));
+        for (ReadTableRequest readTableRequest : request.getReadRequests()) {
+            RecordHelper<?> helper = readTableRequest.getRecordHelper();
+            Objects.requireNonNull(helper);
+            if (helper.isRecordOperationsEnabled()) {
+                try (Cursor cursor = read(readTableRequest)) {
+                    List<RecordInternal<?>> internalRecords =
+                            helper.getInternalRecords(cursor, MAXIMUM_PAGE_SIZE);
+                    populateInternalRecordsWithExtraData(internalRecords, readTableRequest);
+                    recordInternals.addAll(internalRecords);
+                }
+            }
+        }
         return recordInternals;
     }
 
     /**
      * Reads the records {@link RecordInternal} stored in the HealthConnect database and returns the
-     * max row_id as next page token.
+     * start time of the next record as part of next page token.
      *
-     * @param request a read request.
-     * @return Pair containing records list read {@link RecordInternal} from the table and a next
-     *     page token for pagination
+     * @param request a read request. Only one {@link ReadTableRequest} is expected in the {@link
+     *     ReadTransactionRequest request}.
+     * @return Pair containing records list read {@link RecordInternal} from the table and a
+     *     timestamp for pagination
      */
-    public Pair<List<RecordInternal<?>>, Long> readRecordsAndGetNextToken(
+    public Pair<List<RecordInternal<?>>, Long> readRecordsAndNextRecordStartTime(
             @NonNull ReadTransactionRequest request) throws SQLiteException {
-        // throw an exception if read requested is not for a single record type
-        // i.e. size of read table request is not equal to 1.
-        if (request.getReadRequests().size() != 1) {
-            throw new IllegalArgumentException("Read requested is not for a single record type");
-        }
+        ReadTableRequest readTableRequest = getOnlyElement(request.getReadRequests());
         List<RecordInternal<?>> recordInternalList;
-        long token = DEFAULT_LONG;
-        ReadTableRequest readTableRequest = request.getReadRequests().get(0);
+        long timestamp = DEFAULT_LONG;
         RecordHelper<?> helper = readTableRequest.getRecordHelper();
         Objects.requireNonNull(helper);
         if (!helper.isRecordOperationsEnabled()) {
             recordInternalList = new ArrayList<>(0);
-            return Pair.create(recordInternalList, token);
+            return Pair.create(recordInternalList, timestamp);
         }
 
         try (Cursor cursor = read(readTableRequest)) {
@@ -308,10 +302,10 @@ public final class TransactionManager {
 
             populateInternalRecordsWithExtraData(recordInternalList, readTableRequest);
             if (cursor.moveToNext()) {
-                token = getCursorLong(cursor, startTimeColumnName);
+                timestamp = getCursorLong(cursor, startTimeColumnName);
             }
         }
-        return Pair.create(recordInternalList, token);
+        return Pair.create(recordInternalList, timestamp);
     }
 
     /**
@@ -754,6 +748,12 @@ public final class TransactionManager {
         Objects.requireNonNull(sTransactionManager);
 
         return sTransactionManager;
+    }
+
+    /** Clear the static instance held in memory, so unit tests can perform correctly. */
+    @VisibleForTesting
+    public static void clearInstance() {
+        sTransactionManager = null;
     }
 
     @NonNull

@@ -61,12 +61,8 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         mTimeRangeFilter = timeRangeFilter;
         mDataOrigins = dataOrigins;
         mPageSize = pageSize;
-        if (pageToken != DEFAULT_LONG) {
-            mAscending = pageToken % 2 == 0 ? true : false;
-        } else {
-            mAscending = ascending;
-        }
         mPageToken = pageToken;
+        mAscending = ascending;
     }
 
     /** Returns time range b/w which the read operation is to be performed */

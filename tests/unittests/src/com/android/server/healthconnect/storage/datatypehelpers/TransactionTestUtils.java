@@ -23,15 +23,16 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.health.connect.datatypes.BloodPressureRecord;
+import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
-import android.os.UserHandle;
 
-import com.android.server.healthconnect.HealthConnectUserContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 
-import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
@@ -40,10 +41,9 @@ public final class TransactionTestUtils {
     private final TransactionManager mTransactionManager;
     private final Context mContext;
 
-    public TransactionTestUtils(Context context, UserHandle userHandle) {
+    public TransactionTestUtils(Context context, TransactionManager transactionManager) {
         mContext = context;
-        mTransactionManager =
-                TransactionManager.getInstance(new HealthConnectUserContext(context, userHandle));
+        mTransactionManager = transactionManager;
     }
 
     public void insertApp(String packageName) {
@@ -55,22 +55,33 @@ public final class TransactionTestUtils {
         assertThat(AppInfoHelper.getInstance().getAppInfoId(packageName)).isEqualTo(1);
     }
 
-    public String insertStepsRecord(long startTimeMillis, long endTimeMillis, int stepsCount) {
-        StepsRecordInternal recordInternal =
-                (StepsRecordInternal)
-                        new StepsRecordInternal()
-                                .setCount(stepsCount)
-                                .setStartTime(startTimeMillis)
-                                .setEndTime(endTimeMillis);
+    public List<String> insertRecords(RecordInternal<?>... records) {
+        return insertRecords(List.of(records));
+    }
 
-        List<String> uids =
-                mTransactionManager.insertAll(
-                        new UpsertTransactionRequest(
-                                "package.name",
-                                ImmutableList.of(recordInternal),
-                                mContext,
-                                true,
-                                false));
-        return uids.get(0);
+    public List<String> insertRecords(List<RecordInternal<?>> records) {
+        return mTransactionManager.insertAll(
+                new UpsertTransactionRequest(
+                        "package.name",
+                        records,
+                        mContext,
+                        /* isInsertRequest= */ true,
+                        /* skipPackageNameAndLogs= */ false));
+    }
+
+    public static RecordInternal<StepsRecord> createStepsRecord(
+            long startTimeMillis, long endTimeMillis, int stepsCount) {
+        return new StepsRecordInternal()
+                .setCount(stepsCount)
+                .setStartTime(startTimeMillis)
+                .setEndTime(endTimeMillis);
+    }
+
+    public static RecordInternal<BloodPressureRecord> createBloodPressureRecord(
+            long timeMillis, double systolic, double diastolic) {
+        return new BloodPressureRecordInternal()
+                .setSystolic(systolic)
+                .setDiastolic(diastolic)
+                .setTime(timeMillis);
     }
 }
