@@ -41,14 +41,6 @@ class HealthPermissionReaderTest {
         (fakeFeatureUtils as FakeFeatureUtils).setIsSessionTypesEnabled(false)
 
         assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
-            .doesNotContain(
-                listOf(
-                    HealthPermissions.READ_EXERCISE.toHealthPermission(),
-                    HealthPermissions.WRITE_EXERCISE.toHealthPermission(),
-                    HealthPermissions.WRITE_SLEEP.toHealthPermission(),
-                    HealthPermissions.READ_SLEEP.toHealthPermission(),
-                ))
-        assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
             .containsExactly(
                 HealthPermissions.WRITE_EXERCISE_ROUTE.toHealthPermission(),
                 HealthPermissions.READ_ACTIVE_CALORIES_BURNED.toHealthPermission(),
@@ -58,9 +50,6 @@ class HealthPermissionReaderTest {
     @Test
     fun getDeclaredPermissions_hidesExerciseRouteIfDisabled() = runTest {
         (fakeFeatureUtils as FakeFeatureUtils).setIsExerciseRoutesEnabled(false)
-
-        assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
-            .doesNotContain(listOf(HealthPermissions.WRITE_EXERCISE_ROUTE.toHealthPermission()))
 
         assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
             .containsExactly(
@@ -88,11 +77,7 @@ class HealthPermissionReaderTest {
     }
 
     @Test
-    fun getDeclaredPermissions_returnsAllPermissions() = runTest {
-
-        assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
-            .doesNotContain(listOf(HealthPermissions.WRITE_EXERCISE_ROUTE.toHealthPermission()))
-
+    fun getDeclaredPermissions_returnsAllPermissions_exceptReadAllRoutes() = runTest {
         assertThat(permissionReader.getDeclaredPermissions(TEST_APP_PACKAGE_NAME))
             .containsExactly(
                 HealthPermissions.WRITE_EXERCISE_ROUTE.toHealthPermission(),

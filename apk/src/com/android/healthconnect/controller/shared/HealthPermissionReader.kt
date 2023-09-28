@@ -128,12 +128,19 @@ constructor(
 
     private fun shouldHidePermission(permission: String): Boolean {
         return shouldHideExerciseRoute(permission) ||
+            shouldHideExerciseRouteAll(permission) ||
             shouldHideSessionTypes(permission) ||
             shouldHideBackgroundReadPermission(permission)
     }
 
     private fun shouldHideExerciseRoute(permission: String): Boolean {
         return permission in exerciseRoutePermissions && !featureUtils.isExerciseRouteEnabled()
+    }
+
+    private fun shouldHideExerciseRouteAll(permission: String): Boolean {
+        // TODO(b/300270771): use HealthPermissions.READ_EXERCISE_ROUTES_ALL when the API becomes
+        // unhidden.
+        return permission == "android.permission.health.READ_EXERCISE_ROUTES_ALL"
     }
 
     private fun shouldHideSessionTypes(permission: String): Boolean {

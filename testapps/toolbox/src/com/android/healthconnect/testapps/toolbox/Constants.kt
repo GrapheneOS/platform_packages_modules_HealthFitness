@@ -82,6 +82,7 @@ object Constants {
             "android.permission.health.READ_DISTANCE",
             "android.permission.health.READ_ELEVATION_GAINED",
             "android.permission.health.READ_EXERCISE",
+            "android.permission.health.READ_EXERCISE_ROUTES_ALL",
             "android.permission.health.READ_FLOORS_CLIMBED",
             "android.permission.health.READ_HEART_RATE",
             "android.permission.health.READ_HEART_RATE_VARIABILITY",
