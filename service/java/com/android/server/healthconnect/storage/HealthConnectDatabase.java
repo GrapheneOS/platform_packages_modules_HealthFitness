@@ -55,12 +55,16 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     public static final int DB_VERSION_GENERATED_LOCAL_TIME = 10;
     private static final String TAG = "HealthConnectDatabase";
     private static final int DATABASE_VERSION = 10;
-    private static final String DATABASE_NAME = "healthconnect.db";
+    private static final String DEFAULT_DATABASE_NAME = "healthconnect.db";
     @NonNull private final Collection<RecordHelper<?>> mRecordHelpers;
     private final Context mContext;
 
     public HealthConnectDatabase(@NonNull Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this(context, DEFAULT_DATABASE_NAME);
+    }
+
+    public HealthConnectDatabase(@NonNull Context context, String databaseName) {
+        super(context, databaseName, null, DATABASE_VERSION);
         mRecordHelpers = RecordHelperProvider.getInstance().getRecordHelpers().values();
         mContext = context;
     }
@@ -98,7 +102,7 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     }
 
     public File getDatabasePath() {
-        return mContext.getDatabasePath(DATABASE_NAME);
+        return mContext.getDatabasePath(getDatabaseName());
     }
 
     private void dropAllTables(SQLiteDatabase db) {
@@ -145,9 +149,5 @@ public class HealthConnectDatabase extends SQLiteOpenHelper {
     public static void createTable(SQLiteDatabase db, CreateTableRequest createTableRequest) {
         db.execSQL(createTableRequest.getCreateCommand());
         createTableRequest.getCreateIndexStatements().forEach(db::execSQL);
-    }
-
-    public static String getName() {
-        return DATABASE_NAME;
     }
 }
