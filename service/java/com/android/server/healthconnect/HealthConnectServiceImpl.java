@@ -1779,7 +1779,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         checkParamsNonNull(stageRemoteDataRequest, userHandle);
 
         mContext.enforceCallingPermission(HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION, null);
-        mBackupRestore.getAllDataForBackup(stageRemoteDataRequest, userHandle);
+        final long token = Binder.clearCallingIdentity();
+        try {
+            mBackupRestore.getAllDataForBackup(stageRemoteDataRequest, userHandle);
+        } finally {
+            Binder.restoreCallingIdentity(token);
+        }
     }
 
     /**

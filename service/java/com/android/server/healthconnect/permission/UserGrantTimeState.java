@@ -20,6 +20,8 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.util.ArrayMap;
 
+import com.android.internal.annotations.VisibleForTesting;
+
 import java.time.Instant;
 import java.util.Map;
 
@@ -41,14 +43,15 @@ public class UserGrantTimeState {
     /** The version of the grant times state. */
     private final int mVersion;
 
-    UserGrantTimeState(@NonNull int version) {
+    UserGrantTimeState(int version) {
         this(new ArrayMap<>(), new ArrayMap<>(), version);
     }
 
-    UserGrantTimeState(
+    @VisibleForTesting
+    public UserGrantTimeState(
             @NonNull Map<String, Instant> packagePermissions,
             @NonNull Map<String, Instant> sharedUserPermissions,
-            @NonNull int version) {
+            int version) {
         mPackagePermissions = packagePermissions;
         mSharedUserPermissions = sharedUserPermissions;
         mVersion = version;
