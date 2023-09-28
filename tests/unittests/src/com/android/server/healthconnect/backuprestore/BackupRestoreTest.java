@@ -40,6 +40,7 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.INTER
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_DONE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING;
+import static com.android.server.healthconnect.backuprestore.BackupRestore.STAGED_DATABASE_NAME;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -75,6 +76,7 @@ import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
+import com.android.server.healthconnect.permission.UserGrantTimeState;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
@@ -109,7 +111,7 @@ public class BackupRestoreTest {
                     .mockStatic(PreferenceHelper.class)
                     .mockStatic(TransactionManager.class)
                     .mockStatic(BackupRestore.BackupRestoreJobService.class)
-                    .mockStatic(GrantTimeXmlHelper.class)
+                    .spyStatic(GrantTimeXmlHelper.class)
                     .setStrictness(Strictness.LENIENT)
                     .build();
 
@@ -152,27 +154,17 @@ public class BackupRestoreTest {
 
     @Test
     public void testGetAllBackupFileNames_forDeviceToDevice_returnsAllFileNames() throws Exception {
-        File dbFile = createAndGetNonEmptyFile(mMockDataDirectory, DATABASE_NAME);
-        File grantTimeFile = createAndGetNonEmptyFile(mMockDataDirectory, GRANT_TIME_FILE_NAME);
-        when(mTransactionManager.getDatabasePath()).thenReturn(dbFile);
-        when(mFirstGrantTimeManager.getFile(mUserHandle)).thenReturn(grantTimeFile);
-
         BackupFileNamesSet backupFileNamesSet = mBackupRestore.getAllBackupFileNames(true);
 
         assertThat(backupFileNamesSet).isNotNull();
         assertThat(backupFileNamesSet.getFileNames()).hasSize(2);
-        assertThat(backupFileNamesSet.getFileNames()).contains(DATABASE_NAME);
+        assertThat(backupFileNamesSet.getFileNames()).contains(STAGED_DATABASE_NAME);
         assertThat(backupFileNamesSet.getFileNames()).contains(GRANT_TIME_FILE_NAME);
     }
 
     @Test
     public void testGetAllBackupFileNames_forNonDeviceToDevice_returnsSmallFileNames()
             throws Exception {
-        File dbFile = createAndGetNonEmptyFile(mMockDataDirectory, DATABASE_NAME);
-        File grantTimeFile = createAndGetNonEmptyFile(mMockDataDirectory, GRANT_TIME_FILE_NAME);
-        when(mTransactionManager.getDatabasePath()).thenReturn(dbFile);
-        when(mFirstGrantTimeManager.getFile(mUserHandle)).thenReturn(grantTimeFile);
-
         BackupFileNamesSet backupFileNamesSet = mBackupRestore.getAllBackupFileNames(false);
 
         assertThat(backupFileNamesSet).isNotNull();
@@ -182,29 +174,30 @@ public class BackupRestoreTest {
 
     @Test
     public void testGetAllBackupData_forDeviceToDevice_copiesAllData() throws Exception {
-        File dbFileToBackup = createAndGetEmptyFile(mMockDataDirectory, DATABASE_NAME);
-        File grantTimeFileToBackup =
-                createAndGetEmptyFile(mMockDataDirectory, GRANT_TIME_FILE_NAME);
-        File dbFileBacked = createAndGetEmptyFile(mMockBackedDataDirectory, DATABASE_NAME);
+        File dbFileToBackup = createAndGetNonEmptyFile(mMockDataDirectory, DATABASE_NAME);
+        File dbFileBacked = createAndGetEmptyFile(mMockBackedDataDirectory, STAGED_DATABASE_NAME);
         File grantTimeFileBacked =
                 createAndGetEmptyFile(mMockBackedDataDirectory, GRANT_TIME_FILE_NAME);
 
         when(mTransactionManager.getDatabasePath()).thenReturn(dbFileToBackup);
-        when(mFirstGrantTimeManager.getFile(mUserHandle)).thenReturn(grantTimeFileToBackup);
+        UserGrantTimeState userGrantTimeState =
+                new UserGrantTimeState(Map.of("package", Instant.now()), Map.of(), 1);
+        when(mFirstGrantTimeManager.createBackupState(mUserHandle)).thenReturn(userGrantTimeState);
 
         Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
         pfdsByFileName.put(
                 dbFileBacked.getName(),
-                ParcelFileDescriptor.open(dbFileBacked, ParcelFileDescriptor.MODE_READ_ONLY));
+                ParcelFileDescriptor.open(dbFileBacked, ParcelFileDescriptor.MODE_READ_WRITE));
         pfdsByFileName.put(
                 grantTimeFileBacked.getName(),
                 ParcelFileDescriptor.open(
-                        grantTimeFileBacked, ParcelFileDescriptor.MODE_READ_ONLY));
+                        grantTimeFileBacked, ParcelFileDescriptor.MODE_READ_WRITE));
 
         mBackupRestore.getAllDataForBackup(new StageRemoteDataRequest(pfdsByFileName), mUserHandle);
 
         assertThat(dbFileBacked.length()).isEqualTo(dbFileToBackup.length());
-        assertThat(grantTimeFileBacked.length()).isEqualTo(dbFileToBackup.length());
+        assertThat(GrantTimeXmlHelper.parseGrantTime(grantTimeFileBacked).toString())
+                .isEqualTo(userGrantTimeState.toString());
     }
 
     @Test
