@@ -214,6 +214,7 @@ public final class DeriveBasalCaloriesBurnedHelper {
         return (370 + 21.6 * (massInGms / GMS_IN_KG)) * KCAL_TO_CAL;
     }
 
+    // TODO(b/302521219): Restructure this derivation logic
     private double derivedBasalCaloriesBurnedFromProfile(
             long intervalStartTime, long intervalEndTime) {
         double caloriesFromProfile = 0;
@@ -233,8 +234,8 @@ public final class DeriveBasalCaloriesBurnedHelper {
             double height = DEFAULT_HEIGHT_IN_METERS;
             double weight = DEFAULT_WEIGHT_IN_GMS;
 
-            long heightTime = Integer.MAX_VALUE;
-            long weightTime = Integer.MAX_VALUE;
+            long heightTime = Long.MAX_VALUE;
+            long weightTime = Long.MAX_VALUE;
             while (hasHeight || hasWeight) {
                 if (hasHeight) {
                     heightTime = StorageUtils.getCursorLong(heightCursor, mTimeColumnName);
@@ -281,7 +282,12 @@ public final class DeriveBasalCaloriesBurnedHelper {
             if (lastTimeUsed < intervalEndTime) {
                 caloriesFromProfile +=
                         getCaloriesFromHeightAndWeight(
-                                height, weight, lastTimeUsed, intervalEndTime);
+                                height,
+                                weight,
+                                // Snap to startTime in case the last-used record is still before
+                                // the startTime of the interval
+                                Math.max(intervalStartTime, lastTimeUsed),
+                                intervalEndTime);
             }
         }
 
