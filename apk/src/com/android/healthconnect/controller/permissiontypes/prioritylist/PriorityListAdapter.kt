@@ -116,7 +116,7 @@ class PriorityListAdapter(
             appPositionView = itemView.findViewById(R.id.app_position)
             appNameView = itemView.findViewById(R.id.app_name)
             appIconView = itemView.findViewById(R.id.app_icon)
-            dragIconView = itemView.findViewById(R.id.drag_icon)
+            dragIconView = itemView.findViewById(R.id.action_icon)
             this.onItemDragStartedListener = onItemDragStartedListener
         }
 

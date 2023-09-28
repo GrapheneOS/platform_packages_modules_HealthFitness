@@ -76,6 +76,8 @@
 
         <!-- Data sources & priority -->
         <item name="addIcon">@drawable/ic_add</item>
+        <item name="editIcon">@drawable/ic_edit</item>
+        <item name="closeIcon">@drawable/ic_close</item>
 
         <!-- END REGION -->
 

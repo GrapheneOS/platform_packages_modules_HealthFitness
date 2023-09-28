@@ -18,107 +18,169 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.utils.AttributeResolver
 import java.text.NumberFormat
 
 /** RecyclerView adapter that holds the list of app sources for this [HealthDataCategory]. */
 class AppSourcesAdapter(
-        appMetadataList: List<AppMetadata>,
-        private val viewModel: HealthPermissionTypesViewModel,
-        private val category: @HealthDataCategoryInt Int
+    priorityList: List<AppMetadata>,
+    potentialAppSourcesList: List<AppMetadata>,
+    private val dataSourcesViewModel: DataSourcesViewModel,
+    private val category: @HealthDataCategoryInt Int,
+    private val onAppRemovedListener: OnAppRemovedFromPriorityListListener,
+    private val itemMoveAttachCallbackListener: ItemMoveAttachCallbackListener,
 ) : RecyclerView.Adapter<AppSourcesAdapter.AppSourcesItemViewHolder?>() {
 
     private var listener: ItemTouchHelper? = null
-    private var appMetadataList = appMetadataList.toMutableList()
+    private var priorityList = priorityList.toMutableList()
+    private var potentialAppSourcesList = potentialAppSourcesList.toMutableList()
+    private var isEditMode = false
 
     private val POSITION_CHANGED_PAYLOAD = Any()
 
-    override fun onCreateViewHolder(
-            viewGroup: ViewGroup,
-            viewType: Int
-    ): AppSourcesItemViewHolder {
+    interface OnAppRemovedFromPriorityListListener {
+        fun onAppRemovedFromPriorityList()
+    }
+
+    /**
+     * Used for re-attaching the onItemMovedCallback to the RecyclerView when we exit the edit mode
+     */
+    interface ItemMoveAttachCallbackListener {
+        fun attachCallback()
+    }
+
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): AppSourcesItemViewHolder {
         return AppSourcesItemViewHolder(
-                LayoutInflater.from(viewGroup.context)
-                        .inflate(R.layout.widget_app_source_layout, viewGroup, false),
-                listener)
+            LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.widget_app_source_layout, viewGroup, false),
+            listener)
     }
 
     override fun onBindViewHolder(viewHolder: AppSourcesItemViewHolder, position: Int) {
-        viewHolder.bind(position, appMetadataList[position].appName, isOnlyApp = appMetadataList.size == 1)
+        viewHolder.bind(
+            position, priorityList[position].appName, isOnlyApp = priorityList.size == 1)
     }
 
     override fun getItemCount(): Int {
-        return appMetadataList.size
+        return priorityList.size
     }
 
     fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        val movedAppInfo: AppMetadata = appMetadataList.removeAt(fromPosition)
-        appMetadataList.add(
-                if (toPosition > fromPosition + 1) toPosition - 1 else toPosition, movedAppInfo)
+        val movedAppInfo: AppMetadata = priorityList.removeAt(fromPosition)
+        priorityList.add(
+            if (toPosition > fromPosition + 1) toPosition - 1 else toPosition, movedAppInfo)
         notifyItemMoved(fromPosition, toPosition)
         if (toPosition < fromPosition) {
             notifyItemRangeChanged(
-                    toPosition, fromPosition - toPosition + 1, POSITION_CHANGED_PAYLOAD)
+                toPosition, fromPosition - toPosition + 1, POSITION_CHANGED_PAYLOAD)
         } else {
             notifyItemRangeChanged(
-                    fromPosition, toPosition - fromPosition + 1, POSITION_CHANGED_PAYLOAD)
+                fromPosition, toPosition - fromPosition + 1, POSITION_CHANGED_PAYLOAD)
         }
-        viewModel.updatePriorityList(category, appMetadataList.map { it.packageName })
+        dataSourcesViewModel.updatePriorityList(priorityList.map { it.packageName }, category)
         return true
-    }
-
-    fun getPackageNameList(): List<String> {
-        return appMetadataList.stream().map(AppMetadata::packageName).toList()
     }
 
     fun setOnItemDragStartedListener(listener: ItemTouchHelper) {
         this.listener = listener
     }
 
-    fun removeOnItemDragStartedListener() {
+    private fun removeOnItemDragStartedListener() {
         listener = null
     }
 
+    fun toggleEditMode(isEditMode: Boolean) {
+        this.isEditMode = isEditMode
+        if (!isEditMode) {
+            itemMoveAttachCallbackListener.attachCallback()
+        } else {
+            removeOnItemDragStartedListener()
+        }
+        notifyDataSetChanged()
+    }
+
+    fun removeItem(position: Int) {
+        priorityList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     /** Shows a single item of the priority list. */
-    class AppSourcesItemViewHolder(itemView: View, onItemDragStartedListener: ItemTouchHelper?) :
-            RecyclerView.ViewHolder(itemView) {
+    inner class AppSourcesItemViewHolder(
+        itemView: View,
+        private val onItemDragStartedListener: ItemTouchHelper?
+    ) : RecyclerView.ViewHolder(itemView) {
         private val appPositionView: TextView
         private val appNameView: TextView
-        private val dragIconView: View
-
-        private val onItemDragStartedListener: ItemTouchHelper?
+        private val actionView: View
+        private val actionIconBackground: ImageView
 
         init {
             appPositionView = itemView.findViewById(R.id.app_position)
             appNameView = itemView.findViewById(R.id.app_name)
-            dragIconView = itemView.findViewById(R.id.drag_icon)
-            this.onItemDragStartedListener = onItemDragStartedListener
+            actionView = itemView.findViewById(R.id.action_icon)
+            actionIconBackground = itemView.findViewById(R.id.action_icon_background)
         }
 
-        // These items are not clickable and so onTouch does not need to reimplement click
-        // conditions.
-        // Drag&drop in accessibility mode (talk back) is implemented as custom actions.
-        @SuppressLint("ClickableViewAccessibility")
         fun bind(appPosition: Int, appName: String?, isOnlyApp: Boolean) {
             // Adding 1 to position as position starts from 0 but should show to the user starting
             // from 1.
             val positionString: String = NumberFormat.getIntegerInstance().format(appPosition + 1)
             appPositionView.text = positionString
             appNameView.text = appName
+
+            if (isEditMode) {
+                setupItemForEditMode(appPosition)
+            } else {
+                setupItemForDragMode(isOnlyApp)
+            }
+        }
+
+        private fun setupItemForEditMode(appPosition: Int) {
+            actionView.isClickable = true
+            actionView.visibility = View.VISIBLE
+            actionIconBackground.background =
+                AttributeResolver.getDrawable(itemView.context, R.attr.closeIcon)
+            actionView.setOnTouchListener(null)
+            actionView.setOnClickListener {
+
+                val currentPriority = priorityList.toMutableList()
+                val removedItem = currentPriority.removeAt(appPosition)
+                dataSourcesViewModel.setEditedPriorityList(currentPriority)
+                dataSourcesViewModel.updatePriorityList(currentPriority.map { it.packageName }, category)
+
+                potentialAppSourcesList.add(removedItem)
+                dataSourcesViewModel.loadPotentialAppSources(category, false)
+                dataSourcesViewModel.setEditedPotentialAppSources(potentialAppSourcesList)
+
+                removeItem(appPosition)
+                onAppRemovedListener.onAppRemovedFromPriorityList()
+            }
+        }
+
+        // These items are not clickable and so onTouch does not need to reimplement click
+        // conditions.
+        // Drag&drop in accessibility mode (talk back) is implemented as custom actions.
+        @SuppressLint("ClickableViewAccessibility")
+        private fun setupItemForDragMode(isOnlyApp: Boolean) {
             // Hide drag icon if this is the only app in the list
             if (isOnlyApp) {
-                dragIconView.visibility = View.INVISIBLE
-                dragIconView.isClickable = false
+                actionView.visibility = View.INVISIBLE
+                actionView.isClickable = false
             } else {
-                dragIconView.setOnTouchListener { _, event ->
+                actionIconBackground.background =
+                    AttributeResolver.getDrawable(itemView.context, R.attr.priorityItemDragIcon)
+                actionView.setOnClickListener(null)
+                actionView.setOnTouchListener { _, event ->
                     if (event.action == MotionEvent.ACTION_DOWN ||
-                            event.action == MotionEvent.ACTION_UP) {
+                        event.action == MotionEvent.ACTION_UP) {
                         onItemDragStartedListener?.startDrag(this)
                     }
                     false

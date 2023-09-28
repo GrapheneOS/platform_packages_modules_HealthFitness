@@ -14,6 +14,7 @@
 package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -37,8 +38,13 @@ class CardContainerPreference constructor(
     }
 
     private val mAggregationCardInfo: MutableList<AggregationCardInfo> = mutableListOf()
+    private var container: ConstraintLayout? = null
+    private var holder: PreferenceViewHolder? = null
+    private var isLoading = false
+    private var progressBar: ConstraintLayout? = null
 
     fun setAggregationCardInfo(aggregationCardInfoList: List<AggregationCardInfo>) {
+        mAggregationCardInfo.clear()
 
         if (aggregationCardInfoList.isEmpty()) {
             return
@@ -52,33 +58,95 @@ class CardContainerPreference constructor(
         }
     }
 
+    fun setLoading(isLoading: Boolean) {
+        this.isLoading = isLoading
+        if (container == null) {
+            return
+        }
+
+        if (!isLoading) {
+            holder?.let {
+                onBindViewHolder(it) }
+        } else {
+            // Get the current width and height on the card container so we don't flash the screen
+            val width = container?.width
+            val height = container?.height
+
+            container?.removeAllViews()
+            val layoutInflater = LayoutInflater.from(context)
+            progressBar =
+                layoutInflater.inflate(R.layout.widget_loading_preference, null) as ConstraintLayout
+
+            val layoutParams = ConstraintLayout.LayoutParams(
+                width ?: ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                height ?: ConstraintLayout.LayoutParams.WRAP_CONTENT)
+            progressBar?.layoutParams = layoutParams
+            container?.addView(progressBar)
+        }
+    }
+
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        val container = holder.itemView as ConstraintLayout
-        container.removeAllViews()
+        this.holder = holder
+        container = holder.itemView as ConstraintLayout
+
+        if (!isLoading) {
+            setupCards()
+        } else {
+            setLoading(true)
+        }
+
+    }
+
+    private fun setupCards() {
+
+        if (container == null) {
+            return
+        }
 
         if (this.mAggregationCardInfo.isEmpty() || this.mAggregationCardInfo.size > 2) {
             return
         }
 
         if (mAggregationCardInfo.size == 1) {
-            addSingleLargeCard(container, mAggregationCardInfo[0])
-
+            addSingleLargeCard(mAggregationCardInfo[0])
+            container?.removeView(progressBar)
         } else {
-            val (firstCard, secondCard) =
-                addTwoSmallCards(container, mAggregationCardInfo[0],
+
+            // Add both types of cards to the container (they will be invisible)
+            val (firstSmallCard, secondSmallCard) =
+                addTwoSmallCards(mAggregationCardInfo[0],
                     mAggregationCardInfo[1])
 
-            // Redraw cards if the text is too large
-            val firstCardText = firstCard.findViewById<TextView>(R.id.card_title_number)
-            val secondCardText = secondCard.findViewById<TextView>(R.id.card_title_number)
+            val (firstLargeCard, secondLargeCard) =
+                addTwoLargeCards(mAggregationCardInfo[0], mAggregationCardInfo[1])
+
+            val firstCardText = firstSmallCard.findViewById<TextView>(R.id.card_title_number)
+            val secondCardText = secondSmallCard.findViewById<TextView>(R.id.card_title_number)
+            val firstCardDate = firstSmallCard.findViewById<TextView>(R.id.card_date)
+            val secondCardDate = secondSmallCard.findViewById<TextView>(R.id.card_date)
 
             // Check for the ellipsized text after the first card has been drawn
-            firstCard.post {
-                if (isTextEllipsized(firstCardText) || isTextEllipsized(secondCardText)) {
-                    container.removeAllViews()
-                    addTwoLargeCards(container, mAggregationCardInfo[0], mAggregationCardInfo[1])
-
+            // If there is ellipsized text, remove the small cards and set the large cards to
+            // visible
+            // If there is no ellipsized text, remove the large cards and set the small cards to
+            // visible
+            firstSmallCard.post {
+                if (isTextEllipsized(firstCardText) ||
+                    isTextEllipsized(secondCardText) ||
+                    isTextEllipsized(firstCardDate) ||
+                    isTextEllipsized(secondCardDate)) {
+                    container?.removeView(firstSmallCard)
+                    container?.removeView(secondSmallCard)
+                    container?.removeView(progressBar)
+                    firstLargeCard.visibility = View.VISIBLE
+                    secondLargeCard.visibility = View.VISIBLE
+                } else {
+                    container?.removeView(firstLargeCard)
+                    container?.removeView(secondLargeCard)
+                    container?.removeView(progressBar)
+                    firstSmallCard.visibility = View.VISIBLE
+                    secondSmallCard.visibility = View.VISIBLE
                 }
             }
         }
@@ -88,7 +156,7 @@ class CardContainerPreference constructor(
      * Adds a single large [AggregationDataCard] to the provided container.
      * This should be called when there is only one available aggregate.
      */
-    private fun addSingleLargeCard(container: ConstraintLayout, cardInfo: AggregationCardInfo) {
+    private fun addSingleLargeCard(cardInfo: AggregationCardInfo) {
         val singleCard = AggregationDataCard(
                 context,
                 null,
@@ -100,7 +168,7 @@ class CardContainerPreference constructor(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT)
         singleCard.layoutParams = layoutParams
-        container.addView(singleCard)
+        container?.addView(singleCard)
     }
 
     /**
@@ -108,28 +176,27 @@ class CardContainerPreference constructor(
      * This should be called when there are two available aggregates.
      */
     private fun addTwoSmallCards(
-        container: ConstraintLayout,
         firstCardInfo: AggregationCardInfo,
         secondCardInfo: AggregationCardInfo): Pair<AggregationDataCard, AggregationDataCard> {
-
         // Construct the first card
         val firstCard = constructSmallCard(firstCardInfo, addMargin = true)
 
         // Construct the second card
         val secondCard = constructSmallCard(secondCardInfo, addMargin = false)
 
-        container.addView(firstCard)
-        container.addView(secondCard)
+        firstCard.visibility = View.INVISIBLE
+        secondCard.visibility = View.INVISIBLE
+        container?.addView(firstCard)
+        container?.addView(secondCard)
 
-        applySmallCardConstraints(firstCard, secondCard, container)
+        applySmallCardConstraints(firstCard, secondCard)
 
         return Pair(firstCard, secondCard)
     }
 
     private fun applySmallCardConstraints(
         firstCard: AggregationDataCard,
-        secondCard: AggregationDataCard,
-        container: ConstraintLayout
+        secondCard: AggregationDataCard
     ) {
         // Add the constraints between the two cards in their ConstraintLayout container
         val constraintSet = ConstraintSet()
@@ -153,7 +220,6 @@ class CardContainerPreference constructor(
     private fun constructSmallCard(
         cardInfo: AggregationCardInfo,
         addMargin: Boolean) : AggregationDataCard {
-
         val card = AggregationDataCard(
             context,
             null,
@@ -182,25 +248,27 @@ class CardContainerPreference constructor(
      * too large to fit into small cards.
      */
     private fun addTwoLargeCards(
-        container: ConstraintLayout,
         firstCardInfo: AggregationCardInfo,
-        secondCardInfo: AggregationCardInfo) {
-
+        secondCardInfo: AggregationCardInfo): Pair<AggregationDataCard, AggregationDataCard> {
         // Construct the first card
         val firstLongCard = constructLargeCard(firstCardInfo, addMargin = true)
         // Construct the second card
         val secondLongCard = constructLargeCard(secondCardInfo, addMargin = false)
 
-        container.addView(firstLongCard)
-        container.addView(secondLongCard)
+        firstLongCard.visibility = View.GONE
+        secondLongCard.visibility = View.GONE
 
-        applyLargeCardConstraints(firstLongCard, secondLongCard, container)
+        container?.addView(firstLongCard)
+        container?.addView(secondLongCard)
+
+        applyLargeCardConstraints(firstLongCard, secondLongCard)
+
+        return Pair(firstLongCard, secondLongCard)
     }
 
     private fun applyLargeCardConstraints(
         firstCard: AggregationDataCard,
-        secondCard: AggregationDataCard,
-        container: ConstraintLayout
+        secondCard: AggregationDataCard
     ) {
         // Add the constraints between the two cards in their ConstraintLayout container
         val constraintSet = ConstraintSet()
@@ -225,7 +293,6 @@ class CardContainerPreference constructor(
         cardInfo: AggregationCardInfo,
         addMargin: Boolean
     ): AggregationDataCard {
-
         val largeCard = AggregationDataCard(context, null,
             AggregationDataCard.CardTypeEnum.LARGE_CARD, cardInfo, timeSource)
         largeCard.id = View.generateViewId()
@@ -265,5 +332,6 @@ class CardContainerPreference constructor(
 
     override fun isSameItem(preference: Preference): Boolean {
         return preference is CardContainerPreference &&
-                this == preference    }
+                this == preference
+    }
 }

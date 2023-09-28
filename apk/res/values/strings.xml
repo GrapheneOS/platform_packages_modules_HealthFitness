@@ -1096,6 +1096,7 @@
     <string name="data_sources_empty_state_footer" description="Text for the footer of the empty state of the data sources screen [CHAR_LIMIT=NONE]">Once you give app permissions to write <xliff:g example="activity" id="category_name">%1$s</xliff:g> data, sources will show here.</string>
     <string name="data_sources_help_link" description="Text for helper link in the data sources screen taking the user to an article about how sources and prioritization work [CHAR_LIMIT=NONE]">How sources &amp; prioritization work</string>
     <string name="data_sources_add_app" description="Title for preference in the data sources screen used to add an app to the list of data sources [CHAR_LIMIT=NONE]">Add an app</string>
+    <string name="edit_data_sources" description="Menu option for adding or removing apps from the app sources list">Edit app sources</string>
     <!--  endregion -->
 
     <!-- region App data -->

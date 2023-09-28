@@ -28,8 +28,8 @@ import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeR
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 /** Entry point activity for Health Connect. */
 @AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
@@ -78,6 +78,7 @@ class MainActivity : Hilt_MainActivity() {
         if (!navController.popBackStack()) {
             finish()
         }
+
     }
 
     override fun onNavigateUp(): Boolean {
@@ -85,6 +86,7 @@ class MainActivity : Hilt_MainActivity() {
         if (!navController.popBackStack()) {
             finish()
         }
+
         return true
     }
 
