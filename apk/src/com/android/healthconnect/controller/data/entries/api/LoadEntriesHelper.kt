@@ -45,11 +45,11 @@ import javax.inject.Singleton
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 /**
- * Shared use case for loading normal data entries ([LoadDataEntriesUseCase], menstruation entries
+ * Helper methods for loading normal data entries ([LoadDataEntriesUseCase], menstruation entries
  * ([LoadMenstruationDataUseCase]) and aggregations ([LoadDataAggregationsUseCase]).).
  */
 @Singleton
-class LoadEntriesSharedUseCase
+class LoadEntriesHelper
 @Inject
 constructor(
     @ApplicationContext private val context: Context,

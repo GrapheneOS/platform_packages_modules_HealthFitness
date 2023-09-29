@@ -21,38 +21,35 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getDataTypes
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 
+/** Use case to load data entries except for menstruation data types. */
 @Singleton
 class LoadDataEntriesUseCase
 @Inject
 constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-    private val loadEntriesSharedUseCase: LoadEntriesSharedUseCase
-) : BaseUseCase<LoadDataEntriesInput, List<FormattedEntry>>(dispatcher) {
-
-    companion object {
-        private const val TAG = "LoadDataEntriesUseCase"
-    }
+    private val loadEntriesHelper: LoadEntriesHelper
+) : BaseUseCase<LoadDataEntriesInput, List<FormattedEntry>>(dispatcher), ILoadDataEntriesUseCase {
 
     override suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry> {
         val timeFilterRange =
-            loadEntriesSharedUseCase.getTimeFilter(
+            loadEntriesHelper.getTimeFilter(
                 input.displayedStartTime, input.period, endTimeExclusive = true)
         val dataTypes = getDataTypes(input.permissionType)
 
         val entryRecords =
             dataTypes
                 .map { dataType ->
-                    loadEntriesSharedUseCase.readDataType(
-                        dataType, timeFilterRange, input.packageName)
+                    loadEntriesHelper.readDataType(dataType, timeFilterRange, input.packageName)
                 }
                 .flatten()
 
-        return loadEntriesSharedUseCase.maybeAddDateSectionHeaders(
+        return loadEntriesHelper.maybeAddDateSectionHeaders(
             entryRecords, input.period, input.showDataOrigin)
     }
 }
@@ -64,3 +61,9 @@ data class LoadDataEntriesInput(
     val period: DateNavigationPeriod,
     val showDataOrigin: Boolean
 )
+
+interface ILoadDataEntriesUseCase {
+    suspend fun invoke(input: LoadDataEntriesInput): UseCaseResults<List<FormattedEntry>>
+
+    suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry>
+}

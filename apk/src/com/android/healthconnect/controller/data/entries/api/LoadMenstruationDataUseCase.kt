@@ -25,19 +25,22 @@ import com.android.healthconnect.controller.data.entries.datenavigation.DateNavi
 import com.android.healthconnect.controller.dataentries.formatters.MenstruationPeriodFormatter
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import java.time.Duration.ofDays
 import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
-/** View binder for a section title that looks like a PreferenceCategory. */
+/** Use case to load menstruation data entries. */
 class LoadMenstruationDataUseCase
 @Inject
 constructor(
-    private val loadEntriesSharedUseCase: LoadEntriesSharedUseCase,
+    private val loadEntriesHelper: LoadEntriesHelper,
     private val menstruationPeriodFormatter: MenstruationPeriodFormatter,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<LoadMenstruationDataInput, List<FormattedEntry>>(dispatcher) {
+) :
+    BaseUseCase<LoadMenstruationDataInput, List<FormattedEntry>>(dispatcher),
+    ILoadMenstruationDataUseCase {
 
     companion object {
         private val SEARCH_RANGE = ofDays(30)
@@ -62,7 +65,7 @@ constructor(
         showDataOrigin: Boolean
     ): List<FormattedEntry> {
         val exactTimeRange =
-            loadEntriesSharedUseCase.getTimeFilter(selectedDate, period, endTimeExclusive = true)
+            loadEntriesHelper.getTimeFilter(selectedDate, period, endTimeExclusive = true)
         val exactEnd = exactTimeRange.endTime!!
         val exactStart = exactTimeRange.startTime!!
 
@@ -76,7 +79,7 @@ constructor(
                 .build()
 
         val records =
-            loadEntriesSharedUseCase
+            loadEntriesHelper
                 .readDataType(
                     MenstruationPeriodRecord::class.java, extendedSearchTimeRange, packageName)
                 .filter { menstruationPeriodRecord ->
@@ -98,12 +101,12 @@ constructor(
         showDataOrigin: Boolean
     ): List<FormattedEntry> {
         val timeRange =
-            loadEntriesSharedUseCase.getTimeFilter(selectedDate, period, endTimeExclusive = true)
+            loadEntriesHelper.getTimeFilter(selectedDate, period, endTimeExclusive = true)
         val records =
-            loadEntriesSharedUseCase.readDataType(
+            loadEntriesHelper.readDataType(
                 MenstruationFlowRecord::class.java, timeRange, packageName)
 
-        return loadEntriesSharedUseCase.maybeAddDateSectionHeaders(records, period, showDataOrigin)
+        return loadEntriesHelper.maybeAddDateSectionHeaders(records, period, showDataOrigin)
     }
 }
 
@@ -113,3 +116,9 @@ data class LoadMenstruationDataInput(
     val period: DateNavigationPeriod,
     val showDataOrigin: Boolean
 )
+
+interface ILoadMenstruationDataUseCase {
+    suspend fun invoke(input: LoadMenstruationDataInput): UseCaseResults<List<FormattedEntry>>
+
+    suspend fun execute(input: LoadMenstruationDataInput): List<FormattedEntry>
+}

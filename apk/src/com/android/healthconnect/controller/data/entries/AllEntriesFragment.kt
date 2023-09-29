@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.data.entries
 
-import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,26 +22,22 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.appdata.AppDataFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.data.entries.EntriesViewModel.EntriesFragmentState.Empty
 import com.android.healthconnect.controller.data.entries.EntriesViewModel.EntriesFragmentState.Loading
 import com.android.healthconnect.controller.data.entries.EntriesViewModel.EntriesFragmentState.LoadingFailed
 import com.android.healthconnect.controller.data.entries.EntriesViewModel.EntriesFragmentState.With
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationView
-import com.android.healthconnect.controller.deletion.DeletionConstants.FRAGMENT_TAG_DELETION
-import com.android.healthconnect.controller.deletion.DeletionFragment
 import com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
-import com.android.healthconnect.controller.permissions.shared.Constants
+import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
@@ -53,14 +48,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
 import javax.inject.Inject
 
-/** Fragment to show health data entries by date. */
+/** Fragment to show health data entries. */
 @AndroidEntryPoint(Fragment::class)
-class AppEntriesFragment : Hilt_AppEntriesFragment() {
+class AllEntriesFragment : Hilt_AllEntriesFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
-
-    private var packageName: String = ""
-    private var appName: String = ""
+    // TODO(b/291249677): Add logging.
 
     private lateinit var permissionType: HealthPermissionType
     private val entriesViewModel: EntriesViewModel by viewModels()
@@ -78,13 +71,15 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             override fun onItemClicked(id: String, index: Int) {
                 findNavController()
                     .navigate(
-                        R.id.action_appEntriesFragment_to_dataEntryDetailsFragment,
+                        R.id.action_entriesAndAccessFragment_to_dataEntryDetailsFragment,
                         DataEntryDetailsFragment.createBundle(
-                            permissionType, id, showDataOrigin = false))
+                            permissionType, id, showDataOrigin = true))
             }
         }
     }
-    private val aggregationViewBinder by lazy { AggregationViewBinder() }
+    private val aggregationViewBinder by lazy {
+        com.android.healthconnect.controller.data.entries.AggregationViewBinder()
+    }
     private val entryViewBinder by lazy { EntryItemViewBinder() }
     private val sectionTitleViewBinder by lazy { SectionTitleViewBinder() }
     private val sleepSessionViewBinder by lazy {
@@ -102,16 +97,6 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // TODO(b/291249677): Log pagename.
-
-        if (requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
-            requireArguments().getString(EXTRA_PACKAGE_NAME) != null) {
-            packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
-        }
-        if (requireArguments().containsKey(Constants.EXTRA_APP_NAME) &&
-            requireArguments().getString(Constants.EXTRA_APP_NAME) != null) {
-            appName = requireArguments().getString(Constants.EXTRA_APP_NAME)!!
-        }
 
         val view = inflater.inflate(R.layout.fragment_entries, container, false)
         if (requireArguments().containsKey(PERMISSION_TYPE_KEY)) {
@@ -125,12 +110,14 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             when (menuItem.itemId) {
                 R.id.menu_open_units -> {
                     logger.logImpression(ToolbarElement.TOOLBAR_UNITS_BUTTON)
-                    findNavController().navigate(R.id.action_dataEntriesFragment_to_unitsFragment)
+                    findNavController()
+                        .navigate(R.id.action_entriesAndAccessFragment_to_unitFragment)
                     true
                 }
                 else -> false
             }
         }
+        logger.logImpression(ToolbarElement.TOOLBAR_SETTINGS_BUTTON)
 
         dateNavigationView = view.findViewById(R.id.date_navigation_view)
         noDataView = view.findViewById(R.id.no_data_view)
@@ -153,11 +140,6 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                 it.adapter = adapter
                 it.layoutManager = LinearLayoutManager(context, VERTICAL, false)
             }
-
-        if (childFragmentManager.findFragmentByTag(FRAGMENT_TAG_DELETION) == null) {
-            childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
-        }
-
         return view
     }
 
@@ -170,21 +152,11 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                     displayedStartDate: Instant,
                     period: DateNavigationPeriod
                 ) {
-                    entriesViewModel.loadEntries(
-                        permissionType, packageName, displayedStartDate, period)
+                    entriesViewModel.loadEntries(permissionType, displayedStartDate, period)
                 }
             })
 
         header = AppHeaderPreference(requireContext())
-        entriesViewModel.loadAppInfo(packageName)
-
-        entriesViewModel.appInfo.observe(viewLifecycleOwner) { appMetadata ->
-            header.apply {
-                icon = appMetadata.icon
-                title = appMetadata.appName
-            }
-        }
-
         observeEntriesUpdates()
     }
 
@@ -197,16 +169,14 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             val selectedPeriod = entriesViewModel.period.value!!
             dateNavigationView.setDate(date)
             dateNavigationView.setPeriod(selectedPeriod)
-            entriesViewModel.loadEntries(permissionType, packageName, date, selectedPeriod)
+            entriesViewModel.loadEntries(permissionType, date, selectedPeriod)
         } else {
             entriesViewModel.loadEntries(
-                permissionType,
-                packageName,
-                dateNavigationView.getDate(),
-                dateNavigationView.getPeriod())
+                permissionType, dateNavigationView.getDate(), dateNavigationView.getPeriod())
         }
-
-        // TODO(b/291249677): Log pagename.
+        //
+        //        logger.setPageId(pageName)
+        //        logger.logPageImpression()
     }
 
     private fun observeEntriesUpdates() {
