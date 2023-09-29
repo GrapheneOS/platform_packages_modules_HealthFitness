@@ -18,7 +18,6 @@ package android.healthconnect;
 
 import static android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
-
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -52,6 +51,7 @@ public class HealthPermissionsTest {
                     HealthPermissions.READ_DISTANCE,
                     HealthPermissions.READ_ELEVATION_GAINED,
                     HealthPermissions.READ_EXERCISE,
+                    HealthPermissions.READ_EXERCISE_ROUTES_ALL,
                     HealthPermissions.READ_FLOORS_CLIMBED,
                     HealthPermissions.READ_STEPS,
                     HealthPermissions.READ_TOTAL_CALORIES_BURNED,

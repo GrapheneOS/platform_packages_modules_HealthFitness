@@ -175,6 +175,9 @@ public final class BackupRestore {
     @VisibleForTesting
     static final String GRANT_TIME_FILE_NAME = "health-permissions-first-grant-times.xml";
 
+    @VisibleForTesting
+    static final String STAGED_DATABASE_NAME = "healthconnect_staged.db";
+
     private static final String TAG = "HealthConnectBackupRestore";
     private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
     private final FirstGrantTimeManager mFirstGrantTimeManager;
@@ -359,8 +362,7 @@ public final class BackupRestore {
     public BackupFileNamesSet getAllBackupFileNames(boolean forDeviceToDevice) {
         ArraySet<String> backupFileNames = new ArraySet<>();
         if (forDeviceToDevice) {
-            backupFileNames.add(
-                    TransactionManager.getInitialisedInstance().getDatabasePath().getName());
+            backupFileNames.add(STAGED_DATABASE_NAME);
         }
         backupFileNames.add(GRANT_TIME_FILE_NAME);
         return new BackupFileNamesSet(backupFileNames);
@@ -382,7 +384,7 @@ public final class BackupRestore {
     public void deleteAndResetEverything(@NonNull UserHandle userHandle) {
         // Don't delete anything while we are in the process of merging staged data.
         synchronized (mMergingLock) {
-            mStagedDbContext.deleteDatabase(HealthConnectDatabase.getName());
+            mStagedDbContext.deleteDatabase(STAGED_DATABASE_NAME);
             mStagedDatabase = null;
             FilesUtil.deleteDir(getStagedRemoteDataDirectoryForUser(userHandle.getIdentifier()));
         }
@@ -591,7 +593,7 @@ public final class BackupRestore {
         ArrayMap<String, File> backupFilesByFileNames = new ArrayMap<>();
 
         File databasePath = TransactionManager.getInitialisedInstance().getDatabasePath();
-        backupFilesByFileNames.put(databasePath.getName(), databasePath);
+        backupFilesByFileNames.put(STAGED_DATABASE_NAME, databasePath);
 
         File backupDataDir = getBackupDataDirectoryForUser(userHandle.getIdentifier());
         backupDataDir.mkdirs();
