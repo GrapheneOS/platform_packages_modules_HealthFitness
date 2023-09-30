@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/Theme.MaterialComponents.DayNight"
     android:layout_width="match_parent"
@@ -23,8 +23,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:id="@+id/tab_container"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:paddingBottom="@dimen/spacing_small">
@@ -41,14 +43,12 @@
             app:tabSelectedTextColor="?android:attr/textColorPrimary"
             app:tabTextColor="?android:attr/textColorSecondary"
             app:tabBackground="@drawable/tab_background"
-            app:tabTextAppearance="?attr/textAppearanceSubheader"
-            />
-
+            app:tabTextAppearance="?attr/textAppearanceSubheader" />
     </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_container"/>
+</RelativeLayout>

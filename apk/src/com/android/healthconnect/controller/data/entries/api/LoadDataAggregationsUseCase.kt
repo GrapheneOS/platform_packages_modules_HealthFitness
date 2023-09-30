@@ -42,28 +42,32 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Use case to load aggregation data on the Entries screens. */
 @Singleton
 class LoadDataAggregationsUseCase
 @Inject
 constructor(
-    private val loadEntriesSharedUseCase: LoadEntriesSharedUseCase,
+    private val loadEntriesHelper: LoadEntriesHelper,
     private val stepsFormatter: StepsFormatter,
     private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
     private val distanceFormatter: DistanceFormatter,
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) : BaseUseCase<LoadAggregationInput, FormattedAggregation>(dispatcher) {
+) :
+    BaseUseCase<LoadAggregationInput, FormattedAggregation>(dispatcher),
+    ILoadDataAggregationsUseCase {
 
     override suspend fun execute(input: LoadAggregationInput): FormattedAggregation {
         val timeFilterRange =
-            loadEntriesSharedUseCase.getTimeFilter(
+            loadEntriesHelper.getTimeFilter(
                 input.displayedStartTime, input.period, endTimeExclusive = false)
         val showDataOrigin = input.showDataOrigin
         val results =
@@ -168,3 +172,9 @@ data class LoadAggregationInput(
     val period: DateNavigationPeriod,
     val showDataOrigin: Boolean
 )
+
+interface ILoadDataAggregationsUseCase {
+    suspend fun invoke(input: LoadAggregationInput): UseCaseResults<FormattedAggregation>
+
+    suspend fun execute(input: LoadAggregationInput): FormattedAggregation
+}

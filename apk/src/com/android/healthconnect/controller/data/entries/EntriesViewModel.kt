@@ -20,12 +20,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDataUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
-import com.android.healthconnect.controller.data.entries.api.LoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
-import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
-import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataUseCase
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
@@ -39,25 +39,25 @@ import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-/** View model for [AppEntriesFragment] and [EntriesFragment]. */
+/** View model for [AppEntriesFragment] and [AllEntriesFragment]. */
 @HiltViewModel
 class EntriesViewModel
 @Inject
 constructor(
     private val appInfoReader: AppInfoReader,
-    private val loadDataEntriesUseCase: LoadDataEntriesUseCase,
-    private val loadMenstruationDataUseCase: LoadMenstruationDataUseCase,
-    private val loadDataAggregationsUseCase: LoadDataAggregationsUseCase
+    private val loadDataEntriesUseCase: ILoadDataEntriesUseCase,
+    private val loadMenstruationDataUseCase: ILoadMenstruationDataUseCase,
+    private val loadDataAggregationsUseCase: ILoadDataAggregationsUseCase
 ) : ViewModel() {
 
     companion object {
-        private const val TAG = "DataEntriesFragmentView"
+        private const val TAG = "EntriesViewModel"
         private val AGGREGATE_HEADER_DATA_TYPES = listOf(STEPS, DISTANCE, TOTAL_CALORIES_BURNED)
     }
 
-    private val _appEntries = MutableLiveData<EntriesFragmentState>()
-    val appEntries: LiveData<EntriesFragmentState>
-        get() = _appEntries
+    private val _entries = MutableLiveData<EntriesFragmentState>()
+    val entries: LiveData<EntriesFragmentState>
+        get() = _entries
 
     val currentSelectedDate = MutableLiveData<Instant>()
     val period = MutableLiveData<DateNavigationPeriod>()
@@ -90,7 +90,7 @@ constructor(
         period: DateNavigationPeriod,
         showDataOrigin: Boolean
     ) {
-        _appEntries.postValue(EntriesFragmentState.Loading)
+        _entries.postValue(EntriesFragmentState.Loading)
         currentSelectedDate.postValue(selectedDate)
         this.period.postValue(period)
 
@@ -111,16 +111,16 @@ constructor(
                 is UseCaseResults.Success -> {
                     list.addAll(entriesResults.data)
                     if (list.isEmpty()) {
-                        _appEntries.postValue(EntriesFragmentState.Empty)
+                        _entries.postValue(EntriesFragmentState.Empty)
                     } else {
                         addAggregation(
                             permissionType, packageName, selectedDate, period, list, showDataOrigin)
-                        _appEntries.postValue(EntriesFragmentState.With(list))
+                        _entries.postValue(EntriesFragmentState.With(list))
                     }
                 }
                 is UseCaseResults.Failed -> {
                     Log.e(TAG, "Loading error ", entriesResults.exception)
-                    _appEntries.postValue(EntriesFragmentState.LoadingFailed)
+                    _entries.postValue(EntriesFragmentState.LoadingFailed)
                 }
             }
         }

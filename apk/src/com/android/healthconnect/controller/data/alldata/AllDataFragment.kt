@@ -17,9 +17,12 @@ package com.android.healthconnect.controller.data.alldata
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceCategory
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.data.appdata.AppDataFragment.Companion.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
@@ -109,17 +112,13 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                                     .uppercaseLabel)
                             // TODO(b/291249677): Add in upcoming CL.
                             // it.logName = AllDataElement.PERMISSION_TYPE_BUTTON
-                            //                            it.setOnPreferenceClickListener {
-                            //                                findNavController()
-                            //                                    .navigate(
-                            //
-                            // R.id.action_allData_to_entriesAndAccess,
-                            //                                        bundleOf(
-                            //
-                            // HealthPermissionTypesFragment.PERMISSION_TYPE_KEY to permissionType
-                            //                                        ))
-                            //                                true
-                            //                            }
+                            it.setOnPreferenceClickListener {
+                                findNavController()
+                                    .navigate(
+                                        R.id.action_allData_to_entriesAndAccess,
+                                        bundleOf(PERMISSION_TYPE_KEY to permissionType))
+                                true
+                            }
                         })
                 }
         }
