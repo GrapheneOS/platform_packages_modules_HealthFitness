@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"ကျန်းမာရေးဒေတာကို သုံးနိုင်သည်"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"လောင်ကျွမ်းသောကယ်လိုရီဖတ်ခြင်း"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"အက်ပ်ကို လောင်ကျွမ်းသွားသော ကယ်လိုရီများ ဖတ်ခွင့်ပေးသည်"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"နောက်ခံတွင် ဖတ်ခြင်း"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"နောက်ခံတွင် ဖတ်ခြင်း"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"နောက်ခံတွင် ကျန်းမာရေးဒေတာကို ဖတ်နိုင်သည်"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီ"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီ"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီကို ဖတ်ရန်"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"လေ့ကျင့်ခန်း လမ်းကြောင်း"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"လေ့ကျင့်ခန်းလမ်းကြောင်း ရေးရန်"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"လေ့ကျင့်ခန်း ပုံမှန်အစီအစဉ် ဖတ်ရန်"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"အကွာအဝေး"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"အကွာအဝေး"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"အကွာအဝေးကို ဖတ်ရန်"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Health Connect တွင် သင်၏ မည်သည့်အက်ပ်မျှ ဒေတာသုံးနိုင် (သို့) ထည့်နိုင်တော့မည် မဟုတ်ပါ။ ၎င်းက ရှိပြီးသားဒေတာများကို မဖျက်ပါ။\n\n၎င်းသည် တည်နေရာ၊ ကင်မရာ (သို့) မိုက်ခရိုဖုန်းကဲ့သို့ ဤအက်ပ်တွင် ရှိနိုင်သော အခြားခွင့်ပြုချက်များအပေါ် မသက်ရောက်ပါ။"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"အားလုံး ဖယ်ရှားရန်"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"အက်ပ်စီမံခြင်း"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"အက်ပ်ဒေတာ ကြည့်ရန်"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"အက်ပ်ဒေတာ ဖျက်ရန်"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"အသုံးမပြုသော အက်ပ်များ"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"ဤအက်ပ်များက သုံးခွင့်မရှိတော့သော်လည်း Health Connect တွင် ဒေတာများ သိမ်းထားသေးသည်"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ဒေတာရေးရန် အက်ပ်ခွင့်ပြုချက်များ ပေးလိုက်ပါက ရင်းမြစ်များကို ဤနေရာတွင် ပြမည်။"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ရင်းမြစ်များနှင့် ဦးစားပေးခြင်း အလုပ်လုပ်ပုံ"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"အက်ပ် ထည့်ရန်"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"အက်ပ်ဒေတာ"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Health Connect သုံးခွင့်ရှိသော အက်ပ်များမှ ဒေတာကို ဤနေရာတွင် ပြပါမည်"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"ရက်"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"သီတင်းပတ်"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"လ"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"ယခု သီတင်းပတ်"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"ပြီးခဲ့သော သီတင်းပတ်"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"ယခုလ"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"ပြီးခဲ့သောလ"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"akses data kesihatan anda"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Baca kalori yang dibakar"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Benarkan apl membaca kalori yang dibakar"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"Bacaan latar"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"bacaan latar"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"Baca data kesihatan pada latar"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Kalori aktif yang dibakar"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"kalori aktif yang dibakar"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Baca kalori aktif yang dibakar"</string>
@@ -91,6 +94,7 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"laluan senaman"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Tulis laluan senaman"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Baca laluan senaman"</string>
+    <string name="exercise_routes_all_read_content_description" msgid="5799035808926978381">"Baca semua laluan senaman"</string>
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Jarak"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"jarak"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Baca jarak"</string>
@@ -786,8 +790,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cara sumber &amp; keutamaan berfungsi"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Tambahkan apl"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Data apl"</string>
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
+    <string name="no_data_footer" msgid="4777297654713673100">"Data daripada apl dengan akses kepada Health Connect akan dipaparkan di sini"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Hari"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Minggu"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"Bulan"</string>
@@ -795,4 +798,8 @@
     <string name="last_week_header" msgid="5194448963146719382">"Minggu lalu"</string>
     <string name="this_month_header" msgid="2452395268894677189">"Bulan ini"</string>
     <string name="last_month_header" msgid="1359164797239191253">"Bulan lepas"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
+    <skip />
+    <!-- no translation found for tab_access (7818197975407243701) -->
+    <skip />
 </resources>

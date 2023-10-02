@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"dostęp do Twoich danych dotyczących zdrowia"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Odczytuj spalone kalorie"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Zezwala aplikacji na odczytywanie spalonych kalorii"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"Odczytywanie w tle"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"odczytywanie w tle"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"Odczytuj dane dotyczące zdrowia w tle"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Kalorie spalone podczas aktywności"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"kalorie spalone podczas aktywności"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Odczytuj informacje o kaloriach spalonych podczas aktywności"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"trasa ćwiczeń"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Zapisz trasę ćwiczeń"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Odczyt trasy ćwiczeń"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Odległość"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"odległość"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Odczytuj dane o odległości"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Żadna aplikacja nie będzie już mogła korzystać z danych z Health Connect ani dodawać nowych danych. Istniejące dane nie zostaną usunięte.\n\nNie wpływa na to na inne uprawnienia, które może mieć ta aplikacja, np. dotyczące lokalizacji, aparatu czy mikrofonu."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Usuń wszystko"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Zarządzaj aplikacją"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"Zobacz dane aplikacji"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Usuń dane aplikacji"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Nieaktywne aplikacje"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Te aplikacje nie mają już dostępu, ale ich dane wciąż są przechowywane w Health Connect"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kiedy nadasz aplikacji uprawnienia do zapisywania danych <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, źródła pojawią się tutaj."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Jak działają priorytety źródeł"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Dodaj aplikację"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"Dane aplikacji"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Tutaj pojawią się dane z aplikacji z dostępem do Health Connect"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"Dzień"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Tydzień"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Miesiąc"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Ten tydzień"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"Ostatni tydzień"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Ten miesiąc"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"Ostatni miesiąc"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>
