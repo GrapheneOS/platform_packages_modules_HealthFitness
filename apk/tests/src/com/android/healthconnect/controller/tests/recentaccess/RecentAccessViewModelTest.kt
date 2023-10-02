@@ -113,7 +113,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -192,7 +192,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -268,7 +268,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -315,7 +315,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
 
         val expected =
             listOf(
@@ -371,7 +371,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -419,7 +419,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -506,7 +506,7 @@ class RecentAccessViewModelTest {
 
         fakeRecentAccessUseCase.updateList(accessLogs)
         viewModel.loadRecentAccessApps(maxNumEntries = 3)
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
         val expected =
             listOf(
                 RecentAccessEntry(
