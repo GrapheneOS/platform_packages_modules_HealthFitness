@@ -272,7 +272,7 @@
     <string name="other_android_permissions" msgid="8051485761573324702">"Бул колдонмодогу башка Android уруксаттарын башкаруу үчүн Параметрлер &gt; Колдонмолорго өтүңүз"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"<xliff:g id="APP_NAME">%1$s</xliff:g> менен бөлүшкөн нерселериңиз анын купуялык саясаты менен корголот."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Бул колдонмодогу башка Android уруксаттарын тескөө үчүн Тууралоого өтүп, Колдонмолорду таптап коюңуз"</string>
-    <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Купуялык саясатын окуп чыгуу"</string>
+    <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Купуялык эрежелерин окуп чыгуу"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Акыркы 24 сааттын ичинде колдонулган"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Колдонмонун мүмкүнчүлүгү"</string>
     <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Учурда орнотулган шайкеш колдонмолоруңуз жок"</string>
