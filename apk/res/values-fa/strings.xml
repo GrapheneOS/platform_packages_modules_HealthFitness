@@ -754,7 +754,7 @@
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"به‌روزرسانی برنامه لازم است"</string>
     <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> باید به‌روز باشد تا همچنان با Health Connect کار کند"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"برخی‌از برنامه‌ها باید به‌روز باشند تا همچنان با Health Connect کار کنند"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"بررسی وجود به‌روزرسانی"</string>
+    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"به‌روزرسانی‌ها را بررسی کنید"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"یکپارچه‌سازی Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"‫Health Connect برای ادغام شدن با سیستم Android آماده است. اگر اکنون به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه دسترسی بدهید، ممکن است برخی‌از ویژگی‌ها تا زمان تکمیل یکپارچه‌سازی کار نکنند."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"‫Health Connect برای ادغام شدن با سیستم Android آماده است. اگر اکنون به برنامه‌ها اجازه دسترسی بدهید، ممکن است برخی‌از ویژگی‌ها تا زمان تکمیل فرایند ادغام کار نکنند."</string>
