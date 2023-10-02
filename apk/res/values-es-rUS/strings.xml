@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"Acceder a tus datos de salud"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Medir calorías quemadas"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Permite que la app lea las calorías quemadas"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"Lectura en segundo plano"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"lectura en segundo plano"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"Leer los datos de salud en segundo plano"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Calorías activas quemadas"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"Calorías activas quemadas"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Medir las calorías activas quemadas"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"ruta de ejercicio"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Grabar ruta de ejercicio"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Leer la ruta de ejercicio"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Distancia"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"distancia"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Medir distancia"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Ninguna de las apps podrá acceder a Health Connect ni agregar datos nuevos en ella. No se borrarán los datos existentes.\n\nEsto no afecta los otros permisos que puede tener esta app, como a la ubicación, la cámara o el micrófono."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Quitar todo"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Administrar app"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"Ver datos de app"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Borrar datos de la app"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Apps inactivas"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Estas apps ya no tienen acceso, pero todavía tienen datos almacenados en Health Connect"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Cuando otorgues permiso a las apps para escribir datos de <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, las fuentes se mostrarán aquí."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cómo funcionan la priorización y las fuentes"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Agrega una app"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"Datos de app"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Aquí se mostrará la información de apps con acceso a Health Connect"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"Día"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Semana"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Mes"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Esta semana"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"La semana pasada"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Este mes"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"El mes pasado"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

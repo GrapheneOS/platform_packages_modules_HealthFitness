@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"πρόσβαση σε δεδομένα υγείας"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Ανάγνωση θερμίδων που κάηκαν"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Επιτρέπει στην εφαρμογή να διαβάζει τις θερμίδες που καίγονται"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"Ανάγνωση στο παρασκήνιο"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"ανάγνωση στο παρασκήνιο"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"Ανάγνωση δεδομένων υγείας στο παρασκήνιο"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Ενεργές θερμίδες που έχετε κάψει"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"ενεργές θερμίδες που έχετε κάψει"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Ανάγνωση ενεργών θερμίδων που έχετε κάψει"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"διαδρομή άσκησης"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Εγγραφή διαδρομής άσκησης"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Ανάγνωση διαδρομής άσκησης"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Απόσταση"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"απόσταση"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Ανάγνωση δεδομένων απόστασης"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Καμία από τις εφαρμογές σας δεν θα μπορεί να αποκτήσει πρόσβαση στα δεδομένα του Health Connect ή να προσθέσει νέα δεδομένα. Με αυτή την ενέργεια δεν διαγράφονται τυχόν υπάρχοντα δεδομένα.\n\nΔεν επηρεάζονται άλλες άδειες που ενδέχεται να έχει αυτή η εφαρμογή, όπως οι άδειες για την τοποθεσία, την κάμερα ή το μικρόφωνο."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Κατάργηση όλων"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Διαχείριση εφαρμογής"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"Εμφάνιση δεδομένων εφαρμογών"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Διαγραφή δεδομένων εφαρμογής"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Ανενεργές εφαρμογές"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Αυτές οι εφαρμογές δεν έχουν πλέον πρόσβαση, αλλά έχουν ακόμη αποθηκευμένα δεδομένα στο Health Connect"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Μόλις παραχωρήσετε άδειες εφαρμογών για την εγγραφή δεδομένων <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, οι πηγές θα εμφανίζονται εδώ."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Πώς λειτουργούν οι πηγές και η προτεραιότητα"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Προσθήκη εφαρμογής"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"Δεδομένα εφαρμογών"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Τα δεδομένα από εφαρμογές με πρόσβαση στο Health Connect θα εμφανίζονται εδώ"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"Ημέρα"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Εβδομάδα"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Μήνας"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Αυτή την εβδομάδα"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"Προηγούμενη εβδομάδα"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Αυτόν τον μήνα"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"Προηγούμενος μήνας"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"Auf meine Gesundheitsdaten zugreifen"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Verbrannte Kalorien lesen"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Ermöglicht der App, die verbrannten Kalorien zu lesen"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"Daten im Hintergrund abrufen"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"Daten im Hintergrund abrufen"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"Gesundheitsdaten im Hintergrund abrufen"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Aktiv verbrannte Kalorien"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"Aktiv verbrannte Kalorien"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Aktiv verbrannte Kalorien lesen"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"Trainingsroute"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Trainingsroute schreiben"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Trainingsroute ansehen"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Strecke"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"Strecke"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Strecke lesen"</string>
@@ -785,12 +790,10 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Keine App-Quellen"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Wenn du App-Berechtigungen zum Schreiben von „<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>“-Daten erteilst, werden die Quellen hier angezeigt."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"So funktionieren Quellen und Priorisierung"</string>
-    <!-- no translation found for data_sources_add_app (319926596123692514) -->
-    <skip />
+    <string name="data_sources_add_app" msgid="319926596123692514">"App hinzufügen"</string>
     <!-- no translation found for app_data_title (6499967982291000837) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
+    <string name="no_data_footer" msgid="4777297654713673100">"Daten aus Apps mit Zugriff auf Health Connect werden hier angezeigt"</string>
     <!-- no translation found for date_picker_day (3076687507968958991) -->
     <skip />
     <!-- no translation found for date_picker_week (1038805538316142229) -->
@@ -804,5 +807,9 @@
     <!-- no translation found for this_month_header (2452395268894677189) -->
     <skip />
     <!-- no translation found for last_month_header (1359164797239191253) -->
+    <skip />
+    <!-- no translation found for tab_entries (3402700951602029493) -->
+    <skip />
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

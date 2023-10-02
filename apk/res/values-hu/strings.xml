@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"hozzáférés az egészségügyi adataihoz"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Elégetett kalória olvasása"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Engedélyezi az alkalmazásnak az elégetett kalória olvasását"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"Olvasás a háttérben"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"olvasás a háttérben"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"Egészségi adatok olvasása a háttérben"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Aktívan elégetett kalória"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"aktívan elégetett kalória"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Aktívan elégetett kalóriára vonatkozó adatok olvasása"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"edzésútvonal"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Edzésútvonal írása"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Edzésútvonal áttekintése"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Távolság"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"távolság"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Távolságra vonatkozó adatok olvasása"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Egyik alkalmazása sem férhet majd hozzá a Health Connect-adatokhoz, és nem is adhat majd hozzá új adatokat a Health Connecthez. A művelettel nem törlődnek a meglévő adatok.\n\nEz nem befolyásolja azokat az egyéb (például a helyadatokhoz, a kamerához vagy a mikrofonhoz tartozó) engedélyeket, amelyekkel ez az alkalmazás esetleg rendelkezik."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Összes eltávolítása"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Alkalmazás kezelése"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"Alkalmazásadatok megtekintése"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Alkalmazásadatok törlése"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Inaktív alkalmazások"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Ezeknek az alkalmazásoknak már nincs hozzáférésük, de továbbra is tárolnak adatokat a Health Connect szolgáltatásban."</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Miután alkalmazásengedélyeket adott a(z) <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> kategóriájú adatok írására, itt jelennek meg a források."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Hogyan működnek a források és a priorizálás?"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Alkalmazás hozzáadása"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"Alkalmazásadatok"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Itt jelennek meg az adatok azokból az alkalmazásokból, amelyeknek hozzáférése van a Health Connecthez"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"Nap"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Hét"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Hónap"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Ezen a héten"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"Múlt héten"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Ebben a hónapban"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"Előző hónapban"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

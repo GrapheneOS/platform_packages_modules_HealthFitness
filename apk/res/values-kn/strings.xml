@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"ನಿಮ್ಮ ಹೆಲ್ತ್‌ ಡೇಟಾಗೆ ಆ್ಯಕ್ಸೆಸ್ ಪಡೆಯಿರಿ"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"ಕಳೆಕೊಂಡ ಕ್ಯಾಲೋರಿ ಓದುತ್ತದೆ"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"ಕಳೆದುಕೊಂಡ ಕ್ಯಾಲೋರಿಗಳ ಮೊತ್ತವನ್ನು ಆ್ಯಪ್‌ಗೆ ಓದಲು ಅನುವು ಮಾಡಿಕೊಡುತ್ತದೆ."</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಓದುವಿಕೆ"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಓದುವಿಕೆ"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಆರೋಗ್ಯ ಡೇಟಾವನ್ನು ಓದಿರಿ"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"ಕರಗಿಸಿದ ಸಕ್ರಿಯ ಕ್ಯಾಲೋರಿಗಳು"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"ಸಕ್ರಿಯ ಕ್ಯಾಲೋರಿಗಳನ್ನು ಕಳೆದುಕೊಳ್ಳಲಾಗಿದೆ"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"ಸಕ್ರಿಯ ಕ್ಯಾಲೋರಿಗಳನ್ನು ಕಳೆದುಕೊಂಡಿರುವುದರ ಕುರಿತು ಓದಿರಿ"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"ವ್ಯಾಯಾಮದ ಯೋಜನೆ"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"ವ್ಯಾಯಾಮದ ಯೋಜನೆಯನ್ನು ಬರೆಯಿರಿ"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"ವ್ಯಾಯಾಮದ ಯೋಜನೆಯನ್ನು ಓದಿರಿ"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"ದೂರ"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"ದೂರ"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"ದೂರವನ್ನು ಓದುತ್ತದೆ"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"ನಿಮ್ಮ ಯಾವುದೇ ಆ್ಯಪ್‌ಗಳಿಗೆ Health Connect ಅನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಅಥವಾ ಅದರಲ್ಲಿ ಹೊಸ ಡೇಟಾವನ್ನು ಸೇರಿಸಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. ಇದು ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಯಾವುದೇ ಡೇಟಾವನ್ನು ಅಳಿಸುವುದಿಲ್ಲ.\n\nಈ ಆ್ಯಪ್ ಹೊಂದಿರಬಹುದಾದ ಸ್ಥಳ, ಕ್ಯಾಮರಾ ಅಥವಾ ಮೈಕ್ರೊಫೋನ್‌ನಂತಹ ಇತರ ಅನುಮತಿಗಳ ಮೇಲೆ ಇದು ಪರಿಣಾಮ ಬೀರುವುದಿಲ್ಲ."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"ಎಲ್ಲವನ್ನೂ ತೆಗೆದುಹಾಕಿ"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"ಆ್ಯಪ್ ಅನ್ನು ನಿರ್ವಹಿಸಿ"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"ಆ್ಯಪ್ ಡೇಟಾ ನೋಡಿ"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"ಆ್ಯಪ್ ಡೇಟಾ ಅಳಿಸಿ"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"ನಿಷ್ಕ್ರಿಯ ಆ್ಯಪ್‌ಗಳು"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"ಈ ಆ್ಯಪ್‌ಗಳು ಇನ್ನು ಮುಂದೆ ಆ್ಯಕ್ಸೆಸ್ ಹೊಂದಿರುವುದಿಲ್ಲ ಆದರೆ ಈಗಲೂ Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾ ಇರುತ್ತದೆ"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"ನೀವು <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ಡೇಟಾವನ್ನು ರೈಟ್ ಮಾಡಲು ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಗಳನ್ನು ನೀಡಿದ ನಂತರ, ಮೂಲಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ಮೂಲಗಳು ಮತ್ತು ಆದ್ಯತೆ ನೀಡುವಿಕೆ ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತವೆ"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"ಆ್ಯಪ್ ಒಂದನ್ನು ಸೇರಿಸಿ"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"ಆ್ಯಪ್ ಡೇಟಾ"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Health Connect ಗೆ ಆ್ಯಕ್ಸೆಸ್ ಹೊಂದಿರುವ ಆ್ಯಪ್‌ಗಳ ಡೇಟಾವನ್ನು ಇಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"ದಿನ"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"ವಾರ"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"ತಿಂಗಳು"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"ಈ ವಾರ"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"ಕಳೆದ ವಾರ"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"ಈ ತಿಂಗಳು"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"ಕಳೆದ ತಿಂಗಳು"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

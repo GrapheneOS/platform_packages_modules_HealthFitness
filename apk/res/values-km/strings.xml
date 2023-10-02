@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"ចូលប្រើទិន្នន័យសុខភាពរបស់អ្នក"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"អានកាឡូរីដែលបានដុត"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"អនុញ្ញាតឱ្យកម្មវិធីអានកាឡូរីដែលបានដុត"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"ការអាននៅផ្ទៃខាងក្រោយ"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"ការអាននៅផ្ទៃខាងក្រោយ"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"អានទិន្នន័យសុខភាពនៅផ្ទៃខាងក្រោយ"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"កាឡូរីសកម្មដែលបានដុត"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"កាឡូរីសកម្មដែលបានដុត"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"អានកាឡូរីសកម្មដែលបានដុត"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"ផ្លូវលំហាត់ប្រាណ"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"សរសេរ​ផ្លូវលំហាត់ប្រាណ"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"អានអំពីផ្លូវនៃលំហាត់ប្រាណ"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"ចម្ងាយ"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"ចម្ងាយ"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"អានចម្ងាយ"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"កម្មវិធី​របស់អ្នក​នឹងមិនអាច​ចូលប្រើ ឬ​បញ្ចូលទិន្នន័យថ្មី​ទៅក្នុង Health Connect បានទេ។ សកម្មភាពនេះ​មិនលុបទិន្នន័យ​ដែលមានស្រាប់ណាមួយឡើយ។\n\nសកម្មភាពនេះ​មិនប៉ះពាល់ដល់​ការអនុញ្ញាតផ្សេងទៀត​ដែលកម្មវិធីនេះអាចមាន ដូចជាទីតាំង កាមេរ៉ា ឬមីក្រូហ្វូនជាដើម។"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"ដកចេញទាំងអស់"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"គ្រប់គ្រង​កម្មវិធី"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"មើលទិន្នន័យកម្មវិធី"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"លុប​ទិន្នន័យ​កម្មវិធី"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"កម្មវិធីអសកម្ម"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"កម្មវិធីទាំងនេះ​លែង​មាន​សិទ្ធិ​ចូល​ប្រើប្រាស់​ទៀតហើយ ប៉ុន្តែ​នៅតែ​រក្សាទុក​ទិន្នន័យ​នៅក្នុង Health Connect ដដែល"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"នៅពេល​អ្នកផ្ដល់​ការអនុញ្ញាតកម្មវិធី​ឱ្យសរសេរទិន្នន័យ <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ប្រភពនឹង​បង្ហាញនៅទីនេះ។"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"របៀបដែល​ប្រភព និងការកំណត់អាទិភាព​ដំណើរការ"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"បញ្ចូល​កម្មវិធី"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"ទិន្នន័យកម្មវិធី"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"ទិន្នន័យពីកម្មវិធីដែលមានសិទ្ធិចូលប្រើ Health Connect នឹងបង្ហាញនៅទីនេះ"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"ថ្ងៃ"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"សប្ដាហ៍"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"ខែ"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"សប្ដាហ៍​នេះ"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"សប្ដាហ៍មុន"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"ខែ​នេះ"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"ខែមុន"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>
