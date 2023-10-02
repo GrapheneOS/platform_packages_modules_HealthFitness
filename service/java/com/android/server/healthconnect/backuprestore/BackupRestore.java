@@ -47,6 +47,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager.DataDownloadState;
@@ -120,12 +121,22 @@ public final class BackupRestore {
     @VisibleForTesting
     public static final String DATA_DOWNLOAD_STATE_KEY = "data_download_state_key";
     // The below values for the IntDef are defined in chronological order of the restore process.
+    @VisibleForTesting
     public static final int INTERNAL_RESTORE_STATE_UNKNOWN = 0;
+    @VisibleForTesting
     public static final int INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING = 1;
+    @VisibleForTesting
     public static final int INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS = 2;
+    @VisibleForTesting
     public static final int INTERNAL_RESTORE_STATE_STAGING_DONE = 3;
+    @VisibleForTesting
     public static final int INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS = 4;
-    public static final int INTERNAL_RESTORE_STATE_MERGING_DONE = 5;
+    // See b/290172311 for details.
+    @VisibleForTesting
+    public static final int INTERNAL_RESTORE_STATE_MERGING_DONE_OLD_CODE = 5;
+
+    @VisibleForTesting
+    public static final int INTERNAL_RESTORE_STATE_MERGING_DONE = 6;
 
     @VisibleForTesting
     static final long DATA_DOWNLOAD_TIMEOUT_INTERVAL_MILLIS = 14 * DateUtils.DAY_IN_MILLIS;
@@ -163,6 +174,7 @@ public final class BackupRestore {
             INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS,
             INTERNAL_RESTORE_STATE_STAGING_DONE,
             INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS,
+            INTERNAL_RESTORE_STATE_MERGING_DONE_OLD_CODE,
             INTERNAL_RESTORE_STATE_MERGING_DONE
     })
     public @interface InternalRestoreState {}
@@ -203,7 +215,7 @@ public final class BackupRestore {
         mMigrationStateManager = migrationStateManager;
         mContext = context;
         mCurrentForegroundUser = mContext.getUser();
-        mStagedDbContext = new StagedDatabaseContext(context, mCurrentForegroundUser);
+        mStagedDbContext = StagedDatabaseContext.create(context, mCurrentForegroundUser);
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
@@ -375,7 +387,8 @@ public final class BackupRestore {
         if (downloadState == DATA_DOWNLOAD_COMPLETE) {
             setInternalRestoreState(INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING, false /* force */);
         } else if (downloadState == DATA_DOWNLOAD_FAILED) {
-            setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_DONE, false /* force */);
+            setInternalRestoreState(
+                    INTERNAL_RESTORE_STATE_MERGING_DONE, false /* force */);
             setDataRestoreError(RESTORE_ERROR_FETCHING_DATA);
         }
     }
@@ -554,8 +567,9 @@ public final class BackupRestore {
     boolean shouldAttemptMerging() {
         @InternalRestoreState int internalRestoreState = getInternalRestoreState();
         if (internalRestoreState == INTERNAL_RESTORE_STATE_STAGING_DONE
-                || internalRestoreState == INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS) {
-            Slog.i(TAG, "Will attempt merging as it was already happening or bound to happen");
+                || internalRestoreState == INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS
+                || internalRestoreState == INTERNAL_RESTORE_STATE_MERGING_DONE_OLD_CODE) {
+            Slog.i(TAG, "Should attempt merging now with state = " + internalRestoreState);
             return true;
         }
         return false;
@@ -576,13 +590,30 @@ public final class BackupRestore {
         }
 
         int currentDbVersion = TransactionManager.getInitialisedInstance().getDatabaseVersion();
-        int stagedDbVersion = getStagedDatabase().getReadableDatabase().getVersion();
-        if (currentDbVersion < stagedDbVersion) {
-            Slog.i(TAG, "Module needs upgrade for merging to version " + stagedDbVersion);
-            setDataRestoreError(RESTORE_ERROR_VERSION_DIFF);
-            return;
+        File stagedDbFile = mStagedDbContext.getDatabasePath(STAGED_DATABASE_NAME);
+        if (stagedDbFile.exists()) {
+            try (SQLiteDatabase stagedDb =
+                         SQLiteDatabase.openDatabase(
+                                 stagedDbFile,
+                                 new SQLiteDatabase.OpenParams.Builder().build())) {
+                int stagedDbVersion = stagedDb.getVersion();
+                Slog.i(
+                        TAG,
+                        "merging staged data, current version = "
+                                + currentDbVersion
+                                + ", staged version = "
+                                + stagedDbVersion);
+                if (currentDbVersion < stagedDbVersion) {
+                    Slog.i(TAG, "Module needs upgrade for merging to version " + stagedDbVersion);
+                    setDataRestoreError(RESTORE_ERROR_VERSION_DIFF);
+                    return;
+                }
+            }
+        } else {
+            Slog.i(TAG, "No database file found to merge.");
         }
 
+        Slog.i(TAG, "Starting the data merge.");
         setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS, false);
         mergeGrantTimes();
         mergeDatabase();
@@ -956,7 +987,7 @@ public final class BackupRestore {
 
     private void mergeDatabase() {
         synchronized (mMergingLock) {
-            if (!mStagedDbContext.getDatabasePath(HealthConnectDatabase.getName()).exists()) {
+            if (!mStagedDbContext.getDatabasePath(STAGED_DATABASE_NAME).exists()) {
                 Slog.i(TAG, "No staged db found.");
                 // no db was staged
                 return;
@@ -976,9 +1007,12 @@ public final class BackupRestore {
                 mergeRecordsOfType(recordTypeMapEntry.getKey(), recordTypeMapEntry.getValue());
             }
 
+            Slog.i(TAG, "Sync app info records after restored data merge.");
+            AppInfoHelper.getInstance().syncAppInfoRecordTypesUsed();
+
             // Delete the staged db as we are done merging.
             Slog.i(TAG, "Deleting staged db after merging.");
-            mStagedDbContext.deleteDatabase(HealthConnectDatabase.getName());
+            mStagedDbContext.deleteDatabase(STAGED_DATABASE_NAME);
             mStagedDatabase = null;
         }
     }
@@ -1033,7 +1067,6 @@ public final class BackupRestore {
             Class<T> recordTypeClass, long requestToken, RecordHelper<?> recordHelper) {
         ReadRecordsRequestUsingFilters<T> readRecordsRequest =
                 new ReadRecordsRequestUsingFilters.Builder<>(recordTypeClass)
-                        .setAscending(true)
                         .setPageSize(2000)
                         .setPageToken(requestToken)
                         .build();
@@ -1075,7 +1108,10 @@ public final class BackupRestore {
 
     private Cursor read(ReadTableRequest request) {
         synchronized (mMergingLock) {
-            return mStagedDatabase.getReadableDatabase().rawQuery(request.getReadCommand(), null);
+            return getStagedDatabase()
+                    .getReadableDatabase()
+                    .rawQuery(request.getReadCommand(), null);
+
         }
     }
 
@@ -1114,7 +1150,7 @@ public final class BackupRestore {
     HealthConnectDatabase getStagedDatabase() {
         synchronized (mMergingLock) {
             if (mStagedDatabase == null) {
-                mStagedDatabase = new HealthConnectDatabase(mStagedDbContext);
+                mStagedDatabase = new HealthConnectDatabase(mStagedDbContext, STAGED_DATABASE_NAME);
             }
             return mStagedDatabase;
         }
@@ -1125,7 +1161,7 @@ public final class BackupRestore {
      *
      * @hide
      */
-    private static final class StagedDatabaseContext extends ContextWrapper {
+    static final class StagedDatabaseContext extends ContextWrapper {
         private volatile UserHandle mCurrentForegroundUser;
 
         StagedDatabaseContext(@NonNull Context context, UserHandle userHandle) {
@@ -1144,6 +1180,10 @@ public final class BackupRestore {
                     getStagedRemoteDataDirectoryForUser(mCurrentForegroundUser.getIdentifier());
             stagedDataDir.mkdirs();
             return new File(stagedDataDir, name);
+        }
+
+        static StagedDatabaseContext create(@NonNull Context context, UserHandle handle) {
+            return new StagedDatabaseContext(context, handle);
         }
     }
 
