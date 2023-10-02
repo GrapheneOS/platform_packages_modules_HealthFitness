@@ -108,7 +108,7 @@ class EntriesViewModelTest {
             Instant.ofEpochMilli(timeSource.currentTimeMillis()),
             DateNavigationPeriod.PERIOD_WEEK)
 
-        val actual = viewModel.entries.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.entries.getOrAwaitValue(callsCount = 2)
         val expected =
             EntriesViewModel.EntriesFragmentState.With(
                 listOf(formattedAggregation("12 steps"), FORMATTED_STEPS))
@@ -125,7 +125,7 @@ class EntriesViewModelTest {
             Instant.ofEpochMilli(timeSource.currentTimeMillis()),
             DateNavigationPeriod.PERIOD_WEEK)
 
-        val actual = viewModel.entries.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.entries.getOrAwaitValue(callsCount = 2)
         val expected =
             EntriesViewModel.EntriesFragmentState.With(
                 listOf(formattedAggregation("27 steps"), FORMATTED_STEPS, FORMATTED_STEPS_2))
@@ -141,7 +141,7 @@ class EntriesViewModelTest {
             Instant.ofEpochMilli(timeSource.currentTimeMillis()),
             DateNavigationPeriod.PERIOD_WEEK)
 
-        val actual = viewModel.entries.getOrAwaitValue(time = 5, callsCount = 2)
+        val actual = viewModel.entries.getOrAwaitValue(callsCount = 2)
         val expected =
             EntriesViewModel.EntriesFragmentState.With(listOf(FORMATTED_MENSTRUATION_PERIOD))
         assertThat(actual).isEqualTo(expected)
