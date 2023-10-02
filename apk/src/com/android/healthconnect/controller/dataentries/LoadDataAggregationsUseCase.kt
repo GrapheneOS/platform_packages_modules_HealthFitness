@@ -26,6 +26,7 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.AggregationType
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.DistanceRecord
+import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.units.Energy
@@ -34,10 +35,12 @@ import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
+import com.android.healthconnect.controller.dataentries.formatters.SleepSessionFormatter
 import com.android.healthconnect.controller.dataentries.formatters.StepsFormatter
 import com.android.healthconnect.controller.dataentries.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SLEEP
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.TOTAL_CALORIES_BURNED
 import com.android.healthconnect.controller.service.IoDispatcher
@@ -59,6 +62,7 @@ constructor(
     private val stepsFormatter: StepsFormatter,
     private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
     private val distanceFormatter: DistanceFormatter,
+    private val sleepFormatter: SleepSessionFormatter,
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
@@ -70,14 +74,24 @@ constructor(
         val results =
             when (input.permissionType) {
                 STEPS -> {
-                    readAggregations<Long>(timeFilterRange, StepsRecord.STEPS_COUNT_TOTAL)
+                    readAggregations<Long>(
+                        timeFilterRange, StepsRecord.STEPS_COUNT_TOTAL, input.permissionType)
                 }
                 DISTANCE -> {
-                    readAggregations<Length>(timeFilterRange, DistanceRecord.DISTANCE_TOTAL)
+                    readAggregations<Length>(
+                        timeFilterRange, DistanceRecord.DISTANCE_TOTAL, input.permissionType)
                 }
                 TOTAL_CALORIES_BURNED -> {
                     readAggregations<Energy>(
-                        timeFilterRange, TotalCaloriesBurnedRecord.ENERGY_TOTAL)
+                        timeFilterRange,
+                        TotalCaloriesBurnedRecord.ENERGY_TOTAL,
+                        input.permissionType)
+                }
+                SLEEP -> {
+                    readAggregations<Long>(
+                        timeFilterRange,
+                        SleepSessionRecord.SLEEP_DURATION_TOTAL,
+                        input.permissionType)
                 }
                 else ->
                     throw IllegalArgumentException(
@@ -89,7 +103,8 @@ constructor(
 
     private suspend fun <T> readAggregations(
         timeFilterRange: TimeInstantRangeFilter,
-        aggregationType: AggregationType<T>
+        aggregationType: AggregationType<T>,
+        healthPermissionType: HealthPermissionType
     ): FormattedAggregation {
         val request =
             AggregateRecordsRequest.Builder<T>(timeFilterRange)
@@ -103,34 +118,42 @@ constructor(
             }
         val aggregationResult: T = requireNotNull(response.get(aggregationType))
         val apps = response.getDataOrigins(aggregationType)
-        return formatAggregation(aggregationResult, apps)
+        return formatAggregation(aggregationResult, apps, healthPermissionType)
     }
 
     private suspend fun <T> formatAggregation(
         aggregationResult: T,
-        apps: Set<DataOrigin>
+        apps: Set<DataOrigin>,
+        healthPermissionType: HealthPermissionType
     ): FormattedAggregation {
         val contributingApps = getContributingApps(apps)
-        return when (aggregationResult) {
-            is Long ->
+        return when (healthPermissionType) {
+            STEPS ->
                 FormattedAggregation(
-                    aggregation = stepsFormatter.formatUnit(aggregationResult),
+                    aggregation = stepsFormatter.formatUnit(aggregationResult as Long),
                     aggregationA11y =
                         addAggregationA11yPrefix(stepsFormatter.formatA11yUnit(aggregationResult)),
                     contributingApps = contributingApps)
-            is Energy ->
+            TOTAL_CALORIES_BURNED ->
                 FormattedAggregation(
-                    aggregation = totalCaloriesBurnedFormatter.formatUnit(aggregationResult),
+                    aggregation =
+                        totalCaloriesBurnedFormatter.formatUnit(aggregationResult as Energy),
                     aggregationA11y =
                         addAggregationA11yPrefix(
                             totalCaloriesBurnedFormatter.formatA11yUnit(aggregationResult)),
                     contributingApps = contributingApps)
-            is Length ->
+            DISTANCE ->
                 FormattedAggregation(
-                    aggregation = distanceFormatter.formatUnit(aggregationResult),
+                    aggregation = distanceFormatter.formatUnit(aggregationResult as Length),
                     aggregationA11y =
                         addAggregationA11yPrefix(
                             distanceFormatter.formatA11yUnit(aggregationResult)),
+                    contributingApps = contributingApps)
+            SLEEP ->
+                FormattedAggregation(
+                    aggregation = sleepFormatter.formatUnit(aggregationResult as Long),
+                    aggregationA11y =
+                        addAggregationA11yPrefix(sleepFormatter.formatA11yUnit(aggregationResult)),
                     contributingApps = contributingApps)
             else -> {
                 throw IllegalArgumentException("Unsupported aggregation type!")

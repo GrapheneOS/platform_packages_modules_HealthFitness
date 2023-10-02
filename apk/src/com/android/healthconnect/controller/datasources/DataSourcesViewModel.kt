@@ -23,20 +23,16 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
-import com.android.healthconnect.controller.datasources.api.LoadMostRecentAggregationsUseCase
-import com.android.healthconnect.controller.datasources.api.LoadPotentialPriorityListUseCase
-import com.android.healthconnect.controller.datasources.api.UpdatePriorityListUseCase
 import com.android.healthconnect.controller.permissiontypes.api.ILoadPriorityListUseCase
-import com.android.healthconnect.controller.permissiontypes.api.LoadPriorityListUseCase
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class DataSourcesViewModel
@@ -47,7 +43,7 @@ constructor(
     private val loadPriorityListUseCase: ILoadPriorityListUseCase,
     private val updatePriorityListUseCase: IUpdatePriorityListUseCase,
     private val appInfoReader: AppInfoReader
-    ) : ViewModel() {
+) : ViewModel() {
 
     companion object {
         private const val TAG = "DataSourcesViewModel"
@@ -60,7 +56,7 @@ constructor(
     // Used to control the reloading of the aggregation cards after reordering the priority list
     // To avoid reloading the whole screen when only the cards need updating
     // TODO (b/305907256) improve flow by observing the aggregationCardsData directly
-    val updatedAggregationCardsData : LiveData<AggregationCardsState>
+    val updatedAggregationCardsData: LiveData<AggregationCardsState>
         get() = _updatedAggregationCardsData
 
     private val _potentialAppSources = MutableLiveData<PotentialAppSourcesState>()
@@ -84,47 +80,46 @@ constructor(
             if (!priorityListState.shouldObserve) {
                 return@addSource
             }
-            _dataSourcesAndAggregationsInfo.value = DataSourcesAndAggregationsInfo(
-                priorityListState = priorityListState,
-                potentialAppSourcesState = _potentialAppSources.value,
-                aggregationCardsState = _aggregationCardsData.value
-            )
-
+            _dataSourcesAndAggregationsInfo.value =
+                DataSourcesAndAggregationsInfo(
+                    priorityListState = priorityListState,
+                    potentialAppSourcesState = _potentialAppSources.value,
+                    aggregationCardsState = _aggregationCardsData.value)
         }
-        _dataSourcesAndAggregationsInfo.addSource(_potentialAppSources) { potentialAppSourcesState ->
+        _dataSourcesAndAggregationsInfo.addSource(_potentialAppSources) { potentialAppSourcesState
+            ->
             if (!potentialAppSourcesState.shouldObserve) {
                 return@addSource
             }
-            _dataSourcesAndAggregationsInfo.value = DataSourcesAndAggregationsInfo(
-                priorityListState = _currentPriorityList.value,
-                potentialAppSourcesState = potentialAppSourcesState,
-                aggregationCardsState = _aggregationCardsData.value
-            )
-
+            _dataSourcesAndAggregationsInfo.value =
+                DataSourcesAndAggregationsInfo(
+                    priorityListState = _currentPriorityList.value,
+                    potentialAppSourcesState = potentialAppSourcesState,
+                    aggregationCardsState = _aggregationCardsData.value)
         }
         _dataSourcesAndAggregationsInfo.addSource(_aggregationCardsData) { aggregationCardsState ->
             if (!aggregationCardsState.shouldObserve) {
                 return@addSource
             }
-            _dataSourcesAndAggregationsInfo.value = DataSourcesAndAggregationsInfo(
-                priorityListState = _currentPriorityList.value,
-                potentialAppSourcesState = _potentialAppSources.value,
-                aggregationCardsState = aggregationCardsState
-            )
+            _dataSourcesAndAggregationsInfo.value =
+                DataSourcesAndAggregationsInfo(
+                    priorityListState = _currentPriorityList.value,
+                    potentialAppSourcesState = _potentialAppSources.value,
+                    aggregationCardsState = aggregationCardsState)
         }
 
         _dataSourcesInfo.addSource(_currentPriorityList) { priorityListState ->
-            _dataSourcesInfo.value = DataSourcesInfo(
-                priorityListState = priorityListState,
-                potentialAppSourcesState = _potentialAppSources.value
-            )
+            _dataSourcesInfo.value =
+                DataSourcesInfo(
+                    priorityListState = priorityListState,
+                    potentialAppSourcesState = _potentialAppSources.value)
         }
 
         _dataSourcesInfo.addSource(_potentialAppSources) { potentialAppSourcesState ->
-            _dataSourcesInfo.value = DataSourcesInfo(
-                priorityListState = _currentPriorityList.value,
-                potentialAppSourcesState = potentialAppSourcesState
-            )
+            _dataSourcesInfo.value =
+                DataSourcesInfo(
+                    priorityListState = _currentPriorityList.value,
+                    potentialAppSourcesState = potentialAppSourcesState)
         }
     }
 
@@ -136,16 +131,16 @@ constructor(
         currentSelection = category
     }
 
-    fun loadData(category: Int) {
-        loadMostRecentAggregations()
+    fun loadData(category: @HealthDataCategoryInt Int) {
+        loadMostRecentAggregations(category)
         loadCurrentPriorityList(category)
         loadPotentialAppSources(category)
     }
 
-    private fun loadMostRecentAggregations() {
+    private fun loadMostRecentAggregations(category: @HealthDataCategoryInt Int) {
         _aggregationCardsData.postValue(AggregationCardsState.Loading(true))
         viewModelScope.launch {
-            when (val aggregationInfoResult = loadDatesWithDataUseCase.invoke()) {
+            when (val aggregationInfoResult = loadDatesWithDataUseCase.invoke(category)) {
                 is UseCaseResults.Success -> {
                     _aggregationCardsData.postValue(
                         AggregationCardsState.WithData(true, aggregationInfoResult.data))
@@ -158,28 +153,30 @@ constructor(
         }
     }
 
-    fun loadPotentialAppSources(category: Int, shouldObserve: Boolean = true) {
+    fun loadPotentialAppSources(
+        category: @HealthDataCategoryInt Int,
+        shouldObserve: Boolean = true
+    ) {
         _potentialAppSources.postValue(PotentialAppSourcesState.Loading(shouldObserve))
         viewModelScope.launch {
-
             when (val appSourcesResult = loadPotentialAppSourcesUseCase.invoke(category)) {
                 is UseCaseResults.Success -> {
                     _potentialAppSources.postValue(
-                        PotentialAppSourcesState.WithData(shouldObserve, appSourcesResult.data)
-                    )
+                        PotentialAppSourcesState.WithData(shouldObserve, appSourcesResult.data))
                 }
                 is UseCaseResults.Failed -> {
                     Log.e(
                         TAG,
                         "Failed to load possible priority list candidates",
                         appSourcesResult.exception)
-                    _potentialAppSources.postValue(PotentialAppSourcesState.LoadingFailed(shouldObserve))
+                    _potentialAppSources.postValue(
+                        PotentialAppSourcesState.LoadingFailed(shouldObserve))
                 }
             }
         }
     }
 
-    private fun loadCurrentPriorityList(category: Int) {
+    private fun loadCurrentPriorityList(category: @HealthDataCategoryInt Int) {
         _currentPriorityList.postValue(PriorityListState.Loading(true))
         viewModelScope.launch {
             when (val result = loadPriorityListUseCase.invoke(category)) {
@@ -192,9 +189,7 @@ constructor(
                         })
                 is UseCaseResults.Failed -> {
                     Log.e(TAG, "Load error ", result.exception)
-                    _currentPriorityList.postValue(
-                        PriorityListState.LoadingFailed(true)
-                    )
+                    _currentPriorityList.postValue(PriorityListState.LoadingFailed(true))
                 }
             }
         }
@@ -204,19 +199,18 @@ constructor(
         _currentPriorityList.postValue(PriorityListState.Loading(false))
         viewModelScope.launch {
             updatePriorityListUseCase.invoke(newPriorityList, category)
-            updateMostRecentAggregations()
+            updateMostRecentAggregations(category)
             val appMetadataList: List<AppMetadata> =
                 newPriorityList.map { appInfoReader.getAppMetadata(it) }
             _currentPriorityList.postValue(PriorityListState.WithData(false, appMetadataList))
         }
-
     }
 
-    private fun updateMostRecentAggregations() {
+    private fun updateMostRecentAggregations(category: @HealthDataCategoryInt Int) {
         _aggregationCardsData.postValue(AggregationCardsState.Loading(false))
         _updatedAggregationCardsData.postValue(AggregationCardsState.Loading(true))
         viewModelScope.launch {
-            val job = async { loadDatesWithDataUseCase.invoke() }
+            val job = async { loadDatesWithDataUseCase.invoke(category) }
             delay(1000)
 
             when (val aggregationInfoResult = job.await()) {
@@ -229,7 +223,8 @@ constructor(
                 is UseCaseResults.Failed -> {
                     Log.e(TAG, "Failed loading dates with data ", aggregationInfoResult.exception)
                     _aggregationCardsData.postValue(AggregationCardsState.LoadingFailed(false))
-                    _updatedAggregationCardsData.postValue(AggregationCardsState.LoadingFailed(true))
+                    _updatedAggregationCardsData.postValue(
+                        AggregationCardsState.LoadingFailed(true))
                 }
             }
         }
@@ -243,11 +238,11 @@ constructor(
         _editedPotentialAppSources.value = newList
     }
 
-    fun getEditedPotentialAppSources() : List<AppMetadata> {
+    fun getEditedPotentialAppSources(): List<AppMetadata> {
         return _editedPotentialAppSources.value ?: emptyList()
     }
 
-    fun getEditedPriorityList() : List<AppMetadata> {
+    fun getEditedPriorityList(): List<AppMetadata> {
         return _editedPriorityList.value ?: emptyList()
     }
 
@@ -258,8 +253,10 @@ constructor(
         data class LoadingFailed(override val shouldObserve: Boolean) :
             AggregationCardsState(shouldObserve)
 
-        data class WithData(override val shouldObserve: Boolean, val dataTotals: List<AggregationCardInfo>) :
-            AggregationCardsState(shouldObserve)
+        data class WithData(
+            override val shouldObserve: Boolean,
+            val dataTotals: List<AggregationCardInfo>
+        ) : AggregationCardsState(shouldObserve)
     }
 
     sealed class PotentialAppSourcesState(open val shouldObserve: Boolean) {
@@ -269,19 +266,22 @@ constructor(
         data class LoadingFailed(override val shouldObserve: Boolean) :
             PotentialAppSourcesState(shouldObserve)
 
-        data class WithData(override val shouldObserve: Boolean,
-                            val appSources: List<AppMetadata>) :
-            PotentialAppSourcesState(shouldObserve)
+        data class WithData(
+            override val shouldObserve: Boolean,
+            val appSources: List<AppMetadata>
+        ) : PotentialAppSourcesState(shouldObserve)
     }
 
     sealed class PriorityListState(open val shouldObserve: Boolean) {
-        data class Loading(override val shouldObserve: Boolean):
+        data class Loading(override val shouldObserve: Boolean) : PriorityListState(shouldObserve)
+
+        data class LoadingFailed(override val shouldObserve: Boolean) :
             PriorityListState(shouldObserve)
-        data class LoadingFailed(override val shouldObserve: Boolean):
-            PriorityListState(shouldObserve)
+
         data class WithData(
             override val shouldObserve: Boolean,
-            val priorityList: List<AppMetadata>): PriorityListState(shouldObserve)
+            val priorityList: List<AppMetadata>
+        ) : PriorityListState(shouldObserve)
     }
 
     class DataSourcesInfo(
@@ -290,21 +290,19 @@ constructor(
     ) {
         fun isLoading(): Boolean {
             return priorityListState is PriorityListState.Loading ||
-                    potentialAppSourcesState is PotentialAppSourcesState.Loading
+                potentialAppSourcesState is PotentialAppSourcesState.Loading
         }
 
-        fun isLoadingFailed() : Boolean {
+        fun isLoadingFailed(): Boolean {
             return priorityListState is PriorityListState.LoadingFailed ||
-                    potentialAppSourcesState is PotentialAppSourcesState.LoadingFailed
+                potentialAppSourcesState is PotentialAppSourcesState.LoadingFailed
         }
 
-        fun isWithData() : Boolean {
+        fun isWithData(): Boolean {
             return priorityListState is PriorityListState.WithData &&
-                    potentialAppSourcesState is PotentialAppSourcesState.WithData
+                potentialAppSourcesState is PotentialAppSourcesState.WithData
         }
     }
-
-
 
     data class DataSourcesAndAggregationsInfo(
         val priorityListState: PriorityListState?,
@@ -313,20 +311,20 @@ constructor(
     ) {
         fun isLoading(): Boolean {
             return priorityListState is PriorityListState.Loading ||
-                    potentialAppSourcesState is PotentialAppSourcesState.Loading ||
-                    aggregationCardsState is AggregationCardsState.Loading
+                potentialAppSourcesState is PotentialAppSourcesState.Loading ||
+                aggregationCardsState is AggregationCardsState.Loading
         }
 
-        fun isLoadingFailed() : Boolean {
+        fun isLoadingFailed(): Boolean {
             return priorityListState is PriorityListState.LoadingFailed ||
-                    potentialAppSourcesState is PotentialAppSourcesState.LoadingFailed ||
-                    aggregationCardsState is AggregationCardsState.LoadingFailed
+                potentialAppSourcesState is PotentialAppSourcesState.LoadingFailed ||
+                aggregationCardsState is AggregationCardsState.LoadingFailed
         }
 
-        fun isWithData() : Boolean {
+        fun isWithData(): Boolean {
             return priorityListState is PriorityListState.WithData &&
-                    potentialAppSourcesState is PotentialAppSourcesState.WithData &&
-                    aggregationCardsState is AggregationCardsState.WithData
+                potentialAppSourcesState is PotentialAppSourcesState.WithData &&
+                aggregationCardsState is AggregationCardsState.WithData
         }
     }
 }

@@ -1097,6 +1097,7 @@
     <string name="data_sources_help_link" description="Text for helper link in the data sources screen taking the user to an article about how sources and prioritization work [CHAR_LIMIT=NONE]">How sources &amp; prioritization work</string>
     <string name="data_sources_add_app" description="Title for preference in the data sources screen used to add an app to the list of data sources [CHAR_LIMIT=NONE]">Add an app</string>
     <string name="edit_data_sources" description="Menu option for adding or removing apps from the app sources list">Edit app sources</string>
+    <string name="default_app_summary" description="Text for an app on the priority list that is the device default app for health connect data [CHAR_LIMIT=50]">Device default</string>
     <!--  endregion -->
 
     <!-- region App data -->

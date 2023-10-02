@@ -52,12 +52,10 @@ constructor(
 
         cardIcon.background = fromHealthPermissionType(cardInfo.healthPermissionType).icon(context)
         cardTitle.text = cardInfo.aggregation.aggregation
-        val totalDate = cardInfo.date
-        if (isLessThanOneYearAgo(totalDate)) {
-            cardDate.text = dateFormatter.formatShortDate(totalDate)
-        } else {
-            cardDate.text = dateFormatter.formatLongDate(totalDate)
-        }
+
+        val totalStartDate = cardInfo.startDate
+        val totalEndDate = cardInfo.endDate
+        cardDate.text = formatDateText(totalStartDate, totalEndDate)
 
         val constraintSet = ConstraintSet()
         constraintSet.clone(titleAndDateContainer)
@@ -120,6 +118,24 @@ constructor(
                 .atStartOfDay(timeSource.deviceZoneOffset())
                 .toInstant()
         return instant.isAfter(oneYearAgo)
+    }
+
+    private fun formatDateText(startDate: Instant, endDate: Instant?): String {
+        return if (endDate != null) {
+            // display date range
+            if (isLessThanOneYearAgo(startDate) && isLessThanOneYearAgo(endDate)) {
+                dateFormatter.formatDateRangeWithoutYear(startDate, endDate)
+            } else {
+                dateFormatter.formatDateRangeWithYear(startDate, endDate)
+            }
+        } else {
+            // display only one date
+            if (isLessThanOneYearAgo(startDate)) {
+                dateFormatter.formatShortDate(startDate)
+            } else {
+                dateFormatter.formatLongDate(startDate)
+            }
+        }
     }
 
     enum class CardTypeEnum {

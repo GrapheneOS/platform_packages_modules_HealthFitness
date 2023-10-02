@@ -21,5 +21,6 @@ import java.time.Instant
 data class AggregationCardInfo(
     val healthPermissionType: HealthPermissionType,
     val aggregation: FormattedEntry.FormattedAggregation,
-    val date: Instant
+    val startDate: Instant,
+    val endDate: Instant? = null
 )
