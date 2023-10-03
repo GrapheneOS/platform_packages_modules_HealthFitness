@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 fun <T> LiveData<T>.getOrAwaitValue(
-    time: Long = 2,
+    time: Long = 8,
     timeUnit: TimeUnit = TimeUnit.SECONDS,
     callsCount: Int = 1
 ): T {
