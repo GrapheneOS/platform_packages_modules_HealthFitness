@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"உங்கள் உடல் ஆரோக்கியம் தொடர்பான தரவை அணுகும்"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"எரித்த கலோரிகளை வாசிக்கும்"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"எரிக்கப்பட்ட கலோரிகள் குறித்த தரவை வாசிக்க ஆப்ஸை அனுமதிக்கும்"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"பின்னணி வாசிப்பு"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"பின்னணி வாசிப்பு"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"பின்னணியில் உடல்நலம் தொடர்பான தரவை வாசிக்கும்"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"செயல்பாட்டின்போது எரிக்கப்பட்ட கலோரிகள்"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"செயல்பாட்டின் மூலம் எரிக்கப்பட்ட கலோரிகள்"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"செயல்பாட்டின்போது எரிக்கப்பட்ட கலோரிகள் தொடர்பான தரவை வாசிக்கும்"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"உடற்பயிற்சிப் பாதை"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"உடற்பயிற்சிப் பாதை தொடர்பான தரவை எழுதும்"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"உடற்பயிற்சிப் பாதையைப் படியுங்கள்"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"தொலைவு"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"தொலைவு"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"தொலைவு தொடர்பான தரவை வாசிக்கும்"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"உங்களிடமுள்ள எந்தவொரு ஆப்ஸாலும் Health Connectடில் புதிய தரவைச் சேர்க்க/அணுக முடியாது. ஏற்கெனவே உள்ள தரவு எதையும் இது நீக்காது.\n\nஇது இந்த ஆப்ஸுக்கு இருக்கக்கூடிய பிற அனுமதிகளை (இருப்பிடம், கேமரா, மைக்ரோஃபோன் போன்றவை) பாதிக்காது."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"அனைத்தையும் அகற்று"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"ஆப்ஸை நிர்வகித்தல்"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"ஆப்ஸ் தரவைக் காட்டு"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"ஆப்ஸ் தரவை நீக்கு"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"செயலில் இல்லாத ஆப்ஸ்"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"இந்த ஆப்ஸுக்கு இனி அணுகல் இருக்காது என்றாலும் அவை சேமித்த தரவு Health Connectடில் அப்படியே இருக்கும்"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> தரவை எழுதுவதற்கு நீங்கள் ஆப்ஸ் அனுமதிகள் வழங்கியதும் அவை இங்கே காட்டப்படும்."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"மூலங்களும் முன்னுரிமையும் செயல்படும் விதம்"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"ஆப்ஸைச் சேர்த்தல்"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"ஆப்ஸ் தரவு"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Health Connectடுக்கான அணுகல் உள்ள ஆப்ஸின் தரவு இங்கே காட்டப்படும்"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"நாள்"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"வாரம்"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"மாதம்"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"இந்த வாரம்"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"கடந்த வாரம்"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"இந்த மாதம்"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"கடந்த மாதம்"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

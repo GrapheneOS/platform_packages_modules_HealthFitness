@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"truy cập vào dữ liệu sức khoẻ của bạn"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Đọc dữ liệu về lượng calo đã đốt cháy"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Cho phép ứng dụng đọc dữ liệu về lượng calo đã đốt cháy"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"Đọc ở chế độ nền"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"đọc ở chế độ nền"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"Đọc dữ liệu sức khoẻ ở chế độ nền"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Lượng calo hoạt động đã đốt cháy"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"lượng calo hoạt động đã đốt cháy"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Đọc dữ liệu về lượng calo hoạt động đã đốt cháy"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"tuyến đường tập thể dục"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Ghi dữ liệu về tuyến đường tập thể dục"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Đọc dữ liệu về lộ trình tập luyện"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Quãng đường"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"quãng đường"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Đọc dữ liệu về quãng đường"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Bạn chưa có ứng dụng nào truy cập hoặc thêm được dữ liệu mới vào Health Connect. Điều này không xoá bất kỳ dữ liệu nào hiện có.\n\nĐiều này không ảnh hưởng đến các quyền khác mà ứng dụng có thể có, chẳng hạn như quyền đối với thông tin vị trí, máy ảnh hoặc micrô."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Xoá tất cả"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Quản lý ứng dụng"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"Xem dữ liệu ứng dụng"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Xoá dữ liệu ứng dụng"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Ứng dụng không hoạt động"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Các ứng dụng này không còn quyền truy cập nhưng vẫn có dữ liệu được lưu trữ trong Health Connect"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Sau khi bạn cấp quyền ghi dữ liệu <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> cho ứng dụng, nguồn dữ liệu sẽ xuất hiện ở đây."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cách hoạt động của nguồn dữ liệu và mức độ ưu tiên"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Thêm ứng dụng"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"Dữ liệu ứng dụng"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Dữ liệu của các ứng dụng có quyền truy cập vào Health Connect sẽ xuất hiện ở đây"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"Ngày"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Tuần"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Tháng"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Tuần này"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"Tuần trước"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Tháng này"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"Tháng trước"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>
