@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"ден соолукка байланыштуу нерселерди көрүү мүмкүнчүлүгү"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Күйгүзүлгөн калорияларды окуу"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Колдонмо күйгүзүлгөн калорияларды окуй алат"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"Фондо окуу"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"фондо окуу"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"Ден соолук тууралуу маалыматты фондо окуу"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Кыймылдаганда күйгөн калориялар"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"кыймылдаганда күйгөн калориялар"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Кыймылдаганда күйгөн калорияларды окуу"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"машыгуу маршруту"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Машыгуу маршрутун жазуу"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Машыгуу маршрутун окуу"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Аралык"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"аралык"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Аралыкты окуу"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Бир да колдонмоңуз Health Connect\'ке кирип же жаңы маалымат кошо албайт. Бул учурдагы маалыматты өчүрбөйт.\n\nБул нерсе колдонмодогу башка уруксаттарга, мисалы, жайгашкан жер, камера же микрофонго кедергисин тийгизбейт."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Баарын өчүрүү"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Колдонмону тескөө"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"Колдонмонун дайындарын көрүү"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Колдонмодогу нерселерди өчүрүү"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Иштебеген колдонмолор"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Бул колдонмолорго бул нерселер мындан ары жеткиликсиз, бирок алар Health Connect\'те сактала берет"</string>
@@ -277,7 +281,7 @@
     <string name="other_android_permissions" msgid="8051485761573324702">"Бул колдонмодогу башка Android уруксаттарын башкаруу үчүн Параметрлер &gt; Колдонмолорго өтүңүз"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"<xliff:g id="APP_NAME">%1$s</xliff:g> менен бөлүшкөн нерселериңиз анын купуялык саясаты менен корголот."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Бул колдонмодогу башка Android уруксаттарын тескөө үчүн Тууралоого өтүп, Колдонмолорду таптап коюңуз"</string>
-    <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Купуялык саясатын окуп чыгуу"</string>
+    <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Купуялык эрежелерин окуп чыгуу"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Акыркы 24 сааттын ичинде колдонулган"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Колдонмонун мүмкүнчүлүгү"</string>
     <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Учурда орнотулган шайкеш колдонмолоруңуз жок"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> маалыматын жазууга уруксат берген колдонмолоруңуз бул жерде көрсөтүлөт."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Булактар жана маанилүүлүк кандайча иштейт"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Колдонмо кошуу"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"Колдонмонун дайындары"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Колдонмолордогу Health Connect кызматына байланыштуу нерселер ушул жерде көрүнөт"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"Күн"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Апта"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Ай"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Ушул апта"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"Өткөн апта"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Ушул ай"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"Өткөн ай"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

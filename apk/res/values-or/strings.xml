@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ଡାଟାକୁ ଆକ୍ସେସ କରନ୍ତୁ"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"ଖର୍ଚ୍ଚ ହୋଇଥିବା କେଲୋରୀର ଡାଟା ପଢ଼"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"ଖର୍ଚ୍ଚ ହୋଇଥିବା କେଲୋରୀର ଡାଟା ପଢ଼ିବାକୁ ଆପକୁ ଅନୁମତି ଦିଏ"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"ପୃଷ୍ଠପଟରେ ପଢ଼ିବା"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"ପୃଷ୍ଠପଟରେ ପଢ଼ିବା"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"ପୃଷ୍ଠପଟରେ ସ୍ୱାସ୍ଥ୍ୟ ଡାଟା ପଢ଼ନ୍ତୁ"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"ଖର୍ଚ୍ଚ ହୋଇଥିବା ସକ୍ରିୟ କେଲୋରୀ"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"ଖର୍ଚ୍ଚ ହୋଇଥିବା ସକ୍ରିୟ କେଲୋରୀ"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"ଖର୍ଚ୍ଚ ହୋଇଥିବା ସକ୍ରିୟ କେଲୋରୀର ଡାଟା ପଢ଼ନ୍ତୁ"</string>
@@ -91,6 +94,7 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"ବ୍ୟାୟାମର ମାର୍ଗ"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"ବ୍ୟାୟାମର ମାର୍ଗ ତିଆରି କରନ୍ତୁ"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"ବ୍ୟାୟାମର ମାର୍ଗକୁ ପଢ଼ନ୍ତୁ"</string>
+    <string name="exercise_routes_all_read_content_description" msgid="5799035808926978381">"ସମସ୍ତ ବ୍ୟାୟାମ ରୁଟ ପଢ଼ନ୍ତୁ"</string>
     <string name="distance_uppercase_label" msgid="1420705424462077174">"ଦୂରତା"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"ଦୂରତା"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"ଦୂରତାର ଡାଟା ପଢ଼ନ୍ତୁ"</string>
@@ -268,8 +272,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"ଆପଣଙ୍କର କୌଣସି ଆପ୍ସ Health Connectରେ ନୂଆ ଡାଟାକୁ ଆକ୍ସେସ କିମ୍ବା ଯୋଗ କରିବା ପାଇଁ ସକ୍ଷମ ହେବ ନାହିଁ। ଏହା ପୂର୍ବରୁ ଥିବା କୌଣସି ଡାଟାକୁ ଡିଲିଟ କରେ ନାହିଁ।\n\nଏହି ଆପର ଲୋକେସନ, କେମେରା କିମ୍ବା ମାଇକ୍ରୋଫୋନ ପରି ରହିଥିବା ଅନ୍ୟ ଅନୁମତିଗୁଡ଼ିକୁ ଏହା ପ୍ରଭାବିତ କରେ ନାହିଁ।"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"ସବୁ କାଢ଼ି ଦିଅନ୍ତୁ"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"ଆପକୁ ପରିଚାଳନା କରନ୍ତୁ"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"ଆପ ଡାଟା ଦେଖନ୍ତୁ"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"ଆପ ଡାଟାକୁ ଡିଲିଟ କରିବେ?"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"ନିଷ୍କ୍ରିୟ ଆପ୍ସ"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"ଏହି ଆପ୍ସର ଆଉ ଆକ୍ସେସ ନାହିଁ, କିନ୍ତୁ ଏବେ ବି ଷ୍ଟୋର କରାଯାଇଥିବା ଡାଟା Health Connectରେ ଅଛି"</string>
@@ -786,22 +789,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ଡାଟା ଲେଖିବାକୁ ଆପଣ ଆପ ଅନୁମତି ଦେବା ପରେ ଏଠାରେ ସୋର୍ସଗୁଡ଼ିକ ଦେଖାଯିବ।"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ସୋର୍ସ ଏବଂ ପ୍ରାଥମିକତା କିପରି କାର୍ଯ୍ୟ କରେ"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"ଏକ ଆପ ଯୋଗ କରନ୍ତୁ"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"ଆପ ଡାଟା"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Health Connectକୁ ଆକ୍ସେସ ଥିବା ଆପ୍ସରୁ ଡାଟା ଏଠାରେ ଦେଖାଯିବ"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"ଦିନ"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"ସପ୍ତାହ"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"ମାସ"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"ଏହି ସପ୍ତାହ"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"ଗତ ସପ୍ତାହ"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"ଏହି ମାସ"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"ଗତ ମାସ"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>
