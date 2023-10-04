@@ -390,101 +390,92 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setDistinctClause(true);
     }
 
-    /** Returns List of Internal records from the cursor */
+    /** Returns List of Internal records from the cursor up to the requested size. */
     public List<RecordInternal<?>> getInternalRecords(Cursor cursor, int requestSize) {
-        return getInternalRecords(cursor, requestSize, /* packageNamesByAppIds= */ null);
+        Trace.traceBegin(TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetInternalRecords"));
+
+        List<RecordInternal<?>> recordInternalList = new ArrayList<>();
+        while (cursor.moveToNext() && recordInternalList.size() < requestSize) {
+            recordInternalList.add(getRecord(cursor, /* packageNamesByAppIds= */ null));
+        }
+
+        Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
+        return recordInternalList;
     }
 
-    /** Returns List of Internal records from the cursor */
-    @SuppressWarnings("unchecked")
-    public List<RecordInternal<?>> getInternalRecords(
+    /**
+     * Returns a list of Internal records from the cursor up to the requested size, with pagination
+     * handled.
+     *
+     * @see #getInternalRecordsPage(Cursor, int, Map)
+     */
+    public List<RecordInternal<?>> getInternalRecordsPage(Cursor cursor, int requestSize) {
+        return getInternalRecordsPage(cursor, requestSize, /* packageNamesByAppIds= */ null);
+    }
+
+    /**
+     * Returns List of Internal records from the cursor up to the requested size, with pagination
+     * handled.
+     */
+    public List<RecordInternal<?>> getInternalRecordsPage(
             Cursor cursor, int requestSize, @Nullable Map<Long, String> packageNamesByAppIds) {
         Trace.traceBegin(TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetInternalRecords"));
         List<RecordInternal<?>> recordInternalList = new ArrayList<>();
 
         int count = 0;
-        long prevStartTime = DEFAULT_LONG;
+        long prevStartTime;
         long currentStartTime = DEFAULT_LONG;
         int tempCount = 0;
         List<RecordInternal<?>> tempList = new ArrayList<>();
         while (cursor.moveToNext()) {
-            try {
-                T record =
-                        (T)
-                                RecordMapper.getInstance()
-                                        .getRecordIdToInternalRecordClassMap()
-                                        .get(getRecordIdentifier())
-                                        .getConstructor()
-                                        .newInstance();
-                record.setUuid(getCursorUUID(cursor, UUID_COLUMN_NAME));
-                record.setLastModifiedTime(getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME));
-                record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
-                record.setClientRecordVersion(
-                        getCursorLong(cursor, CLIENT_RECORD_VERSION_COLUMN_NAME));
-                record.setRecordingMethod(getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME));
-                record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
-                long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
-                DeviceInfoHelper.getInstance().populateRecordWithValue(deviceInfoId, record);
-                long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
-                String packageName =
-                        packageNamesByAppIds != null
-                                ? packageNamesByAppIds.get(appInfoId)
-                                : AppInfoHelper.getInstance().getPackageName(appInfoId);
-                record.setPackageName(packageName);
-                populateRecordValue(cursor, record);
+            T record = getRecord(cursor, packageNamesByAppIds);
 
-                prevStartTime = currentStartTime;
-                currentStartTime = getCursorLong(cursor, getStartTimeColumnName());
-                if (prevStartTime == DEFAULT_LONG || prevStartTime == currentStartTime) {
-                    // Fetch and add records with same startTime to tempList
-                    tempList.add(record);
-                    tempCount++;
-                } else {
-                    if (count == 0) {
-                        // items in tempList having startTime same as the first record from cursor
-                        // is added to final list.
-                        // This makes sure that we return at least 1 record if the count of
-                        // records with startTime same as second record exceeds requestSize.
-                        recordInternalList.addAll(tempList);
-                        count = tempCount;
-                        tempList.clear();
-                        tempCount = 0;
-                        if (count >= requestSize) {
-                            // startTime of current record should be fetched for pageToken
-                            cursor.moveToPrevious();
-                            break;
-                        }
-                        tempList.add(record);
-                        tempCount = 1;
-                    } else if (tempCount + count <= requestSize) {
-                        // Makes sure after adding records in tempList with same starTime
-                        // the count does not exceed requestSize
-                        recordInternalList.addAll(tempList);
-                        count += tempCount;
-                        tempList.clear();
-                        tempCount = 0;
-                        if (count >= requestSize) {
-                            // After adding records if count is equal to requestSize then startTime
-                            // of current fetched record should be the next page token.
-                            cursor.moveToPrevious();
-                            break;
-                        }
-                        tempList.add(record);
-                        tempCount = 1;
-                    } else {
-                        // If adding records in tempList makes count > requestSize, then ignore temp
-                        // list and startTime of records in temp list should be the next page token.
-                        tempList.clear();
-                        int lastposition = cursor.getPosition();
-                        cursor.moveToPosition(lastposition - 2);
+            prevStartTime = currentStartTime;
+            currentStartTime = getCursorLong(cursor, getStartTimeColumnName());
+            if (prevStartTime == DEFAULT_LONG || prevStartTime == currentStartTime) {
+                // Fetch and add records with same startTime to tempList
+                tempList.add(record);
+                tempCount++;
+            } else {
+                if (count == 0) {
+                    // items in tempList having startTime same as the first record from cursor
+                    // is added to final list.
+                    // This makes sure that we return at least 1 record if the count of
+                    // records with startTime same as second record exceeds requestSize.
+                    recordInternalList.addAll(tempList);
+                    count = tempCount;
+                    tempList.clear();
+                    tempCount = 0;
+                    if (count >= requestSize) {
+                        // startTime of current record should be fetched for pageToken
+                        cursor.moveToPrevious();
                         break;
                     }
+                    tempList.add(record);
+                    tempCount = 1;
+                } else if (tempCount + count <= requestSize) {
+                    // Makes sure after adding records in tempList with same starTime
+                    // the count does not exceed requestSize
+                    recordInternalList.addAll(tempList);
+                    count += tempCount;
+                    tempList.clear();
+                    tempCount = 0;
+                    if (count >= requestSize) {
+                        // After adding records if count is equal to requestSize then startTime
+                        // of current fetched record should be the next page token.
+                        cursor.moveToPrevious();
+                        break;
+                    }
+                    tempList.add(record);
+                    tempCount = 1;
+                } else {
+                    // If adding records in tempList makes count > requestSize, then ignore temp
+                    // list and startTime of records in temp list should be the next page token.
+                    tempList.clear();
+                    int lastposition = cursor.getPosition();
+                    cursor.moveToPosition(lastposition - 2);
+                    break;
                 }
-            } catch (InstantiationException
-                    | IllegalAccessException
-                    | NoSuchMethodException
-                    | InvocationTargetException exception) {
-                throw new IllegalArgumentException(exception);
             }
         }
         if (!tempList.isEmpty()) {
@@ -499,6 +490,41 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
         Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
         return recordInternalList;
+    }
+
+    @SuppressWarnings("unchecked") // uncheck cast to T
+    private T getRecord(Cursor cursor, @Nullable Map<Long, String> packageNamesByAppIds) {
+        try {
+            T record =
+                    (T)
+                            RecordMapper.getInstance()
+                                    .getRecordIdToInternalRecordClassMap()
+                                    .get(getRecordIdentifier())
+                                    .getConstructor()
+                                    .newInstance();
+            record.setUuid(getCursorUUID(cursor, UUID_COLUMN_NAME));
+            record.setLastModifiedTime(getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME));
+            record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
+            record.setClientRecordVersion(getCursorLong(cursor, CLIENT_RECORD_VERSION_COLUMN_NAME));
+            record.setRecordingMethod(getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME));
+            record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
+            long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
+            DeviceInfoHelper.getInstance().populateRecordWithValue(deviceInfoId, record);
+            long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
+            String packageName =
+                    packageNamesByAppIds != null
+                            ? packageNamesByAppIds.get(appInfoId)
+                            : AppInfoHelper.getInstance().getPackageName(appInfoId);
+            record.setPackageName(packageName);
+            populateRecordValue(cursor, record);
+
+            return record;
+        } catch (InstantiationException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | InvocationTargetException exception) {
+            throw new IllegalArgumentException(exception);
+        }
     }
 
     /** Returns is the read of this record type is enabled */

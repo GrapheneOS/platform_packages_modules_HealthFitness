@@ -300,9 +300,8 @@ public final class TransactionManager {
 
         try (Cursor cursor = read(readTableRequest)) {
             recordInternalList =
-                    helper.getInternalRecords(
-                            cursor,
-                            request.getPageSize().orElse(DEFAULT_PAGE_SIZE));
+                    helper.getInternalRecordsPage(
+                            cursor, request.getPageSize().orElse(DEFAULT_PAGE_SIZE));
             String startTimeColumnName = helper.getStartTimeColumnName();
 
             populateInternalRecordsWithExtraData(recordInternalList, readTableRequest);
