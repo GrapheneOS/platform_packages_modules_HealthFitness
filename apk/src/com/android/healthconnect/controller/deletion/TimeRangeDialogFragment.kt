@@ -35,6 +35,7 @@ import java.time.Instant
 import javax.inject.Inject
 
 /** A {@link DialogFragment} for choosing the deletion time range. */
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 @AndroidEntryPoint(DialogFragment::class)
 class TimeRangeDialogFragment : Hilt_TimeRangeDialogFragment() {
 

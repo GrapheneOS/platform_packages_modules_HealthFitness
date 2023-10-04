@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2022 The Android Open Source Project
+/*
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,12 +13,12 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.deletion.api
+package com.android.healthconnect.controller.selectabledeletion.api
 
 import android.health.connect.DeleteUsingFiltersRequest
 import android.health.connect.HealthConnectManager
-import android.health.connect.TimeInstantRangeFilter
-import com.android.healthconnect.controller.deletion.DeletionType
+import android.health.connect.datatypes.DataOrigin
+import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import javax.inject.Inject
@@ -26,9 +26,12 @@ import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
+/**
+ * Use case to delete all records from the given permission type (e.g. Steps) written by a given
+ * app.
+ */
 @Singleton
-@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
-class DeletePermissionTypeUseCase
+class DeletePermissionTypesFromAppUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
@@ -36,13 +39,18 @@ constructor(
 ) {
 
     suspend operator fun invoke(
-        deletePermissionType: DeletionType.DeletionTypeHealthPermissionTypeData,
-        timeRangeFilter: TimeInstantRangeFilter
+        deletePermissionTypesFromApp: DeletionType.DeletionTypeHealthPermissionTypesFromApp,
     ) {
-        val deleteRequest = DeleteUsingFiltersRequest.Builder().setTimeRangeFilter(timeRangeFilter)
+        val deleteRequest = DeleteUsingFiltersRequest.Builder()
 
-        HealthPermissionToDatatypeMapper.getDataTypes(deletePermissionType.healthPermissionType)
-            .map { recordType -> deleteRequest.addRecordType(recordType) }
+        deletePermissionTypesFromApp.healthPermissionTypes.map { permissionType ->
+            HealthPermissionToDatatypeMapper.getDataTypes(permissionType).map { recordType ->
+                deleteRequest.addRecordType(recordType)
+            }
+        }
+
+        deleteRequest.addDataOrigin(
+            DataOrigin.Builder().setPackageName(deletePermissionTypesFromApp.packageName).build())
 
         withContext(dispatcher) {
             healthConnectManager.deleteRecords(deleteRequest.build(), Runnable::run) {}

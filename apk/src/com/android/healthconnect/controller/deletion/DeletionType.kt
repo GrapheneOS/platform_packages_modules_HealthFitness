@@ -22,6 +22,7 @@ import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 
 /** Represents the types of deletion that the user can perform. */
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 sealed class DeletionType : Parcelable {
     class DeletionTypeAllData() : DeletionType() {
 

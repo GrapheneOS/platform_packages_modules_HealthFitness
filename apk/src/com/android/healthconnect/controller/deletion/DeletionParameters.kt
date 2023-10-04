@@ -24,6 +24,7 @@ import java.time.Duration.ofDays
 import java.time.Instant
 
 /** Represents deletion parameters chosen by the user in the deletion dialogs. */
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 data class DeletionParameters(
     var chosenRange: ChosenRange = ChosenRange.DELETE_RANGE_LAST_24_HOURS,
     val startTimeMs: Long = -1L,
