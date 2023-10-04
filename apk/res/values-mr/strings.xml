@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"तुमच्या आरोग्याशी संबंधित डेटा अ‍ॅक्सेस करा"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"घटवलेल्या कॅलरी रीड करा"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"अ‍ॅपला घटवलेल्या कॅलरी रीड करण्याची अनुमती देते"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"बॅकग्राउंडमध्ये वाचन"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"बॅकग्राउंडमध्ये वाचन"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"बॅकग्राउंडमध्ये आरोग्याशी संबंधित डेटा वाचा"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"घटवलेल्या अ‍ॅक्टिव्ह कॅलरी"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"घटवलेल्या अ‍ॅक्टिव्ह कॅलरी"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"घटवलेल्या अ‍ॅक्टिव्ह कॅलरी रीड करा"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"व्यायामाचा मार्ग"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"व्यायामाचा मार्ग लिहा"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"व्यायामाशी संबंधित मार्ग रीड करा"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"अंतराशी संबंधित डेटा"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"अंतराशी संबंधित डेटा"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"अंतराशी संबंधित डेटा रीड करा"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"तुमच्या कोणत्याही अ‍ॅप्सना Health Connect वरील नवीन डेटा अ‍ॅक्सेस करता येणार नाही किंवा जोडता येणार नाही. यामुळे सध्याचा कोणताही डेटा हटवला जात नाही.\n\nयामुळे स्थान, कॅमेरा किंवा मायक्रोफोन यांसारख्या या अ‍ॅपला असलेल्या इतर परवानग्यांवर परिणाम होत नाही."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"सर्व काढून टाका"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"अ‍ॅप व्यवस्थापित करा"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"अ‍ॅप डेटा पहा"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"अ‍ॅप डेटा हटवा"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"इनॅक्टिव्ह अ‍ॅप्स"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"या अ‍ॅप्सना यापुढे अ‍ॅक्सेस नाही, पण Health Connect मध्ये अजूनही डेटा स्टोअर केलेला राहील"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"तुम्ही ॲपला <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> डेटा राइट करण्याच्या परवानग्या दिल्यावर, स्रोत येथे दाखवली जातील."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"स्रोत &amp; प्राधान्य देणे कसे काम करते"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"एखादे ॲप जोडा"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"अ‍ॅप डेटा"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Health Connect चा अ‍ॅक्सेस असलेल्या ॲप्सचा डेटा येथे दर्शवला जाईल"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"दिवस"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"आठवडा"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"महिना"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"हा आठवडा"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"मागील आठवडा"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"हा महिना"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"मागील महिना"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

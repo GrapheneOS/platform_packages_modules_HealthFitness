@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"存取你的健康資料"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"讀取卡路里消耗量資料"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"允許應用程式讀取卡路里消耗量資料"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"背景讀取"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"背景讀取"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"在背景讀取健康資料"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"活動卡路里消耗量"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"活動卡路里消耗量"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"讀取活動卡路里消耗量資料"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"運動路線"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"寫入運動路線"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"讀取運動路線"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"距離"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"距離"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"讀取距離資料"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"所有應用程式將無法存取 Health Connect，亦無法在當中新增資料。系統並不會刪除任何現有資料。\n\n此操作不會影響此應用程式可能擁有的位置、相機或麥克風等其他權限。"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"全部移除"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"管理應用程式"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"查看應用程式資料"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"刪除應用程式資料"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"已停用的應用程式"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"這些應用程式不再擁有存取權，但仍有資料儲存在 Health Connect"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"當你授予應用程式寫入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>資料的權限後，系統就會在這裡顯示來源。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"來源和優先次序的運作方式"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"新增應用程式"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"應用程式資料"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"有 Health Connect 存取權的應用程式所提供的資料會在這裡顯示"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"日"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"週"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"月"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"本週"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"上週"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"本月"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"上個月"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>

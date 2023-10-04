@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"access your health data"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Read calories burned"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Allows the app to read the calories burned"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"Background reading"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"background reading"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"Read health data in the background"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Active calories burned"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"active calories burned"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Read active calories burned"</string>
@@ -91,6 +94,7 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"exercise route"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Write exercise route"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Read exercise route"</string>
+    <string name="exercise_routes_all_read_content_description" msgid="5799035808926978381">"Read all exercise routes"</string>
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Distance"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"distance"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Read distance"</string>
@@ -786,8 +790,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"How sources &amp; prioritization work"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Add an app"</string>
     <string name="app_data_title" msgid="6499967982291000837">"App data"</string>
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
+    <string name="no_data_footer" msgid="4777297654713673100">"Data from apps with access to Health Connect will show here"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Day"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Week"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"Month"</string>
@@ -795,4 +798,6 @@
     <string name="last_week_header" msgid="5194448963146719382">"Last week"</string>
     <string name="this_month_header" msgid="2452395268894677189">"This month"</string>
     <string name="last_month_header" msgid="1359164797239191253">"Last month"</string>
+    <string name="tab_entries" msgid="3402700951602029493">"Entries"</string>
+    <string name="tab_access" msgid="7818197975407243701">"Access"</string>
 </resources>

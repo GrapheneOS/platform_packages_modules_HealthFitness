@@ -79,6 +79,9 @@
     <string name="permgroupdesc_health" msgid="252080476917407273">"તમારો આરોગ્ય સંબંધિત ડેટા ઍક્સેસ કરો"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"વપરાયેલી કૅલરીનો ડેટા વાંચો"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"ઍપને વપરાયેલી કૅલરોની ડેટા વાંચવાની મંજૂરી આપે છે"</string>
+    <string name="background_read_uppercase_label" msgid="5727643918930403320">"બૅકગ્રાઉન્ડમાં વાંચવું"</string>
+    <string name="background_read_lowercase_label" msgid="2490218479761177680">"બૅકગ્રાઉન્ડમાં વાંચવું"</string>
+    <string name="background_read_description" msgid="5263745158443722174">"બૅકગ્રાઉન્ડમાં આરોગ્યનો ડેટા વાંચો"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"વપરાયેલી સક્રિય કૅલરી"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"વપરાયેલી સક્રિય કૅલરી"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"વપરાયેલી સક્રિય કૅલરીનો ડેટા વાંચો"</string>
@@ -91,6 +94,8 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"વ્યાયામનો રસ્તો"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"વ્યાયામનો રસ્તો બનાવો"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"વ્યાયામ કરવાની રીત વિશેની માહિતી વાંચવી"</string>
+    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
+    <skip />
     <string name="distance_uppercase_label" msgid="1420705424462077174">"અંતર"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"અંતર"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"અંતરનો ડેટા વાંચો"</string>
@@ -268,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"તમારી કોઈપણ ઍપ Health Connectમાં નવો ડેટા ઍક્સેસ કરી કે ઉમેરી શકશે નહીં. આનાથી હાલનો કોઈપણ ડેટા ડિલીટ થતો નથી.\n\nઆનાથી ઍપ ધરાવતી હોઈ શકે એવી, જેમ કે લોકેશન, કૅમેરા કે માઇક્રોફોનની પરવાનગીઓ પર કોઈ અસર પડશે નહીં."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"બધી કાઢી નાખો"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"ઍપ મેનેજ કરો"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"ઍપનો ડેટા જુઓ"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"ઍપનો ડેટા ડિલીટ કરો"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"નિષ્ક્રિય ઍપ"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"આ બધી ઍપ હવે કોઈ ઍક્સેસ ધરાવતી નથી, પરંતુ હજી પણ Health Connectમાં તેનો ડેટા સ્ટોર કરેલો છે"</string>
@@ -786,22 +790,17 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"એકવાર તમે ઍપને <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>નો ડેટા લખવાની પરવાનગીઓ આપો, ત્યાર બાદ સૉર્સ અહીં દેખાશે."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"સૉર્સના &amp; પ્રાધાન્યતા આપવાના સેટિંગની કાર્ય કરવાની રીત"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"કોઈ ઍપ ઉમેરો"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
+    <string name="app_data_title" msgid="6499967982291000837">"ઍપનો ડેટા"</string>
+    <string name="no_data_footer" msgid="4777297654713673100">"Health Connectનો ઍક્સેસ ધરાવતી ઍપનો ડેટા અહીં દેખાશે"</string>
+    <string name="date_picker_day" msgid="3076687507968958991">"દિવસ"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"અઠવાડિયું"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"મહિનો"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"આ અઠવાડિયે"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"ગયા અઠવાડિયે"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"આ મહિને"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"ગયા મહિને"</string>
+    <!-- no translation found for tab_entries (3402700951602029493) -->
     <skip />
-    <!-- no translation found for no_data_footer (4777297654713673100) -->
-    <skip />
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
+    <!-- no translation found for tab_access (7818197975407243701) -->
     <skip />
 </resources>
