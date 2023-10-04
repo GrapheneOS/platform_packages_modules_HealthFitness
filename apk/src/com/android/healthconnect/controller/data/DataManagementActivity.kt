@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
+import com.android.healthconnect.controller.onboarding.OnboardingActivityContract
 import com.android.healthconnect.controller.utils.FeatureUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
@@ -55,8 +56,8 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
             return
         }
 
-        if (maybeRedirectToOnboardingActivity(this)) {
-            return
+        if (maybeRedirectToOnboardingActivity(this) && savedInstanceState == null) {
+            openOnboardingActivity.launch(1)
         }
 
         val currentMigrationState = runBlocking { migrationViewModel.getCurrentMigrationUiState() }
@@ -118,4 +119,11 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
         }
         return true
     }
+
+    val openOnboardingActivity =
+        registerForActivityResult(OnboardingActivityContract()) { result ->
+            if (result == OnboardingActivityContract.INTENT_RESULT_CANCELLED) {
+                finish()
+            }
+        }
 }
