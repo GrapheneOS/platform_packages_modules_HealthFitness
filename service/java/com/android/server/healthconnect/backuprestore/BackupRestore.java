@@ -18,6 +18,7 @@ package com.android.server.healthconnect.backuprestore;
 
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_FETCHING_DATA;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_NONE;
 import static android.health.connect.HealthConnectDataState.RESTORE_ERROR_UNKNOWN;
@@ -36,6 +37,8 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.Backu
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorBlob;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+
+import static java.util.Objects.requireNonNull;
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
@@ -1093,7 +1096,9 @@ public final class BackupRestore {
         try (Cursor cursor = read(readTableRequest)) {
             recordInternalList =
                     recordHelper.getInternalRecords(
-                            cursor, readTableRequest.getPageSize(), mStagedPackageNamesByAppIds);
+                            cursor,
+                            readTransactionRequest.getPageSize().orElse(DEFAULT_PAGE_SIZE),
+                            mStagedPackageNamesByAppIds);
             String startTimeColumnName = recordHelper.getStartTimeColumnName();
 
             populateInternalRecordsWithExtraData(recordInternalList, readTableRequest);
@@ -1166,7 +1171,7 @@ public final class BackupRestore {
 
         StagedDatabaseContext(@NonNull Context context, UserHandle userHandle) {
             super(context);
-            Objects.requireNonNull(context);
+            requireNonNull(context);
             mCurrentForegroundUser = userHandle;
         }
 
@@ -1243,7 +1248,7 @@ public final class BackupRestore {
             final long token = Binder.clearCallingIdentity();
             try {
                 int result =
-                        Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                        requireNonNull(context.getSystemService(JobScheduler.class))
                                 .forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE)
                                 .schedule(jobInfo);
 
@@ -1260,7 +1265,7 @@ public final class BackupRestore {
 
         /** Cancels all jobs for our namespace. */
         public static void cancelAllJobs(Context context) {
-            Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+            requireNonNull(context.getSystemService(JobScheduler.class))
                     .forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE)
                     .cancelAll();
         }
