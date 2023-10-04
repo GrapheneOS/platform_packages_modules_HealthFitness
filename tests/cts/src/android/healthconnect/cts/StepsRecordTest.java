@@ -18,7 +18,7 @@ package android.healthconnect.cts;
 
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
-import static android.healthconnect.cts.TestUtils.isHardwareAutomotive;
+import static android.healthconnect.cts.utils.TestUtils.isHardwareAutomotive;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -46,6 +46,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
+import android.healthconnect.cts.utils.TestUtils;
 import android.platform.test.annotations.AppModeFull;
 import android.util.Pair;
 

@@ -19,9 +19,9 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
-import android.healthconnect.cts.TestUtils.insertRecords
-import android.healthconnect.cts.TestUtils.setAutoDeletePeriod
-import android.healthconnect.cts.TestUtils.verifyDeleteRecords
+import android.healthconnect.cts.utils.TestUtils.insertRecords
+import android.healthconnect.cts.utils.TestUtils.setAutoDeletePeriod
+import android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords
 import android.healthconnect.cts.lib.ActivityLauncher.launchDataActivity
 import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import android.healthconnect.cts.lib.UiTestUtils.stepsRecordFromTestApp

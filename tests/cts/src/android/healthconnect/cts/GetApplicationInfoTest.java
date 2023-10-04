@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts;
 
-import static android.healthconnect.cts.TestUtils.MANAGE_HEALTH_DATA;
+import static android.healthconnect.cts.utils.TestUtils.MANAGE_HEALTH_DATA;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -26,6 +26,7 @@ import android.health.connect.ApplicationInfoResponse;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.AppInfo;
+import android.healthconnect.cts.utils.TestUtils;
 import android.os.OutcomeReceiver;
 import android.platform.test.annotations.AppModeFull;
 import android.util.Log;

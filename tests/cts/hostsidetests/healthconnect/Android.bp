@@ -97,6 +97,7 @@ android_test {
         "ctstestrunner-axt",
         "cts-wm-util",
         "testng",
+        "cts-healthconnect-utils",
     ],
     test_suites: [
         "cts",
