@@ -514,8 +514,9 @@ public class TotalCaloriesBurnedRecordTest {
         Energy totEnergyAfter = newResponse.get(TotalCaloriesBurnedRecord.ENERGY_TOTAL);
         assertThat(totEnergyBefore).isNotNull();
         assertThat(totEnergyAfter).isNotNull();
-        assertThat(totEnergyBefore.getInCalories()).isWithin(1).of(4693520);
-        assertThat(totEnergyAfter.getInCalories()).isWithin(1).of(1564540);
+        // The default total calories burned for one day is approx 1564.5 kCals
+        assertThat(totEnergyBefore.getInCalories()).isWithin(1).of(4_693_520);
+        assertThat(totEnergyAfter.getInCalories()).isWithin(1).of(1_564_540);
         Set<DataOrigin> newDataOrigin =
                 newResponse.getDataOrigins(TotalCaloriesBurnedRecord.ENERGY_TOTAL);
         for (DataOrigin itr : newDataOrigin) {

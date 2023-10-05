@@ -145,7 +145,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         initAndValidateUserStateIfNeedLocked(user);
 
         if (!checkSupportPermissionsUsageIntent(packageNames, user)) {
-            logIfInDebugMode("Can find health intent declaration in ", packageNames[0]);
+            logIfInDebugMode("Cannot find health intent declaration in ", packageNames[0]);
             return;
         }
 
@@ -164,7 +164,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                     // already take care of merging permissions.
                     if (!MigrationStateManager.getInitialisedInstance().isMigrationInProgress()) {
                         HealthConnectThreadScheduler.scheduleInternalTask(
-                                () -> removeAppFromPriorityList(packageNames));
+                                () -> removeAppsFromPriorityList(packageNames));
                     }
                 } else {
                     // An app got new health permission, set current time as it's first grant
@@ -650,9 +650,10 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         }
     }
 
-    private void removeAppFromPriorityList(String[] packageNames) {
+    private void removeAppsFromPriorityList(String[] packageNames) {
         for (String packageName : packageNames) {
-            HealthDataCategoryPriorityHelper.getInstance().removeAppFromPriorityList(packageName);
+            HealthDataCategoryPriorityHelper.getInstance()
+                    .maybeRemoveAppWithoutWritePermissionsFromPriorityList(packageName);
         }
     }
 

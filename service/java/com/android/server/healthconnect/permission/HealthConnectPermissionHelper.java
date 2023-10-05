@@ -151,7 +151,9 @@ public final class HealthConnectPermissionHelper {
                     MASK_PERMISSION_FLAGS,
                     permissionFlags,
                     checkedUser);
+
             removeFromPriorityListIfRequired(packageName, permissionName);
+
         } finally {
             Binder.restoreCallingIdentity(token);
         }
@@ -220,7 +222,7 @@ public final class HealthConnectPermissionHelper {
     /**
      * Same as {@link #getHealthDataStartDateAccess(String, UserHandle)} except this method also
      * throws {@link IllegalAccessException} if health permission is in an incorrect state where
-     * first grant time can't be fetch.
+     * first grant time can't be fetched.
      */
     @NonNull
     public Instant getHealthDataStartDateAccessOrThrow(String packageName, UserHandle user) {
@@ -245,17 +247,20 @@ public final class HealthConnectPermissionHelper {
             HealthDataCategoryPriorityHelper.getInstance()
                     .appendToPriorityList(
                             packageName,
-                            HealthPermissions.getHealthDataCategory(permissionName),
-                            mContext);
+                            HealthPermissions.getHealthDataCategoryForWritePermission(
+                                    permissionName),
+                            mContext,
+                            /* isInactiveApp= */ false);
         }
     }
 
     private void removeFromPriorityListIfRequired(String packageName, String permissionName) {
         if (HealthPermissions.isWritePermission(permissionName)) {
             HealthDataCategoryPriorityHelper.getInstance()
-                    .removeFromPriorityList(
+                    .maybeRemoveAppFromPriorityList(
                             packageName,
-                            HealthPermissions.getHealthDataCategory(permissionName),
+                            HealthPermissions.getHealthDataCategoryForWritePermission(
+                                    permissionName),
                             this,
                             mContext.getUser());
         }

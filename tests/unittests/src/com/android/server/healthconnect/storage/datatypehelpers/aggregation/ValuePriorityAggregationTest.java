@@ -25,24 +25,36 @@ import static org.mockito.Mockito.when;
 
 import android.database.Cursor;
 
+import com.android.modules.utils.testing.ExtendedMockitoRule;
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.storage.request.AggregateParams;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.quality.Strictness;
 
 import java.util.Collections;
 import java.util.List;
 
 public class ValuePriorityAggregationTest {
     @Mock Cursor mCursor;
+    @Mock HealthConnectDeviceConfigManager mHealthConnectDeviceConfigManager;
 
     PriorityRecordsAggregator mOneGroupAggregator;
     PriorityRecordsAggregator mMultiGroupAggregator;
     AggregateParams.PriorityAggregationExtraParams mParams =
             new AggregateParams.PriorityAggregationExtraParams("start", "end");
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(HealthConnectDeviceConfigManager.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
 
     @Before
     public void setUp() {
@@ -60,6 +72,10 @@ public class ValuePriorityAggregationTest {
                                 0,
                                 mParams,
                                 false));
+        when(HealthConnectDeviceConfigManager.getInitialisedInstance())
+                .thenReturn(mHealthConnectDeviceConfigManager);
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(false);
     }
 
     @Test
@@ -363,5 +379,47 @@ public class ValuePriorityAggregationTest {
         when(mCursor.moveToNext()).thenReturn(true, true, true, false);
         mOneGroupAggregator.calculateAggregation(mCursor);
         assertThat(mOneGroupAggregator.getResultForGroup(0)).isEqualTo(40);
+    }
+
+    @Test
+    public void testOneStepRecord_newAggregation_noPriority_notAccountedForAggregation() {
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(true);
+        doReturn(createStepsData(10, 20, 10, Integer.MIN_VALUE, 1))
+                .when(mOneGroupAggregator)
+                .readNewData(mCursor);
+        when(mCursor.moveToNext()).thenReturn(true, false);
+        mOneGroupAggregator.calculateAggregation(mCursor);
+        assertThat(mOneGroupAggregator.getResultForGroup(0)).isNull();
+    }
+
+    @Test
+    public void
+            testTwoStepRecords_newAggregation_recordWithNoPriority_notAccountedForAggregation() {
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(true);
+        doReturn(
+                        createStepsData(15, 15, 10, Integer.MIN_VALUE, 10),
+                        createStepsData(15, 15, 20, 100, 20))
+                .when(mOneGroupAggregator)
+                .readNewData(mCursor);
+        when(mCursor.moveToNext()).thenReturn(true, true, false);
+        mOneGroupAggregator.calculateAggregation(mCursor);
+        assertThat(mOneGroupAggregator.getResultForGroup(0)).isEqualTo(20);
+    }
+
+    @Test
+    public void
+            testTwoStepRecords_newAggregation_noRecordsWithPriority_notAccountedForAggregation() {
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(true);
+        doReturn(
+                        createStepsData(15, 15, 10, Integer.MIN_VALUE, 10),
+                        createStepsData(15, 15, 20, Integer.MIN_VALUE, 20))
+                .when(mOneGroupAggregator)
+                .readNewData(mCursor);
+        when(mCursor.moveToNext()).thenReturn(true, true, false);
+        mOneGroupAggregator.calculateAggregation(mCursor);
+        assertThat(mOneGroupAggregator.getResultForGroup(0)).isNull();
     }
 }

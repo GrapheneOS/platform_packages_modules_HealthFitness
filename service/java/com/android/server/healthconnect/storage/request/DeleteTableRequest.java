@@ -129,6 +129,11 @@ public class DeleteTableRequest {
         return mIdColumnName;
     }
 
+    @Nullable
+    public List<String> getIds() {
+        return mIds;
+    }
+
     @NonNull
     public String getTableName() {
         return mTableName;

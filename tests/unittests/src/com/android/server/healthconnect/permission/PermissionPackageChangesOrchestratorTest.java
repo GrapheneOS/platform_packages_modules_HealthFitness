@@ -35,6 +35,7 @@ import android.os.UserHandle;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.modules.utils.testing.ExtendedMockitoRule;
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
@@ -52,6 +53,7 @@ public class PermissionPackageChangesOrchestratorTest {
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
                     .mockStatic(TransactionManager.class)
+                    .mockStatic(HealthConnectDeviceConfigManager.class)
                     .mockStatic(HealthDataCategoryPriorityHelper.class)
                     .setStrictness(Strictness.LENIENT)
                     .build();
@@ -64,6 +66,7 @@ public class PermissionPackageChangesOrchestratorTest {
     @Mock private HealthPermissionIntentAppsTracker mTracker;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private TransactionManager mTransactionManager;
+    @Mock private HealthConnectDeviceConfigManager mHealthConnectDeviceConfigManager;
     @Mock private UserHandle mUserHandle;
 
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
@@ -73,7 +76,8 @@ public class PermissionPackageChangesOrchestratorTest {
         when(HealthDataCategoryPriorityHelper.getInstance())
                 .thenReturn(mHealthDataCategoryPriorityHelper);
         when(TransactionManager.getInitialisedInstance()).thenReturn(mTransactionManager);
-
+        when(HealthConnectDeviceConfigManager.getInitialisedInstance())
+                .thenReturn(mHealthConnectDeviceConfigManager);
         mContext = ApplicationProvider.getApplicationContext();
         mCurrentUid = mContext.getPackageManager().getPackageUid(SELF_PACKAGE_NAME, 0);
         mOrchestrator =
@@ -113,11 +117,15 @@ public class PermissionPackageChangesOrchestratorTest {
     }
 
     @Test
-    public void testPackageRemoved_removesFromPriorityList() {
+    public void testPackageRemoved_removesFromPriorityList_whenNewAggregationOff() {
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(false);
         mOrchestrator.onReceive(
                 mContext,
                 buildPackageIntent(Intent.ACTION_PACKAGE_REMOVED, /* isReplaced= */ false));
-        assertThat(mHealthDataCategoryPriorityHelper.getPriorityOrder(HealthDataCategory.SLEEP))
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getPriorityOrder(
+                                HealthDataCategory.SLEEP, mContext))
                 .isEmpty();
     }
 
