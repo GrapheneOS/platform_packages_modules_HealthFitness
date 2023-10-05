@@ -25,24 +25,36 @@ import static org.mockito.Mockito.when;
 
 import android.database.Cursor;
 
+import com.android.modules.utils.testing.ExtendedMockitoRule;
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.storage.request.AggregateParams;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.quality.Strictness;
 
 import java.util.Collections;
 import java.util.List;
 
 public class SessionPriorityAggregationTest {
-    @Mock Cursor mCursor;
-
     PriorityRecordsAggregator mOneGroupAggregator;
     PriorityRecordsAggregator mMultiGroupAggregator;
     AggregateParams.PriorityAggregationExtraParams mParams =
             new AggregateParams.PriorityAggregationExtraParams("start", "end");
+
+    @Rule
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(HealthConnectDeviceConfigManager.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
+    @Mock Cursor mCursor;
+    @Mock HealthConnectDeviceConfigManager mHealthConnectDeviceConfigManager;
 
     @Before
     public void setUp() {
@@ -60,6 +72,10 @@ public class SessionPriorityAggregationTest {
                                 0,
                                 mParams,
                                 false));
+        when(HealthConnectDeviceConfigManager.getInitialisedInstance())
+                .thenReturn(mHealthConnectDeviceConfigManager);
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(false);
     }
 
     @Test
@@ -128,6 +144,47 @@ public class SessionPriorityAggregationTest {
         assertThat(mMultiGroupAggregator.getResultForGroup(0)).isNull(); // Group 10-20
         assertThat(mMultiGroupAggregator.getResultForGroup(1)).isEqualTo(4.0); // Group 20-30
         assertThat(mMultiGroupAggregator.getResultForGroup(2)).isEqualTo(1.0); // Group 30-40
+    }
+
+    @Test
+    public void testOneSession_newAggregation_noPriority_returnsNothing() {
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(true);
+        doReturn(createSessionData(10, 20, Integer.MIN_VALUE))
+                .when(mOneGroupAggregator)
+                .readNewData(mCursor);
+        when(mCursor.moveToNext()).thenReturn(true, false);
+        mOneGroupAggregator.calculateAggregation(mCursor);
+        assertThat(mOneGroupAggregator.getResultForGroup(0)).isNull();
+    }
+
+    @Test
+    public void testTwoSessions_newAggregation_sessionWithoutPriority_isNotCounted() {
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(true);
+        doReturn(
+                        createSessionData(5, 18, 1),
+                        createSessionData(12, 25, Integer.MIN_VALUE, List.of(13L), List.of(16L)))
+                .when(mOneGroupAggregator)
+                .readNewData(mCursor);
+        when(mCursor.moveToNext()).thenReturn(true, true, false);
+        mOneGroupAggregator.calculateAggregation(mCursor);
+        assertThat(mOneGroupAggregator.getResultForGroup(0)).isEqualTo(8.0);
+    }
+
+    // TODO testTwoSessions_noneHasPriority_returnsNothing
+    @Test
+    public void testTwoSessions_newAggregation_sessionsWithoutPriority_returnsNull() {
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(true);
+        doReturn(
+                        createSessionData(5, 18, Integer.MIN_VALUE),
+                        createSessionData(12, 25, Integer.MIN_VALUE, List.of(13L), List.of(16L)))
+                .when(mOneGroupAggregator)
+                .readNewData(mCursor);
+        when(mCursor.moveToNext()).thenReturn(true, true, false);
+        mOneGroupAggregator.calculateAggregation(mCursor);
+        assertThat(mOneGroupAggregator.getResultForGroup(0)).isNull();
     }
 
     @Test
