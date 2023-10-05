@@ -59,6 +59,9 @@ fun getMetaData(): Metadata {
         .build()
 }
 
+fun getDataOrigin(packageName: String): DataOrigin =
+    DataOrigin.Builder().setPackageName(packageName).build()
+
 // region apps
 
 const val TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app"
