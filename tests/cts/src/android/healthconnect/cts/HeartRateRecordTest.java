@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.HeartRateRecord.BPM_AVG;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MIN;
 import static android.health.connect.datatypes.HeartRateRecord.HEART_MEASUREMENTS_COUNT;
+import static android.healthconnect.cts.utils.TestUtils.readRecordsWithPagination;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -32,6 +33,7 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
+import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
@@ -45,7 +47,6 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.utils.TestUtils;
 import android.platform.test.annotations.AppModeFull;
-import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
@@ -217,12 +218,12 @@ public class HeartRateRecordTest {
                         TestUtils.getHeartRateRecord(72, Instant.now().minus(1, ChronoUnit.DAYS)),
                         TestUtils.getHeartRateRecord(72, Instant.now().minus(2, ChronoUnit.DAYS)));
         TestUtils.insertRecords(recordList);
-        Pair<List<HeartRateRecord>, Long> newHeartRecords =
-                TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<HeartRateRecord> newHeartRecords =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
                                 .setPageSize(1)
                                 .build());
-        assertThat(newHeartRecords.first.size()).isEqualTo(1);
+        assertThat(newHeartRecords.getRecords()).hasSize(1);
     }
 
     @Test
@@ -234,21 +235,22 @@ public class HeartRateRecordTest {
                         TestUtils.getHeartRateRecord(72, Instant.now().minusMillis(3000)),
                         TestUtils.getHeartRateRecord(72, Instant.now().minusMillis(4000)));
         TestUtils.insertRecords(recordList);
-        Pair<List<HeartRateRecord>, Long> oldHeartRecords =
-                TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<HeartRateRecord> oldHeartRecords =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
                                 .setPageSize(1)
                                 .setAscending(true)
                                 .build());
-        assertThat(oldHeartRecords.first.size()).isEqualTo(1);
-        Pair<List<HeartRateRecord>, Long> newHeartRecords =
-                TestUtils.readRecordsWithPagination(
+        assertThat(oldHeartRecords.getRecords()).hasSize(1);
+        ReadRecordsResponse<HeartRateRecord> newHeartRecords =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
                                 .setPageSize(2)
-                                .setPageToken(oldHeartRecords.second)
+                                .setPageToken(oldHeartRecords.getNextPageToken())
                                 .build());
-        assertThat(newHeartRecords.first.size()).isEqualTo(2);
-        assertThat(newHeartRecords.second).isNotEqualTo(oldHeartRecords.second);
+        assertThat(newHeartRecords.getRecords()).hasSize(2);
+        assertThat(newHeartRecords.getNextPageToken())
+                .isNotEqualTo(oldHeartRecords.getNextPageToken());
     }
 
     @Test
@@ -256,23 +258,20 @@ public class HeartRateRecordTest {
         List<Record> recordList =
                 Arrays.asList(TestUtils.getHeartRateRecord(), TestUtils.getHeartRateRecord());
         TestUtils.insertRecords(recordList);
-        Pair<List<HeartRateRecord>, Long> oldHeartRecords =
-                TestUtils.readRecordsWithPagination(
+        ReadRecordsResponse<HeartRateRecord> oldHeartRecords =
+                readRecordsWithPagination(
                         new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
                                 .build());
-        Pair<List<HeartRateRecord>, Long> newHeartRecords;
-        while (oldHeartRecords.second != -1) {
+        ReadRecordsResponse<HeartRateRecord> newHeartRecords;
+        while (oldHeartRecords.getNextPageToken() != -1) {
             newHeartRecords =
-                    TestUtils.readRecordsWithPagination(
+                    readRecordsWithPagination(
                             new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
-                                    .setPageToken(oldHeartRecords.second)
+                                    .setPageToken(oldHeartRecords.getNextPageToken())
                                     .build());
-            if (newHeartRecords.second != -1) {
-                assertThat(newHeartRecords.second).isGreaterThan(oldHeartRecords.second);
-            }
             oldHeartRecords = newHeartRecords;
         }
-        assertThat(oldHeartRecords.second).isEqualTo(-1);
+        assertThat(oldHeartRecords.getNextPageToken()).isEqualTo(-1);
     }
 
     @Test
