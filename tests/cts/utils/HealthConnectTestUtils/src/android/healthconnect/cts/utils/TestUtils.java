@@ -126,6 +126,7 @@ import android.os.UserHandle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -161,7 +162,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public final class TestUtils {
-    public static final String MANAGE_HEALTH_PERMISSION =
+    public static final String MANAGE_HEALTH_PERMISSIONS =
             HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
@@ -820,6 +821,17 @@ public final class TestUtils {
         return receiver.getResponse().getDataMigrationState();
     }
 
+    public static int getHealthConnectDataRestoreState() throws InterruptedException {
+        HealthConnectReceiver<HealthConnectDataState> receiver = new HealthConnectReceiver<>();
+        runWithShellPermissionIdentity(
+                () ->
+                        getHealthConnectManager()
+                                .getHealthConnectDataState(
+                                        Executors.newSingleThreadExecutor(), receiver),
+                MANAGE_HEALTH_DATA);
+        return receiver.getResponse().getDataRestoreState();
+    }
+
     public static List<AppInfo> getApplicationInfo() throws InterruptedException {
         HealthConnectReceiver<ApplicationInfoResponse> receiver = new HealthConnectReceiver<>();
         getHealthConnectManager()
@@ -1150,7 +1162,7 @@ public final class TestUtils {
                         service.getClass()
                                 .getMethod("grantHealthPermission", String.class, String.class)
                                 .invoke(service, pkgName, permission),
-                MANAGE_HEALTH_PERMISSION);
+                MANAGE_HEALTH_PERMISSIONS);
     }
 
     public static void revokePermission(String pkgName, String permission) {
@@ -1164,7 +1176,48 @@ public final class TestUtils {
                                         String.class,
                                         String.class)
                                 .invoke(service, pkgName, permission, null),
-                MANAGE_HEALTH_PERMISSION);
+                MANAGE_HEALTH_PERMISSIONS);
+    }
+
+    /**
+     * Utility method to call {@link HealthConnectManager#revokeAllHealthPermissions(String,
+     * String)}.
+     */
+    public static void revokeAllPermissions(String packageName, @Nullable String reason) {
+        HealthConnectManager service = getHealthConnectManager();
+        runWithShellPermissionIdentity(
+                () ->
+                        service.getClass()
+                                .getMethod("revokeAllHealthPermissions", String.class, String.class)
+                                .invoke(service, packageName, reason),
+                MANAGE_HEALTH_PERMISSIONS);
+    }
+
+    /**
+     * Same as {@link #revokeAllPermissions(String, String)} but with a delay to wait for grant time
+     * to be updated.
+     */
+    public static void revokeAllPermissionsWithDelay(String packageName, @Nullable String reason)
+            throws InterruptedException {
+        revokeAllPermissions(packageName, reason);
+        Thread.sleep(500);
+    }
+
+    /**
+     * Utility method to call {@link
+     * HealthConnectManager#getHealthDataHistoricalAccessStartDate(String)}.
+     */
+    public static Instant getHealthDataHistoricalAccessStartDate(String packageName) {
+        HealthConnectManager service = getHealthConnectManager();
+        return (Instant)
+                runWithShellPermissionIdentity(
+                        () ->
+                                service.getClass()
+                                        .getMethod(
+                                                "getHealthDataHistoricalAccessStartDate",
+                                                String.class)
+                                        .invoke(service, packageName),
+                        MANAGE_HEALTH_PERMISSIONS);
     }
 
     public static void revokeHealthPermissions(String packageName) {
