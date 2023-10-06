@@ -231,7 +231,7 @@ public class DataPermissionEnforcer {
 
     private boolean isPermissionGranted(
             String permissionName, AttributionSource attributionSource) {
-        return mPermissionManager.checkPermissionForStartDataDelivery(
+        return mPermissionManager.checkPermissionForDataDelivery(
                         permissionName, attributionSource, null)
                 == PERMISSION_GRANTED;
     }
