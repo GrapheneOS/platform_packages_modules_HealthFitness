@@ -18,23 +18,33 @@ package android.healthconnect;
 
 import static android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP;
 import static android.health.connect.HealthPermissions.READ_EXERCISE_ROUTE;
+
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+
+import static org.mockito.Mockito.reset;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 
 import androidx.test.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Set;
 
+@RunWith(AndroidJUnit4.class)
 public class HealthPermissionsTest {
     private static final String FAIL_MESSAGE =
             "Add new health permission to ALL_EXPECTED_HEALTH_PERMISSIONS and "
@@ -121,11 +131,18 @@ public class HealthPermissionsTest {
                     HealthPermissions.WRITE_RESTING_HEART_RATE);
     private PackageManager mPackageManager;
     private Context mContext;
+    @Mock private PackageInfo mPackageInfo1;
 
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
         mContext = InstrumentationRegistry.getTargetContext();
         mPackageManager = mContext.getPackageManager();
+    }
+
+    @After
+    public void tearDown() {
+        reset(mPackageInfo1);
     }
 
     @Test
@@ -164,6 +181,78 @@ public class HealthPermissionsTest {
                         mContext.getPackageManager()
                                 .checkPermission(READ_EXERCISE_ROUTE, healthControllerPackageName))
                 .isEqualTo(PackageManager.PERMISSION_GRANTED);
+    }
+
+    @Test
+    public void testGetDataCategoriesWithWritePermissionsForPackage_returnsCorrectSet() {
+        mPackageInfo1.requestedPermissions =
+                new String[] {
+                    HealthPermissions.WRITE_STEPS,
+                    HealthPermissions.WRITE_SLEEP,
+                    HealthPermissions.READ_HEART_RATE,
+                    HealthPermissions.WRITE_OVULATION_TEST
+                };
+        mPackageInfo1.requestedPermissionsFlags =
+                new int[] {
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                    0,
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED
+                };
+
+        Set<Integer> expectedResult =
+                Set.of(HealthDataCategory.ACTIVITY, HealthDataCategory.CYCLE_TRACKING);
+        Set<Integer> actualResult =
+                HealthPermissions.getDataCategoriesWithWritePermissionsForPackage(
+                        mPackageInfo1, mContext);
+        assertThat(actualResult).isEqualTo(expectedResult);
+    }
+
+    @Test
+    public void
+            testPackageHasWriteHealthPermissionsForCategory_ifNoWritePermissions_returnsFalse() {
+        mPackageInfo1.requestedPermissions =
+                new String[] {
+                    HealthPermissions.WRITE_EXERCISE,
+                    HealthPermissions.WRITE_SLEEP,
+                    HealthPermissions.READ_HEART_RATE,
+                    HealthPermissions.WRITE_OVULATION_TEST
+                };
+        mPackageInfo1.requestedPermissionsFlags =
+                new int[] {
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                    0,
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED
+                };
+
+        assertThat(
+                        HealthPermissions.getPackageHasWriteHealthPermissionsForCategory(
+                                mPackageInfo1, HealthDataCategory.SLEEP, mContext))
+                .isFalse();
+    }
+
+    @Test
+    public void testPackageHasWriteHealthPermissionsForCategory_ifWritePermissions_returnsTrue() {
+        mPackageInfo1.requestedPermissions =
+                new String[] {
+                    HealthPermissions.WRITE_STEPS,
+                    HealthPermissions.WRITE_SLEEP,
+                    HealthPermissions.READ_HEART_RATE,
+                    HealthPermissions.WRITE_OVULATION_TEST
+                };
+        mPackageInfo1.requestedPermissionsFlags =
+                new int[] {
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                    0,
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED
+                };
+
+        assertThat(
+                        HealthPermissions.getPackageHasWriteHealthPermissionsForCategory(
+                                mPackageInfo1, HealthDataCategory.ACTIVITY, mContext))
+                .isTrue();
     }
 
     private PermissionInfo[] getHealthPermissionInfos() throws Exception {

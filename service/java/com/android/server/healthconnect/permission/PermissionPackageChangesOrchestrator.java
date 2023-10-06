@@ -107,7 +107,8 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
                 HealthConnectThreadScheduler.scheduleInternalTask(
                         () ->
                                 HealthDataCategoryPriorityHelper.getInstance()
-                                        .removeAppFromPriorityList(packageName));
+                                        .maybeRemoveAppWithoutWritePermissionsFromPriorityList(
+                                                packageName));
             }
         } else if (isHealthIntentRemoved) {
             // Revoke all health permissions as we don't grant health permissions if permissions

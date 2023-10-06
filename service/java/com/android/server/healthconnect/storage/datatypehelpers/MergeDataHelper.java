@@ -29,6 +29,7 @@ import android.annotation.NonNull;
 import android.database.Cursor;
 import android.util.Pair;
 
+import com.android.server.healthconnect.HealthConnectDeviceConfigManager;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TimeUtils;
 
@@ -134,7 +135,7 @@ public final class MergeDataHelper {
      * <p>Example: App1 > App2 > App3 Before:App1 : T1-T2 -> value1, App2 : T1-T3 -> value2 , App3 :
      * T2-T4 -> value3
      *
-     * <p>After merging overlapping data between T1-T4 below values will be taken from eachapp:
+     * <p>After merging overlapping data between T1-T4 below values will be taken from each app:
      *
      * <p>App1 : T1-T2 -> value1, App2 : T2-T3 -> value2*(T3-T2)/(T3-T1), App3 : T3-T4 ->
      * value3*(T4-T3)/(T4-T2)
@@ -161,7 +162,8 @@ public final class MergeDataHelper {
                     continue;
                 }
                 RecordData recordData = getRecordData(mCursor);
-                if (recordData != null) {
+
+                if (shouldAddDataPoint(recordData)) {
                     mBufferWindow.add(recordData);
                 }
             }
@@ -174,6 +176,17 @@ public final class MergeDataHelper {
             mBufferWindow = eliminateEarliestRecordOverlaps(mBufferWindow);
         }
         return getTotal();
+    }
+
+    // Only add this datapoint to the TreeSet in the new behaviour
+    // if its app has a priority assigned
+    private boolean shouldAddDataPoint(RecordData recordData) {
+        if (recordData == null) return false;
+        if (HealthConnectDeviceConfigManager.getInitialisedInstance()
+                .isAggregationSourceControlsEnabled()) {
+            return mReversedPriorityList.contains(recordData.mAppId);
+        }
+        return true;
     }
 
     private boolean cursorOutOfRange() {
@@ -309,6 +322,7 @@ public final class MergeDataHelper {
     private RecordData getRecordData(Cursor cursor) {
         if (cursor != null) {
             double factor = 1;
+
             Instant startTime =
                     Instant.ofEpochMilli(
                             StorageUtils.getCursorLong(cursor, getStartTimeColumnName()));

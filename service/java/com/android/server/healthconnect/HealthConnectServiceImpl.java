@@ -240,6 +240,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void onUserSwitching(UserHandle currentForegroundUser) {
         mCurrentForegroundUser = currentForegroundUser;
         mBackupRestore.setupForUser(currentForegroundUser);
+        HealthDataCategoryPriorityHelper.getInstance().maybeAddInactiveAppsToPriorityList(mContext);
     }
 
     @Override
@@ -463,7 +464,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 mDataPermissionEnforcer.enforceBackgroundReadRestrictions(
                                         uid,
                                         pid,
-                                        /*errorMessage=*/ attributionSource.getPackageName()
+                                        /* errorMessage= */ attributionSource.getPackageName()
                                                 + "must be in foreground to call aggregate method");
                             }
                             tryAcquireApiCallQuota(
@@ -933,7 +934,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             mDataPermissionEnforcer.enforceBackgroundReadRestrictions(
                                     uid,
                                     pid,
-                                    /*errorMessage=*/ attributionSource.getPackageName()
+                                    /* errorMessage= */ attributionSource.getPackageName()
                                             + "must be in foreground to call getChangeLogs method");
                         }
 
@@ -1235,10 +1236,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         enforceIsForegroundUser(userHandle);
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
+                        HealthDataCategoryPriorityHelper priorityHelper =
+                                HealthDataCategoryPriorityHelper.getInstance();
                         List<DataOrigin> dataOriginInPriorityOrder =
-                                HealthDataCategoryPriorityHelper.getInstance()
-                                        .getPriorityOrder(dataCategory)
-                                        .stream()
+                                priorityHelper.getPriorityOrder(dataCategory, mContext).stream()
                                         .map(
                                                 (name) ->
                                                         new DataOrigin.Builder()
