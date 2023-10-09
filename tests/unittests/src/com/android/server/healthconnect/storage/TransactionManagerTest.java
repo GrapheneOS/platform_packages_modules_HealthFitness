@@ -53,10 +53,12 @@ import org.junit.runner.RunWith;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class TransactionManagerTest {
+    private static final Map<String, Boolean> NO_EXTRA_PERMS = Map.of();
     private static final String TEST_PACKAGE_NAME = "package.name";
     @Rule public final HealthConnectDatabaseTestRule testRule = new HealthConnectDatabaseTestRule();
 
@@ -83,6 +85,7 @@ public class TransactionManagerTest {
         long endTimeMillis = 456;
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
+                        TEST_PACKAGE_NAME,
                         createStepsRecord(startTimeMillis, endTimeMillis, 100),
                         createBloodPressureRecord(endTimeMillis, 120.0, 80.0));
 
@@ -90,12 +93,14 @@ public class TransactionManagerTest {
         List<UUID> bloodPressureUuids = ImmutableList.of(UUID.fromString(uuids.get(1)));
         ReadTransactionRequest request =
                 new ReadTransactionRequest(
+                        TEST_PACKAGE_NAME,
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 stepsUuids,
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
                                 bloodPressureUuids),
-                        /* startDateAccess= */ 0);
+                        /* startDateAccess= */ 0,
+                        NO_EXTRA_PERMS);
 
         List<RecordInternal<?>> records = mTransactionManager.readRecordsByIds(request);
         assertThat(records).hasSize(2);
@@ -109,7 +114,8 @@ public class TransactionManagerTest {
         for (int i = 0; i < MAXIMUM_PAGE_SIZE + 1; i++) {
             inputRecords.add(createStepsRecord(i, i + 1, 100));
         }
-        List<String> uuidStrings = mTransactionTestUtils.insertRecords(inputRecords);
+        List<String> uuidStrings =
+                mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, inputRecords);
         List<UUID> uuids = new ArrayList<>(uuidStrings.size());
         for (String uuidString : uuidStrings) {
             uuids.add(UUID.fromString(uuidString));
@@ -117,8 +123,10 @@ public class TransactionManagerTest {
 
         ReadTransactionRequest request =
                 new ReadTransactionRequest(
+                        TEST_PACKAGE_NAME,
                         ImmutableMap.of(RecordTypeIdentifier.RECORD_TYPE_STEPS, uuids),
-                        /* startDateAccess= */ 0);
+                        /* startDateAccess= */ 0,
+                        NO_EXTRA_PERMS);
 
         List<RecordInternal<?>> records = mTransactionManager.readRecordsByIds(request);
         assertThat(records).hasSize(MAXIMUM_PAGE_SIZE);
@@ -128,7 +136,9 @@ public class TransactionManagerTest {
     public void readRecordsAndNextRecordStartTime_returnsRecordsAndTimestamp() {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
-                        createStepsRecord(400, 500, 100), createStepsRecord(500, 600, 100));
+                        TEST_PACKAGE_NAME,
+                        createStepsRecord(400, 500, 100),
+                        createStepsRecord(500, 600, 100));
 
         ReadRecordsRequestUsingFilters<StepsRecord> request =
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
@@ -142,7 +152,7 @@ public class TransactionManagerTest {
 
         ReadTransactionRequest readTransactionRequest =
                 new ReadTransactionRequest(
-                        "package.name",
+                        TEST_PACKAGE_NAME,
                         request.toReadRecordsRequestParcel(),
                         /* startDateAccess= */ 0,
                         /* enforceSelfRead= */ false,
@@ -159,12 +169,14 @@ public class TransactionManagerTest {
     public void readRecordsAndNextRecordStartTime_multipleRecordTypes_throws() {
         ReadTransactionRequest request =
                 new ReadTransactionRequest(
+                        TEST_PACKAGE_NAME,
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(UUID.randomUUID()),
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
                                 List.of(UUID.randomUUID())),
-                        /* startDateAccess= */ 0);
+                        /* startDateAccess= */ 0,
+                        NO_EXTRA_PERMS);
 
         Throwable thrown =
                 assertThrows(

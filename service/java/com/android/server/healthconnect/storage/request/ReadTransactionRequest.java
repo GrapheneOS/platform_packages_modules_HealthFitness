@@ -49,7 +49,7 @@ public class ReadTransactionRequest {
             ReadRecordsRequestParcel request,
             long startDateAccess,
             boolean enforceSelfRead,
-            Map<String, Boolean> extraReadPermsMapping) {
+            Map<String, Boolean> extraPermsState) {
         RecordHelper<?> recordHelper =
                 RecordHelperProvider.getInstance().getRecordHelper(request.getRecordType());
         mReadTableRequests =
@@ -59,19 +59,26 @@ public class ReadTransactionRequest {
                                 packageName,
                                 enforceSelfRead,
                                 startDateAccess,
-                                extraReadPermsMapping));
+                                extraPermsState));
         mPageSize = request.getPageSize();
     }
 
     public ReadTransactionRequest(
-            Map<Integer, List<UUID>> recordTypeToUuids, long startDateAccess) {
+            String packageName,
+            Map<Integer, List<UUID>> recordTypeToUuids,
+            long startDateAccess,
+            Map<String, Boolean> extraPermsState) {
         mReadTableRequests = new ArrayList<>();
         recordTypeToUuids.forEach(
                 (recordType, uuids) ->
                         mReadTableRequests.add(
                                 RecordHelperProvider.getInstance()
                                         .getRecordHelper(recordType)
-                                        .getReadTableRequest(uuids, startDateAccess)));
+                                        .getReadTableRequest(
+                                                packageName,
+                                                uuids,
+                                                startDateAccess,
+                                                extraPermsState)));
         mPageSize = DEFAULT_INT;
     }
 

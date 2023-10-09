@@ -159,6 +159,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -605,7 +606,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 Collections.unmodifiableMap(
                                         mDataPermissionEnforcer
                                                 .collectExtraReadPermissionToStateMapping(
-                                                        request.getRecordType(),
+                                                        Set.of(request.getRecordType()),
                                                         attributionSource));
 
                         Trace.traceBegin(TRACE_TAG_READ, TAG_READ);
@@ -932,9 +933,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
+        final String callerPackageName = Objects.requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES)
-                        .setPackageName(attributionSource.getPackageName());
+                        .setPackageName(callerPackageName);
 
         HealthConnectThreadScheduler.schedule(
                 mContext,
@@ -951,31 +953,41 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             mDataPermissionEnforcer.enforceBackgroundReadRestrictions(
                                     uid,
                                     pid,
-                                    /* errorMessage= */ attributionSource.getPackageName()
+                                    /* errorMessage= */ callerPackageName
                                             + "must be in foreground to call getChangeLogs method");
                         }
 
                         ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
                                 ChangeLogsRequestHelper.getRequest(
-                                        attributionSource.getPackageName(), request.getToken());
+                                        callerPackageName, request.getToken());
                         tryAcquireApiCallQuota(
                                 uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
                         mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                                 changeLogsTokenRequest.getRecordTypes(), attributionSource);
                         Instant startDateAccessInstant =
                                 mPermissionHelper.getHealthDataStartDateAccessOrThrow(
-                                        attributionSource.getPackageName(), userHandle);
+                                        callerPackageName, userHandle);
                         long startDateAccessEpochMilli = startDateAccessInstant.toEpochMilli();
                         final ChangeLogsHelper.ChangeLogsResponse changeLogsResponse =
                                 ChangeLogsHelper.getInstance()
                                         .getChangeLogs(changeLogsTokenRequest, request);
 
+                        Map<Integer, List<UUID>> recordTypeToInsertedUuids =
+                                ChangeLogsHelper.getRecordTypeToInsertedUuids(
+                                        changeLogsResponse.getChangeLogsMap());
+
+                        Map<String, Boolean> extraReadPermsToGrantState =
+                                mDataPermissionEnforcer.collectExtraReadPermissionToStateMapping(
+                                        recordTypeToInsertedUuids.keySet(), attributionSource);
+
                         List<RecordInternal<?>> recordInternals =
                                 mTransactionManager.readRecordsByIds(
                                         new ReadTransactionRequest(
-                                                ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                                                        changeLogsResponse.getChangeLogsMap()),
-                                                startDateAccessEpochMilli));
+                                                callerPackageName,
+                                                recordTypeToInsertedUuids,
+                                                startDateAccessEpochMilli,
+                                                extraReadPermsToGrantState));
+
                         List<DeletedLog> deletedLogs =
                                 ChangeLogsHelper.getDeletedLogs(
                                         changeLogsResponse.getChangeLogsMap());
