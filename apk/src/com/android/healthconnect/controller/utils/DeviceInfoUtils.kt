@@ -1,5 +1,6 @@
 package com.android.healthconnect.controller.utils
 
+import android.app.compat.gms.GmsCompat
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -54,6 +55,12 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
                 if (!TextUtils.isEmpty(info.activityInfo.packageName)) {
                     try {
                         val ai = pm.getApplicationInfo(info.activityInfo.packageName, 0)
+                        if (TextUtils.equals(
+                                info.activityInfo.packageName, FEEDBACK_REPORTER)) {
+                            if (GmsCompat.isGmsApp(ai)) {
+                                return FEEDBACK_REPORTER
+                            }
+                        }
                         if (ai.flags and ApplicationInfo.FLAG_SYSTEM != 0) {
                             // Package is on the system image
                             if (TextUtils.equals(
@@ -78,8 +85,8 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
         }
         val pm = context.packageManager
         return try {
-            pm?.getApplicationInfo(playStorePackageName, 0)
-            true
+            val ai = pm.getApplicationInfo(playStorePackageName, 0)
+            GmsCompat.isGmsApp(ai)
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
