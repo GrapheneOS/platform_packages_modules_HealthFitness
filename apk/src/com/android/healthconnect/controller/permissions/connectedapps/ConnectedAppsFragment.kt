@@ -375,10 +375,16 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     private fun setUpEmptyState() {
         mTopIntro?.title = getString(R.string.connected_apps_empty_list_section_title)
-        mThingsToTryCategory?.isVisible = true
-        mThingsToTryCategory?.addPreference(getCheckForUpdatesPreference())
-        mThingsToTryCategory?.addPreference(getSeeAllCompatibleAppsPreference())
-        mThingsToTryCategory?.addPreference(getSendFeedbackPreference())
+        val isPlayStoreAvailable = deviceInfoUtils.isPlayStoreAvailable(requireContext())
+        val isSendFeedbackAvailable = deviceInfoUtils.isSendFeedbackAvailable(requireContext())
+        mThingsToTryCategory?.isVisible = isPlayStoreAvailable || isSendFeedbackAvailable
+        if (isPlayStoreAvailable) {
+            mThingsToTryCategory?.addPreference(getCheckForUpdatesPreference())
+            mThingsToTryCategory?.addPreference(getSeeAllCompatibleAppsPreference())
+        }
+        if (isSendFeedbackAvailable) {
+            mThingsToTryCategory?.addPreference(getSendFeedbackPreference())
+        }
         setAppAndSettingsCategoriesVisibility(false)
     }
 
