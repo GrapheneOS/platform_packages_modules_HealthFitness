@@ -61,13 +61,6 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
                                 return FEEDBACK_REPORTER
                             }
                         }
-                        if (ai.flags and ApplicationInfo.FLAG_SYSTEM != 0) {
-                            // Package is on the system image
-                            if (TextUtils.equals(
-                                info.activityInfo.packageName, FEEDBACK_REPORTER)) {
-                                return FEEDBACK_REPORTER
-                            }
-                        }
                     } catch (e: PackageManager.NameNotFoundException) {
                         // No need to do anything here.
                     }
