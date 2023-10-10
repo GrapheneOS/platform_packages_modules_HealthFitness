@@ -273,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Aucune de vos applications ne pourra accéder aux données stockées dans Connexion santé ni en ajouter de nouvelles. Les données existantes ne seront pas supprimées.\n\nCela n\'a aucune incidence sur d\'autres autorisations dont peut disposer cette application, comme la position, l\'appareil photo ou le microphone."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Tout retirer"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Gérer l\'application"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"Afficher les données de l\'application"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Supprimer les données de l\'application"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Applications inactives"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Ces applications n\'ont plus accès à Connexion santé, mais leurs données y sont toujours stockées"</string>
@@ -791,25 +790,15 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Une fois que vous aurez autorisé l\'application à écrire les données de catégorie <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, les sources s\'afficheront ici."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Fonctionnement des sources et de la hiérarchisation"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Ajouter une application"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
-    <skip />
+    <string name="app_data_title" msgid="6499967982291000837">"Données de l\'application"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Les données des applications qui ont accès à Connexion santé s\'afficheront ici"</string>
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
-    <skip />
-    <!-- no translation found for tab_entries (3402700951602029493) -->
-    <skip />
-    <!-- no translation found for tab_access (7818197975407243701) -->
-    <skip />
+    <string name="date_picker_day" msgid="3076687507968958991">"Jour"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Semaine"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Mois"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Cette semaine"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"La semaine dernière"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Ce mois-ci"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"Le mois dernier"</string>
+    <string name="tab_entries" msgid="3402700951602029493">"Entrées"</string>
+    <string name="tab_access" msgid="7818197975407243701">"Accès"</string>
 </resources>
