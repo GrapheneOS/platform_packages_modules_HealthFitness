@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.deletion
 
 /** Constants used for deletion operations. */
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 object DeletionConstants {
 
     /** Used for attaching the DeletionFragment. */

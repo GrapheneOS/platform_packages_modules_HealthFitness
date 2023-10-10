@@ -49,6 +49,7 @@ import org.junit.Test
 import org.mockito.Mockito
 
 @HiltAndroidTest
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 class DeletionFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
