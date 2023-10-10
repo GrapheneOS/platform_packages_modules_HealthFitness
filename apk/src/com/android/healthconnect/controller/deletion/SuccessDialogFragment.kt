@@ -24,6 +24,7 @@ import com.android.healthconnect.controller.utils.logging.SuccessDialogElement
 import dagger.hilt.android.AndroidEntryPoint
 
 /** A deletion {@link DialogFragment} notifying user about a successful deletion. */
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 @AndroidEntryPoint(DialogFragment::class)
 class SuccessDialogFragment : Hilt_SuccessDialogFragment() {
 

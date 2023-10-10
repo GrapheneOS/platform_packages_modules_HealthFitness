@@ -104,18 +104,15 @@ constructor(
     private var _permissionsStatus: List<HealthPermissionStatus> = listOf()
 
     /**
-     * Flag to prevent {@link SettingManageAppPermissionsFragment} from reloading
-     * the granted permissions on orientation change
+     * Flag to prevent {@link SettingManageAppPermissionsFragment} from reloading the granted
+     * permissions on orientation change
      */
     private var shouldLoadGrantedPermissions = true
 
-    /**
-     * True if the package is supported or if it has any permissions granted
-     */
+    /** True if the package is supported or if it has any permissions granted */
     private val _shouldNavigateToFragment = MutableLiveData(false)
     val shouldNavigateToFragment: LiveData<Boolean>
         get() = _shouldNavigateToFragment
-
 
     fun loadForPackage(packageName: String) {
         if (!isPackageSupported(packageName)) {
@@ -140,18 +137,20 @@ constructor(
             viewModelScope.launch {
                 _appInfo.postValue(appInfoReader.getAppMetadata(packageName))
 
-                _permissionsStatus = loadGrantedHealthPermissionsUseCase.invoke(packageName).map {
-                        permission -> HealthPermissionStatus(HealthPermission.fromPermissionString(permission), true)
-                }
+                _permissionsStatus =
+                    loadGrantedHealthPermissionsUseCase.invoke(packageName).map { permission ->
+                        HealthPermissionStatus(
+                            HealthPermission.fromPermissionString(permission), true)
+                    }
                 // Only show app permissions that are granted
-                _appPermissions.postValue(_permissionsStatus.filter { it.isGranted }.map { it.healthPermission })
+                _appPermissions.postValue(
+                    _permissionsStatus.filter { it.isGranted }.map { it.healthPermission })
                 _allAppPermissionsGranted.postValue(_permissionsStatus.all { it.isGranted })
                 _atLeastOnePermissionGranted.postValue(_permissionsStatus.any { it.isGranted })
                 _grantedPermissions.postValue(
                     _permissionsStatus.filter { it.isGranted }.map { it.healthPermission }.toSet())
             }
             shouldLoadGrantedPermissions = false
-
         }
     }
 
@@ -241,27 +240,30 @@ constructor(
     fun loadShouldNavigateToFragment(packageName: String) {
         viewModelScope.launch {
             val anyPermissionsGranted =
-                loadGrantedHealthPermissionsUseCase.invoke(packageName)
-                    .map {
-                        permission -> HealthPermissionStatus(HealthPermission.fromPermissionString(permission),
-                        true) }
+                loadGrantedHealthPermissionsUseCase
+                    .invoke(packageName)
+                    .map { permission ->
+                        HealthPermissionStatus(
+                            HealthPermission.fromPermissionString(permission), true)
+                    }
                     .filter { it.isGranted }
                     .map { it.healthPermission }
                     .isNotEmpty()
-            _shouldNavigateToFragment.value = anyPermissionsGranted || isPackageSupported(packageName)
+            _shouldNavigateToFragment.value =
+                anyPermissionsGranted || isPackageSupported(packageName)
         }
     }
 
-    /**
-     * Returns True if the packageName declares the Rationale intent, False otherwise
-     */
+    /** Returns True if the packageName declares the Rationale intent, False otherwise */
     fun isPackageSupported(packageName: String): Boolean {
         return healthPermissionReader.isRationalIntentDeclared(packageName)
     }
 
     sealed class RevokeAllState {
         object NotStarted : RevokeAllState()
+
         object Loading : RevokeAllState()
+
         object Updated : RevokeAllState()
     }
 }

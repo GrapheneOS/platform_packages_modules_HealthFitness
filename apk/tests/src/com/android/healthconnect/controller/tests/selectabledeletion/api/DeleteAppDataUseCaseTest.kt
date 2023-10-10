@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2022 The Android Open Source Project
+/*
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,20 +13,18 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.tests.deletion.api
+package com.android.healthconnect.controller.tests.selectabledeletion.api
 
 import android.health.connect.DeleteUsingFiltersRequest
 import android.health.connect.HealthConnectManager
-import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.DataOrigin
-import com.android.healthconnect.controller.deletion.DeletionType
-import com.android.healthconnect.controller.deletion.api.DeleteAppDataUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
+import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeletionTypeAppData
+import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
 import com.google.common.truth.Truth
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import java.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -39,7 +37,6 @@ import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 
 @HiltAndroidTest
-@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 class DeleteAppDataUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
@@ -58,26 +55,17 @@ class DeleteAppDataUseCaseTest {
     }
 
     @Test
-    fun invoke_deleteCategoryData_callsHealthManager() = runTest {
+    fun invoke_deleteAppData_callsHealthManager() = runTest {
         doAnswer(prepareAnswer())
             .`when`(dataManager)
             .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
 
-        val startTime = Instant.now().minusSeconds(10)
-        val endTime = Instant.now()
+        val deleteAppData = DeletionTypeAppData(packageName = "package.name", appName = "APP_NAME")
 
-        val deleteAppData =
-            DeletionType.DeletionTypeAppData(packageName = "package.name", appName = "APP_NAME")
-
-        useCase.invoke(
-            deleteAppData,
-            TimeInstantRangeFilter.Builder().setStartTime(startTime).setEndTime(endTime).build())
+        useCase.invoke(deleteAppData)
 
         verify(dataManager, times(1)).deleteRecords(filtersCaptor.capture(), any(), any())
-        Truth.assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
-            .isEqualTo(startTime)
-        Truth.assertThat((filtersCaptor.value.timeRangeFilter as TimeInstantRangeFilter).endTime)
-            .isEqualTo(endTime)
+        Truth.assertThat(filtersCaptor.value.timeRangeFilter).isNull()
         Truth.assertThat(filtersCaptor.value.dataOrigins)
             .containsExactly(DataOrigin.Builder().setPackageName("package.name").build())
         Truth.assertThat(filtersCaptor.value.recordTypes).isEmpty()

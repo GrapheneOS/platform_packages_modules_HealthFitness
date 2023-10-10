@@ -34,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * A deletion {@link DialogFragment} asking confirmation from user for deleting data from from the
  * time range chosen on the previous dialog.
  */
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 @AndroidEntryPoint(DialogFragment::class)
 class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragment() {
 

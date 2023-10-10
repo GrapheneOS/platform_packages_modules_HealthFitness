@@ -32,6 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint(DialogFragment::class)
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 class DeletionAppDataConfirmationDialogFragment : Hilt_DeletionAppDataConfirmationDialogFragment() {
 
     private val viewModel: DeletionViewModel by activityViewModels()

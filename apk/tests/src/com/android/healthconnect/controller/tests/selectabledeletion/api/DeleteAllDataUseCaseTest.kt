@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2022 The Android Open Source Project
+/*
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,14 +13,11 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.tests.deletion.api
+package com.android.healthconnect.controller.tests.selectabledeletion.api
 
+import android.health.connect.DeleteUsingFiltersRequest
 import android.health.connect.HealthConnectManager
-import android.health.connect.RecordIdFilter
-import android.health.connect.datatypes.StepsRecord
-import com.android.healthconnect.controller.deletion.DeletionType.DeleteDataEntry
-import com.android.healthconnect.controller.deletion.api.DeleteEntryUseCase
-import com.android.healthconnect.controller.shared.DataType
+import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllDataUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -32,7 +29,6 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Matchers.any
-import org.mockito.Matchers.anyListOf
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
@@ -41,33 +37,32 @@ import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 
 @HiltAndroidTest
-@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
-class DeleteEntryUseCaseTest {
-
+class DeleteAllDataUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    private lateinit var useCase: DeleteEntryUseCase
+    private lateinit var useCase: DeleteAllDataUseCase
     var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
 
-    @Captor lateinit var listCaptor: ArgumentCaptor<List<RecordIdFilter>>
+    @Captor lateinit var filtersCaptor: ArgumentCaptor<DeleteUsingFiltersRequest>
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        useCase = DeleteEntryUseCase(manager, Dispatchers.Main)
+        useCase = DeleteAllDataUseCase(manager, Dispatchers.Main)
     }
 
     @Test
-    fun invoke_delete_callsHealthManager() = runTest {
+    fun invoke_deleteAllData_callsHealthManager() = runTest {
         doAnswer(prepareAnswer())
             .`when`(manager)
-            .deleteRecords(anyListOf(RecordIdFilter::class.java), any(), any())
+            .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
 
-        useCase.invoke(DeleteDataEntry("test_id", DataType.STEPS, 0))
+        useCase.invoke()
 
-        verify(manager, times(1)).deleteRecords(listCaptor.capture(), any(), any())
-        assertThat(listCaptor.value[0].id).isEqualTo("test_id")
-        assertThat(listCaptor.value[0].recordType).isEqualTo(StepsRecord::class.java)
+        verify(manager, times(1)).deleteRecords(filtersCaptor.capture(), any(), any())
+        assertThat(filtersCaptor.value.timeRangeFilter).isNull()
+        assertThat(filtersCaptor.value.dataOrigins).isEmpty()
+        assertThat(filtersCaptor.value.recordTypes).isEmpty()
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {

@@ -51,6 +51,7 @@ import java.time.Instant
  * ```
  * } </pre>
  */
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 @AndroidEntryPoint(Fragment::class)
 class DeletionFragment : Hilt_DeletionFragment() {
 
