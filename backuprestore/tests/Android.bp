@@ -28,7 +28,7 @@ android_test {
     ],
     test_suites: [
         "mts-healthfitness",
-        "general-tests"
+        "general-tests",
     ],
     defaults: ["mts-target-sdk-version-current"],
     static_libs: [
@@ -36,7 +36,7 @@ android_test {
         "androidx.test.core",
         "androidx.test.runner",
         "mockito-target-minus-junit4",
-        "truth-prebuilt",
+        "truth",
     ],
     libs: [
         "android.test.base",
