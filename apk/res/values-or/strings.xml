@@ -798,8 +798,6 @@
     <string name="last_week_header" msgid="5194448963146719382">"ଗତ ସପ୍ତାହ"</string>
     <string name="this_month_header" msgid="2452395268894677189">"ଏହି ମାସ"</string>
     <string name="last_month_header" msgid="1359164797239191253">"ଗତ ମାସ"</string>
-    <!-- no translation found for tab_entries (3402700951602029493) -->
-    <skip />
-    <!-- no translation found for tab_access (7818197975407243701) -->
-    <skip />
+    <string name="tab_entries" msgid="3402700951602029493">"ଏଣ୍ଟ୍ରିଗୁଡ଼ିକ"</string>
+    <string name="tab_access" msgid="7818197975407243701">"ଆକ୍ସେସ କରନ୍ତୁ"</string>
 </resources>

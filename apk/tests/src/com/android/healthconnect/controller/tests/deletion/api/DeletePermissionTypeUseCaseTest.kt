@@ -41,6 +41,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 
 @HiltAndroidTest
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 class DeletePermissionTypeUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

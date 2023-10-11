@@ -273,8 +273,7 @@
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Deine Apps können dann weder Daten von Health Connect abrufen noch neue hinzufügen. Dadurch werden jedoch keine vorhandenen Daten gelöscht.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Standort, Kamera oder Mikrofon."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Alle entfernen"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"App verwalten"</string>
-    <!-- no translation found for see_app_data (3951030076195119476) -->
-    <skip />
+    <string name="see_app_data" msgid="3951030076195119476">"App-Daten ansehen"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"App-Daten löschen"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Inaktive Apps"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Diese Apps haben keinen Zugriff mehr, aber es sind noch Daten von ihnen in Health Connect gespeichert"</string>
@@ -791,25 +790,15 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Wenn du App-Berechtigungen zum Schreiben von „<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>“-Daten erteilst, werden die Quellen hier angezeigt."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"So funktionieren Quellen und Priorisierung"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"App hinzufügen"</string>
-    <!-- no translation found for app_data_title (6499967982291000837) -->
-    <skip />
+    <string name="app_data_title" msgid="6499967982291000837">"App-Daten"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Daten aus Apps mit Zugriff auf Health Connect werden hier angezeigt"</string>
-    <!-- no translation found for date_picker_day (3076687507968958991) -->
-    <skip />
-    <!-- no translation found for date_picker_week (1038805538316142229) -->
-    <skip />
-    <!-- no translation found for date_picker_month (3560692391260778560) -->
-    <skip />
-    <!-- no translation found for this_week_header (1280121922548216973) -->
-    <skip />
-    <!-- no translation found for last_week_header (5194448963146719382) -->
-    <skip />
-    <!-- no translation found for this_month_header (2452395268894677189) -->
-    <skip />
-    <!-- no translation found for last_month_header (1359164797239191253) -->
-    <skip />
-    <!-- no translation found for tab_entries (3402700951602029493) -->
-    <skip />
-    <!-- no translation found for tab_access (7818197975407243701) -->
-    <skip />
+    <string name="date_picker_day" msgid="3076687507968958991">"Tag"</string>
+    <string name="date_picker_week" msgid="1038805538316142229">"Woche"</string>
+    <string name="date_picker_month" msgid="3560692391260778560">"Monat"</string>
+    <string name="this_week_header" msgid="1280121922548216973">"Diese Woche"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"Letzte Woche"</string>
+    <string name="this_month_header" msgid="2452395268894677189">"Dieser Monat"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"Letzter Monat"</string>
+    <string name="tab_entries" msgid="3402700951602029493">"Einträge"</string>
+    <string name="tab_access" msgid="7818197975407243701">"Zugriff"</string>
 </resources>

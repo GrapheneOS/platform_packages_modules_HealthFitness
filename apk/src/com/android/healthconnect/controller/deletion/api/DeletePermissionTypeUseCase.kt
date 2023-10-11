@@ -27,6 +27,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 @Singleton
+@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 class DeletePermissionTypeUseCase
 @Inject
 constructor(
