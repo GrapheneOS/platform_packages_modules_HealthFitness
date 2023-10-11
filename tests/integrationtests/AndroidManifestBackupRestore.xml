@@ -16,8 +16,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.healthconnect.cts.backuprestore"
-    android:targetSandboxVersion="2">
+    package="android.healthconnect.integrationtests.backuprestore">
 
     <application
         android:debuggable="true"
@@ -36,13 +35,9 @@
         </activity>
     </application>
 
-    <!-- To get visibility of the app with health permissions definitions,
-         required for testing defined permissions. -->
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
-        android:label="CTS HealthConnect tests for Backup and Restore"
-        android:targetPackage="android.healthconnect.cts.backuprestore">
-        <meta-data android:name="listener"
-            android:value="com.android.cts.runner.CtsTestRunListener"/>
+        android:targetPackage="android.healthconnect.integrationtests.backuprestore"
+        android:label="Integration tests for HC Backup and Restore">
     </instrumentation>
 
     <!-- This is needed to turn enable D2D flag for B&R local transport -->
@@ -121,6 +116,4 @@
     <uses-permission android:name="android.permission.health.WRITE_VO2_MAX"/>
     <uses-permission android:name="android.permission.health.WRITE_WEIGHT"/>
     <uses-permission android:name="android.permission.health.WRITE_WHEELCHAIR_PUSHES"/>
-
-    <!--  self-instrumenting test package. -->
 </manifest>
