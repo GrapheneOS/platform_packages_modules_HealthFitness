@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage.request;
 
+import static android.health.connect.Constants.DEFAULT_INT;
+
 import android.annotation.NonNull;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -39,6 +42,7 @@ import java.util.UUID;
 public class ReadTransactionRequest {
     public static final String TYPE_NOT_PRESENT_PACKAGE_NAME = "package_name";
     private final List<ReadTableRequest> mReadTableRequests;
+    private final int mPageSize;
 
     public ReadTransactionRequest(
             String packageName,
@@ -56,6 +60,7 @@ public class ReadTransactionRequest {
                                 enforceSelfRead,
                                 startDateAccess,
                                 extraReadPermsMapping));
+        mPageSize = request.getPageSize();
     }
 
     public ReadTransactionRequest(
@@ -67,10 +72,22 @@ public class ReadTransactionRequest {
                                 RecordHelperProvider.getInstance()
                                         .getRecordHelper(recordType)
                                         .getReadTableRequest(uuids, startDateAccess)));
+        mPageSize = DEFAULT_INT;
     }
 
     @NonNull
     public List<ReadTableRequest> getReadRequests() {
         return mReadTableRequests;
+    }
+
+    /**
+     * Returns optional of page size in the {@link android.health.connect.ReadRecordsRequest}
+     * refined by this {@link ReadTransactionRequest}.
+     *
+     * <p>For {@link android.health.connect.ReadRecordsRequestUsingIds} requests, page size is
+     * {@code Optional.empty}.
+     */
+    public Optional<Integer> getPageSize() {
+        return mPageSize == DEFAULT_INT ? Optional.empty() : Optional.of(mPageSize);
     }
 }

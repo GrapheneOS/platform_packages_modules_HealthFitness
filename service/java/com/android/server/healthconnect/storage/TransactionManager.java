@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.storage;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 import static android.health.connect.Constants.PARENT_KEY;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
@@ -26,6 +27,8 @@ import static com.android.server.healthconnect.storage.datatypehelpers.RecordHel
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
+
+import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
 import android.content.Context;
@@ -61,7 +64,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -262,7 +264,7 @@ public final class TransactionManager {
         List<RecordInternal<?>> recordInternals = new ArrayList<>();
         for (ReadTableRequest readTableRequest : request.getReadRequests()) {
             RecordHelper<?> helper = readTableRequest.getRecordHelper();
-            Objects.requireNonNull(helper);
+            requireNonNull(helper);
             if (helper.isRecordOperationsEnabled()) {
                 try (Cursor cursor = read(readTableRequest)) {
                     List<RecordInternal<?>> internalRecords =
@@ -290,14 +292,17 @@ public final class TransactionManager {
         List<RecordInternal<?>> recordInternalList;
         long timestamp = DEFAULT_LONG;
         RecordHelper<?> helper = readTableRequest.getRecordHelper();
-        Objects.requireNonNull(helper);
+        requireNonNull(helper);
         if (!helper.isRecordOperationsEnabled()) {
             recordInternalList = new ArrayList<>(0);
             return Pair.create(recordInternalList, timestamp);
         }
 
         try (Cursor cursor = read(readTableRequest)) {
-            recordInternalList = helper.getInternalRecords(cursor, readTableRequest.getPageSize());
+            recordInternalList =
+                    helper.getInternalRecords(
+                            cursor,
+                            request.getPageSize().orElse(DEFAULT_PAGE_SIZE));
             String startTimeColumnName = helper.getStartTimeColumnName();
 
             populateInternalRecordsWithExtraData(recordInternalList, readTableRequest);
@@ -387,7 +392,7 @@ public final class TransactionManager {
      * @return Number of entries in the given table
      */
     public long getNumberOfEntriesInTheTable(@NonNull String tableName) {
-        Objects.requireNonNull(tableName);
+        requireNonNull(tableName);
         return DatabaseUtils.queryNumEntries(getReadableDb(), tableName);
     }
 
@@ -398,7 +403,7 @@ public final class TransactionManager {
      * @return Size of the database
      */
     public long getDatabaseSize(@NonNull Context context) {
-        Objects.requireNonNull(context);
+        requireNonNull(context);
         return context.getDatabasePath(getReadableDb().getPath()).length();
     }
 
@@ -477,7 +482,7 @@ public final class TransactionManager {
      * make sure that either all its operation succeed or fail in a single run.
      */
     public void deleteWithoutChangeLogs(@NonNull List<DeleteTableRequest> deleteTableRequests) {
-        Objects.requireNonNull(deleteTableRequests);
+        requireNonNull(deleteTableRequests);
         final SQLiteDatabase db = getWritableDb();
         db.beginTransaction();
         try {
@@ -745,7 +750,7 @@ public final class TransactionManager {
 
     @NonNull
     public static TransactionManager getInitialisedInstance() {
-        Objects.requireNonNull(sTransactionManager);
+        requireNonNull(sTransactionManager);
 
         return sTransactionManager;
     }
