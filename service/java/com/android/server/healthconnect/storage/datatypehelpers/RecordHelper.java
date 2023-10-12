@@ -630,9 +630,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return null;
     }
 
-    private int getLimitSize(ReadRecordsRequestParcel request) {
+    private static int getLimitSize(ReadRecordsRequestParcel request) {
+        // Querying extra records on top of page size
+        // + 1: if number of records queried is more than pageSize we know there are more records
+        //      available to return for the next read.
         if (request.getRecordIdFiltersParcel() == null) {
-            return request.getPageSize();
+            return request.getPageSize() + 1;
         } else {
             return MAXIMUM_PAGE_SIZE;
         }

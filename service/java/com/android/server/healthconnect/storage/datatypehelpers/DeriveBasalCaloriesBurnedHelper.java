@@ -151,7 +151,7 @@ public final class DeriveBasalCaloriesBurnedHelper {
                                         new WhereClauses()
                                                 .addWhereLessThanOrEqualClause(
                                                         mTimeColumnName, intervalStartTime))
-                                .setLimit(0)
+                                .setLimit(1)
                                 .setOrderBy(
                                         new OrderByClause()
                                                 .addOrderByClause(mTimeColumnName, false)))) {
@@ -334,7 +334,7 @@ public final class DeriveBasalCaloriesBurnedHelper {
                                                                 .addWhereLessThanOrEqualClause(
                                                                         mTimeColumnName,
                                                                         intervalStartTime))
-                                                .setLimit(0)
+                                                .setLimit(1)
                                                 .setOrderBy(
                                                         new OrderByClause()
                                                                 .addOrderByClause(
