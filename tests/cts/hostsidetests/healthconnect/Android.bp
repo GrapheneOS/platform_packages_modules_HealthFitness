@@ -23,14 +23,14 @@ android_test_helper_app {
     platform_apis: true,
     static_libs: [
         "ctstestrunner-axt",
-        "cts-healthconnect-lib"
+        "cts-healthconnect-lib",
     ],
     sdk_version: "test_current",
     min_sdk_version: "UpsideDownCake",
     srcs: [
         "HealthConnectTestHelper/src/**/*.java",
         "HealthConnectTestHelper/src/**/*.kt",
-        ],
+    ],
     libs: ["junit"],
 }
 
@@ -86,8 +86,8 @@ android_test {
     defaults: ["cts_defaults"],
     srcs: [
         "device/**/*.java",
-        "device/**/*.kt"
-        ],
+        "device/**/*.kt",
+    ],
     static_libs: [
         "cts-healthconnect-lib",
         "modules-utils-build_system",
@@ -111,13 +111,13 @@ android_test {
         "android.test.runner",
         "framework-healthfitness",
     ],
-    data : [
-          ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
-          ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
-          ":CtsHealthConnectTestAppWithDataManagePermission",
-          ":CtsHealthConnectTestAppWithNoPermission",
-          ":CtsHealthConnectTestAppWithWritePermissionsOnly",
-    ]
+    data: [
+        ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
+        ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
+        ":CtsHealthConnectTestAppWithDataManagePermission",
+        ":CtsHealthConnectTestAppWithNoPermission",
+        ":CtsHealthConnectTestAppWithWritePermissionsOnly",
+    ],
 }
 
 java_test_host {
@@ -125,7 +125,7 @@ java_test_host {
     defaults: ["cts_defaults"],
     srcs: [
         "host/**/*.java",
-        "host/**/*.kt"
+        "host/**/*.kt",
     ],
     test_suites: [
         "cts",
@@ -136,12 +136,12 @@ java_test_host {
         "compatibility-host-util",
         "cts-tradefed",
         "tradefed",
-        "truth-prebuilt",
+        "truth",
     ],
     static_libs: [
         "cts-statsd-atom-host-test-utils",
     ],
     data: [
         ":CtsHealthConnectTestApp",
-    ]
+    ],
 }
