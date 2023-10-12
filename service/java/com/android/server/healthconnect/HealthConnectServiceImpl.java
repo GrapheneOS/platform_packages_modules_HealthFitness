@@ -368,7 +368,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         HealthConnectThreadScheduler.scheduleInternalTask(
                                 () -> postInsertTasks(attributionSource, recordsParcel));
 
-                        finishDataDeliveryWriteRecords(recordInternals, attributionSource);
                         logRecordTypeSpecificUpsertMetrics(
                                 recordInternals, attributionSource.getPackageName());
                         logger.setDataTypesFromRecordInternals(recordInternals);
@@ -488,7 +487,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                 request,
                                                 startDateAccess)
                                         .getAggregateDataResponseParcel());
-                        finishDataDeliveryRead(recordTypesToTest, attributionSource);
                         logger.setDataTypesFromRecordTypes(recordTypesToTest)
                                 .setHealthDataServiceApiStatusSuccess();
                     } catch (SQLiteException sqLiteException) {
@@ -672,7 +670,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             callback.onResult(
                                     new ReadRecordsResponseParcel(
                                             new RecordsParcel(records), pageToken));
-                            finishDataDeliveryRead(request.getRecordType(), attributionSource);
                             if (requiresLogging) {
                                 logRecordTypeSpecificReadMetrics(records, callerPackageName);
                             }
@@ -789,7 +786,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                         recordInternals, attributionSource));
                         mTransactionManager.updateAll(request);
                         tryAndReturnResult(callback, logger);
-                        finishDataDeliveryWriteRecords(recordInternals, attributionSource);
                         logRecordTypeSpecificUpsertMetrics(
                                 recordInternals, attributionSource.getPackageName());
                         logger.setDataTypesFromRecordInternals(recordInternals);
@@ -969,8 +965,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         deletedLogs,
                                         changeLogsResponse.getNextPageToken(),
                                         changeLogsResponse.hasMorePages()));
-                        finishDataDeliveryRead(
-                                changeLogsTokenRequest.getRecordTypes(), attributionSource);
                         logger.setHealthDataServiceApiStatusSuccess()
                                 .setNumberOfRecords(recordInternals.size() + deletedLogs.size())
                                 .setDataTypesFromRecordInternals(recordInternals);
@@ -1211,7 +1205,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 .setHasManageHealthDataPermission(
                                         hasDataManagementPermission(uid, pid)));
         tryAndReturnResult(callback, logger);
-        finishDataDeliveryWrite(recordTypeIdsToDelete, attributionSource);
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> postDeleteTasks(recordTypeIdsToDelete));
 
@@ -2156,57 +2149,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 || !isPermissionGranted(READ_HEALTH_DATA_IN_BACKGROUND, uid, pid);
     }
 
-    private void finishDataDeliveryRead(int recordTypeId, AttributionSource attributionSource) {
-        finishDataDeliveryRead(Collections.singletonList(recordTypeId), attributionSource);
-    }
-
     private boolean isPermissionGranted(String permission, int uid, int pid) {
         return mContext.checkPermission(permission, pid, uid) == PERMISSION_GRANTED;
-    }
-
-    private void finishDataDeliveryRead(
-            List<Integer> recordTypeIds, AttributionSource attributionSource) {
-        Trace.traceBegin(TRACE_TAG_READ_SUBTASKS, TAG_READ.concat("FinishDataDeliveryRead"));
-
-        try {
-            for (Integer recordTypeId : recordTypeIds) {
-                String permissionName =
-                        HealthPermissions.getHealthReadPermission(
-                                RecordTypePermissionCategoryMapper
-                                        .getHealthPermissionCategoryForRecordType(recordTypeId));
-                mPermissionManager.finishDataDelivery(permissionName, attributionSource);
-            }
-        } catch (Exception exception) {
-            // Ignore: HC API has already fulfilled the result, ignore any exception we hit here
-        }
-        Trace.traceEnd(TRACE_TAG_READ_SUBTASKS);
-    }
-
-    private void finishDataDeliveryWriteRecords(
-            List<RecordInternal<?>> recordInternals, AttributionSource attributionSource) {
-        Trace.traceBegin(TRACE_TAG_READ_SUBTASKS, TAG_READ.concat(".FinishDataDeliveryWrite"));
-        Set<Integer> recordTypeIdsToEnforce = new ArraySet<>();
-        for (RecordInternal<?> recordInternal : recordInternals) {
-            recordTypeIdsToEnforce.add(recordInternal.getRecordType());
-        }
-
-        finishDataDeliveryWrite(recordTypeIdsToEnforce.stream().toList(), attributionSource);
-        Trace.traceEnd(TRACE_TAG_READ_SUBTASKS);
-    }
-
-    private void finishDataDeliveryWrite(
-            List<Integer> recordTypeIds, AttributionSource attributionSource) {
-        try {
-            for (Integer recordTypeId : recordTypeIds) {
-                String permissionName =
-                        HealthPermissions.getHealthWritePermission(
-                                RecordTypePermissionCategoryMapper
-                                        .getHealthPermissionCategoryForRecordType(recordTypeId));
-                mPermissionManager.finishDataDelivery(permissionName, attributionSource);
-            }
-        } catch (Exception exception) {
-            // Ignore: HC API has already fulfilled the result, ignore any exception we hit here
-        }
     }
 
     private void enforceBinderUidIsSameAsAttributionSourceUid(
