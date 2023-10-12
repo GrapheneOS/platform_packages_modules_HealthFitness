@@ -30,6 +30,9 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__AP
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__BACKGROUND;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__FOREGROUND;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__UNSPECIFIED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RATE_LIMIT__NOT_DEFINED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RATE_LIMIT__NOT_USED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RATE_LIMIT__RATE_LIMIT_BACKGROUND_15_MIN_ABOVE_3000;
@@ -166,6 +169,7 @@ public class HealthConnectServiceLogger {
     private final int mNumberOfRecords;
     private final int[] mRecordTypes;
     private final String mPackageName;
+    private final int mCallerForegroundState;
     private static final int MAX_NUMBER_OF_LOGGED_DATA_TYPES = 6;
     private static final int RECORD_TYPE_NOT_ASSIGNED_DEFAULT_VALUE = -1;
 
@@ -356,6 +360,7 @@ public class HealthConnectServiceLogger {
         private final boolean mHoldsDataManagementPermission;
         private int[] mRecordTypes;
         private String mPackageName;
+        private int mCallerForegroundState;
 
         public Builder(boolean holdsDataManagementPermission, @ApiMethods.ApiMethod int apiMethod) {
             mStartTime = System.currentTimeMillis();
@@ -368,6 +373,8 @@ public class HealthConnectServiceLogger {
             mRecordTypes = new int[MAX_NUMBER_OF_LOGGED_DATA_TYPES];
             Arrays.fill(mRecordTypes, RECORD_TYPE_NOT_ASSIGNED_DEFAULT_VALUE);
             mPackageName = "UNKNOWN";
+            mCallerForegroundState =
+                    HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__UNSPECIFIED;
         }
 
         /** Set the API was called successfully. */
@@ -472,6 +479,20 @@ public class HealthConnectServiceLogger {
                 return this;
             }
             mPackageName = packageName;
+            return this;
+        }
+
+        /**
+         * Sets the caller's foreground state.
+         *
+         * @param isCallerInForeground whether the caller is in foreground or background.
+         */
+        @NonNull
+        public Builder setCallerForegroundState(boolean isCallerInForeground) {
+            mCallerForegroundState =
+                    isCallerInForeground
+                            ? HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__FOREGROUND
+                            : HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__BACKGROUND;
             return this;
         }
 
@@ -595,6 +616,7 @@ public class HealthConnectServiceLogger {
         mNumberOfRecords = builder.mNumberOfRecords;
         mRecordTypes = builder.mRecordTypes;
         mPackageName = builder.mPackageName;
+        mCallerForegroundState = builder.mCallerForegroundState;
     }
 
     /** Log to statsd. */
@@ -611,7 +633,8 @@ public class HealthConnectServiceLogger {
                 mErrorCode,
                 mDuration,
                 mNumberOfRecords,
-                mRateLimit);
+                mRateLimit,
+                mCallerForegroundState);
 
         // For private logging, max 6 data types per request are being logged
         // rest will be ignored

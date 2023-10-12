@@ -22,6 +22,9 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__AP
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__BACKGROUND;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__FOREGROUND;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__UNSPECIFIED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RATE_LIMIT__NOT_USED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RATE_LIMIT__RATE_LIMIT_BACKGROUND_15_MIN_ABOVE_3000;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__RATE_LIMIT__RATE_LIMIT_BACKGROUND_24_HRS_BW_3000_TO_4000;
@@ -53,6 +56,13 @@ import org.junit.Test;
 
 public class HealthConnectServiceLoggerTest {
 
+    private static final int CALLER_FOREGROUND_STATE_UNSPECIFIED =
+            HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__UNSPECIFIED;
+    private static final int CALLER_FOREGROUND_STATE_FOREGROUND =
+            HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__FOREGROUND;
+    private static final int CALLER_FOREGROUND_STATE_BACKGROUND =
+            HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__BACKGROUND;
+
     @Rule
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this).mockStatic(HealthFitnessStatsLog.class).build();
@@ -67,7 +77,7 @@ public class HealthConnectServiceLoggerTest {
                 () ->
                         HealthFitnessStatsLog.write(
                                 anyInt(), anyInt(), anyInt(), anyInt(), anyLong(), anyInt(),
-                                anyInt()),
+                                anyInt(), anyInt()),
                 times(0));
     }
 
@@ -86,7 +96,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.NOT_USED)),
+                                eq(RateLimitingRanges.NOT_USED),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -108,7 +119,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.FOREGROUND_15_MIN_BW_3000_TO_4000)),
+                                eq(RateLimitingRanges.FOREGROUND_15_MIN_BW_3000_TO_4000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -130,7 +142,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000)),
+                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -152,7 +165,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.BACKGROUND_24_HRS_BW_3000_TO_4000)),
+                                eq(RateLimitingRanges.BACKGROUND_24_HRS_BW_3000_TO_4000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -174,7 +188,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.FOREGROUND_24_HRS_BW_3000_TO_4000)),
+                                eq(RateLimitingRanges.FOREGROUND_24_HRS_BW_3000_TO_4000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -196,7 +211,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.FOREGROUND_15_MIN_BW_3000_TO_4000)),
+                                eq(RateLimitingRanges.FOREGROUND_15_MIN_BW_3000_TO_4000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -218,7 +234,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000)),
+                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -240,7 +257,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.BACKGROUND_24_HRS_BW_3000_TO_4000)),
+                                eq(RateLimitingRanges.BACKGROUND_24_HRS_BW_3000_TO_4000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -262,7 +280,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.FOREGROUND_24_HRS_BW_3000_TO_4000)),
+                                eq(RateLimitingRanges.FOREGROUND_24_HRS_BW_3000_TO_4000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -284,7 +303,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.NOT_USED)),
+                                eq(RateLimitingRanges.NOT_USED),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -306,7 +326,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(2),
                                 anyLong(),
                                 eq(0),
-                                eq(RateLimitingRanges.NOT_USED)),
+                                eq(RateLimitingRanges.NOT_USED),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -328,7 +349,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(10),
-                                eq(RateLimitingRanges.NOT_USED)),
+                                eq(RateLimitingRanges.NOT_USED),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -352,7 +374,8 @@ public class HealthConnectServiceLoggerTest {
                                 eq(0),
                                 anyLong(),
                                 eq(10),
-                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000)),
+                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
     }
 
@@ -376,8 +399,51 @@ public class HealthConnectServiceLoggerTest {
                                 eq(1),
                                 anyLong(),
                                 eq(10),
-                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000)),
+                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
+                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED)),
                 times(1));
+    }
+
+    @Test
+    public void testCallerForegroundState() {
+        new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
+                .setCallerForegroundState(true)
+                .build()
+                .log();
+
+        // then
+        ExtendedMockito.verify(
+                () ->
+                        HealthFitnessStatsLog.write(
+                                eq(HEALTH_CONNECT_API_CALLED),
+                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                                eq(0),
+                                anyLong(),
+                                eq(0),
+                                eq(RateLimitingRanges.NOT_USED),
+                                eq(CALLER_FOREGROUND_STATE_FOREGROUND)));
+    }
+
+    @Test
+    public void testCallerBackgroundState() {
+        new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
+                .setCallerForegroundState(false)
+                .build()
+                .log();
+
+        // then
+        ExtendedMockito.verify(
+                () ->
+                        HealthFitnessStatsLog.write(
+                                eq(HEALTH_CONNECT_API_CALLED),
+                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                                eq(0),
+                                anyLong(),
+                                eq(0),
+                                eq(RateLimitingRanges.NOT_USED),
+                                eq(CALLER_FOREGROUND_STATE_BACKGROUND)));
     }
 
     private static final class RateLimitingRanges {
