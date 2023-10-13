@@ -25,6 +25,7 @@ import android.cts.statsdatom.lib.DeviceUtils;
 import android.cts.statsdatom.lib.ReportUtils;
 import android.healthfitness.api.ApiMethod;
 import android.healthfitness.api.ApiStatus;
+import android.healthfitness.api.ForegroundState;
 import android.healthfitness.api.RateLimit;
 
 import com.android.os.StatsLog;
@@ -198,6 +199,7 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         assertThat(atom.getDurationMillis()).isAtLeast(0);
         assertThat(atom.getNumberOfRecords()).isEqualTo(1);
         assertThat(atom.getRateLimit()).isEqualTo(RateLimit.NOT_USED);
+        assertThat(atom.getCallerForegroundState()).isEqualTo(ForegroundState.FOREGROUND);
     }
 
     public void testReadRecordsError() throws Exception {
@@ -215,6 +217,7 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         assertThat(atom.getErrorCode()).isNotEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
         assertThat(atom.getRateLimit()).isEqualTo(RateLimit.NOT_USED);
+        assertThat(atom.getCallerForegroundState()).isEqualTo(ForegroundState.FOREGROUND);
     }
 
     public void testChangeLogTokenRequest() throws Exception {
@@ -269,6 +272,7 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         assertThat(atom.getDurationMillis()).isAtLeast(0);
         assertThat(atom.getNumberOfRecords()).isEqualTo(1);
         assertThat(atom.getRateLimit()).isEqualTo(RateLimit.NOT_USED);
+        assertThat(atom.getCallerForegroundState()).isEqualTo(ForegroundState.FOREGROUND);
     }
 
     public void testChangeLogsRequestError() throws Exception {
@@ -286,6 +290,7 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         assertThat(atom.getErrorCode()).isNotEqualTo(0);
         assertThat(atom.getDurationMillis()).isAtLeast(0);
         assertThat(atom.getRateLimit()).isEqualTo(RateLimit.NOT_USED);
+        assertThat(atom.getCallerForegroundState()).isEqualTo(ForegroundState.FOREGROUND);
     }
 
     public void testAggregatedDataRequest() throws Exception {
@@ -304,6 +309,7 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         assertThat(atom.getDurationMillis()).isAtLeast(0);
         assertThat(atom.getNumberOfRecords()).isEqualTo(1);
         assertThat(atom.getRateLimit()).isEqualTo(RateLimit.NOT_USED);
+        assertThat(atom.getCallerForegroundState()).isEqualTo(ForegroundState.FOREGROUND);
     }
 
     public void testAggregatedDataRequestError() throws Exception {
@@ -322,6 +328,7 @@ public class HealthConnectServiceStatsTests extends DeviceTestCase implements IB
         assertThat(atom.getDurationMillis()).isAtLeast(0);
         assertThat(atom.getNumberOfRecords()).isEqualTo(1);
         assertThat(atom.getRateLimit()).isEqualTo(RateLimit.NOT_USED);
+        assertThat(atom.getCallerForegroundState()).isEqualTo(ForegroundState.FOREGROUND);
     }
 
     private List<StatsLog.EventMetricData> uploadAtomConfigAndTriggerTest(String testName)

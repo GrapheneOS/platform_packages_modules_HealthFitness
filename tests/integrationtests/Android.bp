@@ -17,6 +17,42 @@ package {
 }
 
 android_test {
+    name: "HealthFitnessIntegrationBackupRestoreTests",
+    test_suites: [
+        "device-tests",
+        "general-tests",
+        "mts-healthfitness",
+    ],
+
+    libs: [
+        "android.test.runner",
+        "android.test.base",
+        "framework-configinfrastructure",
+        "framework-sdkextensions",
+        "framework-healthfitness.impl"
+    ],
+
+    static_libs: [
+        "androidx.test.rules",
+        "compatibility-device-util-axt",
+        "androidx.test.ext.truth",
+        "cts-healthconnect-utils",
+    ],
+    srcs: [
+        "src/android/healthconnect/tests/backuprestore/*.java"
+    ],
+    min_sdk_version: "34",
+    sdk_version: "module_current",
+    test_config:"AndroidTestBackupRestore.xml",
+    manifest: "AndroidManifestBackupRestore.xml",
+    resource_dirs: ["res"],
+    data: [
+        ":HealthFitnessCtsTestApp",
+        ":HealthFitnessCtsTestApp2"
+    ]
+}
+
+android_test {
     name: "HealthFitnessIntegrationTests",
     test_suites: [
         "device-tests",
@@ -35,7 +71,10 @@ android_test {
 
     srcs: [
         ":healthfitness-permissions-testapp-srcs",
-        "src/**/*.java",
+        "src/**/*.java"
+    ],
+    exclude_srcs: [
+        "src/android/healthconnect/tests/backuprestore/*.java"
     ],
     sdk_version: "module_current",
     data: [

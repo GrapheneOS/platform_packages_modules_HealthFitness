@@ -16,7 +16,7 @@
 
 package android.healthconnect.tests.backuprestore;
 
-import static android.healthconnect.tests.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.os.ParcelFileDescriptor.MODE_READ_ONLY;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -36,7 +36,7 @@ import android.health.connect.datatypes.BodyFatRecord;
 import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.restore.StageRemoteDataException;
-import android.healthconnect.integrationtests.R;
+import android.healthconnect.integrationtests.backuprestore.R;
 import android.os.FileUtils;
 import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;
@@ -64,7 +64,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /** Integration test for the backup-restore functionality of HealthConnect service. */
 @RunWith(AndroidJUnit4.class)
-public class BackupRestoreTest {
+public class BackupRestoreApiTest {
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
     private static final String TAG = "BackupRestoreIntegrationTest";
     private Context mContext;
