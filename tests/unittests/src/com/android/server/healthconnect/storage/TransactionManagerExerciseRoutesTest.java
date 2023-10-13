@@ -196,7 +196,7 @@ public class TransactionManagerExerciseRoutesTest {
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_byFilters_doesNotReturnRoutesOfOtherApps() {
+    public void readRecordsAndPageToken_byFilters_doesNotReturnRoutesOfOtherApps() {
         ExerciseSessionRecordInternal fooSession =
                 createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
         ExerciseSessionRecordInternal barSession =
@@ -222,7 +222,7 @@ public class TransactionManagerExerciseRoutesTest {
                         NO_EXTRA_PERMS);
 
         List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndNextRecordStartTime(request).first;
+                mTransactionManager.readRecordsAndPageToken(request).first;
 
         Map<String, ExerciseSessionRecordInternal> idToSessionMap =
                 returnedRecords.stream()
@@ -240,7 +240,7 @@ public class TransactionManagerExerciseRoutesTest {
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_byFilters_unknownApp_doesNotReturnRoute() {
+    public void readRecordsAndPageToken_byFilters_unknownApp_doesNotReturnRoute() {
         ExerciseSessionRecordInternal session =
                 createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
@@ -260,7 +260,7 @@ public class TransactionManagerExerciseRoutesTest {
                         NO_EXTRA_PERMS);
 
         List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndNextRecordStartTime(request).first;
+                mTransactionManager.readRecordsAndPageToken(request).first;
 
         assertThat(returnedRecords).hasSize(1);
         ExerciseSessionRecordInternal returnedRecord =
@@ -270,7 +270,7 @@ public class TransactionManagerExerciseRoutesTest {
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_byFilters_nullPackageName_doesNotReturnRoute() {
+    public void readRecordsAndPageToken_byFilters_nullPackageName_doesNotReturnRoute() {
         ExerciseSessionRecordInternal session =
                 createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
@@ -290,7 +290,7 @@ public class TransactionManagerExerciseRoutesTest {
                         NO_EXTRA_PERMS);
 
         List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndNextRecordStartTime(request).first;
+                mTransactionManager.readRecordsAndPageToken(request).first;
 
         assertThat(returnedRecords).hasSize(1);
         ExerciseSessionRecordInternal returnedRecord =
@@ -300,7 +300,7 @@ public class TransactionManagerExerciseRoutesTest {
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_byFilters_withReadRoutePermission_returnsRoute() {
+    public void readRecordsAndPageToken_byFilters_withReadRoutePermission_returnsRoute() {
         ExerciseSessionRecordInternal session =
                 createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session);
@@ -320,7 +320,7 @@ public class TransactionManagerExerciseRoutesTest {
                         Map.of(HealthPermissions.READ_EXERCISE_ROUTE, true));
 
         List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndNextRecordStartTime(request).first;
+                mTransactionManager.readRecordsAndPageToken(request).first;
 
         assertThat(returnedRecords).hasSize(1);
         ExerciseSessionRecordInternal returnedRecord =
@@ -330,7 +330,7 @@ public class TransactionManagerExerciseRoutesTest {
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_byIds_doesNotReturnRoutesOfOtherApps() {
+    public void readRecordsAndPageToken_byIds_doesNotReturnRoutesOfOtherApps() {
         ExerciseSessionRecordInternal fooSession =
                 createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
         ExerciseSessionRecordInternal barSession =
@@ -354,7 +354,7 @@ public class TransactionManagerExerciseRoutesTest {
                         NO_EXTRA_PERMS);
 
         List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndNextRecordStartTime(request).first;
+                mTransactionManager.readRecordsAndPageToken(request).first;
 
         Map<String, ExerciseSessionRecordInternal> idToSessionMap =
                 returnedRecords.stream()
@@ -371,7 +371,7 @@ public class TransactionManagerExerciseRoutesTest {
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_byIds_unknownApp_doesNotReturnRoute() {
+    public void readRecordsAndPageToken_byIds_unknownApp_doesNotReturnRoute() {
         ExerciseSessionRecordInternal session =
                 createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         String uuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0);
@@ -387,7 +387,7 @@ public class TransactionManagerExerciseRoutesTest {
                         NO_EXTRA_PERMS);
 
         List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndNextRecordStartTime(request).first;
+                mTransactionManager.readRecordsAndPageToken(request).first;
 
         assertThat(returnedRecords).hasSize(1);
         ExerciseSessionRecordInternal returnedRecord =
@@ -397,7 +397,7 @@ public class TransactionManagerExerciseRoutesTest {
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_byIds_nullPackageName_doesNotReturnRoute() {
+    public void readRecordsAndPageToken_byIds_nullPackageName_doesNotReturnRoute() {
         ExerciseSessionRecordInternal session =
                 createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         String uuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0);
@@ -413,7 +413,7 @@ public class TransactionManagerExerciseRoutesTest {
                         NO_EXTRA_PERMS);
 
         List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndNextRecordStartTime(request).first;
+                mTransactionManager.readRecordsAndPageToken(request).first;
 
         assertThat(returnedRecords).hasSize(1);
         ExerciseSessionRecordInternal returnedRecord =
@@ -423,7 +423,7 @@ public class TransactionManagerExerciseRoutesTest {
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_byIds_withReadRoutePermission_returnsRoute() {
+    public void readRecordsAndPageToken_byIds_withReadRoutePermission_returnsRoute() {
         ExerciseSessionRecordInternal session =
                 createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
         String uuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0);
@@ -439,7 +439,7 @@ public class TransactionManagerExerciseRoutesTest {
                         Map.of(HealthPermissions.READ_EXERCISE_ROUTE, true));
 
         List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndNextRecordStartTime(request).first;
+                mTransactionManager.readRecordsAndPageToken(request).first;
 
         assertThat(returnedRecords).hasSize(1);
         ExerciseSessionRecordInternal returnedRecord =

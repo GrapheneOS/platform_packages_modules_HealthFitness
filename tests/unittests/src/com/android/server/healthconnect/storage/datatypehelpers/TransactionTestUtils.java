@@ -83,10 +83,16 @@ public final class TransactionTestUtils {
 
     public static RecordInternal<StepsRecord> createStepsRecord(
             long startTimeMillis, long endTimeMillis, int stepsCount) {
+        return createStepsRecord(/* clientId= */ null, startTimeMillis, endTimeMillis, stepsCount);
+    }
+
+    public static RecordInternal<StepsRecord> createStepsRecord(
+            String clientId, long startTimeMillis, long endTimeMillis, int stepsCount) {
         return new StepsRecordInternal()
                 .setCount(stepsCount)
                 .setStartTime(startTimeMillis)
-                .setEndTime(endTimeMillis);
+                .setEndTime(endTimeMillis)
+                .setClientRecordId(clientId);
     }
 
     public static RecordInternal<BloodPressureRecord> createBloodPressureRecord(
