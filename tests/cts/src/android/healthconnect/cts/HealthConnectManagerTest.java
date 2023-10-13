@@ -32,6 +32,8 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.cts.utils.TestUtils.MANAGE_HEALTH_DATA;
 import static android.healthconnect.cts.utils.TestUtils.getRecordById;
+import static android.healthconnect.cts.utils.TestUtils.insertRecords;
+import static android.healthconnect.cts.utils.TestUtils.readRecords;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -630,6 +632,31 @@ public class HealthConnectManagerTest {
         assertThat(records).hasSize(2);
         assertThat(getRecordById(records, id1).getProtein()).isEqualTo(protein1);
         assertThat(getRecordById(records, id2).getProtein()).isEqualTo(protein2);
+    }
+
+    @Test
+    public void testReadRecords_readById_maxPageSizeNotExceeded() throws Exception {
+        int maxPageSize = 5000;
+        Instant startTime = Instant.now().minus(1, ChronoUnit.DAYS);
+        List<Record> inputRecords = new ArrayList<>(maxPageSize + 1);
+        for (int i = 0; i < maxPageSize + 1; i++) {
+            inputRecords.add(
+                    getStepsRecord(
+                            "client.id" + i,
+                            "package.name",
+                            /* count= */ 100,
+                            startTime.plusSeconds(i),
+                            startTime.plusSeconds(i + 1)));
+        }
+        insertRecords(inputRecords);
+
+        ReadRecordsRequestUsingIds.Builder<StepsRecord> requestBuilder =
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class);
+        for (int i = 0; i < maxPageSize + 1; i++) {
+            requestBuilder.addClientRecordId("client.id" + i);
+        }
+        List<StepsRecord> records = readRecords(requestBuilder.build());
+        assertThat(records).hasSize(maxPageSize);
     }
 
     @Test

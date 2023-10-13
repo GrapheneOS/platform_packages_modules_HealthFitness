@@ -79,4 +79,32 @@ public class RecordHelperTest {
             assertThat(record.getCount()).isEqualTo(100);
         }
     }
+
+    @Test
+    public void getInternalRecords_requestSizeMoreThanRecordNumber_recordsReturned() {
+        RecordHelper<?> helper = new StepsRecordHelper();
+        String uid = mTransactionTestUtils.insertRecords(createStepsRecord(4000, 5000, 100)).get(0);
+        ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
+        try (Cursor cursor = mTransactionManager.read(request)) {
+            assertThat(cursor.getCount()).isEqualTo(1);
+            List<RecordInternal<?>> records = helper.getInternalRecords(cursor, 2);
+            assertThat(records).hasSize(1);
+            assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uid));
+        }
+    }
+
+    @Test
+    public void getInternalRecords_requestSizeReached_correctNumberOfRecordsReturned() {
+        RecordHelper<?> helper = new StepsRecordHelper();
+        List<String> uids =
+                mTransactionTestUtils.insertRecords(
+                        createStepsRecord(4000, 5000, 100), createStepsRecord(5000, 6000, 200));
+        ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
+        try (Cursor cursor = mTransactionManager.read(request)) {
+            assertThat(cursor.getCount()).isEqualTo(2);
+            List<RecordInternal<?>> records = helper.getInternalRecords(cursor, 1);
+            assertThat(records).hasSize(1);
+            assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uids.get(0)));
+        }
+    }
 }

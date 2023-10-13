@@ -1095,7 +1095,7 @@ public final class BackupRestore {
         ReadTableRequest readTableRequest = readTransactionRequest.getReadRequests().get(0);
         try (Cursor cursor = read(readTableRequest)) {
             recordInternalList =
-                    recordHelper.getInternalRecords(
+                    recordHelper.getInternalRecordsPage(
                             cursor,
                             readTransactionRequest.getPageSize().orElse(DEFAULT_PAGE_SIZE),
                             mStagedPackageNamesByAppIds);
