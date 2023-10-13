@@ -16,6 +16,7 @@
 
 package android.healthconnect.tests.permissions;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 import android.content.Context;
@@ -28,6 +29,8 @@ import androidx.test.runner.AndroidJUnit4;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.List;
 
 /**
  * Integration tests for {@link HealthConnectManager} Permission-related APIs.
@@ -88,5 +91,14 @@ public class HealthConnectWithoutManagePermissionsTest {
         fail(
                 "Expected SecurityException due to not holding"
                         + "android.permission.MANAGE_HEALTH_PERMISSIONS.");
+    }
+
+    @Test
+    public void testGetHealthPermissionsFlags_noManageHealthPermissions_throwsSecurityException() {
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mHealthConnectManager.getHealthPermissionsFlags(
+                                DEFAULT_APP_PACKAGE, List.of()));
     }
 }

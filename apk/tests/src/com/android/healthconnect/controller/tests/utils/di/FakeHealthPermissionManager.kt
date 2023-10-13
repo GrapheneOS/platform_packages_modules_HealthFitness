@@ -32,6 +32,13 @@ class FakeHealthPermissionManager : HealthPermissionManager {
         return grantedPermissions.getOrDefault(packageName, emptyList())
     }
 
+    override fun getHealthPermissionsFlags(
+        packageName: String,
+        permissions: List<String>
+    ): Map<String, Int> {
+        TODO("Not yet implemented")
+    }
+
     override fun grantHealthPermission(packageName: String, permissionName: String) {
         val permissions = grantedPermissions.getOrDefault(packageName, mutableListOf())
         permissions.add(permissionName)

@@ -94,7 +94,6 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.health.connect.internal.datatypes.utils.RecordMapper;
-import android.health.connect.internal.datatypes.utils.RecordTypePermissionCategoryMapper;
 import android.health.connect.migration.HealthConnectMigrationUiState;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
@@ -112,7 +111,6 @@ import android.os.Trace;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
 import android.util.ArrayMap;
-import android.util.ArraySet;
 import android.util.Log;
 import android.util.Pair;
 import android.util.Slog;
@@ -181,6 +179,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private static final String TAG_READ = "HealthConnectRead";
     private static final String TAG_GRANT_PERMISSION = "HealthConnectGrantReadPermissions";
     private static final String TAG_READ_PERMISSION = "HealthConnectReadPermission";
+    private static final String TAG_READ_PERMISSION_FLAGS = "HealthConnectReadPermissionFlags";
     private static final String TAG_INSERT_SUBTASKS = "HealthConnectInsertSubtasks";
 
     private static final String TAG_DELETE_SUBTASKS = "HealthConnectDeleteSubtasks";
@@ -189,6 +188,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private static final int TRACE_TAG_READ = TAG_READ.hashCode();
     private static final int TRACE_TAG_GRANT_PERMISSION = TAG_GRANT_PERMISSION.hashCode();
     private static final int TRACE_TAG_READ_PERMISSION = TAG_READ_PERMISSION.hashCode();
+    private static final int TRACE_TAG_READ_PERMISSION_FLAGS = TAG_READ_PERMISSION_FLAGS.hashCode();
     private static final int TRACE_TAG_INSERT_SUBTASKS = TAG_INSERT_SUBTASKS.hashCode();
     private static final int TRACE_TAG_DELETE_SUBTASKS = TAG_DELETE_SUBTASKS.hashCode();
     private static final int TRACE_TAG_READ_SUBTASKS = TAG_READ_SUBTASKS.hashCode();
@@ -286,6 +286,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mPermissionHelper.getGrantedHealthPermissions(packageName, user);
         Trace.traceEnd(TRACE_TAG_READ_PERMISSION);
         return grantedPermissions;
+    }
+
+    @Override
+    public Map<String, Integer> getHealthPermissionsFlags(
+            @NonNull String packageName, @NonNull UserHandle user, List<String> permissions) {
+        checkParamsNonNull(packageName, user);
+        throwIllegalStateExceptionIfDataSyncInProgress();
+
+        Trace.traceBegin(TRACE_TAG_READ_PERMISSION_FLAGS, TAG_READ_PERMISSION_FLAGS);
+
+        Map<String, Integer> response =
+                mPermissionHelper.getHealthPermissionsFlags(packageName, user, permissions);
+
+        Trace.traceEnd(TRACE_TAG_READ_PERMISSION_FLAGS);
+        return response;
     }
 
     @Override

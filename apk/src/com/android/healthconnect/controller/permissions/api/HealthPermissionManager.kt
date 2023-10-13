@@ -21,8 +21,14 @@ import java.time.Instant
 /** Wrapper for HealthConnectManager permission apis. */
 interface HealthPermissionManager {
     fun getGrantedHealthPermissions(packageName: String): List<String>
+
+    fun getHealthPermissionsFlags(packageName: String, permissions: List<String>): Map<String, Int>
+
     fun grantHealthPermission(packageName: String, permissionName: String)
+
     fun revokeHealthPermission(packageName: String, permissionName: String)
+
     fun revokeAllHealthPermissions(packageName: String)
+
     fun loadStartAccessDate(packageName: String?): Instant?
 }
