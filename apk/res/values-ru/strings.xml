@@ -239,7 +239,7 @@
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Разрешить все"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Запретить"</string>
     <string name="request_permissions_header_desc" msgid="5561173070722750153">"Выберите, какие данные это приложение сможет читать и записывать в сервисе \"Здоровье и спорт\"."</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Если вы предоставите приложению доступ для чтения, оно сможет считывать как новые данные, так и информацию за последние 30 дней."</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Если вы предоставите приложению доступ для чтения, оно сможет получать как новые данные, так и информацию за последние 30 дней."</string>
     <string name="request_permissions_header_title" msgid="4264236128614363479">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к сервису \"Здоровье и спорт\"?"</string>
     <string name="request_permissions_rationale" msgid="6154280355215802538">"Подробнее о том, как приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" обрабатывает ваши данные, можно прочитать в <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> разработчика."</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"политике конфиденциальности"</string>
@@ -270,7 +270,7 @@
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"У этих приложений больше нет доступа, но их данные по-прежнему хранятся в сервисе \"Здоровье и спорт\"."</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"Приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" получит доступ к данным, добавленным после <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Чтобы задать разрешения для этого приложения в Android, выберите \"Настройки &gt; Приложения\""</string>
-    <string name="manage_permissions_rationale" msgid="9183689798847740274">"Данные, которые вы предоставляете приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\", защищены его политикой конфиденциальности."</string>
+    <string name="manage_permissions_rationale" msgid="9183689798847740274">"На данные, которые вы предоставляете приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\", распространяется его политика конфиденциальности."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Чтобы задать разрешения для этого приложения в Android, выберите \"Настройки &gt; Приложения\""</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Ознакомиться с политикой конфиденциальности"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Разрешение использовалось в последние 24 часа"</string>
@@ -294,16 +294,16 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Назад"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Начать"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Удалить данные"</string>
-    <string name="time_range_title" msgid="6831605283322600165">"Выберите данные для удаления"</string>
+    <string name="time_range_title" msgid="6831605283322600165">"Какие данные удалить?"</string>
     <string name="time_range_next_button" msgid="5849096934896557888">"Далее"</string>
     <string name="time_range_message_all" msgid="7280888587242744729">"Все данные, добавленные в приложение \"Здоровье и спорт\" за выбранный период времени, будут навсегда удалены."</string>
     <string name="time_range_message_data_type" msgid="1896125004829258195">"Данные \"<xliff:g id="DATA_TYPE">%s</xliff:g>\", добавленные в приложение \"Здоровье и спорт\" за выбранный период времени, будут навсегда удалены."</string>
     <string name="time_range_message_category" msgid="1136451418397326356">"Данные категории \"<xliff:g id="CATEGORY">%s</xliff:g>\", добавленные в приложение \"Здоровье и спорт\" за выбранный период времени, будут навсегда удалены."</string>
     <string name="time_range_message_app_data" msgid="2590800457710603556">"Данные приложения \"<xliff:g id="APP_DATA">%s</xliff:g>\", добавленные в сервис \"Здоровье и спорт\" за выбранный период времени, будут навсегда удалены."</string>
-    <string name="time_range_one_day" msgid="7162709826595446727">"Удалить данные за последние 24 часа"</string>
-    <string name="time_range_one_week" msgid="8754523384275645434">"Удалить данные за последние 7 дней"</string>
-    <string name="time_range_one_month" msgid="3034747870231999766">"Удалить данные за последние 30 дней"</string>
-    <string name="time_range_all" msgid="8167350212705839943">"Удалить все данные"</string>
+    <string name="time_range_one_day" msgid="7162709826595446727">"За последние 24 часа"</string>
+    <string name="time_range_one_week" msgid="8754523384275645434">"За последние 7 дней"</string>
+    <string name="time_range_one_month" msgid="3034747870231999766">"За последние 30 дней"</string>
+    <string name="time_range_all" msgid="8167350212705839943">"Все"</string>
     <string name="confirming_question_all" msgid="1585414659784742952">"Навсегда удалить все данные?"</string>
     <string name="confirming_question_one_day" msgid="8001434729335611950">"Навсегда удалить все данные за последние 24 часа?"</string>
     <string name="confirming_question_one_week" msgid="5441506951423969587">"Навсегда удалить все данные за последние 7 дней?"</string>

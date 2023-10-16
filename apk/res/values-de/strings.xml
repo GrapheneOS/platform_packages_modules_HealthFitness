@@ -239,7 +239,7 @@
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Alle zulassen"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Nicht erlauben"</string>
     <string name="request_permissions_header_desc" msgid="5561173070722750153">"Du kannst festlegen, welche Daten diese App in Health Connect lesen und schreiben darf"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Wenn du der App Schreibzugriff gibst, kann sie neue Daten und solche aus den letzten 30 Tagen lesen"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Wenn du der App Lesezugriff gibst, kann sie neue Daten und solche aus den letzten 30 Tagen lesen"</string>
     <string name="request_permissions_header_title" msgid="4264236128614363479">"<xliff:g id="APP_NAME">%1$s</xliff:g> Zugriff auf Health Connect erlauben?"</string>
     <string name="request_permissions_rationale" msgid="6154280355215802538">"Wie <xliff:g id="APP_NAME">%1$s</xliff:g> deine Daten verarbeitet, erfährst du in der <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> des Entwicklers"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"Datenschutzerklärung"</string>

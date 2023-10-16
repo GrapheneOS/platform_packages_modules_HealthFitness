@@ -754,7 +754,7 @@
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Cần cập nhật ứng dụng"</string>
     <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> cần được cập nhật để có thể tiếp tục tích hợp với Health Connect"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Một số ứng dụng cần được cập nhật để có thể tiếp tục tích hợp với Health Connect"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Kiểm tra bản cập nhật"</string>
+    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Kiểm tra để tìm bản cập nhật"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Tích hợp Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect đã sẵn sàng tích hợp với hệ thống Android. Nếu bạn cấp ngay quyền truy cập cho <xliff:g id="APP_NAME">%1$s</xliff:g>, một số tính năng sẽ chưa hoạt động được cho đến khi quá trình tích hợp hoàn tất."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect đã sẵn sàng tích hợp với hệ thống Android của bạn. Nếu bạn cấp quyền truy cập ứng dụng ngay lúc này, một số tính năng sẽ chưa thể hoạt động cho đến khi quá trình tích hợp hoàn tất."</string>

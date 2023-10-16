@@ -501,7 +501,7 @@
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"beranjak dari tempat tidur"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"tidur REM"</string>
     <string name="sleep_stage_light" msgid="1070117964678317880">"tidur ringan"</string>
-    <string name="sleep_stage_deep" msgid="3134557407657258364">"tidur nyenyak"</string>
+    <string name="sleep_stage_deep" msgid="3134557407657258364">"fase tidur dalam"</string>
     <string name="sleep_stage_unknown" msgid="8664190491902295991">"tidak diketahui"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> m"</string>
     <string name="hour_minute_duration_short" msgid="6862483734123680444">"<xliff:g id="HOUR">%1$s</xliff:g> j <xliff:g id="MIN">%2$s</xliff:g> m"</string>

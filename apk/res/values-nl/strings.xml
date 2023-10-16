@@ -239,7 +239,7 @@
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Alles toestaan"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Niet toestaan"</string>
     <string name="request_permissions_header_desc" msgid="5561173070722750153">"Bepaal welke gegevens deze app mag lezen of schrijven in Health Connect"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Als je leesrechten geeft, kan deze app nieuwe gegevens en gegevens van de afgelopen 30 dagen lezen."</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Als je leesrechten geeft, kan deze app nieuwe gegevens en gegevens van de afgelopen 30 dagen lezen"</string>
     <string name="request_permissions_header_title" msgid="4264236128614363479">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot Health Connect?"</string>
     <string name="request_permissions_rationale" msgid="6154280355215802538">"In het <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> van de ontwikkelaar lees je hoe <xliff:g id="APP_NAME">%1$s</xliff:g> omgaat met je gegevens."</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privacybeleid"</string>
