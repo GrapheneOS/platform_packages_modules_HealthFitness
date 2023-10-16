@@ -169,11 +169,8 @@ public class ReadTableRequest {
 
     /** Sets LIMIT size for the read query */
     @NonNull
-    public ReadTableRequest setLimit(int pageSize) {
-        // We set limit size to requested pageSize + 1,so that if number of records queried is more
-        // than pageSize we know there are more records available to return for the next read.
-        pageSize += 1;
-        mLimitClause = LIMIT_SIZE + pageSize;
+    public ReadTableRequest setLimit(int limit) {
+        mLimitClause = LIMIT_SIZE + limit;
         return this;
     }
 
