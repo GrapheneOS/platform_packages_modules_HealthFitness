@@ -145,7 +145,7 @@ class UnitsFragment : Hilt_UnitsFragment() {
         unitValue: String,
         onNewValue: (String) -> Unit
     ): ListPreference {
-        val listPreference = ListPreference(context)
+        val listPreference = ListPreference(requireContext())
         logger.logImpression(logName)
 
         with(listPreference) {

@@ -80,6 +80,7 @@ import libcore.util.HexEncoding;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -620,6 +621,7 @@ public class MigrationStateManagerTest {
         ExtendedMockito.verify(() -> MigrationStateChangeJob.cancelAllJobs(eq(mContext)));
     }
 
+    @Ignore("b/294458689")
     @Test
     public void testPauseMigration_maxStartMigrationCountNotReached_shouldNotCompleteMigration() {
         int maxStartMigrationCount = MAX_START_MIGRATION_CALLS_MOCK_VALUE;

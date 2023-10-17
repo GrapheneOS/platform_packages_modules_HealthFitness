@@ -85,28 +85,28 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private val viewModel: ConnectedAppsViewModel by viewModels()
     private lateinit var searchMenuItem: MenuItem
 
-    private val mTopIntro: TopIntroPreference? by lazy {
-        preferenceScreen.findPreference(TOP_INTRO)
+    private val mTopIntro: TopIntroPreference by lazy {
+        preferenceScreen.findPreference(TOP_INTRO)!!
     }
 
-    private val mAllowedAppsCategory: PreferenceGroup? by lazy {
-        preferenceScreen.findPreference(ALLOWED_APPS_CATEGORY)
+    private val mAllowedAppsCategory: PreferenceGroup by lazy {
+        preferenceScreen.findPreference(ALLOWED_APPS_CATEGORY)!!
     }
 
-    private val mNotAllowedAppsCategory: PreferenceGroup? by lazy {
-        preferenceScreen.findPreference(NOT_ALLOWED_APPS)
+    private val mNotAllowedAppsCategory: PreferenceGroup by lazy {
+        preferenceScreen.findPreference(NOT_ALLOWED_APPS)!!
     }
 
-    private val mInactiveAppsCategory: PreferenceGroup? by lazy {
-        preferenceScreen.findPreference(INACTIVE_APPS)
+    private val mInactiveAppsCategory: PreferenceGroup by lazy {
+        preferenceScreen.findPreference(INACTIVE_APPS)!!
     }
 
-    private val mThingsToTryCategory: PreferenceGroup? by lazy {
-        preferenceScreen.findPreference(THINGS_TO_TRY)
+    private val mThingsToTryCategory: PreferenceGroup by lazy {
+        preferenceScreen.findPreference(THINGS_TO_TRY)!!
     }
 
-    private val mSettingsAndHelpCategory: PreferenceGroup? by lazy {
-        preferenceScreen.findPreference(SETTINGS_AND_HELP)
+    private val mSettingsAndHelpCategory: PreferenceGroup by lazy {
+        preferenceScreen.findPreference(SETTINGS_AND_HELP)!!
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -271,7 +271,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     }
 
     private fun getNoAppsPreference(@StringRes res: Int): Preference {
-        return Preference(context).also {
+        return Preference(requireContext()).also {
             it.setTitle(res)
             it.isSelectable = false
         }
@@ -375,10 +375,17 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     private fun setUpEmptyState() {
         mTopIntro?.title = getString(R.string.connected_apps_empty_list_section_title)
-        mThingsToTryCategory?.isVisible = true
-        mThingsToTryCategory?.addPreference(getCheckForUpdatesPreference())
-        mThingsToTryCategory?.addPreference(getSeeAllCompatibleAppsPreference())
-        mThingsToTryCategory?.addPreference(getSendFeedbackPreference())
+        if (deviceInfoUtils.isPlayStoreAvailable(requireContext()) ||
+            deviceInfoUtils.isSendFeedbackAvailable(requireContext())) {
+            mThingsToTryCategory?.isVisible = true
+        }
+        if (deviceInfoUtils.isPlayStoreAvailable(requireContext())) {
+            mThingsToTryCategory?.addPreference(getCheckForUpdatesPreference())
+            mThingsToTryCategory?.addPreference(getSeeAllCompatibleAppsPreference())
+        }
+        if (deviceInfoUtils.isSendFeedbackAvailable(requireContext())) {
+            mThingsToTryCategory?.addPreference(getSendFeedbackPreference())
+        }
         setAppAndSettingsCategoriesVisibility(false)
     }
 

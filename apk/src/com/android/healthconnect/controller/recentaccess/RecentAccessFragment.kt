@@ -82,7 +82,7 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val rootView = super.onCreateView(inflater, container, savedInstanceState)
 
         contentParent = requireActivity().findViewById(android.R.id.content)

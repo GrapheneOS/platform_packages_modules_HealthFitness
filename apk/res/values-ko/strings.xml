@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"헬스 커넥트"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"건강 데이터에 대한 앱 액세스 제어"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"권한 및 데이터"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"휴대전화에서 건강 및 피트니스 데이터를 관리하고 이러한 데이터에 액세스할 수 있는 앱을 제어하세요."</string>
     <string name="data_title" msgid="4456619761533380816">"데이터 및 액세스"</string>
@@ -100,10 +101,10 @@
     <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"올라간 층수"</string>
     <string name="floors_climbed_read_content_description" msgid="4730764877684911752">"올라간 층수 읽기"</string>
     <string name="floors_climbed_write_content_description" msgid="3480340610185615655">"올라간 층수 쓰기"</string>
-    <string name="power_uppercase_label" msgid="8027219480901448660">"체력"</string>
-    <string name="power_lowercase_label" msgid="3893286148577044369">"체력"</string>
-    <string name="power_read_content_description" msgid="6821797135406643841">"체력 읽기"</string>
-    <string name="power_write_content_description" msgid="8091584558688087392">"체력 쓰기"</string>
+    <string name="power_uppercase_label" msgid="8027219480901448660">"전력"</string>
+    <string name="power_lowercase_label" msgid="3893286148577044369">"전력"</string>
+    <string name="power_read_content_description" msgid="6821797135406643841">"전력 읽기"</string>
+    <string name="power_write_content_description" msgid="8091584558688087392">"전력 쓰기"</string>
     <string name="speed_uppercase_label" msgid="3307049861007518587">"속도"</string>
     <string name="speed_lowercase_label" msgid="3462529886150464647">"속도"</string>
     <string name="speed_read_content_description" msgid="9097089387385110692">"속도 읽기"</string>
@@ -248,10 +249,12 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱이 더 이상 헬스 커넥트의 데이터를 읽거나 쓸 수 없습니다.\n\n위치, 카메라, 마이크 등 이 앱에 부여된 다른 권한에는 영향을 미치지 않습니다."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"헬스 커넥트에서 <xliff:g id="APP_NAME">%1$s</xliff:g> 데이터도 삭제"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"다음 날"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"선택한 날짜"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"전날"</string>
     <string name="default_error" msgid="7966868260616403475">"문제가 발생했습니다. 다시 시도해 주세요."</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"이 권한이 있는 앱은 내 건강/피트니스 데이터를 읽고 쓸 수 있습니다."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"헬스 커넥트에 저장된 데이터에 액세스할 수 있는 앱을 관리합니다. 어떤 데이터를 읽거나 쓸 수 있는지 검토할 앱을 탭하세요."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"액세스가 허용된 앱"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"액세스가 허용되지 않은 앱"</string>
@@ -262,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"허용된 앱 없음"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"거부된 앱 없음"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"모든 앱의 액세스 권한을 삭제하시겠습니까?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"헬스 커넥트에 액세스하거나 새 데이터를 추가할 수 있는 앱이 없습니다. 기존 데이터는 삭제되지 않습니다.\n\n위치, 카메라, 마이크 등 이 앱에 부여된 다른 권한은 영향을 받지 않습니다."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"전체 삭제"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"앱 관리"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"앱 데이터 삭제"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"비활성 앱"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"앱의 액세스 권한은 취소되었지만 데이터는 계속해서 헬스 커넥트에 저장됩니다."</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱은 <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> 이후 추가된 데이터를 읽을 수 있습니다."</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"앱이 액세스할 수 있는 다른 Android 권한을 관리하려면 설정 &gt; 앱으로 이동하세요."</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱과 공유하는 데이터에는 앱의 개인정보처리방침이 적용됩니다."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"앱이 액세스할 수 있는 다른 Android 권한을 관리하려면 설정으로 이동한 다음 앱을 탭하세요."</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"개인정보처리방침 읽기"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"지난 24시간 이내에 액세스함"</string>
     <string name="app_access_title" msgid="7137018424885371763">"앱 액세스"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"현재 설치되어 있는 호환 앱이 없습니다"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"앱 권한 삭제됨"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"헬스 커넥트에서 <xliff:g id="APP_DATA">%s</xliff:g>의 권한을 삭제했습니다."</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"헬스 커넥트에서 <xliff:g id="APP_DATA_0">%1$s</xliff:g> 및 <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>의 권한을 삭제했습니다."</string>
@@ -324,7 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"<xliff:g id="APP_DATA">%2$s</xliff:g>에서 추가한 모든 <xliff:g id="DATA_TYPE">%1$s</xliff:g> 데이터를 완전히 삭제하시겠습니까?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"이 항목을 완전히 삭제하시겠습니까?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"연결된 앱이 더 이상 이 헬스 커넥트 데이터에 액세스할 수 없게 됩니다."</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"<xliff:g id="START_DATE">%1$s</xliff:g>~<xliff:g id="END_DATE">%2$s</xliff:g> 기간의 모든 월경 관련 항목이 삭제됩니다."</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"삭제"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"뒤로"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"완료"</string>
@@ -338,9 +345,9 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"헬스 커넥트 데이터 삭제"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"헬스 커넥트 데이터 삭제"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"데이터 삭제"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"데이터 항목 삭제"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"항목 삭제"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"총 <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1W}other{#W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1와트}other{#와트}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1걸음}other{#걸음}}"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"수면 시간: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="NAME">%2$s</xliff:g>: <xliff:g id="DURATION">%1$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"깨어 있는 상태"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"깨어 있는 상태로 누워 있음"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"수면 중"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"침대에서 나옴"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"렘 수면"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{1분}other{#분}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> <xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1일}other{#일}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1mL/(kg·분)}other{#mL/(kg·분)}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{산소 1밀리리터(체질량 킬로그램, 분당)}other{산소 #밀리리터(체질량 킬로그램, 분당)}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"신진대사율 측정 장치"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1킬로줄}other{#킬로줄}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}other{#%}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1퍼센트}other{#퍼센트}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"취소"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"단위"</string>
     <string name="set_units_label" msgid="6566059089772896105">"데이터 단위 설정하기"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"거리"</string>
@@ -669,23 +678,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"화씨"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"켈빈"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"고객센터"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"설치된 앱이 표시되지 않는다면 아직 헬스 커넥트와 호환되지 않을 수 있습니다."</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"사용할 수 있는 옵션"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"업데이트 확인"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"설치된 앱이 최신 상태인지 확인하세요."</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"호환 앱 모두 보기"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play에서 앱을 찾아보세요."</string>
     <string name="send_feedback" msgid="7756927746070096780">"의견 보내기"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"헬스 커넥트와 함께 어떤 건강/피트니스 앱을 사용할지 알려주세요."</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play 스토어"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"자동 삭제"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"자동 삭제"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"헬스 커넥트의 데이터 저장 기간을 관리하세요. 설정된 기간이 끝나면 내 데이터가 삭제되도록 예약할 수 있습니다."</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"자동 삭제에 관해 자세히 알아보기"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"자세히 알아보기"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"데이터 자동 삭제"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{#개월 후}other{#개월 후}}"</string>
     <string name="range_never" msgid="4429478261788361233">"사용 안함"</string>
-    <string name="range_off" msgid="8178520557618184215">"사용 안함"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"설정을 변경하면 헬스 커넥트가 새로운 환경설정을 반영하여 기존 데이터를 삭제합니다."</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{#개월 후 데이터를 자동 삭제하시겠습니까?}other{#개월 후 데이터를 자동 삭제하시겠습니까?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{#개월이 지나면 헬스 커넥트에서 새로운 데이터를 자동으로 삭제합니다. 이렇게 설정하면 #개월이 넘은 기존 데이터도 삭제됩니다.}other{#개월이 지나면 헬스 커넥트에서 새로운 데이터를 자동으로 삭제합니다. 이렇게 설정하면 #개월이 넘은 기존 데이터도 삭제됩니다.}}"</string>
@@ -712,66 +724,119 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"<xliff:g id="APP_NAME">%1$s</xliff:g>에서 헬스 커넥트에 있는 이 운동 경로에 액세스할 수 있도록 허용하시겠습니까?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"이 앱이 경로에 포함된 나의 과거 위치를 읽을 수 있게 됩니다."</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"운동 경로에 위치 정보가 포함됨"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"누가 이 데이터를 볼 수 있나요?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"운동 경로에 액세스하도록 허용한 앱만 볼 수 있습니다."</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"어떻게 액세스를 관리하나요?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"헬스 커넥트 설정에서 운동 경로에 액세스하는 앱을 관리할 수 있습니다."</string>
-    <string name="back_button" msgid="780519527385993407">"뒤로"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"로드 중…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"통합 진행 중"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"헬스 커넥트가 Android 시스템과 통합 중입니다.\n\n데이터와 권한을 이전하는 데 시간이 다소 걸릴 수 있습니다."</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"절차가 완료되었다는 알림이 표시될 때까지 앱을 닫지 마세요."</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"헬스 커넥트 통합 진행 중"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"업데이트 필요"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"설정에서 바로 액세스할 수 있도록 헬스 커넥트가 Android 시스템과 통합 중입니다."</string>
-    <string name="update_button" msgid="4544529019832009496">"업데이트"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"헬스 커넥트가 시스템 설정과 통합을 계속할 수 있도록 업데이트를 시작하세요."</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"지금 업데이트"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"시스템 업데이트 필요"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"계속하기 전에 휴대전화 시스템을 업데이트하세요."</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"휴대전화 시스템을 이미 업데이트했다면 휴대전화를 다시 시작하여 통합을 계속해 보세요."</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"헬스 커넥트 업데이트 필요"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"계속하기 전에 헬스 커넥트 앱을 최신 버전으로 업데이트하세요."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"추가 저장용량 필요"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"통합을 계속하기 위해 헬스 커넥트에 <xliff:g id="SPACE_NEEDED">%1$s</xliff:g>의 저장용량이 필요합니다.\n\n휴대전화에서 저장용량 일부를 정리한 후 다시 시도해 보세요."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"다시 시도"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"여유 공간 확보"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"추가 저장용량 필요"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"통합을 계속하기 위해 헬스 커넥트에 <xliff:g id="SPACE_NEEDED">%1$s</xliff:g>의 저장용량이 필요합니다."</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"통합 일시중지됨"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"헬스 커넥트 앱이 Android 시스템과의 통합 중에 종료되었습니다.\n\n재개를 클릭하여 앱을 다시 열고 데이터 및 권한 이전을 계속하세요."</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"헬스 커넥트 데이터를 유지하려면 <xliff:g id="TIME_NEEDED">%1$s</xliff:g> 이내에 완료하세요."</string>
-    <string name="resume_button" msgid="2255148549862208047">"재개"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"통합 일시중지됨"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"헬스 커넥트가 Android 시스템과 통합 중입니다. 계속하려면 탭하세요."</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"통합 재개"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"헬스 커넥트와 Android 시스템과의 통합을 계속하려면 탭하세요. 데이터를 유지하려면 <xliff:g id="TIME_NEEDED">%1$s</xliff:g> 이내에 완료하세요."</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"헬스 커넥트와 Android 시스템과의 통합을 계속하려면 탭하세요."</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"계속"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"헬스 커넥트 통합 재개"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"데이터를 유지하려면 <xliff:g id="TIME_NEEDED">%1$s</xliff:g> 이내에 완료하세요."</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"앱 업데이트 필요"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱은 헬스 커넥트와 호환되기 위해 최신 버전으로 업데이트되어야 합니다."</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"일부 앱은 최신 버전으로 업데이트하지 않으면 헬스 커넥트와 호환되지 않습니다."</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"업데이트 확인"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"헬스 커넥트 통합"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"헬스 커넥트가 Android 시스템과 통합될 준비가 되었습니다. 지금 <xliff:g id="APP_NAME">%1$s</xliff:g> 앱에 액세스 권한을 부여하면 통합이 완료될 때까지 일부 기능이 작동하지 않을 수 있습니다."</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"헬스 커넥트가 Android 시스템과 통합될 준비가 되었습니다. 지금 앱에 액세스 권한을 부여하면 통합이 완료될 때까지 일부 기능이 작동하지 않을 수 있습니다."</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"계속"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"통합 시작"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"헬스 커넥트 통합 진행 중"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"헬스 커넥트가 Android 시스템과 통합 중입니다.\n\n통합이 완료되고 헬스 커넥트와 함께 <xliff:g id="APP_NAME">%1$s</xliff:g> 앱을 사용할 수 있게 되면 알려드립니다."</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"헬스 커넥트가 Android 시스템과 통합 중입니다.\n\n통합이 완료되고 헬스 커넥트를 사용할 수 있게 되면 알려드립니다."</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"확인"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"헬스 커넥트 통합이 완료되지 않음"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"다시 사용할 수 있게 되면 알림이 전송됩니다."</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"확인"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"헬스 커넥트 통합이 완료되지 않음"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"자세히 알아보기"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"헬스 커넥트 통합 완료"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"열기"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"새로운 기능"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"이제 설정에서 바로 헬스 커넥트에 액세스할 수 있습니다. 언제든 헬스 커넥트 앱을 제거하세요."</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"확인"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>

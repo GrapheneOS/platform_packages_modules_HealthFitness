@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"നിങ്ങളുടെ ആരോഗ്യം സംബന്ധിച്ച ഡാറ്റയിലേക്കുള്ള ആപ്പ് ആക്‌സസ് മാനേജ് ചെയ്യുക"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"അനുമതികളും ഡാറ്റയും"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"നിങ്ങളുടെ ഫോണിൽ ആരോഗ്യ, ഫിറ്റ്‍നസ് ഡാറ്റ മാനേജ് ചെയ്യുകയും ഏതെല്ലാം ആപ്പുകൾക്ക് അത് ആക്‌സസ് ചെയ്യാനാകുമെന്ന് നിയന്ത്രിക്കുകയും ചെയ്യുക"</string>
     <string name="data_title" msgid="4456619761533380816">"ഡാറ്റയും ആക്‌സസും"</string>
@@ -248,10 +249,12 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിന് ഇനി Health Connect-ൽ നിന്നുള്ള ഒരു ഡാറ്റയും വായിക്കാനോ എഴുതാനോ കഴിയില്ല.\n\nലൊക്കേഷനോ ക്യാമറയോ മൈക്രോഫോണോ പോലെ ഈ ആപ്പിന് ഉണ്ടായിരിക്കാനിടയുള്ള മറ്റ് അനുമതികളെ ഇത് ബാധിക്കില്ല."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect-ൽ നിന്നുള്ള <xliff:g id="APP_NAME">%1$s</xliff:g> ഡാറ്റയും ഇല്ലാതാക്കുക"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"അടുത്ത ദിവസം"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"തിരഞ്ഞെടുത്ത ദിവസം"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"മുമ്പത്തെ ദിവസം"</string>
     <string name="default_error" msgid="7966868260616403475">"എന്തോ കുഴപ്പമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക."</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"ഈ അനുമതിയുള്ള ആപ്പുകൾക്ക് നിങ്ങളുടെ ആരോഗ്യവും ഫിറ്റ്‍നസും സംബന്ധിച്ച ഡാറ്റ റീഡ് ചെയ്യാനും റൈറ്റ് ചെയ്യാനുമാകും."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connect-ൽ സംഭരിച്ച ഡാറ്റ ഏതെല്ലാം ആപ്പുകൾക്ക് ആക്‌സസ് ചെയ്യാനാകുമെന്നത് നിയന്ത്രിക്കുക. ഒരു ആപ്പിന് റീഡ് ചെയ്യാനോ റൈറ്റ് ചെയ്യാനോ കഴിയുന്ന ഡാറ്റ അവലോകനം ചെയ്യാൻ ആപ്പിൽ ടാപ്പ് ചെയ്യുക."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"ആക്സസിന് അനുമതി നൽകിയവ"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"ആക്സസിന് അനുമതി നൽകാത്തവ"</string>
@@ -262,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"ആപ്പുകൾക്കൊന്നും അനുമതി നൽകിയിട്ടില്ല"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"ആപ്പിനൊന്നും അനുമതി നിഷേധിച്ചിട്ടില്ല"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"എല്ലാ ആപ്പുകൾക്കുമുള്ള ആക്‌സസ് നീക്കം ചെയ്യണോ?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"നിങ്ങളുടെ ആപ്പുകൾക്കൊന്നും Health Connect ആക്‌സസ് ചെയ്യാനോ അതിലേക്ക് പുതിയ ഡാറ്റ ചേർക്കാനോ കഴിയില്ല. ഇത് നിലവിലുള്ള ഡാറ്റയൊന്നും ഇല്ലാതാക്കുന്നില്ല.\n\nലൊക്കേഷൻ, ക്യാമറ, മൈക്രോഫോൺ എന്നിവ പോലെ ഈ ആപ്പിന് ഉണ്ടായിരിക്കാവുന്ന മറ്റ് അനുമതികളെയൊന്നും ഇത് ബാധിക്കുന്നില്ല."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"എല്ലാം നീക്കം ചെയ്യൂ"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"ആപ്പ് മാനേജ് ചെയ്യുക"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"ആപ്പ് ഡാറ്റ ഇല്ലാതാക്കുക"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"നിഷ്‌ക്രിയമായ ആപ്പുകൾ"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"ഈ ആപ്പുകൾക്ക് ഇനി ആക്‌സസ് ഇല്ല, എന്നാലും Health Connect-ൽ ഇപ്പോഴും ഡാറ്റ സംഭരിച്ചിട്ടുണ്ട്"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിന് <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>-ന് ശേഷം ചേർത്ത ഡാറ്റ റീഡ് ചെയ്യാനാകും"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"ഈ ആപ്പിന് ആക്‌സസ് ചെയ്യാനാകുന്ന മറ്റ് Android അനുമതികൾ മാനേജ് ചെയ്യാൻ, ക്രമീകരണം &gt; ആപ്പുകൾ എന്നതിലേക്ക് പോകുക"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതുമായി നിങ്ങൾ പങ്കിടുന്ന ഡാറ്റയ്‌ക്ക് അവരുടെ സ്വകാര്യതാ നയത്തിന്റെ പരിരക്ഷണമുണ്ട്"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"ഈ ആപ്പിന് ആക്‌സസ് ചെയ്യാനാകുന്ന മറ്റ് Android അനുമതികൾ മാനേജ് ചെയ്യാൻ, ക്രമീകരണത്തിലേക്ക് പോയ ശേഷം ആപ്പുകൾ ടാപ്പ് ചെയ്യുക"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"സ്വകാര്യതാ നയം വായിക്കുക"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"കഴിഞ്ഞ 24 മണിക്കൂറിനിടെ ആക്‌സസ് ചെയ്‌തു"</string>
     <string name="app_access_title" msgid="7137018424885371763">"ആപ്പ് ആക്‌സസ്"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"നിലവിൽ നിങ്ങൾ അനുയോജ്യമായ ആപ്പുകളൊന്നും ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"നീക്കം ചെയ്ത ആപ്പ് അനുമതികൾ"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"<xliff:g id="APP_DATA">%s</xliff:g> ആപ്പിനുള്ള അനുമതികൾ Health Connect നീക്കം ചെയ്തു"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"<xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> എന്നീ ആപ്പുകൾക്കുള്ള അനുമതികൾ Health Connect നീക്കം ചെയ്തു"</string>
@@ -324,7 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"<xliff:g id="APP_DATA">%2$s</xliff:g> ചേർത്ത എല്ലാ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ഡാറ്റയും ശാശ്വതമായി ഇല്ലാതാക്കണോ?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"ഈ എൻട്രി ശാശ്വതമായി ഇല്ലാതാക്കണോ?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"കണക്‌റ്റ് ചെയ്‌തിട്ടുള്ള ആപ്പുകൾക്ക് ഇനി Health Connect-ൽ നിന്ന് ഈ ഡാറ്റ ആക്‌സസ് ചെയ്യാനാകില്ല"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"ആർത്തവ സംബന്ധമായി <xliff:g id="START_DATE">%1$s</xliff:g> മുതൽ <xliff:g id="END_DATE">%2$s</xliff:g> വരെയുള്ള എല്ലാ എൻട്രികളും ഇത് ഇല്ലാതാക്കും."</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"ഇല്ലാതാക്കുക"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"മടങ്ങുക"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"പൂർത്തിയായി"</string>
@@ -338,9 +345,9 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"Health Connect ഡാറ്റ ഇല്ലാതാക്കുന്നു"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Health Connect ഡാറ്റ ഇല്ലാതാക്കുന്നു"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"ഡാറ്റ ഇല്ലാതാക്കൽ"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"ഡാറ്റാ എൻട്രി ഇല്ലാതാക്കുക"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"എൻട്രി ഇല്ലാതാക്കുക"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"ആകെ: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{ഒരു വാട്ട്}other{# വാട്ട്}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 ചുവട്}other{# ചുവടുകൾ}}"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> ഉറക്കം"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"സജീവം"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"കിടക്കയിൽ ഉണർന്നിരിക്കുന്ന സമയം"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"ഉറക്ക സമയം"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"കിടക്കയിൽ നിന്ന് എഴുന്നേൽക്കുക"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM ഉറക്കം"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{ഒരു മിനിറ്റ്}other{# മിനിറ്റ്}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g>, <xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1 ദിവസം}other{# ദിവസം}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 മി.ലി/(കിലോഗ്രാം പെർ മിനിറ്റ്)}other{# മി.ലി/(കിലോഗ്രാം പെർ മിനിറ്റ്)}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{ഒരു മിനിറ്റിൽ ഒരു കിലോഗ്രാം ശരീര ഭാരത്തിന് 1 മില്ലിലിറ്റർ ഓക്‌സിജൻ}other{ഒരു മിനിറ്റിൽ ഒരു കിലോഗ്രാം ശരീര ഭാരത്തിന് # മില്ലിലിറ്റർ ഓക്‌സിജൻ}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"മെറ്റാബോളിക് കാർട്ട്"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 കിലോജൂൾ}other{# കിലോജൂൾ}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}other{#%}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 ശതമാനം}other{# ശതമാനം}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"റദ്ദാക്കുക"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"യൂണിറ്റുകൾ"</string>
     <string name="set_units_label" msgid="6566059089772896105">"ഡാറ്റാ യൂണിറ്റുകൾ സജ്ജീകരിക്കുക"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"ദൂരം"</string>
@@ -669,23 +678,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"ഫാരൻഹീറ്റ്"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"കെൽവിൻ"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"സഹായവും ഫീഡ്‌ബാക്കും"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"നിങ്ങൾക്ക് ഇൻസ്റ്റാൾ ചെയ്ത ആപ്പ് കാണാനാകുന്നില്ലെങ്കിൽ, അത് ഇതുവരെ Health Connect-ന് അനുയോജ്യമല്ലായിരിക്കാം"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"ശ്രമിച്ച് നോക്കാവുന്ന കാര്യങ്ങൾ"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"അപ്‌ഡേറ്റുകൾ പരിശോധിക്കുക"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"ഇൻസ്റ്റാൾ ചെയ്ത ആപ്പുകൾ അപ് ടു ഡേറ്റാണ് എന്ന് ഉറപ്പാക്കുക"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"അനുയോജ്യമായ എല്ലാ ആപ്പുകളും കാണുക"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play-യിൽ ആപ്പുകൾ കണ്ടെത്തുക"</string>
     <string name="send_feedback" msgid="7756927746070096780">"ഫീഡ്ബാക്ക് അയയ്ക്കുക"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Health Connect-നൊപ്പം ഏതൊക്കെ ആരോഗ്യ, ഫിറ്റ്നസ് ആപ്പുകൾ ഉപയോഗിക്കാനാണ് നിങ്ങൾക്ക് താൽപ്പര്യമെന്ന് ഞങ്ങളോട് പറയുക"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"സ്വയമേവ ഇല്ലാതാക്കൽ"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"സ്വയമേവ ഇല്ലാതാക്കൽ"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Health Connect നിങ്ങളുടെ ഡാറ്റ എത്ര നാൾ സംഭരിക്കണമെന്നത്, ഒരു നിശ്ചിത സമയത്തിന് ശേഷം അത് ഇല്ലാതാക്കാനായി ഷെഡ്യൂൾ ചെയ്തുകൊണ്ട് നിയന്ത്രിക്കുക"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"സ്വയമേവ-ഇല്ലാതാക്കലിനെക്കുറിച്ച് കൂടുതലറിയുക"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"കൂടുതലറിയുക"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ഡാറ്റ സ്വയമേവ ഇല്ലാതാക്കുക"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# മാസത്തിന് ശേഷം}other{# മാസത്തിന് ശേഷം}}"</string>
     <string name="range_never" msgid="4429478261788361233">"ഒരിക്കലും വേണ്ട"</string>
-    <string name="range_off" msgid="8178520557618184215">"ഓഫാണ്"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"നിങ്ങൾ ഈ ക്രമീകരണം മാറ്റുമ്പോൾ, പുതിയ മുൻഗണനകൾ പ്രതിഫലിപ്പിക്കുന്ന വിധത്തിൽ നിലവിലുള്ള ഡാറ്റ Health Connect ഇല്ലാതാക്കുന്നു"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# മാസത്തിന് ശേഷം ഡാറ്റ സ്വയമേവ ഇല്ലാതാക്കണോ?}other{# മാസത്തിന് ശേഷം ഡാറ്റ സ്വയമേവ ഇല്ലാതാക്കണോ?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{പുതിയ ഡാറ്റ # മാസത്തിന് ശേഷം Health Connect സ്വയമേവ ഇല്ലാതാക്കും. ഇത് സജ്ജീകരിക്കുന്നത് നിലവിലുള്ള # മാസത്തിൽ കൂടുതൽ പഴക്കമുള്ള ഡാറ്റയേയും ഇല്ലാതാക്കും.}other{പുതിയ ഡാറ്റ # മാസത്തിന് ശേഷം Health Connect സ്വയമേവ ഇല്ലാതാക്കും. ഇത് സജ്ജീകരിക്കുന്നത് നിലവിലുള്ള # മാസത്തിൽ കൂടുതൽ പഴക്കമുള്ള ഡാറ്റയേയും ഇല്ലാതാക്കും.}}"</string>
@@ -712,66 +724,119 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"Health Connect-ലെ ഈ വ്യായാമ ദിനചര്യ ആക്സസ് ചെയ്യാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിനെ അനുവദിക്കണോ?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"ഈ വഴിയിൽ, നിങ്ങൾ മുമ്പ് സന്ദർശിച്ച ലൊക്കേഷൻ മനസ്സിലാക്കാൻ ഈ ആപ്പിന് കഴിയും"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"വ്യായാമ സെഷന്റെ വഴികളിൽ ലൊക്കേഷൻ വിവരങ്ങൾ ഉൾപ്പെടുന്നു"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"ആർക്കൊക്കെ ഈ ഡാറ്റ കാണാനാകും?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"വ്യായാമ സെഷന്റെ വഴികൾ ആക്‌സസ് ചെയ്യാൻ നിങ്ങൾ അനുവദിച്ചിട്ടുള്ള ആപ്പുകൾക്ക് മാത്രം"</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"എനിക്ക് എങ്ങനെ ആക്‌സസ് മാനേജ് ചെയ്യാനാകും?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"നിങ്ങൾക്ക് വ്യായാമ സെഷന്റെ വഴികളിലേക്കുള്ള ആപ്പ് ആക്‌സസ് Health Connect ക്രമീകരണത്തിൽ മാനേജ് ചെയ്യാം"</string>
-    <string name="back_button" msgid="780519527385993407">"മടങ്ങുക"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"ലോഡ് ചെയ്യുന്നു…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"സംയോജനം പുരോഗമിക്കുന്നു"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Android സിസ്റ്റവുമായി Health Connect സംയോജിപ്പിക്കുന്നു.\n\nനിങ്ങളുടെ ഡാറ്റയും അനുമതികളും കൈമാറാൻ കുറച്ച് സമയമെടുത്തേക്കാം."</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"പ്രക്രിയ പൂർത്തിയായി എന്ന അറിയിപ്പ് ലഭിക്കാതെ ആപ്പ് അടയ്ക്കരുത്."</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect സംയോജനം പുരോഗമിക്കുന്നു"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"അപ്‌ഡേറ്റ് ആവശ്യമാണ്"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect നിങ്ങളുടെ ക്രമീകരണത്തിൽ നിന്ന് നേരിട്ട് ആക്സസ് ചെയ്യുന്നതിനായി അത് Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കുകയാണ്."</string>
-    <string name="update_button" msgid="4544529019832009496">"അപ്ഡേറ്റ് ചെയ്യുക"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Health Connect നിങ്ങളുടെ സിസ്റ്റം ക്രമീകരണവുമായി സംയോജിപ്പിക്കുന്നത് തുടരാൻ ഈ അപ്ഡേറ്റ് ആരംഭിക്കുക"</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"ഇപ്പോൾ അപ്‌ഡേറ്റ് ചെയ്യുക"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"സിസ്‌റ്റം അപ്‌ഡേറ്റ് ആവശ്യമാണ്"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"തുടരുന്നതിന് മുമ്പ്, ഫോൺ സിസ്റ്റം അപ്ഡേറ്റ് ചെയ്യുക."</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"നിങ്ങൾ ഇതിനകം ഫോൺ സിസ്റ്റം അപ്ഡേറ്റ് ചെയ്തിട്ടുണ്ടെങ്കിൽ, സംയോജനം തുടരാൻ ഫോൺ റീസ്റ്റാർട്ട് ചെയ്തു നോക്കുക"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Health Connect അപ്ഡേറ്റ് ചെയ്യേണ്ടതുണ്ട്"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"തുടരുന്നതിന് മുമ്പ്, Health Connect ആപ്പ് ഏറ്റവും പുതിയ പതിപ്പിലേക്ക് അപ്ഡേറ്റ് ചെയ്യുക."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"കൂടുതൽ സ്‌പെയ്‌സ് ആവശ്യമാണ്"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"സംയോജനം തുടരാൻ Health Connect-ന് നിങ്ങളുടെ ഫോണിൽ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> സ്‌റ്റോറേജ് സ്‌പെയ്‌സ് ആവശ്യമാണ്.\n\nഫോണിൽ കുറച്ച് ഇടം സൃഷ്ടിച്ച് വീണ്ടും ശ്രമിക്കുക."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"വീണ്ടും ശ്രമിക്കുക"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"ഇടം സൃഷ്ടിക്കുക"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"കൂടുതൽ സ്‌പെയ്‌സ് ആവശ്യമാണ്"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"സംയോജനം തുടരാൻ Health Connect-ന് നിങ്ങളുടെ ഫോണിൽ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> സ്‌റ്റോറേജ് സ്‌പെയ്‌സ് ആവശ്യമാണ്."</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"സംയോജനം താൽക്കാലികമായി നിർത്തി"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Health Connect ആപ്പ് Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കുമ്പോൾ അതിന്റെ പ്രവർത്തനം അവസാനിച്ചു.\n\nആപ്പ് വീണ്ടും തുറന്ന് നിങ്ങളുടെ ഡാറ്റയും അനുമതികളും കൈമാറുന്നത് തുടരാൻ, \'പുനരാരംഭിക്കുക\' ക്ലിക്ക് ചെയ്യുക."</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"നിങ്ങളുടെ Health Connect ഡാറ്റ നിലനിർത്താൻ, <xliff:g id="TIME_NEEDED">%1$s</xliff:g> സമയപരിധിക്കുള്ളിൽ ഇത് പൂർത്തിയാക്കുക"</string>
-    <string name="resume_button" msgid="2255148549862208047">"പുനരാരംഭിക്കുക"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"സമന്വയിപ്പിക്കൽ താൽക്കാലികമായി നിർത്തി"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Android സിസ്റ്റവുമായി Health Connect-നെ സമന്വയിപ്പിക്കുന്നു. തുടരാൻ ടാപ്പ് ചെയ്യുക"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"സംയോജനം പുനരാരംഭിക്കുക"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Android സിസ്റ്റവുമായി Health Connect സംയോജിപ്പിക്കുന്നത് തുടരാൻ ടാപ്പ് ചെയ്യുക. നിങ്ങളുടെ ഡാറ്റ നിലനിർത്താൻ, <xliff:g id="TIME_NEEDED">%1$s</xliff:g> സമയപരിധിക്കുള്ളിൽ ഇത് പൂർത്തിയാക്കുക"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Android സിസ്റ്റവുമായി Health Connect സംയോജിപ്പിക്കുന്നത് തുടരാൻ ടാപ്പ് ചെയ്യുക."</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"തുടരുക"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"Health Connect സംയോജനം പുനരാരംഭിക്കുക"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"നിങ്ങളുടെ ഡാറ്റ നിലനിർത്താൻ, <xliff:g id="TIME_NEEDED">%1$s</xliff:g> സമയപരിധിക്കുള്ളിൽ ഇത് പൂർത്തിയാക്കുക"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"ആപ്പ് അപ്‌ഡേറ്റ് ചെയ്യേണ്ടതുണ്ട്"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"Health Connect-നൊപ്പം പ്രവർത്തിക്കുന്നതിന് <xliff:g id="APP_NAME">%1$s</xliff:g> അപ് ടു ഡേറ്റ് ആയിരിക്കണം"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Health Connect-നൊപ്പം പ്രവർത്തിക്കുന്നതിന് ചില ആപ്പുകൾ അപ് ടു ഡേറ്റ് ആയിരിക്കണം"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"അപ്‌ഡേറ്റുകൾ പരിശോധിക്കുക"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect സംയോജനം"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect നിങ്ങളുടെ Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കാൻ തയ്യാറാണ്. നിങ്ങൾ <xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിന് ഇപ്പോൾ ആക്സസ് നൽകിയാൽ, സംയോജനം പൂർത്തിയാകുന്നത് വരെ ചില ഫീച്ചറുകൾ പ്രവർത്തിക്കണമെന്നില്ല."</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect നിങ്ങളുടെ Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കാൻ തയ്യാറായിരിക്കുന്നു. നിങ്ങൾ ആപ്പുകൾക്ക് ഇപ്പോൾ ആക്സസ് നൽകിയാൽ, സംയോജനം പൂർത്തിയാകുന്നതു വരെ ചില ഫീച്ചറുകൾ പ്രവർത്തിക്കണമെന്നില്ല."</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"തുടരുക"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"സമന്വയിപ്പിക്കൽ ആരംഭിക്കുക"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect സംയോജനം പുരോഗമിക്കുന്നു"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Android സിസ്റ്റവുമായി Health Connect സംയോജിപ്പിക്കുന്നു.\n\nപ്രക്രിയ പൂർത്തിയായി Health Connect-നൊപ്പം <xliff:g id="APP_NAME">%1$s</xliff:g> ഉപയോഗിക്കാനാകുമ്പോൾ നിങ്ങൾക്ക് അറിയിപ്പ് ലഭിക്കും."</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Android സിസ്റ്റവുമായി Health Connect-നെ സംയോജിപ്പിക്കുന്നു.\n\nപ്രക്രിയ പൂർത്തിയായി Health Connect ഉപയോഗിക്കാനാകുമ്പോൾ നിങ്ങൾക്ക് അറിയിപ്പ് ലഭിക്കും."</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"മനസ്സിലായി"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect സംയോജനം പൂർത്തിയായില്ല"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"ഇത് വീണ്ടും ലഭ്യമാകുമ്പോൾ നിങ്ങൾക്ക് അറിയിപ്പ് ലഭിക്കും."</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"മനസ്സിലായി"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Health Connect സംയോജനം പൂർത്തിയായില്ല"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"കൂടുതൽ വായിക്കുക"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect സംയോജനം പൂർത്തിയായി"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"തുറക്കുക"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"പുതിയത് എന്തൊക്കെയാണ്"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"നിങ്ങൾക്കിപ്പോൾ ക്രമീകരണത്തിൽ നിന്ന് നേരിട്ട് Health Connect ആക്സസ് ചെയ്യാം. എപ്പോൾ വേണമെങ്കിലും Health Connect ആപ്പ് അൺഇൻസ്റ്റാൾ ചെയ്യാം."</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"മനസ്സിലായി"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>

@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"إدارة إمكانية وصول التطبيقات إلى البيانات الصحية"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"الأذونات والبيانات"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"يمكنك إدارة بيانات الصحة واللياقة البدنية على هاتفك والتحكّم في التطبيقات التي يمكنها الوصول إلى تلك البيانات."</string>
     <string name="data_title" msgid="4456619761533380816">"البيانات وإمكانية وصول التطبيقات إليها"</string>
@@ -63,7 +64,7 @@
     <string name="app_priority_button" msgid="3126133977893705098">"ضبط أولوية التطبيقات"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"حذف بيانات <xliff:g id="CATEGORY">%s</xliff:g>"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"جميع التطبيقات"</string>
-    <string name="can_read" msgid="4568261079308309564">"التطبيقات المسموح لها بقراءة بيانات <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_read" msgid="4568261079308309564">"تطبيقات تملُك إذنًا بقراءة بيانات <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"تطبيقات تملُك إذنًا بكتابة بيانات <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"التطبيقات غير النشطة"</string>
     <string name="inactive_apps_message" msgid="4666501359079362486">"لم يعُد بإمكان هذه التطبيقات كتابة بيانات <xliff:g id="DATA_TYPE">%s</xliff:g>، ولكن لا يزال لديها بيانات مخزَّنة في Health Connect."</string>
@@ -248,34 +249,39 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"لن يتمكَّن تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" بعد ذلك من قراءة أو كتابة أي بيانات من تطبيق Health Connect.\n\nلا يؤثر هذا الإجراء في الأذونات الأخرى التي قد يمتلكها هذا التطبيق، مثلاً الموقع الجغرافي أو الكاميرا أو الميكروفون."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"حذف بيانات تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" أيضًا من Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"اليوم التالي"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"اليوم المحدَّد"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"اليوم السابق"</string>
     <string name="default_error" msgid="7966868260616403475">"حدث خطأ. يُرجى إعادة المحاولة."</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"تتمكن التطبيقات التي لديها هذا الإذن من قراءة بيانات الصحة واللياقة البدنية وكتابتها."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"تحكَّم في اختيار التطبيقات التي يمكنها الوصول إلى البيانات المخزَّنة في Health Connect. انقر على أحد التطبيقات لمراجعة البيانات التي يمكنه قراءتها وكتابتها."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"التطبيقات المسموح لها بالوصول إلى البيانات"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"التطبيقات غير المسموح لها بالوصول إلى البيانات"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"الإعدادات والمساعدة"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"إزالة إمكانية وصول كل التطبيقات للبيانات"</string>
-    <string name="manage_permissions_read_header" msgid="2031153753057983683">"مسموح للتطبيق بقراءة البيانات التالية:"</string>
+    <string name="manage_permissions_read_header" msgid="2031153753057983683">"مسموح له بقراءة بيانات"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"مسموح له بكتابة بيانات"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"لم يتم السماح لأي تطبيقات."</string>
-    <string name="no_apps_denied" msgid="743327680286446017">"لم يتم رفض أي تطبيقات"</string>
+    <string name="no_apps_denied" msgid="743327680286446017">"لم يتم رفض أي تطبيقات."</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"هل تريد إزالة إمكانية وصول كل التطبيقات؟"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"لن يتمكّن أي من تطبيقاتك من الوصول إلى بيانات تطبيق Health Connect أو إضافة بيانات جديدة إليه. لا يؤدي هذا الإجراء إلى حذف أي بيانات حالية.\n\nلا يؤثر هذا الإجراء في الأذونات الأخرى التي قد يمتلكها هذا التطبيق، مثلاً الموقع الجغرافي أو الكاميرا أو الميكروفون."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"إزالة الكل"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"إدارة التطبيق"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"حذف بيانات التطبيق"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"التطبيقات غير النشطة"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"لن تتمكن هذه التطبيقات من الوصول إلى البيانات بعد ذلك، ولكن لا يزال لديها بيانات مخزَّنة في تطبيق Health Connect."</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"يمكن لتطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" قراءة البيانات التي تمت إضافتها بعد <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>."</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"لإدارة أذونات Android الأخرى التي يمكن لهذا التطبيق الوصول إليها، انتقِل إلى الإعدادات &gt; التطبيقات."</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"تخضع البيانات التي تشاركها مع تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" لسياسة الخصوصية التي يُطبِّقها."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"لإدارة أذونات Android الأخرى التي يمكن لهذا التطبيق الوصول إليها، انتقِل إلى \"الإعدادات\" ثم انقر على \"التطبيقات\"."</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"قراءة سياسة الخصوصية"</string>
-    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"تم الوصول إلى البيانات في آخر 24 ساعة"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"الأذونات التي تم استخدامها للوصول في آخر 24 ساعة"</string>
     <string name="app_access_title" msgid="7137018424885371763">"إمكانية وصول التطبيق إلى البيانات"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"ليس لديك الآن أي تطبيقات متوافقة مثبَّتة"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"أذونات التطبيقات التي تمت إزالتها"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"أزال تطبيق Health Connect أذونات \"<xliff:g id="APP_DATA">%s</xliff:g>\"."</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"أزال تطبيق Health Connect أذونات \"<xliff:g id="APP_DATA_0">%1$s</xliff:g>\" و\"<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>\"."</string>
@@ -324,7 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"هل تريد نهائيًا حذف جميع بيانات <xliff:g id="DATA_TYPE">%1$s</xliff:g> التي تمت إضافتها بواسطة \"<xliff:g id="APP_DATA">%2$s</xliff:g>\"؟"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"هل تريد حذف هذا الإدخال نهائيًا؟"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"لن تتمكَّن التطبيقات المرتبطة بعد ذلك من الوصول إلى هذه البيانات من Health Connect."</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"سيؤدي هذا الإجراء إلى حذف جميع إدخالات بيانات الحيض من <xliff:g id="START_DATE">%1$s</xliff:g> إلى <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"حذف"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"الرجوع"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"تم"</string>
@@ -338,9 +345,9 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"جارٍ حذف بيانات Health Connect"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"جارٍ حذف بيانات Health Connect"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"حذف البيانات"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"حذف إدخالات البيانات"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"حذف إدخال"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"الإجمالي: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 واط}zero{# واط}two{# واط}few{# واط}many{# واط}other{# واط}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 واط}zero{# واط}two{# واط}few{# واط}many{# واط}other{# واط}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{خطوة واحدة}zero{# خطوة}two{خطوتان}few{# خطوات}many{# خطوة}other{# خطوة}}"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> نوم"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"استيقاظ"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"الاستيقاظ في السرير"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"نوم"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"خارج السرير"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"نوم حركة العين السريعة"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{دقيقة واحدة}zero{# دقيقة}two{دقيقتان}few{# دقائق}many{# دقيقة}other{# دقيقة}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> و<xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{يوم واحد}zero{# يوم}two{يومان}few{# أيام}many{# يومًا}other{# يوم}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 مليلتر/(كغم في الدقيقة)}zero{# مليلتر/(كغم في الدقيقة)}two{# مليلتر/(كغم في الدقيقة)}few{# مليلتر/(كغم في الدقيقة)}many{# مليلتر/(كغم في الدقيقة)}other{# مليلتر/(كغم في الدقيقة)}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{1 مليلتر من الأكسجين لكل كيلوغرام من كتلة الجسم في الدقيقة}zero{# مليلتر من الأكسجين لكل كيلوغرام من كتلة الجسم في الدقيقة}two{# مليلتر من الأكسجين لكل كيلوغرام من كتلة الجسم في الدقيقة}few{# مليلتر من الأكسجين لكل كيلوغرام من كتلة الجسم في الدقيقة}many{# مليلتر من الأكسجين لكل كيلوغرام من كتلة الجسم في الدقيقة}other{# مليلتر من الأكسجين لكل كيلوغرام من كتلة الجسم في الدقيقة}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"مجموعة بيانات التمثيل الغذائي"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 كيلوجول}zero{# كيلوجول}two{# كيلوجول}few{# كيلوجول}many{# كيلوجول}other{# كيلوجول}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}zero{%#}two{%#}few{%#}many{%#}other{%#}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 في المئة}zero{# في المئة}two{# في المئة}few{# في المئة}many{# في المئة}other{# في المئة}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"إلغاء"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"الوحدات"</string>
     <string name="set_units_label" msgid="6566059089772896105">"ضبط وحدات البيانات"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"المسافة"</string>
@@ -669,23 +678,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"فهرنهايت"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"كلفن"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"المساعدة والملاحظات"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"إذا لم يظهر لك تطبيق مثبَّت، قد يكون غير متوافق مع Health Connect حتى الآن."</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"إجراءات مُقترَحة"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"البحث عن تحديثات"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"التأكّد من أن التطبيقات المثبَّتة محدَّثة"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"عرض جميع التطبيقات المتوافقة"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"البحث عن تطبيقات وتنزيلها في Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"إرسال ملاحظات"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"أخبِرنا بتطبيقات الصحة واللياقة البدنية التي تريدها أن تعمل مع Health Connect."</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"متجر Play"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"الحذف التلقائي"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"الحذف التلقائي"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"يمكن التحكّم في مدة تخزين البيانات في تطبيق Health Connect من خلال جدولتها ليتم حذفها بعد فترة زمنية معيَنة."</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"مزيد من المعلومات عن الحذف التلقائي"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"مزيد من المعلومات"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"الحذف التلقائي للبيانات"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{بعد شهر واحد}zero{بعد # شهر}two{بعد شهرَين}few{بعد # شهور}many{بعد # شهرًا}other{بعد # شهر}}"</string>
     <string name="range_never" msgid="4429478261788361233">"أبدًا"</string>
-    <string name="range_off" msgid="8178520557618184215">"الخيار غير مفعَّل"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"عند تغيير هذه الإعدادات، يحذف تطبيق Health Connect البيانات الحالية لإظهار الإعدادات المفضّلة الجديدة."</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{هل تريد حذف البيانات تلقائيًا بعد شهر واحد؟}zero{هل تريد حذف البيانات تلقائيًا بعد # شهر؟}two{هل تريد حذف البيانات تلقائيًا بعد # شهرَين؟}few{هل تريد حذف البيانات تلقائيًا بعد # شهور؟}many{هل تريد حذف البيانات تلقائيًا بعد # شهرًا؟}other{هل تريد حذف البيانات تلقائيًا بعد # شهر؟}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد شهر واحد. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من شهر واحد.}zero{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد # شهر. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من # شهر.}two{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد شهرَين. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من شهرَين.}few{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد # شهور. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من # شهور.}many{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد # شهرًا. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من # شهرًا.}other{سيحذف تطبيق Health Connect البيانات الجديدة تلقائيًا بعد # شهر. سيؤدي ضبط هذه الميزة أيضًا إلى حذف البيانات الحالية الأقدم من # شهر.}}"</string>
@@ -712,66 +724,119 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"هل تريد السماح لتطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" بالوصول إلى مسار التمرين الرياضي في Health Connect؟"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"سيتمكّن هذا التطبيق من قراءة موقعك الجغرافي السابق في المسار."</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"مسارات التمارين الرياضية تشمل معلومات الموقع الجغرافي"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"ما هي التطبيقات التي يمكنها الوصول إلى هذه البيانات؟"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"التطبيقات فقط التي تسمح لها بالوصول إلى مسارات التمارين الرياضية"</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"كيف يمكنني إدارة أذونات الوصول؟"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"يمكنك إدارة أذونات وصول التطبيقات إلى مسارات التمارين الرياضية في إعدادات Health Connect."</string>
-    <string name="back_button" msgid="780519527385993407">"رجوع"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"جارٍ التحميل…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"جارٍ تنفيذ عملية الدمج"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"يتم دمج تطبيق Health Connect حاليًا مع نظام Android.\n\nقد تستغرق العملية بعض الوقت أثناء نقل البيانات والأذونات."</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"يُرجى عدم إغلاق التطبيق حتى تتلقّى إشعارًا باكتمال العملية."</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"جارٍ تنفيذ عملية دمج تطبيق Health Connect"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"مطلوب التحديث"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"يتم دمج تطبيق Health Connect حاليًا مع نظام Android لتتمكّن من الوصول إليه مباشرةً من خلال الإعدادات."</string>
-    <string name="update_button" msgid="4544529019832009496">"تحديث"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"يُرجى بدء تنزيل هذا التحديث ليتمكّن تطبيق Health Connect من مواصلة عملية الدمج مع إعدادات النظام."</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"التحديث الآن"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"يجب تحديث النظام"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"قبل المتابعة، يُرجى تحديث نظام الهاتف."</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"إذا سبق لك تحديث نظام الهاتف، جرِّب إعادة تشغيل الهاتف لمواصلة عملية الدمج."</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"مطلوب تحديث تطبيق Health Connect"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"قبل المتابعة، يُرجى تثبيت أحدث إصدار من تطبيق Health Connect."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"مطلوب المزيد من مساحة التخزين"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"يحتاج تطبيق Health Connect إلى <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> من مساحة التخزين على هاتفك لمواصلة عملية الدمج.\n\nيُرجى إخلاء بعض المساحة على هاتفك ثم إعادة المحاولة."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"إعادة المحاولة"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"إخلاء بعض المساحة"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"مطلوب المزيد من مساحة التخزين"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"يحتاج تطبيق Health Connect إلى <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> من مساحة التخزين على هاتفك لمواصلة عملية الدمج."</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"تم إيقاف عملية الدمج مؤقتًا"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"تم إغلاق تطبيق Health Connect أثناء تنفيذ عملية الدمج مع نظام Android.\n\nانقر على \"استئناف\" لإعادة فتح التطبيق ومواصلة عملية نقل البيانات والأذونات."</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"للحفاظ على بيانات تطبيق Health Connect، يُرجى إكمال عملية الدمج هذه في غضون <xliff:g id="TIME_NEEDED">%1$s</xliff:g>."</string>
-    <string name="resume_button" msgid="2255148549862208047">"استئناف"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"تم إيقاف عملية الدمج مؤقتًا"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"يجري دمج تطبيق Health Connect مع نظام Android. انقر للمتابعة."</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"استئناف عملية الدمج"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"انقر لمواصلة عملية دمج تطبيق Health Connect مع نظام Android. للحفاظ على بياناتك، يُرجى إكمال عملية الدمج هذه في غضون <xliff:g id="TIME_NEEDED">%1$s</xliff:g>."</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"انقر لمواصلة عملية دمج تطبيق Health Connect مع نظام Android."</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"متابعة"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"استئناف عملية دمج تطبيق Health Connect"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"للحفاظ على بياناتك، يُرجى إكمال عملية الدمج هذه في غضون <xliff:g id="TIME_NEEDED">%1$s</xliff:g>."</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"يجب تحديث التطبيق"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"يجب تحديث تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" لمواصلة استخدامه مع تطبيق Health Connect."</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"يجب تحديث بعض التطبيقات لمواصلة استخدامها مع تطبيق Health Connect."</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"البحث عن تحديثات"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"دمج تطبيق Health Connect"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"أصبح تطبيق Health Connect جاهزًا لإجراء عملية الدمج مع نظام Android. إذا منحت تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" إذن الوصول الآن، قد لا تعمل بعض الميزات إلى أن تكتمل عملية الدمج."</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"أصبح تطبيق Health Connect جاهزًا لإجراء عملية الدمج مع نظام Android. إذا منحت التطبيقات إذن الوصول الآن، قد لا تعمل بعض الميزات إلى أن تكتمل عملية الدمج."</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"متابعة"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"بدء عملية الدمج"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"جارٍ تنفيذ عملية دمج تطبيق Health Connect"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"يتم دمج تطبيق Health Connect حاليًا مع نظام Android.\n\nستتلقّى إشعارًا عند اكتمال العملية وإتاحة إمكانية استخدام تطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" مع Health Connect."</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"يتم دمج تطبيق Health Connect حاليًا مع نظام Android.\n\nستتلقّى إشعارًا عند اكتمال العملية وإتاحة إمكانية استخدام تطبيق Health Connect."</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"حسنًا"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"تعذّر اكتمال عملية دمج تطبيق Health Connect"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"ستتلقّى إشعارًا عند مواصلة عملية الدمج مرة أخرى."</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"حسنًا"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"تعذّر اكتمال عملية دمج تطبيق Health Connect"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"مزيد من المعلومات"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"اكتملت عملية دمج تطبيق Health Connect"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"فتح"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"ما الجديد؟"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"يمكنك الآن الوصول إلى تطبيق Health Connect مباشرةً من خلال الإعدادات. يمكنك إلغاء تثبيت تطبيق Health Connect في أي وقت."</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"حسنًا"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>

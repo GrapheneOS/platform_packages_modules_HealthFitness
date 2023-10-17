@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Salut connectada"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Gestiona l\'accés de les aplicacions a les dades de salut"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Permisos i dades"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Gestiona les dades de salut i fitnes al telèfon, i controla quines aplicacions poden accedir-hi"</string>
     <string name="data_title" msgid="4456619761533380816">"Dades i accés"</string>
@@ -61,14 +62,14 @@
     <string name="no_categories" msgid="2636778482437506241">"No tens cap dada a Salut connectada"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Les teves dades"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"Prioritat d\'aplicacions"</string>
-    <string name="delete_category_data_button" msgid="2324773398768267043">"Suprimeix les dades de: <xliff:g id="CATEGORY">%s</xliff:g>"</string>
+    <string name="delete_category_data_button" msgid="2324773398768267043">"Suprimeix les dades de la categoria <xliff:g id="CATEGORY">%s</xliff:g>"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Totes les aplicacions"</string>
     <string name="can_read" msgid="4568261079308309564">"Pot llegir <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Pot escriure <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"Aplicacions inactives"</string>
     <string name="inactive_apps_message" msgid="4666501359079362486">"Aquestes aplicacions ja no poden escriure <xliff:g id="DATA_TYPE">%s</xliff:g>, però encara tenen dades emmagatzemades a Salut connectada"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Les aplicacions ja no poden llegir o escriure <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> i no hi ha cap dada de <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> emmagatzemada a Salut connectada"</string>
-    <string name="data_access_exercise_description" msgid="6868583522699443570">"Aquestes dades inclouen informació com ara el temps d\'activitat, el tipus d\'exercici, les voltes, les repeticions, les sessions o les braçades"</string>
+    <string name="data_access_exercise_description" msgid="6868583522699443570">"Aquestes dades inclouen informació com ara el temps d\'activitat, el tipus d\'exercici, els llargs, les repeticions, les sessions o les braçades"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Aquestes dades inclouen informació com ara les fases del son i les sessions de son"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Mostra totes les entrades"</string>
     <string name="delete_permission_type_data_button" msgid="2270819954943391797">"Suprimeix aquestes dades"</string>
@@ -116,10 +117,10 @@
     <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"total de calories cremades"</string>
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Llegir el total de calories cremades"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Escriure el total de calories cremades"</string>
-    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"VO2 màx."</string>
-    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"VO2 màx."</string>
-    <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Llegir el VO2 màx."</string>
-    <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Escriure el VO2 màx."</string>
+    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"Consum màxim d\'oxigen"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"consum màxim d\'oxigen"</string>
+    <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Llegir el consum màxim d\'oxigen"</string>
+    <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Escriure el consum màxim d\'oxigen"</string>
     <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Impulsos en cadira de rodes"</string>
     <string name="wheelchair_pushes_lowercase_label" msgid="8919337990806379687">"impulsos en cadira de rodes"</string>
     <string name="wheelchair_pushes_read_content_description" msgid="157304610943976471">"Llegir els impulsos en cadira de rodes"</string>
@@ -248,10 +249,12 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> ja no podrà llegir ni escriure dades de Salut connectada.\n\nAixò no afecta altres permisos que pot tenir aquesta aplicació, com ara els relacionats amb la ubicació, la càmera o el micròfon."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Suprimeix també les dades de <xliff:g id="APP_NAME">%1$s</xliff:g> de Salut connectada"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Dia següent"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"Dia seleccionat"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Dia anterior"</string>
     <string name="default_error" msgid="7966868260616403475">"S\'ha produït un error. Torna-ho a provar."</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"Les aplicacions amb aquest permís poden llegir i escriure les teves dades de salut i fitnes."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Controla quines aplicacions poden accedir a les dades emmagatzemades a Salut connectada. Toca una aplicació per consultar quines dades pot llegir o escriure."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Accés permès"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Accés no permès"</string>
@@ -262,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"Cap aplicació amb permís"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Cap aplicació denegada"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Vols suprimir l\'accés per a totes les aplicacions?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Cap de les teves aplicacions no podrà afegir noves dades a Salut connectada ni accedir-hi. Aquesta acció no suprimeix cap de les dades existents.\n\nAixò no afecta els altres permisos que aquesta aplicació pugui tenir, com ara els d\'accés a la ubicació, a la càmera o al micròfon."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Suprimeix-ho tot"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Gestiona l\'aplicació"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Suprimeix les dades de l\'aplicació"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Aplicacions inactives"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Aquestes aplicacions ja no tenen accés, però encara tenen dades emmagatzemades a Salut connectada"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> pot llegir les dades afegides després del dia <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"Per gestionar altres permisos d\'Android a què pot accedir aquesta aplicació, ves a Configuració &gt; Aplicacions"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"Les dades que comparteixes amb <xliff:g id="APP_NAME">%1$s</xliff:g> estan subjectes a la seva política de privadesa"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Per gestionar altres permisos d\'Android a què pot accedir aquesta aplicació, ves a Configuració i, a continuació, toca Aplicacions"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Llegeix la política de privadesa"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"S\'hi ha accedit durant les 24 darreres hores"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Accés de l\'aplicació"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Actualment no tens cap aplicació compatible instal·lada"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Aplicacions amb permisos suprimits"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Salut connectada ha suprimit els permisos de <xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Salut connectada ha suprimit els permisos de <xliff:g id="APP_DATA_0">%1$s</xliff:g> i <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
@@ -323,8 +329,9 @@
     <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"Suprimeix també tots els permisos de l\'aplicació <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> de Salut connectada"</string>
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Vols suprimir permanentment totes les dades de <xliff:g id="DATA_TYPE">%1$s</xliff:g> que hagi afegit <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Vols suprimir permanentment aquesta entrada?"</string>
-    <string name="confirming_question_message" msgid="2934249835529079545">"Les aplicacions connectades ja no podran accedir a aquestes dades de Salut connectada."</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Això suprimirà totes les entrades de menstruació entre el dia <xliff:g id="START_DATE">%1$s</xliff:g> i el dia <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"Les aplicacions connectades ja no podran accedir a aquestes dades de Salut connectada"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Suprimeix"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Torna"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Fet"</string>
@@ -338,9 +345,9 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"S\'estan suprimint les dades de Salut connectada"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"S\'estan suprimint les dades de Salut connectada"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Supressió de dades"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"Suprimeix l\'entrada de dades"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"Suprimeix l\'entrada"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"Total: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 watt}other{# watts}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 pas}other{# passos}}"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> dormint"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"despert"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"al llit sense dormir"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"dormint"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"fora del llit"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"de son REM"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{1 minut}other{# minuts}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> i <xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1 dia}other{# dies}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 mL/(kg·min)}other{# mL/(kg·min)}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{1 mil·lilitre d\'oxigen per quilogram de massa corporal per minut}other{# mil·lilitres d\'oxigen per quilogram de massa corporal per minut}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"Carro metabòlic"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 quilojoule}other{# quilojoules}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}other{#%}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 per cent}other{# per cent}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"Cancel·la"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"Unitats"</string>
     <string name="set_units_label" msgid="6566059089772896105">"Defineix les unitats de dades"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"Distància"</string>
@@ -669,23 +678,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Fahrenheit"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvin"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Ajuda i suggeriments"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Si no trobes una aplicació instal·lada, és possible que encara no sigui compatible amb Salut connectada"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"Coses que pots provar"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Cerca actualitzacions"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Assegura\'t que les aplicacions instal·lades estiguin actualitzades"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Mostra totes les aplicacions compatibles"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Cerca aplicacions a Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Envia suggeriments"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Explica\'ns quines aplicacions de salut i fitnes vols que funcionin amb Salut connectada"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Supressió automàtica"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Supressió automàtica"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Controla el temps que les dades estan emmagatzemades a Salut connectada programant que se suprimeixin després d\'un temps determinat"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Més informació sobre la supressió automàtica"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"Més informació"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Dades de supressió automàtica"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# mes després}other{# mesos després}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Mai"</string>
-    <string name="range_off" msgid="8178520557618184215">"Desactivat"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Si canvies aquesta configuració, Salut connectada suprimirà les dades existents per reflectir les preferències noves"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Vols suprimir automàticament les dades passat # mes?}other{Vols suprimir automàticament les dades passats # mesos?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Salut connectada suprimirà automàticament les dades noves passat # mes. Amb aquesta configuració, també se suprimiran les dades existents anteriors a # mes.}other{Salut connectada suprimirà automàticament les dades noves passats # mesos. Amb aquesta configuració, també se suprimiran les dades existents anteriors a # mesos.}}"</string>
@@ -712,66 +724,119 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"Vols permetre que <xliff:g id="APP_NAME">%1$s</xliff:g> accedeixi a aquesta ruta d\'exercici a Salut connectada?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"Aquesta aplicació podrà llegir la teva ubicació passada a la ruta"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"Les rutes d\'exercici inclouen informació sobre la ubicació"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"Qui pot veure aquestes dades?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Només les aplicacions a què donis accés a les teves rutes d\'exercici"</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"Com puc gestionar l\'accés?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Pots gestionar l\'accés de les aplicacions a les rutes d\'exercici a la configuració de Salut connectada"</string>
-    <string name="back_button" msgid="780519527385993407">"Enrere"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"S\'està carregant…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integració en curs"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Salut connectada s\'està integrant amb el sistema Android.\n\nÉs possible que les dades i els permisos tardin una estona a transferir-se."</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"No tanquis l\'aplicació fins que no se\'t notifiqui que s\'ha completat el procés."</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"La integració de Salut connectada està en curs"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Actualització necessària"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Salut connectada s\'està integrant amb el sistema Android perquè hi puguis accedir directament des de la configuració."</string>
-    <string name="update_button" msgid="4544529019832009496">"Actualitza"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Inicia l\'actualització perquè Salut connectada pugui continuar integrant-se amb la configuració del sistema"</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Actualitza ara"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Actualització del sistema necessària"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Abans de continuar, actualitza el sistema del telèfon."</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si ja has actualitzat el sistema del telèfon, prova de reiniciar-lo per continuar la integració"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Cal actualitzar Salut connectada"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Abans de continuar, actualitza l\'aplicació Salut connectada a la darrera versió."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Es necessita més espai"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Salut connectada necessita <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> d\'espai d\'emmagatzematge al telèfon per continuar amb la integració.\n\nAllibera espai al telèfon i torna-ho a provar."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Torna-ho a provar"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Allibera espai"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"Es necessita més espai"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Salut connectada necessita <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> d\'espai d\'emmagatzematge al telèfon per continuar amb la integració."</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"La integració s\'ha posat en pausa"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"L\'aplicació Salut connectada s\'ha tancat mentre s\'estava integrant amb el sistema Android.\n\nFes clic a Reprèn per tornar a obrir l\'aplicació i continuar transferint les teves dades i permisos."</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Per conservar les teves dades de Salut connectada, completa la integració en <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="resume_button" msgid="2255148549862208047">"Reprèn"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"La integració s\'ha posat en pausa"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Salut connectada s\'està integrant amb el sistema Android. Toca per continuar."</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"Reprèn la integració"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Toca per continuar integrant Salut connectada amb el sistema Android. Per conservar les teves dades, completa la integració en <xliff:g id="TIME_NEEDED">%1$s</xliff:g>."</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Toca per continuar integrant Salut connectada amb el sistema Android."</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"Continua"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"Reprèn la integració de Salut connectada"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"Per conservar les teves dades, completa la integració en <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Cal actualitzar l\'aplicació"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"L\'aplicació <xliff:g id="APP_NAME">%1$s</xliff:g> ha d\'estar actualitzada per seguir funcionant amb Salut connectada"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Algunes aplicacions han d\'estar actualitzades per seguir funcionant amb Salut connectada"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Cerca actualitzacions"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integració de Salut connectada"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Salut connectada està a punt per integrar-se amb el sistema Android. Si ara dones accés a <xliff:g id="APP_NAME">%1$s</xliff:g>, és possible que algunes funcions no funcionin fins que es completi la integració."</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Salut connectada està a punt per integrar-se amb el sistema Android. Si ara dones accés a les aplicacions, és possible que algunes funcions no funcionin fins que es completi la integració."</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continua"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Inicia la integració"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"La integració de Salut connectada està en curs"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Salut connectada s\'està integrant amb el sistema Android.\n\nRebràs una notificació quan s\'hagi completat el procés i puguis utilitzar <xliff:g id="APP_NAME">%1$s</xliff:g> amb Salut connectada."</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Salut connectada s\'està integrant amb el sistema Android.\n\nRebràs una notificació quan s\'hagi completat el procés i puguis utilitzar Salut connectada."</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Entesos"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"La integració de Salut connectada no s\'ha completat"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Rebràs una notificació quan torni a estar disponible."</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"Entesos"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"La integració de Salut connectada no s\'ha completat"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"Més informació"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"S\'ha completat la integració de Salut connectada"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"Obre"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Novetats"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Ara pots accedir a Salut connectada directament des de la configuració. Desinstal·la l\'aplicació Salut connectada en qualsevol moment."</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Entesos"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>

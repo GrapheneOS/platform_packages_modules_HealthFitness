@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"ヘルスコネクト"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"健康に関するデータへのアプリのアクセス権を管理します"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"権限とデータ"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"健康とフィットネスに関するスマートフォン上のデータや、そのデータにアクセスできるアプリを管理できます"</string>
     <string name="data_title" msgid="4456619761533380816">"データとアクセス"</string>
@@ -68,7 +69,7 @@
     <string name="inactive_apps" msgid="8956546286760797760">"休止中のアプリ"</string>
     <string name="inactive_apps_message" msgid="4666501359079362486">"これらのアプリは<xliff:g id="DATA_TYPE">%s</xliff:g>を書き込めなくなりましたが、ヘルスコネクトからデータが削除されることはありません"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"アプリで<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>の読み取りと書き込みができなくなりました。ヘルスコネクトに保存されている<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>データはありません"</string>
-    <string name="data_access_exercise_description" msgid="6868583522699443570">"このデータには、エクササイズの時間、エクササイズの種類、ラップ数、繰り返し数、セッション数、ストローク数（水泳）などの情報が含まれます"</string>
+    <string name="data_access_exercise_description" msgid="6868583522699443570">"このデータには、アクティブ時間、エクササイズの種類、ラップ数、繰り返し数、セッション数、ストローク数（水泳）などの情報が含まれます"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"このデータには、睡眠ステージ、睡眠セッションなどの情報が含まれます"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"すべてのエントリを表示"</string>
     <string name="delete_permission_type_data_button" msgid="2270819954943391797">"このデータを削除"</string>
@@ -248,10 +249,12 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> はヘルスコネクトのデータの読み取り、書き込みを行えなくなります。\n\nこの設定は、位置情報、カメラ、マイクなど、このアプリのその他の権限には影響しません。"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"ヘルスコネクトから <xliff:g id="APP_NAME">%1$s</xliff:g> のデータも削除する"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"翌日"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"選択した日"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"前日"</string>
     <string name="default_error" msgid="7966868260616403475">"エラーが発生しました。もう一度お試しください。"</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"この権限があるアプリは、健康とフィットネスに関するデータの読み取り / 書き込みを行えます。"</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"ヘルスコネクトに保存されているデータにアクセスできるアプリの管理を行えます。アプリをタップすると、そのアプリが読み取り / 書き込みを行えるデータが表示されます。"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"アクセスが許可されているアプリ"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"アクセスが許可されていないアプリ"</string>
@@ -262,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"許可されているアプリはありません"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"許可されていないアプリはありません"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"すべてのアプリに対してアクセス権を削除しますか？"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"すべてのアプリがヘルスコネクトへのアクセスやデータの追加を行えなくなります。既存のデータは削除されません。\n\nこの設定は、位置情報、カメラ、マイクなど、このアプリのその他の権限には影響しません。"</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"すべて削除"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"アプリの管理"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"アプリデータを削除"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"休止中のアプリ"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"これらのアプリはアクセスできなくなりましたが、ヘルスコネクトからデータが削除されることはありません"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> は、<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>以降に追加されたデータを読み取ることができます"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"このアプリがアクセスできるその他の Android 権限を管理するには、[設定] &gt; [アプリ] に移動してください"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"<xliff:g id="APP_NAME">%1$s</xliff:g> と共有するデータには、そのアプリのプライバシー ポリシーが適用されます"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"このアプリがアクセスできるその他の Android 権限を管理するには、[設定] に移動し、[アプリ] をタップしてください"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"プライバシー ポリシーを読む"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"過去 24 時間にアクセス"</string>
     <string name="app_access_title" msgid="7137018424885371763">"アプリのアクセス権"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"現在、対応アプリがインストールされていません"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"アプリの権限を削除しました"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"ヘルスコネクトにより、<xliff:g id="APP_DATA">%s</xliff:g> に対する権限が削除されました"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"ヘルスコネクトにより、<xliff:g id="APP_DATA_0">%1$s</xliff:g> と <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> の権限が削除されました"</string>
@@ -324,7 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"<xliff:g id="APP_DATA">%2$s</xliff:g>から追加された<xliff:g id="DATA_TYPE">%1$s</xliff:g>の全データを完全に削除しますか？"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"このエントリを完全に削除しますか？"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"接続されているアプリが、ヘルスコネクトに保存されているこのデータにアクセスできなくなります"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"<xliff:g id="START_DATE">%1$s</xliff:g>～<xliff:g id="END_DATE">%2$s</xliff:g>の月経期間のデータがすべて削除されます。"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"削除"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"戻る"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"完了"</string>
@@ -338,9 +345,9 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"ヘルスコネクトのデータの削除中"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"ヘルスコネクトのデータを削除しています"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"データの削除"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"データエントリを削除"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"エントリを削除"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"合計: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 ワット}other{# ワット}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 歩}other{# 歩}}"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> - 睡眠"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"覚醒"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"寝床で目が覚めている状態"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"睡眠"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"起床"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"レム睡眠"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{1 分}other{# 分}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g>と <xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1 日}other{# 日}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 mL/（kg 分）}other{# mL/（kg 分）}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{体重 1 kg あたりの酸素摂取量 1 ミリリットル毎分}other{体重 1 kg あたりの酸素摂取量 # ミリリットル毎分}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"メタボリック カート"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 キロジュール}other{# キロジュール}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}other{#%}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 パーセント}other{# パーセント}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"キャンセル"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"単位"</string>
     <string name="set_units_label" msgid="6566059089772896105">"データの単位を設定"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"距離"</string>
@@ -663,29 +672,32 @@
     <string name="weight_unit_pound_label" msgid="8210663393844989211">"ポンド"</string>
     <string name="weight_unit_kilogram_label" msgid="6623938920860887238">"キログラム"</string>
     <string name="weight_unit_stone_label" msgid="3063787243474847180">"ストーン"</string>
-    <string name="energy_unit_calorie_label" msgid="3412965811470957296">"カロリー"</string>
+    <string name="energy_unit_calorie_label" msgid="3412965811470957296">"消費カロリー"</string>
     <string name="energy_unit_kilojoule_label" msgid="6481196724083455110">"キロジュール"</string>
     <string name="temperature_unit_celsius_label" msgid="4698347100553808449">"摂氏"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"華氏"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"ケルビン"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"ヘルプとフィードバック"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"アプリをインストールしているのに表示されない場合は、ヘルスコネクトにまだ対応していない可能性があります"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"おすすめの方法"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"アップデートを確認"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"インストール済みのアプリについて、アップデートがないか確認できます"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"対応するアプリをすべて表示"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play でアプリを探します"</string>
     <string name="send_feedback" msgid="7756927746070096780">"フィードバックを送信"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"ヘルスコネクトで使用したい健康アプリやフィットネス アプリをリクエストできます"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play ストア"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"自動削除"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"自動削除"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"指定した時間が過ぎたらデータを削除するよう設定することで、ヘルスコネクトでの保存時間を管理できます"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"自動削除の詳細"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"詳細"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"データの自動削除"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# か月後}other{# か月後}}"</string>
     <string name="range_never" msgid="4429478261788361233">"なし"</string>
-    <string name="range_off" msgid="8178520557618184215">"OFF"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"これらの設定を変更すると、ヘルスコネクトから既存のデータが削除され、新しい設定が反映されます"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# か月後にデータを自動削除しますか？}other{# か月後にデータを自動削除しますか？}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{今後のデータは # か月後にヘルスコネクトから自動削除されます。保存期間が # か月を超える既存のデータも削除されます。}other{今後のデータは # か月後にヘルスコネクトから自動削除されます。保存期間が # か月を超える既存のデータも削除されます。}}"</string>
@@ -712,66 +724,119 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"ヘルスコネクトのこのエクササイズのルートへのアクセスを <xliff:g id="APP_NAME">%1$s</xliff:g> に許可しますか？"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"このアプリは、ルートの過去の位置情報を読み取れるようになります。"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"エクササイズのルートに位置情報が含まれます"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"このデータを見られるのはどのアプリですか？"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"エクササイズのルートへのアクセスを許可したアプリのみです"</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"アクセスを管理するにはどうすればよいですか？"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"エクササイズのルートへのアプリのアクセスはヘルスコネクトの設定で管理できます"</string>
-    <string name="back_button" msgid="780519527385993407">"戻る"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"読み込んでいます…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"統合中"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"ヘルスコネクトを Android システムと統合しています。\n\nデータと権限が移行されるまで時間がかかることがあります。"</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"統合完了の通知が表示されるまでアプリを閉じないでください。"</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"ヘルスコネクトの統合中"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"更新が必要です"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"設定から直接アクセスできるよう、ヘルスコネクトを Android システムと統合しています。"</string>
-    <string name="update_button" msgid="4544529019832009496">"更新"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ヘルスコネクトとシステム設定との統合を続行できるよう、この更新を開始してください"</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"今すぐ更新"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"システム アップデートが必要です"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"続行する前に、電話システムを更新してください。"</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"電話システムをすでに更新している場合は、スマートフォンを再起動して統合を続行してください"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"ヘルスコネクトの更新が必要です"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"続行する前に、ヘルスコネクト アプリを最新バージョンに更新してください。"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"空き容量が不足しています"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"ヘルスコネクトの統合を続けるためには、スマートフォンに <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> の空き容量が必要です。\n\nスマートフォンのストレージのデータを一部削除してから、もう一度お試しください。"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"再試行"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"空き容量を増やす"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"空き容量が不足しています"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"ヘルスコネクトの統合を続けるには、スマートフォンに <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> の空き容量が必要です。"</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"統合が一時停止しました"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Android システムとの統合中にヘルスコネクト アプリが終了しました。\n\n[再開] をクリックしてアプリを再起動し、データと権限の移行を続行してください。"</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"ヘルスコネクトのデータを保持するため、<xliff:g id="TIME_NEEDED">%1$s</xliff:g>以内に完了してください"</string>
-    <string name="resume_button" msgid="2255148549862208047">"再開"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"統合が一時停止しました"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"ヘルスコネクトを Android システムと統合しています。タップすると続行します"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"統合を再開してください"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"ヘルスコネクトと Android システムとの統合を続行するには、タップしてください。データを保持するため、<xliff:g id="TIME_NEEDED">%1$s</xliff:g>以内に統合を完了してください。"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"ヘルスコネクトと Android システムとの統合を続行するには、タップしてください。"</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"続行"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"ヘルスコネクトの統合を再開してください"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"データを保持するため、<xliff:g id="TIME_NEEDED">%1$s</xliff:g>以内に統合を完了してください。"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"アプリの更新が必要です"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"ヘルスコネクトと引き続き連携するには <xliff:g id="APP_NAME">%1$s</xliff:g> を更新する必要があります"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"ヘルスコネクトと引き続き連携するには更新が必要なアプリがあります"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"アップデートを確認"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"ヘルスコネクトの統合"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"ヘルスコネクトを Android システムと統合する準備ができました。<xliff:g id="APP_NAME">%1$s</xliff:g> に今すぐアクセス権を付与しても、統合が完了するまで一部の機能が動作しないことがあります。"</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"ヘルスコネクトを Android システムと統合する準備ができました。アプリに今すぐアクセス権を付与しても、統合が完了するまで一部の機能が動作しないことがあります。"</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"続行"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"統合を開始"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"ヘルスコネクトの統合中"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"ヘルスコネクトを Android システムと統合しています。\n\n統合が完了したら通知が届き、<xliff:g id="APP_NAME">%1$s</xliff:g> をヘルスコネクトで使用できるようになります。"</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"ヘルスコネクトを Android システムと統合しています。\n\n統合が完了したら通知が届き、ヘルスコネクトを使用できるようになります。"</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"ヘルスコネクトの統合が完了しませんでした"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"再開できるようになると通知が届きます。"</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"OK"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"ヘルスコネクトの統合が完了しませんでした"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"詳細"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"ヘルスコネクトの統合が完了しました"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"開く"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"新機能"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"設定からヘルスコネクトに直接アクセスできるようになりました。ヘルスコネクト アプリはいつでもアンインストールできます。"</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"OK"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>
