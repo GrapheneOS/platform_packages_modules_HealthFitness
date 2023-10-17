@@ -20,19 +20,25 @@ import androidx.preference.PreferenceViewHolder
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.datasources.DataSourcesFragment
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.ComparablePreference
-import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 
 class AppSourcesPreference
 constructor(
-        context: Context,
-        val viewModel: HealthPermissionTypesViewModel,
-        val category: @HealthDataCategoryInt Int):
-    Preference(context), ComparablePreference {
+    context: Context,
+    private val dataSourcesViewModel: DataSourcesViewModel,
+    val category: @HealthDataCategoryInt Int,
+    private val fragment: DataSourcesFragment
+) : Preference(context), ComparablePreference, AppSourcesAdapter.ItemMoveAttachCallbackListener {
 
     private var priorityList: List<AppMetadata> = listOf()
+    private var potentialAppSourcesList: List<AppMetadata> = listOf()
+    private lateinit var priorityListView: RecyclerView
+    private lateinit var adapter: AppSourcesAdapter
+
     init {
         layoutResource = R.layout.widget_linear_layout_preference
     }
@@ -40,26 +46,39 @@ constructor(
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        priorityList = viewModel.editedPriorityList.value ?: emptyList()
-        val priorityListView = holder.findViewById(R.id.linear_layout_recycle_view) as RecyclerView
-        val adapter = AppSourcesAdapter(priorityList, viewModel, category)
+        priorityList = dataSourcesViewModel.getEditedPriorityList()
+        potentialAppSourcesList = dataSourcesViewModel.getEditedPotentialAppSources()
+        priorityListView = holder.findViewById(R.id.linear_layout_recycle_view) as RecyclerView
 
-        priorityListView.layoutManager = AppSourcesLinearLayoutManager(context, adapter)
+        adapter = AppSourcesAdapter(priorityList, potentialAppSourcesList,
+            dataSourcesViewModel, category, fragment, this)
         priorityListView.adapter = adapter
+        priorityListView.layoutManager = AppSourcesLinearLayoutManager(context, adapter)
+        createAndAttachItemMoveCallback()
+    }
+
+    override fun attachCallback() {
+        createAndAttachItemMoveCallback()
+    }
+
+    private fun createAndAttachItemMoveCallback() {
         val callback = AppSourcesItemMoveCallback(adapter)
         val priorityListMover = ItemTouchHelper(callback)
         adapter.setOnItemDragStartedListener(priorityListMover)
         priorityListMover.attachToRecyclerView(priorityListView)
+    }
 
+    fun toggleEditMode(isEditMode: Boolean) {
+        adapter.toggleEditMode(isEditMode)
     }
 
     override fun isSameItem(preference: Preference): Boolean {
-        return preference is AppSourcesPreference &&
-                this == preference
+        return preference is AppSourcesPreference && this == preference
     }
 
     override fun hasSameContents(preference: Preference): Boolean {
         return preference is AppSourcesPreference &&
-                preference.priorityList == this.priorityList
+                preference.priorityList == this.priorityList &&
+                preference.category == this.category
     }
 }

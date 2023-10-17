@@ -52,7 +52,7 @@
         android:textAppearance="?attr/textAppearanceSubheader" />
 
     <FrameLayout
-        android:id="@+id/drag_icon"
+        android:id="@+id/action_icon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:minWidth="@dimen/button_size"

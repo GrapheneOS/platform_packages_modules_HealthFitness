@@ -48,14 +48,14 @@ constructor(
     private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
     private val loadPriorityListUseCase: LoadPriorityListUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) {
+) : ILoadPotentialPriorityListUseCase {
 
     private val TAG = "LoadAppSourcesUseCase"
 
     /**
      * Returns a list of unique [AppMetadata]s that are potential priority list candidates.
      */
-    suspend operator fun invoke(category: @HealthDataCategoryInt Int): UseCaseResults<List<AppMetadata>> =
+    override suspend operator fun invoke(category: @HealthDataCategoryInt Int): UseCaseResults<List<AppMetadata>> =
         withContext(dispatcher) {
             val appsWithDataResult = getAppsWithData(category)
             val appsWithWritePermissionResult = getAppsWithWritePermission(category)
@@ -146,4 +146,8 @@ constructor(
                 UseCaseResults.Failed(e)
             }
         }
+}
+
+interface ILoadPotentialPriorityListUseCase {
+    suspend fun invoke(category: @HealthDataCategoryInt Int): UseCaseResults<List<AppMetadata>>
 }

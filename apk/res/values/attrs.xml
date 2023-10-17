@@ -77,6 +77,8 @@
 
     <!-- Data sources & priority -->
     <attr name="addIcon" format="reference"/>
+    <attr name="editIcon" format="reference"/>
+    <attr name="closeIcon" format="reference"/>
 
     <!-- END REGION -->
 
