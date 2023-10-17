@@ -69,6 +69,8 @@
 
             <!-- Data sources & priority -->
             <item type="drawable" name="ic_add"/>
+            <item type="drawable" name="ic_edit"/>
+            <item type="drawable" name="ic_close"/>
 
             <!-- END REGION -->
 

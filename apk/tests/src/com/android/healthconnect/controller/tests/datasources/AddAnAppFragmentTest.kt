@@ -27,6 +27,8 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_KEY
 import com.android.healthconnect.controller.datasources.AddAnAppFragment
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.DataSourcesInfo
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
@@ -60,13 +62,15 @@ class AddAnAppFragmentTest {
 
     @Test
     fun fragmentIsDisplayed() {
-        whenever(dataSourcesViewModel.potentialAppSources).then {
-            MutableLiveData<PotentialAppSourcesState>(
-                PotentialAppSourcesState.WithData(listOf(
-                    TEST_APP,
-                    TEST_APP_2,
-                    TEST_APP_3
-                )))
+        whenever(dataSourcesViewModel.dataSourcesInfo).then {
+            MutableLiveData(
+                DataSourcesInfo(
+                    priorityListState = PriorityListState.WithData(true, listOf()),
+                    potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf(
+                        TEST_APP,
+                        TEST_APP_2,
+                        TEST_APP_3
+                    ))))
         }
 
         launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
@@ -78,10 +82,13 @@ class AddAnAppFragmentTest {
 
     @Test
     fun showsLoading_whenAppSourcesLoading() {
-        whenever(dataSourcesViewModel.potentialAppSources).then {
-            MutableLiveData<PotentialAppSourcesState>(
-                PotentialAppSourcesState.Loading)
+        whenever(dataSourcesViewModel.dataSourcesInfo).then {
+            MutableLiveData(
+                DataSourcesInfo(
+                    priorityListState = PriorityListState.WithData(true, listOf()),
+                    potentialAppSourcesState = PotentialAppSourcesState.Loading(true)))
         }
+
         launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
 
         onView(ViewMatchers.withId(R.id.progress_indicator)).check(matches(isDisplayed()))
@@ -89,11 +96,13 @@ class AddAnAppFragmentTest {
 
     @Test
     fun showsError_whenAppSourcesError() {
-        whenever(dataSourcesViewModel.potentialAppSources).then {
-            MutableLiveData<PotentialAppSourcesState>(
-                PotentialAppSourcesState.LoadingFailed
-            )
+        whenever(dataSourcesViewModel.dataSourcesInfo).then {
+            MutableLiveData(
+                DataSourcesInfo(
+                    priorityListState = PriorityListState.WithData(true, listOf()),
+                    potentialAppSourcesState = PotentialAppSourcesState.LoadingFailed(true)))
         }
+
         launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
 
         onView(ViewMatchers.withId(R.id.error_view)).check(matches(isDisplayed()))

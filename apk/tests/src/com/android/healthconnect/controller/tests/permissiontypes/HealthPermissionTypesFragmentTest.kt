@@ -33,7 +33,9 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
+import com.android.healthconnect.controller.tests.utils.di.FakeFeatureUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.utils.FeatureUtils
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -41,11 +43,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
+import javax.inject.Inject
 
 @HiltAndroidTest
 class HealthPermissionTypesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @Inject
+    lateinit var fakeFeatureUtils: FeatureUtils
 
     @BindValue
     val viewModel: HealthPermissionTypesViewModel =
@@ -54,6 +59,7 @@ class HealthPermissionTypesFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(false)
     }
 
     @Test
@@ -306,6 +312,49 @@ class HealthPermissionTypesFragmentTest {
 
         onView(withText(TEST_APP_3.appName)).perform(scrollTo(), click())
         assert(viewModel.selectedAppFilter.value == TEST_APP_3.appName)
+    }
+
+    @Test
+    fun permissionTypesFragment_whenNewPriorityEnabled_doesNotShowAppPriority() {
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(true)
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(
+                        HealthPermissionType.DISTANCE,
+                        HealthPermissionType.EXERCISE,
+                        HealthPermissionType.STEPS)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then { MutableLiveData("activity") }
+        launchFragment<HealthPermissionTypesFragment>(activityCategoryBundle())
+
+        onView(withText("Active calories burned")).check(doesNotExist())
+        onView(withText("Distance")).check(matches(isDisplayed()))
+        onView(withText("Elevation gained")).check(doesNotExist())
+        onView(withText("Exercise")).check(matches(isDisplayed()))
+        onView(withText("Floors climbed")).check(doesNotExist())
+        onView(withText("Power")).check(doesNotExist())
+        onView(withText("Steps")).check(matches(isDisplayed()))
+        onView(withText("Total calories burned")).check(doesNotExist())
+        onView(withText("VO2 max")).check(doesNotExist())
+        onView(withText("Wheelchair pushes")).check(doesNotExist())
+        onView(withText("Manage data")).check(matches(isDisplayed()))
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Health Connect test app")).check(doesNotExist())
+        onView(withText("Delete activity data")).check(matches(isDisplayed()))
     }
 
     private fun activityCategoryBundle(): Bundle {

@@ -176,6 +176,8 @@
         android:label="@string/data_sources_add_app">
         <action
             android:id="@+id/action_addAnAppFragment_to_dataSourcesFragment"
+            app:popUpTo="@id/dataSourcesFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/dataSourcesFragment"/>
     </fragment>
 

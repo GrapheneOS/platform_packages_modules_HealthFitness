@@ -15,12 +15,14 @@ package com.android.healthconnect.controller.datasources.api
 
 import android.health.connect.HealthConnectManager
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.dataentries.LoadAggregationInput
-import com.android.healthconnect.controller.dataentries.LoadDataAggregationsUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
+import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
+import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -34,14 +36,14 @@ import javax.inject.Singleton
 class LoadMostRecentAggregationsUseCase
 @Inject
 constructor(
-        private val healthConnectManager: HealthConnectManager,
-        private val loadDataAggregationsUseCase: LoadDataAggregationsUseCase,
-        @IoDispatcher private val dispatcher: CoroutineDispatcher,
-){
+    private val healthConnectManager: HealthConnectManager,
+    private val loadDataAggregationsUseCase: ILoadDataAggregationsUseCase,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : ILoadMostRecentAggregationsUseCase {
     /**
      * Invoked only for the Activity category to provide [AggregationDataCard]s info
      */
-    suspend operator fun invoke(): UseCaseResults<List<AggregationCardInfo>> =
+    override suspend operator fun invoke(): UseCaseResults<List<AggregationCardInfo>> =
             withContext(dispatcher) {
                 try {
                     val resultsList = mutableListOf<AggregationCardInfo>()
@@ -93,7 +95,12 @@ constructor(
         val lastDateInstant = lastDate.atStartOfDay(ZoneId.systemDefault()).toInstant()
 
         // call for aggregate
-        val input = LoadAggregationInput(healthPermissionType, lastDateInstant)
+        val input = LoadAggregationInput(
+            healthPermissionType,
+            packageName = null,
+            displayedStartTime = lastDateInstant,
+            period = DateNavigationPeriod.PERIOD_DAY,
+            showDataOrigin = false)
 
         return when (val useCaseResult = loadDataAggregationsUseCase.invoke(input)) {
             is UseCaseResults.Success -> {
@@ -109,4 +116,8 @@ constructor(
             }
         }
     }
+}
+
+interface ILoadMostRecentAggregationsUseCase {
+    suspend fun invoke(): UseCaseResults<List<AggregationCardInfo>>
 }
