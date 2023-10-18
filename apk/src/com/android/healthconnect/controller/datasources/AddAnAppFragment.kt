@@ -18,8 +18,12 @@ package com.android.healthconnect.controller.datasources
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MediatorLiveData
+import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_KEY
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthPreference
@@ -30,8 +34,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddAnAppFragment : Hilt_AddAnAppFragment() {
 
     private val dataSourcesViewModel: DataSourcesViewModel by activityViewModels()
-    @HealthDataCategoryInt
-    private var category: Int = 0
+    @HealthDataCategoryInt private var category: Int = 0
+
+    private var currentPriority: List<AppMetadata> = listOf()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -40,44 +45,48 @@ class AddAnAppFragment : Hilt_AddAnAppFragment() {
             category = requireArguments().getInt(CATEGORY_KEY)
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dataSourcesViewModel.loadPotentialAppSources(category)
-
-        dataSourcesViewModel.potentialAppSources.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is DataSourcesViewModel.PotentialAppSourcesState.Loading -> {
-                    setLoading(true)
-                }
-                is DataSourcesViewModel.PotentialAppSourcesState.LoadingFailed -> {
-                    setLoading(false)
-                    setError(true)
-                }
-                is DataSourcesViewModel.PotentialAppSourcesState.WithData -> {
-                    setLoading(false)
-                    updateAppsList(state.appSources)
-                }
+        dataSourcesViewModel.loadData(category)
+        dataSourcesViewModel.dataSourcesInfo.observe(viewLifecycleOwner) { dataSourcesInfoState ->
+            if (dataSourcesInfoState.isLoading()) {
+                setLoading(true)
+            } else if (dataSourcesInfoState.isLoadingFailed()) {
+                setLoading(false)
+                setError(true)
+            } else if (dataSourcesInfoState.isWithData()) {
+                setLoading(false)
+                val currentPriorityList = (dataSourcesInfoState.priorityListState as PriorityListState.WithData).priorityList
+                val potentialAppSources = (dataSourcesInfoState.potentialAppSourcesState as PotentialAppSourcesState.WithData).appSources
+                currentPriorityList.let { currentPriority = it }
+                updateAppsList(potentialAppSources)
             }
         }
     }
 
     private fun updateAppsList(appSources: List<AppMetadata>) {
         preferenceScreen.removeAll()
-        appSources.sortedBy { it.appName }
+        appSources
+            .sortedBy { it.appName }
             .forEach { appMetadata ->
                 preferenceScreen.addPreference(
-                    HealthPreference(requireContext())
-                        .also {
-                            it.title = appMetadata.appName
-                            it.icon = appMetadata.icon
-                            it.setOnPreferenceClickListener {
-                                // TODO - update priority list and return to previous fragment
-                                true
-                            }
+                    HealthPreference(requireContext()).also { preference ->
+                        preference.title = appMetadata.appName
+                        preference.icon = appMetadata.icon
+                        preference.setOnPreferenceClickListener {
+                            // add this app to the bottom of the priority list
+                            val newPriority = currentPriority.toMutableList().also {
+                                it.add(appMetadata) }.toList()
+                            dataSourcesViewModel.updatePriorityList(
+                                newPriority.map { it.packageName }.toList(), category)
+                            findNavController().navigate(
+                                R.id.action_addAnAppFragment_to_dataSourcesFragment
+                            )
+                            true
                         }
-                )
+                    })
             }
     }
-
 }

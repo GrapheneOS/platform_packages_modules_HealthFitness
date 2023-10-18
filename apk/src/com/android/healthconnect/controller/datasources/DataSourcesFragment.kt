@@ -15,20 +15,20 @@ package com.android.healthconnect.controller.datasources
 
 import android.health.connect.HealthDataCategory
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MediatorLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_KEY
-import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.AggregationCardsState
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
+import com.android.healthconnect.controller.datasources.appsources.AppSourcesAdapter
 import com.android.healthconnect.controller.datasources.appsources.AppSourcesPreference
-import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
-import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel.NewPriorityListState
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
@@ -40,6 +40,9 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsImpl
 import com.android.healthconnect.controller.utils.TimeSource
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.setupMenu
+import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsSpinnerAdapter
 import com.android.settingslib.widget.SettingsSpinnerPreference
@@ -47,7 +50,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint(HealthPreferenceFragment::class)
-class DataSourcesFragment: Hilt_DataSourcesFragment() {
+class DataSourcesFragment : Hilt_DataSourcesFragment(),
+    AppSourcesAdapter.OnAppRemovedFromPriorityListListener {
 
     companion object {
         private const val DATA_TOTALS_PREFERENCE_GROUP = "data_totals_group"
@@ -59,18 +63,22 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
         private const val EMPTY_STATE_HEADER_PREFERENCE_KEY = "empty_state_header"
         private const val EMPTY_STATE_FOOTER_PREFERENCE_KEY = "empty_state_footer"
 
-        private val dataSourcesCategories = arrayListOf(
-                HealthDataCategory.ACTIVITY,
-                HealthDataCategory.SLEEP)
+        private val dataSourcesCategories =
+            arrayListOf(HealthDataCategory.ACTIVITY, HealthDataCategory.SLEEP)
     }
 
-    private val healthPermissionsViewModel: HealthPermissionTypesViewModel by activityViewModels()
+    init {
+        // TODO (b/292270118) update to correct name
+//        this.setPageName(PageName.MANAGE_DATA_PAGE)
+    }
+
+    @Inject lateinit var logger: HealthConnectLogger
+
     private val dataSourcesViewModel: DataSourcesViewModel by activityViewModels()
     private lateinit var spinnerPreference: SettingsSpinnerPreference
     private lateinit var dataSourcesCategoriesStrings: List<String>
     private var currentCategorySelection: @HealthDataCategoryInt Int = HealthDataCategory.ACTIVITY
-    @Inject
-    lateinit var timeSource : TimeSource
+    @Inject lateinit var timeSource: TimeSource
 
     private val dataTotalsPreferenceGroup: PreferenceGroup? by lazy {
         preferenceScreen.findPreference(DATA_TOTALS_PREFERENCE_GROUP)
@@ -84,133 +92,167 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
         preferenceScreen.findPreference(NON_EMPTY_FOOTER_PREFERENCE_KEY)
     }
 
-    private val mediator = MediatorLiveData<Pair<NewPriorityListState?, AggregationCardsState?>>()
+    private val onEditMenuItemSelected: (MenuItem) -> Boolean = { menuItem ->
+        when (menuItem.itemId) {
+            R.id.menu_edit -> {
+                editPriorityList()
+                true
+            }
+            else -> false
+        }
+    }
+
+    private var cardContainerPreference: CardContainerPreference? = null
+
+    override fun onAppRemovedFromPriorityList() {
+        exitEditMode()
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.data_sources_and_priority_screen, rootKey)
-        dataSourcesCategoriesStrings = dataSourcesCategories.map {
-            category -> getString(category.uppercaseTitle())
-        }
+        dataSourcesCategoriesStrings =
+            dataSourcesCategories.map { category -> getString(category.uppercaseTitle()) }
 
         setupSpinnerPreference()
-
-        mediator.addSource(healthPermissionsViewModel.newPriorityList) { result ->
-            if (result.shouldObserve) {
-                mediator.value = Pair(result, mediator.value?.second)
-            }
-        }
-
-        mediator.addSource(dataSourcesViewModel.aggregationCardsData) { result ->
-            mediator.value = Pair(mediator.value?.first, result)
-        }
     }
 
     override fun onResume() {
         super.onResume()
-        healthPermissionsViewModel.loadData(currentCategorySelection)
-        dataSourcesViewModel.loadPotentialAppSources(currentCategorySelection)
-        dataSourcesViewModel.loadMostRecentAggregations()
+        dataSourcesViewModel.loadData(currentCategorySelection)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val currentStringSelection = spinnerPreference.selectedItem
-        currentCategorySelection = dataSourcesCategories[dataSourcesCategoriesStrings.indexOf(currentStringSelection)]
+        currentCategorySelection =
+            dataSourcesCategories[dataSourcesCategoriesStrings.indexOf(currentStringSelection)]
 
-        healthPermissionsViewModel.loadData(currentCategorySelection)
-        dataSourcesViewModel.loadPotentialAppSources(currentCategorySelection)
+        dataSourcesViewModel.loadData(currentCategorySelection)
 
-        // we only show DataTotalsCards if the current selection is Activity
-        if (currentCategorySelection == HealthDataCategory.ACTIVITY) {
-            dataSourcesViewModel.loadMostRecentAggregations()
-        }
+        dataSourcesViewModel.dataSourcesAndAggregationsInfo.observe(viewLifecycleOwner) { dataSourcesInfo ->
+            if (dataSourcesInfo.isLoading()) {
+                setLoading(true)
+            } else if (dataSourcesInfo.isLoadingFailed()) {
+                setLoading(false)
+                setError(true)
+            } else if (dataSourcesInfo.isWithData()) {
+                setLoading(false)
 
-        dataSourcesViewModel.potentialAppSources.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is PotentialAppSourcesState.Loading -> {}
-                is PotentialAppSourcesState.LoadingFailed -> {}
-                is PotentialAppSourcesState.WithData -> {
-                    updateAddApp(state.appSources.isNotEmpty())
-                }
-            }
-        }
+                val priorityList = (dataSourcesInfo.priorityListState as PriorityListState.WithData).priorityList
+                val potentialAppSources = (dataSourcesInfo.potentialAppSourcesState as PotentialAppSourcesState.WithData).appSources
+                val cardInfos = (dataSourcesInfo.aggregationCardsState as AggregationCardsState.WithData).dataTotals
 
-        mediator.observe(viewLifecycleOwner) { (priorityListState, aggregationInfoState) ->
-            when {
-                priorityListState is NewPriorityListState.Loading ||
-                        aggregationInfoState is AggregationCardsState.Loading ->
-                    setLoading(true)
-
-                priorityListState is NewPriorityListState.LoadingFailed ||
-                        aggregationInfoState is AggregationCardsState.LoadingFailed-> {
-                    setLoading(false)
-                    setError(true)
+                if (priorityList.isEmpty() && potentialAppSources.isEmpty()) {
+                    addEmptyState()
+                } else {
+                    updateMenu(priorityList.size > 1)
+                    updateAppSourcesSection(priorityList, potentialAppSources)
+                    updateDataTotalsSection(cardInfos)
                 }
 
-                priorityListState is NewPriorityListState.WithData &&
-                        aggregationInfoState is AggregationCardsState.WithData -> {
-
-                    setLoading(false)
-                    val priorityList = priorityListState.priorityList
-                    val cardInfos = aggregationInfoState.dataTotals
-
-                    if (priorityList.isEmpty()) {
-                        addEmptyState()
-                    } else {
-                        updatePriorityList(priorityList)
-                        updateCards(cardInfos)
-                    }
-                }
             }
 
+        }
+
+        dataSourcesViewModel.updatedAggregationCardsData.observe(viewLifecycleOwner) { aggregationCardsData ->
+            when (aggregationCardsData) {
+                is AggregationCardsState.Loading -> {
+                    updateAggregations(listOf(), true)
+                }
+                is AggregationCardsState.LoadingFailed -> {
+                    updateDataTotalsSection(listOf())
+                }
+                is AggregationCardsState.WithData -> {
+                    updateAggregations(aggregationCardsData.dataTotals, false)
+                }
+            }
         }
     }
 
-    private fun updatePriorityList(appSources: List<AppMetadata>) {
+    private fun updateMenu(shouldShowEditButton: Boolean) {
+        if (shouldShowEditButton) {
+            setupMenu(R.menu.data_sources, viewLifecycleOwner, logger, onEditMenuItemSelected)
+        } else {
+            setupSharedMenu(viewLifecycleOwner, logger)
+        }
+    }
+
+    private fun editPriorityList() {
+        updateMenu(shouldShowEditButton = false)
+        appSourcesPreferenceGroup?.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
+        val appSourcesPreference =
+            preferenceScreen?.findPreference<AppSourcesPreference>(APP_SOURCES_PREFERENCE_KEY)
+        appSourcesPreference?.toggleEditMode(true)
+    }
+
+    private fun exitEditMode() {
+        appSourcesPreferenceGroup?.findPreference<AppSourcesPreference>(
+            APP_SOURCES_PREFERENCE_KEY)
+            ?.toggleEditMode(false)
+        updateMenu(dataSourcesViewModel.getEditedPriorityList().size > 1)
+        updateAddApp(dataSourcesViewModel.getEditedPotentialAppSources().isNotEmpty())
+    }
+
+    /**
+     * Updates the priority list preference.
+     */
+    private fun updateAppSourcesSection(priorityList: List<AppMetadata>, potentialAppSources: List<AppMetadata>) {
         removeEmptyState()
         appSourcesPreferenceGroup?.isVisible = true
         appSourcesPreferenceGroup?.removePreferenceRecursively(APP_SOURCES_PREFERENCE_KEY)
 
-        healthPermissionsViewModel.setEditedPriorityList(appSources)
+        dataSourcesViewModel.setEditedPriorityList(priorityList)
         appSourcesPreferenceGroup?.addPreference(
-                AppSourcesPreference(requireContext(),
-                        healthPermissionsViewModel,
-                        currentCategorySelection).also {
-                    it.key = APP_SOURCES_PREFERENCE_KEY
-                })
+            AppSourcesPreference(
+                requireContext(),
+                dataSourcesViewModel,
+                currentCategorySelection,
+                this)
+                .also { it.key = APP_SOURCES_PREFERENCE_KEY })
 
+        updateAddApp(potentialAppSources.isNotEmpty())
         nonEmptyFooterPreference?.isVisible = true
     }
 
-
-    private fun updateAddApp(shouldAdd: Boolean) {
+    /**
+     * Shows the "Add an app" button when there is at least one potential app for the priority list.
+     *
+     * <p> Hides the button in edit mode and when there are no other potential apps for the priority
+     * list.
+     */
+    private fun updateAddApp(shouldShow: Boolean) {
         appSourcesPreferenceGroup?.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
 
-        if (shouldAdd) {
-            appSourcesPreferenceGroup?.addPreference(
-                HealthPreference(requireContext()).also {
-                    it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.addIcon)
-                    it.title = getString(R.string.data_sources_add_app)
-                    it.key = ADD_AN_APP_PREFERENCE_KEY
-                    it.order = 100 // Arbitrary number to ensure the button is added at the end of the priority list
-                    it.setOnPreferenceClickListener {
-                        findNavController().navigate(
+        if (!shouldShow) {
+            return
+        }
+
+        appSourcesPreferenceGroup?.addPreference(
+            HealthPreference(requireContext()).also {
+                it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.addIcon)
+                it.title = getString(R.string.data_sources_add_app)
+                it.key = ADD_AN_APP_PREFERENCE_KEY
+                it.order =
+                    100 // Arbitrary number to ensure the button is added at the end of the
+                        // priority list
+                it.setOnPreferenceClickListener {
+                    findNavController()
+                        .navigate(
                             R.id.action_dataSourcesFragment_to_addAnAppFragment,
                             bundleOf(CATEGORY_KEY to currentCategorySelection))
-                        true
-                    }
+                    true
                 }
-            )
-        }
+            })
+
     }
 
-    private fun updateCards(cardInfos: List<AggregationCardInfo>) {
+    /**
+     * Populates the data totals section with aggregation cards if needed.
+     */
+    private fun updateDataTotalsSection(cardInfos: List<AggregationCardInfo>) {
         dataTotalsPreferenceGroup?.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_KEY)
-
-        // Temporary condition while priority list fetched from old API
-        // to avoid showing data cards when there are no apps on the priority list
+        // Do not show data cards when there are no apps on the priority list
         if (appSourcesPreferenceGroup?.isVisible == false) {
             return
         }
@@ -219,16 +261,36 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
             dataTotalsPreferenceGroup?.isVisible = false
         } else {
             dataTotalsPreferenceGroup?.isVisible = true
-            dataTotalsPreferenceGroup?.addPreference(
-                CardContainerPreference(requireContext(), timeSource)
-                    .also {
-                        it.setAggregationCardInfo(cardInfos)
-                        it.key = DATA_TOTALS_PREFERENCE_KEY
-                    }
-            )
+            cardContainerPreference = CardContainerPreference(requireContext(), timeSource).also {
+                it.setAggregationCardInfo(cardInfos)
+                it.key = DATA_TOTALS_PREFERENCE_KEY
+            }
+            dataTotalsPreferenceGroup?.addPreference((cardContainerPreference as CardContainerPreference))
         }
     }
 
+    /**
+     * Updates the aggregation cards after a priority list change.
+     */
+    private fun updateAggregations(cardInfos: List<AggregationCardInfo>, isLoading: Boolean) {
+        if (isLoading) {
+            cardContainerPreference?.setLoading(true)
+        } else {
+            if (cardInfos.isEmpty()) {
+                dataTotalsPreferenceGroup?.isVisible = false
+            } else {
+                dataTotalsPreferenceGroup?.isVisible = true
+                cardContainerPreference?.setLoading(false)
+                cardContainerPreference?.setAggregationCardInfo(cardInfos)
+            }
+        }
+    }
+
+    /**
+     * The empty state of this fragment is represented by:
+     * - no apps with write permissions for this category
+     * - no apps with data for this category
+     */
     private fun addEmptyState() {
         removeNonEmptyState()
         removeEmptyState()
@@ -247,7 +309,7 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
         preferenceScreen.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
         preferenceScreen.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_KEY)
 
-        // Need to keep the preference group headers and footer
+        // We hide the preference group headers and footer instead of removing them
         appSourcesPreferenceGroup?.isVisible = false
         dataTotalsPreferenceGroup?.isVisible = false
         nonEmptyFooterPreference?.isVisible = false
@@ -255,21 +317,21 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
 
     private fun getEmptyStateHeaderPreference(): HeaderPreference {
         return HeaderPreference(requireContext()).also {
-            it.setHeaderText(
-                    getString(R.string.data_sources_empty_state))
+            it.setHeaderText(getString(R.string.data_sources_empty_state))
             it.key = EMPTY_STATE_HEADER_PREFERENCE_KEY
         }
     }
 
     private fun getEmptyStateFooterPreference(): FooterPreference {
-        return FooterPreference(context)
-            .also {
-                it.title = getString(R.string.data_sources_empty_state_footer,
+        return FooterPreference(context).also {
+            it.title =
+                getString(
+                    R.string.data_sources_empty_state_footer,
                     getString(currentCategorySelection.lowercaseTitle()))
-                it.setLearnMoreText(getString(R.string.data_sources_help_link))
-                it.setLearnMoreAction { DeviceInfoUtilsImpl().openHCGetStartedLink(requireActivity())}
-                it.key = EMPTY_STATE_FOOTER_PREFERENCE_KEY
-            }
+            it.setLearnMoreText(getString(R.string.data_sources_help_link))
+            it.setLearnMoreAction { DeviceInfoUtilsImpl().openHCGetStartedLink(requireActivity()) }
+            it.key = EMPTY_STATE_FOOTER_PREFERENCE_KEY
+        }
     }
 
     private fun setupSpinnerPreference() {
@@ -279,29 +341,30 @@ class DataSourcesFragment: Hilt_DataSourcesFragment() {
                 it.addAll(dataSourcesCategoriesStrings)
             })
 
-        spinnerPreference.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val currentCategory = dataSourcesCategories[position]
-                currentCategorySelection = dataSourcesCategories[position]
+        spinnerPreference.setOnItemSelectedListener(
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val currentCategory = dataSourcesCategories[position]
+                    currentCategorySelection = dataSourcesCategories[position]
 
-                healthPermissionsViewModel.loadData(currentCategory)
-                dataSourcesViewModel.loadPotentialAppSources(currentCategory)
-                dataSourcesViewModel.setCurrentSelection(currentCategory)
-                if (currentCategory == HealthDataCategory.ACTIVITY) {
-                    dataTotalsPreferenceGroup?.isVisible = true
-                    dataSourcesViewModel.loadMostRecentAggregations()
-                } else {
-                    dataTotalsPreferenceGroup?.isVisible = false
+                    // Reload the data sources information when a new category has been selected
+                    dataSourcesViewModel.loadData(currentCategory)
+                    dataSourcesViewModel.setCurrentSelection(currentCategory)
+                    dataTotalsPreferenceGroup?.isVisible = currentCategory == HealthDataCategory.ACTIVITY
                 }
-            }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-        })
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            })
 
         spinnerPreference.setSelection(
-            dataSourcesCategories.indexOf(
-                dataSourcesViewModel.getCurrentSelection()))
+            dataSourcesCategories.indexOf(dataSourcesViewModel.getCurrentSelection()))
 
         preferenceScreen.addPreference(spinnerPreference)
     }
+
 }
