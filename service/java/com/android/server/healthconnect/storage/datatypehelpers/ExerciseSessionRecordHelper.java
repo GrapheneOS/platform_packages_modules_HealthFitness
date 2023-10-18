@@ -90,6 +90,10 @@ public final class ExerciseSessionRecordHelper
     private static final String TITLE_COLUMN_NAME = "title";
     private static final String HAS_ROUTE_COLUMN_NAME = "has_route";
 
+    private static final int ROUTE_READ_ACCESS_TYPE_NONE = 0;
+    private static final int ROUTE_READ_ACCESS_TYPE_OWN = 1;
+    private static final int ROUTE_READ_ACCESS_TYPE_ALL = 2;
+
     public ExerciseSessionRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION);
     }
@@ -245,25 +249,17 @@ public final class ExerciseSessionRecordHelper
             String packageName,
             long startDateAccess,
             Map<String, Boolean> extraPermsState) {
-        if (!isExerciseRouteFeatureEnabled()) {
+        int routeAccessType = getExerciseRouteReadAccessType(packageName, extraPermsState);
+
+        if (routeAccessType == ROUTE_READ_ACCESS_TYPE_NONE) {
             return Collections.emptyList();
         }
 
-        boolean canReadAnyRoute = extraPermsState.get(READ_EXERCISE_ROUTE);
-        if (!canReadAnyRoute
-                && AppInfoHelper.getInstance().getAppInfoId(packageName) == DEFAULT_LONG) {
-            // If the package doesn't have app info and cannot read any route,
-            // then no route is accessible for it.
-            return Collections.emptyList();
-        }
+        boolean enforceSelfRead = routeAccessType == ROUTE_READ_ACCESS_TYPE_OWN;
 
-        WhereClauses whereClause =
-                getReadTableWhereClause(
-                        request,
-                        packageName,
-                        /* enforceSelfRead= */ !canReadAnyRoute,
-                        startDateAccess);
-        return List.of(getRouteReadRequest(whereClause));
+        WhereClauses sessionsWithAccessibleRouteClause =
+                getReadTableWhereClause(request, packageName, enforceSelfRead, startDateAccess);
+        return List.of(getRouteReadRequest(sessionsWithAccessibleRouteClause));
     }
 
     @Override
@@ -315,17 +311,30 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
-    List<ReadTableRequest> getExtraDataReadRequests(List<UUID> uuids, long startDateAccess) {
-        if (!isExerciseRouteFeatureEnabled()) {
+    List<ReadTableRequest> getExtraDataReadRequests(
+            String packageName,
+            List<UUID> uuids,
+            long startDateAccess,
+            Map<String, Boolean> extraPermsState) {
+        int routeAccessType = getExerciseRouteReadAccessType(packageName, extraPermsState);
+
+        if (routeAccessType == ROUTE_READ_ACCESS_TYPE_NONE) {
             return Collections.emptyList();
         }
 
-        WhereClauses whereClause =
+        WhereClauses sessionsWithAccessibleRouteClause =
                 new WhereClauses()
                         .addWhereInClauseWithoutQuotes(
-                                UUID_COLUMN_NAME, StorageUtils.getListOfHexString(uuids));
-        whereClause.addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
-        return List.of(getRouteReadRequest(whereClause));
+                                UUID_COLUMN_NAME, StorageUtils.getListOfHexString(uuids))
+                        .addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
+
+        if (routeAccessType == ROUTE_READ_ACCESS_TYPE_OWN) {
+            long appId = AppInfoHelper.getInstance().getAppInfoId(packageName);
+            sessionsWithAccessibleRouteClause.addWhereInLongsClause(
+                    APP_INFO_ID_COLUMN_NAME, List.of(appId));
+        }
+
+        return List.of(getRouteReadRequest(sessionsWithAccessibleRouteClause));
     }
 
     @Override
@@ -407,5 +416,19 @@ public final class ExerciseSessionRecordHelper
         inClause.addWhereInSQLRequestClause(PARENT_KEY_COLUMN_NAME, sessionsIdsRequest);
         routeReadRequest.setWhereClause(inClause);
         return routeReadRequest;
+    }
+
+    private int getExerciseRouteReadAccessType(
+            String packageName, Map<String, Boolean> extraPermsState) {
+        if (!isExerciseRouteFeatureEnabled()) {
+            return ROUTE_READ_ACCESS_TYPE_NONE;
+        }
+
+        if (extraPermsState.getOrDefault(READ_EXERCISE_ROUTE, false)) {
+            return ROUTE_READ_ACCESS_TYPE_ALL;
+        }
+
+        long appId = AppInfoHelper.getInstance().getAppInfoId(packageName);
+        return appId == DEFAULT_LONG ? ROUTE_READ_ACCESS_TYPE_NONE : ROUTE_READ_ACCESS_TYPE_OWN;
     }
 }
