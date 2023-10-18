@@ -66,7 +66,10 @@ public class RecordHelperTest {
     @Test
     public void getInternalRecords_insertThenRead_recordReturned() {
         RecordHelper<?> helper = new StepsRecordHelper();
-        String uid = mTransactionTestUtils.insertRecords(createStepsRecord(4000, 5000, 100)).get(0);
+        String uid =
+                mTransactionTestUtils
+                        .insertRecords(TEST_PACKAGE_NAME, createStepsRecord(4000, 5000, 100))
+                        .get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
             List<RecordInternal<?>> records = helper.getInternalRecords(cursor, 1);
@@ -83,7 +86,10 @@ public class RecordHelperTest {
     @Test
     public void getInternalRecords_requestSizeMoreThanRecordNumber_recordsReturned() {
         RecordHelper<?> helper = new StepsRecordHelper();
-        String uid = mTransactionTestUtils.insertRecords(createStepsRecord(4000, 5000, 100)).get(0);
+        String uid =
+                mTransactionTestUtils
+                        .insertRecords(TEST_PACKAGE_NAME, createStepsRecord(4000, 5000, 100))
+                        .get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
             assertThat(cursor.getCount()).isEqualTo(1);
@@ -98,7 +104,9 @@ public class RecordHelperTest {
         RecordHelper<?> helper = new StepsRecordHelper();
         List<String> uids =
                 mTransactionTestUtils.insertRecords(
-                        createStepsRecord(4000, 5000, 100), createStepsRecord(5000, 6000, 200));
+                        TEST_PACKAGE_NAME,
+                        createStepsRecord(4000, 5000, 100),
+                        createStepsRecord(5000, 6000, 200));
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
             assertThat(cursor.getCount()).isEqualTo(2);

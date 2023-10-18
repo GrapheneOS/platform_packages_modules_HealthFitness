@@ -19,6 +19,8 @@ package com.android.server.healthconnect.permission;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 
+import static java.util.stream.Collectors.toMap;
+
 import android.annotation.NonNull;
 import android.content.AttributionSource;
 import android.content.Context;
@@ -38,6 +40,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Helper class to force caller of data apis to hold api required permissions.
@@ -170,18 +173,16 @@ public class DataPermissionEnforcer {
      * doesn't have corresponding permission.
      */
     public Map<String, Boolean> collectExtraReadPermissionToStateMapping(
-            int recordTypeId, AttributionSource attributionSource) {
-        RecordHelper<?> recordHelper =
-                RecordHelperProvider.getInstance().getRecordHelper(recordTypeId);
-        if (recordHelper.getExtraReadPermissions().isEmpty()) {
-            return Collections.emptyMap();
-        }
-
-        Map<String, Boolean> mapping = new ArrayMap<>();
-        for (String permissionName : recordHelper.getExtraReadPermissions()) {
-            mapping.put(permissionName, isPermissionGranted(permissionName, attributionSource));
-        }
-        return mapping;
+            Set<Integer> recordTypeIds, AttributionSource attributionSource) {
+        RecordHelperProvider recordHelperProvider = RecordHelperProvider.getInstance();
+        return recordTypeIds.stream()
+                .map(recordHelperProvider::getRecordHelper)
+                .flatMap(recordHelper -> recordHelper.getExtraReadPermissions().stream())
+                .distinct()
+                .collect(
+                        toMap(
+                                Function.identity(),
+                                permission -> isPermissionGranted(permission, attributionSource)));
     }
 
     public Map<String, Boolean> collectExtraWritePermissionStateMapping(
