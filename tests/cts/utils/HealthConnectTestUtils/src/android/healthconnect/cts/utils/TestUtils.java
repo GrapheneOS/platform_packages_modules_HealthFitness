@@ -164,6 +164,8 @@ import java.util.stream.Collectors;
 public final class TestUtils {
     public static final String MANAGE_HEALTH_PERMISSIONS =
             HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
+    public static final String READ_EXERCISE_ROUTE_PERMISSION =
+            "android.permission.health.READ_EXERCISE_ROUTE";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
     public static final String MANAGE_HEALTH_DATA = HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
     public static final Instant SESSION_START_TIME = Instant.now().minus(10, ChronoUnit.DAYS);
@@ -460,7 +462,7 @@ public final class TestUtils {
 
     public static ExerciseSessionRecord getExerciseSessionRecord(
             String packageName, double clientId, boolean withRoute) {
-        Instant startTime = Instant.now().minusSeconds(3000);
+        Instant startTime = Instant.now().minusSeconds(3000).truncatedTo(ChronoUnit.MILLIS);
         Instant endTime = Instant.now();
         ExerciseSessionRecord.Builder builder =
                 new ExerciseSessionRecord.Builder(

@@ -16,16 +16,23 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
+
 import static com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper.PACKAGE_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper.UNIQUE_COLUMN_INFO;
 
 import static com.google.common.truth.Truth.assertThat;
+
+import static java.time.Duration.ofMinutes;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
+import android.health.connect.internal.datatypes.ExerciseRouteInternal;
+import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 
@@ -33,8 +40,9 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 
-
+import java.time.Instant;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /** Util class provides shared functionality for db transaction testing. */
 public final class TransactionTestUtils {
@@ -52,17 +60,21 @@ public final class TransactionTestUtils {
         mTransactionManager.insert(
                 new UpsertTableRequest(
                         AppInfoHelper.TABLE_NAME, contentValues, UNIQUE_COLUMN_INFO));
-        assertThat(AppInfoHelper.getInstance().getAppInfoId(packageName)).isEqualTo(1);
+        AppInfoHelper.getInstance().clearCache();
+        assertThat(AppInfoHelper.getInstance().getAppInfoId(packageName))
+                .isNotEqualTo(DEFAULT_LONG);
     }
 
-    public List<String> insertRecords(RecordInternal<?>... records) {
-        return insertRecords(List.of(records));
+    /** Inserts records attributed to the given package. */
+    public List<String> insertRecords(String packageName, RecordInternal<?>... records) {
+        return insertRecords(packageName, List.of(records));
     }
 
-    public List<String> insertRecords(List<RecordInternal<?>> records) {
+    /** Inserts records attributed to the given package. */
+    public List<String> insertRecords(String packageName, List<RecordInternal<?>> records) {
         return mTransactionManager.insertAll(
                 new UpsertTransactionRequest(
-                        "package.name",
+                        packageName,
                         records,
                         mContext,
                         /* isInsertRequest= */ true,
@@ -83,5 +95,32 @@ public final class TransactionTestUtils {
                 .setSystolic(systolic)
                 .setDiastolic(diastolic)
                 .setTime(timeMillis);
+    }
+
+    /** Creates an exercise sessions with a route. */
+    public static ExerciseSessionRecordInternal createExerciseSessionRecordWithRoute(
+            Instant startTime) {
+        return (ExerciseSessionRecordInternal)
+                new ExerciseSessionRecordInternal()
+                        .setExerciseType(EXERCISE_SESSION_TYPE_RUNNING)
+                        .setRoute(createExerciseRoute(startTime))
+                        .setStartTime(startTime.toEpochMilli())
+                        .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
+    }
+
+    private static ExerciseRouteInternal createExerciseRoute(Instant startTime) {
+        int numberOfLocations = 3;
+        double latitude = 52.13;
+        double longitude = 0.14;
+
+        return new ExerciseRouteInternal(
+                IntStream.range(0, numberOfLocations)
+                        .mapToObj(
+                                i ->
+                                        new ExerciseRouteInternal.LocationInternal()
+                                                .setTime(startTime.plusSeconds(i).toEpochMilli())
+                                                .setLatitude(latitude + 0.001 * i)
+                                                .setLongitude(longitude + 0.001 * i))
+                        .toList());
     }
 }

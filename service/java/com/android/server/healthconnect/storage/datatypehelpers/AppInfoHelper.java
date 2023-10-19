@@ -98,6 +98,7 @@ public final class AppInfoHelper extends DatabaseHelper {
      * <p>TO HAVE THREAD SAFETY DON'T USE THESE VARIABLES DIRECTLY, INSTEAD USE ITS GETTER
      */
     private volatile ConcurrentHashMap<Long, String> mIdPackageNameMap;
+
     /**
      * Map to store application package-name -> AppInfo mapping (such as packageName -> appName,
      * icon, rowId in the DB etc.)
@@ -198,6 +199,10 @@ public final class AppInfoHelper extends DatabaseHelper {
      * @return id of {@code packageName} or {@link Constants#DEFAULT_LONG} if the id is not found
      */
     public long getAppInfoId(String packageName) {
+        if (packageName == null) {
+            return DEFAULT_LONG;
+        }
+
         AppInfoInternal appInfo = getAppInfoMap().getOrDefault(packageName, null);
 
         if (appInfo == null) {
