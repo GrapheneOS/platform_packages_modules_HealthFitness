@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Cuando otorgues permiso a las apps para escribir datos de <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, las fuentes se mostrarán aquí."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cómo funcionan la priorización y las fuentes"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Agrega una app"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Datos de app"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Aquí se mostrará la información de apps con acceso a Health Connect"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Día"</string>

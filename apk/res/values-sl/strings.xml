@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Ko boste aplikacijam dodelili dovoljenja za zapisovanje podatkov vrste »<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>«, bodo viri prikazani tukaj."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Kako delujejo viri in dodeljevanje prednosti"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Dodajanje aplikacije"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Podatki aplikacije"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Podatki iz aplikacij z dostopom do aplikacije Health Connect bodo prikazani tukaj"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Dan"</string>

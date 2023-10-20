@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"當你將寫入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>資料的權限授予應用程式後，這裡就會顯示來源。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"來源與優先順序的運作方式"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"新增應用程式"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"應用程式資料"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"如果資料是來自有權存取 Health Connect 的應用程式，就會顯示在這裡"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"一天"</string>
