@@ -679,7 +679,7 @@
     <string name="help_and_feedback" msgid="4772169905005369871">"Nápověda a zpětná vazba"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Pokud nějakou nainstalovanou aplikaci nevidíte, zřejmě ještě není kompatibilní se službou Health Connect"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Co byste mohli vyzkoušet"</string>
-    <string name="check_for_updates" msgid="3841090978657783101">"Kontrola dostupnosti aktualizací"</string>
+    <string name="check_for_updates" msgid="3841090978657783101">"Zkontrolovat dostupnost aktualizací"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Ověřte, zda jsou nainstalované aplikace aktuální"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Zobrazit všechny kompatibilní aplikace"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Najít aplikace na Google Play"</string>
@@ -762,7 +762,7 @@
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Je vyžadována aktualizace"</string>
     <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> musí být aktualizovaná, aby fungovala se službou Health Connect"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Některé aplikace musí být aktualizované, aby fungovaly se službou Health Connect"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Kontrola dostupnosti aktualizací"</string>
+    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Zkontrolovat dostupnost aktualizací"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integrace Health Connect"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Služba Health Connect je připravena na integraci se systémem Android. Pokud aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> dáte přístup teď, některé funkce budou k dispozici až po dokončení integrace."</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Služba Health Connect je připravena na integraci se systémem Android. Pokud aplikacím dáte přístup teď, některé funkce budou k dispozici až po dokončení integrace."</string>
@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Jakmile aplikacím udělíte oprávnění k zápisu dat z kategorie <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, zobrazí se zde zdroje."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Jak fungují zdroje a určování priorit"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Přidat aplikaci"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Data aplikace"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Tady se budou zobrazovat data z aplikací s přístupem na platformu Health Connect"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Den"</string>

@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"ನೀವು <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ಡೇಟಾವನ್ನು ರೈಟ್ ಮಾಡಲು ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಗಳನ್ನು ನೀಡಿದ ನಂತರ, ಮೂಲಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ಮೂಲಗಳು ಮತ್ತು ಆದ್ಯತೆ ನೀಡುವಿಕೆ ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತವೆ"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"ಆ್ಯಪ್ ಒಂದನ್ನು ಸೇರಿಸಿ"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"ಆ್ಯಪ್ ಡೇಟಾ"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Health Connect ಗೆ ಆ್ಯಕ್ಸೆಸ್ ಹೊಂದಿರುವ ಆ್ಯಪ್‌ಗಳ ಡೇಟಾವನ್ನು ಇಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"ದಿನ"</string>

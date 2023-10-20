@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Када дате дозволе за апликације за уписивање података из категорије <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, извори ће се приказивати овде."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Како извори и одређивање приоритета раде"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Додај апликацију"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Подаци апликација"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Подаци из апликација са приступом Повезивању здравља приказаће се овде"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Дан"</string>

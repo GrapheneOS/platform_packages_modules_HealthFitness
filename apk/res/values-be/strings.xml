@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Тут у якасці крыніц будуць паказвацца праграмы, якім вы дазволіце запісваць даныя катэгорыі \"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>\"."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Як працуюць крыніцы даных і прыярытэт"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Дадаць праграму"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Даныя праграмы"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Тут будуць паказвацца даныя з праграм, у якіх ёсць доступ да \"Здароўя і спорта\""</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Дзень"</string>

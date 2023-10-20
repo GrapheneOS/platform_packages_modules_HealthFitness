@@ -94,7 +94,7 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"運動路線"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"寫入運動路線"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"讀取運動路線"</string>
-    <string name="exercise_routes_all_read_content_description" msgid="5799035808926978381">"讀取所有運動路線"</string>
+    <string name="exercise_routes_all_read_content_description" msgid="5799035808926978381">"朗讀所有運動路線"</string>
     <string name="distance_uppercase_label" msgid="1420705424462077174">"距離"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"距離"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"讀取距離資料"</string>
@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"當你授予應用程式寫入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>資料的權限後，系統就會在這裡顯示來源。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"來源和優先次序的運作方式"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"新增應用程式"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"應用程式資料"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"有 Health Connect 存取權的應用程式所提供的資料會在這裡顯示"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"日"</string>

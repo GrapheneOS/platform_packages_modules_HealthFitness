@@ -331,7 +331,7 @@
     <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"헬스 커넥트에서 모든 <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> 권한도 삭제"</string>
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"<xliff:g id="APP_DATA">%2$s</xliff:g>에서 추가한 모든 <xliff:g id="DATA_TYPE">%1$s</xliff:g> 데이터를 완전히 삭제하시겠습니까?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"이 항목을 완전히 삭제하시겠습니까?"</string>
-    <string name="confirming_question_message" msgid="2934249835529079545">"연결된 앱이 더 이상 이 헬스 커넥트 데이터에 액세스할 수 없게 됩니다."</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"연결된 앱에서 더 이상 이 헬스 커넥트 데이터에 액세스할 수 없게 됩니다."</string>
     <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"<xliff:g id="START_DATE">%1$s</xliff:g>~<xliff:g id="END_DATE">%2$s</xliff:g> 기간의 모든 월경 관련 항목이 삭제됩니다."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"삭제"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"뒤로"</string>
@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> 데이터를 쓸 수 있는 권한을 앱에 부여하면 소스가 여기에 표시됩니다."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"소스 및 우선순위 지정의 작동 방식"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"앱 추가하기"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"앱 데이터"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"헬스 커넥트에 액세스할 수 있는 앱의 데이터가 여기에 표시됩니다."</string>
     <string name="date_picker_day" msgid="3076687507968958991">"일"</string>

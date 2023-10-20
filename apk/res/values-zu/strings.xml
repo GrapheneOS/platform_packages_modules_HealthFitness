@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Ngemva kokunika i-app izimvume zokubhala idatha ye-<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, imithombo izovela lapha."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Indlela imithombo nomsebenzi wokwenza kube okubalulekile"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Faka i-app"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Idatha ye-app"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Idatha ekuma-app akwazi ukufinyelela ku-Health Connect izovela lapha"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Usuku"</string>

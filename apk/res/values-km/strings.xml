@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"នៅពេល​អ្នកផ្ដល់​ការអនុញ្ញាតកម្មវិធី​ឱ្យសរសេរទិន្នន័យ <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ប្រភពនឹង​បង្ហាញនៅទីនេះ។"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"របៀបដែល​ប្រភព និងការកំណត់អាទិភាព​ដំណើរការ"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"បញ្ចូល​កម្មវិធី"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"ទិន្នន័យកម្មវិធី"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"ទិន្នន័យពីកម្មវិធីដែលមានសិទ្ធិចូលប្រើ Health Connect នឹងបង្ហាញនៅទីនេះ"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"ថ្ងៃ"</string>

@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kui annate rakendusele loa kirjutada kategooria <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> andmeid, kuvatakse siin allikad."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Kuidas toimivad allikad ja prioriteetsus?"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Rakenduse lisamine"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Rakenduse andmed"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Nende rakenduste andmed, millel on juurdepääs teenusele Health Connect, kuvatakse siin"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Päev"</string>

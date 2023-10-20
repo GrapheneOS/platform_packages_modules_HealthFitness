@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Pasi t\'i japësh aplikacionit leje për të shkruar të dhëna të <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, burimet do të shfaqen këtu."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Si funksionojnë burimet dhe dhënia e përparësisë"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Shto një aplikacion"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Të dhënat e aplikacionit"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Të dhënat nga aplikacionet që kanë qasje te Health Connect do të shfaqen këtu"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Dita"</string>
