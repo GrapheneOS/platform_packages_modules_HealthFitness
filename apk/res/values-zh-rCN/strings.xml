@@ -238,10 +238,10 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"允许"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"全部允许"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"不允许"</string>
-    <string name="request_permissions_header_desc" msgid="5561173070722750153">"选择允许此应用读取或写入 Health Connect 的数据"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"如果您授予读取权限，此应用可以读取新数据和过去 30 天的数据"</string>
+    <string name="request_permissions_header_desc" msgid="5561173070722750153">"选择允许此应用对 Health Connect 读取或写入数据"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"如果你授予读取权限，此应用可以读取新数据和过去 30 天的数据"</string>
     <string name="request_permissions_header_title" msgid="4264236128614363479">"要允许<xliff:g id="APP_NAME">%1$s</xliff:g>访问 Health Connect 吗？"</string>
-    <string name="request_permissions_rationale" msgid="6154280355215802538">"您可以参阅开发者的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，了解<xliff:g id="APP_NAME">%1$s</xliff:g>如何处理您的数据"</string>
+    <string name="request_permissions_rationale" msgid="6154280355215802538">"你可以参阅开发者的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，了解<xliff:g id="APP_NAME">%1$s</xliff:g>如何处理你的数据"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"隐私权政策"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"要撤消所有权限吗？"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"全部移除"</string>
