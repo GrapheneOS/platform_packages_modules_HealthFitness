@@ -107,6 +107,13 @@ class HealthPermissionReaderTest {
     }
 
     @Test
+    fun getAppsWithHealthPermissions_returnsDistinctApps() = runTest {
+        val apps = permissionReader.getAppsWithHealthPermissions()
+        assertThat(apps).isEqualTo(apps.distinct())
+    }
+
+
+    @Test
     fun getAppsWithHealthPermissions_doesNotReturnUnsupportedApps() = runTest {
         assertThat(permissionReader.getAppsWithHealthPermissions())
             .doesNotContain(UNSUPPORTED_TEST_APP_PACKAGE_NAME)
