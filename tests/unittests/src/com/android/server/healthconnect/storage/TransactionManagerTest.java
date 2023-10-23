@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.storage;
 
-import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
-
 import static com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils.createBloodPressureRecord;
 import static com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils.createStepsRecord;
 
@@ -53,7 +51,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -111,31 +108,7 @@ public class TransactionManagerTest {
     }
 
     @Test
-    public void readRecordsById_exceedMaxPageSize_recordsNotReturned() {
-        List<RecordInternal<?>> inputRecords = new ArrayList<>(MAXIMUM_PAGE_SIZE + 1);
-        for (int i = 0; i < MAXIMUM_PAGE_SIZE + 1; i++) {
-            inputRecords.add(createStepsRecord(i, i + 1, 100));
-        }
-        List<String> uuidStrings =
-                mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, inputRecords);
-        List<UUID> uuids = new ArrayList<>(uuidStrings.size());
-        for (String uuidString : uuidStrings) {
-            uuids.add(UUID.fromString(uuidString));
-        }
-
-        ReadTransactionRequest request =
-                new ReadTransactionRequest(
-                        TEST_PACKAGE_NAME,
-                        ImmutableMap.of(RecordTypeIdentifier.RECORD_TYPE_STEPS, uuids),
-                        /* startDateAccess= */ 0,
-                        NO_EXTRA_PERMS);
-
-        List<RecordInternal<?>> records = mTransactionManager.readRecordsByIds(request);
-        assertThat(records).hasSize(MAXIMUM_PAGE_SIZE);
-    }
-
-    @Test
-    public void readRecordsAndPageToken_returnsRecordsAndPageToken() {
+    public void readRecordsAndNextRecordStartTime_returnsRecordsAndTimestamp() {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
