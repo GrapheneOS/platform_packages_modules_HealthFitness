@@ -23,7 +23,6 @@ import static com.google.common.truth.Truth.assertThat;
 import android.Manifest;
 import android.health.connect.HealthPermissions;
 import android.health.connect.ReadRecordsRequestUsingFilters;
-import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -217,7 +216,7 @@ public class TransactionManagerExerciseRoutesTest {
                                                 .build())
                                 .build()
                                 .toReadRecordsRequestParcel(),
-                        /* startDateAccess= */ 0,
+                        /* startDateAccessMillis= */ 0,
                         /* enforceSelfRead= */ false,
                         NO_EXTRA_PERMS);
 
@@ -255,7 +254,7 @@ public class TransactionManagerExerciseRoutesTest {
                                                 .build())
                                 .build()
                                 .toReadRecordsRequestParcel(),
-                        /* startDateAccess= */ 0,
+                        /* startDateAccessMillis= */ 0,
                         /* enforceSelfRead= */ false,
                         NO_EXTRA_PERMS);
 
@@ -285,7 +284,7 @@ public class TransactionManagerExerciseRoutesTest {
                                                 .build())
                                 .build()
                                 .toReadRecordsRequestParcel(),
-                        /* startDateAccess= */ 0,
+                        /* startDateAccessMillis= */ 0,
                         /* enforceSelfRead= */ false,
                         NO_EXTRA_PERMS);
 
@@ -315,126 +314,7 @@ public class TransactionManagerExerciseRoutesTest {
                                                 .build())
                                 .build()
                                 .toReadRecordsRequestParcel(),
-                        /* startDateAccess= */ 0,
-                        /* enforceSelfRead= */ false,
-                        Map.of(HealthPermissions.READ_EXERCISE_ROUTE, true));
-
-        List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndPageToken(request).first;
-
-        assertThat(returnedRecords).hasSize(1);
-        ExerciseSessionRecordInternal returnedRecord =
-                (ExerciseSessionRecordInternal) returnedRecords.get(0);
-        assertThat(returnedRecord.hasRoute()).isTrue();
-        assertThat(returnedRecord.getRoute()).isEqualTo(session.getRoute());
-    }
-
-    @Test
-    public void readRecordsAndPageToken_byIds_doesNotReturnRoutesOfOtherApps() {
-        ExerciseSessionRecordInternal fooSession =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
-        ExerciseSessionRecordInternal barSession =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(11000));
-        ExerciseSessionRecordInternal ownSession =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        String fooUuid = mTransactionTestUtils.insertRecords(FOO_PACKAGE_NAME, fooSession).get(0);
-        String barUuid = mTransactionTestUtils.insertRecords(BAR_PACKAGE_NAME, barSession).get(0);
-        String ownUuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, ownSession).get(0);
-        ReadTransactionRequest request =
-                new ReadTransactionRequest(
-                        TEST_PACKAGE_NAME,
-                        new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
-                                .addId(fooUuid)
-                                .addId(ownUuid)
-                                .addId(barUuid)
-                                .build()
-                                .toReadRecordsRequestParcel(),
-                        /* startDateAccess= */ 0,
-                        /* enforceSelfRead= */ false,
-                        NO_EXTRA_PERMS);
-
-        List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndPageToken(request).first;
-
-        Map<String, ExerciseSessionRecordInternal> idToSessionMap =
-                returnedRecords.stream()
-                        .collect(
-                                Collectors.toMap(
-                                        record -> record.getUuid().toString(),
-                                        ExerciseSessionRecordInternal.class::cast));
-        assertThat(idToSessionMap.get(fooUuid).getRoute()).isNull();
-        assertThat(idToSessionMap.get(barUuid).getRoute()).isNull();
-        assertThat(idToSessionMap.get(ownUuid).getRoute()).isEqualTo(ownSession.getRoute());
-        assertThat(idToSessionMap.get(fooUuid).hasRoute()).isTrue();
-        assertThat(idToSessionMap.get(barUuid).hasRoute()).isTrue();
-        assertThat(idToSessionMap.get(ownUuid).hasRoute()).isTrue();
-    }
-
-    @Test
-    public void readRecordsAndPageToken_byIds_unknownApp_doesNotReturnRoute() {
-        ExerciseSessionRecordInternal session =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        String uuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0);
-        ReadTransactionRequest request =
-                new ReadTransactionRequest(
-                        UNKNOWN_PACKAGE_NAME,
-                        new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
-                                .addId(uuid)
-                                .build()
-                                .toReadRecordsRequestParcel(),
-                        /* startDateAccess= */ 0,
-                        /* enforceSelfRead= */ false,
-                        NO_EXTRA_PERMS);
-
-        List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndPageToken(request).first;
-
-        assertThat(returnedRecords).hasSize(1);
-        ExerciseSessionRecordInternal returnedRecord =
-                (ExerciseSessionRecordInternal) returnedRecords.get(0);
-        assertThat(returnedRecord.hasRoute()).isTrue();
-        assertThat(returnedRecord.getRoute()).isNull();
-    }
-
-    @Test
-    public void readRecordsAndPageToken_byIds_nullPackageName_doesNotReturnRoute() {
-        ExerciseSessionRecordInternal session =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        String uuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0);
-        ReadTransactionRequest request =
-                new ReadTransactionRequest(
-                        null,
-                        new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
-                                .addId(uuid)
-                                .build()
-                                .toReadRecordsRequestParcel(),
-                        /* startDateAccess= */ 0,
-                        /* enforceSelfRead= */ false,
-                        NO_EXTRA_PERMS);
-
-        List<RecordInternal<?>> returnedRecords =
-                mTransactionManager.readRecordsAndPageToken(request).first;
-
-        assertThat(returnedRecords).hasSize(1);
-        ExerciseSessionRecordInternal returnedRecord =
-                (ExerciseSessionRecordInternal) returnedRecords.get(0);
-        assertThat(returnedRecord.hasRoute()).isTrue();
-        assertThat(returnedRecord.getRoute()).isNull();
-    }
-
-    @Test
-    public void readRecordsAndPageToken_byIds_withReadRoutePermission_returnsRoute() {
-        ExerciseSessionRecordInternal session =
-                createExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        String uuid = mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, session).get(0);
-        ReadTransactionRequest request =
-                new ReadTransactionRequest(
-                        UNKNOWN_PACKAGE_NAME,
-                        new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
-                                .addId(uuid)
-                                .build()
-                                .toReadRecordsRequestParcel(),
-                        /* startDateAccess= */ 0,
+                        /* startDateAccessMillis= */ 0,
                         /* enforceSelfRead= */ false,
                         Map.of(HealthPermissions.READ_EXERCISE_ROUTE, true));
 

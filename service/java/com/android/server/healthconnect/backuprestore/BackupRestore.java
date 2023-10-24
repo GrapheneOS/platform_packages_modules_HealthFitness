@@ -1083,7 +1083,7 @@ public final class BackupRestore {
                 new ReadTransactionRequest(
                         null,
                         readRecordsRequest.toReadRecordsRequestParcel(),
-                        DEFAULT_LONG /* startDateAccess */,
+                        DEFAULT_LONG /* startDateAccessMillis */,
                         false,
                         extraReadPermsMapping);
 

@@ -28,6 +28,7 @@ import static java.time.Duration.ofMinutes;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
@@ -37,15 +38,20 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 /** Util class provides shared functionality for db transaction testing. */
 public final class TransactionTestUtils {
+    private static final Map<String, Boolean> NO_EXTRA_PERMS = Map.of();
+    private static final String TEST_PACKAGE_NAME = "package.name";
     private final TransactionManager mTransactionManager;
     private final Context mContext;
 
@@ -79,6 +85,22 @@ public final class TransactionTestUtils {
                         mContext,
                         /* isInsertRequest= */ true,
                         /* skipPackageNameAndLogs= */ false));
+    }
+
+    public static ReadTransactionRequest getReadTransactionRequest(
+            Map<Integer, List<UUID>> recordTypeToUuids) {
+        return new ReadTransactionRequest(
+                TEST_PACKAGE_NAME, recordTypeToUuids, /* startDateAccess= */ 0, NO_EXTRA_PERMS);
+    }
+
+    public static ReadTransactionRequest getReadTransactionRequest(
+            ReadRecordsRequestParcel request) {
+        return new ReadTransactionRequest(
+                TEST_PACKAGE_NAME,
+                request,
+                /* startDateAccessMillis= */ 0,
+                /* enforceSelfRead= */ false,
+                NO_EXTRA_PERMS);
     }
 
     public static RecordInternal<StepsRecord> createStepsRecord(

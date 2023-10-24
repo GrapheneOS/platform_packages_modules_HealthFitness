@@ -21,6 +21,7 @@ import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.Constants.PARENT_KEY;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 
+import static com.android.internal.util.Preconditions.checkArgument;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 
@@ -255,10 +256,17 @@ public final class TransactionManager {
      * Reads the records {@link RecordInternal} stored in the HealthConnect database.
      *
      * @param request a read request.
+     * @throws IllegalArgumentException if the {@link ReadTransactionRequest} contains pagination
+     *     information, which should use {@link #readRecordsAndPageToken(ReadTransactionRequest)}
+     *     instead.
      * @return List of records read {@link RecordInternal} from table based on ids.
      */
     public List<RecordInternal<?>> readRecordsByIds(@NonNull ReadTransactionRequest request)
             throws SQLiteException {
+        // TODO(b/308158714): Make this build time check once we have different classes.
+        checkArgument(
+                request.getPageToken() == null && request.getPageSize().isEmpty(),
+                "Expect read by id request, but request contains pagination info.");
         List<RecordInternal<?>> recordInternals = new ArrayList<>();
         for (ReadTableRequest readTableRequest : request.getReadRequests()) {
             RecordHelper<?> helper = readTableRequest.getRecordHelper();
@@ -280,11 +288,18 @@ public final class TransactionManager {
      *
      * @param request a read request. Only one {@link ReadTableRequest} is expected in the {@link
      *     ReadTransactionRequest request}.
+     * @throws IllegalArgumentException if the {@link ReadTransactionRequest} doesn't contain
+     *     pagination information, which should use {@link
+     *     #readRecordsByIds(ReadTransactionRequest)} instead.
      * @return Pair containing records list read {@link RecordInternal} from the table and a page
      *     token for pagination.
      */
     public Pair<List<RecordInternal<?>>, Long> readRecordsAndPageToken(
             @NonNull ReadTransactionRequest request) throws SQLiteException {
+        // TODO(b/308158714): Make this build time check once we have different classes.
+        checkArgument(
+                request.getPageToken() != null && request.getPageSize().isPresent(),
+                "Expect read by filter request, but request doesn't contain pagination info.");
         ReadTableRequest readTableRequest = getOnlyElement(request.getReadRequests());
         List<RecordInternal<?>> recordInternalList;
         RecordHelper<?> helper = readTableRequest.getRecordHelper();

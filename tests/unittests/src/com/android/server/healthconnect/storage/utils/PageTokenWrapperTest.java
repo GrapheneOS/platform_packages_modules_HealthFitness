@@ -45,7 +45,7 @@ public class PageTokenWrapperTest {
 
     @Test
     public void of_isAscending_timestampNotSet() {
-        PageTokenWrapper wrapper = PageTokenWrapper.of(/* isAscending= */ true);
+        PageTokenWrapper wrapper = PageTokenWrapper.ofAscending(/* isAscending= */ true);
         assertThat(wrapper.isAscending()).isTrue();
         assertThat(wrapper.timeMillis()).isEqualTo(0);
         assertThat(wrapper.offset()).isEqualTo(0);
@@ -88,5 +88,37 @@ public class PageTokenWrapperTest {
                                 PageTokenWrapper.of(
                                         isAscending, MAX_ALLOWED_TIME_MILLIS + 1, /* offset= */ 0));
         assertThat(thrown.getMessage()).isEqualTo("timestamp too large");
+    }
+
+    @Test
+    public void equals_sameValue_expectTrue() {
+        PageTokenWrapper wrapper1 =
+                PageTokenWrapper.of(
+                        /* isAscending= */ false, /* timeMillis= */ 1234, /* offset= */ 567);
+        PageTokenWrapper wrapper2 =
+                PageTokenWrapper.of(
+                        /* isAscending= */ false, /* timeMillis= */ 1234, /* offset= */ 567);
+
+        assertThat(wrapper1.equals(wrapper2)).isTrue();
+    }
+
+    @Test
+    public void equals_differentValue_expectFalse() {
+        PageTokenWrapper wrapper =
+                PageTokenWrapper.of(
+                        /* isAscending= */ false, /* timeMillis= */ 1234, /* offset= */ 567);
+        PageTokenWrapper differentIsAscending =
+                PageTokenWrapper.of(
+                        /* isAscending= */ true, /* timeMillis= */ 1234, /* offset= */ 567);
+        PageTokenWrapper differentTime =
+                PageTokenWrapper.of(
+                        /* isAscending= */ false, /* timeMillis= */ 123, /* offset= */ 567);
+        PageTokenWrapper differentOffset =
+                PageTokenWrapper.of(
+                        /* isAscending= */ false, /* timeMillis= */ 1234, /* offset= */ 5678);
+
+        assertThat(wrapper.equals(differentIsAscending)).isFalse();
+        assertThat(wrapper.equals(differentTime)).isFalse();
+        assertThat(wrapper.equals(differentOffset)).isFalse();
     }
 }
