@@ -24,7 +24,6 @@ import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 
@@ -279,37 +278,37 @@ public final class TransactionManager {
 
     /**
      * Reads the records {@link RecordInternal} stored in the HealthConnect database and returns the
-     * start time of the next record as part of next page token.
+     * next page token.
      *
      * @param request a read request. Only one {@link ReadTableRequest} is expected in the {@link
      *     ReadTransactionRequest request}.
-     * @return Pair containing records list read {@link RecordInternal} from the table and a
-     *     timestamp for pagination
+     * @return Pair containing records list read {@link RecordInternal} from the table and a page
+     *     token for pagination.
      */
-    public Pair<List<RecordInternal<?>>, Long> readRecordsAndNextRecordStartTime(
+    public Pair<List<RecordInternal<?>>, Long> readRecordsAndPageToken(
             @NonNull ReadTransactionRequest request) throws SQLiteException {
         ReadTableRequest readTableRequest = getOnlyElement(request.getReadRequests());
         List<RecordInternal<?>> recordInternalList;
-        long timestamp = DEFAULT_LONG;
         RecordHelper<?> helper = readTableRequest.getRecordHelper();
         requireNonNull(helper);
         if (!helper.isRecordOperationsEnabled()) {
             recordInternalList = new ArrayList<>(0);
-            return Pair.create(recordInternalList, timestamp);
+            return Pair.create(recordInternalList, DEFAULT_LONG);
         }
 
+        long pageToken;
         try (Cursor cursor = read(readTableRequest)) {
-            recordInternalList =
-                    helper.getInternalRecordsPage(
-                            cursor, request.getPageSize().orElse(DEFAULT_PAGE_SIZE));
-            String startTimeColumnName = helper.getStartTimeColumnName();
-
+            Pair<List<RecordInternal<?>>, Long> readResult =
+                    helper.getNextInternalRecordsPageAndToken(
+                            cursor,
+                            request.getPageSize().orElse(DEFAULT_PAGE_SIZE),
+                            // pageToken is never null for read by filter requests
+                            requireNonNull(request.getPageToken()));
+            recordInternalList = readResult.first;
+            pageToken = readResult.second;
             populateInternalRecordsWithExtraData(recordInternalList, readTableRequest);
-            if (cursor.moveToNext()) {
-                timestamp = getCursorLong(cursor, startTimeColumnName);
-            }
         }
-        return Pair.create(recordInternalList, timestamp);
+        return Pair.create(recordInternalList, pageToken);
     }
 
     /**

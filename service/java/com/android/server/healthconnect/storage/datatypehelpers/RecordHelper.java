@@ -417,89 +417,89 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * Returns a list of Internal records from the cursor up to the requested size, with pagination
      * handled.
      *
-     * @see #getInternalRecordsPage(Cursor, int, Map)
+     * @see #getNextInternalRecordsPageAndToken(Cursor, int, PageTokenWrapper, Map)
      */
-    public List<RecordInternal<?>> getInternalRecordsPage(Cursor cursor, int requestSize) {
-        return getInternalRecordsPage(cursor, requestSize, /* packageNamesByAppIds= */ null);
+    public Pair<List<RecordInternal<?>>, Long> getNextInternalRecordsPageAndToken(
+            Cursor cursor, int requestSize, PageTokenWrapper pageToken) {
+        return getNextInternalRecordsPageAndToken(
+                cursor, requestSize, pageToken, /* packageNamesByAppIds= */ null);
     }
 
     /**
      * Returns List of Internal records from the cursor up to the requested size, with pagination
      * handled.
+     *
+     * <p>Note that the cursor limit is set to {@code requestSize + offset + 1},
+     * <li>+ offset: {@code offset} records has already been returned in previous page(s). See
+     *     go/hc-page-token for details.
+     * <li>+ 1: if number of records queried is more than pageSize we know there are more records
+     *     available to return for the next read.
+     *
+     *     <p>Note that the cursor may contain more records that we need to return. Cursor limit set
+     *     to sum of the following:
+     * <li>offset: {@code offset} records have already been returned in previous page(s), and should
+     *     be skipped from this current page. In rare occasions (e.g. records deleted in between two
+     *     reads), there are less than {@code offset} records, an empty list is returned, with no
+     *     page token.
+     * <li>requestSize: {@code requestSize} records to return in the response.
+     * <li>one extra record: If there are more records than (offset+requestSize), a page token is
+     *     returned for the next page. If not, then a default token is returned.
+     *
+     * @see #getLimitSize(ReadRecordsRequestParcel)
      */
-    public List<RecordInternal<?>> getInternalRecordsPage(
-            Cursor cursor, int requestSize, @Nullable Map<Long, String> packageNamesByAppIds) {
-        Trace.traceBegin(TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetInternalRecords"));
-        List<RecordInternal<?>> recordInternalList = new ArrayList<>();
+    public Pair<List<RecordInternal<?>>, Long> getNextInternalRecordsPageAndToken(
+            Cursor cursor,
+            int requestSize,
+            PageTokenWrapper prevPageToken,
+            @Nullable Map<Long, String> packageNamesByAppIds) {
+        Trace.traceBegin(
+                TRACE_TAG_RECORD_HELPER,
+                TAG_RECORD_HELPER.concat("getNextInternalRecordsPageAndToken"));
 
-        int count = 0;
+        // Ignore <offset> records of the same start time, because it was returned in previous
+        // page(s).
+        // If the offset is greater than number of records in the cursor, it'll move to the last
+        // index and will not enter the while loop below.
         long prevStartTime;
         long currentStartTime = DEFAULT_LONG;
-        int tempCount = 0;
-        List<RecordInternal<?>> tempList = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            T record = getRecord(cursor, packageNamesByAppIds);
-
+        for (int i = 0; i < prevPageToken.offset(); i++) {
+            if (!cursor.moveToNext()) {
+                break;
+            }
             prevStartTime = currentStartTime;
             currentStartTime = getCursorLong(cursor, getStartTimeColumnName());
-            if (prevStartTime == DEFAULT_LONG || prevStartTime == currentStartTime) {
-                // Fetch and add records with same startTime to tempList
-                tempList.add(record);
-                tempCount++;
-            } else {
-                if (count == 0) {
-                    // items in tempList having startTime same as the first record from cursor
-                    // is added to final list.
-                    // This makes sure that we return at least 1 record if the count of
-                    // records with startTime same as second record exceeds requestSize.
-                    recordInternalList.addAll(tempList);
-                    count = tempCount;
-                    tempList.clear();
-                    tempCount = 0;
-                    if (count >= requestSize) {
-                        // startTime of current record should be fetched for pageToken
-                        cursor.moveToPrevious();
-                        break;
-                    }
-                    tempList.add(record);
-                    tempCount = 1;
-                } else if (tempCount + count <= requestSize) {
-                    // Makes sure after adding records in tempList with same starTime
-                    // the count does not exceed requestSize
-                    recordInternalList.addAll(tempList);
-                    count += tempCount;
-                    tempList.clear();
-                    tempCount = 0;
-                    if (count >= requestSize) {
-                        // After adding records if count is equal to requestSize then startTime
-                        // of current fetched record should be the next page token.
-                        cursor.moveToPrevious();
-                        break;
-                    }
-                    tempList.add(record);
-                    tempCount = 1;
-                } else {
-                    // If adding records in tempList makes count > requestSize, then ignore temp
-                    // list and startTime of records in temp list should be the next page token.
-                    tempList.clear();
-                    int lastposition = cursor.getPosition();
-                    cursor.moveToPosition(lastposition - 2);
-                    break;
-                }
+            if (prevStartTime != DEFAULT_LONG && prevStartTime != currentStartTime) {
+                // The current record should not be skipped
+                cursor.moveToPrevious();
+                break;
             }
         }
-        if (!tempList.isEmpty()) {
-            if (tempCount + count <= requestSize) {
-                // If reached end of cursor while fetching records then add it to final list
-                recordInternalList.addAll(tempList);
+
+        currentStartTime = DEFAULT_LONG;
+        int offset = 0;
+        List<RecordInternal<?>> recordInternalList = new ArrayList<>();
+        long nextToken = DEFAULT_LONG;
+        while (cursor.moveToNext()) {
+            prevStartTime = currentStartTime;
+            currentStartTime = getCursorLong(cursor, getStartTimeColumnName());
+            if (currentStartTime != prevStartTime) {
+                offset = 0;
+            }
+
+            if (recordInternalList.size() >= requestSize) {
+                PageTokenWrapper nextPageToken =
+                        PageTokenWrapper.of(prevPageToken.isAscending(), currentStartTime, offset);
+                nextToken = PageTokenUtil.encode(nextPageToken);
+                break;
             } else {
-                // If reached end of cursor while fetching and adding it will exceed requestSize
-                // then ignore them,startTime of the last record will be pageToken for next read.
-                cursor.moveToPosition(cursor.getCount() - 2);
+                T record = getRecord(cursor, packageNamesByAppIds);
+                recordInternalList.add(record);
+                offset++;
             }
         }
+
         Trace.traceEnd(TRACE_TAG_RECORD_HELPER);
-        return recordInternalList;
+        return Pair.create(recordInternalList, nextToken);
     }
 
     @SuppressWarnings("unchecked") // uncheck cast to T
@@ -642,10 +642,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     private static int getLimitSize(ReadRecordsRequestParcel request) {
         // Querying extra records on top of page size
+        // + pageOffset: <pageOffset> records has already been returned in previous page(s). See
+        //               go/hc-page-token for details.
         // + 1: if number of records queried is more than pageSize we know there are more records
         //      available to return for the next read.
         if (request.getRecordIdFiltersParcel() == null) {
-            return request.getPageSize() + 1;
+            int pageOffset =
+                    PageTokenUtil.decode(request.getPageToken(), request.isAscending()).offset();
+            return request.getPageSize() + pageOffset + 1;
         } else {
             return MAXIMUM_PAGE_SIZE;
         }
@@ -732,7 +736,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         PageTokenWrapper pageToken =
                 PageTokenUtil.decode(request.getPageToken(), request.isAscending());
         return new OrderByClause()
-                .addOrderByClause(getStartTimeColumnName(), pageToken.isAscending());
+                .addOrderByClause(getStartTimeColumnName(), pageToken.isAscending())
+                .addOrderByClause(PRIMARY_COLUMN_NAME, /* isAscending= */ true);
     }
 
     @NonNull
