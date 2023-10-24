@@ -94,8 +94,7 @@
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"Trainingsroute"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"Trainingsroute schreiben"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"Trainingsroute ansehen"</string>
-    <!-- no translation found for exercise_routes_all_read_content_description (5799035808926978381) -->
-    <skip />
+    <string name="exercise_routes_all_read_content_description" msgid="5799035808926978381">"Alle Trainingsrouten einsehen"</string>
     <string name="distance_uppercase_label" msgid="1420705424462077174">"Strecke"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"Strecke"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Strecke lesen"</string>
@@ -247,7 +246,7 @@
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Alle zulassen"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Nicht erlauben"</string>
     <string name="request_permissions_header_desc" msgid="5561173070722750153">"Du kannst festlegen, welche Daten diese App in Health Connect lesen und schreiben darf"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Wenn du der App Schreibzugriff gibst, kann sie neue Daten und solche aus den letzten 30 Tagen lesen"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"Wenn du der App Lesezugriff gibst, kann sie neue Daten und solche aus den letzten 30 Tagen lesen"</string>
     <string name="request_permissions_header_title" msgid="4264236128614363479">"<xliff:g id="APP_NAME">%1$s</xliff:g> Zugriff auf Health Connect erlauben?"</string>
     <string name="request_permissions_rationale" msgid="6154280355215802538">"Wie <xliff:g id="APP_NAME">%1$s</xliff:g> deine Daten verarbeitet, erfährst du in der <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> des Entwicklers"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"Datenschutzerklärung"</string>
@@ -790,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Wenn du App-Berechtigungen zum Schreiben von „<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>“-Daten erteilst, werden die Quellen hier angezeigt."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"So funktionieren Quellen und Priorisierung"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"App hinzufügen"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"App-Daten"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Daten aus Apps mit Zugriff auf Health Connect werden hier angezeigt"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Tag"</string>

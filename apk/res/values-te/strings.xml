@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"మీరు <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> డేటాను రాయడానికి యాప్ అనుమతులు ఇచ్చిన తర్వాత, సోర్స్‌లు ఇక్కడ చూపబడతాయి."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"సోర్స్‌లు &amp; ప్రాధాన్యత ఎలా పని చేస్తాయి"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"యాప్‌ను జోడించండి"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"యాప్ డేటా"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Health Connectకు యాక్సెస్ ఉన్న యాప్‌ల డేటా ఇక్కడ చూపబడుతుంది"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"రోజు"</string>

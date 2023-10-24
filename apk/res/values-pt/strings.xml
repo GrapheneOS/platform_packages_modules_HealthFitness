@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Depois que você permitir que o app grave dados de <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, as origens serão mostradas aqui."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Como origens e priorização funcionam"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Adicionar um app"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Dados do app"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Os dados de apps com acesso à Conexão Saúde vão aparecer aqui"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Dia"</string>

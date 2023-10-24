@@ -789,6 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Tu sa budú zobrazovať zdroje, keď udelíte povolenia aplikácie zapisovať údaje v kategórii <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Ako fungujú zdroje a priorizácia"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Pridať aplikáciu"</string>
+    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Dáta aplikácie"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Údaje z aplikácií s prístupom k Dátam o zdraví sa budú zobrazovať tu"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Deň"</string>
