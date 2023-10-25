@@ -16,20 +16,31 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
+
 import static com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper.STEPS_TABLE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.database.Cursor;
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.aidl.ReadRecordsRequestParcel;
+import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
+import android.util.Pair;
 
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.server.healthconnect.HealthConnectUserContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
+import com.android.server.healthconnect.storage.utils.OrderByClause;
+import com.android.server.healthconnect.storage.utils.PageTokenUtil;
+import com.android.server.healthconnect.storage.utils.PageTokenWrapper;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import org.junit.After;
 import org.junit.Before;
@@ -37,6 +48,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,6 +65,7 @@ public class RecordHelperTest {
     public void setup() throws Exception {
         HealthConnectUserContext context = testRule.getUserContext();
         mTransactionManager = TransactionManager.getInstance(context);
+        DatabaseHelper.clearAllData(mTransactionManager);
         mTransactionTestUtils = new TransactionTestUtils(context, mTransactionManager);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
     }
@@ -114,5 +127,178 @@ public class RecordHelperTest {
             assertThat(records).hasSize(1);
             assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uids.get(0)));
         }
+    }
+
+    @Test
+    public void getNextInternalRecordsPageAndToken_zeroOffsetDesc_correctResults() {
+        RecordHelper<?> helper = new StepsRecordHelper();
+        int pageSize = 1;
+        boolean isAscending = false;
+        mTransactionTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                createStepsRecord(
+                        "client.id1",
+                        /* startTimeMillis= */ 4000,
+                        /* endTimeMillis= */ 4500,
+                        /* stepsCount= */ 1000),
+                createStepsRecord(
+                        "client.id2",
+                        /* startTimeMillis= */ 6000,
+                        /* endTimeMillis= */ 7000,
+                        /* stepsCount= */ 500));
+
+        long expectedTimestamp = 4000L;
+        int expectedOffset = 0;
+        PageTokenWrapper expectedPageToken =
+                PageTokenWrapper.of(isAscending, expectedTimestamp, expectedOffset);
+
+        OrderByClause orderByStartTime =
+                new OrderByClause().addOrderByClause(helper.getStartTimeColumnName(), isAscending);
+        ReadTableRequest request1 =
+                new ReadTableRequest(STEPS_TABLE_NAME)
+                        .setOrderBy(orderByStartTime)
+                        .setLimit(pageSize + 1);
+        try (Cursor cursor = mTransactionManager.read(request1)) {
+            Pair<List<RecordInternal<?>>, Long> page1 =
+                    helper.getNextInternalRecordsPageAndToken(
+                            cursor, pageSize, PageTokenWrapper.of(isAscending));
+            assertThat(page1.first).hasSize(pageSize);
+            assertThat(page1.first.get(0).getClientRecordId()).isEqualTo("client.id2");
+            assertThat(page1.second).isEqualTo(PageTokenUtil.encode(expectedPageToken));
+        }
+
+        WhereClauses whereClause =
+                new WhereClauses()
+                        .addWhereLessThanOrEqualClause(
+                                helper.getStartTimeColumnName(), expectedTimestamp);
+        ReadTableRequest request2 =
+                new ReadTableRequest(STEPS_TABLE_NAME)
+                        .setOrderBy(orderByStartTime)
+                        .setWhereClause(whereClause)
+                        .setLimit(pageSize + 1 + expectedOffset);
+        try (Cursor cursor = mTransactionManager.read(request2)) {
+            Pair<List<RecordInternal<?>>, Long> page2 =
+                    helper.getNextInternalRecordsPageAndToken(cursor, pageSize, expectedPageToken);
+            assertThat(page2.first).hasSize(pageSize);
+            assertThat(page2.first.get(0).getClientRecordId()).isEqualTo("client.id1");
+            assertThat(page2.second).isEqualTo(DEFAULT_LONG);
+        }
+    }
+
+    @Test
+    public void getNextInternalRecordsPageAndToken_sameStartTimeAsc_correctResults() {
+        RecordHelper<?> helper = new StepsRecordHelper();
+        int pageSize = 3;
+        boolean isAscending = true;
+        mTransactionTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                // in page 1
+                createStepsRecord(
+                        "id1",
+                        /* startTimeMillis= */ 3000,
+                        /* endTimeMillis= */ 45000,
+                        /* stepsCount= */ 1000),
+                createStepsRecord(
+                        "id2",
+                        /* startTimeMillis= */ 4000,
+                        /* endTimeMillis= */ 5000,
+                        /* stepsCount= */ 100),
+                createStepsRecord(
+                        "id3",
+                        /* startTimeMillis= */ 4000,
+                        /* endTimeMillis= */ 6000,
+                        /* stepsCount= */ 200),
+                // in page 2
+                createStepsRecord(
+                        "id4",
+                        /* startTimeMillis= */ 4000,
+                        /* endTimeMillis= */ 7000,
+                        /* stepsCount= */ 300),
+                createStepsRecord(
+                        "id5",
+                        /* startTimeMillis= */ 5000,
+                        /* endTimeMillis= */ 6000,
+                        /* stepsCount= */ 400),
+                createStepsRecord(
+                        "id6",
+                        /* startTimeMillis= */ 6000,
+                        /* endTimeMillis= */ 7000,
+                        /* stepsCount= */ 500));
+
+        long expectedTimestamp = 4000L;
+        int expectedOffset = 2;
+        PageTokenWrapper expectedPageToken =
+                PageTokenWrapper.of(isAscending, expectedTimestamp, expectedOffset);
+
+        TimeInstantRangeFilter filter =
+                new TimeInstantRangeFilter.Builder()
+                        .setStartTime(Instant.ofEpochMilli(3000))
+                        .setEndTime(Instant.ofEpochMilli(10000))
+                        .build();
+        ReadRecordsRequestUsingFilters<StepsRecord> readRequest1 =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setTimeRangeFilter(filter)
+                        .setPageSize(pageSize)
+                        .build();
+        ReadTableRequest request1 =
+                getReadTableRequest(helper, readRequest1.toReadRecordsRequestParcel());
+        try (Cursor cursor = mTransactionManager.read(request1)) {
+            Pair<List<RecordInternal<?>>, Long> page1 =
+                    helper.getNextInternalRecordsPageAndToken(
+                            cursor, pageSize, PageTokenWrapper.of(isAscending));
+            assertThat(page1.first).hasSize(3);
+            assertThat(page1.first.get(0).getClientRecordId()).isEqualTo("id1");
+            assertThat(page1.first.get(1).getClientRecordId()).isEqualTo("id2");
+            assertThat(page1.first.get(2).getClientRecordId()).isEqualTo("id3");
+            assertThat(page1.second).isEqualTo(PageTokenUtil.encode(expectedPageToken));
+        }
+
+        ReadRecordsRequestUsingFilters<StepsRecord> readRequest2 =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setTimeRangeFilter(filter)
+                        .setPageSize(pageSize)
+                        .setPageToken(PageTokenUtil.encode(expectedPageToken))
+                        .build();
+        ReadTableRequest request2 =
+                getReadTableRequest(helper, readRequest2.toReadRecordsRequestParcel());
+        try (Cursor cursor = mTransactionManager.read(request2)) {
+            Pair<List<RecordInternal<?>>, Long> page2 =
+                    helper.getNextInternalRecordsPageAndToken(cursor, pageSize, expectedPageToken);
+            assertThat(page2.first).hasSize(pageSize);
+            assertThat(page2.first.get(0).getClientRecordId()).isEqualTo("id4");
+            assertThat(page2.first.get(1).getClientRecordId()).isEqualTo("id5");
+            assertThat(page2.first.get(2).getClientRecordId()).isEqualTo("id6");
+            assertThat(page2.second).isEqualTo(DEFAULT_LONG);
+        }
+    }
+
+    @Test
+    public void getNextInternalRecordsPageAndToken_wrongOffsetPageToken_skipSameStartTimeRecords() {
+        RecordHelper<?> helper = new StepsRecordHelper();
+        mTransactionTestUtils.insertRecords(
+                TEST_PACKAGE_NAME,
+                createStepsRecord("id1", 4000, 5000, 100),
+                createStepsRecord("id2", 5000, 6000, 100));
+        PageTokenWrapper incorrectToken = PageTokenWrapper.of(true, 4000, 2);
+        ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
+        try (Cursor cursor = mTransactionManager.read(request)) {
+            Pair<List<RecordInternal<?>>, Long> result =
+                    helper.getNextInternalRecordsPageAndToken(
+                            cursor, /* requestSize= */ 2, incorrectToken);
+            // skip the first record, but preserve the second because start time is different
+            assertThat(result.first).hasSize(1);
+            assertThat(result.first.get(0).getClientRecordId()).isEqualTo("id2");
+            assertThat(result.second).isEqualTo(DEFAULT_LONG);
+        }
+    }
+
+    private static ReadTableRequest getReadTableRequest(
+            RecordHelper<?> helper, ReadRecordsRequestParcel request) {
+        return helper.getReadTableRequest(
+                request,
+                TEST_PACKAGE_NAME,
+                /* enforceSelfRead= */ false,
+                /* startDateAccess= */ 0,
+                /* extraPermsState= */ null);
     }
 }

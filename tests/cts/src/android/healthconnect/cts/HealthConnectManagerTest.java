@@ -49,7 +49,10 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 import android.health.connect.LocalTimeRangeFilter;
+import android.health.connect.ReadRecordsRequest;
+import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
+import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordTypeInfoResponse;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
@@ -163,7 +166,7 @@ public class HealthConnectManagerTest {
     }
 
     @Test
-    public void testIsHealthPermission_forHealthPermission_returnsTrue() throws Exception {
+    public void testIsHealthPermission_forHealthPermission_returnsTrue() {
         Context context = ApplicationProvider.getApplicationContext();
         assertThat(isHealthPermission(context, HealthPermissions.READ_ACTIVE_CALORIES_BURNED))
                 .isTrue();
@@ -172,7 +175,7 @@ public class HealthConnectManagerTest {
     }
 
     @Test
-    public void testIsHealthPermission_forNonHealthGroupPermission_returnsFalse() throws Exception {
+    public void testIsHealthPermission_forNonHealthGroupPermission_returnsFalse() {
         Context context = ApplicationProvider.getApplicationContext();
         assertThat(isHealthPermission(context, HealthPermissions.MANAGE_HEALTH_PERMISSIONS))
                 .isFalse();
@@ -195,12 +198,7 @@ public class HealthConnectManagerTest {
      * <p>Insert a sample record of each dataType, update them and check by reading them.
      */
     @Test
-    public void testUpdateRecords_validInput_dataBaseUpdatedSuccessfully()
-            throws InterruptedException,
-                    InvocationTargetException,
-                    InstantiationException,
-                    IllegalAccessException,
-                    NoSuchMethodException {
+    public void testUpdateRecords_validInput_dataBaseUpdatedSuccessfully() throws Exception {
 
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
@@ -265,12 +263,7 @@ public class HealthConnectManagerTest {
      * valid inputs) should not be modified either.
      */
     @Test
-    public void testUpdateRecords_invalidInputRecords_noChangeInDataBase()
-            throws InterruptedException,
-                    InvocationTargetException,
-                    InstantiationException,
-                    IllegalAccessException,
-                    NoSuchMethodException {
+    public void testUpdateRecords_invalidInputRecords_noChangeInDataBase() throws Exception {
 
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
@@ -341,11 +334,7 @@ public class HealthConnectManagerTest {
      */
     @Test
     public void testUpdateRecords_recordWithInvalidPackageName_noChangeInDataBase()
-            throws InterruptedException,
-                    InvocationTargetException,
-                    InstantiationException,
-                    IllegalAccessException,
-                    NoSuchMethodException {
+            throws Exception {
 
         Context context = ApplicationProvider.getApplicationContext();
         CountDownLatch latch = new CountDownLatch(1);
@@ -657,6 +646,64 @@ public class HealthConnectManagerTest {
         }
         List<StepsRecord> records = readRecords(requestBuilder.build());
         assertThat(records).hasSize(maxPageSize);
+    }
+
+    @Test
+    public void testReadRecords_multiplePagesSameStartTimeRecords_paginatedCorrectly()
+            throws Exception {
+        Instant startTime = Instant.now().minus(1, ChronoUnit.DAYS);
+
+        insertRecords(
+                List.of(
+                        getStepsRecord(
+                                "client.id1",
+                                "package.name",
+                                /* count= */ 100,
+                                startTime,
+                                startTime.plusSeconds(500)),
+                        getStepsRecord(
+                                "client.id2",
+                                "package.name",
+                                /* count= */ 100,
+                                startTime,
+                                startTime.plusSeconds(200)),
+                        getStepsRecord(
+                                "client.id3",
+                                "package.name",
+                                /* count= */ 100,
+                                startTime,
+                                startTime.plusSeconds(400)),
+                        getStepsRecord(
+                                "client.id4",
+                                "package.name",
+                                /* count= */ 100,
+                                startTime,
+                                startTime.plusSeconds(300))));
+
+        ReadRecordsRequest<StepsRecord> request1 =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setPageSize(2)
+                        .setAscending(false)
+                        .build();
+        ReadRecordsResponse<StepsRecord> result1 = TestUtils.readRecordsWithPagination(request1);
+        assertThat(result1.getRecords()).hasSize(2);
+        assertThat(result1.getRecords().get(0).getMetadata().getClientRecordId())
+                .isEqualTo("client.id1");
+        assertThat(result1.getRecords().get(1).getMetadata().getClientRecordId())
+                .isEqualTo("client.id2");
+
+        ReadRecordsRequest<StepsRecord> request2 =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setPageSize(2)
+                        .setPageToken(result1.getNextPageToken())
+                        .build();
+        ReadRecordsResponse<StepsRecord> result2 = TestUtils.readRecordsWithPagination(request2);
+        assertThat(result2.getRecords()).hasSize(2);
+        assertThat(result2.getRecords().get(0).getMetadata().getClientRecordId())
+                .isEqualTo("client.id3");
+        assertThat(result2.getRecords().get(1).getMetadata().getClientRecordId())
+                .isEqualTo("client.id4");
+        assertThat(result2.getNextPageToken()).isEqualTo(-1);
     }
 
     @Test
@@ -1467,7 +1514,8 @@ public class HealthConnectManagerTest {
                         @Override
                         public void onError(@NonNull HealthConnectException e) {
                             returnedException.set(e);
-                            latch.countDown();}
+                            latch.countDown();
+                        }
                     });
         } catch (Exception e) {
             throw new RuntimeException(e);

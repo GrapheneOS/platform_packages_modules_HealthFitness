@@ -40,6 +40,8 @@ import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthConnectDatabaseTestRule;
 import com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
+import com.android.server.healthconnect.storage.utils.PageTokenUtil;
+import com.android.server.healthconnect.storage.utils.PageTokenWrapper;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -133,7 +135,7 @@ public class TransactionManagerTest {
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_returnsRecordsAndTimestamp() {
+    public void readRecordsAndPageToken_returnsRecordsAndPageToken() {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
@@ -149,6 +151,10 @@ public class TransactionManagerTest {
                                         .build())
                         .setPageSize(1)
                         .build();
+        long expectedToken =
+                PageTokenUtil.encode(
+                        PageTokenWrapper.of(
+                                /* isAscending= */ true, /* timeMillis= */ 500, /* offset= */ 0));
 
         ReadTransactionRequest readTransactionRequest =
                 new ReadTransactionRequest(
@@ -157,16 +163,16 @@ public class TransactionManagerTest {
                         /* startDateAccess= */ 0,
                         /* enforceSelfRead= */ false,
                         /* extraReadPermsMapping= */ new ArrayMap<>());
-        Pair<List<RecordInternal<?>>, Long> blah =
-                mTransactionManager.readRecordsAndNextRecordStartTime(readTransactionRequest);
-        List<RecordInternal<?>> records = blah.first;
+        Pair<List<RecordInternal<?>>, Long> result =
+                mTransactionManager.readRecordsAndPageToken(readTransactionRequest);
+        List<RecordInternal<?>> records = result.first;
         assertThat(records).hasSize(1);
-        assertThat(blah.first.get(0).getUuid()).isEqualTo(UUID.fromString(uuids.get(0)));
-        assertThat(blah.second).isEqualTo(500);
+        assertThat(result.first.get(0).getUuid()).isEqualTo(UUID.fromString(uuids.get(0)));
+        assertThat(result.second).isEqualTo(expectedToken);
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_multipleRecordTypes_throws() {
+    public void readRecordsAndPageToken_multipleRecordTypes_throws() {
         ReadTransactionRequest request =
                 new ReadTransactionRequest(
                         TEST_PACKAGE_NAME,
@@ -181,7 +187,7 @@ public class TransactionManagerTest {
         Throwable thrown =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> mTransactionManager.readRecordsAndNextRecordStartTime(request));
+                        () -> mTransactionManager.readRecordsAndPageToken(request));
         assertThat(thrown.getMessage()).contains("expected one element");
     }
 }

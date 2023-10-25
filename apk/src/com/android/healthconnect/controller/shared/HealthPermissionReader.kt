@@ -70,6 +70,7 @@ constructor(
                     .queryIntentActivities(
                         getRationaleIntent(), ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
                     .map { it.activityInfo.packageName }
+                    .distinct()
 
             appsWithDeclaredIntent.filter { getDeclaredPermissions(it).isNotEmpty() }
         } catch (e: Exception) {

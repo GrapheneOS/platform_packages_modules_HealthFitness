@@ -144,8 +144,6 @@ import com.android.server.healthconnect.storage.request.AggregateTransactionRequ
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
-import com.android.server.healthconnect.storage.utils.PageTokenUtil;
-import com.android.server.healthconnect.storage.utils.PageTokenWrapper;
 import com.android.server.healthconnect.storage.utils.RecordHelperProvider;
 
 import java.io.IOException;
@@ -643,29 +641,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             }
 
                             List<RecordInternal<?>> records;
-                            long pageToken = DEFAULT_LONG;
+                            long pageToken;
                             if (request.getRecordIdFiltersParcel() != null) {
                                 records =
                                         mTransactionManager.readRecordsByIds(
                                                 readTransactionRequest);
+                                pageToken = DEFAULT_LONG;
                             } else {
                                 Pair<List<RecordInternal<?>>, Long> readRecordsResponse =
-                                        mTransactionManager.readRecordsAndNextRecordStartTime(
+                                        mTransactionManager.readRecordsAndPageToken(
                                                 readTransactionRequest);
                                 records = readRecordsResponse.first;
-                                long timestamp = readRecordsResponse.second;
-                                if (timestamp != DEFAULT_LONG) {
-                                    boolean isAscending =
-                                            PageTokenUtil.decode(
-                                                            request.getPageToken(),
-                                                            request.isAscending())
-                                                    .isAscending();
-
-                                    PageTokenWrapper wrapper =
-                                            PageTokenWrapper.of(
-                                                    isAscending, timestamp, /* offset= */ 0);
-                                    pageToken = PageTokenUtil.encode(wrapper);
-                                }
+                                pageToken = readRecordsResponse.second;
                             }
                             logger.setNumberOfRecords(records.size());
 
