@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.Constants.MAXIMUM_ALLOWED_CURSOR_COUNT;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
@@ -400,12 +401,19 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 .setDistinctClause(true);
     }
 
-    /** Returns List of Internal records from the cursor up to the requested size. */
-    public List<RecordInternal<?>> getInternalRecords(Cursor cursor, int requestSize) {
+    /**
+     * Returns List of Internal records from the cursor. If the cursor contains more than {@link
+     * MAXIMUM_ALLOWED_CURSOR_COUNT} records, it throws {@link IllegalArgumentException}.
+     */
+    public List<RecordInternal<?>> getInternalRecords(Cursor cursor) {
+        if (cursor.getCount() > MAXIMUM_ALLOWED_CURSOR_COUNT) {
+            throw new IllegalArgumentException(
+                    "Too many records in the cursor. Max allowed: " + MAXIMUM_ALLOWED_CURSOR_COUNT);
+        }
         Trace.traceBegin(TRACE_TAG_RECORD_HELPER, TAG_RECORD_HELPER.concat("GetInternalRecords"));
 
         List<RecordInternal<?>> recordInternalList = new ArrayList<>();
-        while (cursor.moveToNext() && recordInternalList.size() < requestSize) {
+        while (cursor.moveToNext()) {
             recordInternalList.add(getRecord(cursor, /* packageNamesByAppIds= */ null));
         }
 

@@ -18,7 +18,6 @@ package com.android.server.healthconnect.storage;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
-import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 import static android.health.connect.Constants.PARENT_KEY;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 
@@ -266,8 +265,7 @@ public final class TransactionManager {
             requireNonNull(helper);
             if (helper.isRecordOperationsEnabled()) {
                 try (Cursor cursor = read(readTableRequest)) {
-                    List<RecordInternal<?>> internalRecords =
-                            helper.getInternalRecords(cursor, MAXIMUM_PAGE_SIZE);
+                    List<RecordInternal<?>> internalRecords = helper.getInternalRecords(cursor);
                     populateInternalRecordsWithExtraData(internalRecords, readTableRequest);
                     recordInternals.addAll(internalRecords);
                 }
