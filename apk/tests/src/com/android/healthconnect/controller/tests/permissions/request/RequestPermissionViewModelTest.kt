@@ -22,28 +22,36 @@ import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPerm
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString
 import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
 import com.android.healthconnect.controller.service.HealthPermissionManagerModule
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
-import com.android.healthconnect.controller.tests.utils.getOrAwaitValue
 import com.google.common.truth.Truth.*
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @UninstallModules(HealthPermissionManagerModule::class)
 @HiltAndroidTest
 class RequestPermissionViewModelTest {
@@ -54,6 +62,7 @@ class RequestPermissionViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @BindValue val permissionManager: HealthPermissionManager = FakeHealthPermissionManager()
 
@@ -68,6 +77,7 @@ class RequestPermissionViewModelTest {
     fun setup() {
         hiltRule.inject()
         permissionManager.revokeAllHealthPermissions(TEST_APP_PACKAGE_NAME)
+        Dispatchers.setMain(testDispatcher)
         viewModel =
             RequestPermissionViewModel(
                 appInfoReader,
@@ -77,16 +87,27 @@ class RequestPermissionViewModelTest {
         viewModel.init(TEST_APP_PACKAGE_NAME, permissions)
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
+    }
+
     @Test
     fun init_initAppInfo_initPermissions() = runTest {
-        val appMetaData = viewModel.appMetadata.getOrAwaitValue()
-        assertThat(appMetaData.appName).isEqualTo(TEST_APP_NAME)
-        assertThat(appMetaData.packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
+        val testObserver = TestObserver<AppMetadata>()
+        viewModel.appMetadata.observeForever(testObserver)
+        advanceUntilIdle()
+        assertThat(testObserver.getLastValue()?.appName).isEqualTo(TEST_APP_NAME)
+        assertThat(testObserver.getLastValue()?.packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
     }
 
     @Test
     fun init_initPermissions() = runTest {
-        assertThat(viewModel.permissionsList.getOrAwaitValue())
+        val testObserver = TestObserver<List<HealthPermission>>()
+        viewModel.permissionsList.observeForever(testObserver)
+        advanceUntilIdle()
+        assertThat(testObserver.getLastValue())
             .isEqualTo(
                 listOf(fromPermissionString(READ_STEPS), fromPermissionString(READ_HEART_RATE)))
     }
@@ -108,36 +129,48 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    fun updatePermission_grant_updatesGrantedPermissions() {
+    fun updatePermission_grant_updatesGrantedPermissions() = runTest {
         val readStepsPermission = fromPermissionString(READ_STEPS)
+        val testObserver = TestObserver<Set<HealthPermission>>()
+        viewModel.grantedPermissions.observeForever(testObserver)
         viewModel.updatePermission(readStepsPermission, grant = true)
+        advanceUntilIdle()
 
-        assertThat(viewModel.grantedPermissions.getOrAwaitValue()).contains(readStepsPermission)
+        assertThat(testObserver.getLastValue()).contains(readStepsPermission)
     }
 
     @Test
-    fun updatePermission_revoke_updatesGrantedPermissions() {
+    fun updatePermission_revoke_updatesGrantedPermissions() = runTest {
         val readStepsPermission = fromPermissionString(READ_STEPS)
+        val testObserver = TestObserver<Set<HealthPermission>>()
+        viewModel.grantedPermissions.observeForever(testObserver)
         viewModel.updatePermission(readStepsPermission, grant = false)
+        advanceUntilIdle()
 
-        assertThat(viewModel.grantedPermissions.getOrAwaitValue())
+        assertThat(testObserver.getLastValue())
             .doesNotContain(readStepsPermission)
     }
 
     @Test
-    fun updatePermissions_grant_updatesGrantedPermissions() {
+    fun updatePermissions_grant_updatesGrantedPermissions() = runTest {
+        val testObserver = TestObserver<Set<HealthPermission>>()
+        viewModel.grantedPermissions.observeForever(testObserver)
         viewModel.updatePermissions(grant = true)
+        advanceUntilIdle()
 
-        assertThat(viewModel.grantedPermissions.getOrAwaitValue())
+        assertThat(testObserver.getLastValue())
             .containsExactly(
                 fromPermissionString(READ_STEPS), fromPermissionString(READ_HEART_RATE))
     }
 
     @Test
-    fun updatePermissions_revoke_updatesGrantedPermissions() {
+    fun updatePermissions_revoke_updatesGrantedPermissions() = runTest {
+        val testObserver = TestObserver<Set<HealthPermission>>()
+        viewModel.grantedPermissions.observeForever(testObserver)
         viewModel.updatePermissions(grant = false)
+        advanceUntilIdle()
 
-        assertThat(viewModel.grantedPermissions.getOrAwaitValue()).isEmpty()
+        assertThat(testObserver.getLastValue()).isEmpty()
     }
 
     @Test

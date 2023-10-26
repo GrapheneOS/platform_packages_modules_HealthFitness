@@ -33,16 +33,20 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
-import com.android.healthconnect.controller.tests.utils.getOrAwaitValue
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -51,14 +55,16 @@ import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import java.util.Locale
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class AllDataViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    private val testDispatcher = TestCoroutineDispatcher()
 
     var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
 
@@ -71,14 +77,24 @@ class AllDataViewModelTest {
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
         hiltRule.inject()
+        Dispatchers.setMain(testDispatcher)
         viewModel = AllDataViewModel(AppDataUseCase(manager, Dispatchers.Main))
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
     fun loadAllData_noData_returnsEmptyList() = runTest {
         doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
 
+        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
+        viewModel.allData.observeForever(testObserver)
         viewModel.loadAllData()
+        advanceUntilIdle()
 
         val expected =
             listOf(
@@ -88,7 +104,7 @@ class AllDataViewModelTest {
                 PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()))
-        assertThat(viewModel.allData.getOrAwaitValue(callsCount = 2))
+        assertThat(testObserver.getLastValue())
             .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
     }
 
@@ -117,7 +133,10 @@ class AllDataViewModelTest {
             .`when`(manager)
             .queryAllRecordTypesInfo(any(), any())
 
+        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
+        viewModel.allData.observeForever(testObserver)
         viewModel.loadAllData()
+        advanceUntilIdle()
 
         val expected =
             listOf(
@@ -130,7 +149,7 @@ class AllDataViewModelTest {
                 PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(
                     HealthDataCategory.VITALS, listOf(HealthPermissionType.HEART_RATE)))
-        assertThat(viewModel.allData.getOrAwaitValue(callsCount = 2))
+        assertThat(testObserver.getLastValue())
             .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
     }
 
