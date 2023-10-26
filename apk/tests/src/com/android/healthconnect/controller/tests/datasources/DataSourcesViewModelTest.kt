@@ -14,11 +14,11 @@ import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
+import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadPotentialPriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadPriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeUpdatePriorityListUseCase
-import com.android.healthconnect.controller.tests.utils.getOrAwaitValue
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -121,9 +121,12 @@ class DataSourcesViewModelTest {
         loadMostRecentAggregationsUseCase.updateMostRecentAggregations(mostRecentAggregations)
         loadPriorityListUseCase.updatePriorityList(priorityList)
         loadPotentialAppSourcesUseCase.updatePotentialPriorityList(potentialAppSources)
+        val testObserver = TestObserver<DataSourcesAndAggregationsInfo>()
+        viewModel.dataSourcesAndAggregationsInfo.observeForever(testObserver)
         viewModel.loadData(HealthDataCategory.ACTIVITY)
+        advanceUntilIdle()
 
-        val actual = viewModel.dataSourcesAndAggregationsInfo.getOrAwaitValue(callsCount = 3)
+        val actual = testObserver.getLastValue()
         val expected =
             DataSourcesAndAggregationsInfo(
                 priorityListState = PriorityListState.WithData(true, priorityList),
