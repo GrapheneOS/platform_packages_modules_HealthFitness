@@ -33,6 +33,10 @@ class HealthPermissionManagerImpl @Inject constructor(private val manager: Healt
         return manager.getHealthPermissionsFlags(packageName, permissions)
     }
 
+    override fun makeHealthPermissionsRequestable(packageName: String, permissions: List<String>) {
+        manager.makeHealthPermissionsRequestable(packageName, permissions)
+    }
+
     override fun grantHealthPermission(packageName: String, permissionName: String) {
         manager.grantHealthPermission(packageName, permissionName)
     }

@@ -52,6 +52,11 @@ interface IHealthConnectService {
      */
     Map getHealthPermissionsFlags(String packageName, in UserHandle user, in List<String> permissions);
 
+    /**
+     * @hide
+     */
+    void makeHealthPermissionsRequestable(String packageName, in UserHandle user, in List<String> permissions);
+
     /* @hide */
     long getHistoricalAccessStartDateInMilliseconds(String packageName, in UserHandle user);
 
