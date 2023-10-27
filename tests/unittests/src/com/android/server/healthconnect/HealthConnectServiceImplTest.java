@@ -111,6 +111,7 @@ public class HealthConnectServiceImplTest {
                     "revokeAllHealthPermissions",
                     "getGrantedHealthPermissions",
                     "getHealthPermissionsFlags",
+                    "makeHealthPermissionsRequestable",
                     "getHistoricalAccessStartDateInMilliseconds",
                     "insertRecords",
                     "aggregateRecords",

@@ -318,6 +318,86 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     @Test
+    public void testMakeHealthPermissionsRequestable_resetsUserFixedFlagToZero() {
+        updatePermissionsFlagsViaPackageManager(
+                DEFAULT_APP_PACKAGE,
+                DEFAULT_PERM,
+                PackageManager.FLAG_PERMISSION_USER_SET
+                        | PackageManager.FLAG_PERMISSION_AUTO_REVOKED);
+        int permFlags = getPermissionsFlagsViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        updatePermissionsFlagsViaPackageManager(
+                DEFAULT_APP_PACKAGE, DEFAULT_PERM_2, PackageManager.FLAG_PERMISSION_USER_FIXED);
+        int perm2Flags = getPermissionsFlagsViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2);
+
+        makeHealthPermissionsRequestable(
+                DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM, DEFAULT_PERM_2));
+
+        int mask = PackageManager.FLAG_PERMISSION_USER_FIXED;
+        assertThat(getPermissionsFlagsViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM))
+                .isEqualTo(permFlags & ~mask);
+        assertThat(getPermissionsFlagsViaPackageManager(DEFAULT_APP_PACKAGE, DEFAULT_PERM_2))
+                .isEqualTo(perm2Flags & ~mask);
+    }
+
+    @Test
+    public void testMakeHealthPermissionsRequestable_invalidPermission_throwsException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        makeHealthPermissionsRequestable(
+                                DEFAULT_APP_PACKAGE,
+                                List.of(INVALID_PERM, DEFAULT_PERM, DEFAULT_PERM_2)));
+    }
+
+    @Test
+    public void testMakeHealthPermissionsRequestable_nonHealthPermission_throwsException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        makeHealthPermissionsRequestable(
+                                DEFAULT_APP_PACKAGE,
+                                List.of(DEFAULT_PERM, NON_HEALTH_PERM, DEFAULT_PERM_2)));
+    }
+
+    @Test
+    public void testMakeHealthPermissionsRequestable_undeclaredPermissions_throwsException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        makeHealthPermissionsRequestable(
+                                DEFAULT_APP_PACKAGE,
+                                List.of(DEFAULT_PERM, DEFAULT_PERM_2, UNDECLARED_PERM)));
+    }
+
+    @Test
+    public void testMakeHealthPermissionsRequestable_emptyPermissions_doesNotThrow() {
+        makeHealthPermissionsRequestable(DEFAULT_APP_PACKAGE, List.of());
+    }
+
+    @Test
+    public void testMakeHealthPermissionsRequestable_invalidPackage_throwsException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        makeHealthPermissionsRequestable(
+                                INEXISTENT_APP_PACKAGE, List.of(DEFAULT_PERM, DEFAULT_PERM)));
+    }
+
+    @Test
+    public void testMakeHealthPermissionsRequestable_nullPackage_throwsException() {
+        assertThrows(
+                NullPointerException.class,
+                () -> makeHealthPermissionsRequestable(null, List.of(DEFAULT_PERM, DEFAULT_PERM)));
+    }
+
+    @Test
+    public void testMakeHealthPermissionsRequestable_nullPermissions_throwsException() {
+        assertThrows(
+                NullPointerException.class,
+                () -> makeHealthPermissionsRequestable(DEFAULT_APP_PACKAGE, null));
+    }
+
+    @Test
     public void testRevokeAllHealthPermissions_appHasNoPermissionsGranted_success()
             throws Exception {
         revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
@@ -405,6 +485,12 @@ public class HealthConnectWithManagePermissionsTest {
                         getHealthPermissionsFlags(
                                 DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM, DEFAULT_PERM_2)));
 
+        assertThrows(
+                IllegalStateException.class,
+                () ->
+                        makeHealthPermissionsRequestable(
+                                DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM, DEFAULT_PERM_2)));
+
         runWithShellPermissionIdentity(
                 PermissionsTestUtils::finishMigration,
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
@@ -431,9 +517,16 @@ public class HealthConnectWithManagePermissionsTest {
                 Manifest.permission.REVOKE_RUNTIME_PERMISSIONS);
     }
 
+    private int getPermissionsFlagsViaPackageManager(String packageName, String permName) {
+        return runWithShellPermissionIdentity(
+                () ->
+                        mContext.getPackageManager()
+                                .getPermissionFlags(permName, packageName, mContext.getUser()),
+                Manifest.permission.GRANT_RUNTIME_PERMISSIONS);
+    }
+
     private void updatePermissionsFlagsViaPackageManager(
             String packageName, String permName, int flags) {
-
         int mask =
                 PackageManager.FLAG_PERMISSION_USER_SET
                         | PackageManager.FLAG_PERMISSION_USER_FIXED
@@ -523,6 +616,21 @@ public class HealthConnectWithManagePermissionsTest {
         try {
             return runWithShellPermissionIdentity(
                     () -> mHealthConnectManager.getHealthPermissionsFlags(packageName, permissions),
+                    MANAGE_HEALTH_PERMISSIONS);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
+    }
+
+    private void makeHealthPermissionsRequestable(String packageName, List<String> permissions) {
+        try {
+            runWithShellPermissionIdentity(
+                    () ->
+                            mHealthConnectManager.makeHealthPermissionsRequestable(
+                                    packageName, permissions),
                     MANAGE_HEALTH_PERMISSIONS);
         } catch (RuntimeException e) {
             // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
