@@ -24,6 +24,7 @@ import com.android.healthconnect.controller.migration.api.MigrationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @HiltViewModel
 class MigrationViewModel
@@ -40,15 +41,15 @@ constructor(
         loadHealthConnectMigrationUiState()
     }
 
-    fun loadHealthConnectMigrationUiState() {
+    private fun loadHealthConnectMigrationUiState() {
         viewModelScope.launch {
             _migrationState.postValue(
                 MigrationFragmentState.WithData(loadMigrationStateUseCase.invoke()))
         }
     }
 
-    suspend fun getCurrentMigrationUiState(): MigrationState {
-        return loadMigrationStateUseCase.invoke()
+    fun getCurrentMigrationUiState(): MigrationState {
+        return runBlocking { loadMigrationStateUseCase.invoke() }
     }
 
     sealed class MigrationFragmentState {
