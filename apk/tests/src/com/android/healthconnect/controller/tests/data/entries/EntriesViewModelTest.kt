@@ -22,21 +22,27 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
+import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataAggregationsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataEntriesUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMenstruationDataUseCase
-import com.android.healthconnect.controller.tests.utils.getOrAwaitValue
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import java.time.Instant
-import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.time.Instant
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -78,6 +84,7 @@ class EntriesViewModelTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @Inject lateinit var appInfoReader: AppInfoReader
     private val timeSource = TestTimeSource
@@ -90,7 +97,7 @@ class EntriesViewModelTest {
     @Before
     fun setup() {
         hiltRule.inject()
-
+        Dispatchers.setMain(testDispatcher)
         viewModel =
             EntriesViewModel(
                 appInfoReader,
@@ -99,16 +106,25 @@ class EntriesViewModelTest {
                 fakeLoadDataAggregationsUseCase)
     }
 
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
+    }
+
     @Test
     fun loadDataEntries_hasStepsData_returnsFragmentStateWitAggregationAndSteps() = runTest {
         fakeLoadDataEntriesUseCase.updateList(listOf(FORMATTED_STEPS))
         fakeLoadDataAggregationsUseCase.updateAggregation(formattedAggregation("12 steps"))
+        val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
+        viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
             HealthPermissionType.STEPS,
             Instant.ofEpochMilli(timeSource.currentTimeMillis()),
             DateNavigationPeriod.PERIOD_WEEK)
+        advanceUntilIdle()
 
-        val actual = viewModel.entries.getOrAwaitValue(callsCount = 2)
+        val actual = testObserver.getLastValue()
         val expected =
             EntriesViewModel.EntriesFragmentState.With(
                 listOf(formattedAggregation("12 steps"), FORMATTED_STEPS))
@@ -119,13 +135,15 @@ class EntriesViewModelTest {
     fun loadDataEntries_hasMultipleSteps_returnsFragmentStateWitAggregationAndSteps() = runTest {
         fakeLoadDataEntriesUseCase.updateList(listOf(FORMATTED_STEPS, FORMATTED_STEPS_2))
         fakeLoadDataAggregationsUseCase.updateAggregation(formattedAggregation("27 steps"))
-
+        val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
+        viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
             HealthPermissionType.STEPS,
             Instant.ofEpochMilli(timeSource.currentTimeMillis()),
             DateNavigationPeriod.PERIOD_WEEK)
+        advanceUntilIdle()
 
-        val actual = viewModel.entries.getOrAwaitValue(callsCount = 2)
+        val actual = testObserver.getLastValue()
         val expected =
             EntriesViewModel.EntriesFragmentState.With(
                 listOf(formattedAggregation("27 steps"), FORMATTED_STEPS, FORMATTED_STEPS_2))
@@ -135,13 +153,15 @@ class EntriesViewModelTest {
     @Test
     fun loadDataEntries_hasMenstruationData_returnsFragmentStateWithData() = runTest {
         fakeLoadMenstruationDataUseCase.updateList(listOf(FORMATTED_MENSTRUATION_PERIOD))
-
+        val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
+        viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
             HealthPermissionType.MENSTRUATION,
             Instant.ofEpochMilli(timeSource.currentTimeMillis()),
             DateNavigationPeriod.PERIOD_WEEK)
+        advanceUntilIdle()
 
-        val actual = viewModel.entries.getOrAwaitValue(callsCount = 2)
+        val actual = testObserver.getLastValue()
         val expected =
             EntriesViewModel.EntriesFragmentState.With(listOf(FORMATTED_MENSTRUATION_PERIOD))
         assertThat(actual).isEqualTo(expected)

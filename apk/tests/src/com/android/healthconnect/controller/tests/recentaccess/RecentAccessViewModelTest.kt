@@ -27,8 +27,6 @@ import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.R
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.dataTypeToCategory
-import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeRecentAccessUseCase
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.MIDNIGHT
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -36,27 +34,36 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
-import com.android.healthconnect.controller.tests.utils.getOrAwaitValue
+import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeRecentAccessUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import java.time.Duration
-import java.time.Instant
-import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.time.Duration
+import java.time.Instant
+import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class RecentAccessViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @Inject lateinit var appInfoReader: AppInfoReader
 
@@ -68,9 +75,16 @@ class RecentAccessViewModelTest {
     @Before
     fun setup() {
         hiltRule.inject()
+        Dispatchers.setMain(testDispatcher)
         viewModel =
             RecentAccessViewModel(
                 appInfoReader, fakeHealthPermissionAppsUseCase, fakeRecentAccessUseCase, timeSource)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
@@ -112,8 +126,12 @@ class RecentAccessViewModelTest {
                 .sortedByDescending { it.accessTime }
 
         fakeRecentAccessUseCase.updateList(accessLogs)
+        val testObserver = TestObserver<RecentAccessState>()
+        viewModel.recentAccessApps.observeForever(testObserver)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -191,8 +209,12 @@ class RecentAccessViewModelTest {
                 .sortedByDescending { it.accessTime }
 
         fakeRecentAccessUseCase.updateList(accessLogs)
+        val testObserver = TestObserver<RecentAccessState>()
+        viewModel.recentAccessApps.observeForever(testObserver)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -267,8 +289,12 @@ class RecentAccessViewModelTest {
                 .sortedByDescending { it.accessTime }
 
         fakeRecentAccessUseCase.updateList(accessLogs)
+        val testObserver = TestObserver<RecentAccessState>()
+        viewModel.recentAccessApps.observeForever(testObserver)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -314,8 +340,12 @@ class RecentAccessViewModelTest {
                 .sortedByDescending { it.accessTime }
 
         fakeRecentAccessUseCase.updateList(accessLogs)
+        val testObserver = TestObserver<RecentAccessState>()
+        viewModel.recentAccessApps.observeForever(testObserver)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
 
         val expected =
             listOf(
@@ -370,8 +400,12 @@ class RecentAccessViewModelTest {
                 .sortedByDescending { it.accessTime }
 
         fakeRecentAccessUseCase.updateList(accessLogs)
+        val testObserver = TestObserver<RecentAccessState>()
+        viewModel.recentAccessApps.observeForever(testObserver)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -418,8 +452,12 @@ class RecentAccessViewModelTest {
                 .sortedByDescending { it.accessTime }
 
         fakeRecentAccessUseCase.updateList(accessLogs)
+        val testObserver = TestObserver<RecentAccessState>()
+        viewModel.recentAccessApps.observeForever(testObserver)
         viewModel.loadRecentAccessApps()
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -505,8 +543,12 @@ class RecentAccessViewModelTest {
                 .sortedByDescending { it.accessTime }
 
         fakeRecentAccessUseCase.updateList(accessLogs)
+        val testObserver = TestObserver<RecentAccessState>()
+        viewModel.recentAccessApps.observeForever(testObserver)
         viewModel.loadRecentAccessApps(maxNumEntries = 3)
-        val actual = viewModel.recentAccessApps.getOrAwaitValue(callsCount = 2)
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
         val expected =
             listOf(
                 RecentAccessEntry(
@@ -541,7 +583,7 @@ class RecentAccessViewModelTest {
     }
 
     private fun assertRecentAccessEquality(
-        state: RecentAccessState,
+        state: RecentAccessState?,
         expectedValues: List<RecentAccessEntry>
     ) {
         assertThat(state).isInstanceOf(RecentAccessState.WithData::class.java)

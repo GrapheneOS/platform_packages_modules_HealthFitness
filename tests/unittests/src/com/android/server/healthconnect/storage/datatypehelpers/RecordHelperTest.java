@@ -17,11 +17,14 @@
 package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.Constants.MAXIMUM_ALLOWED_CURSOR_COUNT;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper.STEPS_TABLE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
+
+import static org.junit.Assert.assertThrows;
 
 import android.database.Cursor;
 import android.health.connect.ReadRecordsRequestUsingFilters;
@@ -49,6 +52,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,7 +89,7 @@ public class RecordHelperTest {
                         .get(0);
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
-            List<RecordInternal<?>> records = helper.getInternalRecords(cursor, 1);
+            List<RecordInternal<?>> records = helper.getInternalRecords(cursor);
             assertThat(records).hasSize(1);
 
             StepsRecordInternal record = (StepsRecordInternal) records.get(0);
@@ -106,26 +110,29 @@ public class RecordHelperTest {
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
             assertThat(cursor.getCount()).isEqualTo(1);
-            List<RecordInternal<?>> records = helper.getInternalRecords(cursor, 2);
+            List<RecordInternal<?>> records = helper.getInternalRecords(cursor);
             assertThat(records).hasSize(1);
             assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uid));
         }
     }
 
     @Test
-    public void getInternalRecords_requestSizeReached_correctNumberOfRecordsReturned() {
+    public void getInternalRecords_cursorHasTooManyData_throws() {
         RecordHelper<?> helper = new StepsRecordHelper();
-        List<String> uids =
-                mTransactionTestUtils.insertRecords(
-                        TEST_PACKAGE_NAME,
-                        createStepsRecord(4000, 5000, 100),
-                        createStepsRecord(5000, 6000, 200));
+        int startTime = 9527;
+        List<RecordInternal<?>> records = new ArrayList<>(MAXIMUM_ALLOWED_CURSOR_COUNT + 1);
+        for (int i = 0; i <= MAXIMUM_ALLOWED_CURSOR_COUNT; i++) {
+            records.add(createStepsRecord(startTime + i, startTime + i + 1, 100));
+        }
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+
         ReadTableRequest request = new ReadTableRequest(STEPS_TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
-            assertThat(cursor.getCount()).isEqualTo(2);
-            List<RecordInternal<?>> records = helper.getInternalRecords(cursor, 1);
-            assertThat(records).hasSize(1);
-            assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uids.get(0)));
+            Throwable thrown =
+                    assertThrows(
+                            IllegalArgumentException.class,
+                            () -> helper.getInternalRecords(cursor));
+            assertThat(thrown.getMessage()).contains("Too many records in the cursor.");
         }
     }
 
