@@ -168,7 +168,7 @@ public class RecordHelperTest {
         try (Cursor cursor = mTransactionManager.read(request1)) {
             Pair<List<RecordInternal<?>>, Long> page1 =
                     helper.getNextInternalRecordsPageAndToken(
-                            cursor, pageSize, PageTokenWrapper.of(isAscending));
+                            cursor, pageSize, PageTokenWrapper.ofAscending(isAscending));
             assertThat(page1.first).hasSize(pageSize);
             assertThat(page1.first.get(0).getClientRecordId()).isEqualTo("client.id2");
             assertThat(page1.second).isEqualTo(PageTokenUtil.encode(expectedPageToken));
@@ -252,7 +252,7 @@ public class RecordHelperTest {
         try (Cursor cursor = mTransactionManager.read(request1)) {
             Pair<List<RecordInternal<?>>, Long> page1 =
                     helper.getNextInternalRecordsPageAndToken(
-                            cursor, pageSize, PageTokenWrapper.of(isAscending));
+                            cursor, pageSize, PageTokenWrapper.ofAscending(isAscending));
             assertThat(page1.first).hasSize(3);
             assertThat(page1.first.get(0).getClientRecordId()).isEqualTo("id1");
             assertThat(page1.first.get(1).getClientRecordId()).isEqualTo("id2");
