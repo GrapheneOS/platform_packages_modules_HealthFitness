@@ -18,17 +18,19 @@ package com.android.server.healthconnect.storage;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils.createBloodPressureRecord;
 import static com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils.createStepsRecord;
+import static com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils.getReadTransactionRequest;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 import android.util.Pair;
 
 import androidx.test.runner.AndroidJUnit4;
@@ -52,13 +54,12 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class TransactionManagerTest {
-    private static final Map<String, Boolean> NO_EXTRA_PERMS = Map.of();
     private static final String TEST_PACKAGE_NAME = "package.name";
+
     @Rule public final HealthConnectDatabaseTestRule testRule = new HealthConnectDatabaseTestRule();
 
     private TransactionTestUtils mTransactionTestUtils;
@@ -79,6 +80,29 @@ public class TransactionManagerTest {
     }
 
     @Test
+    public void readRecordsById_returnsAllRecords() {
+        long timeMillis = 456;
+        String uuid =
+                mTransactionTestUtils
+                        .insertRecords(
+                                TEST_PACKAGE_NAME,
+                                createBloodPressureRecord(timeMillis, 120.0, 80.0))
+                        .get(0);
+
+        ReadRecordsRequestUsingIds<BloodPressureRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(BloodPressureRecord.class)
+                        .addId(uuid)
+                        .build();
+        ReadTransactionRequest readTransactionRequest =
+                getReadTransactionRequest(request.toReadRecordsRequestParcel());
+
+        List<RecordInternal<?>> records =
+                mTransactionManager.readRecordsByIds(readTransactionRequest);
+        assertThat(records).hasSize(1);
+        assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uuid));
+    }
+
+    @Test
     public void readRecordsById_multipleRecordTypes_returnsAllRecords() {
         long startTimeMillis = 123;
         long endTimeMillis = 456;
@@ -91,24 +115,41 @@ public class TransactionManagerTest {
         List<UUID> stepsUuids = ImmutableList.of(UUID.fromString(uuids.get(0)));
         List<UUID> bloodPressureUuids = ImmutableList.of(UUID.fromString(uuids.get(1)));
         ReadTransactionRequest request =
-                new ReadTransactionRequest(
-                        TEST_PACKAGE_NAME,
+                getReadTransactionRequest(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 stepsUuids,
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
-                                bloodPressureUuids),
-                        /* startDateAccess= */ 0,
-                        NO_EXTRA_PERMS);
+                                bloodPressureUuids));
 
         List<RecordInternal<?>> records = mTransactionManager.readRecordsByIds(request);
         assertThat(records).hasSize(2);
-        assertThat(records.get(0).getUuid().toString()).isEqualTo(uuids.get(0));
-        assertThat(records.get(1).getUuid().toString()).isEqualTo(uuids.get(1));
+        assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uuids.get(0)));
+        assertThat(records.get(1).getUuid()).isEqualTo(UUID.fromString(uuids.get(1)));
     }
 
     @Test
-    public void readRecordsAndNextRecordStartTime_returnsRecordsAndTimestamp() {
+    public void readRecordsById_readByFilterRequest_throws() {
+        ReadRecordsRequestUsingFilters<StepsRecord> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setTimeRangeFilter(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.EPOCH)
+                                        .setEndTime(Instant.ofEpochMilli(1000))
+                                        .build())
+                        .setPageSize(1)
+                        .build();
+        ReadTransactionRequest readTransactionRequest =
+                getReadTransactionRequest(request.toReadRecordsRequestParcel());
+        Throwable thrown =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> mTransactionManager.readRecordsByIds(readTransactionRequest));
+        assertThat(thrown).hasMessageThat().contains("Expect read by id request");
+    }
+
+    @Test
+    public void readRecordsAndPageToken_returnsRecordsAndPageToken() {
         List<String> uuids =
                 mTransactionTestUtils.insertRecords(
                         TEST_PACKAGE_NAME,
@@ -130,12 +171,7 @@ public class TransactionManagerTest {
                                 /* isAscending= */ true, /* timeMillis= */ 500, /* offset= */ 0));
 
         ReadTransactionRequest readTransactionRequest =
-                new ReadTransactionRequest(
-                        TEST_PACKAGE_NAME,
-                        request.toReadRecordsRequestParcel(),
-                        /* startDateAccess= */ 0,
-                        /* enforceSelfRead= */ false,
-                        /* extraReadPermsMapping= */ new ArrayMap<>());
+                getReadTransactionRequest(request.toReadRecordsRequestParcel());
         Pair<List<RecordInternal<?>>, Long> result =
                 mTransactionManager.readRecordsAndPageToken(readTransactionRequest);
         List<RecordInternal<?>> records = result.first;
@@ -145,22 +181,18 @@ public class TransactionManagerTest {
     }
 
     @Test
-    public void readRecordsAndPageToken_multipleRecordTypes_throws() {
-        ReadTransactionRequest request =
-                new ReadTransactionRequest(
-                        TEST_PACKAGE_NAME,
-                        ImmutableMap.of(
-                                RecordTypeIdentifier.RECORD_TYPE_STEPS,
-                                List.of(UUID.randomUUID()),
-                                RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
-                                List.of(UUID.randomUUID())),
-                        /* startDateAccess= */ 0,
-                        NO_EXTRA_PERMS);
+    public void readRecordsAndPageToken_readByIdRequest_throws() {
+        ReadRecordsRequestUsingIds<BloodPressureRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(BloodPressureRecord.class)
+                        .addId(UUID.randomUUID().toString())
+                        .build();
+        ReadTransactionRequest readTransactionRequest =
+                getReadTransactionRequest(request.toReadRecordsRequestParcel());
 
         Throwable thrown =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> mTransactionManager.readRecordsAndPageToken(request));
-        assertThat(thrown.getMessage()).contains("expected one element");
+                        () -> mTransactionManager.readRecordsAndPageToken(readTransactionRequest));
+        assertThat(thrown).hasMessageThat().contains("Expect read by filter request");
     }
 }

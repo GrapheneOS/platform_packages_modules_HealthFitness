@@ -16,21 +16,15 @@
 
 package com.android.healthconnect.controller.permissions.api
 
-import java.time.Instant
+import javax.inject.Inject
+import javax.inject.Singleton
 
-/** Wrapper for HealthConnectManager permission apis. */
-interface HealthPermissionManager {
-    fun getGrantedHealthPermissions(packageName: String): List<String>
-
-    fun getHealthPermissionsFlags(packageName: String, permissions: List<String>): Map<String, Int>
-
-    fun makeHealthPermissionsRequestable(packageName: String, permissions: List<String>)
-
-    fun grantHealthPermission(packageName: String, permissionName: String)
-
-    fun revokeHealthPermission(packageName: String, permissionName: String)
-
-    fun revokeAllHealthPermissions(packageName: String)
-
-    fun loadStartAccessDate(packageName: String?): Instant?
+/** Use case to reset health permissions flags for an app. */
+@Singleton
+class MakeHealthPermissionsRequestableUseCase
+@Inject
+constructor(private val healthPermissionManager: HealthPermissionManager) {
+    operator fun invoke(packageName: String, permissions: List<String>) {
+        healthPermissionManager.makeHealthPermissionsRequestable(packageName, permissions)
+    }
 }

@@ -39,6 +39,10 @@ class FakeHealthPermissionManager : HealthPermissionManager {
         TODO("Not yet implemented")
     }
 
+    override fun makeHealthPermissionsRequestable(packageName: String, permissions: List<String>) {
+        TODO("Not yet implemented")
+    }
+
     override fun grantHealthPermission(packageName: String, permissionName: String) {
         val permissions = grantedPermissions.getOrDefault(packageName, mutableListOf())
         permissions.add(permissionName)

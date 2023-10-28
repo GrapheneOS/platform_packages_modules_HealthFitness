@@ -432,6 +432,28 @@ public class HealthConnectManager {
     }
 
     /**
+     * Allow provided permissions to be requested again if they previously were denied multiple
+     * times by the users.
+     *
+     * @throws IllegalArgumentException if the package doesn't exist, any of the permissions are not
+     *     Health permissions or not declared by the app.
+     * @throws NullPointerException if any of the arguments is {@code null}.
+     * @throws SecurityException if the caller doesn't possess {@code
+     *     android.permission.MANAGE_HEALTH_PERMISSIONS}.
+     * @hide
+     */
+    @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
+    @UserHandleAware
+    public void makeHealthPermissionsRequestable(
+            @NonNull String packageName, @NonNull List<String> permissions) {
+        try {
+            mService.makeHealthPermissionsRequestable(packageName, mContext.getUser(), permissions);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
      * Returns the date from which an app have access to the historical health data. Returns null if
      * the package doesn't have historical access date.
      *

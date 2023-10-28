@@ -60,7 +60,7 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
             openOnboardingActivity.launch(1)
         }
 
-        val currentMigrationState = runBlocking { migrationViewModel.getCurrentMigrationUiState() }
+        val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
 
         if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
             return
@@ -98,9 +98,9 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
 
     override fun onResume() {
         super.onResume()
-        val currentMigrationState = runBlocking { migrationViewModel.getCurrentMigrationUiState() }
+        val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
 
-        if (MigrationActivity.maybeRedirectToMigrationActivity(this, currentMigrationState)) {
+        if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
             return
         }
     }

@@ -61,7 +61,7 @@ public final class PageTokenUtil {
      */
     public static PageTokenWrapper decode(long pageToken, boolean defaultIsAscending) {
         if (pageToken == DEFAULT_LONG) {
-            return PageTokenWrapper.of(defaultIsAscending);
+            return PageTokenWrapper.ofAscending(defaultIsAscending);
         }
         checkArgument(pageToken >= 0, "pageToken cannot be negative");
         return PageTokenWrapper.of(

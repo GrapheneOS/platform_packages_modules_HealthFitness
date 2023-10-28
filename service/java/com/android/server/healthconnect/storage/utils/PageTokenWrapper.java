@@ -22,6 +22,8 @@ import static com.android.server.healthconnect.storage.utils.PageTokenUtil.MAX_A
 
 import static java.lang.Integer.min;
 
+import java.util.Objects;
+
 /**
  * A wrapper object contains information encoded in the {@code long} page token.
  *
@@ -75,9 +77,35 @@ public final class PageTokenWrapper {
      * Generate a page token that contains only {@code isAscending} information. Timestamp and
      * offset are not set.
      */
-    public static PageTokenWrapper of(boolean isAscending) {
+    public static PageTokenWrapper ofAscending(boolean isAscending) {
         return new PageTokenWrapper(
                 isAscending, /* timeMillis= */ 0, /* offset= */ 0, /* isTimestampSet= */ false);
+    }
+
+    @Override
+    public String toString() {
+        return "PageTokenWrapper{"
+                + "isAscending = "
+                + mIsAscending
+                + ", timeMillis = "
+                + mTimeMillis
+                + ", offset = "
+                + mOffset
+                + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PageTokenWrapper that)) return false;
+        return mIsAscending == that.mIsAscending
+                && mTimeMillis == that.mTimeMillis
+                && mOffset == that.mOffset;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mIsAscending, mOffset, mTimeMillis);
     }
 
     private PageTokenWrapper(

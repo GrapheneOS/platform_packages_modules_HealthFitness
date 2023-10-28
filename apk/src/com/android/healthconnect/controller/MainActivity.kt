@@ -51,7 +51,7 @@ class MainActivity : Hilt_MainActivity() {
             openOnboardingActivity.launch(1)
         }
 
-        val currentMigrationState = runBlocking { migrationViewModel.getCurrentMigrationUiState() }
+        val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
 
         if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
             return
@@ -66,7 +66,7 @@ class MainActivity : Hilt_MainActivity() {
 
     override fun onResume() {
         super.onResume()
-        val currentMigrationState = runBlocking { migrationViewModel.getCurrentMigrationUiState() }
+        val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
 
         if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
             return
