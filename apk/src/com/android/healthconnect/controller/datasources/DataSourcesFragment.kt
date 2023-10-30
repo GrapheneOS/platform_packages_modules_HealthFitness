@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppUtils
 import com.android.healthconnect.controller.shared.preference.CardContainerPreference
 import com.android.healthconnect.controller.shared.preference.HeaderPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
@@ -50,8 +51,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint(HealthPreferenceFragment::class)
-class DataSourcesFragment : Hilt_DataSourcesFragment(),
-    AppSourcesAdapter.OnAppRemovedFromPriorityListListener {
+class DataSourcesFragment :
+    Hilt_DataSourcesFragment(), AppSourcesAdapter.OnAppRemovedFromPriorityListListener {
 
     companion object {
         private const val DATA_TOTALS_PREFERENCE_GROUP = "data_totals_group"
@@ -69,10 +70,11 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
 
     init {
         // TODO (b/292270118) update to correct name
-//        this.setPageName(PageName.MANAGE_DATA_PAGE)
+        //        this.setPageName(PageName.MANAGE_DATA_PAGE)
     }
 
     @Inject lateinit var logger: HealthConnectLogger
+    @Inject lateinit var appUtils: AppUtils
 
     private val dataSourcesViewModel: DataSourcesViewModel by activityViewModels()
     private lateinit var spinnerPreference: SettingsSpinnerPreference
@@ -130,7 +132,8 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
 
         dataSourcesViewModel.loadData(currentCategorySelection)
 
-        dataSourcesViewModel.dataSourcesAndAggregationsInfo.observe(viewLifecycleOwner) { dataSourcesInfo ->
+        dataSourcesViewModel.dataSourcesAndAggregationsInfo.observe(viewLifecycleOwner) {
+            dataSourcesInfo ->
             if (dataSourcesInfo.isLoading()) {
                 setLoading(true)
             } else if (dataSourcesInfo.isLoadingFailed()) {
@@ -139,9 +142,14 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
             } else if (dataSourcesInfo.isWithData()) {
                 setLoading(false)
 
-                val priorityList = (dataSourcesInfo.priorityListState as PriorityListState.WithData).priorityList
-                val potentialAppSources = (dataSourcesInfo.potentialAppSourcesState as PotentialAppSourcesState.WithData).appSources
-                val cardInfos = (dataSourcesInfo.aggregationCardsState as AggregationCardsState.WithData).dataTotals
+                val priorityList =
+                    (dataSourcesInfo.priorityListState as PriorityListState.WithData).priorityList
+                val potentialAppSources =
+                    (dataSourcesInfo.potentialAppSourcesState as PotentialAppSourcesState.WithData)
+                        .appSources
+                val cardInfos =
+                    (dataSourcesInfo.aggregationCardsState as AggregationCardsState.WithData)
+                        .dataTotals
 
                 if (priorityList.isEmpty() && potentialAppSources.isEmpty()) {
                     addEmptyState()
@@ -150,12 +158,11 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
                     updateAppSourcesSection(priorityList, potentialAppSources)
                     updateDataTotalsSection(cardInfos)
                 }
-
             }
-
         }
 
-        dataSourcesViewModel.updatedAggregationCardsData.observe(viewLifecycleOwner) { aggregationCardsData ->
+        dataSourcesViewModel.updatedAggregationCardsData.observe(viewLifecycleOwner) {
+            aggregationCardsData ->
             when (aggregationCardsData) {
                 is AggregationCardsState.Loading -> {
                     updateAggregations(listOf(), true)
@@ -187,17 +194,18 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
     }
 
     private fun exitEditMode() {
-        appSourcesPreferenceGroup?.findPreference<AppSourcesPreference>(
-            APP_SOURCES_PREFERENCE_KEY)
+        appSourcesPreferenceGroup
+            ?.findPreference<AppSourcesPreference>(APP_SOURCES_PREFERENCE_KEY)
             ?.toggleEditMode(false)
         updateMenu(dataSourcesViewModel.getEditedPriorityList().size > 1)
         updateAddApp(dataSourcesViewModel.getEditedPotentialAppSources().isNotEmpty())
     }
 
-    /**
-     * Updates the priority list preference.
-     */
-    private fun updateAppSourcesSection(priorityList: List<AppMetadata>, potentialAppSources: List<AppMetadata>) {
+    /** Updates the priority list preference. */
+    private fun updateAppSourcesSection(
+        priorityList: List<AppMetadata>,
+        potentialAppSources: List<AppMetadata>
+    ) {
         removeEmptyState()
         appSourcesPreferenceGroup?.isVisible = true
         appSourcesPreferenceGroup?.removePreferenceRecursively(APP_SOURCES_PREFERENCE_KEY)
@@ -205,10 +213,11 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
         dataSourcesViewModel.setEditedPriorityList(priorityList)
         appSourcesPreferenceGroup?.addPreference(
             AppSourcesPreference(
-                requireContext(),
-                dataSourcesViewModel,
-                currentCategorySelection,
-                this)
+                    requireContext(),
+                    appUtils,
+                    dataSourcesViewModel,
+                    currentCategorySelection,
+                    this)
                 .also { it.key = APP_SOURCES_PREFERENCE_KEY })
 
         updateAddApp(potentialAppSources.isNotEmpty())
@@ -233,9 +242,8 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
                 it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.addIcon)
                 it.title = getString(R.string.data_sources_add_app)
                 it.key = ADD_AN_APP_PREFERENCE_KEY
-                it.order =
-                    100 // Arbitrary number to ensure the button is added at the end of the
-                        // priority list
+                it.order = 100 // Arbitrary number to ensure the button is added at the end of the
+                // priority list
                 it.setOnPreferenceClickListener {
                     findNavController()
                         .navigate(
@@ -244,12 +252,9 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
                     true
                 }
             })
-
     }
 
-    /**
-     * Populates the data totals section with aggregation cards if needed.
-     */
+    /** Populates the data totals section with aggregation cards if needed. */
     private fun updateDataTotalsSection(cardInfos: List<AggregationCardInfo>) {
         dataTotalsPreferenceGroup?.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_KEY)
         // Do not show data cards when there are no apps on the priority list
@@ -257,21 +262,21 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
             return
         }
 
-        if (cardInfos.isEmpty() || currentCategorySelection == HealthDataCategory.SLEEP) {
+        if (cardInfos.isEmpty()) {
             dataTotalsPreferenceGroup?.isVisible = false
         } else {
             dataTotalsPreferenceGroup?.isVisible = true
-            cardContainerPreference = CardContainerPreference(requireContext(), timeSource).also {
-                it.setAggregationCardInfo(cardInfos)
-                it.key = DATA_TOTALS_PREFERENCE_KEY
-            }
-            dataTotalsPreferenceGroup?.addPreference((cardContainerPreference as CardContainerPreference))
+            cardContainerPreference =
+                CardContainerPreference(requireContext(), timeSource).also {
+                    it.setAggregationCardInfo(cardInfos)
+                    it.key = DATA_TOTALS_PREFERENCE_KEY
+                }
+            dataTotalsPreferenceGroup?.addPreference(
+                (cardContainerPreference as CardContainerPreference))
         }
     }
 
-    /**
-     * Updates the aggregation cards after a priority list change.
-     */
+    /** Updates the aggregation cards after a priority list change. */
     private fun updateAggregations(cardInfos: List<AggregationCardInfo>, isLoading: Boolean) {
         if (isLoading) {
             cardContainerPreference?.setLoading(true)
@@ -355,7 +360,6 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
                     // Reload the data sources information when a new category has been selected
                     dataSourcesViewModel.loadData(currentCategory)
                     dataSourcesViewModel.setCurrentSelection(currentCategory)
-                    dataTotalsPreferenceGroup?.isVisible = currentCategory == HealthDataCategory.ACTIVITY
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -366,5 +370,4 @@ class DataSourcesFragment : Hilt_DataSourcesFragment(),
 
         preferenceScreen.addPreference(spinnerPreference)
     }
-
 }

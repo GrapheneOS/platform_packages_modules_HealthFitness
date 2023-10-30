@@ -14,7 +14,6 @@
 package com.android.healthconnect.controller.datasources.appsources
 
 import android.content.Context
-import android.util.Log
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -25,10 +24,12 @@ import com.android.healthconnect.controller.datasources.DataSourcesViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.ComparablePreference
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppUtils
 
 class AppSourcesPreference
 constructor(
     context: Context,
+    private val appUtils: AppUtils,
     private val dataSourcesViewModel: DataSourcesViewModel,
     val category: @HealthDataCategoryInt Int,
     private val fragment: DataSourcesFragment
@@ -50,8 +51,16 @@ constructor(
         potentialAppSourcesList = dataSourcesViewModel.getEditedPotentialAppSources()
         priorityListView = holder.findViewById(R.id.linear_layout_recycle_view) as RecyclerView
 
-        adapter = AppSourcesAdapter(priorityList, potentialAppSourcesList,
-            dataSourcesViewModel, category, fragment, this)
+        adapter =
+            AppSourcesAdapter(
+                context,
+                appUtils,
+                priorityList,
+                potentialAppSourcesList,
+                dataSourcesViewModel,
+                category,
+                fragment,
+                this)
         priorityListView.adapter = adapter
         priorityListView.layoutManager = AppSourcesLinearLayoutManager(context, adapter)
         createAndAttachItemMoveCallback()
@@ -78,7 +87,7 @@ constructor(
 
     override fun hasSameContents(preference: Preference): Boolean {
         return preference is AppSourcesPreference &&
-                preference.priorityList == this.priorityList &&
-                preference.category == this.category
+            preference.priorityList == this.priorityList &&
+            preference.category == this.category
     }
 }

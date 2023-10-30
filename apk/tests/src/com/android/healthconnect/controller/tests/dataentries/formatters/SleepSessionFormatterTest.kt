@@ -36,6 +36,8 @@ import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Duration
+import java.time.Instant
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.Locale
@@ -161,6 +163,24 @@ class SleepSessionFormatterTest {
         val stage =
             formatter.formatRecordDetails(record)[0] as FormattedEntry.FormattedSessionDetail
         assertThat(stage.title).isEqualTo("1h out of bed")
+    }
+
+    @Test
+    fun formatUnit_showsAmountOfSleep() {
+        val startTime = Instant.parse("2023-02-11T21:20:00Z")
+        val endTime = Instant.parse("2023-02-12T08:14:00Z")
+        val totalSleepTime = Duration.between(startTime, endTime).toMillis()
+
+        assertThat(formatter.formatUnit(totalSleepTime)).isEqualTo("10h 54m")
+    }
+
+    @Test
+    fun formatA11yUnit_showsAmountOfSleep() {
+        val startTime = Instant.parse("2023-02-11T21:20:00Z")
+        val endTime = Instant.parse("2023-02-12T08:14:00Z")
+        val totalSleepTime = Duration.between(startTime, endTime).toMillis()
+
+        assertThat(formatter.formatA11yUnit(totalSleepTime)).isEqualTo("10 hours 54 minutes")
     }
 
     private fun getRecord(

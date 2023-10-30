@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -42,4 +44,36 @@ fun Instant.toLocalDate(): LocalDate {
 
 fun Instant.toLocalTime(): LocalTime {
     return atZone(ZoneId.systemDefault()).toLocalTime()
+}
+
+fun Instant.isOnSameDay(other: Instant): Boolean {
+    val localDate1 = this.toLocalDate()
+    val localDate2 = other.toLocalDate()
+    return localDate1 == localDate2
+}
+
+fun Instant.isOnDayBefore(other: Instant): Boolean {
+    val localDate1 = this.toLocalDate()
+    val localDate2 = other.toLocalDate()
+    return localDate1 == localDate2.minusDays(1)
+}
+
+fun Instant.isOnDayAfter(other: Instant): Boolean {
+    val localDate1 = this.toLocalDate()
+    val localDate2 = other.toLocalDate()
+    return localDate1 == localDate2.plusDays(1)
+}
+
+fun Instant.atStartOfDay(): Instant {
+    return this.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant()
+}
+
+fun Instant.isAtLeastOneDayAfter(other: Instant): Boolean {
+    val localDate1 = this.toLocalDate()
+    val localDate2 = other.toLocalDate()
+    return localDate1.isAfter(localDate2.plusDays(1)) || localDate1 == localDate2.plusDays(1)
+}
+
+fun LocalDate.toInstantAtStartOfDay(): Instant {
+    return this.atStartOfDay(ZoneId.systemDefault()).toInstant()
 }
