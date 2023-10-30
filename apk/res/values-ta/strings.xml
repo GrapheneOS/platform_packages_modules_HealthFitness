@@ -789,7 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> தரவை எழுதுவதற்கு நீங்கள் ஆப்ஸ் அனுமதிகள் வழங்கியதும் அவை இங்கே காட்டப்படும்."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"மூலங்களும் முன்னுரிமையும் செயல்படும் விதம்"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"ஆப்ஸைச் சேர்த்தல்"</string>
-    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <string name="edit_data_sources" msgid="79641360876849547">"ஆப்ஸ் ஆதாரங்களை மாற்றுதல்"</string>
+    <!-- no translation found for default_app_summary (6183876151011837062) -->
     <skip />
     <string name="app_data_title" msgid="6499967982291000837">"ஆப்ஸ் தரவு"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Health Connectடுக்கான அணுகல் உள்ள ஆப்ஸின் தரவு இங்கே காட்டப்படும்"</string>

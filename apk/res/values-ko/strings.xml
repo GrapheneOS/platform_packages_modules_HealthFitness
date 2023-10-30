@@ -789,7 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> 데이터를 쓸 수 있는 권한을 앱에 부여하면 소스가 여기에 표시됩니다."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"소스 및 우선순위 지정의 작동 방식"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"앱 추가하기"</string>
-    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <string name="edit_data_sources" msgid="79641360876849547">"앱 소스 수정"</string>
+    <!-- no translation found for default_app_summary (6183876151011837062) -->
     <skip />
     <string name="app_data_title" msgid="6499967982291000837">"앱 데이터"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"헬스 커넥트에 액세스할 수 있는 앱의 데이터가 여기에 표시됩니다."</string>

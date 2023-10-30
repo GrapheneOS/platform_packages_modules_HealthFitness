@@ -789,7 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ഡാറ്റ റൈറ്റ് ചെയ്യുന്നതിന് നിങ്ങൾ ആപ്പ് അനുമതികൾ നൽകിയാൽ, ഉറവിടങ്ങൾ ഇവിടെ കാണിക്കുന്നതാണ്."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ഉറവിടങ്ങളും മുൻഗണനകളും എങ്ങനെ പ്രവർത്തിക്കുന്നു"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"ആപ്പ് ചേർക്കുക"</string>
-    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <string name="edit_data_sources" msgid="79641360876849547">"ആപ്പ് ഉറവിടങ്ങൾ എഡിറ്റ് ചെയ്യുക"</string>
+    <!-- no translation found for default_app_summary (6183876151011837062) -->
     <skip />
     <string name="app_data_title" msgid="6499967982291000837">"ആപ്പ് ഡാറ്റ"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Health Connect-ലേക്ക് ആക്‌സസ് ഉള്ള ആപ്പുകളിൽ നിന്നുള്ള ഡാറ്റ ഇവിടെ കാണിക്കും"</string>

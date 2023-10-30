@@ -789,7 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"După ce acorzi aplicațiilor permisiuni de scriere datelor despre <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, sursele vor apărea aici."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cum funcționează sursele și stabilirea priorității"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Adaugă o aplicație"</string>
-    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <string name="edit_data_sources" msgid="79641360876849547">"Editează sursele de aplicații"</string>
+    <!-- no translation found for default_app_summary (6183876151011837062) -->
     <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Datele aplicației"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Datele din aplicațiile cu acces la Health Connect se vor afișa aici"</string>

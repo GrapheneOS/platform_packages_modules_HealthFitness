@@ -789,7 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"ऐप्लिकेशन को <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> के डेटा में बदलाव करने की अनुमति देने पर, सोर्स यहां दिखेंगे."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"सोर्स और प्राथमिकता की सेटिंग कैसे काम करती है"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"ऐप्लिकेशन जोड़ें"</string>
-    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <string name="edit_data_sources" msgid="79641360876849547">"ऐप्लिकेशन के सोर्स बदलें"</string>
+    <!-- no translation found for default_app_summary (6183876151011837062) -->
     <skip />
     <string name="app_data_title" msgid="6499967982291000837">"ऐप्लिकेशन का डेटा"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Health Connect का ऐक्सेस रखने वाले ऐप्लिकेशन का डेटा यहां दिखेगा"</string>
