@@ -643,7 +643,7 @@
     <string name="feet_inches_format" msgid="768610500549967860">"<xliff:g id="FT">%1$s</xliff:g><xliff:g id="IN">%2$s</xliff:g>⁠"</string>
     <string name="feet_inches_format_long" msgid="5187265716573430363">"<xliff:g id="FT">%1$s</xliff:g> <xliff:g id="IN">%2$s</xliff:g>⁠"</string>
     <string name="calories_long" msgid="7225535148232419419">"{count,plural, =1{1 caloria}one{# caloria}other{# calorias}}"</string>
-    <string name="calories" msgid="320906359079319632">"{count,plural, =1{1 cal}one{# cal}other{# cal}}"</string>
+    <string name="calories" msgid="320906359079319632">"{count,plural, =1{1 kcal}one{# kcal}other{# kcal}}"</string>
     <string name="kj" msgid="2742876437259085714">"{count,plural, =1{1 kJ}one{# kJ}other{# kJ}}"</string>
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 quilojoule}one{# quilojoule}other{# quilojoules}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}one{#%}other{#%}}"</string>
