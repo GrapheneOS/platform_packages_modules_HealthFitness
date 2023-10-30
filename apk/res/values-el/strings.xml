@@ -789,7 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Μόλις παραχωρήσετε άδειες εφαρμογών για την εγγραφή δεδομένων <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, οι πηγές θα εμφανίζονται εδώ."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Πώς λειτουργούν οι πηγές και η προτεραιότητα"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Προσθήκη εφαρμογής"</string>
-    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <string name="edit_data_sources" msgid="79641360876849547">"Επεξεργασία πηγών εφαρμογών"</string>
+    <!-- no translation found for default_app_summary (6183876151011837062) -->
     <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Δεδομένα εφαρμογών"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Τα δεδομένα από εφαρμογές με πρόσβαση στο Health Connect θα εμφανίζονται εδώ"</string>

@@ -789,7 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kad piešķirsiet lietotņu atļaujas rakstīt datus kategorijā “<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>”, avoti tiks rādīti šeit."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Avotu un prioritātes noteikšanas principi"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Pievienot lietotni"</string>
-    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <string name="edit_data_sources" msgid="79641360876849547">"Rediģēt lietotņu avotus"</string>
+    <!-- no translation found for default_app_summary (6183876151011837062) -->
     <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Lietotnes dati"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Šeit būs redzami dati no lietotnēm, kurām ir piekļuve platformai Health Connect."</string>
