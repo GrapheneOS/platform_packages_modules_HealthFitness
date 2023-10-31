@@ -63,7 +63,7 @@
     <string name="delete_all_data_button" msgid="7238755635416521487">"Futa data yote"</string>
     <string name="no_categories" msgid="2636778482437506241">"Huna data yoyote kwenye Health Connect"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Data yako"</string>
-    <string name="app_priority_button" msgid="3126133977893705098">"Kipaumbele cha programu"</string>
+    <string name="app_priority_button" msgid="3126133977893705098">"Programu yenye kipaumbele"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"Futa data ya <xliff:g id="CATEGORY">%s</xliff:g>"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Programu zote"</string>
     <string name="can_read" msgid="4568261079308309564">"Zinazoweza kusoma <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
@@ -789,7 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Ukishaipa programu ruhusa za kuandika data ya<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, vyanzo vitaonekana hapa."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Jinsi vyanzo na uwekaji kipaumbele vinavyofanya kazi"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Ongeza programu"</string>
-    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <string name="edit_data_sources" msgid="79641360876849547">"Badilisha vyanzo vya programu"</string>
+    <!-- no translation found for default_app_summary (6183876151011837062) -->
     <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Data ya programu"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Data kutoka kwa programu zinazofikia Health Connect itaonekana hapa"</string>

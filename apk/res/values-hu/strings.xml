@@ -789,7 +789,8 @@
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Miután alkalmazásengedélyeket adott a(z) <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> kategóriájú adatok írására, itt jelennek meg a források."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Hogyan működnek a források és a priorizálás?"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Alkalmazás hozzáadása"</string>
-    <!-- no translation found for edit_data_sources (79641360876849547) -->
+    <string name="edit_data_sources" msgid="79641360876849547">"Alkalmazásforrások szerkesztése"</string>
+    <!-- no translation found for default_app_summary (6183876151011837062) -->
     <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Alkalmazásadatok"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Itt jelennek meg az adatok azokból az alkalmazásokból, amelyeknek hozzáférése van a Health Connecthez"</string>
