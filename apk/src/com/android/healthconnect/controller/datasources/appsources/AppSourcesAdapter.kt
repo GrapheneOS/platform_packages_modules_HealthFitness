@@ -14,6 +14,7 @@
 package com.android.healthconnect.controller.datasources.appsources
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -26,11 +27,14 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.app.AppUtils
 import com.android.healthconnect.controller.utils.AttributeResolver
 import java.text.NumberFormat
 
 /** RecyclerView adapter that holds the list of app sources for this [HealthDataCategory]. */
 class AppSourcesAdapter(
+    private val context: Context,
+    private val appUtils: AppUtils,
     priorityList: List<AppMetadata>,
     potentialAppSourcesList: List<AppMetadata>,
     private val dataSourcesViewModel: DataSourcesViewModel,
@@ -65,8 +69,7 @@ class AppSourcesAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: AppSourcesItemViewHolder, position: Int) {
-        viewHolder.bind(
-            position, priorityList[position].appName, isOnlyApp = priorityList.size == 1)
+        viewHolder.bind(position, priorityList[position], isOnlyApp = priorityList.size == 1)
     }
 
     override fun getItemCount(): Int {
@@ -119,6 +122,7 @@ class AppSourcesAdapter(
     ) : RecyclerView.ViewHolder(itemView) {
         private val appPositionView: TextView
         private val appNameView: TextView
+        private val appSourceSummary: TextView
         private val actionView: View
         private val actionIconBackground: ImageView
 
@@ -127,14 +131,22 @@ class AppSourcesAdapter(
             appNameView = itemView.findViewById(R.id.app_name)
             actionView = itemView.findViewById(R.id.action_icon)
             actionIconBackground = itemView.findViewById(R.id.action_icon_background)
+            appSourceSummary = itemView.findViewById(R.id.app_source_summary)
         }
 
-        fun bind(appPosition: Int, appName: String?, isOnlyApp: Boolean) {
+        fun bind(appPosition: Int, appMetadata: AppMetadata, isOnlyApp: Boolean) {
             // Adding 1 to position as position starts from 0 but should show to the user starting
             // from 1.
             val positionString: String = NumberFormat.getIntegerInstance().format(appPosition + 1)
             appPositionView.text = positionString
-            appNameView.text = appName
+            appNameView.text = appMetadata.appName
+
+            if (appUtils.isDefaultApp(context, appMetadata.packageName)) {
+                appSourceSummary.visibility = View.VISIBLE
+                appSourceSummary.text = context.getString(R.string.default_app_summary)
+            } else {
+                appSourceSummary.visibility = View.GONE
+            }
 
             if (isEditMode) {
                 setupItemForEditMode(appPosition)
@@ -150,11 +162,11 @@ class AppSourcesAdapter(
                 AttributeResolver.getDrawable(itemView.context, R.attr.closeIcon)
             actionView.setOnTouchListener(null)
             actionView.setOnClickListener {
-
                 val currentPriority = priorityList.toMutableList()
                 val removedItem = currentPriority.removeAt(appPosition)
                 dataSourcesViewModel.setEditedPriorityList(currentPriority)
-                dataSourcesViewModel.updatePriorityList(currentPriority.map { it.packageName }, category)
+                dataSourcesViewModel.updatePriorityList(
+                    currentPriority.map { it.packageName }, category)
 
                 potentialAppSourcesList.add(removedItem)
                 dataSourcesViewModel.loadPotentialAppSources(category, false)

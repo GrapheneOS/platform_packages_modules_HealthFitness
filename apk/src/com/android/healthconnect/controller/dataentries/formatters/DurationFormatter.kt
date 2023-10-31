@@ -45,7 +45,7 @@ object DurationFormatter {
     }
 
     /**
-     * Formats the given duration in the format 'X hours, X minutes'.
+     * Formats the given duration in the format 'X hours X minutes'.
      *
      * <p>Returns '0 minutes' for durations less than a minute. Returns only the minute component
      * for durations less than an hour. Returns only the hour component for durations with hours and

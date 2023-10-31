@@ -33,32 +33,40 @@ import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.datasources.DataSourcesFragment
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.AggregationCardsState
+import com.android.healthconnect.controller.datasources.DataSourcesViewModel.DataSourcesAndAggregationsInfo
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
-import com.android.healthconnect.controller.datasources.DataSourcesViewModel.DataSourcesAndAggregationsInfo
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.shared.app.AppUtils
+import com.android.healthconnect.controller.shared.app.AppUtilsModule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.atPosition
+import com.android.healthconnect.controller.tests.utils.di.FakeAppUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.whenever
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
 
+@UninstallModules(AppUtilsModule::class)
 @HiltAndroidTest
 class DataSourcesFragmentTest {
 
@@ -66,6 +74,7 @@ class DataSourcesFragmentTest {
 
     @BindValue
     val dataSourcesViewModel: DataSourcesViewModel = Mockito.mock(DataSourcesViewModel::class.java)
+    @BindValue val appUtils: AppUtils = FakeAppUtils()
 
     @Before
     fun setup() {
@@ -76,21 +85,25 @@ class DataSourcesFragmentTest {
         whenever(dataSourcesViewModel.getCurrentSelection()).then { HealthDataCategory.ACTIVITY }
     }
 
+    @After
+    fun tearDown() {
+        (appUtils as FakeAppUtils).reset()
+    }
+
     @Test
-    fun twoSources_noDataTotals_isDisplayed() {
+    fun twoActivitySources_noDataTotals_isDisplayed() {
         whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
             MutableLiveData(
                 DataSourcesAndAggregationsInfo(
-                    priorityListState = PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    priorityListState =
+                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
                     potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
-                    aggregationCardsState = AggregationCardsState.WithData(true, listOf())
-                ))
+                    aggregationCardsState = AggregationCardsState.WithData(true, listOf())))
         }
-        whenever(dataSourcesViewModel.getEditedPriorityList()).then {
-            listOf(TEST_APP, TEST_APP_2)
-        }
+        whenever(dataSourcesViewModel.getEditedPriorityList()).then { listOf(TEST_APP, TEST_APP_2) }
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.WithData(true, listOf())) }
+            MutableLiveData(AggregationCardsState.WithData(true, listOf()))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
         onIdle()
 
@@ -123,31 +136,37 @@ class DataSourcesFragmentTest {
     }
 
     @Test
-    fun twoSources_oneDataTotal_withinLastYear_isDisplayed() {
+    fun twoActivitySources_oneDataTotal_withinLastYear_isDisplayed() {
         whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
             MutableLiveData(
                 DataSourcesAndAggregationsInfo(
-                    priorityListState = PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    priorityListState =
+                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
                     potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
-                    aggregationCardsState = AggregationCardsState.WithData(true,
-                        listOf(
-                            AggregationCardInfo(
-                                HealthPermissionType.STEPS,
-                                FormattedEntry.FormattedAggregation(
-                                    "1234 steps", "1234 steps", "TestApp"),
-                                Instant.parse("2022-10-19T07:06:05.432Z")))))
-                )
+                    aggregationCardsState =
+                        AggregationCardsState.WithData(
+                            true,
+                            listOf(
+                                AggregationCardInfo(
+                                    HealthPermissionType.STEPS,
+                                    FormattedEntry.FormattedAggregation(
+                                        "1234 steps", "1234 steps", "TestApp"),
+                                    Instant.parse("2022-10-19T07:06:05.432Z"))))))
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getEditedPriorityList())
+            .thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.WithData(true,
-                listOf(
-                    AggregationCardInfo(
-                        HealthPermissionType.STEPS,
-                        FormattedEntry.FormattedAggregation(
-                            "1234 steps", "1234 steps", "TestApp"),
-                        Instant.parse("2022-10-19T07:06:05.432Z"))))) }
+            MutableLiveData(
+                AggregationCardsState.WithData(
+                    true,
+                    listOf(
+                        AggregationCardInfo(
+                            HealthPermissionType.STEPS,
+                            FormattedEntry.FormattedAggregation(
+                                "1234 steps", "1234 steps", "TestApp"),
+                            Instant.parse("2022-10-19T07:06:05.432Z")))))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
 
         onView(withText("Activity")).check(matches(isDisplayed()))
@@ -181,35 +200,242 @@ class DataSourcesFragmentTest {
     }
 
     @Test
-    fun oneDataTotal_olderThanOneYear_displaysYear() {
+    fun oneActivityDataTotal_olderThanOneYear_displaysYear() {
         whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
             MutableLiveData(
                 DataSourcesAndAggregationsInfo(
-                    priorityListState = PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    priorityListState =
+                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
                     potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
-                    aggregationCardsState = AggregationCardsState.WithData(true,
-                        listOf(
-                            AggregationCardInfo(
-                                HealthPermissionType.STEPS,
-                                FormattedEntry.FormattedAggregation(
-                                    "1234 steps", "1234 steps", "TestApp"),
-                                Instant.parse("2020-10-19T07:06:05.432Z")))))
-            )
+                    aggregationCardsState =
+                        AggregationCardsState.WithData(
+                            true,
+                            listOf(
+                                AggregationCardInfo(
+                                    HealthPermissionType.STEPS,
+                                    FormattedEntry.FormattedAggregation(
+                                        "1234 steps", "1234 steps", "TestApp"),
+                                    Instant.parse("2020-10-19T07:06:05.432Z"))))))
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getEditedPriorityList())
+            .thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.WithData(true,
-                listOf(
-                    AggregationCardInfo(
-                        HealthPermissionType.STEPS,
-                        FormattedEntry.FormattedAggregation(
-                            "1234 steps", "1234 steps", "TestApp"),
-                        Instant.parse("2020-10-19T07:06:05.432Z"))))) }
+            MutableLiveData(
+                AggregationCardsState.WithData(
+                    true,
+                    listOf(
+                        AggregationCardInfo(
+                            HealthPermissionType.STEPS,
+                            FormattedEntry.FormattedAggregation(
+                                "1234 steps", "1234 steps", "TestApp"),
+                            Instant.parse("2020-10-19T07:06:05.432Z")))))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
         onView(withText("Data totals")).check(matches(isDisplayed()))
         onView(withText("1234 steps")).check(matches(isDisplayed()))
         onView(withText("October 19, 2020")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun twoSleepSources_oneDataTotal_withinLastYear_isDisplayed() {
+        whenever(dataSourcesViewModel.getCurrentSelection()).then { HealthDataCategory.SLEEP }
+        whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
+            MutableLiveData(
+                DataSourcesAndAggregationsInfo(
+                    priorityListState =
+                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
+                    aggregationCardsState =
+                        AggregationCardsState.WithData(
+                            true,
+                            listOf(
+                                AggregationCardInfo(
+                                    HealthPermissionType.SLEEP,
+                                    FormattedEntry.FormattedAggregation(
+                                        "11h 5m", "11h 5m", "TestApp"),
+                                    Instant.parse("2022-10-18T21:00:00.00Z"),
+                                    Instant.parse("2022-10-19T08:05:00.00Z"))))))
+        }
+
+        whenever(dataSourcesViewModel.getEditedPriorityList())
+            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
+            MutableLiveData(
+                AggregationCardsState.WithData(
+                    true,
+                    listOf(
+                        AggregationCardInfo(
+                            HealthPermissionType.SLEEP,
+                            FormattedEntry.FormattedAggregation("11h 5m", "11h 5m", "TestApp"),
+                            Instant.parse("2022-10-18T21:00:00.00Z"),
+                            Instant.parse("2022-10-19T08:05:00.00Z")))))
+        }
+
+        launchFragment<DataSourcesFragment>(Bundle())
+
+        onView(withText("Sleep")).check(matches(isDisplayed()))
+        onView(withText("Data totals")).check(matches(isDisplayed()))
+        onView(withText("11h 5m")).check(matches(isDisplayed()))
+        onView(withText("Oct 18 – 19")).check(matches(isDisplayed()))
+        onView(withText("App sources")).check(matches(isDisplayed()))
+        onView(withText("Add an app")).check(doesNotExist())
+        onView(
+                withText(
+                    "Add app sources to the list to see how the data " +
+                        "totals can change. Removing an app from this list will stop it " +
+                        "from contributing to totals, but it will still have write permissions."))
+            .check(matches(isDisplayed()))
+
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(
+                matches(
+                    atPosition(
+                        0,
+                        allOf(
+                            hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))))))
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(
+                matches(
+                    atPosition(
+                        1,
+                        allOf(
+                            hasDescendant(withText("2")),
+                            hasDescendant(withText(TEST_APP_NAME_2))))))
+    }
+
+    @Test
+    fun twoSleepSources_oneDataTotal_olderThanOneYear_isDisplayed() {
+        whenever(dataSourcesViewModel.getCurrentSelection()).then { HealthDataCategory.SLEEP }
+        whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
+            MutableLiveData(
+                DataSourcesAndAggregationsInfo(
+                    priorityListState =
+                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
+                    aggregationCardsState =
+                        AggregationCardsState.WithData(
+                            true,
+                            listOf(
+                                AggregationCardInfo(
+                                    HealthPermissionType.SLEEP,
+                                    FormattedEntry.FormattedAggregation(
+                                        "11h 5m", "11h 5m", "TestApp"),
+                                    Instant.parse("2020-10-18T21:00:00.00Z"),
+                                    Instant.parse("2020-10-19T08:05:00.00Z"))))))
+        }
+
+        whenever(dataSourcesViewModel.getEditedPriorityList())
+            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
+            MutableLiveData(
+                AggregationCardsState.WithData(
+                    true,
+                    listOf(
+                        AggregationCardInfo(
+                            HealthPermissionType.SLEEP,
+                            FormattedEntry.FormattedAggregation("11h 5m", "11h 5m", "TestApp"),
+                            Instant.parse("2020-10-18T21:00:00.00Z"),
+                            Instant.parse("2020-10-19T08:05:00.00Z")))))
+        }
+
+        launchFragment<DataSourcesFragment>(Bundle())
+
+        onView(withText("Sleep")).check(matches(isDisplayed()))
+        onView(withText("Data totals")).check(matches(isDisplayed()))
+        onView(withText("11h 5m")).check(matches(isDisplayed()))
+        onView(withText("Oct 18 – 19, 2020")).check(matches(isDisplayed()))
+        onView(withText("App sources")).check(matches(isDisplayed()))
+        onView(withText("Add an app")).check(doesNotExist())
+        onView(
+                withText(
+                    "Add app sources to the list to see how the data " +
+                        "totals can change. Removing an app from this list will stop it " +
+                        "from contributing to totals, but it will still have write permissions."))
+            .check(matches(isDisplayed()))
+
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(
+                matches(
+                    atPosition(
+                        0,
+                        allOf(
+                            hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))))))
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(
+                matches(
+                    atPosition(
+                        1,
+                        allOf(
+                            hasDescendant(withText("2")),
+                            hasDescendant(withText(TEST_APP_NAME_2))))))
+    }
+
+    @Test
+    fun twoSleepSources_oneDataTotal_startTimeOlderThanOneYear_endTimeWithinLastYear_isDisplayed() {
+        whenever(dataSourcesViewModel.getCurrentSelection()).then { HealthDataCategory.SLEEP }
+        whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
+            MutableLiveData(
+                DataSourcesAndAggregationsInfo(
+                    priorityListState =
+                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
+                    aggregationCardsState =
+                        AggregationCardsState.WithData(
+                            true,
+                            listOf(
+                                AggregationCardInfo(
+                                    HealthPermissionType.SLEEP,
+                                    FormattedEntry.FormattedAggregation(
+                                        "11h 5m", "11h 5m", "TestApp"),
+                                    Instant.parse("2020-12-31T21:00:00.00Z"),
+                                    Instant.parse("2021-01-01T08:05:00.00Z"))))))
+        }
+
+        whenever(dataSourcesViewModel.getEditedPriorityList())
+            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
+            MutableLiveData(
+                AggregationCardsState.WithData(
+                    true,
+                    listOf(
+                        AggregationCardInfo(
+                            HealthPermissionType.SLEEP,
+                            FormattedEntry.FormattedAggregation("11h 5m", "11h 5m", "TestApp"),
+                            Instant.parse("2020-12-31T21:00:00.00Z"),
+                            Instant.parse("2021-01-01T08:05:00.00Z")))))
+        }
+
+        launchFragment<DataSourcesFragment>(Bundle())
+
+        onView(withText("Sleep")).check(matches(isDisplayed()))
+        onView(withText("Data totals")).check(matches(isDisplayed()))
+        onView(withText("11h 5m")).check(matches(isDisplayed()))
+        onView(withText("Dec 31, 2020 – Jan 1, 2021")).check(matches(isDisplayed()))
+        onView(withText("App sources")).check(matches(isDisplayed()))
+        onView(withText("Add an app")).check(doesNotExist())
+        onView(
+                withText(
+                    "Add app sources to the list to see how the data " +
+                        "totals can change. Removing an app from this list will stop it " +
+                        "from contributing to totals, but it will still have write permissions."))
+            .check(matches(isDisplayed()))
+
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(
+                matches(
+                    atPosition(
+                        0,
+                        allOf(
+                            hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))))))
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(
+                matches(
+                    atPosition(
+                        1,
+                        allOf(
+                            hasDescendant(withText("2")),
+                            hasDescendant(withText(TEST_APP_NAME_2))))))
     }
 
     @Test
@@ -219,11 +445,11 @@ class DataSourcesFragmentTest {
                 DataSourcesAndAggregationsInfo(
                     priorityListState = PriorityListState.WithData(true, listOf()),
                     potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
-                    aggregationCardsState = AggregationCardsState.WithData(true, listOf())
-                ))
+                    aggregationCardsState = AggregationCardsState.WithData(true, listOf())))
         }
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.WithData(true, listOf())) }
+            MutableLiveData(AggregationCardsState.WithData(true, listOf()))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
 
         onView(withText("Activity")).check(matches(isDisplayed()))
@@ -240,14 +466,17 @@ class DataSourcesFragmentTest {
         whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
             MutableLiveData(
                 DataSourcesAndAggregationsInfo(
-                    priorityListState = PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
-                    potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf(TEST_APP_3)),
-                    aggregationCardsState = AggregationCardsState.WithData(true, listOf())
-                ))
+                    priorityListState =
+                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    potentialAppSourcesState =
+                        PotentialAppSourcesState.WithData(true, listOf(TEST_APP_3)),
+                    aggregationCardsState = AggregationCardsState.WithData(true, listOf())))
         }
-        whenever(dataSourcesViewModel.getEditedPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getEditedPriorityList())
+            .thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.WithData(true, listOf())) }
+            MutableLiveData(AggregationCardsState.WithData(true, listOf()))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
         onIdle()
 
@@ -280,19 +509,71 @@ class DataSourcesFragmentTest {
     }
 
     @Test
+    fun appOnPriorityList_whenDefaultApp_showsAsDeviceDefault() {
+        whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
+            MutableLiveData(
+                DataSourcesAndAggregationsInfo(
+                    priorityListState =
+                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
+                    aggregationCardsState = AggregationCardsState.WithData(true, listOf())))
+        }
+        whenever(dataSourcesViewModel.getEditedPriorityList()).then { listOf(TEST_APP, TEST_APP_2) }
+        whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
+            MutableLiveData(AggregationCardsState.WithData(true, listOf()))
+        }
+        (appUtils as FakeAppUtils).setDefaultApp(TEST_APP_PACKAGE_NAME)
+        launchFragment<DataSourcesFragment>(Bundle())
+        onIdle()
+
+        onView(withText("Activity")).check(matches(isDisplayed()))
+        onView(withText("Data totals")).check(doesNotExist())
+        onView(withText("App sources")).check(matches(isDisplayed()))
+        onView(withText("Add an app")).check(doesNotExist())
+        onView(
+                withText(
+                    "Add app sources to the list to see how the data " +
+                        "totals can change. Removing an app from this list will stop it " +
+                        "from contributing to totals, but it will still have write permissions."))
+            .check(matches(isDisplayed()))
+
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(
+                matches(
+                    atPosition(
+                        0,
+                        allOf(
+                            hasDescendant(withText("1")),
+                            hasDescendant(withText(TEST_APP_NAME)),
+                            hasDescendant(withText("Device default"))))))
+
+        onView(withId(R.id.linear_layout_recycle_view))
+            .check(
+                matches(
+                    atPosition(
+                        1,
+                        allOf(
+                            hasDescendant(withText("2")),
+                            hasDescendant(withText(TEST_APP_NAME_2)),
+                            hasDescendant(not(withText("Device default")))))))
+    }
+
+    @Test
     fun atLeastOneSourceLoading_showsLoading() {
         whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
             MutableLiveData(
                 DataSourcesAndAggregationsInfo(
-                    priorityListState = PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    priorityListState =
+                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
                     potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
-                    aggregationCardsState = AggregationCardsState.Loading(true)
-            ))
+                    aggregationCardsState = AggregationCardsState.Loading(true)))
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getEditedPriorityList())
+            .thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.Loading(false)) }
+            MutableLiveData(AggregationCardsState.Loading(false))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
 
         onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
@@ -305,13 +586,14 @@ class DataSourcesFragmentTest {
                 DataSourcesAndAggregationsInfo(
                     priorityListState = PriorityListState.LoadingFailed(true),
                     potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
-                    aggregationCardsState = AggregationCardsState.WithData(true, listOf())
-                ))
+                    aggregationCardsState = AggregationCardsState.WithData(true, listOf())))
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getEditedPriorityList())
+            .thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.WithData(true, listOf())) }
+            MutableLiveData(AggregationCardsState.WithData(true, listOf()))
+        }
         launchFragment<DataSourcesFragment>(Bundle())
         onIdle()
 

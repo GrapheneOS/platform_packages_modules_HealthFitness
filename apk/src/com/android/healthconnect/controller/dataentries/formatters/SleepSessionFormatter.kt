@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.dataentries.formatters.DurationForma
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationShort
 import com.android.healthconnect.controller.dataentries.formatters.shared.BaseFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.SessionDetailsFormatter
+import com.android.healthconnect.controller.dataentries.formatters.shared.UnitFormatter
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.google.common.annotations.VisibleForTesting
@@ -39,7 +40,9 @@ import javax.inject.Inject
 
 /** Formatter for printing SleepSessionRecord data. */
 class SleepSessionFormatter @Inject constructor(@ApplicationContext private val context: Context) :
-    BaseFormatter<SleepSessionRecord>(context), SessionDetailsFormatter<SleepSessionRecord> {
+    BaseFormatter<SleepSessionRecord>(context),
+    SessionDetailsFormatter<SleepSessionRecord>,
+    UnitFormatter<Long> {
 
     private val timeFormatter = LocalDateTimeFormatter(context)
 
@@ -67,6 +70,14 @@ class SleepSessionFormatter @Inject constructor(@ApplicationContext private val 
     @VisibleForTesting
     fun formatA11yValue(record: SleepSessionRecord): String {
         return formatSleepSession(record) { duration -> formatDurationLong(context, duration) }
+    }
+
+    override fun formatA11yUnit(unit: Long): String {
+        return formatDurationLong(context, Duration.ofMillis(unit))
+    }
+
+    override fun formatUnit(unit: Long): String {
+        return formatDurationShort(context, Duration.ofMillis(unit))
     }
 
     private fun getNotes(record: SleepSessionRecord): String? {

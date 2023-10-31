@@ -48,9 +48,13 @@ fun getBasalMetabolicRateRecord(calories: Long): BasalMetabolicRateRecord {
 }
 
 fun getMetaData(): Metadata {
+    return getMetaData(TEST_APP_PACKAGE_NAME)
+}
+
+fun getMetaData(packageName: String): Metadata {
     val device: Device =
         Device.Builder().setManufacturer("google").setModel("Pixel4a").setType(2).build()
-    val dataOrigin = DataOrigin.Builder().setPackageName(TEST_APP_PACKAGE_NAME).build()
+    val dataOrigin = DataOrigin.Builder().setPackageName(packageName).build()
     return Metadata.Builder()
         .setId("test_id")
         .setDevice(device)

@@ -23,8 +23,10 @@ import com.android.healthconnect.controller.data.entries.api.LoadDataAggregation
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataUseCase
+import com.android.healthconnect.controller.data.entries.api.LoadSleepDataUseCase
 import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
 import com.android.healthconnect.controller.dataentries.formatters.MenstruationPeriodFormatter
+import com.android.healthconnect.controller.dataentries.formatters.SleepSessionFormatter
 import com.android.healthconnect.controller.dataentries.formatters.StepsFormatter
 import com.android.healthconnect.controller.dataentries.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
@@ -95,6 +97,7 @@ class UseCaseModule {
         stepsFormatter: StepsFormatter,
         totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
         distanceFormatter: DistanceFormatter,
+        sleepSessionFormatter: SleepSessionFormatter,
         healthConnectManager: HealthConnectManager,
         appInfoReader: AppInfoReader,
         loadEntriesHelper: LoadEntriesHelper
@@ -104,6 +107,7 @@ class UseCaseModule {
             stepsFormatter,
             totalCaloriesBurnedFormatter,
             distanceFormatter,
+            sleepSessionFormatter,
             healthConnectManager,
             appInfoReader,
             dispatcher)
@@ -123,10 +127,11 @@ class UseCaseModule {
     fun providesMostRecentAggregationsUseCase(
         healthConnectManager: HealthConnectManager,
         loadDataAggregationsUseCase: LoadDataAggregationsUseCase,
+        sleepDataUseCase: LoadSleepDataUseCase,
         @IoDispatcher dispatcher: CoroutineDispatcher
-    ) : ILoadMostRecentAggregationsUseCase {
+    ): ILoadMostRecentAggregationsUseCase {
         return LoadMostRecentAggregationsUseCase(
-            healthConnectManager, loadDataAggregationsUseCase, dispatcher)
+            healthConnectManager, loadDataAggregationsUseCase, sleepDataUseCase, dispatcher)
     }
 
     @Provides
@@ -137,9 +142,13 @@ class UseCaseModule {
         loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
         loadPriorityListUseCase: LoadPriorityListUseCase,
         @IoDispatcher dispatcher: CoroutineDispatcher
-    ) : ILoadPotentialPriorityListUseCase {
-        return LoadPotentialPriorityListUseCase(appInfoReader, healthConnectManager,
-            healthPermissionReader, loadGrantedHealthPermissionsUseCase, loadPriorityListUseCase,
+    ): ILoadPotentialPriorityListUseCase {
+        return LoadPotentialPriorityListUseCase(
+            appInfoReader,
+            healthConnectManager,
+            healthPermissionReader,
+            loadGrantedHealthPermissionsUseCase,
+            loadPriorityListUseCase,
             dispatcher)
     }
 
@@ -148,7 +157,7 @@ class UseCaseModule {
         appInfoReader: AppInfoReader,
         healthConnectManager: HealthConnectManager,
         @IoDispatcher dispatcher: CoroutineDispatcher
-    ) : ILoadPriorityListUseCase {
+    ): ILoadPriorityListUseCase {
         return LoadPriorityListUseCase(healthConnectManager, appInfoReader, dispatcher)
     }
 

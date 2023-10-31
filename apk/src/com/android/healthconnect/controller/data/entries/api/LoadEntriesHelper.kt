@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.toLocalDate
+import com.google.common.annotations.VisibleForTesting
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration
 import java.time.Instant
@@ -184,7 +185,12 @@ constructor(
         return TimeInstantRangeFilter.Builder().setStartTime(start).setEndTime(end).build()
     }
 
-    private fun buildReadRecordsRequestUsingFilters(
+    fun getTimeFilter(startTime: Instant, endTime: Instant): TimeInstantRangeFilter {
+        return TimeInstantRangeFilter.Builder().setStartTime(startTime).setEndTime(endTime).build()
+    }
+
+    @VisibleForTesting
+    fun buildReadRecordsRequestUsingFilters(
         data: Class<out Record>,
         timeFilterRange: TimeInstantRangeFilter,
         packageName: String?

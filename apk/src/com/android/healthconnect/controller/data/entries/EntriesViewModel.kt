@@ -156,7 +156,8 @@ constructor(
         showDataOrigin: Boolean
     ): UseCaseResults<FormattedEntry.FormattedAggregation> {
         val input =
-            LoadAggregationInput(permissionType, packageName, selectedDate, period, showDataOrigin)
+            LoadAggregationInput.PeriodAggregation(
+                permissionType, packageName, selectedDate, period, showDataOrigin)
         return loadDataAggregationsUseCase.invoke(input)
     }
 

@@ -17,10 +17,12 @@ package com.android.healthconnect.controller.tests.utils.di
 
 import android.health.connect.HealthDataCategory
 import android.health.connect.accesslog.AccessLog
+import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDataUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadSleepDataUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
@@ -35,6 +37,8 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.toLocalDate
+import java.time.LocalDate
 
 class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
     private var list: List<AccessLog> = emptyList()
@@ -106,9 +110,7 @@ class FakeLoadDataAggregationsUseCase : ILoadDataAggregationsUseCase {
         this.aggregations = listOf(aggregation)
     }
 
-    /**
-     * Used for subsequent invocations when we need different responses
-     */
+    /** Used for subsequent invocations when we need different responses */
     fun updateAggregationResponses(aggregations: List<FormattedEntry.FormattedAggregation>) {
         this.aggregations = aggregations
     }
@@ -122,12 +124,11 @@ class FakeLoadDataAggregationsUseCase : ILoadDataAggregationsUseCase {
     ): UseCaseResults<FormattedEntry.FormattedAggregation> {
         return if (invocationCount >= this.aggregations.size) {
             UseCaseResults.Failed(
-                IllegalStateException("AggregationResponsesSize = ${this.aggregations.size}, " +
+                IllegalStateException(
+                    "AggregationResponsesSize = ${this.aggregations.size}, " +
                         "invocationCount = $invocationCount. Please update aggregation responses before invoking."))
-        }
-         else if (shouldReturnFailed) {
-            UseCaseResults.Failed(
-                IllegalStateException("Custom failure"))
+        } else if (shouldReturnFailed) {
+            UseCaseResults.Failed(IllegalStateException("Custom failure"))
         } else {
             val result = UseCaseResults.Success(aggregations[invocationCount])
             invocationCount += 1
@@ -149,7 +150,10 @@ class FakeLoadDataAggregationsUseCase : ILoadDataAggregationsUseCase {
 class FakeLoadMostRecentAggregationsUseCase : ILoadMostRecentAggregationsUseCase {
 
     private var mostRecentAggregations = listOf<AggregationCardInfo>()
-    override suspend fun invoke(): UseCaseResults<List<AggregationCardInfo>> {
+
+    override suspend fun invoke(
+        healthDataCategory: @HealthDataCategoryInt Int
+    ): UseCaseResults<List<AggregationCardInfo>> {
         return UseCaseResults.Success(mostRecentAggregations)
     }
 
@@ -165,7 +169,10 @@ class FakeLoadMostRecentAggregationsUseCase : ILoadMostRecentAggregationsUseCase
 class FakeLoadPotentialPriorityListUseCase : ILoadPotentialPriorityListUseCase {
 
     private var potentialPriorityList = listOf<AppMetadata>()
-    override suspend fun invoke(category: @HealthDataCategoryInt Int): UseCaseResults<List<AppMetadata>> {
+
+    override suspend fun invoke(
+        category: @HealthDataCategoryInt Int
+    ): UseCaseResults<List<AppMetadata>> {
         return UseCaseResults.Success(potentialPriorityList)
     }
 
@@ -181,7 +188,10 @@ class FakeLoadPotentialPriorityListUseCase : ILoadPotentialPriorityListUseCase {
 class FakeLoadPriorityListUseCase : ILoadPriorityListUseCase {
 
     private var priorityList = listOf<AppMetadata>()
-    override suspend fun invoke(input: @HealthDataCategoryInt Int): UseCaseResults<List<AppMetadata>> {
+
+    override suspend fun invoke(
+        input: @HealthDataCategoryInt Int
+    ): UseCaseResults<List<AppMetadata>> {
         return UseCaseResults.Success(priorityList)
     }
 
@@ -211,5 +221,27 @@ class FakeUpdatePriorityListUseCase : IUpdatePriorityListUseCase {
     fun reset() {
         this.priorityList = listOf()
         this.category = HealthDataCategory.UNKNOWN
+    }
+}
+
+class FakeLoadSleepDataUseCase : ILoadSleepDataUseCase {
+
+    private var sleepDataMap: MutableMap<LocalDate, List<Record>> = mutableMapOf()
+
+    fun updateSleepData(date: LocalDate, recordsList: List<Record>) {
+        sleepDataMap[date] = recordsList
+    }
+
+    override suspend fun invoke(input: LoadDataEntriesInput): UseCaseResults<List<Record>> {
+        val result = sleepDataMap.getOrDefault(input.displayedStartTime.toLocalDate(), listOf())
+        return UseCaseResults.Success(result)
+    }
+
+    override suspend fun execute(input: LoadDataEntriesInput): List<Record> {
+        return sleepDataMap.getOrDefault(input.displayedStartTime.toLocalDate(), listOf())
+    }
+
+    fun reset() {
+        this.sleepDataMap = mutableMapOf()
     }
 }

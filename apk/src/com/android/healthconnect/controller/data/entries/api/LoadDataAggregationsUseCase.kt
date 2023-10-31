@@ -25,6 +25,7 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.AggregationType
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.DistanceRecord
+import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.units.Energy
@@ -33,10 +34,12 @@ import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
+import com.android.healthconnect.controller.dataentries.formatters.SleepSessionFormatter
 import com.android.healthconnect.controller.dataentries.formatters.StepsFormatter
 import com.android.healthconnect.controller.dataentries.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.DISTANCE
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType.SLEEP
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType.TOTAL_CALORIES_BURNED
 import com.android.healthconnect.controller.service.IoDispatcher
@@ -58,6 +61,7 @@ constructor(
     private val stepsFormatter: StepsFormatter,
     private val totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
     private val distanceFormatter: DistanceFormatter,
+    private val sleepSessionFormatter: SleepSessionFormatter,
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
@@ -67,8 +71,15 @@ constructor(
 
     override suspend fun execute(input: LoadAggregationInput): FormattedAggregation {
         val timeFilterRange =
-            loadEntriesHelper.getTimeFilter(
-                input.displayedStartTime, input.period, endTimeExclusive = false)
+            when (input) {
+                is LoadAggregationInput.PeriodAggregation -> {
+                    loadEntriesHelper.getTimeFilter(
+                        input.displayedStartTime, input.period, endTimeExclusive = false)
+                }
+                is LoadAggregationInput.CustomAggregation -> {
+                    loadEntriesHelper.getTimeFilter(input.startTime, input.endTime)
+                }
+            }
         val showDataOrigin = input.showDataOrigin
         val results =
             when (input.permissionType) {
@@ -77,21 +88,32 @@ constructor(
                         timeFilterRange,
                         StepsRecord.STEPS_COUNT_TOTAL,
                         input.packageName,
-                        showDataOrigin)
+                        showDataOrigin,
+                        input.permissionType)
                 }
                 DISTANCE -> {
                     readAggregations<Length>(
                         timeFilterRange,
                         DistanceRecord.DISTANCE_TOTAL,
                         input.packageName,
-                        showDataOrigin)
+                        showDataOrigin,
+                        input.permissionType)
                 }
                 TOTAL_CALORIES_BURNED -> {
                     readAggregations<Energy>(
                         timeFilterRange,
                         TotalCaloriesBurnedRecord.ENERGY_TOTAL,
                         input.packageName,
-                        showDataOrigin)
+                        showDataOrigin,
+                        input.permissionType)
+                }
+                SLEEP -> {
+                    readAggregations<Long>(
+                        timeFilterRange,
+                        SleepSessionRecord.SLEEP_DURATION_TOTAL,
+                        input.packageName,
+                        showDataOrigin,
+                        input.permissionType)
                 }
                 else ->
                     throw IllegalArgumentException(
@@ -105,7 +127,8 @@ constructor(
         timeFilterRange: TimeInstantRangeFilter,
         aggregationType: AggregationType<T>,
         packageName: String?,
-        showDataOrigin: Boolean
+        showDataOrigin: Boolean,
+        healthPermissionType: HealthPermissionType
     ): FormattedAggregation {
         val request =
             AggregateRecordsRequest.Builder<T>(timeFilterRange).addAggregationType(aggregationType)
@@ -120,21 +143,35 @@ constructor(
             }
         val aggregationResult: T = requireNotNull(response.get(aggregationType))
         val apps = response.getDataOrigins(aggregationType)
-        return formatAggregation(aggregationResult, apps, showDataOrigin)
+        return formatAggregation(aggregationResult, apps, showDataOrigin, healthPermissionType)
     }
 
     private suspend fun <T> formatAggregation(
         aggregationResult: T,
         apps: Set<DataOrigin>,
-        showDataOrigin: Boolean
+        showDataOrigin: Boolean,
+        healthPermissionType: HealthPermissionType
     ): FormattedAggregation {
         val contributingApps = getContributingApps(apps, showDataOrigin)
         return when (aggregationResult) {
-            is Long ->
-                FormattedAggregation(
-                    aggregation = stepsFormatter.formatUnit(aggregationResult),
-                    aggregationA11y = stepsFormatter.formatA11yUnit(aggregationResult),
-                    contributingApps = contributingApps)
+            is Long -> {
+                when (healthPermissionType) {
+                    STEPS ->
+                        FormattedAggregation(
+                            aggregation = stepsFormatter.formatUnit(aggregationResult),
+                            aggregationA11y = stepsFormatter.formatA11yUnit(aggregationResult),
+                            contributingApps = contributingApps)
+                    SLEEP ->
+                        FormattedAggregation(
+                            aggregation = sleepSessionFormatter.formatUnit(aggregationResult),
+                            aggregationA11y =
+                                sleepSessionFormatter.formatA11yUnit(aggregationResult),
+                            contributingApps = contributingApps)
+                    else -> {
+                        throw IllegalArgumentException("Unsupported aggregation type!")
+                    }
+                }
+            }
             is Energy ->
                 FormattedAggregation(
                     aggregation = totalCaloriesBurnedFormatter.formatUnit(aggregationResult),
@@ -165,13 +202,29 @@ constructor(
     }
 }
 
-data class LoadAggregationInput(
-    val permissionType: HealthPermissionType,
-    val packageName: String?,
-    val displayedStartTime: Instant,
-    val period: DateNavigationPeriod,
-    val showDataOrigin: Boolean
-)
+sealed class LoadAggregationInput(
+    open val permissionType: HealthPermissionType,
+    open val packageName: String?,
+    open val showDataOrigin: Boolean
+) {
+    /** Aggregation input which uses a [DateNavigationPeriod] to calculate start and end times */
+    data class PeriodAggregation(
+        override val permissionType: HealthPermissionType,
+        override val packageName: String?,
+        val displayedStartTime: Instant,
+        val period: DateNavigationPeriod,
+        override val showDataOrigin: Boolean
+    ) : LoadAggregationInput(permissionType, packageName, showDataOrigin)
+
+    /** Aggregation input with custom start and end times */
+    data class CustomAggregation(
+        override val permissionType: HealthPermissionType,
+        override val packageName: String?,
+        val startTime: Instant,
+        val endTime: Instant,
+        override val showDataOrigin: Boolean
+    ) : LoadAggregationInput(permissionType, packageName, showDataOrigin)
+}
 
 interface ILoadDataAggregationsUseCase {
     suspend fun invoke(input: LoadAggregationInput): UseCaseResults<FormattedAggregation>
