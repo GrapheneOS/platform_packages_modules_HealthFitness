@@ -18,6 +18,8 @@ package com.android.server.healthconnect.storage.request;
 
 import static android.health.connect.Constants.UPSERT;
 
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.Context;
@@ -183,7 +185,7 @@ public class UpsertTransactionRequest {
     }
 
     private WhereClauses generateWhereClausesForUpdate(@NonNull RecordInternal<?> recordInternal) {
-        WhereClauses whereClauseForUpdateRequest = new WhereClauses();
+        WhereClauses whereClauseForUpdateRequest = new WhereClauses(AND);
         whereClauseForUpdateRequest.addWhereEqualsClause(
                 RecordHelper.UUID_COLUMN_NAME, StorageUtils.getHexString(recordInternal.getUuid()));
         whereClauseForUpdateRequest.addWhereEqualsClause(

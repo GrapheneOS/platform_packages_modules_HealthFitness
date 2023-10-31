@@ -19,13 +19,29 @@ package com.android.server.healthconnect.storage.utils;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /** @hide */
 public final class WhereClauses {
+    public enum LogicalOperator {
+        AND(" AND "),
+        OR(" OR ");
+
+        private final String opKeyword;
+
+        LogicalOperator(String opKeyword) {
+            this.opKeyword = opKeyword;
+        }
+    }
+
     private final List<String> mClauses = new ArrayList<>();
-    private boolean mUseOr = false;
+    private final LogicalOperator mLogicalOperator;
+
+    public WhereClauses(LogicalOperator logicalOperator) {
+        mLogicalOperator = logicalOperator;
+    }
 
     public WhereClauses addWhereBetweenClause(String columnName, long start, long end) {
         mClauses.add(columnName + " BETWEEN " + start + " AND " + end);
@@ -126,18 +142,21 @@ public final class WhereClauses {
     }
 
     /**
-     * Adds where in condition for the column
+     * Adds where in condition for the column.
      *
      * @param columnName Column name on which where condition to be applied
      * @param values to check in the where condition
      */
-    public WhereClauses addWhereInLongsClause(String columnName, List<Long> values) {
+    public WhereClauses addWhereInLongsClause(String columnName, Collection<Long> values) {
         if (values == null || values.isEmpty()) return this;
 
         mClauses.add(
                 columnName
                         + " IN ("
-                        + values.stream().map(String::valueOf).collect(Collectors.joining(", "))
+                        + values.stream()
+                                .distinct()
+                                .map(String::valueOf)
+                                .collect(Collectors.joining(", "))
                         + ")");
 
         return this;
@@ -153,6 +172,20 @@ public final class WhereClauses {
         return this;
     }
 
+    /** Adds other {@link WhereClauses} as conditions of this where clause. */
+    public WhereClauses addNestedWhereClauses(WhereClauses... otherWhereClauses) {
+        for (WhereClauses whereClauses : otherWhereClauses) {
+            if (whereClauses.mClauses.isEmpty()) {
+                // skip empty WhereClauses so we don't add empty pairs of parentheses "()" to the
+                // final SQL statement
+                continue;
+            }
+            mClauses.add("(" + whereClauses.get(/* withWhereKeyword= */ false) + ")");
+        }
+
+        return this;
+    }
+
     /**
      * Returns where clauses joined by 'AND', if the input parameter isIncludeWHEREinClauses is true
      * then the clauses are preceded by 'WHERE'.
@@ -162,16 +195,7 @@ public final class WhereClauses {
             return "";
         }
 
-        return (withWhereKeyword ? " WHERE " : "") + String.join(getJoinClause(), mClauses);
-    }
-
-    private String getJoinClause() {
-        return mUseOr ? " OR " : " AND ";
-    }
-
-    public WhereClauses setUseOr(boolean useOr) {
-        mUseOr = useOr;
-
-        return this;
+        return (withWhereKeyword ? " WHERE " : "")
+                + String.join(mLogicalOperator.opKeyword, mClauses);
     }
 }

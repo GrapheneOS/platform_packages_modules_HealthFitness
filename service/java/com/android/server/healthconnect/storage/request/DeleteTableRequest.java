@@ -19,6 +19,8 @@ package com.android.server.healthconnect.storage.request;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.Constants;
@@ -165,7 +167,7 @@ public class DeleteTableRequest {
 
     public String getWhereCommand() {
         WhereClauses whereClauses =
-                Objects.isNull(mCustomWhereClauses) ? new WhereClauses() : mCustomWhereClauses;
+                Objects.isNull(mCustomWhereClauses) ? new WhereClauses(AND) : mCustomWhereClauses;
         whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
         whereClauses.addWhereBetweenTimeClause(mTimeColumnName, mStartTime, mEndTime);
         whereClauses.addWhereInClauseWithoutQuotes(mIdColumnName, mIds);

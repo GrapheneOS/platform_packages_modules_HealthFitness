@@ -51,7 +51,7 @@ public class ReadTransactionRequest {
     private final int mPageSize;
 
     public ReadTransactionRequest(
-            String packageName,
+            String callingPackageName,
             ReadRecordsRequestParcel request,
             long startDateAccessMillis,
             boolean enforceSelfRead,
@@ -62,7 +62,7 @@ public class ReadTransactionRequest {
                 Collections.singletonList(
                         recordHelper.getReadTableRequest(
                                 request,
-                                packageName,
+                                callingPackageName,
                                 enforceSelfRead,
                                 startDateAccessMillis,
                                 extraPermsState));

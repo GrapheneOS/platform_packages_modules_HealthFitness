@@ -35,17 +35,6 @@ import java.util.Objects;
 public final class AggregateParams {
     private final String mTableName;
 
-    /**
-     * Physical time column name (i.e. {@link
-     * com.android.server.healthconnect.storage.datatypehelpers.RecordHelper#getStartTimeColumnName()}).
-     *
-     * <p>This is used to compare against start date access when local time is used, when local time
-     * is NOT used, this has the same value as {@link #mTimeColumnName}.
-     *
-     * <p>Same as {@link #mTimeColumnName}, this is start time for interval records.
-     */
-    private String mPhysicalTimeColumnName;
-
     /** Column used for time filtering. Start time for interval records. */
     private String mTimeColumnName;
 
@@ -87,10 +76,6 @@ public final class AggregateParams {
         return mTimeColumnName;
     }
 
-    public String getPhysicalTimeColumnName() {
-        return mPhysicalTimeColumnName;
-    }
-
     public String getExtraTimeColumnName() {
         return mExtraTimeColumnName;
     }
@@ -112,10 +97,6 @@ public final class AggregateParams {
     public AggregateParams setTimeColumnName(String columnName) {
         mTimeColumnName = columnName;
         return this;
-    }
-
-    public void setPhysicalTimeColumnName(String physicalTimeColumnName) {
-        this.mPhysicalTimeColumnName = physicalTimeColumnName;
     }
 
     /** Appends additional columns to fetch. */

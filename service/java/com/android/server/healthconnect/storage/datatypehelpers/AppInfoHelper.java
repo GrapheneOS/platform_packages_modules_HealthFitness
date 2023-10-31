@@ -27,6 +27,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorBlob;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import static java.util.Objects.requireNonNull;
 
@@ -525,7 +526,7 @@ public final class AppInfoHelper extends DatabaseHelper {
             Set<Integer> recordTypesUsed) {
         appInfo.setRecordTypesUsed(recordTypesUsed);
         // create upsert table request to modify app info table, keyed by packages name.
-        WhereClauses whereClauseForAppInfoTableUpdate = new WhereClauses();
+        WhereClauses whereClauseForAppInfoTableUpdate = new WhereClauses(AND);
         whereClauseForAppInfoTableUpdate.addWhereEqualsClause(
                 PACKAGE_COLUMN_NAME, appInfo.getPackageName());
         UpsertTableRequest upsertRequestForAppInfoUpdate =

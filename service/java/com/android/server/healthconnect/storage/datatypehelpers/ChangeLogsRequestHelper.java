@@ -26,6 +26,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorIntegerList;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorStringList;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -141,7 +142,7 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(TABLE_NAME)
                         .setWhereClause(
-                                new WhereClauses()
+                                new WhereClauses(AND)
                                         .addWhereEqualsClause(PRIMARY_COLUMN_NAME, token)
                                         .addWhereEqualsClause(
                                                 PACKAGE_NAME_COLUMN_NAME, packageName));

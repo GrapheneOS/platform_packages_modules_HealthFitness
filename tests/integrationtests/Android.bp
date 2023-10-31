@@ -67,6 +67,7 @@ android_test {
         "androidx.test.rules",
         "compatibility-device-util-axt",
         "androidx.test.ext.truth",
+        "cts-healthconnect-utils",
     ],
 
     srcs: [
