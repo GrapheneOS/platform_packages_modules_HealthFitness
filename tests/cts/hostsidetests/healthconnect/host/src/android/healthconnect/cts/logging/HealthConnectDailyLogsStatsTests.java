@@ -38,14 +38,22 @@ import com.android.tradefed.util.RunUtil;
 
 import com.google.protobuf.ExtensionRegistry;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements IBuildReceiver {
 
     public static final String TEST_APP_PKG_NAME = "android.healthconnect.cts.testhelper";
     private static final int NUMBER_OF_RETRIES = 10;
-
+    private static final String DAILY_LOG_TESTS_ACTIVITY = ".DailyLogsTests";
+    private static final String HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY =
+            ".HealthConnectServiceLogsTests";
     private IBuildInfo mCtsBuild;
+    private Instant mTestStartTime;
+    private Instant mTestStartTimeOnDevice;
 
     @Override
     protected void setUp() throws Exception {
@@ -55,14 +63,21 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         super.setUp();
         assertThat(mCtsBuild).isNotNull();
         assertThat(isHardwareSupported(getDevice())).isTrue();
+        mTestStartTime = Instant.now();
+        mTestStartTimeOnDevice = Instant.ofEpochMilli(getDevice().getDeviceDate());
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
+        clearData();
+        // Doing this to avoid any access log entries which might make the test flaky.
+        increaseDeviceTimeByDays(/* numberOfDays= */ 31);
     }
 
     @Override
     protected void tearDown() throws Exception {
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
+        clearData();
+        resetTime();
         super.tearDown();
     }
 
@@ -80,11 +95,12 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
 
-        List<StatsLog.EventMetricData> data = getEventMetricDataList(null, NUMBER_OF_RETRIES);
-
+        List<StatsLog.EventMetricData> data =
+                getEventMetricDataList(/* testName= */ null, NUMBER_OF_RETRIES);
         assertThat(data.size()).isAtLeast(1);
         HealthConnectUsageStats atom =
                 data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectUsageStats);
+
         assertThat(atom.getConnectedAppsCount()).isGreaterThan(0);
         assertThat(atom.getAvailableAppsCount()).isGreaterThan(0);
     }
@@ -93,27 +109,159 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         if (!isHardwareSupported(getDevice())) {
             return;
         }
-        // To clear the data before the test starts (as a safety measure)
-        DeviceUtils.runDeviceTests(
-                getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", "deleteAllRecordsAddedForTest");
         ConfigUtils.uploadConfigForPushedAtoms(
                 getDevice(),
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_STORAGE_STATS_FIELD_NUMBER});
+
         List<StatsLog.EventMetricData> data =
-                getEventMetricDataList("testHealthConnectDatabaseStats", NUMBER_OF_RETRIES);
+                getEventMetricDataList(
+                        /* testName= */ "testHealthConnectDatabaseStats", NUMBER_OF_RETRIES);
         assertThat(data.size()).isAtLeast(1);
         HealthConnectStorageStats atom =
                 data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectStorageStats);
+
         assertThat(atom.getDatabaseSize()).isGreaterThan(0);
         assertThat(atom.getInstantDataCount()).isEqualTo(1);
         assertThat(atom.getIntervalDataCount()).isEqualTo(1);
         assertThat(atom.getSeriesDataCount()).isEqualTo(1);
         assertThat(atom.getChangelogCount()).isGreaterThan(2);
+    }
 
-        // To clear the data once the database stats have been verified
-        DeviceUtils.runDeviceTests(
-                getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", "deleteAllRecordsAddedForTest");
+    public void testIsUserActive_insertRecordPreviousDay_userMonthlyActive() throws Exception {
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
+
+        ConfigUtils.uploadConfigForPushedAtoms(
+                getDevice(),
+                TEST_APP_PKG_NAME,
+                new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
+        triggerTestInTestApp(
+                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectInsertRecords");
+        increaseDeviceTimeByDays(/* numberOfDays= */ 1);
+
+        List<StatsLog.EventMetricData> data =
+                getEventMetricDataList(/* testName= */ null, NUMBER_OF_RETRIES);
+        assertThat(data.size()).isAtLeast(1);
+        HealthConnectUsageStats atom =
+                data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectUsageStats);
+
+        assertThat(atom.getIsMonthlyActiveUser()).isTrue();
+    }
+
+    public void testIsUserActive_insertRecordBetween7To30days_userMonthlyActive() throws Exception {
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
+
+        ConfigUtils.uploadConfigForPushedAtoms(
+                getDevice(),
+                TEST_APP_PKG_NAME,
+                new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
+        triggerTestInTestApp(
+                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectInsertRecords");
+        increaseDeviceTimeByDays(/* numberOfDays= */ 10);
+
+        List<StatsLog.EventMetricData> data =
+                getEventMetricDataList(/* testName= */ null, NUMBER_OF_RETRIES);
+        assertThat(data.size()).isAtLeast(1);
+        HealthConnectUsageStats atom =
+                data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectUsageStats);
+
+        assertThat(atom.getIsMonthlyActiveUser()).isTrue();
+    }
+
+    public void testIsUserActive_insertRecordBefore30Days_userNotMonthlyActive() throws Exception {
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
+
+        ConfigUtils.uploadConfigForPushedAtoms(
+                getDevice(),
+                TEST_APP_PKG_NAME,
+                new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
+        triggerTestInTestApp(
+                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectInsertRecords");
+        increaseDeviceTimeByDays(/* numberOfDays= */ 35);
+        // To delete access logs older than 7 days.
+        triggerDailyJob();
+
+        List<StatsLog.EventMetricData> data =
+                getEventMetricDataList(/* testName= */ null, NUMBER_OF_RETRIES);
+        assertThat(data.size()).isAtLeast(1);
+        HealthConnectUsageStats atom =
+                data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectUsageStats);
+
+        assertThat(atom.getIsMonthlyActiveUser()).isFalse();
+    }
+
+    public void testIsUserActive_readRecordPreviousDay_userMonthlyActive() throws Exception {
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
+
+        ConfigUtils.uploadConfigForPushedAtoms(
+                getDevice(),
+                TEST_APP_PKG_NAME,
+                new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
+        triggerTestInTestApp(
+                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectReadRecords");
+        increaseDeviceTimeByDays(/* numberOfDays= */ 1);
+
+        List<StatsLog.EventMetricData> data =
+                getEventMetricDataList(/* testName= */ null, NUMBER_OF_RETRIES);
+        assertThat(data.size()).isAtLeast(1);
+        HealthConnectUsageStats atom =
+                data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectUsageStats);
+
+        assertThat(atom.getIsMonthlyActiveUser()).isTrue();
+    }
+
+    public void testIsUserActive_readRecordBetween7To30days_userMonthlyActive() throws Exception {
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
+
+        ConfigUtils.uploadConfigForPushedAtoms(
+                getDevice(),
+                TEST_APP_PKG_NAME,
+                new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
+        triggerTestInTestApp(
+                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectReadRecords");
+        increaseDeviceTimeByDays(/* numberOfDays= */ 10);
+        // To delete access logs older than 7 days.
+        triggerDailyJob();
+
+        List<StatsLog.EventMetricData> data =
+                getEventMetricDataList(/* testName= */ null, NUMBER_OF_RETRIES);
+        assertThat(data.size()).isAtLeast(1);
+        HealthConnectUsageStats atom =
+                data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectUsageStats);
+
+        assertThat(atom.getIsMonthlyActiveUser()).isTrue();
+    }
+
+    public void testIsUserActive_readRecordBefore30Days_userNotMonthlyActive() throws Exception {
+        if (!isHardwareSupported(getDevice())) {
+            return;
+        }
+
+        ConfigUtils.uploadConfigForPushedAtoms(
+                getDevice(),
+                TEST_APP_PKG_NAME,
+                new int[] {ApiExtensionAtoms.HEALTH_CONNECT_USAGE_STATS_FIELD_NUMBER});
+        triggerTestInTestApp(
+                HEALTH_CONNECT_SERVICE_LOG_TESTS_ACTIVITY, "testHealthConnectReadRecords");
+        increaseDeviceTimeByDays(/* numberOfDays= */ 35);
+
+        List<StatsLog.EventMetricData> data =
+                getEventMetricDataList(/* testName= */ null, NUMBER_OF_RETRIES);
+        assertThat(data.size()).isAtLeast(1);
+        HealthConnectUsageStats atom =
+                data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectUsageStats);
+
+        assertThat(atom.getIsMonthlyActiveUser()).isFalse();
     }
 
     private List<StatsLog.EventMetricData> getEventMetricDataList(String testName, int retryCount)
@@ -122,7 +270,11 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
             throw new RuntimeException("Could not collect metrics.");
         }
 
-        List<StatsLog.EventMetricData> data = triggerDailyJob(triggerTestInTestApp(testName));
+        ExtensionRegistry extensionRegistry =
+                triggerTestInTestApp(DAILY_LOG_TESTS_ACTIVITY, testName);
+        triggerDailyJob(); // This will run the job which calls DailyLogger to log some metrics.
+        List<StatsLog.EventMetricData> data =
+                ReportUtils.getEventMetricDataList(getDevice(), extensionRegistry);
 
         if (data.size() == 0) {
             return getEventMetricDataList(testName, retryCount - 1);
@@ -130,10 +282,19 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         return data;
     }
 
-    private ExtensionRegistry triggerTestInTestApp(String testName) throws Exception {
+    private void clearData() throws Exception {
+        triggerTestInTestApp(DAILY_LOG_TESTS_ACTIVITY, "deleteAllRecordsAddedForTest");
+        // Next two lines will delete newly added Access Logs as all access logs over 7 days are
+        // deleted by the AutoDeleteService which is run by the daily job.
+        increaseDeviceTimeByDays(10);
+        triggerDailyJob();
+    }
+
+    private ExtensionRegistry triggerTestInTestApp(String className, String testName)
+            throws Exception {
 
         if (testName != null) {
-            DeviceUtils.runDeviceTests(getDevice(), TEST_APP_PKG_NAME, ".DailyLogsTests", testName);
+            DeviceUtils.runDeviceTests(getDevice(), TEST_APP_PKG_NAME, className, testName);
         }
 
         ExtensionRegistry registry = ExtensionRegistry.newInstance();
@@ -141,8 +302,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         return registry;
     }
 
-    private List<StatsLog.EventMetricData> triggerDailyJob(ExtensionRegistry registry)
-            throws Exception {
+    private void triggerDailyJob() throws Exception {
 
         // There are multiple instances of HealthConnectDailyService. This command finds the one
         // that needs to be triggered for this test using the job param 'hc_daily_job'.
@@ -157,7 +317,6 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
 
         executeLoggingJob(jobExecutionCommand, NUMBER_OF_RETRIES);
         RunUtil.getDefault().sleep(AtomTestUtils.WAIT_TIME_LONG);
-        return ReportUtils.getEventMetricDataList(getDevice(), registry);
     }
 
     private void executeLoggingJob(String jobExecutionCommand, int retry)
@@ -169,5 +328,29 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 != CommandStatus.SUCCESS) {
             executeLoggingJob(jobExecutionCommand, retry - 1);
         }
+    }
+
+    private void increaseDeviceTimeByDays(int numberOfDays) throws DeviceNotAvailableException {
+        Instant deviceDate = Instant.ofEpochMilli(getDevice().getDeviceDate());
+
+        getDevice().setDate(Date.from(deviceDate.plus(numberOfDays, ChronoUnit.DAYS)));
+        getDevice()
+                .executeShellCommand(
+                        "cmd time_detector set_time_state_for_tests --unix_epoch_time "
+                                + deviceDate.plus(numberOfDays, ChronoUnit.DAYS).toEpochMilli()
+                                + " --user_should_confirm_time false --elapsed_realtime 0");
+
+        getDevice().executeShellCommand("am broadcast -a android.intent.action.TIME_SET");
+    }
+
+    private void resetTime() throws DeviceNotAvailableException {
+        long timeDiff = Duration.between(mTestStartTime, Instant.now()).toMillis();
+
+        getDevice()
+                .executeShellCommand(
+                        "cmd time_detector set_time_state_for_tests --unix_epoch_time "
+                                + mTestStartTimeOnDevice.plusMillis(timeDiff).toEpochMilli()
+                                + " --user_should_confirm_time false --elapsed_realtime 0");
+        getDevice().executeShellCommand("am broadcast -a android.intent.action.TIME_SET");
     }
 }
