@@ -24,6 +24,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.isNullValue;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -129,7 +130,7 @@ public class ExerciseSegmentRecordHelper {
     /** Returns sql join needed for calculating exercise sessions duration */
     public static SqlJoin getJoinForDurationAggregation(String parentTableName) {
         SqlJoin join = getJoinReadRequest(parentTableName);
-        WhereClauses filterPauses = new WhereClauses();
+        WhereClauses filterPauses = new WhereClauses(AND);
         filterPauses.addWhereInIntsClause(EXERCISE_SEGMENT_TYPE, DURATION_EXCLUDE_TYPES);
         join.setSecondTableWhereClause(filterPauses);
         return join;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.tests;
+package android.healthconnect.cts.utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

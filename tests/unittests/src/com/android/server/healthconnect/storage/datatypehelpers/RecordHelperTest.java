@@ -21,6 +21,7 @@ import static android.health.connect.Constants.MAXIMUM_ALLOWED_CURSOR_COUNT;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper.STEPS_TABLE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.TransactionTestUtils.createStepsRecord;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -175,7 +176,7 @@ public class RecordHelperTest {
         }
 
         WhereClauses whereClause =
-                new WhereClauses()
+                new WhereClauses(AND)
                         .addWhereLessThanOrEqualClause(
                                 helper.getStartTimeColumnName(), expectedTimestamp);
         ReadTableRequest request2 =

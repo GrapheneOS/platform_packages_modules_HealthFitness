@@ -234,7 +234,7 @@ public class ExerciseRouteAccessTest {
     }
 
     @Test
-    public void readRecords_usingIds__mixedOwnAndOtherAppSession() throws Exception {
+    public void readRecords_usingIds_mixedOwnAndOtherAppSession() throws Exception {
         Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
         assertThat(bundle.getBoolean(SUCCESS)).isTrue();
         String otherAppSessionId = getInsertedSessionId(bundle);

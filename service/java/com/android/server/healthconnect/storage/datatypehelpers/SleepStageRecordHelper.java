@@ -24,6 +24,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.isNullValue;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.NonNull;
 import android.content.ContentValues;
@@ -64,7 +65,7 @@ public final class SleepStageRecordHelper {
     /** Returns sql join needed for calculating sleep duration */
     public static SqlJoin getJoinForDurationAggregation(String parentTableName) {
         SqlJoin join = getJoinReadRequest(parentTableName);
-        WhereClauses filterAwakes = new WhereClauses();
+        WhereClauses filterAwakes = new WhereClauses(AND);
         filterAwakes.addWhereInIntsClause(SLEEP_STAGE_TYPE, DURATION_EXCLUDE_TYPES);
         join.setSecondTableWhereClause(filterAwakes);
         return join;

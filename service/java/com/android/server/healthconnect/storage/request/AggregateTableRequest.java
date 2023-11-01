@@ -63,23 +63,23 @@ public class AggregateTableRequest {
 
     private static final int MAX_NUMBER_OF_GROUPS = Constants.MAXIMUM_PAGE_SIZE;
 
-    private final long DEFAULT_TIME = -1;
     private final String mTableName;
     private final List<String> mColumnNamesToAggregate;
     private final AggregationType<?> mAggregationType;
     private final RecordHelper<?> mRecordHelper;
     private final Map<Integer, AggregateResult<?>> mAggregateResults = new ArrayMap<>();
-    private final String mPhysicalTimeColumnName;
+
+    /**
+     * Represents "start time" for interval record, and "time" for instant record.
+     *
+     * <p>{@link #mUseLocalTime} is already taken into account when this field is set, meaning if
+     * {@link #mUseLocalTime} is {@code true}, then this field represent local time, otherwise
+     * physical time.
+     */
     private final String mTimeColumnName;
-    // Additional column used for time filtering. End time for interval records,
-    // null for other records.
-    private final String mEndTimeColumnName;
-    private final long mStartDateAccess;
+
+    private final WhereClauses mWhereClauses;
     private final SqlJoin mSqlJoin;
-    private List<Long> mPackageFilters;
-    private long mStartTime = DEFAULT_TIME;
-    private long mEndTime = DEFAULT_TIME;
-    private String mPackageColumnName;
     private String mGroupByColumnName;
     private int mGroupBySize = 1;
     private final List<String> mAdditionalColumnsToFetch;
@@ -91,24 +91,23 @@ public class AggregateTableRequest {
             AggregateParams params,
             AggregationType<?> aggregationType,
             RecordHelper<?> recordHelper,
-            long startDateAccess,
+            WhereClauses whereClauses,
             boolean useLocalTime) {
         mTableName = params.getTableName();
         mColumnNamesToAggregate = params.getColumnsToFetch();
-        mPhysicalTimeColumnName = params.getPhysicalTimeColumnName();
         mTimeColumnName = params.getTimeColumnName();
         mAggregationType = aggregationType;
         mRecordHelper = recordHelper;
         mSqlJoin = params.getJoin();
         mPriorityParams = params.getPriorityAggregationExtraParams();
-        mEndTimeColumnName = params.getExtraTimeColumnName();
+        mWhereClauses = whereClauses;
         mAdditionalColumnsToFetch = new ArrayList<>();
         mAdditionalColumnsToFetch.add(params.getTimeOffsetColumnName());
         mAdditionalColumnsToFetch.add(mTimeColumnName);
-        if (mEndTimeColumnName != null) {
-            mAdditionalColumnsToFetch.add(mEndTimeColumnName);
+        String endTimeColumnName = params.getExtraTimeColumnName();
+        if (endTimeColumnName != null) {
+            mAdditionalColumnsToFetch.add(endTimeColumnName);
         }
-        mStartDateAccess = startDateAccess;
         mUseLocalTime = useLocalTime;
     }
 
@@ -194,14 +193,6 @@ public class AggregateTableRequest {
         return appendAggregateCommand(builder, usingPriority);
     }
 
-    public AggregateTableRequest setPackageFilter(
-            List<Long> packageFilters, String packageColumnName) {
-        mPackageFilters = packageFilters;
-        mPackageColumnName = packageColumnName;
-
-        return this;
-    }
-
     /** Sets time filter for table request. */
     public AggregateTableRequest setTimeFilter(long startTime, long endTime) {
         // Return if the params will result in no impact on the query
@@ -209,9 +200,7 @@ public class AggregateTableRequest {
             return this;
         }
 
-        mStartTime = startTime;
-        mEndTime = endTime;
-        mTimeSplits = List.of(mStartTime, mEndTime);
+        mTimeSplits = List.of(startTime, endTime);
         return this;
     }
 
@@ -333,7 +322,7 @@ public class AggregateTableRequest {
             builder.append(mSqlJoin.getJoinCommand());
         }
 
-        builder.append(buildAggregationWhereCondition());
+        builder.append(mWhereClauses.get(/* withWhereKeyword= */ true));
 
         if (useGroupBy) {
             builder.append(" GROUP BY " + GROUP_BY_COLUMN_NAME);
@@ -348,36 +337,6 @@ public class AggregateTableRequest {
         }
 
         return builder.toString();
-    }
-
-    private String buildAggregationWhereCondition() {
-        WhereClauses whereClauses = new WhereClauses();
-        whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
-
-        // Take start access date into account
-        long startTime = mStartTime;
-        // This is an optimization to avoid unnecessary WHERE clause.
-        // - if local time is used, we'll compare the physical time field with mStartDateAccess
-        // - otherwise we'll just update the startTime to mStartDateAccess if it is greater than
-        //   startTime because we'll need to WHERE with that anyway.
-        // This is similar to what's been done in RecordHelper#getReadTableWhereClause()
-        if (mUseLocalTime) {
-            whereClauses.addWhereGreaterThanOrEqualClause(
-                    mPhysicalTimeColumnName, mStartDateAccess);
-        } else {
-            startTime = Math.max(mStartDateAccess, mStartTime);
-        }
-
-        if (mEndTimeColumnName != null) {
-            // Filter all records which overlap with time filter interval:
-            // recordStartTime < filterEndTime and recordEndTime >= filterStartTime
-            whereClauses.addWhereGreaterThanOrEqualClause(mEndTimeColumnName, startTime);
-        } else {
-            whereClauses.addWhereGreaterThanOrEqualClause(mTimeColumnName, startTime);
-        }
-        whereClauses.addWhereLessThanClause(mTimeColumnName, mEndTime);
-
-        return whereClauses.get(/* withWhereKeyword= */ true);
     }
 
     private void updateResultWithDataOriginPackageNames(Cursor metaDataCursor) {

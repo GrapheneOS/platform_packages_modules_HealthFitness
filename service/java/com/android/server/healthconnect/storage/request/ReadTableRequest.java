@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage.request;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.LIMIT_SIZE;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -47,7 +48,7 @@ public class ReadTableRequest {
     private RecordHelper<?> mRecordHelper;
     private List<String> mColumnNames;
     private SqlJoin mJoinClause;
-    private WhereClauses mWhereClauses = new WhereClauses();
+    private WhereClauses mWhereClauses = new WhereClauses(AND);
     private boolean mDistinct = false;
     private OrderByClause mOrderByClause = new OrderByClause();
     private String mLimitClause = "";

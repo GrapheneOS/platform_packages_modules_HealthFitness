@@ -17,7 +17,7 @@
 package android.healthconnect.tests.permissions;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
-import static android.healthconnect.tests.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
