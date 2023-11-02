@@ -37,10 +37,10 @@ constructor(
     private val appInfoReader: AppInfoReader,
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) {
+) : ILoadPermissionTypeContributorAppsUseCase {
 
     /** Returns a list of [AppMetadata]s that have data in this [HealthPermissionType]. */
-    suspend operator fun invoke(permissionType: HealthPermissionType): List<AppMetadata> =
+    override suspend operator fun invoke(permissionType: HealthPermissionType): List<AppMetadata> =
         withContext(dispatcher) {
             try {
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
@@ -63,4 +63,8 @@ constructor(
                 emptyList()
             }
         }
+}
+
+interface ILoadPermissionTypeContributorAppsUseCase {
+    suspend fun invoke(permissionType: HealthPermissionType): List<AppMetadata>
 }

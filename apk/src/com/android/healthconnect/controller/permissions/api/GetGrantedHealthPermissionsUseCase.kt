@@ -23,11 +23,13 @@ import javax.inject.Singleton
 @Singleton
 class GetGrantedHealthPermissionsUseCase
 @Inject
-constructor(private val healthPermissionManager: HealthPermissionManager) {
+constructor(private val healthPermissionManager: HealthPermissionManager) :
+    IGetGrantedHealthPermissionsUseCase {
     companion object {
         private const val TAG = "GetGrantedHealthPermiss"
     }
-    operator fun invoke(packageName: String): List<String> {
+
+    override operator fun invoke(packageName: String): List<String> {
         return try {
             healthPermissionManager.getGrantedHealthPermissions(packageName)
         } catch (ex: Exception) {
@@ -35,4 +37,8 @@ constructor(private val healthPermissionManager: HealthPermissionManager) {
             emptyList()
         }
     }
+}
+
+interface IGetGrantedHealthPermissionsUseCase {
+    operator fun invoke(packageName: String): List<String>
 }

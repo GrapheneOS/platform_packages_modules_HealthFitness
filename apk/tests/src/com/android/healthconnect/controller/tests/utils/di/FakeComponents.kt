@@ -18,6 +18,9 @@ package com.android.healthconnect.controller.tests.utils.di
 import android.health.connect.HealthDataCategory
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.Record
+import com.android.healthconnect.controller.data.access.AppAccessState
+import com.android.healthconnect.controller.data.access.ILoadAccessUseCase
+import com.android.healthconnect.controller.data.access.ILoadPermissionTypeContributorAppsUseCase
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
@@ -30,7 +33,9 @@ import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
+import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.api.ILoadPriorityListUseCase
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
@@ -243,5 +248,58 @@ class FakeLoadSleepDataUseCase : ILoadSleepDataUseCase {
 
     fun reset() {
         this.sleepDataMap = mutableMapOf()
+    }
+}
+
+class FakeLoadAccessUseCase : ILoadAccessUseCase {
+
+    private var appDataMap: Map<AppAccessState, List<AppMetadata>> = mutableMapOf()
+
+    override suspend fun invoke(
+        permissionType: HealthPermissionType
+    ): UseCaseResults<Map<AppAccessState, List<AppMetadata>>> {
+        return UseCaseResults.Success(appDataMap)
+    }
+
+    fun updateMap(map: Map<AppAccessState, List<AppMetadata>>) {
+        appDataMap = map
+    }
+
+    fun reset() {
+        this.appDataMap = mutableMapOf()
+    }
+}
+
+class FakeLoadPermissionTypeContributorAppsUseCase : ILoadPermissionTypeContributorAppsUseCase {
+
+    private var contributorApps: List<AppMetadata> = listOf()
+
+    override suspend fun invoke(permissionType: HealthPermissionType): List<AppMetadata> {
+        return contributorApps
+    }
+
+    fun updateList(list: List<AppMetadata>) {
+        contributorApps = list
+    }
+
+    fun reset() {
+        this.contributorApps = listOf()
+    }
+}
+
+class FakeGetGrantedHealthPermissionsUseCase : IGetGrantedHealthPermissionsUseCase {
+
+    private var permissionsPerApp: MutableMap<String, List<String>> = mutableMapOf()
+
+    override fun invoke(packageName: String): List<String> {
+        return permissionsPerApp.getOrDefault(packageName, listOf())
+    }
+
+    fun updateData(packageName: String, permissions: List<String>) {
+        permissionsPerApp[packageName] = permissions
+    }
+
+    fun reset() {
+        this.permissionsPerApp = mutableMapOf()
     }
 }
