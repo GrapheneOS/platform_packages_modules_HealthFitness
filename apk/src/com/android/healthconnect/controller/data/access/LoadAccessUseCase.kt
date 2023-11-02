@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.data.access
 
-import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
+import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
@@ -33,14 +33,14 @@ import kotlinx.coroutines.withContext
 class LoadAccessUseCase
 @Inject
 constructor(
-    private val loadPermissionTypeContributorAppsUseCase: LoadPermissionTypeContributorAppsUseCase,
-    private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
+    private val loadPermissionTypeContributorAppsUseCase: ILoadPermissionTypeContributorAppsUseCase,
+    private val loadGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
     private val healthPermissionReader: HealthPermissionReader,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) {
+) : ILoadAccessUseCase {
     /** Returns a map of [AppAccessState] to apps. */
-    suspend operator fun invoke(
+    override suspend operator fun invoke(
         permissionType: HealthPermissionType
     ): UseCaseResults<Map<AppAccessState, List<AppMetadata>>> =
         withContext(dispatcher) {
@@ -96,4 +96,10 @@ constructor(
     ): List<AppMetadata> {
         return packageNames.sortedBy { appMetadata -> appMetadata.appName }
     }
+}
+
+interface ILoadAccessUseCase {
+    suspend fun invoke(
+        permissionType: HealthPermissionType
+    ): UseCaseResults<Map<AppAccessState, List<AppMetadata>>>
 }
