@@ -29,6 +29,11 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppUtils
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.logging.DataSourcesElement
+import com.android.healthconnect.controller.utils.logging.ElementName
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import java.text.NumberFormat
 
 /** RecyclerView adapter that holds the list of app sources for this [HealthDataCategory]. */
@@ -49,6 +54,16 @@ class AppSourcesAdapter(
     private var isEditMode = false
 
     private val POSITION_CHANGED_PAYLOAD = Any()
+
+    private var logger: HealthConnectLogger
+    var logName: ElementName = DataSourcesElement.DATA_TOTALS_CARD
+
+    init {
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+        logger = hiltEntryPoint.logger()
+    }
 
     interface OnAppRemovedFromPriorityListListener {
         fun onAppRemovedFromPriorityList()
@@ -153,6 +168,8 @@ class AppSourcesAdapter(
             } else {
                 setupItemForDragMode(isOnlyApp)
             }
+
+            logger.logImpression(DataSourcesElement.APP_SOURCE_BUTTON)
         }
 
         private fun setupItemForEditMode(appPosition: Int) {
@@ -162,6 +179,8 @@ class AppSourcesAdapter(
                 AttributeResolver.getDrawable(itemView.context, R.attr.closeIcon)
             actionView.setOnTouchListener(null)
             actionView.setOnClickListener {
+                logger.logInteraction(DataSourcesElement.REMOVE_APP_SOURCE_BUTTON)
+
                 val currentPriority = priorityList.toMutableList()
                 val removedItem = currentPriority.removeAt(appPosition)
                 dataSourcesViewModel.setEditedPriorityList(currentPriority)
@@ -175,6 +194,7 @@ class AppSourcesAdapter(
                 removeItem(appPosition)
                 onAppRemovedListener.onAppRemovedFromPriorityList()
             }
+            logger.logImpression(DataSourcesElement.REMOVE_APP_SOURCE_BUTTON)
         }
 
         // These items are not clickable and so onTouch does not need to reimplement click
@@ -191,12 +211,14 @@ class AppSourcesAdapter(
                     AttributeResolver.getDrawable(itemView.context, R.attr.priorityItemDragIcon)
                 actionView.setOnClickListener(null)
                 actionView.setOnTouchListener { _, event ->
+                    logger.logInteraction(DataSourcesElement.REORDER_APP_SOURCE_BUTTON)
                     if (event.action == MotionEvent.ACTION_DOWN ||
                         event.action == MotionEvent.ACTION_UP) {
                         onItemDragStartedListener?.startDrag(this)
                     }
                     false
                 }
+                logger.logImpression(DataSourcesElement.REORDER_APP_SOURCE_BUTTON)
             }
         }
     }

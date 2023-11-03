@@ -50,6 +50,8 @@ import com.android.healthconnect.controller.tests.utils.di.FakeAppUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.whenever
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -65,6 +67,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.kotlin.atLeast
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
 
 @UninstallModules(AppUtilsModule::class)
 @HiltAndroidTest
@@ -75,6 +81,7 @@ class DataSourcesFragmentTest {
     @BindValue
     val dataSourcesViewModel: DataSourcesViewModel = Mockito.mock(DataSourcesViewModel::class.java)
     @BindValue val appUtils: AppUtils = FakeAppUtils()
+    @BindValue val healthConnectLogger: HealthConnectLogger = mock<HealthConnectLogger>()
 
     @Before
     fun setup() {
@@ -88,6 +95,7 @@ class DataSourcesFragmentTest {
     @After
     fun tearDown() {
         (appUtils as FakeAppUtils).reset()
+        reset(healthConnectLogger)
     }
 
     @Test
@@ -133,6 +141,9 @@ class DataSourcesFragmentTest {
                         allOf(
                             hasDescendant(withText("2")),
                             hasDescendant(withText(TEST_APP_NAME_2))))))
+
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.DATA_SOURCES_PAGE)
+        verify(healthConnectLogger, atLeast(1)).logPageImpression()
     }
 
     @Test

@@ -81,6 +81,7 @@ android_test {
         "androidx.test.ext.junit",
         "androidx.test.ext.truth",
         "androidx.test.rules",
+        "mockito-kotlin2"
     ],
     resource_dirs: ["main_res"],
     libs: [

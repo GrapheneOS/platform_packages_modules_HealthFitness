@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.datasources
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MediatorLiveData
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_KEY
@@ -28,6 +27,8 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.logging.AddAnAppElement
+import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -37,6 +38,10 @@ class AddAnAppFragment : Hilt_AddAnAppFragment() {
     @HealthDataCategoryInt private var category: Int = 0
 
     private var currentPriority: List<AppMetadata> = listOf()
+
+    init {
+        this.setPageName(PageName.ADD_AN_APP_PAGE)
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -58,8 +63,13 @@ class AddAnAppFragment : Hilt_AddAnAppFragment() {
                 setError(true)
             } else if (dataSourcesInfoState.isWithData()) {
                 setLoading(false)
-                val currentPriorityList = (dataSourcesInfoState.priorityListState as PriorityListState.WithData).priorityList
-                val potentialAppSources = (dataSourcesInfoState.potentialAppSourcesState as PotentialAppSourcesState.WithData).appSources
+                val currentPriorityList =
+                    (dataSourcesInfoState.priorityListState as PriorityListState.WithData)
+                        .priorityList
+                val potentialAppSources =
+                    (dataSourcesInfoState.potentialAppSourcesState
+                            as PotentialAppSourcesState.WithData)
+                        .appSources
                 currentPriorityList.let { currentPriority = it }
                 updateAppsList(potentialAppSources)
             }
@@ -75,15 +85,18 @@ class AddAnAppFragment : Hilt_AddAnAppFragment() {
                     HealthPreference(requireContext()).also { preference ->
                         preference.title = appMetadata.appName
                         preference.icon = appMetadata.icon
+                        preference.logName = AddAnAppElement.POTENTIAL_PRIORITY_APP_BUTTON
                         preference.setOnPreferenceClickListener {
                             // add this app to the bottom of the priority list
-                            val newPriority = currentPriority.toMutableList().also {
-                                it.add(appMetadata) }.toList()
+                            val newPriority =
+                                currentPriority
+                                    .toMutableList()
+                                    .also { it.add(appMetadata) }
+                                    .toList()
                             dataSourcesViewModel.updatePriorityList(
                                 newPriority.map { it.packageName }.toList(), category)
-                            findNavController().navigate(
-                                R.id.action_addAnAppFragment_to_dataSourcesFragment
-                            )
+                            findNavController()
+                                .navigate(R.id.action_addAnAppFragment_to_dataSourcesFragment)
                             true
                         }
                     })
