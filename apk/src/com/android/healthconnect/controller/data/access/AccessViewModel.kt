@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
  * [com.android.healthconnect.controller.dataaccess.HealthDataAccessFragment].
  */
 @HiltViewModel
-class AccessViewModel @Inject constructor(private val loadAccessUseCase: LoadAccessUseCase) :
+class AccessViewModel @Inject constructor(private val loadAccessUseCase: ILoadAccessUseCase) :
     ViewModel() {
 
     private val _appMetadataMap = MutableLiveData<AccessScreenState>()
