@@ -790,8 +790,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"Funcionamento das fontes e da priorización"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Engadir unha aplicación"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Editar fontes de aplicacións"</string>
-    <!-- no translation found for default_app_summary (6183876151011837062) -->
-    <skip />
+    <string name="default_app_summary" msgid="6183876151011837062">"Predeterminada do dispositivo"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Datos da aplicación"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Mostraranse aquí os datos das aplicacións con acceso a Saúde conectada"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Día"</string>

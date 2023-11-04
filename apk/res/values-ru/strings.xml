@@ -790,8 +790,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"Сведения об источниках данных и приоритете"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Добавить приложение"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Изменить список приложений"</string>
-    <!-- no translation found for default_app_summary (6183876151011837062) -->
-    <skip />
+    <string name="default_app_summary" msgid="6183876151011837062">"Приложение по умолчанию"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Данные приложения"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Здесь будут появляться данные из приложений, у которых есть доступ к приложению \"Здоровье и спорт\"."</string>
     <string name="date_picker_day" msgid="3076687507968958991">"День"</string>

@@ -790,8 +790,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"स्रोत &amp; प्राधान्य देणे कसे काम करते"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"एखादे ॲप जोडा"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"अ‍ॅप स्रोत संपादित करा"</string>
-    <!-- no translation found for default_app_summary (6183876151011837062) -->
-    <skip />
+    <string name="default_app_summary" msgid="6183876151011837062">"डिव्हाइस डीफॉल्ट"</string>
     <string name="app_data_title" msgid="6499967982291000837">"अ‍ॅप डेटा"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Health Connect चा अ‍ॅक्सेस असलेल्या ॲप्सचा डेटा येथे दर्शवला जाईल"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"दिवस"</string>

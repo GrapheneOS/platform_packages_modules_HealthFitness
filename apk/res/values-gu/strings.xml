@@ -790,8 +790,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"સૉર્સના &amp; પ્રાધાન્યતા આપવાના સેટિંગની કાર્ય કરવાની રીત"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"કોઈ ઍપ ઉમેરો"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"ઍપના સૉર્સમાં ફેરફાર કરો"</string>
-    <!-- no translation found for default_app_summary (6183876151011837062) -->
-    <skip />
+    <string name="default_app_summary" msgid="6183876151011837062">"ડિવાઇસ પર ડિફૉલ્ટ"</string>
     <string name="app_data_title" msgid="6499967982291000837">"ઍપનો ડેટા"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Health Connectનો ઍક્સેસ ધરાવતી ઍપનો ડેટા અહીં દેખાશે"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"દિવસ"</string>
