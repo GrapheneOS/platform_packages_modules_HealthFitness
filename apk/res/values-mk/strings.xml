@@ -790,8 +790,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"Како функционираат изворите и приоритизацијата"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Додајте апликација"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Изменување на изворите на апликации"</string>
-    <!-- no translation found for default_app_summary (6183876151011837062) -->
-    <skip />
+    <string name="default_app_summary" msgid="6183876151011837062">"Стандардни поставки за уредот"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Податоци од апликација"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Податоците од апликациите со пристап до Health Connect ќе се прикажат тука"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Ден"</string>

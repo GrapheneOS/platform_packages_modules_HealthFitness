@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Nessuna"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Dettagli voce"</string>
     <string name="backup_title" msgid="211503191266235085">"Backup"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Origini di app e priorità"</string>
+    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Origini dati e priorità"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Imposta unità"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Accesso recente"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Nessuna app ha usato di recente Connessione Salute"</string>
@@ -788,10 +788,9 @@
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Nessuna origine di app"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Dopo aver concesso all\'app le autorizzazioni di scrittura di dati <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, le origini verranno visualizzate qui."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Come funzionano le origini e la prioritizzazione"</string>
-    <string name="data_sources_add_app" msgid="319926596123692514">"Aggiungere un\'app"</string>
+    <string name="data_sources_add_app" msgid="319926596123692514">"Aggiungi un\'app"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Modifica origini di app"</string>
-    <!-- no translation found for default_app_summary (6183876151011837062) -->
-    <skip />
+    <string name="default_app_summary" msgid="6183876151011837062">"Opzione predefinita"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Dati dell\'app"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"I dati delle app con accesso a Connessione Salute appariranno qui"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Giorno"</string>
