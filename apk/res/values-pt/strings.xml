@@ -790,8 +790,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"Como origens e priorização funcionam"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Adicionar um app"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Editar fontes de apps"</string>
-    <!-- no translation found for default_app_summary (6183876151011837062) -->
-    <skip />
+    <string name="default_app_summary" msgid="6183876151011837062">"Padrão do dispositivo"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Dados do app"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Os dados de apps com acesso à Conexão Saúde vão aparecer aqui"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Dia"</string>

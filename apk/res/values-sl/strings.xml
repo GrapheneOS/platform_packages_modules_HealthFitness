@@ -790,8 +790,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"Kako delujejo viri in dodeljevanje prednosti"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Dodajanje aplikacije"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Urejanje virov aplikacij"</string>
-    <!-- no translation found for default_app_summary (6183876151011837062) -->
-    <skip />
+    <string name="default_app_summary" msgid="6183876151011837062">"Privzeta aplikacija v napravi"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Podatki aplikacije"</string>
     <string name="no_data_footer" msgid="4777297654713673100">"Podatki iz aplikacij z dostopom do aplikacije Health Connect bodo prikazani tukaj"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Dan"</string>
