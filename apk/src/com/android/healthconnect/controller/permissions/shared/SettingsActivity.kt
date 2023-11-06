@@ -38,6 +38,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -85,6 +86,10 @@ class SettingsActivity : Hilt_SettingsActivity() {
         val rationalIntentDeclared = healthPermissionReader.isRationalIntentDeclared(appPackageName)
         if (!rationalIntentDeclared) {
             Log.e(TAG, "App should support rational intent!")
+            if (healthPermissionReader.hasHealthPermissionGranted(appPackageName)) {
+                Toast.makeText(this, R.string.warning_can_only_revoke_health_permissions, Toast.LENGTH_SHORT).show()
+                return
+            }
             // posting finish() on the next main loop iteration to prevent a blank screen
             // if the activity has been started for the first time (b/284327172)
             Handler(Looper.getMainLooper()).post(this::finish)

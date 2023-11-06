@@ -23,6 +23,7 @@ import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.pm.PackageManager.ResolveInfoFlags
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions
+import com.android.healthconnect.controller.permissions.api.HealthPermissionManagerImpl
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.utils.FeatureUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -92,6 +93,10 @@ constructor(
                 intent, ResolveInfoFlags.of(RESOLVE_INFO_FLAG))
         return resolvedInfo.any { info -> info.activityInfo.packageName == packageName }
     }
+
+    fun hasHealthPermissionGranted(packageName: String) = HealthPermissionManagerImpl(
+        context.getSystemService(HealthConnectManager::class.java))
+        .getGrantedHealthPermissions(packageName).isNotEmpty()
 
     fun getApplicationRationaleIntent(packageName: String): Intent {
         val intent = getRationaleIntent(packageName)

@@ -143,6 +143,8 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         viewModel.grantedPermissions.observe(viewLifecycleOwner) { granted ->
             permissionMap.forEach { (healthPermission, switchPreference) ->
                 switchPreference.isChecked = healthPermission in granted
+                switchPreference.isEnabled =
+                    healthPermissionReader.isRationalIntentDeclared(packageName) || switchPreference.isChecked
             }
         }
 
@@ -236,6 +238,8 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         }
         viewModel.allAppPermissionsGranted.observe(viewLifecycleOwner) { isAllGranted ->
             allowAllPreference?.isChecked = isAllGranted
+            allowAllPreference?.isEnabled =
+                healthPermissionReader.isRationalIntentDeclared(packageName) || allowAllPreference?.isChecked == true
         }
     }
 
