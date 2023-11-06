@@ -125,10 +125,14 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     private static final boolean SESSION_DATATYPE_DEFAULT_FLAG_VALUE = true;
     private static final boolean EXERCISE_ROUTE_DEFAULT_FLAG_VALUE = true;
     public static final boolean ENABLE_RATE_LIMITER_DEFAULT_FLAG_VALUE = true;
-    public static final int QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE = 1000;
-    public static final int QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE = 8000;
-    public static final int QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE = 1000;
-    public static final int QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE = 8000;
+    public static final int QUOTA_BUCKET_READS_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE = 2000;
+    public static final int QUOTA_BUCKET_READS_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE = 16000;
+    public static final int QUOTA_BUCKET_READS_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE = 1000;
+    public static final int QUOTA_BUCKET_READS_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE = 8000;
+    public static final int QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE = 1000;
+    public static final int QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE = 8000;
+    public static final int QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE = 1000;
+    public static final int QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE = 8000;
     public static final int CHUNK_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE = 5000000;
     public static final int RECORD_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE = 1000000;
     public static final int DATA_PUSH_LIMIT_PER_APP_15M_DEFAULT_FLAG_VALUE = 35000000;
@@ -512,49 +516,49 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_READ_REQUESTS_PER_24H_FOREGROUND_FLAG,
-                        QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE));
+                        QUOTA_BUCKET_READS_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE));
         quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_24H_BACKGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_READ_REQUESTS_PER_24H_BACKGROUND_FLAG,
-                        QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE));
+                        QUOTA_BUCKET_READS_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE));
         quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_15M_FOREGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_READ_REQUESTS_PER_15M_FOREGROUND_FLAG,
-                        QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE));
+                        QUOTA_BUCKET_READS_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE));
         quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_15M_BACKGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_READ_REQUESTS_PER_15M_BACKGROUND_FLAG,
-                        QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE));
+                        QUOTA_BUCKET_READS_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE));
         quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_WRITE_REQUESTS_PER_24H_FOREGROUND_FLAG,
-                        QUOTA_BUCKET_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE));
+                        QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE));
         quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_WRITE_REQUESTS_PER_24H_BACKGROUND_FLAG,
-                        QUOTA_BUCKET_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE));
+                        QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE));
         quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_WRITE_REQUESTS_PER_15M_FOREGROUND_FLAG,
-                        QUOTA_BUCKET_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE));
+                        QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE));
         quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND,
                 DeviceConfig.getInt(
                         DeviceConfig.NAMESPACE_HEALTH_FITNESS,
                         MAX_WRITE_REQUESTS_PER_15M_BACKGROUND_FLAG,
-                        QUOTA_BUCKET_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE));
+                        QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE));
         quotaBucketToMaxRollingQuotaMap.put(
                 QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_PER_APP_15M,
                 DeviceConfig.getInt(
