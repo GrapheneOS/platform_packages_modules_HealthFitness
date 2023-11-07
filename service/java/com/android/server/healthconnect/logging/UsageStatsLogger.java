@@ -36,12 +36,10 @@ final class UsageStatsLogger {
         Objects.requireNonNull(context);
 
         UsageStatsCollector usageStatsCollector = new UsageStatsCollector(context, userHandle);
-        usageStatsCollector.upsertLastAccessLogTimeStamp();
 
         HealthFitnessStatsLog.write(
                 HealthFitnessStatsLog.HEALTH_CONNECT_USAGE_STATS,
                 usageStatsCollector.getPackagesHoldingHealthPermissions(),
-                usageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect(),
-                usageStatsCollector.isUserMonthlyActive());
+                usageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect());
     }
 }
