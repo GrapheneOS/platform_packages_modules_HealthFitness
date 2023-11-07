@@ -37,11 +37,12 @@ import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
+import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceGroup
-import androidx.preference.SwitchPreference
+import androidx.preference.TwoStatePreference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.MIGRATION_ACTIVITY_INTENT
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
@@ -66,7 +67,6 @@ import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
-import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -96,7 +96,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
     private lateinit var appName: String
     private var isPackageSupported = true
     private val viewModel: AppPermissionViewModel by activityViewModels()
-    private val permissionMap: MutableMap<HealthPermission, SwitchPreference> = mutableMapOf()
+    private val permissionMap: MutableMap<HealthPermission, TwoStatePreference> = mutableMapOf()
     private val migrationViewModel: MigrationViewModel by viewModels()
 
     private val allowAllPreference: HealthMainSwitchPreference? by lazy {
@@ -230,7 +230,7 @@ class SettingsManageAppPermissionsFragment : Hilt_SettingsManageAppPermissionsFr
         }
     }
 
-    private val onSwitchChangeListener = OnMainSwitchChangeListener { switchView, isChecked ->
+    private val onSwitchChangeListener = OnCheckedChangeListener { switchView, isChecked ->
         if (isChecked) {
             val permissionsUpdated = viewModel.grantAllPermissions(packageName)
             if (!permissionsUpdated) {
