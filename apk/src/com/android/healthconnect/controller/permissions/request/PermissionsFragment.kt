@@ -22,12 +22,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
-import androidx.preference.TwoStatePreference
+import androidx.preference.SwitchPreference
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermissionStrings.Companion.fromPermissionType
@@ -41,6 +40,7 @@ import com.android.healthconnect.controller.shared.preference.HealthSwitchPrefer
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
+import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -76,12 +76,13 @@ class PermissionsFragment : Hilt_PermissionsFragment() {
         preferenceScreen.findPreference(WRITE_CATEGORY)
     }
 
-    private val onSwitchChangeListener = OnCheckedChangeListener { _, grant ->
+    private val onSwitchChangeListener: OnMainSwitchChangeListener =
+        OnMainSwitchChangeListener { _, grant ->
             mReadPermissionCategory?.children?.forEach { preference ->
-                (preference as TwoStatePreference).isChecked = grant
+                (preference as SwitchPreference).isChecked = grant
             }
             mWritePermissionCategory?.children?.forEach { preference ->
-                (preference as TwoStatePreference).isChecked = grant
+                (preference as SwitchPreference).isChecked = grant
             }
             viewModel.updatePermissions(grant)
         }
