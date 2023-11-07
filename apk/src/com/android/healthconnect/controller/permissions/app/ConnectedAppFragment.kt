@@ -34,7 +34,6 @@ package com.android.healthconnect.controller.permissions.app
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -75,6 +74,7 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.AppHeaderPreference
 import com.android.settingslib.widget.FooterPreference
+import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -232,11 +232,11 @@ class ConnectedAppFragment : Hilt_ConnectedAppFragment() {
         }
     }
 
-    private val onSwitchChangeListener = OnCheckedChangeListener { buttonView, isChecked ->
+    private val onSwitchChangeListener = OnMainSwitchChangeListener { switchView, isChecked ->
         if (isChecked) {
             val permissionsUpdated = appPermissionViewModel.grantAllPermissions(packageName)
             if (!permissionsUpdated) {
-                buttonView.isChecked = false
+                switchView.isChecked = false
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
             }
         } else {
