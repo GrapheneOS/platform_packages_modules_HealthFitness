@@ -17,12 +17,12 @@ package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.CompoundButton.OnCheckedChangeListener
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.ErrorPageElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import com.android.settingslib.widget.MainSwitchPreference
-import com.android.settingslib.widget.OnMainSwitchChangeListener
 import dagger.hilt.android.EntryPointAccessors
 
 /** A [MainSwitchPreference] that allows logging. */
@@ -33,15 +33,15 @@ constructor(context: Context, attrs: AttributeSet? = null) : MainSwitchPreferenc
     private var logger: HealthConnectLogger
     var logNameActive: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
     var logNameInactive: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
-    private var loggingSwitchListener: OnMainSwitchChangeListener
+    private var loggingSwitchListener: OnCheckedChangeListener
 
     init {
         val hiltEntryPoint =
             EntryPointAccessors.fromApplication(
                 context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
         logger = hiltEntryPoint.logger()
-        loggingSwitchListener = OnMainSwitchChangeListener { preference, newValue ->
-            if (preference.isPressed) {
+        loggingSwitchListener = OnCheckedChangeListener { buttonView, newValue ->
+            if (buttonView.isPressed) {
                 if (newValue) {
                     logger.logInteraction(
                         logNameInactive,
