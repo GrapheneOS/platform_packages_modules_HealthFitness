@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts.logging;
 
-import static android.healthconnect.cts.logging.HostSideTestsUtils.isHardwareSupported;
+import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
 
 import static com.google.common.truth.Truth.assertThat;
 
