@@ -35,15 +35,15 @@ package com.android.healthconnect.controller.permissions.shared
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
-import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
-import com.android.healthconnect.controller.onboarding.OnboardingActivityContract
-import com.android.healthconnect.controller.onboarding.OnboardingActivityContract.Companion.INTENT_RESULT_CANCELLED
+import com.android.healthconnect.controller.onboarding.OnboardingActivity
+import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.shouldRedirectToOnboardingActivity
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
@@ -53,20 +53,24 @@ import javax.inject.Inject
 @AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
 class SettingsActivity : Hilt_SettingsActivity() {
 
-    companion object {
-        private const val TAG = "SettingsActivity"
-    }
-
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
+
     private val viewModel: AppPermissionViewModel by viewModels()
+
+    private val openOnboardingActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_CANCELED) {
+                finish()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         setTitle(R.string.permgrouplab_health)
 
-        if (maybeRedirectToOnboardingActivity(this) && savedInstanceState == null) {
-            openOnboardingActivity.launch(1)
+        if (savedInstanceState == null && shouldRedirectToOnboardingActivity(this)) {
+            openOnboardingActivity.launch(OnboardingActivity.createIntent(this))
         }
     }
 
@@ -74,8 +78,7 @@ class SettingsActivity : Hilt_SettingsActivity() {
         super.onStart()
 
         if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
-            val packageName = intent.getStringExtra(
-                EXTRA_PACKAGE_NAME)!!
+            val packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME)!!
 
             viewModel.shouldNavigateToFragment.observe(this) { shouldNavigate ->
                 maybeNavigateToFragment(shouldNavigate)
@@ -83,7 +86,6 @@ class SettingsActivity : Hilt_SettingsActivity() {
 
             viewModel.loadShouldNavigateToFragment(packageName)
         }
-
     }
 
     private fun maybeNavigateToFragment(shouldNavigate: Boolean) {
@@ -93,8 +95,7 @@ class SettingsActivity : Hilt_SettingsActivity() {
             navController.navigate(
                 R.id.action_deeplink_to_settingsManageAppPermissionsFragment,
                 bundleOf(EXTRA_PACKAGE_NAME to intent.getStringExtra(EXTRA_PACKAGE_NAME)))
-        }
-        else {
+        } else {
             finish()
         }
     }
@@ -113,11 +114,4 @@ class SettingsActivity : Hilt_SettingsActivity() {
         }
         return true
     }
-
-    val openOnboardingActivity =
-        registerForActivityResult(OnboardingActivityContract()) { result ->
-            if (result == INTENT_RESULT_CANCELLED) {
-                finish()
-            }
-        }
 }

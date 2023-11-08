@@ -15,27 +15,36 @@
  */
 package com.android.healthconnect.controller
 
+import android.app.Activity
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeRedirectToMigrationActivity
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
-import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
-import com.android.healthconnect.controller.onboarding.OnboardingActivityContract
-import com.android.healthconnect.controller.onboarding.OnboardingActivityContract.Companion.INTENT_RESULT_CANCELLED
+import com.android.healthconnect.controller.onboarding.OnboardingActivity
+import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.shouldRedirectToOnboardingActivity
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 /** Entry point activity for Health Connect. */
 @AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
 class MainActivity : Hilt_MainActivity() {
+
     @Inject lateinit var logger: HealthConnectLogger
+
     private val migrationViewModel: MigrationViewModel by viewModels()
+
+    private val openOnboardingActivity =
+        registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_CANCELED) {
+                finish()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +56,8 @@ class MainActivity : Hilt_MainActivity() {
             return
         }
 
-        if (maybeRedirectToOnboardingActivity(this) && savedInstanceState == null) {
-            openOnboardingActivity.launch(1)
+        if (savedInstanceState == null && shouldRedirectToOnboardingActivity(this)) {
+            openOnboardingActivity.launch(OnboardingActivity.createIntent(this))
         }
 
         val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
@@ -78,7 +87,6 @@ class MainActivity : Hilt_MainActivity() {
         if (!navController.popBackStack()) {
             finish()
         }
-
     }
 
     override fun onNavigateUp(): Boolean {
@@ -89,13 +97,6 @@ class MainActivity : Hilt_MainActivity() {
 
         return true
     }
-
-    val openOnboardingActivity =
-        registerForActivityResult(OnboardingActivityContract()) { result ->
-            if (result == INTENT_RESULT_CANCELLED) {
-                finish()
-            }
-        }
 
     // TODO (b/270864219): implement interaction logging for the menu button
     //    override fun onMenuOpened(featureId: Int, menu: Menu?): Boolean {

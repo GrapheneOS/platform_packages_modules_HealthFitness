@@ -27,7 +27,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.utils.getAppStoreLink
+import com.android.healthconnect.controller.utils.AppStoreUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -38,6 +38,7 @@ import javax.inject.Inject
 class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
+    @Inject lateinit var appStoreUtils: AppStoreUtils
 
     companion object {
         private const val TAG = "AppUpdateFragment"
@@ -83,7 +84,7 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
             try {
                 val packageName =
                     getString(resources.getIdentifier(HC_PACKAGE_NAME_CONFIG_NAME, null, null))
-                val intent = getAppStoreLink(requireContext(), packageName)
+                val intent = appStoreUtils.getAppStoreLink(packageName)
                 startActivity(intent!!)
             } catch (exception: Exception) {
                 Log.e(TAG, "App store activity does not exist", exception)
