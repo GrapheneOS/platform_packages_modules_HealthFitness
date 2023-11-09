@@ -3,9 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
+ *
  * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
  * ```
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -27,18 +29,26 @@ import javax.inject.Singleton
 
 /** Time source for testing purposes. */
 object TestTimeSource : TimeSource {
-    override fun currentTimeMillis(): Long = NOW.toEpochMilli()
+    private var localNow: Instant = NOW
+
+    override fun currentTimeMillis(): Long = localNow.toEpochMilli()
 
     override fun deviceZoneOffset(): ZoneId = UTC
 
     override fun currentLocalDateTime(): LocalDateTime =
         Instant.ofEpochMilli(currentTimeMillis()).atZone(deviceZoneOffset()).toLocalDateTime()
+
+    fun setNow(instant: Instant) {
+        localNow = instant
+    }
+
+    fun reset() {
+        localNow = NOW
+    }
 }
 
 @Module
 @TestInstallIn(components = [SingletonComponent::class], replaces = [SystemTimeSourceModule::class])
 object TestTimeSourceModule {
-    @Provides
-    @Singleton
-    fun providesTestTimeSource() : TimeSource = TestTimeSource
+    @Provides @Singleton fun providesTestTimeSource(): TimeSource = TestTimeSource
 }

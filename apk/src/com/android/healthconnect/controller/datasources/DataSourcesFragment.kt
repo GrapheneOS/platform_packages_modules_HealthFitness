@@ -41,7 +41,9 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsImpl
 import com.android.healthconnect.controller.utils.TimeSource
+import com.android.healthconnect.controller.utils.logging.DataSourcesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.FooterPreference
@@ -69,8 +71,7 @@ class DataSourcesFragment :
     }
 
     init {
-        // TODO (b/292270118) update to correct name
-        //        this.setPageName(PageName.MANAGE_DATA_PAGE)
+        this.setPageName(PageName.DATA_SOURCES_PAGE)
     }
 
     @Inject lateinit var logger: HealthConnectLogger
@@ -241,6 +242,7 @@ class DataSourcesFragment :
             HealthPreference(requireContext()).also {
                 it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.addIcon)
                 it.title = getString(R.string.data_sources_add_app)
+                it.logName = DataSourcesElement.ADD_AN_APP_BUTTON
                 it.key = ADD_AN_APP_PREFERENCE_KEY
                 it.order = 100 // Arbitrary number to ensure the button is added at the end of the
                 // priority list
@@ -285,8 +287,8 @@ class DataSourcesFragment :
                 dataTotalsPreferenceGroup?.isVisible = false
             } else {
                 dataTotalsPreferenceGroup?.isVisible = true
-                cardContainerPreference?.setLoading(false)
                 cardContainerPreference?.setAggregationCardInfo(cardInfos)
+                cardContainerPreference?.setLoading(false)
             }
         }
     }
@@ -354,6 +356,8 @@ class DataSourcesFragment :
                     position: Int,
                     id: Long
                 ) {
+                    logger.logInteraction(DataSourcesElement.DATA_TYPE_SPINNER)
+
                     val currentCategory = dataSourcesCategories[position]
                     currentCategorySelection = dataSourcesCategories[position]
 
@@ -369,5 +373,6 @@ class DataSourcesFragment :
             dataSourcesCategories.indexOf(dataSourcesViewModel.getCurrentSelection()))
 
         preferenceScreen.addPreference(spinnerPreference)
+        logger.logImpression(DataSourcesElement.DATA_TYPE_SPINNER)
     }
 }

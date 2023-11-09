@@ -1,3 +1,16 @@
+/**
+ * Copyright (C) 2023 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package com.android.healthconnect.controller.tests.data.entries.api
 
 import android.content.Context
@@ -5,19 +18,17 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.TimeInstantRangeFilter
-import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
 import android.os.OutcomeReceiver
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
-import com.android.healthconnect.controller.data.entries.api.LoadSleepDataUseCase
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.tests.utils.verifySleepSessionListsEqual
 import com.android.healthconnect.controller.utils.atStartOfDay
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -27,7 +38,6 @@ import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -37,23 +47,20 @@ import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
 import org.mockito.Captor
 import org.mockito.Mockito
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
-class LoadSleepDataUseCaseTest {
+class LoadEntriesHelperUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     private val healthConnectManager: HealthConnectManager =
         Mockito.mock(HealthConnectManager::class.java)
-    private lateinit var context: Context
-
     @Inject lateinit var healthDataEntryFormatter: HealthDataEntryFormatter
-    private lateinit var loadSleepDataUseCase: LoadSleepDataUseCase
+
+    private lateinit var context: Context
     private lateinit var loadEntriesHelper: LoadEntriesHelper
 
     @Captor
@@ -67,65 +74,63 @@ class LoadSleepDataUseCaseTest {
         hiltRule.inject()
         loadEntriesHelper =
             LoadEntriesHelper(context, healthDataEntryFormatter, healthConnectManager)
-        loadSleepDataUseCase = LoadSleepDataUseCase(Dispatchers.Main, loadEntriesHelper)
     }
 
+    // TODO (b/309288325) add tests for other permission types
+
     @Test
-    fun loadSleepDataUseCase_withinDay_returnsListOfRecords_sortedByDescendingStartTime() =
-        runTest {
-            TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
+    fun loadSleepData_withinDay_returnsListOfRecords_sortedByDescendingStartTime() = runTest {
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
-            val startTime = Instant.parse("2023-06-12T22:30:00Z").atStartOfDay()
-            val input =
-                LoadDataEntriesInput(
-                    displayedStartTime = startTime,
-                    packageName = null,
-                    period = DateNavigationPeriod.PERIOD_DAY,
-                    showDataOrigin = true,
-                    permissionType = HealthPermissionType.SLEEP)
+        val startTime = Instant.parse("2023-06-12T22:30:00Z").atStartOfDay()
+        val input =
+            LoadDataEntriesInput(
+                displayedStartTime = startTime,
+                packageName = null,
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+                permissionType = HealthPermissionType.SLEEP)
 
-            val expectedTimeRangeFilter =
-                loadEntriesHelper.getTimeFilter(startTime, DateNavigationPeriod.PERIOD_DAY, true)
+        val expectedTimeRangeFilter =
+            loadEntriesHelper.getTimeFilter(startTime, DateNavigationPeriod.PERIOD_DAY, true)
 
-            Mockito.doAnswer(prepareDaySleepAnswer())
-                .`when`(healthConnectManager)
-                .readRecords(
-                    ArgumentMatchers.any(ReadRecordsRequestUsingFilters::class.java),
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any())
+        Mockito.doAnswer(prepareDaySleepAnswer())
+            .`when`(healthConnectManager)
+            .readRecords(
+                ArgumentMatchers.any(ReadRecordsRequestUsingFilters::class.java),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any())
 
-            val actual = loadSleepDataUseCase.invoke(input)
-            val expected =
-                listOf(
-                    SleepSessionRecord.Builder(
-                            getMetaData(),
-                            Instant.parse("2023-06-12T22:30:00Z"),
-                            Instant.parse("2023-06-13T07:45:00Z"))
-                        .build(),
-                    SleepSessionRecord.Builder(
-                            getMetaData(),
-                            Instant.parse("2023-06-12T21:00:00Z"),
-                            Instant.parse("2023-06-12T21:20:00Z"))
-                        .build(),
-                    SleepSessionRecord.Builder(
-                            getMetaData(),
-                            Instant.parse("2023-06-12T16:00:00Z"),
-                            Instant.parse("2023-06-12T17:45:00Z"))
-                        .build(),
-                )
+        val actual = loadEntriesHelper.readRecords(input)
+        val expected =
+            listOf(
+                SleepSessionRecord.Builder(
+                        getMetaData(),
+                        Instant.parse("2023-06-12T22:30:00Z"),
+                        Instant.parse("2023-06-13T07:45:00Z"))
+                    .build(),
+                SleepSessionRecord.Builder(
+                        getMetaData(),
+                        Instant.parse("2023-06-12T21:00:00Z"),
+                        Instant.parse("2023-06-12T21:20:00Z"))
+                    .build(),
+                SleepSessionRecord.Builder(
+                        getMetaData(),
+                        Instant.parse("2023-06-12T16:00:00Z"),
+                        Instant.parse("2023-06-12T17:45:00Z"))
+                    .build(),
+            )
 
-            verify(healthConnectManager, times(1))
-                .readRecords(
-                    requestCaptor.capture(), ArgumentMatchers.any(), ArgumentMatchers.any())
-            assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
-                .isEqualTo(expectedTimeRangeFilter.startTime)
-            assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).endTime)
-                .isEqualTo(expectedTimeRangeFilter.endTime)
-            assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).isBounded)
-                .isEqualTo(expectedTimeRangeFilter.isBounded)
-            assertThat(actual is UseCaseResults.Success).isTrue()
-            verifySleepSessionListsEqual((actual as UseCaseResults.Success).data, expected)
-        }
+        Mockito.verify(healthConnectManager, Mockito.times(1))
+            .readRecords(requestCaptor.capture(), ArgumentMatchers.any(), ArgumentMatchers.any())
+        assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
+            .isEqualTo(expectedTimeRangeFilter.startTime)
+        assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).endTime)
+            .isEqualTo(expectedTimeRangeFilter.endTime)
+        assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).isBounded)
+            .isEqualTo(expectedTimeRangeFilter.isBounded)
+        verifySleepSessionListsEqual(actual, expected)
+    }
 
     @Test
     fun loadSleepDataUseCase_withinWeek_returnsListOfRecords_sortedByDescendingStartTime() =
@@ -151,7 +156,7 @@ class LoadSleepDataUseCaseTest {
                     ArgumentMatchers.any(),
                     ArgumentMatchers.any())
 
-            val actual = loadSleepDataUseCase.invoke(input)
+            val actual = loadEntriesHelper.readRecords(input)
             val expected =
                 listOf(
                     SleepSessionRecord.Builder(
@@ -180,7 +185,7 @@ class LoadSleepDataUseCaseTest {
                             Instant.parse("2023-06-13T07:45:00Z"))
                         .build())
 
-            verify(healthConnectManager, times(1))
+            Mockito.verify(healthConnectManager, Mockito.times(1))
                 .readRecords(
                     requestCaptor.capture(), ArgumentMatchers.any(), ArgumentMatchers.any())
             assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
@@ -189,8 +194,7 @@ class LoadSleepDataUseCaseTest {
                 .isEqualTo(expectedTimeRangeFilter.endTime)
             assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).isBounded)
                 .isEqualTo(expectedTimeRangeFilter.isBounded)
-            assertThat(actual is UseCaseResults.Success).isTrue()
-            verifySleepSessionListsEqual((actual as UseCaseResults.Success).data, expected)
+            verifySleepSessionListsEqual(actual, expected)
         }
 
     @Test
@@ -217,7 +221,7 @@ class LoadSleepDataUseCaseTest {
                     ArgumentMatchers.any(),
                     ArgumentMatchers.any())
 
-            val actual = loadSleepDataUseCase.invoke(input)
+            val actual = loadEntriesHelper.readRecords(input)
             val expected =
                 listOf(
                     SleepSessionRecord.Builder(
@@ -251,7 +255,7 @@ class LoadSleepDataUseCaseTest {
                             Instant.parse("2023-06-13T07:45:00Z"))
                         .build())
 
-            verify(healthConnectManager, times(1))
+            Mockito.verify(healthConnectManager, Mockito.times(1))
                 .readRecords(
                     requestCaptor.capture(), ArgumentMatchers.any(), ArgumentMatchers.any())
             assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).startTime)
@@ -260,26 +264,8 @@ class LoadSleepDataUseCaseTest {
                 .isEqualTo(expectedTimeRangeFilter.endTime)
             assertThat((requestCaptor.value.timeRangeFilter as TimeInstantRangeFilter).isBounded)
                 .isEqualTo(expectedTimeRangeFilter.isBounded)
-            assertThat(actual is UseCaseResults.Success).isTrue()
-            verifySleepSessionListsEqual((actual as UseCaseResults.Success).data, expected)
+            verifySleepSessionListsEqual(actual, expected)
         }
-
-    private fun verifySleepSessionListsEqual(
-        actual: List<Record>,
-        expected: List<SleepSessionRecord>
-    ) {
-        assertThat(actual.size).isEqualTo(expected.size)
-        for ((index, element) in actual.withIndex()) {
-            val expectedElement = expected[index]
-            val actualElement = element as SleepSessionRecord
-
-            assertThat(actualElement.startTime).isEqualTo(expectedElement.startTime)
-            assertThat(actualElement.endTime).isEqualTo(expectedElement.endTime)
-            assertThat(actualElement.notes).isEqualTo(expectedElement.notes)
-            assertThat(actualElement.title).isEqualTo(expectedElement.title)
-            assertThat(actualElement.stages).isEqualTo(expectedElement.stages)
-        }
-    }
 
     private fun prepareDaySleepAnswer():
         (InvocationOnMock) -> ReadRecordsResponse<SleepSessionRecord> {

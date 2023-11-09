@@ -21,13 +21,16 @@ import com.android.healthconnect.controller.utils.isAtLeastOneDayAfter
 import com.android.healthconnect.controller.utils.isOnDayAfter
 import com.android.healthconnect.controller.utils.isOnDayBefore
 import com.android.healthconnect.controller.utils.isOnSameDay
+import com.android.healthconnect.controller.utils.randomInstant
 import com.android.healthconnect.controller.utils.toInstant
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
 import com.android.healthconnect.controller.utils.toLocalDate
+import com.android.healthconnect.controller.utils.toLocalDateTime
 import com.android.healthconnect.controller.utils.toLocalTime
 import com.google.common.truth.Truth.assertThat
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.util.TimeZone
@@ -181,5 +184,37 @@ class TimeExtensionsTest {
         val testLocalDate = LocalDate.of(2021, 10, 1)
         val expectedInstant = Instant.parse("2021-10-01T03:00:00Z")
         assertThat(testLocalDate.toInstantAtStartOfDay()).isEqualTo(expectedInstant)
+    }
+
+    @Test
+    fun instantToLocalDateTime_returnsLocalizedDateTime() {
+        // UTC + 8
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Australia/Perth")))
+
+        val testInstant = Instant.parse("2023-05-18T20:00:00Z")
+        val expectedLocalDateTime = LocalDateTime.of(2023, 5, 19, 4, 0)
+
+        assertThat(testInstant.toLocalDateTime()).isEqualTo(expectedLocalDateTime)
+    }
+
+    @Test
+    fun localDateRandomInstant_returnsInstantOnTheLocalDate() {
+        // UTC + 5:30
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Asia/Kolkata")))
+
+        val localDate = LocalDate.of(2023, 7, 18)
+        val randomInstant = localDate.randomInstant()
+
+        assertThat(randomInstant.isOnSameDay(localDate.toInstantAtStartOfDay())).isTrue()
+    }
+
+    @Test
+    fun localDateTimeToInstant_returnsCorrectInstant() {
+        // UTC - 3
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("America/Sao_Paulo")))
+
+        val testLocalDateTime = LocalDateTime.of(2021, 10, 1, 18, 0)
+        val expectedInstant = Instant.parse("2021-10-01T21:00:00Z")
+        assertThat(testLocalDateTime.toInstant()).isEqualTo(expectedInstant)
     }
 }

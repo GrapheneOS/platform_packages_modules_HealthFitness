@@ -15,11 +15,14 @@
  */
 package com.android.healthconnect.controller.utils
 
+import java.time.Duration
 import java.time.Instant
 import java.time.Instant.ofEpochMilli
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import kotlin.random.Random
 
 /**
  * Returns an Instant with the specified year, month and day-of-month. The day must be valid for the
@@ -44,6 +47,10 @@ fun Instant.toLocalDate(): LocalDate {
 
 fun Instant.toLocalTime(): LocalTime {
     return atZone(ZoneId.systemDefault()).toLocalTime()
+}
+
+fun Instant.toLocalDateTime(): LocalDateTime {
+    return atZone(ZoneId.systemDefault()).toLocalDateTime()
 }
 
 fun Instant.isOnSameDay(other: Instant): Boolean {
@@ -76,4 +83,22 @@ fun Instant.isAtLeastOneDayAfter(other: Instant): Boolean {
 
 fun LocalDate.toInstantAtStartOfDay(): Instant {
     return this.atStartOfDay(ZoneId.systemDefault()).toInstant()
+}
+
+fun LocalDate.randomInstant(): Instant {
+    val startOfDay = this.toInstantAtStartOfDay()
+
+    // Calculate the number of seconds in a day, accounting for daylight saving changes
+    val duration = Duration.between(startOfDay, this.plusDays(1).toInstantAtStartOfDay())
+    val secondsInDay = duration.seconds
+
+    // Generate a random offset in seconds within the day
+    val randomSecondOffset = Random.nextLong(secondsInDay)
+
+    // Return the calculated instant
+    return startOfDay.plusSeconds(randomSecondOffset)
+}
+
+fun LocalDateTime.toInstant(): Instant {
+    return atZone(ZoneId.systemDefault()).toInstant()
 }
