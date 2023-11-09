@@ -39,7 +39,6 @@ import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.utils.OrderByClause;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -96,30 +95,6 @@ public final class AccessLogsHelper extends DatabaseHelper {
         }
 
         return accessLogsList;
-    }
-
-    /**
-     * Returns the timestamp of the latest access log and {@link Long.MIN_VALUE} if there is no
-     * access log.
-     */
-    public long getLatestAccessLogTimeStamp() {
-
-        final ReadTableRequest readTableRequest =
-                new ReadTableRequest(TABLE_NAME)
-                        .setOrderBy(
-                                new OrderByClause()
-                                        .addOrderByClause(ACCESS_TIME_COLUMN_NAME, false))
-                        .setLimit(1);
-
-        long mostRecentAccessTime = Long.MIN_VALUE;
-        final TransactionManager transactionManager = TransactionManager.getInitialisedInstance();
-        try (Cursor cursor = transactionManager.read(readTableRequest)) {
-            while (cursor.moveToNext()) {
-                long accessTime = getCursorLong(cursor, ACCESS_TIME_COLUMN_NAME);
-                mostRecentAccessTime = Math.max(mostRecentAccessTime, accessTime);
-            }
-        }
-        return mostRecentAccessTime;
     }
 
     /** Adds an entry in to the access logs table for every insert or read operation request */
