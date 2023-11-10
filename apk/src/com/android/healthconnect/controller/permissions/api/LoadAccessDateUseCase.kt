@@ -32,7 +32,7 @@ constructor(private val healthPermissionManager: HealthPermissionManager) {
             return try {
                 healthPermissionManager.loadStartAccessDate(it)
             } catch (ex: Exception) {
-                Log.e(TAG, "GetGrantedHealthPermissionsUseCase.invoke", ex)
+                Log.e(TAG, "LoadStartAccessDate failed", ex)
                 null
             }
         }

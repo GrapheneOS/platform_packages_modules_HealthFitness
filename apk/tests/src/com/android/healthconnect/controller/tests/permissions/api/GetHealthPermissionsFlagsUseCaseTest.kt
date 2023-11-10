@@ -20,10 +20,13 @@ import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
+import com.android.healthconnect.controller.tests.utils.whenever
+import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
 
 class GetHealthPermissionsFlagsUseCaseTest {
     private lateinit var context: Context
@@ -44,5 +47,15 @@ class GetHealthPermissionsFlagsUseCaseTest {
         verify(healthPermissionManager)
             .getHealthPermissionsFlags(
                 "TEST_APP", listOf("PERMISSION_1", "PERMISSION_2", "PERMISSION_3"))
+    }
+
+    @Test
+    fun invoke_whenHealthPermissionManagerFails_returnsEmptyMap() {
+        whenever(healthPermissionManager.getHealthPermissionsFlags(any(), any()))
+            .thenThrow(RuntimeException("Exception"))
+
+        val result =
+            useCase.invoke("TEST_APP", listOf("PERMISSION_1", "PERMISSION_2", "PERMISSION_3"))
+        assertThat(result).isEmpty()
     }
 }
