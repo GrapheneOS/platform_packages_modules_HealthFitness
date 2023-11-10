@@ -59,6 +59,8 @@ public final class AccessLogsHelper extends DatabaseHelper {
     private static final String OPERATION_TYPE_COLUMN_NAME = "operation_type";
     private static final int NUM_COLS = 5;
     private static final int DEFAULT_ACCESS_LOG_TIME_PERIOD_IN_DAYS = 7;
+
+    @SuppressWarnings("NullAway.Init")
     private static volatile AccessLogsHelper sAccessLogsHelper;
 
     private AccessLogsHelper() {}

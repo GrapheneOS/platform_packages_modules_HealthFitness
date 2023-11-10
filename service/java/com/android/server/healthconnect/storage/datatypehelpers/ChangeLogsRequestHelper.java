@@ -64,6 +64,8 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
     private static final String PACKAGE_NAME_COLUMN_NAME = "package_name";
     private static final String ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME = "row_id_change_logs_table";
     private static final String TIME_COLUMN_NAME = "time";
+
+    @SuppressWarnings("NullAway.Init")
     private static volatile ChangeLogsRequestHelper sChangeLogsRequestHelper;
 
     private ChangeLogsRequestHelper() {}

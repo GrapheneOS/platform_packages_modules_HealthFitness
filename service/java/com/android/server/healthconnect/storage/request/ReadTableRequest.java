@@ -55,6 +55,7 @@ public class ReadTableRequest {
     private List<ReadTableRequest> mExtraReadRequests;
     private List<ReadTableRequest> mUnionReadRequests;
 
+    @SuppressWarnings("NullAway.Init")
     public ReadTableRequest(@NonNull String tableName) {
         Objects.requireNonNull(tableName);
 
@@ -183,6 +184,8 @@ public class ReadTableRequest {
         return String.join(DELIMITER, mColumnNames);
     }
 
+    /** Sets union read requests. */
+    @SuppressWarnings("NullAway")
     public ReadTableRequest setUnionReadRequests(
             @Nullable List<ReadTableRequest> unionReadRequests) {
         mUnionReadRequests = unionReadRequests;

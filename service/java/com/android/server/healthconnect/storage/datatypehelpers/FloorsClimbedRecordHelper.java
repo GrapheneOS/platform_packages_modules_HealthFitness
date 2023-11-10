@@ -55,6 +55,7 @@ public final class FloorsClimbedRecordHelper
         return FLOORS_CLIMBED_RECORD_TABLE_NAME;
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

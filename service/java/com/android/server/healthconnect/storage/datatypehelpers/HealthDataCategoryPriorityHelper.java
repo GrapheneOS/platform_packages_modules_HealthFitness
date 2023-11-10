@@ -77,6 +77,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
 
     public static final String INACTIVE_APPS_ADDED = "inactive_apps_added";
 
+    @SuppressWarnings("NullAway.Init")
     private static volatile HealthDataCategoryPriorityHelper sHealthDataCategoryPriorityHelper;
 
     /**
@@ -85,6 +86,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      */
     private volatile ConcurrentHashMap<Integer, List<Long>> mHealthDataCategoryToAppIdPriorityMap;
 
+    @SuppressWarnings("NullAway.Init")
     private HealthDataCategoryPriorityHelper() {}
 
     /**
@@ -103,6 +105,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      * <p>Inactive apps are added at the bottom of the priority list even if they are the default
      * app.
      */
+    @SuppressWarnings("NullAway")
     public synchronized void appendToPriorityList(
             @NonNull String packageName,
             @HealthDataCategory.Type int dataCategory,
@@ -171,6 +174,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      * <p>If the new aggregation source control flag is off, apps that don't have write permissions
      * are removed regardless of whether they hold data in that category.
      */
+    @SuppressWarnings("NullAway")
     public synchronized void updateHealthDataPriority(
             @NonNull String[] packageNames, @NonNull UserHandle user, @NonNull Context context) {
         Objects.requireNonNull(packageNames);
@@ -287,6 +291,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
         super.clearData(transactionManager);
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public synchronized void clearCache() {
         mHealthDataCategoryToAppIdPriorityMap = null;
@@ -502,6 +507,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      * aggregation source control, the packages are not removed if they still have data in these
      * categories.
      */
+    @SuppressWarnings("NullAway")
     private synchronized void maybeRemoveAppsFromPriorityList(
             Map<Integer, Set<Long>> dataCategoryToAppIdsWithoutPermissions) {
         for (int dataCategory : dataCategoryToAppIdsWithoutPermissions.keySet()) {

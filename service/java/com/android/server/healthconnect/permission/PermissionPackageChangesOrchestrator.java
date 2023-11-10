@@ -150,11 +150,13 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
         return filter;
     }
 
+    @SuppressWarnings("NullAway")
     private String getPackageName(Intent intent) {
         Uri uri = intent.getData();
         return uri != null ? uri.getSchemeSpecificPart() : null;
     }
 
+    @SuppressWarnings("NullAway")
     private UserHandle getUserHandle(Intent intent) {
         final int uid = intent.getIntExtra(Intent.EXTRA_UID, -1);
         if (uid >= 0) {

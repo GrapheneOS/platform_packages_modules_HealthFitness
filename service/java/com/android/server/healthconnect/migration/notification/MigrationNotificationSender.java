@@ -93,6 +93,7 @@ public final class MigrationNotificationSender {
         return contextAsUser.getSystemService(NotificationManager.class);
     }
 
+    @SuppressWarnings("NullAway")
     private void notifyFromSystem(
             @Nullable NotificationManager notificationManager, @NonNull Notification notification) {
         // This call is needed to send a notification from the system and this also grants the
@@ -108,6 +109,7 @@ public final class MigrationNotificationSender {
         }
     }
 
+    @SuppressWarnings("NullAway")
     private void cancelFromSystem(@Nullable NotificationManager notificationManager) {
         final long callingId = Binder.clearCallingIdentity();
         try {
@@ -120,6 +122,7 @@ public final class MigrationNotificationSender {
         }
     }
 
+    @SuppressWarnings("NullAway")
     private void createNotificationChannel(@NonNull UserHandle userHandle) {
 
         final String channelGroupName =

@@ -56,6 +56,8 @@ public final class ActivityDateHelper extends DatabaseHelper {
     private static final String TABLE_NAME = "activity_date_table";
     private static final String EPOCH_DAYS_COLUMN_NAME = "epoch_days";
     private static final String RECORD_TYPE_ID_COLUMN_NAME = "record_type_id";
+
+    @SuppressWarnings("NullAway.Init")
     private static volatile ActivityDateHelper sActivityDateHelper;
 
     private ActivityDateHelper() {}

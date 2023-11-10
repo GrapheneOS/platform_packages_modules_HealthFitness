@@ -150,6 +150,7 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
         return ZONE_OFFSET_COLUMN_NAME;
     }
 
+    @SuppressWarnings("NullAway")
     final ZoneOffset getZoneOffset(Cursor cursor) {
         ZoneOffset zoneOffset = null;
         if (cursor.getCount() > 0 && cursor.getColumnIndex(ZONE_OFFSET_COLUMN_NAME) != -1) {

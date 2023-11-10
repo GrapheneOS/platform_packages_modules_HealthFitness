@@ -125,6 +125,7 @@ public class MigrationUtils {
     }
 
     /** Computes the SHA256 digest of the input data. */
+    @SuppressWarnings("NullAway")
     public static String computeSha256DigestBytes(@NonNull byte[] data) {
         MessageDigest messageDigest;
         try {

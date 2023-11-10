@@ -53,6 +53,7 @@ public final class DistanceRecordHelper extends IntervalRecordHelper<DistanceRec
         return DISTANCE_RECORD_TABLE_NAME;
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

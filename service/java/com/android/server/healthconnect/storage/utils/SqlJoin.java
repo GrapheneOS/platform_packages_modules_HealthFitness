@@ -53,8 +53,10 @@ public final class SqlJoin {
     private List<SqlJoin> mAttachedJoins;
     private String mJoinType = SQL_JOIN_INNER;
 
+    @SuppressWarnings("NullAway")
     private WhereClauses mTableToJoinWhereClause = null;
 
+    @SuppressWarnings("NullAway.Init")
     public SqlJoin(
             String selfTableName,
             String tableNameToJoinOn,

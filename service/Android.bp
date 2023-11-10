@@ -56,4 +56,13 @@ java_sdk_library {
     impl_library_visibility: [
         "//packages/modules/HealthFitness/tests/unittests",
     ],
+    errorprone: {
+        extra_check_modules: [
+            "//external/nullaway:nullaway_plugin"
+        ],
+        javacflags: [
+            "-Xep:NullAway:ERROR",
+            "-XepOpt:NullAway:AnnotatedPackages=com.android.server.healthconnect",
+        ],
+    },
 }
