@@ -25,13 +25,15 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDataUseCase
-import com.android.healthconnect.controller.data.entries.api.ILoadSleepDataUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
 import com.android.healthconnect.controller.datasources.AggregationCardInfo
+import com.android.healthconnect.controller.datasources.api.ILoadLastDateWithPriorityDataUseCase
 import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriorityListUseCase
+import com.android.healthconnect.controller.datasources.api.ILoadPriorityEntriesUseCase
+import com.android.healthconnect.controller.datasources.api.ISleepSessionHelper
 import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
@@ -42,7 +44,7 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
-import com.android.healthconnect.controller.utils.toLocalDate
+import java.time.Instant
 import java.time.LocalDate
 
 class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
@@ -70,18 +72,18 @@ class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
 }
 
 class FakeLoadDataEntriesUseCase : ILoadDataEntriesUseCase {
-    private var list: List<FormattedEntry> = emptyList()
+    private var formattedList = listOf<FormattedEntry>()
 
     fun updateList(list: List<FormattedEntry>) {
-        this.list = list
+        formattedList = list
     }
 
     override suspend fun invoke(input: LoadDataEntriesInput): UseCaseResults<List<FormattedEntry>> {
-        return UseCaseResults.Success(list)
+        return UseCaseResults.Success(formattedList)
     }
 
     override suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry> {
-        return list
+        return formattedList
     }
 }
 
@@ -108,8 +110,9 @@ class FakeLoadDataAggregationsUseCase : ILoadDataAggregationsUseCase {
         FormattedEntry.FormattedAggregation("100 steps", "100 steps", "Test App")
 
     private var aggregations: List<FormattedEntry.FormattedAggregation> = listOf(aggregation)
-    private var invocationCount = 0
-    private var shouldReturnFailed = false
+    var invocationCount = 0
+    private var forceFail = false
+    private var exceptionMessage = ""
 
     fun updateAggregation(aggregation: FormattedEntry.FormattedAggregation) {
         this.aggregations = listOf(aggregation)
@@ -120,8 +123,9 @@ class FakeLoadDataAggregationsUseCase : ILoadDataAggregationsUseCase {
         this.aggregations = aggregations
     }
 
-    fun updateErrorResponse() {
-        this.shouldReturnFailed = true
+    fun setFailure(exceptionMessage: String) {
+        forceFail = true
+        this.exceptionMessage = exceptionMessage
     }
 
     override suspend fun invoke(
@@ -132,8 +136,8 @@ class FakeLoadDataAggregationsUseCase : ILoadDataAggregationsUseCase {
                 IllegalStateException(
                     "AggregationResponsesSize = ${this.aggregations.size}, " +
                         "invocationCount = $invocationCount. Please update aggregation responses before invoking."))
-        } else if (shouldReturnFailed) {
-            UseCaseResults.Failed(IllegalStateException("Custom failure"))
+        } else if (forceFail) {
+            UseCaseResults.Failed(IllegalStateException(exceptionMessage))
         } else {
             val result = UseCaseResults.Success(aggregations[invocationCount])
             invocationCount += 1
@@ -148,7 +152,8 @@ class FakeLoadDataAggregationsUseCase : ILoadDataAggregationsUseCase {
     fun reset() {
         this.invocationCount = 0
         this.aggregations = listOf(aggregation)
-        this.shouldReturnFailed = false
+        exceptionMessage = ""
+        forceFail = false
     }
 }
 
@@ -168,6 +173,66 @@ class FakeLoadMostRecentAggregationsUseCase : ILoadMostRecentAggregationsUseCase
 
     fun reset() {
         this.mostRecentAggregations = listOf()
+    }
+}
+
+class FakeSleepSessionHelper : ISleepSessionHelper {
+
+    private var forceFail = false
+    private var exceptionMessage = ""
+    private var datePair = Pair(Instant.EPOCH, Instant.EPOCH)
+
+    fun setDatePair(minDate: Instant, maxDate: Instant) {
+        datePair = Pair(minDate, maxDate)
+    }
+
+    fun setFailure(exceptionMessage: String) {
+        forceFail = true
+        this.exceptionMessage = exceptionMessage
+    }
+
+    override suspend fun clusterSleepSessions(
+        lastDateWithData: LocalDate
+    ): UseCaseResults<Pair<Instant, Instant>> {
+        return if (forceFail) UseCaseResults.Failed(Exception(this.exceptionMessage))
+        else UseCaseResults.Success(datePair)
+    }
+
+    fun reset() {
+        datePair = Pair(Instant.EPOCH, Instant.EPOCH)
+        exceptionMessage = ""
+        forceFail = false
+    }
+}
+
+class FakeLoadPriorityEntriesUseCase : ILoadPriorityEntriesUseCase {
+
+    private var priorityEntries = mutableMapOf<LocalDate, List<Record>>()
+    private var forceFail = false
+    private var exceptionMessage = ""
+
+    override suspend fun invoke(
+        healthPermissionType: HealthPermissionType,
+        localDate: LocalDate
+    ): UseCaseResults<List<Record>> {
+        return if (forceFail) UseCaseResults.Failed(Exception(this.exceptionMessage))
+        else UseCaseResults.Success(priorityEntries.getOrDefault(localDate, listOf()))
+    }
+
+    fun setEntriesList(localDate: LocalDate, list: List<Record>) {
+
+        priorityEntries[localDate] = list
+    }
+
+    fun setFailure(exceptionMessage: String) {
+        forceFail = true
+        this.exceptionMessage = exceptionMessage
+    }
+
+    fun reset() {
+        priorityEntries.clear()
+        exceptionMessage = ""
+        forceFail = false
     }
 }
 
@@ -193,11 +258,14 @@ class FakeLoadPotentialPriorityListUseCase : ILoadPotentialPriorityListUseCase {
 class FakeLoadPriorityListUseCase : ILoadPriorityListUseCase {
 
     private var priorityList = listOf<AppMetadata>()
+    private var forceFail = false
+    private var exceptionMessage = ""
 
     override suspend fun invoke(
         input: @HealthDataCategoryInt Int
     ): UseCaseResults<List<AppMetadata>> {
-        return UseCaseResults.Success(priorityList)
+        return if (forceFail) UseCaseResults.Failed(Exception(this.exceptionMessage))
+        else UseCaseResults.Success(priorityList)
     }
 
     override suspend fun execute(input: Int): List<AppMetadata> {
@@ -208,8 +276,15 @@ class FakeLoadPriorityListUseCase : ILoadPriorityListUseCase {
         this.priorityList = priorityList
     }
 
+    fun setFailure(exceptionMessage: String) {
+        forceFail = true
+        this.exceptionMessage = exceptionMessage
+    }
+
     fun reset() {
         this.priorityList = listOf()
+        exceptionMessage = ""
+        forceFail = false
     }
 }
 
@@ -226,28 +301,6 @@ class FakeUpdatePriorityListUseCase : IUpdatePriorityListUseCase {
     fun reset() {
         this.priorityList = listOf()
         this.category = HealthDataCategory.UNKNOWN
-    }
-}
-
-class FakeLoadSleepDataUseCase : ILoadSleepDataUseCase {
-
-    private var sleepDataMap: MutableMap<LocalDate, List<Record>> = mutableMapOf()
-
-    fun updateSleepData(date: LocalDate, recordsList: List<Record>) {
-        sleepDataMap[date] = recordsList
-    }
-
-    override suspend fun invoke(input: LoadDataEntriesInput): UseCaseResults<List<Record>> {
-        val result = sleepDataMap.getOrDefault(input.displayedStartTime.toLocalDate(), listOf())
-        return UseCaseResults.Success(result)
-    }
-
-    override suspend fun execute(input: LoadDataEntriesInput): List<Record> {
-        return sleepDataMap.getOrDefault(input.displayedStartTime.toLocalDate(), listOf())
-    }
-
-    fun reset() {
-        this.sleepDataMap = mutableMapOf()
     }
 }
 
@@ -301,5 +354,39 @@ class FakeGetGrantedHealthPermissionsUseCase : IGetGrantedHealthPermissionsUseCa
 
     fun reset() {
         this.permissionsPerApp = mutableMapOf()
+    }
+}
+
+class FakeLoadLastDateWithPriorityDataUseCase : ILoadLastDateWithPriorityDataUseCase {
+
+    private var lastDateWithPriorityDataMap = mutableMapOf<HealthPermissionType, LocalDate?>()
+    private var forceFail = false
+    private var exceptionMessage = ""
+
+    fun setLastDateWithPriorityDataForHealthPermissionType(
+        healthPermissionType: HealthPermissionType,
+        localDate: LocalDate?
+    ) {
+        lastDateWithPriorityDataMap[healthPermissionType] = localDate
+    }
+
+    fun setFailure(exceptionMessage: String) {
+        forceFail = true
+        this.exceptionMessage = exceptionMessage
+    }
+
+    override suspend fun invoke(
+        healthPermissionType: HealthPermissionType
+    ): UseCaseResults<LocalDate?> {
+        if (forceFail) return UseCaseResults.Failed(Exception(this.exceptionMessage))
+        return if (lastDateWithPriorityDataMap.containsKey(healthPermissionType))
+            UseCaseResults.Success(lastDateWithPriorityDataMap[healthPermissionType])
+        else UseCaseResults.Success(null)
+    }
+
+    fun reset() {
+        lastDateWithPriorityDataMap.clear()
+        exceptionMessage = ""
+        forceFail = false
     }
 }

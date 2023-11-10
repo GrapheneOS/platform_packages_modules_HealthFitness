@@ -19,7 +19,6 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.service.IoDispatcher
-import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getDataTypes
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import java.time.Instant
@@ -37,17 +36,7 @@ constructor(
 ) : BaseUseCase<LoadDataEntriesInput, List<FormattedEntry>>(dispatcher), ILoadDataEntriesUseCase {
 
     override suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry> {
-        val timeFilterRange =
-            loadEntriesHelper.getTimeFilter(
-                input.displayedStartTime, input.period, endTimeExclusive = true)
-        val dataTypes = getDataTypes(input.permissionType)
-
-        val entryRecords =
-            dataTypes
-                .map { dataType ->
-                    loadEntriesHelper.readDataType(dataType, timeFilterRange, input.packageName)
-                }
-                .flatten()
+        val entryRecords = loadEntriesHelper.readRecords(input)
 
         return loadEntriesHelper.maybeAddDateSectionHeaders(
             entryRecords, input.period, input.showDataOrigin)
