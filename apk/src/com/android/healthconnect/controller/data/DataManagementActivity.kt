@@ -19,31 +19,38 @@
 package com.android.healthconnect.controller.data
 
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.migration.MigrationActivity
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeRedirectToMigrationActivity
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.api.MigrationState
 import com.android.healthconnect.controller.navigation.DestinationChangedListener
-import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.maybeRedirectToOnboardingActivity
-import com.android.healthconnect.controller.onboarding.OnboardingActivityContract
+import com.android.healthconnect.controller.onboarding.OnboardingActivity
+import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.shouldRedirectToOnboardingActivity
 import com.android.healthconnect.controller.utils.FeatureUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.coroutines.runBlocking
 
 /** Entry point activity for Health Connect Data Management controllers. */
 @AndroidEntryPoint(CollapsingToolbarBaseActivity::class)
 class DataManagementActivity : Hilt_DataManagementActivity() {
+
     @Inject lateinit var featureUtils: FeatureUtils
 
     private val migrationViewModel: MigrationViewModel by viewModels()
+
+    private val openOnboardingActivity =
+        registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_CANCELED) {
+                finish()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +63,8 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
             return
         }
 
-        if (maybeRedirectToOnboardingActivity(this) && savedInstanceState == null) {
-            openOnboardingActivity.launch(1)
+        if (savedInstanceState == null && shouldRedirectToOnboardingActivity(this)) {
+            openOnboardingActivity.launch(OnboardingActivity.createIntent(this))
         }
 
         val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
@@ -119,11 +126,4 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
         }
         return true
     }
-
-    val openOnboardingActivity =
-        registerForActivityResult(OnboardingActivityContract()) { result ->
-            if (result == OnboardingActivityContract.INTENT_RESULT_CANCELLED) {
-                finish()
-            }
-        }
 }
