@@ -23,6 +23,9 @@ import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * An exception thrown when an error encountered during migration.
  *
@@ -115,5 +118,6 @@ public final class MigrationException extends RuntimeException implements Parcel
         ERROR_MIGRATE_ENTITY,
         ERROR_MIGRATION_UNAVAILABLE,
     })
+    @Retention(RetentionPolicy.SOURCE)
     public @interface ErrorCode {}
 }
