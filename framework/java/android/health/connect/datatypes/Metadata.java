@@ -189,7 +189,7 @@ public final class Metadata {
      * @return {@code true} if this object is the same as the obj
      */
     @Override
-    public boolean equals(@NonNull Object object) {
+    public boolean equals(@Nullable Object object) {
         if (this == object) return true;
         if (object instanceof Metadata) {
             Metadata other = (Metadata) object;

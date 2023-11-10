@@ -129,7 +129,7 @@ public final class Device {
      * @return {@code true} if this object is the same as the obj
      */
     @Override
-    public boolean equals(@NonNull Object object) {
+    public boolean equals(@Nullable Object object) {
         if (this == object) return true;
         if (object instanceof Device) {
             Device other = (Device) object;
