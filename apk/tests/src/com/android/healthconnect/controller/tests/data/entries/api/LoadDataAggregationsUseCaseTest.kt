@@ -32,6 +32,7 @@ import java.time.Instant
 import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -41,6 +42,7 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class LoadDataAggregationsUseCaseTest {
 
