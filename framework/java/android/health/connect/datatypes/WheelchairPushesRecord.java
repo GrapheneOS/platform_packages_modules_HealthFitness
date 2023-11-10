@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 
 import android.annotation.IntRange;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.WheelchairPushesRecordInternal;
@@ -94,7 +95,7 @@ public final class WheelchairPushesRecord extends IntervalRecord {
      *     otherwise.
      */
     @Override
-    public boolean equals(@NonNull Object object) {
+    public boolean equals(@Nullable Object object) {
         if (super.equals(object) && object instanceof WheelchairPushesRecord) {
             WheelchairPushesRecord other = (WheelchairPushesRecord) object;
             return this.getCount() == other.getCount();

@@ -17,6 +17,7 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 
 import java.util.Objects;
 
@@ -70,7 +71,7 @@ public final class DataOrigin {
      * @return {@code true} if this object is the same as the obj
      */
     @Override
-    public boolean equals(@NonNull Object object) {
+    public boolean equals(@Nullable Object object) {
         if (this == object) return true;
         if (object instanceof DataOrigin) {
             DataOrigin other = (DataOrigin) object;

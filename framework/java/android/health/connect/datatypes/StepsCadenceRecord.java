@@ -16,6 +16,7 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.StepsCadenceRecordInternal;
@@ -162,7 +163,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
          * @return {@code true} if this object is the same as the obj
          */
         @Override
-        public boolean equals(@NonNull Object object) {
+        public boolean equals(@Nullable Object object) {
             if (super.equals(object) && object instanceof StepsCadenceRecordSample) {
                 StepsCadenceRecordSample other = (StepsCadenceRecordSample) object;
                 return getRate() == other.getRate()
@@ -282,7 +283,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
      * @return {@code true} if this object is the same as the obj
      */
     @Override
-    public boolean equals(@NonNull Object object) {
+    public boolean equals(@Nullable Object object) {
         if (super.equals(object) && object instanceof StepsCadenceRecord) {
             StepsCadenceRecord other = (StepsCadenceRecord) object;
             if (getSamples().size() != other.getSamples().size()) return false;
