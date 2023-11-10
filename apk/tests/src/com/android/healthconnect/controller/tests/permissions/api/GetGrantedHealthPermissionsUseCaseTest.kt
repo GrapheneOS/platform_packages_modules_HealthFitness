@@ -19,10 +19,13 @@ import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
+import com.android.healthconnect.controller.tests.utils.whenever
+import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
 
 class GetGrantedHealthPermissionsUseCaseTest {
 
@@ -42,5 +45,26 @@ class GetGrantedHealthPermissionsUseCaseTest {
         useCase.invoke("TEST_APP")
 
         verify(healthPermissionManager).getGrantedHealthPermissions("TEST_APP")
+    }
+
+    @Test
+    fun invoke_callsHealthPermissionManager_returnsCorrectList() {
+        val expectedList = listOf("permission1", "permission2")
+        whenever(healthPermissionManager.getGrantedHealthPermissions(any()))
+            .thenReturn(expectedList)
+        val result = useCase.invoke("TEST_APP")
+
+        verify(healthPermissionManager).getGrantedHealthPermissions("TEST_APP")
+        assertThat(result).containsExactlyElementsIn(expectedList)
+    }
+
+    @Test
+    fun invoke_whenHealthPermissionManagerFails_returnsEmptyList() {
+        whenever(healthPermissionManager.getGrantedHealthPermissions(any()))
+            .thenThrow(RuntimeException("Error!"))
+        val result = useCase.invoke("TEST_APP")
+
+        verify(healthPermissionManager).getGrantedHealthPermissions("TEST_APP")
+        assertThat(result).isEmpty()
     }
 }
