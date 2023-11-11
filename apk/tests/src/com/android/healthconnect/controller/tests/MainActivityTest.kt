@@ -64,7 +64,7 @@ class MainActivityTest {
     }
 
     @Test
-    fun homeSettingsIntent_onboardingNotDone_redirectToOnboarding() = runTest {
+    fun homeSettingsIntent_onboardingNotDone_redirectsToOnboarding() = runTest {
         showOnboarding(context, true)
         whenever(viewModel.getCurrentMigrationUiState()).then { MigrationState.COMPLETE_IDLE }
         whenever(viewModel.migrationState).then {
@@ -83,7 +83,7 @@ class MainActivityTest {
     }
 
     @Test
-    fun homeSettingsIntent_migrationInProgress_redirectToMigrationScreen() = runTest {
+    fun homeSettingsIntent_migrationInProgress_redirectsToMigrationScreen() = runTest {
         showOnboarding(context, false)
         whenever(viewModel.getCurrentMigrationUiState()).then { MigrationState.IN_PROGRESS }
         whenever(viewModel.migrationState).then {

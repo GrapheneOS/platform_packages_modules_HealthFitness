@@ -2,6 +2,7 @@ package com.android.healthconnect.controller.onboarding
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.FragmentActivity
@@ -22,7 +23,7 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
         @VisibleForTesting const val USER_ACTIVITY_TRACKER = "USER_ACTIVITY_TRACKER"
         @VisibleForTesting const val ONBOARDING_SHOWN_PREF_KEY = "ONBOARDING_SHOWN_PREF_KEY"
 
-        fun maybeRedirectToOnboardingActivity(activity: Activity): Boolean {
+        fun shouldRedirectToOnboardingActivity(activity: Activity): Boolean {
             val sharedPreference =
                 activity.getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
             val previouslyOpened = sharedPreference.getBoolean(ONBOARDING_SHOWN_PREF_KEY, false)
@@ -30,6 +31,11 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
                 return true
             }
             return false
+        }
+
+        fun createIntent(context: Context): Intent {
+            return Intent(context, OnboardingActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
     }
 

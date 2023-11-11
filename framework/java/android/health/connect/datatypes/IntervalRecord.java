@@ -16,6 +16,7 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -102,7 +103,7 @@ public abstract class IntervalRecord extends Record {
      * @return {@code true} if this object is the same as the obj
      */
     @Override
-    public boolean equals(@NonNull Object object) {
+    public boolean equals(@Nullable Object object) {
         if (super.equals(object)) {
             IntervalRecord other = (IntervalRecord) object;
             return getStartTime().toEpochMilli() == other.getStartTime().toEpochMilli()
