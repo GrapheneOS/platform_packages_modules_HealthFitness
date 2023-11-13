@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.AppStoreUtils
+import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -39,6 +40,7 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
     @Inject lateinit var appStoreUtils: AppStoreUtils
+    @Inject lateinit var navigationUtils: NavigationUtils
 
     companion object {
         private const val TAG = "AppUpdateFragment"
@@ -85,7 +87,7 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
                 val packageName =
                     getString(resources.getIdentifier(HC_PACKAGE_NAME_CONFIG_NAME, null, null))
                 val intent = appStoreUtils.getAppStoreLink(packageName)
-                startActivity(intent!!)
+                navigationUtils.startActivity(this, intent!!)
             } catch (exception: Exception) {
                 Log.e(TAG, "App store activity does not exist", exception)
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
@@ -104,8 +106,8 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
                     putBoolean(getString(R.string.app_update_needed_seen), true)
                     apply()
                 }
-                findNavController()
-                    .navigate(R.id.action_migrationAppUpdateNeededFragment_to_homeScreen)
+                navigationUtils.navigate(
+                    this, R.id.action_migrationAppUpdateNeededFragment_to_homeScreen)
             }
             requireActivity().finish()
         }
