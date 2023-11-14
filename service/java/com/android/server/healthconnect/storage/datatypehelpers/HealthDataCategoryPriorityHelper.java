@@ -401,11 +401,11 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
                 HealthConnectDeviceConfigManager.getInitialisedInstance()
                         .isAggregationSourceControlsEnabled();
         // Candidates to be added to the priority list
-        Map<Integer, Set<Long>> dataCategoryToAppIdMapHavingPermission =
+        Map<Integer, List<Long>> dataCategoryToAppIdMapHavingPermission =
                 getHealthDataCategoryToAppIdPriorityMap().entrySet().stream()
                         .collect(
                                 Collectors.toMap(
-                                        Map.Entry::getKey, e -> new HashSet<>(e.getValue())));
+                                        Map.Entry::getKey, e -> new ArrayList<>(e.getValue())));
         // Candidates to be removed from the priority list
         Map<Integer, Set<Long>> dataCategoryToAppIdMapWithoutPermission =
                 getHealthDataCategoryToAppIdPriorityMap().entrySet().stream()
@@ -421,10 +421,11 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
             long appInfoId = appInfoHelper.getOrInsertAppInfoId(packageInfo.packageName, context);
 
             for (int dataCategory : dataCategoriesWithWritePermissionsForThisPackage) {
-                Set<Long> appIdsHavingPermission =
+                List<Long> appIdsHavingPermission =
                         dataCategoryToAppIdMapHavingPermission.getOrDefault(
-                                dataCategory, new HashSet<>());
-                if (appIdsHavingPermission.add(appInfoId)) {
+                                dataCategory, new ArrayList<>());
+                if (!appIdsHavingPermission.contains(appInfoId)
+                        && appIdsHavingPermission.add(appInfoId)) {
                     dataCategoryToAppIdMapHavingPermission.put(
                             dataCategory, appIdsHavingPermission);
                 }
@@ -512,7 +513,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     }
 
     private synchronized void updateTableWithNewPriorityList(
-            Map<Integer, Set<Long>> healthDataCategoryToAppIdPriorityMap) {
+            Map<Integer, List<Long>> healthDataCategoryToAppIdPriorityMap) {
         for (int dataCategory : healthDataCategoryToAppIdPriorityMap.keySet()) {
             List<Long> appInfoIdList =
                     List.copyOf(healthDataCategoryToAppIdPriorityMap.get(dataCategory));
