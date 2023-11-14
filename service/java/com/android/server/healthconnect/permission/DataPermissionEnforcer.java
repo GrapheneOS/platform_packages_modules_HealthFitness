@@ -104,6 +104,26 @@ public class DataPermissionEnforcer {
         return enforceSelfRead;
     }
 
+    // TODO(b/312952346): Consider refactoring how permission enforcement is done within
+    // HealthConnectServiceImpl. This goes beyond just this method.
+    /**
+     * Enforces that the caller has either read or write permissions for all the given recordTypes,
+     * and returns {@code true} if the caller is allowed to read only records written by itself,
+     * false otherwise.
+     *
+     * @throws SecurityException if the app has neither read nor write permissions for any of the
+     *     specified record types.
+     */
+    public boolean enforceReadAccessAndGetEnforceSelfRead(
+            List<Integer> recordTypes, AttributionSource attributionSource) {
+        boolean enforceSelfRead = false;
+        for (int recordTypeId : recordTypes) {
+            enforceSelfRead |=
+                    enforceReadAccessAndGetEnforceSelfRead(recordTypeId, attributionSource);
+        }
+        return enforceSelfRead;
+    }
+
     /**
      * Enforces that caller has all write permissions to write given records. Includes permissions
      * for writing optional extra data if it's present in given records.

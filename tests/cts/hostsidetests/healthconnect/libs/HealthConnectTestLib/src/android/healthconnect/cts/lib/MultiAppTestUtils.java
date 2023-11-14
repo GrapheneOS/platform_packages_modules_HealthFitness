@@ -31,6 +31,7 @@ import com.android.cts.install.lib.TestApp;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -47,6 +48,9 @@ public class MultiAppTestUtils {
     public static final String READ_RECORDS_SIZE = "android.healthconnect.cts.readRecordsNumber";
     public static final String READ_USING_DATA_ORIGIN_FILTERS =
             "android.healthconnect.cts.readUsingDataOriginFilters";
+
+    public static final String DATA_ORIGIN_FILTER_PACKAGE_NAMES =
+            "android.healthconnect.cts.dataOriginFilterPackageNames";
     public static final String READ_RECORD_CLASS_NAME =
             "android.healthconnect.cts.readRecordsClass";
     public static final String READ_CHANGE_LOGS_QUERY = "android.healthconnect.cts.readChangeLogs";
@@ -125,10 +129,24 @@ public class MultiAppTestUtils {
 
     public static Bundle readRecordsAs(TestApp testApp, ArrayList<String> recordClassesToRead)
             throws Exception {
+        return readRecordsAs(
+                testApp, recordClassesToRead, /* dataOriginFilterPackageNames= */ Optional.empty());
+    }
+
+    public static Bundle readRecordsAs(
+            TestApp testApp,
+            ArrayList<String> recordClassesToRead,
+            Optional<List<String>> dataOriginFilterPackageNames)
+            throws Exception {
         Bundle bundle = new Bundle();
         bundle.putString(QUERY_TYPE, READ_RECORDS_QUERY);
         bundle.putStringArrayList(READ_RECORD_CLASS_NAME, recordClassesToRead);
-
+        if (!dataOriginFilterPackageNames.isEmpty()) {
+            ArrayList<String> dataOrigins = new ArrayList<>();
+            dataOrigins.addAll(dataOriginFilterPackageNames.get());
+            bundle.putBoolean(READ_USING_DATA_ORIGIN_FILTERS, true);
+            bundle.putStringArrayList(DATA_ORIGIN_FILTER_PACKAGE_NAMES, dataOrigins);
+        }
         return getFromTestApp(testApp, bundle);
     }
 

@@ -43,6 +43,7 @@ import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.BloodPressureRecord;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
@@ -161,6 +162,8 @@ public class HealthConnectServiceLogsTests {
         mHealthConnectManager.readRecords(
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                         .setTimeRangeFilter(getDefaultTimeRangeFilter())
+                        .addDataOrigins(
+                                new DataOrigin.Builder().setPackageName(MY_PACKAGE_NAME).build())
                         .setPageSize(1)
                         .build(),
                 Executors.newSingleThreadExecutor(),
