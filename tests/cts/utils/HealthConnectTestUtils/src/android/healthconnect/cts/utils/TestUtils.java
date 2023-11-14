@@ -35,11 +35,11 @@ import static android.healthconnect.test.app.TestAppReceiver.EXTRA_SENDER_PACKAG
 
 import static com.android.compatibility.common.util.FeatureUtil.AUTOMOTIVE_FEATURE;
 import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature;
-import static com.android.compatibility.common.util.SystemUtil.runShellCommand;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 import android.app.UiAutomation;
@@ -219,15 +219,24 @@ public final class TestUtils {
      * @param records records to insert
      * @return inserted records
      */
-    public static List<Record> insertRecords(List<Record> records) throws InterruptedException {
+    public static List<Record> insertRecords(List<? extends Record> records)
+            throws InterruptedException {
         return insertRecords(records, ApplicationProvider.getApplicationContext());
     }
 
-    public static List<Record> insertRecords(List<Record> records, Context context)
+    /**
+     * Inserts records to the database.
+     *
+     * @param records records to insert.
+     * @param context a {@link Context} to obtain {@link HealthConnectManager}.
+     * @return inserted records.
+     */
+    public static List<Record> insertRecords(List<? extends Record> records, Context context)
             throws InterruptedException {
         HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
         getHealthConnectManager(context)
-                .insertRecords(records, Executors.newSingleThreadExecutor(), receiver);
+                .insertRecords(
+                        unmodifiableList(records), Executors.newSingleThreadExecutor(), receiver);
         List<Record> returnedRecords = receiver.getResponse().getRecords();
         assertThat(returnedRecords).hasSize(records.size());
         return returnedRecords;
