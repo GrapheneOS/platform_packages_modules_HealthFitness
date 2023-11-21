@@ -71,6 +71,9 @@
         <action
             android:id="@+id/action_healthPermissionTypes_to_unitsFragment"
             app:destination="@+id/unitFragment" />
+        <action
+            android:id="@+id/action_healthPermissionTypes_to_dataSourcesAndPriority"
+            app:destination="@+id/dataSourcesFragment"/>
     </fragment>
 
     <fragment
@@ -108,6 +111,26 @@
         <argument
             android:name="android.intent.extra.PACKAGE_NAME"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dataSourcesFragment"
+        android:name="com.android.healthconnect.controller.datasources.DataSourcesFragment"
+        android:label="@string/data_sources_and_priority_title">
+        <action
+            android:id="@+id/action_dataSourcesFragment_to_addAnAppFragment"
+            app:destination="@id/addAnAppFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/addAnAppFragment"
+        android:name="com.android.healthconnect.controller.datasources.AddAnAppFragment"
+        android:label="@string/data_sources_add_app">
+        <action
+            android:id="@+id/action_addAnAppFragment_to_dataSourcesFragment"
+            app:popUpTo="@id/dataSourcesFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/dataSourcesFragment"/>
     </fragment>
 
     <activity

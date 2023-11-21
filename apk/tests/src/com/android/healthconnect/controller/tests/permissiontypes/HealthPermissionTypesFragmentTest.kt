@@ -39,18 +39,17 @@ import com.android.healthconnect.controller.utils.FeatureUtils
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import javax.inject.Inject
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
-import javax.inject.Inject
 
 @HiltAndroidTest
 class HealthPermissionTypesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @Inject
-    lateinit var fakeFeatureUtils: FeatureUtils
+    @Inject lateinit var fakeFeatureUtils: FeatureUtils
 
     @BindValue
     val viewModel: HealthPermissionTypesViewModel =
@@ -315,7 +314,7 @@ class HealthPermissionTypesFragmentTest {
     }
 
     @Test
-    fun permissionTypesFragment_whenNewPriorityEnabled_doesNotShowAppPriority() {
+    fun permissionTypesFragment_whenNewPriorityEnabled_showsNewAppPriorityButton() {
         (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(true)
         Mockito.`when`(viewModel.permissionTypesData).then {
             MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
@@ -353,6 +352,7 @@ class HealthPermissionTypesFragmentTest {
         onView(withText("Wheelchair pushes")).check(doesNotExist())
         onView(withText("Manage data")).check(matches(isDisplayed()))
         onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(matches(isDisplayed()))
         onView(withText("Health Connect test app")).check(doesNotExist())
         onView(withText("Delete activity data")).check(matches(isDisplayed()))
     }

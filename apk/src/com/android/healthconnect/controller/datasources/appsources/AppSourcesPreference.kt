@@ -39,6 +39,7 @@ constructor(
     private var potentialAppSourcesList: List<AppMetadata> = listOf()
     private lateinit var priorityListView: RecyclerView
     private lateinit var adapter: AppSourcesAdapter
+    private var isEditMode = false
 
     init {
         layoutResource = R.layout.widget_linear_layout_preference
@@ -64,6 +65,8 @@ constructor(
         priorityListView.adapter = adapter
         priorityListView.layoutManager = AppSourcesLinearLayoutManager(context, adapter)
         createAndAttachItemMoveCallback()
+
+        adapter.toggleEditMode(isEditMode)
     }
 
     override fun attachCallback() {
@@ -77,8 +80,18 @@ constructor(
         priorityListMover.attachToRecyclerView(priorityListView)
     }
 
+    /** Toggles the edit mode on/off after the preference has been created */
     fun toggleEditMode(isEditMode: Boolean) {
+        setEditMode(isEditMode)
         adapter.toggleEditMode(isEditMode)
+    }
+
+    /**
+     * Sets the edit mode on/off before the preference is fully created and the onBindViewHolder
+     * method is called.
+     */
+    fun setEditMode(isEditMode: Boolean) {
+        this.isEditMode = isEditMode
     }
 
     override fun isSameItem(preference: Preference): Boolean {

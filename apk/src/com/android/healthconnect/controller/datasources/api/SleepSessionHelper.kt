@@ -157,15 +157,12 @@ constructor(
             val currentSleepSession = (record as IntervalRecord)
 
             // Start date is Day 1, so the max possible end date is Day 3 12am
-            // Adding one additional millisecond to correctly format
-            // this date for DateUtils, otherwise it would show as Day 2
             val maxPossibleEnd =
                 currentSleepSession.startTime
                     .toLocalDate()
                     .atStartOfDay(ZoneId.systemDefault())
                     .plusDays(2)
                     .toInstant()
-                    .plusMillis(1)
 
             if (currentSleepSession.endTime.isOnSameDay(lastDateWithDataInstant)) {
                 // This is a sleep session that starts on Day 1 and finishes on Day 2

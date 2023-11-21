@@ -28,7 +28,9 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
+import com.android.healthconnect.controller.utils.toLocalTime
 import java.time.Instant
+import java.time.LocalTime
 
 /** A custom card to display the latest available data aggregations. */
 class AggregationDataCard
@@ -122,11 +124,18 @@ constructor(
 
     private fun formatDateText(startDate: Instant, endDate: Instant?): String {
         return if (endDate != null) {
+            var localEndDate: Instant = endDate
+
+            // If endDate is midnight, add one millisecond so that DateUtils
+            // correctly formats it as a separate date.
+            if (endDate.toLocalTime() == LocalTime.MIDNIGHT) {
+                localEndDate = endDate.plusMillis(1)
+            }
             // display date range
-            if (isLessThanOneYearAgo(startDate) && isLessThanOneYearAgo(endDate)) {
-                dateFormatter.formatDateRangeWithoutYear(startDate, endDate)
+            if (isLessThanOneYearAgo(startDate) && isLessThanOneYearAgo(localEndDate)) {
+                dateFormatter.formatDateRangeWithoutYear(startDate, localEndDate)
             } else {
-                dateFormatter.formatDateRangeWithYear(startDate, endDate)
+                dateFormatter.formatDateRangeWithYear(startDate, localEndDate)
             }
         } else {
             // display only one date
