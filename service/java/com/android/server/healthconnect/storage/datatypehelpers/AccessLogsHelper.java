@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.InstantRecordHelper.TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
@@ -129,7 +128,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
     public DeleteTableRequest getDeleteRequestForAutoDelete() {
         return new DeleteTableRequest(TABLE_NAME)
                 .setTimeFilter(
-                        TIME_COLUMN_NAME,
+                        ACCESS_TIME_COLUMN_NAME,
                         Instant.EPOCH.toEpochMilli(),
                         Instant.now()
                                 .minus(DEFAULT_ACCESS_LOG_TIME_PERIOD_IN_DAYS, ChronoUnit.DAYS)
