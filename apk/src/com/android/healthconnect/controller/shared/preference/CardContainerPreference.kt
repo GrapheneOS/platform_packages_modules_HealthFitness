@@ -120,8 +120,8 @@ constructor(context: Context, private val timeSource: TimeSource = SystemTimeSou
         }
 
         if (mAggregationCardInfo.size == 1) {
-            addSingleLargeCard(mAggregationCardInfo[0])
-            container?.removeView(progressBar)
+            val card = addSingleLargeCard(mAggregationCardInfo[0])
+            removeAllChildrenExcept(container, card)
         } else {
 
             // Add both types of cards to the container (they will be invisible)
@@ -166,7 +166,7 @@ constructor(context: Context, private val timeSource: TimeSource = SystemTimeSou
      * Adds a single large [AggregationDataCard] to the provided container. This should be called
      * when there is only one available aggregate.
      */
-    private fun addSingleLargeCard(cardInfo: AggregationCardInfo) {
+    private fun addSingleLargeCard(cardInfo: AggregationCardInfo): AggregationDataCard {
         val singleCard =
             AggregationDataCard(
                 context, null, AggregationDataCard.CardTypeEnum.LARGE_CARD, cardInfo, timeSource)
@@ -177,6 +177,7 @@ constructor(context: Context, private val timeSource: TimeSource = SystemTimeSou
                 ConstraintLayout.LayoutParams.WRAP_CONTENT)
         singleCard.layoutParams = layoutParams
         container?.addView(singleCard)
+        return singleCard
     }
 
     /**
@@ -343,6 +344,17 @@ constructor(context: Context, private val timeSource: TimeSource = SystemTimeSou
             }
         }
         return false
+    }
+
+    private fun removeAllChildrenExcept(container: ConstraintLayout?, childToKeep: View) {
+        container?.let {
+            for (i in it.childCount - 1 downTo 0) {
+                val currentChild = it.getChildAt(i)
+                if (currentChild != childToKeep) {
+                    it.removeViewAt(i)
+                }
+            }
+        }
     }
 
     override fun hasSameContents(preference: Preference): Boolean {

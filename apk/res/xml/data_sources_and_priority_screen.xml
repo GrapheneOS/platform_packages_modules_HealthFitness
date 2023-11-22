@@ -23,9 +23,11 @@
     <PreferenceCategory
         android:key="app_sources_group"
         android:title="@string/app_sources_header"
-        android:order="2"/>
+        android:order="2"
+        app:isPreferenceVisible="false"/>
     <com.android.settingslib.widget.FooterPreference
         android:key="data_sources_footer"
-        android:title="@string/data_sources_footer"/>
+        android:title="@string/data_sources_footer"
+        app:isPreferenceVisible="false"/>
 
 </PreferenceScreen>

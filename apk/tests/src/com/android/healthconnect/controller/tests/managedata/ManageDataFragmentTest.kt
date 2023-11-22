@@ -17,27 +17,27 @@ import com.android.healthconnect.controller.utils.FeatureUtils
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import javax.inject.Inject
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
-import javax.inject.Inject
 
 @HiltAndroidTest
 class ManageDataFragmentTest {
 
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
+    @get:Rule val hiltRule = HiltAndroidRule(this)
     @BindValue
     val autoDeleteViewModel: AutoDeleteViewModel = Mockito.mock(AutoDeleteViewModel::class.java)
-    @Inject
-    lateinit var fakeFeatureUtils: FeatureUtils
+    @Inject lateinit var fakeFeatureUtils: FeatureUtils
 
     @Before
     fun setup() {
         hiltRule.inject()
         whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteViewModel.AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+            MutableLiveData(
+                AutoDeleteViewModel.AutoDeleteState.WithData(
+                    AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
     }
 
@@ -47,7 +47,7 @@ class ManageDataFragmentTest {
         launchFragment<ManageDataFragment>(Bundle())
 
         onView(withText("Auto-delete")).check(matches(isDisplayed()))
-        onView(withText("Data sources & priority")).check(matches(isDisplayed()))
+        onView(withText("Data sources and priority")).check(matches(isDisplayed()))
         onView(withText("Set units")).check(matches(isDisplayed()))
     }
 
@@ -57,7 +57,7 @@ class ManageDataFragmentTest {
         launchFragment<ManageDataFragment>(Bundle())
 
         onView(withText("Auto-delete")).check(matches(isDisplayed()))
-        onView(withText("Data sources & priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(doesNotExist())
         onView(withText("Set units")).check(matches(isDisplayed()))
     }
 }

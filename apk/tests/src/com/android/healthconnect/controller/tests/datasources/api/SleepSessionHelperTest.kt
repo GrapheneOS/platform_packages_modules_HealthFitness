@@ -376,7 +376,7 @@ class SleepSessionHelperTest {
             val SLEEP_SESSION_5_START_DATE = Instant.parse("2023-02-12T12:00:00.00Z")
             val SLEEP_SESSION_5_END_DATE = Instant.parse("2023-02-18T14:20:00.00Z")
 
-            val maxDate = Instant.parse("2023-02-14T00:00:00.00Z").plusMillis(1)
+            val maxDate = Instant.parse("2023-02-14T00:00:00.00Z")
 
             loadPriorityEntriesUseCase.setEntriesList(
                 lastDateWithSleepData,
