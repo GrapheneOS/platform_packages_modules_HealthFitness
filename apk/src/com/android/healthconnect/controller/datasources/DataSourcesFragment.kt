@@ -120,7 +120,7 @@ class DataSourcesFragment :
         if (requireArguments().containsKey(CATEGORY_KEY)) {
             // Only require this from the HealthPermissionTypes screen
             // When navigating here from the Manage Data screen we pass Unknown
-            // so that gong back and forth to this screen does not restrict users to just one
+            // so that going back and forth to this screen does not restrict users to just one
             // category
             val argCategory = requireArguments().getInt(CATEGORY_KEY)
             if (argCategory != HealthDataCategory.UNKNOWN) {

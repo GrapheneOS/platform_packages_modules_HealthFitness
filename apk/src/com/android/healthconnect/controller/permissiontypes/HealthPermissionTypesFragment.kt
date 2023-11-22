@@ -199,6 +199,12 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
 
     private fun updateNewPriorityButton() {
         mManageDataCategory?.removePreferenceRecursively(APP_PRIORITY_BUTTON)
+
+        // Only display the priority button for Activity and Sleep categories
+        if (category !in setOf(HealthDataCategory.ACTIVITY, HealthDataCategory.SLEEP)) {
+            return
+        }
+
         val newPriorityButton =
             HealthPreference(requireContext()).also {
                 it.title = resources.getString(R.string.data_sources_and_priority_title)
