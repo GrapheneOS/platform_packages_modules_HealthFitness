@@ -1368,7 +1368,7 @@ public final class TestUtils {
     }
 
     public static void sendCommandToTestAppReceiver(Context context, String action) {
-        sendCommandToTestAppReceiver(context, action, /*extras=*/ null);
+        sendCommandToTestAppReceiver(context, action, /* extras= */ null);
     }
 
     public static void sendCommandToTestAppReceiver(Context context, String action, Bundle extras) {
