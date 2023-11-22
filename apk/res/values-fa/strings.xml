@@ -92,8 +92,8 @@
     <string name="distance_lowercase_label" msgid="2287154001209381379">"مسافت"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"خواندن داده مسافت"</string>
     <string name="distance_write_content_description" msgid="494549494589487562">"نوشتن داده مسافت"</string>
-    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"ارتفاع صعودکرده"</string>
-    <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"ارتفاع صعودکرده"</string>
+    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"ارتفاع صعودشده"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"ارتفاع صعودشده"</string>
     <string name="elevation_gained_read_content_description" msgid="6018756385903843355">"خواندن داده ارتفاع صعودشده"</string>
     <string name="elevation_gained_write_content_description" msgid="6790199544670231367">"نوشتن داده ارتفاع صعودشده"</string>
     <string name="floors_climbed_uppercase_label" msgid="3754372357767832441">"طبقات پیموده‌شده"</string>
