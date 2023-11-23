@@ -20,7 +20,7 @@ import android.cts.statsdatom.lib.AtomTestUtils
 import android.cts.statsdatom.lib.ConfigUtils
 import android.cts.statsdatom.lib.DeviceUtils
 import android.cts.statsdatom.lib.ReportUtils
-import android.healthconnect.cts.logging.HostSideTestsUtils.isHardwareSupported
+import android.healthconnect.cts.HostSideTestUtil.isHardwareSupported
 import android.healthfitness.ui.ElementId
 import android.healthfitness.ui.PageId
 import com.android.os.StatsLog
