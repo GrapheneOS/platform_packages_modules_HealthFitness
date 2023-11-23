@@ -40,7 +40,12 @@
       "name": "HealthFitnessIntegrationTests"
     },
     {
-      "name": "HealthFitnessUnitTests"
+      "name": "HealthFitnessUnitTests",
+       "options": [
+                {
+                    "exclude-filter": "org.junit.Ignore"
+                }
+        ]
     },
     {
       "name": "HealthConnectBackupRestoreUnitTests"
