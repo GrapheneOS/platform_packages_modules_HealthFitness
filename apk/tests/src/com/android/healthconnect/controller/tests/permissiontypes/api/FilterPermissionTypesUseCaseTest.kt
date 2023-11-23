@@ -1,11 +1,10 @@
-package com.android.healthconnect.controller.tests.permissiontypes
+package com.android.healthconnect.controller.tests.permissiontypes.api
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissionCategory
 import android.health.connect.RecordTypeInfoResponse
-import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.ExerciseLap
 import android.health.connect.datatypes.ExerciseSegment
 import android.health.connect.datatypes.ExerciseSessionRecord
@@ -20,6 +19,7 @@ import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.google.common.truth.Truth
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -157,9 +157,5 @@ class FilterPermissionTypesUseCaseTest {
             .setTitle(title)
             .setSegments(segments)
             .build()
-    }
-
-    private fun getDataOrigin(packageName: String): DataOrigin {
-        return DataOrigin.Builder().setPackageName(packageName).build()
     }
 }
