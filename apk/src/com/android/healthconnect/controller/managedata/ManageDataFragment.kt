@@ -1,13 +1,16 @@
 package com.android.healthconnect.controller.managedata
 
+import android.health.connect.HealthDataCategory
 import android.icu.text.MessageFormat
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
+import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.FeatureUtils
@@ -30,8 +33,7 @@ class ManageDataFragment : Hilt_ManageDataFragment() {
     }
 
     private val autoDeleteViewModel: AutoDeleteViewModel by activityViewModels()
-    @Inject
-    lateinit var featureUtils: FeatureUtils
+    @Inject lateinit var featureUtils: FeatureUtils
 
     private val mAutoDeletePreference: HealthPreference? by lazy {
         preferenceScreen.findPreference(AUTO_DELETE_PREFERENCE_KEY)
@@ -58,7 +60,12 @@ class ManageDataFragment : Hilt_ManageDataFragment() {
         if (featureUtils.isNewAppPriorityEnabled()) {
             mDataSourcesPreference?.logName = ManageDataElement.DATA_SOURCES_AND_PRIORITY_BUTTON
             mDataSourcesPreference?.setOnPreferenceClickListener {
-                findNavController().navigate(R.id.action_manageData_to_dataSources)
+                findNavController()
+                    .navigate(
+                        R.id.action_manageData_to_dataSources,
+                        bundleOf(
+                            HealthDataCategoriesFragment.CATEGORY_KEY to
+                                HealthDataCategory.UNKNOWN))
                 true
             }
         } else {
@@ -96,12 +103,12 @@ class ManageDataFragment : Hilt_ManageDataFragment() {
             AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS -> {
                 val count = AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS.numberOfMonths
                 MessageFormat.format(
-                        getString(R.string.range_after_x_months), mapOf("count" to count))
+                    getString(R.string.range_after_x_months), mapOf("count" to count))
             }
             AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS -> {
                 val count = AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS.numberOfMonths
                 MessageFormat.format(
-                        getString(R.string.range_after_x_months), mapOf("count" to count))
+                    getString(R.string.range_after_x_months), mapOf("count" to count))
             }
         }
     }

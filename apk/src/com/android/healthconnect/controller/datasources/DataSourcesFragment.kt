@@ -117,16 +117,24 @@ class DataSourcesFragment :
         dataSourcesCategoriesStrings =
             dataSourcesCategories.map { category -> getString(category.uppercaseTitle()) }
 
-        setupSpinnerPreference()
-    }
+        if (requireArguments().containsKey(CATEGORY_KEY)) {
+            // Only require this from the HealthPermissionTypes screen
+            // When navigating here from the Manage Data screen we pass Unknown
+            // so that going back and forth to this screen does not restrict users to just one
+            // category
+            val argCategory = requireArguments().getInt(CATEGORY_KEY)
+            if (argCategory != HealthDataCategory.UNKNOWN) {
+                currentCategorySelection = argCategory
+                dataSourcesViewModel.setCurrentSelection(currentCategorySelection)
+            }
+        }
 
-    override fun onResume() {
-        super.onResume()
-        dataSourcesViewModel.loadData(currentCategorySelection)
+        setupSpinnerPreference()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setLoading(true)
         val currentStringSelection = spinnerPreference.selectedItem
         currentCategorySelection =
             dataSourcesCategories[dataSourcesCategoriesStrings.indexOf(currentStringSelection)]
@@ -155,7 +163,7 @@ class DataSourcesFragment :
                 if (priorityList.isEmpty() && potentialAppSources.isEmpty()) {
                     addEmptyState()
                 } else {
-                    updateMenu(priorityList.size > 1)
+                    updateMenu(priorityList.size > 1 && !dataSourcesViewModel.isEditMode)
                     updateAppSourcesSection(priorityList, potentialAppSources)
                     updateDataTotalsSection(cardInfos)
                 }
@@ -178,6 +186,11 @@ class DataSourcesFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        dataSourcesViewModel.loadData(currentCategorySelection)
+    }
+
     private fun updateMenu(shouldShowEditButton: Boolean) {
         if (shouldShowEditButton) {
             setupMenu(R.menu.data_sources, viewLifecycleOwner, logger, onEditMenuItemSelected)
@@ -187,6 +200,7 @@ class DataSourcesFragment :
     }
 
     private fun editPriorityList() {
+        dataSourcesViewModel.isEditMode = true
         updateMenu(shouldShowEditButton = false)
         appSourcesPreferenceGroup?.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
         val appSourcesPreference =
@@ -200,6 +214,7 @@ class DataSourcesFragment :
             ?.toggleEditMode(false)
         updateMenu(dataSourcesViewModel.getEditedPriorityList().size > 1)
         updateAddApp(dataSourcesViewModel.getEditedPotentialAppSources().isNotEmpty())
+        dataSourcesViewModel.isEditMode = false
     }
 
     /** Updates the priority list preference. */
@@ -219,9 +234,12 @@ class DataSourcesFragment :
                     dataSourcesViewModel,
                     currentCategorySelection,
                     this)
-                .also { it.key = APP_SOURCES_PREFERENCE_KEY })
+                .also {
+                    it.key = APP_SOURCES_PREFERENCE_KEY
+                    it.setEditMode(dataSourcesViewModel.isEditMode)
+                })
 
-        updateAddApp(potentialAppSources.isNotEmpty())
+        updateAddApp(potentialAppSources.isNotEmpty() && !dataSourcesViewModel.isEditMode)
         nonEmptyFooterPreference?.isVisible = true
     }
 

@@ -78,8 +78,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
     }
 
     @Inject lateinit var logger: HealthConnectLogger
-    @Inject
-    lateinit var featureUtils: FeatureUtils
+    @Inject lateinit var featureUtils: FeatureUtils
 
     @HealthDataCategoryInt private var category: Int = 0
 
@@ -188,14 +187,45 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
                         mManageDataCategory?.removePreferenceRecursively(APP_PRIORITY_BUTTON)
                     }
                     is HealthPermissionTypesViewModel.PriorityListState.WithData -> {
-                        updatePriorityButton(state.priorityList)
+                        updateOldPriorityButton(state.priorityList)
                     }
                 }
             }
+        } else {
+            // Add the new priority list button
+            updateNewPriorityButton()
         }
     }
 
-    private fun updatePriorityButton(priorityList: List<AppMetadata>) {
+    private fun updateNewPriorityButton() {
+        mManageDataCategory?.removePreferenceRecursively(APP_PRIORITY_BUTTON)
+
+        // Only display the priority button for Activity and Sleep categories
+        if (category !in setOf(HealthDataCategory.ACTIVITY, HealthDataCategory.SLEEP)) {
+            return
+        }
+
+        val newPriorityButton =
+            HealthPreference(requireContext()).also {
+                it.title = resources.getString(R.string.data_sources_and_priority_title)
+                it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.appPriorityIcon)
+                it.logName = PermissionTypesElement.DATA_SOURCES_AND_PRIORITY_BUTTON
+                it.key = APP_PRIORITY_BUTTON
+                it.order = 4
+                it.setOnPreferenceClickListener {
+                    // Navigate to the data sources fragment
+                    findNavController()
+                        .navigate(
+                            R.id.action_healthPermissionTypes_to_dataSourcesAndPriority,
+                            bundleOf(CATEGORY_KEY to category))
+                    true
+                }
+            }
+
+        mManageDataCategory?.addPreference(newPriorityButton)
+    }
+
+    private fun updateOldPriorityButton(priorityList: List<AppMetadata>) {
         mManageDataCategory?.removePreferenceRecursively(APP_PRIORITY_BUTTON)
 
         // Only display the priority button for Activity and Sleep categories
@@ -210,8 +240,7 @@ open class HealthPermissionTypesFragment : Hilt_HealthPermissionTypesFragment() 
         val appPriorityButton =
             HealthPreference(requireContext()).also {
                 it.title = resources.getString(R.string.app_priority_button)
-                it.icon =
-                    AttributeResolver.getDrawable(requireContext(), R.attr.appPriorityIcon)
+                it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.appPriorityIcon)
                 it.logName = PermissionTypesElement.SET_APP_PRIORITY_BUTTON
                 it.summary = priorityList.first().appName
                 it.key = APP_PRIORITY_BUTTON

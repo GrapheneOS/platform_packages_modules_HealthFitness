@@ -15,6 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.permissiontypes
 
+import android.health.connect.HealthDataCategory
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
@@ -29,6 +30,7 @@ import com.android.healthconnect.controller.categories.HealthDataCategoriesFragm
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesViewModel
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
@@ -39,18 +41,17 @@ import com.android.healthconnect.controller.utils.FeatureUtils
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import javax.inject.Inject
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
-import javax.inject.Inject
 
 @HiltAndroidTest
 class HealthPermissionTypesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @Inject
-    lateinit var fakeFeatureUtils: FeatureUtils
+    @Inject lateinit var fakeFeatureUtils: FeatureUtils
 
     @BindValue
     val viewModel: HealthPermissionTypesViewModel =
@@ -63,7 +64,7 @@ class HealthPermissionTypesFragmentTest {
     }
 
     @Test
-    fun permissionTypesFragment_isDisplayed() {
+    fun permissionTypesFragment_activityCategory_isDisplayed() {
         Mockito.`when`(viewModel.permissionTypesData).then {
             MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
                 HealthPermissionTypesViewModel.PermissionTypesState.WithData(
@@ -102,6 +103,39 @@ class HealthPermissionTypesFragmentTest {
         onView(withText("App priority")).check(matches(isDisplayed()))
         onView(withText("Health Connect test app")).check(matches(isDisplayed()))
         onView(withText("Delete activity data")).check(matches(isDisplayed()))
+        onView(withText("Data sources and priority")).check(doesNotExist())
+    }
+
+    @Test
+    fun permissionTypesFragment_sleepCategory_isDisplayed() {
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(HealthPermissionType.SLEEP)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.SLEEP.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(sleepCategoryBundle())
+
+        onView(withText("Manage data")).check(matches(isDisplayed()))
+        onView(withText("App priority")).check(matches(isDisplayed()))
+        onView(withText("Health Connect test app")).check(matches(isDisplayed()))
+        onView(withText("Delete sleep data")).check(matches(isDisplayed()))
+        onView(withText("Data sources and priority")).check(doesNotExist())
     }
 
     @Test
@@ -143,6 +177,7 @@ class HealthPermissionTypesFragmentTest {
         onView(withText("App priority")).check(doesNotExist())
         onView(withText("Health Connect test app")).check(doesNotExist())
         onView(withText("Delete activity data")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Data sources and priority")).check(doesNotExist())
     }
 
     @Test
@@ -182,6 +217,7 @@ class HealthPermissionTypesFragmentTest {
         onView(withText("App priority")).check(doesNotExist())
         onView(withText("Health Connect test app")).check(doesNotExist())
         onView(withText("Delete activity data")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Data sources and priority")).check(doesNotExist())
     }
 
     @Test
@@ -315,7 +351,7 @@ class HealthPermissionTypesFragmentTest {
     }
 
     @Test
-    fun permissionTypesFragment_whenNewPriorityEnabled_doesNotShowAppPriority() {
+    fun permissionTypesFragment_activityCategory_whenNewPriorityEnabled_showsNewAppPriorityButton() {
         (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(true)
         Mockito.`when`(viewModel.permissionTypesData).then {
             MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
@@ -353,13 +389,320 @@ class HealthPermissionTypesFragmentTest {
         onView(withText("Wheelchair pushes")).check(doesNotExist())
         onView(withText("Manage data")).check(matches(isDisplayed()))
         onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(matches(isDisplayed()))
         onView(withText("Health Connect test app")).check(doesNotExist())
         onView(withText("Delete activity data")).check(matches(isDisplayed()))
     }
 
+    @Test
+    fun permissionTypesFragment_sleepCategory_whenNewPriorityEnabled_showsNewAppPriorityButton() {
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(true)
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(HealthPermissionType.SLEEP)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.SLEEP.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(sleepCategoryBundle())
+
+        onView(withText("Manage data")).check(matches(isDisplayed()))
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(matches(isDisplayed()))
+        onView(withText("Health Connect test app")).check(doesNotExist())
+        onView(withText("Delete sleep data")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun permissionTypesFragment_whenBodyMeasurementsCategory_doesNotShowOldPriorityButton() {
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(
+                        HealthPermissionType.BASAL_METABOLIC_RATE,
+                        HealthPermissionType.BODY_FAT,
+                        HealthPermissionType.HEIGHT)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.BODY_MEASUREMENTS.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(bodyMeasurementsCategoryBundle())
+
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(doesNotExist())
+    }
+
+    @Test
+    fun permissionTypesFragment_whenBodyMeasurementsCategory_doesNotShowNewPriorityButton() {
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(true)
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(
+                        HealthPermissionType.BASAL_METABOLIC_RATE,
+                        HealthPermissionType.BODY_FAT,
+                        HealthPermissionType.HEIGHT)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.BODY_MEASUREMENTS.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(bodyMeasurementsCategoryBundle())
+
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(doesNotExist())
+    }
+
+    @Test
+    fun permissionTypesFragment_whenCycleTrackingCategory_doesNotShowOldPriorityButton() {
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(HealthPermissionType.MENSTRUATION)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.CYCLE_TRACKING.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(cycleCategoryBundle())
+
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(doesNotExist())
+    }
+
+    @Test
+    fun permissionTypesFragment_whenCycleTrackingCategory_doesNotShowNewPriorityButton() {
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(true)
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(HealthPermissionType.MENSTRUATION)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.CYCLE_TRACKING.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(cycleCategoryBundle())
+
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(doesNotExist())
+    }
+
+    @Test
+    fun permissionTypesFragment_whenNutritionCategory_doesNotShowOldPriorityButton() {
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(HealthPermissionType.NUTRITION)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.NUTRITION.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(nutritionCategoryBundle())
+
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(doesNotExist())
+    }
+
+    @Test
+    fun permissionTypesFragment_whenNutritionCategory_doesNotShowNewPriorityButton() {
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(true)
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(HealthPermissionType.NUTRITION)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.NUTRITION.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(nutritionCategoryBundle())
+
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(doesNotExist())
+    }
+
+    @Test
+    fun permissionTypesFragment_whenVitalsCategory_doesNotShowOldPriorityButton() {
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(HealthPermissionType.HEART_RATE)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.VITALS.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(vitalsCategoryBundle())
+
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(doesNotExist())
+    }
+
+    @Test
+    fun permissionTypesFragment_whenVitalsCategory_doesNotShowNewPriorityButton() {
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(true)
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(HealthPermissionType.HEART_RATE)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData<List<AppMetadata>>(listOf(TEST_APP, TEST_APP_2))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then {
+            MutableLiveData(HealthDataCategory.VITALS.lowercaseTitle())
+        }
+        launchFragment<HealthPermissionTypesFragment>(vitalsCategoryBundle())
+
+        onView(withText("App priority")).check(doesNotExist())
+        onView(withText("Data sources and priority")).check(doesNotExist())
+    }
+
     private fun activityCategoryBundle(): Bundle {
         val bundle = Bundle()
-        bundle.putInt(HealthDataCategoriesFragment.CATEGORY_KEY, 1)
+        bundle.putInt(HealthDataCategoriesFragment.CATEGORY_KEY, HealthDataCategory.ACTIVITY)
+        return bundle
+    }
+
+    private fun bodyMeasurementsCategoryBundle(): Bundle {
+        val bundle = Bundle()
+        bundle.putInt(
+            HealthDataCategoriesFragment.CATEGORY_KEY, HealthDataCategory.BODY_MEASUREMENTS)
+        return bundle
+    }
+
+    private fun cycleCategoryBundle(): Bundle {
+        val bundle = Bundle()
+        bundle.putInt(HealthDataCategoriesFragment.CATEGORY_KEY, HealthDataCategory.CYCLE_TRACKING)
+        return bundle
+    }
+
+    private fun nutritionCategoryBundle(): Bundle {
+        val bundle = Bundle()
+        bundle.putInt(HealthDataCategoriesFragment.CATEGORY_KEY, HealthDataCategory.NUTRITION)
+        return bundle
+    }
+
+    private fun sleepCategoryBundle(): Bundle {
+        val bundle = Bundle()
+        bundle.putInt(HealthDataCategoriesFragment.CATEGORY_KEY, HealthDataCategory.SLEEP)
+        return bundle
+    }
+
+    private fun vitalsCategoryBundle(): Bundle {
+        val bundle = Bundle()
+        bundle.putInt(HealthDataCategoriesFragment.CATEGORY_KEY, HealthDataCategory.VITALS)
         return bundle
     }
 }
