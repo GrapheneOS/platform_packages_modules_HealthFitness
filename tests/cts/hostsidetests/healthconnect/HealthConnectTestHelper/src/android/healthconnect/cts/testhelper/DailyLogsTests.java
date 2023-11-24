@@ -21,12 +21,16 @@ import static android.healthconnect.cts.testhelper.TestHelperUtils.getBloodPress
 import static android.healthconnect.cts.testhelper.TestHelperUtils.getHeartRateRecord;
 import static android.healthconnect.cts.testhelper.TestHelperUtils.getStepsRecord;
 import static android.healthconnect.cts.testhelper.TestHelperUtils.insertRecords;
+import static android.healthconnect.cts.testhelper.TestHelperUtils.queryAccessLogs;
+
+import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.HealthConnectManager;
 
 import androidx.test.InstrumentationRegistry;
 
 import com.android.compatibility.common.util.NonApiTest;
+import com.android.compatibility.common.util.SystemUtil;
 
 import org.junit.Test;
 
@@ -46,10 +50,42 @@ public class DailyLogsTests {
             InstrumentationRegistry.getContext().getSystemService(HealthConnectManager.class);
 
     @Test
-    public void testHealthConnectDatabaseStats() throws Exception {
-        insertRecords(
-                List.of(getStepsRecord(), getBloodPressureRecord(), getHeartRateRecord()),
-                mHealthConnectManager);
+    public void testInsertRecordsSucceed() throws Exception {
+        assertThat(
+                        insertRecords(
+                                List.of(
+                                        getStepsRecord(),
+                                        getBloodPressureRecord(),
+                                        getHeartRateRecord()),
+                                mHealthConnectManager))
+                .hasSize(3);
+    }
+
+    @Test
+    public void testHealthConnectAccessLogsEqualsZero() throws Exception {
+        SystemUtil.runWithShellPermissionIdentity(
+                () -> {
+                    assertThat(queryAccessLogs(mHealthConnectManager)).hasSize(0);
+                },
+                "android.permission.MANAGE_HEALTH_DATA");
+    }
+
+    @Test
+    public void testHealthConnectAccessLogsEqualsOne() throws Exception {
+        SystemUtil.runWithShellPermissionIdentity(
+                () -> {
+                    assertThat(queryAccessLogs(mHealthConnectManager)).hasSize(1);
+                },
+                "android.permission.MANAGE_HEALTH_DATA");
+    }
+
+    @Test
+    public void testHealthConnectAccessLogsEqualsTwo() throws Exception {
+        SystemUtil.runWithShellPermissionIdentity(
+                () -> {
+                    assertThat(queryAccessLogs(mHealthConnectManager)).hasSize(2);
+                },
+                "android.permission.MANAGE_HEALTH_DATA");
     }
 
     /**

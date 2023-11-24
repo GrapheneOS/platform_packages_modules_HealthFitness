@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts.logging;
 
-import static android.healthconnect.cts.logging.HostSideTestsUtils.isHardwareSupported;
+import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -101,7 +101,7 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
                 TEST_APP_PKG_NAME,
                 new int[] {ApiExtensionAtoms.HEALTH_CONNECT_STORAGE_STATS_FIELD_NUMBER});
         List<StatsLog.EventMetricData> data =
-                getEventMetricDataList("testHealthConnectDatabaseStats", NUMBER_OF_RETRIES);
+                getEventMetricDataList("testInsertRecordsSucceed", NUMBER_OF_RETRIES);
         assertThat(data.size()).isAtLeast(1);
         HealthConnectStorageStats atom =
                 data.get(0).getAtom().getExtension(ApiExtensionAtoms.healthConnectStorageStats);
