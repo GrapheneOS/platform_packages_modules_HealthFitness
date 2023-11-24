@@ -20,6 +20,7 @@ import static android.healthconnect.cts.lib.MultiAppTestUtils.APP_PKG_NAME_USED_
 import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOGS_RESPONSE;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.CHANGE_LOG_TOKEN;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.CLIENT_ID;
+import static android.healthconnect.cts.lib.MultiAppTestUtils.DATA_ORIGIN_FILTER_PACKAGE_NAMES;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.DELETE_RECORDS_QUERY;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.END_TIME;
 import static android.healthconnect.cts.lib.MultiAppTestUtils.EXERCISE_SESSION;
@@ -66,6 +67,7 @@ import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.utils.TestUtils;
 import android.os.Bundle;
 
@@ -149,10 +151,19 @@ public class HealthConnectTestHelper extends Activity {
                     break;
                 case READ_RECORDS_QUERY:
                     if (bundle.containsKey(READ_USING_DATA_ORIGIN_FILTERS)) {
+                        List<String> dataOriginPackageNames =
+                                bundle.containsKey(DATA_ORIGIN_FILTER_PACKAGE_NAMES)
+                                        ?
+                                        // if a set of data origin filters is specified, use that
+                                        bundle.getStringArrayList(DATA_ORIGIN_FILTER_PACKAGE_NAMES)
+                                        :
+                                        // otherwise default to this app's package name
+                                        List.of(context.getPackageName());
                         returnIntent =
                                 readRecordsUsingDataOriginFilters(
                                         queryType,
                                         bundle.getStringArrayList(READ_RECORD_CLASS_NAME),
+                                        dataOriginPackageNames,
                                         context);
                         break;
                     }
@@ -461,23 +472,25 @@ public class HealthConnectTestHelper extends Activity {
      * @return Intent to send back to the main app which is running the tests
      */
     private Intent readRecordsUsingDataOriginFilters(
-            String queryType, ArrayList<String> recordClassesToRead, Context context) {
+            String queryType,
+            ArrayList<String> recordClassesToRead,
+            List<String> dataOriginPackageNames,
+            Context context) {
         final Intent intent = new Intent(queryType);
 
         int recordsSize = 0;
         try {
             for (String recordClass : recordClassesToRead) {
-                List<? extends Record> recordsRead =
-                        readRecords(
-                                new ReadRecordsRequestUsingFilters.Builder<>(
-                                                (Class<? extends Record>)
-                                                        Class.forName(recordClass))
-                                        .addDataOrigins(
-                                                new DataOrigin.Builder()
-                                                        .setPackageName(context.getPackageName())
-                                                        .build())
-                                        .build(),
-                                context);
+                ReadRecordsRequestUsingFilters.Builder requestBuilder =
+                        new ReadRecordsRequestUsingFilters.Builder<>(
+                                (Class<? extends Record>) Class.forName(recordClass));
+                dataOriginPackageNames.forEach(
+                        packageName ->
+                                requestBuilder.addDataOrigins(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(packageName)
+                                                .build()));
+                List<? extends Record> recordsRead = readRecords(requestBuilder.build(), context);
                 recordsSize += recordsRead.size();
             }
         } catch (Exception e) {
@@ -590,8 +603,15 @@ public class HealthConnectTestHelper extends Activity {
                     Arrays.asList(
                             buildStepsRecord(
                                     startTime, endTime, stepsCount, context.getPackageName()));
-            insertRecords(recordToInsert, context);
+            List<Record> insertedRecords = insertRecords(recordToInsert, context);
+            List<TestUtils.RecordTypeAndRecordIds> recordTypeAndRecordIdsList =
+                    new ArrayList<TestUtils.RecordTypeAndRecordIds>();
+            recordTypeAndRecordIdsList.add(
+                    new TestUtils.RecordTypeAndRecordIds(
+                            StepsRecord.class.getName(),
+                            List.of(insertedRecords.get(0).getMetadata().getId())));
             intent.putExtra(SUCCESS, true);
+            intent.putExtra(RECORD_IDS, (Serializable) recordTypeAndRecordIdsList);
         } catch (Exception e) {
             intent.putExtra(SUCCESS, false);
         }

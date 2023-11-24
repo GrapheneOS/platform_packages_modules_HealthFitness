@@ -94,11 +94,8 @@ public class BackgroundReadTest {
 
         sendCommandToTestAppReceiver(mContext, ACTION_READ_RECORDS_FOR_OTHER_APP);
 
-        final Bundle result = TestReceiver.getResult();
-        assertThat(result).isNotNull();
-
-        // Other apps' data is simply not returned when reading in background
-        assertThat(result.getInt(EXTRA_RECORD_COUNT)).isEqualTo(0);
+        assertThat(TestReceiver.getResult()).isNull();
+        assertThat(TestReceiver.getErrorCode()).isEqualTo(ERROR_SECURITY);
     }
 
     @Test
