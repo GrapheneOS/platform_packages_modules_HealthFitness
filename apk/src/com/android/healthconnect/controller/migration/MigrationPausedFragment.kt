@@ -24,8 +24,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -36,6 +36,7 @@ import javax.inject.Inject
 class MigrationPausedFragment : Hilt_MigrationPausedFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
+    @Inject lateinit var navigationUtils: NavigationUtils
 
     companion object {
         private const val TAG = "MigrationPausedFragment"
@@ -60,7 +61,7 @@ class MigrationPausedFragment : Hilt_MigrationPausedFragment() {
         resumeButton.setOnClickListener {
             logger.logInteraction(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
             try {
-                findNavController().navigate(R.id.action_migrationPausedFragment_to_migrationApk)
+                navigationUtils.navigate(this, R.id.action_migrationPausedFragment_to_migrationApk)
             } catch (exception: Exception) {
                 Log.e(TAG, "Migration APK does not exist", exception)
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
@@ -70,21 +71,19 @@ class MigrationPausedFragment : Hilt_MigrationPausedFragment() {
         cancelButton.setOnClickListener {
             logger.logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
             val sharedPreferences =
-                    requireActivity()
-                            .getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+                requireActivity()
+                    .getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
             val integrationPausedSeen =
-                    sharedPreferences.getBoolean(INTEGRATION_PAUSED_SEEN_KEY, false)
+                sharedPreferences.getBoolean(INTEGRATION_PAUSED_SEEN_KEY, false)
             if (!integrationPausedSeen) {
                 sharedPreferences.edit().apply {
                     putBoolean(INTEGRATION_PAUSED_SEEN_KEY, true)
                     apply()
                 }
-                findNavController()
-                        .navigate(R.id.action_migrationPausedFragment_to_homeScreen)
+                navigationUtils.navigate(this, R.id.action_migrationPausedFragment_to_homeScreen)
             }
             requireActivity().finish()
         }
-
     }
 
     override fun onResume() {

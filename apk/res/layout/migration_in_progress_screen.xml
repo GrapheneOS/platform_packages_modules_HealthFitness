@@ -55,13 +55,6 @@
             android:indeterminate="true"
             />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/migration_in_progress_screen_integration_dont_close"
-            android:textAppearance="?attr/textAppearanceSubheader2"
-            />
-
     </LinearLayout>
 
 </ScrollView>
