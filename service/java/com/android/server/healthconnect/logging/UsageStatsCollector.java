@@ -26,7 +26,11 @@ import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 
 import com.android.server.healthconnect.permission.PackageInfoUtils;
+import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +40,9 @@ import java.util.Objects;
  * @hide
  */
 final class UsageStatsCollector {
-
+    private static final String USER_MOST_RECENT_ACCESS_LOG_TIME =
+            "USER_MOST_RECENT_ACCESS_LOG_TIME";
+    private static final int NUMBER_OF_DAYS_FOR_USER_TO_BE_MONTHLY_ACTIVE = 30;
     private final Context mContext;
     private final List<PackageInfo> mAllPackagesInstalledForUser;
 
@@ -84,6 +90,38 @@ final class UsageStatsCollector {
             }
         }
         return count;
+    }
+
+    boolean isUserMonthlyActive() {
+        PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
+
+        String latestAccessLogTimeStampString =
+                preferenceHelper.getPreference(USER_MOST_RECENT_ACCESS_LOG_TIME);
+
+        // Return false if preference is empty and make sure latest access was within past
+        // 30 days.
+        return latestAccessLogTimeStampString != null
+                && Instant.now()
+                                .minus(
+                                        NUMBER_OF_DAYS_FOR_USER_TO_BE_MONTHLY_ACTIVE,
+                                        ChronoUnit.DAYS)
+                                .toEpochMilli()
+                        <= Long.parseLong(latestAccessLogTimeStampString);
+    }
+
+    void upsertLastAccessLogTimeStamp() {
+        PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
+
+        long latestAccessLogTimeStamp =
+                AccessLogsHelper.getInstance().getLatestAccessLogTimeStamp();
+
+        // Access logs are only stored for 7 days, therefore only update this value if there is an
+        // access log. Last access timestamp can be before 7 days and might already exist in
+        // preference and in that case we should not overwrite the existing value.
+        if (latestAccessLogTimeStamp != Long.MIN_VALUE) {
+            preferenceHelper.insertOrReplacePreference(
+                    USER_MOST_RECENT_ACCESS_LOG_TIME, String.valueOf(latestAccessLogTimeStamp));
+        }
     }
 
     private boolean hasRequestedHealthPermission(@NonNull PackageInfo packageInfo) {

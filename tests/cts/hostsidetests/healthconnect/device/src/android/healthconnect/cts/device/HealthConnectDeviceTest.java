@@ -55,18 +55,24 @@ import static com.android.compatibility.common.util.FeatureUtil.hasSystemFeature
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.fail;
+
 import android.app.UiAutomation;
+import android.content.Context;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
@@ -87,9 +93,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -133,9 +142,33 @@ public class HealthConnectDeviceTest {
                     false,
                     "CtsHealthConnectTestAppWithDataManagePermission.apk");
 
+    private static final String STEPS_1000_CLIENT_ID = "client-id-1";
+    private static final String STEPS_2000_CLIENT_ID = "client-id-2";
+    private static final StepsRecord STEPS_1000 =
+            getStepsRecord(
+                    /* stepCount= */ 1000,
+                    /* startTime= */ Instant.now().minus(2, ChronoUnit.HOURS),
+                    /* durationInHours= */ 1,
+                    STEPS_1000_CLIENT_ID);
+    private static final StepsRecord STEPS_2000 =
+            getStepsRecord(
+                    /* stepCount= */ 2000,
+                    /* startTime= */ Instant.now().minus(4, ChronoUnit.HOURS),
+                    /* durationInHours= */ 1,
+                    STEPS_2000_CLIENT_ID);
+
+    private static final AggregationType<Long> WRITE_ONLY_PERM_AGGREGATION_STEPS_TOTAL =
+            STEPS_COUNT_TOTAL;
+
+    private static final AggregationType<Long> READ_PERM_AGGREGATION_EXERCISE_DURATION_TOTAL =
+            EXERCISE_DURATION_TOTAL;
+
+    private Context mContext;
+
     @Before
     public void setUp() {
         Assume.assumeFalse(hasSystemFeature(AUTOMOTIVE_FEATURE));
+        mContext = ApplicationProvider.getApplicationContext();
     }
 
     @After
@@ -193,16 +226,18 @@ public class HealthConnectDeviceTest {
                 (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
 
         for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            Class<? extends Record> recordType =
+                    (Class<? extends Record>) Class.forName(recordTypeAndRecordIds.getRecordType());
+            if (!recordType.equals(ExerciseSessionRecord.class)) {
+                // skip other record types since we don't have read permissions for these.
+                continue;
+            }
             List<Record> records =
                     (List<Record>)
                             readRecords(
-                                    new ReadRecordsRequestUsingFilters.Builder<>(
-                                                    (Class<? extends Record>)
-                                                            Class.forName(
-                                                                    recordTypeAndRecordIds
-                                                                            .getRecordType()))
+                                    new ReadRecordsRequestUsingFilters.Builder<>(recordType)
                                             .build());
-
+            assertThat(records).isNotEmpty();
             for (Record record : records) {
                 assertThat(record.getMetadata().getDataOrigin().getPackageName())
                         .isEqualTo(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
@@ -211,7 +246,7 @@ public class HealthConnectDeviceTest {
     }
 
     @Test
-    public void testAppWithWritePermsOnlyCanReadItsOwnEntry() throws Exception {
+    public void testAppWithWritePermsOnly_readOwnData_success() throws Exception {
         Bundle bundle = insertRecordAs(APP_WITH_WRITE_PERMS_ONLY);
         assertThat(bundle.getBoolean(SUCCESS)).isTrue();
 
@@ -223,12 +258,17 @@ public class HealthConnectDeviceTest {
             recordClassesToRead.add(recordTypeAndRecordIds.getRecordType());
         }
 
-        bundle = readRecordsAs(APP_WITH_WRITE_PERMS_ONLY, recordClassesToRead);
-        assertThat(bundle.getInt(READ_RECORDS_SIZE)).isNotEqualTo(0);
+        bundle =
+                readRecordsAs(
+                        APP_WITH_WRITE_PERMS_ONLY,
+                        recordClassesToRead,
+                        /* dataOriginFilterPackageNames= */ Optional.of(
+                                List.of(APP_WITH_WRITE_PERMS_ONLY.getPackageName())));
+        assertThat(bundle.getInt(READ_RECORDS_SIZE)).isEqualTo(listOfRecordIdsAndClass.size());
     }
 
     @Test
-    public void testAppWithWritePermsOnlyCantReadAnotherAppEntry() throws Exception {
+    public void testAppWithWritePermsOnly_readDataFromAllApps_throwsError() throws Exception {
         Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
         assertThat(bundle.getBoolean(SUCCESS)).isTrue();
 
@@ -240,8 +280,204 @@ public class HealthConnectDeviceTest {
             recordClassesToRead.add(recordTypeAndRecordIds.getRecordType());
         }
 
-        bundle = readRecordsAs(APP_WITH_WRITE_PERMS_ONLY, recordClassesToRead);
-        assertThat(bundle.getInt(READ_RECORDS_SIZE)).isEqualTo(0);
+        try {
+            bundle =
+                    readRecordsAs(
+                            APP_WITH_WRITE_PERMS_ONLY,
+                            recordClassesToRead,
+                            // empty data implies all data is requested
+                            /* dataOriginFilterPackageNames= */ Optional.of(List.of()));
+            fail("Expected to fail with HealthConnectException but didn't");
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(HealthConnectException.class);
+            assertThat(((HealthConnectException) e).getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_SECURITY);
+        }
+    }
+
+    @Test
+    public void testAppWithWritePermsOnly_readDataFromOtherApps_throwsError() throws Exception {
+        Bundle bundle = insertRecordAs(APP_A_WITH_READ_WRITE_PERMS);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+
+        List<TestUtils.RecordTypeAndRecordIds> listOfRecordIdsAndClass =
+                (List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS);
+
+        ArrayList<String> recordClassesToRead = new ArrayList<>();
+        for (TestUtils.RecordTypeAndRecordIds recordTypeAndRecordIds : listOfRecordIdsAndClass) {
+            recordClassesToRead.add(recordTypeAndRecordIds.getRecordType());
+        }
+
+        try {
+            readRecordsAs(
+                    APP_WITH_WRITE_PERMS_ONLY,
+                    recordClassesToRead,
+                    /* dataOriginFilterPackageNames= */ Optional.of(
+                            List.of(
+                                    APP_WITH_WRITE_PERMS_ONLY.getPackageName(),
+                                    APP_A_WITH_READ_WRITE_PERMS.getPackageName())));
+            fail("Expected to fail with HealthConnectException but didn't");
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(HealthConnectException.class);
+            assertThat(((HealthConnectException) e).getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_SECURITY);
+        }
+    }
+
+    @Test
+    public void testAppWithWritePermsOnly_readDataByIdForOwnApp_success() throws Exception {
+        Bundle bundle =
+                insertStepsRecordAs(APP_A_WITH_READ_WRITE_PERMS, "01:00 PM", "03:00 PM", 1000);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+        List<Record> writtenRecords = TestUtils.insertRecords(List.of(STEPS_1000, STEPS_2000));
+        List<String> recordIds =
+                writtenRecords.stream()
+                        .map(record -> record.getMetadata().getId())
+                        .collect(Collectors.toList());
+
+        List<Record> readRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder(StepsRecord.class)
+                                .addId(recordIds.get(0))
+                                .addId(recordIds.get(1))
+                                .build());
+
+        assertThat(
+                        readRecords.stream()
+                                .map(record -> record.getMetadata().getClientRecordId())
+                                .collect(Collectors.toList()))
+                .containsExactly(STEPS_1000_CLIENT_ID, STEPS_2000_CLIENT_ID);
+    }
+
+    // TODO(b/309778116): Consider throwing an error in this case.
+    @Test
+    public void testAppWithWritePermsOnly_readDataByIdForOtherApps_filtersOutOtherAppData()
+            throws Exception {
+        Bundle bundle =
+                insertStepsRecordAs(APP_A_WITH_READ_WRITE_PERMS, "01:00 PM", "03:00 PM", 1000);
+        assertThat(bundle.getBoolean(SUCCESS)).isTrue();
+        String otherAppRecordId =
+                ((List<TestUtils.RecordTypeAndRecordIds>) bundle.getSerializable(RECORD_IDS))
+                        .get(0)
+                        .getRecordIds()
+                        .get(0);
+        List<Record> writtenRecords = TestUtils.insertRecords(List.of(STEPS_1000, STEPS_2000));
+        List<String> recordIds =
+                writtenRecords.stream()
+                        .map(record -> record.getMetadata().getId())
+                        .collect(Collectors.toList());
+
+        List<Record> readRecords =
+                TestUtils.readRecords(
+                        new ReadRecordsRequestUsingIds.Builder(StepsRecord.class)
+                                .addId(recordIds.get(0))
+                                .addId(recordIds.get(1))
+                                .addId(otherAppRecordId)
+                                .build());
+
+        assertThat(
+                        readRecords.stream()
+                                .map(record -> record.getMetadata().getClientRecordId())
+                                .collect(Collectors.toList()))
+                .containsExactly(STEPS_1000_CLIENT_ID, STEPS_2000_CLIENT_ID);
+    }
+
+    @Test
+    public void testAggregateRecords_onlyWritePermissions_requestsOwnDataOnly_succeeds()
+            throws InterruptedException {
+        AggregateRecordsResponse<Long> response =
+                TestUtils.getAggregateResponse(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new TimeInstantRangeFilter.Builder()
+                                                .setStartTime(Instant.ofEpochMilli(0))
+                                                .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                                .build())
+                                .addAggregationType(WRITE_ONLY_PERM_AGGREGATION_STEPS_TOTAL)
+                                .addDataOriginsFilter(
+                                        new DataOrigin.Builder()
+                                                .setPackageName(mContext.getPackageName())
+                                                .build())
+                                .build(),
+                        /* recordsToInsert= */ List.of(STEPS_1000, STEPS_2000));
+        assertThat(response.get(WRITE_ONLY_PERM_AGGREGATION_STEPS_TOTAL))
+                .isEqualTo(STEPS_1000.getCount() + STEPS_2000.getCount());
+    }
+
+    @Test
+    public void testAggregateRecords_onlyWritePermissions_requestsOthersData_throwsHcException()
+            throws InterruptedException {
+        try {
+            TestUtils.getAggregateResponse(
+                    new AggregateRecordsRequest.Builder<Long>(
+                                    new TimeInstantRangeFilter.Builder()
+                                            .setStartTime(Instant.ofEpochMilli(0))
+                                            .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                            .build())
+                            .addAggregationType(WRITE_ONLY_PERM_AGGREGATION_STEPS_TOTAL)
+                            .addDataOriginsFilter(
+                                    new DataOrigin.Builder()
+                                            .setPackageName(mContext.getPackageName())
+                                            .build())
+                            .addDataOriginsFilter(
+                                    new DataOrigin.Builder()
+                                            .setPackageName(
+                                                    APP_B_WITH_READ_WRITE_PERMS.getPackageName())
+                                            .build())
+                            .build(),
+                    /* recordsToInsert= */ List.of(STEPS_1000, STEPS_2000));
+            fail("Expected to fail with HealthConnectException but didn't");
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
+        }
+    }
+
+    @Test
+    public void testAggregateRecords_onlyWritePermissions_allDataRequested_throwsHcException()
+            throws InterruptedException {
+        try {
+            TestUtils.getAggregateResponse(
+                    new AggregateRecordsRequest.Builder<Long>(
+                                    new TimeInstantRangeFilter.Builder()
+                                            .setStartTime(Instant.ofEpochMilli(0))
+                                            .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                            .build())
+                            .addAggregationType(WRITE_ONLY_PERM_AGGREGATION_STEPS_TOTAL)
+                            .build(),
+                    /* recordsToInsert= */ List.of(STEPS_1000, STEPS_2000));
+            fail("Expected to fail with HealthConnectException but didn't");
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
+        }
+    }
+
+    @Test
+    public void
+            testAggregateRecords_someReadAndWritePermissions_requestsOthersData_throwsHcException()
+                    throws InterruptedException {
+        try {
+            TestUtils.getAggregateResponse(
+                    new AggregateRecordsRequest.Builder<Long>(
+                                    new TimeInstantRangeFilter.Builder()
+                                            .setStartTime(Instant.ofEpochMilli(0))
+                                            .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                                            .build())
+                            .addAggregationType(WRITE_ONLY_PERM_AGGREGATION_STEPS_TOTAL)
+                            .addAggregationType(READ_PERM_AGGREGATION_EXERCISE_DURATION_TOTAL)
+                            .addDataOriginsFilter(
+                                    new DataOrigin.Builder()
+                                            .setPackageName(mContext.getPackageName())
+                                            .build())
+                            .addDataOriginsFilter(
+                                    new DataOrigin.Builder()
+                                            .setPackageName(
+                                                    APP_B_WITH_READ_WRITE_PERMS.getPackageName())
+                                            .build())
+                            .build(),
+                    /* recordsToInsert= */ List.of(STEPS_1000, STEPS_2000));
+            fail("Expected to fail with HealthConnectException but didn't");
+        } catch (HealthConnectException e) {
+            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
+        }
     }
 
     @Test
@@ -870,5 +1106,15 @@ public class HealthConnectDeviceTest {
         for (String perm : healthPerms) {
             grantPermission(APP_B_WITH_READ_WRITE_PERMS.getPackageName(), perm);
         }
+    }
+
+    private static StepsRecord getStepsRecord(
+            int stepCount, Instant startTime, int durationInHours, String clientId) {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().setClientRecordId(clientId).build(),
+                        startTime,
+                        startTime.plus(durationInHours, ChronoUnit.HOURS),
+                        stepCount)
+                .build();
     }
 }

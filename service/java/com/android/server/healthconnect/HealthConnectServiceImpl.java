@@ -150,6 +150,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -488,6 +489,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
 
                         long startDateAccess;
+                        // TODO(b/309776578): Consider making background reads possible for
+                        // aggregations when only using own data
                         if (!holdsDataManagementPermission) {
                             boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                             logger.setCallerForegroundState(isInForeground);
@@ -504,13 +507,24 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     RateLimiter.QuotaCategory.QUOTA_CATEGORY_READ,
                                     isInForeground,
                                     logger);
-                            mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
-                                    recordTypesToTest, attributionSource);
+                            boolean enforceSelfRead =
+                                    mDataPermissionEnforcer.enforceReadAccessAndGetEnforceSelfRead(
+                                            recordTypesToTest, attributionSource);
                             startDateAccess =
                                     mPermissionHelper
                                             .getHealthDataStartDateAccessOrThrow(
                                                     attributionSource.getPackageName(), userHandle)
                                             .toEpochMilli();
+                            maybeEnforceOnlyCallingPackageDataRequested(
+                                    request.getPackageFilters(),
+                                    attributionSource.getPackageName(),
+                                    enforceSelfRead,
+                                    "aggregationTypes: "
+                                            + Arrays.stream(request.getAggregateIds())
+                                                    .mapToObj(
+                                                            AggregationTypeIdMapper.getInstance()
+                                                                    ::getAggregationTypeFor)
+                                                    .collect(Collectors.toList()));
                         } else {
                             startDateAccess = request.getStartTime();
                         }
@@ -607,6 +621,20 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 // or READ_HEALTH_DATA_IN_BACKGROUND permission is not granted,
                                 // then enforce self read
                                 enforceSelfRead = isOnlySelfReadInBackgroundAllowed(uid, pid);
+                            }
+                            if (request.getRecordIdFiltersParcel() == null) {
+                                // Only enforce requested packages if this is a
+                                // ReadRecordsByRequest using filters. Reading by IDs does not have
+                                // data origins specified.
+                                // TODO(b/309778116): Consider throwing an error when reading by Id
+                                maybeEnforceOnlyCallingPackageDataRequested(
+                                        request.getPackageFilters(),
+                                        callingPackageName,
+                                        enforceSelfRead,
+                                        "recordType: "
+                                                + RecordMapper.getInstance()
+                                                        .getRecordIdToExternalRecordClassMap()
+                                                        .get(request.getRecordType()));
                             }
 
                             if (Constants.DEBUG) {
@@ -751,6 +779,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 },
                 uid,
                 holdsDataManagementPermission);
+    }
+
+    private void maybeEnforceOnlyCallingPackageDataRequested(
+            List<String> packageFilters,
+            String callingPackageName,
+            boolean enforceSelfRead,
+            String entityFailureMessage) {
+        if (enforceSelfRead
+                && (packageFilters.size() != 1
+                        || !packageFilters.get(0).equals(callingPackageName))) {
+            throwSecurityException(
+                    "Caller does not have permission to read data for the following ("
+                            + entityFailureMessage
+                            + ") from other applications.");
+        }
     }
 
     /**

@@ -27,6 +27,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -37,6 +38,7 @@ import javax.inject.Inject
 class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
+    @Inject lateinit var navigationUtils: NavigationUtils
 
     companion object {
         private const val TAG = "ModuleUpdateRequiredFragment"
@@ -76,9 +78,8 @@ class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
         updateButton.setOnClickListener {
             logger.logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
             try {
-                findNavController()
-                    .navigate(
-                        R.id.action_migrationModuleUpdateNeededFragment_to_systemUpdateActivity)
+                navigationUtils.navigate(
+                    this, R.id.action_migrationModuleUpdateNeededFragment_to_systemUpdateActivity)
             } catch (exception: Exception) {
                 Log.e(TAG, "System update activity does not exist", exception)
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
@@ -98,8 +99,8 @@ class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
                     putBoolean(getString(R.string.module_update_needed_seen), true)
                     apply()
                 }
-                findNavController()
-                    .navigate(R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen)
+                navigationUtils.navigate(
+                    this, R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen)
             }
 
             requireActivity().finish()
