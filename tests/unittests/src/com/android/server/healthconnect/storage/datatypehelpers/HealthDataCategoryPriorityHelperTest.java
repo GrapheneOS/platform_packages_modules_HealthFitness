@@ -745,6 +745,52 @@ public class HealthDataCategoryPriorityHelperTest {
     }
 
     @Test
+    public void testOldReSyncHealthDataPriorityTable_maintainsExistingOrdering() {
+        when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
+                .thenReturn(false);
+        // Setup current priority list
+        Map<Integer, List<Long>> priorityList = new HashMap<>();
+        priorityList.put(
+                HealthDataCategory.ACTIVITY,
+                List.of(APP_PACKAGE_ID_3, APP_PACKAGE_ID, APP_PACKAGE_ID_2));
+        setupPriorityList(priorityList);
+
+        // Setup contributor apps
+        Map<Integer, Set<String>> recordTypesToContributorPackages = new HashMap<>();
+        recordTypesToContributorPackages.put(
+                RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                Set.of(APP_PACKAGE_NAME, APP_PACKAGE_NAME_2, APP_PACKAGE_NAME_3));
+        when(mAppInfoHelper.getRecordTypesToContributingPackagesMap())
+                .thenReturn(recordTypesToContributorPackages);
+
+        // Setup apps with write permissions
+        mPackageInfo1.packageName = APP_PACKAGE_NAME;
+        mPackageInfo1.requestedPermissions = new String[] {HealthPermissions.WRITE_STEPS};
+        mPackageInfo1.requestedPermissionsFlags =
+                new int[] {PackageInfo.REQUESTED_PERMISSION_GRANTED};
+
+        mPackageInfo2.packageName = APP_PACKAGE_NAME_2;
+        mPackageInfo2.requestedPermissions = new String[] {HealthPermissions.WRITE_STEPS};
+        mPackageInfo2.requestedPermissionsFlags =
+                new int[] {PackageInfo.REQUESTED_PERMISSION_GRANTED};
+
+        mPackageInfo3.packageName = APP_PACKAGE_NAME_3;
+        mPackageInfo3.requestedPermissions = new String[] {HealthPermissions.WRITE_STEPS};
+        mPackageInfo3.requestedPermissionsFlags =
+                new int[] {PackageInfo.REQUESTED_PERMISSION_GRANTED};
+        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
+        when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
+                .thenReturn(List.of(mPackageInfo1, mPackageInfo2, mPackageInfo3));
+
+        mHealthDataCategoryPriorityHelper.reSyncHealthDataPriorityTable(mContext);
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .isEqualTo(List.of(APP_PACKAGE_ID_3, APP_PACKAGE_ID, APP_PACKAGE_ID_2));
+    }
+
+    @Test
     public void testOldReSyncHealthDataPriorityTable_addsNewApps_withWritePermission() {
         when(mHealthConnectDeviceConfigManager.isAggregationSourceControlsEnabled())
                 .thenReturn(false);
