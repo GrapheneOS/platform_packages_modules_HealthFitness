@@ -25,11 +25,13 @@ import static com.google.common.truth.Truth.assertThat;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.healthconnect.cts.utils.TestUtils;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -50,6 +52,13 @@ public class SleepDurationAggregationTest {
                     .addAggregationType(SLEEP_DURATION_TOTAL)
                     .build();
 
+    private static final String PACKAGE_NAME = "android.healthconnect.cts";
+
+    @Before
+    public void setUp() throws InterruptedException {
+        TestUtils.deleteAllStagedRemoteData();
+    }
+
     @After
     public void tearDown() throws InterruptedException {
         TestUtils.verifyDeleteRecords(
@@ -62,6 +71,7 @@ public class SleepDurationAggregationTest {
 
     @Test
     public void testSimpleAggregation_oneSession_returnsItsDuration() throws InterruptedException {
+        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.SLEEP);
         SleepSessionRecord session =
                 new SleepSessionRecord.Builder(
                                 TestUtils.generateMetadata(), SESSION_START_TIME, SESSION_END_TIME)
@@ -81,6 +91,8 @@ public class SleepDurationAggregationTest {
     @Test
     public void testSimpleAggregation_oneSessionWithAwake_returnsDurationMinusAwake()
             throws InterruptedException {
+        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.SLEEP);
+
         SleepSessionRecord.Stage awakeStage =
                 new SleepSessionRecord.Stage(
                         SESSION_START_TIME,
@@ -126,6 +138,8 @@ public class SleepDurationAggregationTest {
     @Test
     public void testAggregationByDuration_oneSession_returnsSplitDurationIntoGroups()
             throws InterruptedException {
+        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.SLEEP);
+
         Instant endTime = SESSION_START_TIME.plus(10, ChronoUnit.HOURS);
         SleepSessionRecord session =
                 new SleepSessionRecord.Builder(

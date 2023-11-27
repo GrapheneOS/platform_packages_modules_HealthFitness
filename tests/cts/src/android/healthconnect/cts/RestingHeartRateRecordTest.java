@@ -23,6 +23,7 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
@@ -44,6 +45,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -61,6 +63,12 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class RestingHeartRateRecordTest {
     private static final String TAG = "RestingHeartRateRecordTest";
+    private static final String PACKAGE_NAME = "android.healthconnect.cts";
+
+    @Before
+    public void setUp() throws InterruptedException {
+        TestUtils.deleteAllStagedRemoteData();
+    }
 
     @After
     public void tearDown() throws InterruptedException {
@@ -326,6 +334,7 @@ public class RestingHeartRateRecordTest {
 
     @Test
     public void testBpmAggregation_timeRange_all() throws Exception {
+        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.VITALS);
         List<Record> records =
                 Arrays.asList(
                         getBaseRestingHeartRateRecord(3),
