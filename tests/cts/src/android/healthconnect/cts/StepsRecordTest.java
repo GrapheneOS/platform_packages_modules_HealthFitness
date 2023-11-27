@@ -1366,6 +1366,71 @@ public class StepsRecordTest {
     }
 
     @Test
+    public void testAggregateDuration_differentTimeZones_correctBucketTimes() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        Duration oneHour = Duration.ofHours(1);
+        Instant t1 = Instant.now().minus(Duration.ofDays(1)).truncatedTo(ChronoUnit.MILLIS);
+        Instant t2 = t1.plus(oneHour);
+        Instant t3 = t2.plus(oneHour);
+
+        Metadata metadata =
+                new Metadata.Builder()
+                        .setDataOrigin(
+                                new DataOrigin.Builder()
+                                        .setPackageName(context.getPackageName())
+                                        .build())
+                        .build();
+
+        ZoneOffset zonePlusFive = ZoneOffset.ofHours(5);
+        ZoneOffset zonePlusSix = ZoneOffset.ofHours(6);
+        ZoneOffset zonePlusSeven = ZoneOffset.ofHours(7);
+
+        StepsRecord rec1 =
+                new StepsRecord.Builder(metadata, t1, t2, /* count= */ 100)
+                        .setStartZoneOffset(zonePlusFive)
+                        .setEndZoneOffset(zonePlusFive)
+                        .build();
+        StepsRecord rec2 =
+                new StepsRecord.Builder(metadata, t2, t2, /* count= */ 300)
+                        .setStartZoneOffset(zonePlusSix)
+                        .setEndZoneOffset(zonePlusSeven)
+                        .build();
+
+        TestUtils.insertRecords(List.of(rec1, rec2));
+
+        // Aggregating between [t1+5, t2+7] with 1 hour group duration
+        List<AggregateRecordsGroupedByDurationResponse<Long>> result =
+                TestUtils.getAggregateResponseGroupByDuration(
+                        new AggregateRecordsRequest.Builder<Long>(
+                                        new LocalTimeRangeFilter.Builder()
+                                                .setStartTime(
+                                                        LocalDateTime.ofInstant(t1, zonePlusFive))
+                                                .setEndTime(
+                                                        LocalDateTime.ofInstant(t2, zonePlusSeven))
+                                                .build())
+                                .addAggregationType(STEPS_COUNT_TOTAL)
+                                .build(),
+                        oneHour);
+
+        assertThat(result).hasSize(3);
+
+        // Bucket #0: [t1+5, t2+5]
+        AggregateRecordsGroupedByDurationResponse<Long> response0 = result.get(0);
+        assertThat(response0.getStartTime()).isEqualTo(t1);
+        assertThat(response0.getEndTime()).isEqualTo(t2);
+        assertThat(response0.getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(zonePlusFive);
+
+        // Empty bucket in the middle
+        assertThat(result.get(1).get(STEPS_COUNT_TOTAL)).isNull();
+
+        // Bucket #2: [t2+6, t3+6]
+        AggregateRecordsGroupedByDurationResponse<Long> response2 = result.get(2);
+        assertThat(response2.getStartTime()).isEqualTo(t2);
+        assertThat(response2.getEndTime()).isEqualTo(t3);
+        assertThat(response2.getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(zonePlusSix);
+    }
+
+    @Test
     public void testAggregateDuration_withLocalDateTime() throws Exception {
         testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset.MIN);
         testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset.ofHours(-4));
@@ -1393,7 +1458,7 @@ public class StepsRecordTest {
                         Duration.ofDays(1));
 
         assertThat(responses).hasSize(4);
-        Instant groupBoundary = startTimeLocal.toInstant(ZoneOffset.UTC);
+        Instant groupBoundary = startTimeLocal.toInstant(offset);
         for (int i = 0; i < 4; i++) {
             assertThat(responses.get(i).get(STEPS_COUNT_TOTAL)).isEqualTo(10);
             assertThat(responses.get(i).getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(offset);
