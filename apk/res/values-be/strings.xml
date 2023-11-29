@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Няма"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Звесткі пра ўвод"</string>
     <string name="backup_title" msgid="211503191266235085">"Рэзервовае капіраванне"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Крыніцы даных і прыярытэт"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Крыніцы даных і прыярытэт"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Задаць адзінкі вымярэння"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Апошні доступ да даных геалакацыі"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"У апошні час праграмы не атрымлівалі доступу да Здароўя і спорту"</string>
