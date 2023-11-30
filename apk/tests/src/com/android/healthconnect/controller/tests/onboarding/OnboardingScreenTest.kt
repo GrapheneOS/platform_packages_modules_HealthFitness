@@ -92,7 +92,7 @@ class OnboardingScreenTest {
         onIdle()
         onView(withId(R.id.go_back_button)).perform(ViewActions.click())
         Thread.sleep(4_000) // Need to wait for Activity to close before checking state
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        assertEquals(Lifecycle.State.DESTROYED, scenario.getState())
     }
 
     @Test
