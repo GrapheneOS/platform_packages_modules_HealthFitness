@@ -17,7 +17,9 @@
 package android.healthconnect.cts;
 
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
+import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
@@ -28,13 +30,23 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Comparator.comparing;
 
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.changelog.ChangeLogsResponse.DeletedLog;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.InstantRecord;
 import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.units.Length;
+import android.health.connect.datatypes.units.Mass;
+import android.healthconnect.cts.utils.TestUtils;
 
 import androidx.test.runner.AndroidJUnit4;
+
+import com.google.common.truth.Correspondence;
 
 import org.junit.After;
 import org.junit.Before;
@@ -96,5 +108,67 @@ public class SharedMemoryTest {
         for (int i = 0; i < recordCount; i++) {
             assertThat(readRecords.get(i).getHeight()).isEqualTo(records.get(i).getHeight());
         }
+    }
+
+    @Test
+    public void getChangeLogs_viaSharedMemory_recordsEquals() throws Exception {
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder()
+                        .setPackageName(getApplicationContext().getPackageName())
+                        .build();
+        Metadata metadata = new Metadata.Builder().setDataOrigin(dataOrigin).build();
+
+        int recordCount = 5000;
+        List<HeightRecord> heightRecords = new ArrayList<>(recordCount);
+        List<WeightRecord> weightRecords = new ArrayList<>(recordCount);
+        Instant now = Instant.now();
+        for (int i = 0; i < recordCount; i++) {
+            Instant time = now.minusMillis(i);
+            heightRecords.add(
+                    new HeightRecord.Builder(
+                                    metadata, time, Length.fromMeters(3.0 * i / recordCount))
+                            .build());
+            weightRecords.add(
+                    new WeightRecord.Builder(metadata, time, Mass.fromGrams(1000.0 * 70.0 + i * 10))
+                            .build());
+        }
+
+        String changeLogToken =
+                TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build()).getToken();
+        insertRecords(heightRecords);
+        heightRecords = readAllRecords(HeightRecord.class);
+        deleteRecords(heightRecords);
+        insertRecords(weightRecords);
+        weightRecords = readAllRecords(WeightRecord.class);
+
+        List<DeletedLog> deletedLogs = new ArrayList<>();
+        List<Record> upsertedRecords = new ArrayList<>();
+
+        ChangeLogsResponse changeLogsResponse =
+                TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(changeLogToken).build());
+        while (true) {
+            upsertedRecords.addAll(changeLogsResponse.getUpsertedRecords());
+            deletedLogs.addAll(changeLogsResponse.getDeletedLogs());
+            if (!changeLogsResponse.hasMorePages()) {
+                break;
+            }
+            changeLogToken = changeLogsResponse.getNextChangesToken();
+            changeLogsResponse =
+                    TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(changeLogToken).build());
+        }
+
+        assertThat(deletedLogs).hasSize(recordCount);
+        assertThat(upsertedRecords).hasSize(recordCount);
+        assertThat(deletedLogs)
+                .comparingElementsUsing(
+                        Correspondence.<DeletedLog, Record>from(
+                                (deletedLog, record) ->
+                                        deletedLog
+                                                .getDeletedRecordId()
+                                                .equals(record.getMetadata().getId()),
+                                "deleted log record id is equal to deleted record id"))
+                .containsExactlyElementsIn(heightRecords);
+        assertThat(changeLogsResponse.getUpsertedRecords())
+                .containsExactlyElementsIn(weightRecords);
     }
 }
