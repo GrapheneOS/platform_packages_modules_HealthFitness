@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Brak"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Szczegóły wpisu"</string>
     <string name="backup_title" msgid="211503191266235085">"Kopia zapasowa"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Źródła danych i priorytety"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Źródła danych i priorytet"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Jednostki zestawu"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Ostatni dostęp"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Żadne aplikacje nie uzyskiwały ostatnio dostępu do Health Connect"</string>

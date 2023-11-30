@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ஏதுமில்லை"</string>
     <string name="entry_details_title" msgid="590184849040247850">"உள்ளீட்டு விவரங்கள்"</string>
     <string name="backup_title" msgid="211503191266235085">"காப்புப் பிரதி எடு"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"தரவு மூலங்களும் முன்னுரிமையும்"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"தரவு மூலங்களும் முன்னுரிமையும்"</string>
     <string name="set_units_title" msgid="2657822539603758029">"அலகுகளை அமை"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"சமீபத்திய அணுகல்"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"சமீபத்தில் Health Connect ஆப்ஸை எந்த ஆப்ஸும் அணுகவில்லை"</string>

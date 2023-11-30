@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"කිසිවක් නැත"</string>
     <string name="entry_details_title" msgid="590184849040247850">"ඇතුළත් කිරීමේ විස්තර"</string>
     <string name="backup_title" msgid="211503191266235085">"උපස්ථය"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"දත්ත මූලාශ්‍ර සහ ප්‍රමුඛතාවය"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"දත්ත මූලාශ්‍ර සහ ප්‍රමුඛතාවය"</string>
     <string name="set_units_title" msgid="2657822539603758029">"ඒකක සකසන්න"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"මෑත ප්‍රවේශය"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Health Connect වෙත මෑතදී ප්‍රවේශ වූ යෙදුම් කිසිවක් නැත"</string>
