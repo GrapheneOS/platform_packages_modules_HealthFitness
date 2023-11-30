@@ -190,6 +190,13 @@ public class PriorityRecordsAggregator {
             return null;
         }
 
+        // TODO(b/313924267): workaround for b/308467442, should be remove once we have a long term
+        // solution
+        if (data.getStartTime() > data.getEndTime()) {
+            // skip records with start time > end time to keep the algorithm functional
+            return null;
+        }
+
         mTimestampsBuffer.add(data.getStartTimestamp());
         mTimestampsBuffer.add(data.getEndTimestamp());
         return data;
