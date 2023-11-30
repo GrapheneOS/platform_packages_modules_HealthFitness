@@ -24,8 +24,11 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissiontypes.HealthPermissionTypesFragment
@@ -35,6 +38,7 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
+import com.android.healthconnect.controller.tests.utils.atPosition
 import com.android.healthconnect.controller.tests.utils.di.FakeFeatureUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.FeatureUtils
@@ -263,6 +267,44 @@ class HealthPermissionTypesFragmentTest {
             .check(matches(isDisplayed()))
         onView(withText("Save")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun permissionTypesFragment_priorityListDialog_priorityListChanged_appsAreArrangedCorrectly() {
+        Mockito.`when`(viewModel.permissionTypesData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PermissionTypesState>(
+                HealthPermissionTypesViewModel.PermissionTypesState.WithData(
+                    listOf(
+                        HealthPermissionType.DISTANCE,
+                        HealthPermissionType.EXERCISE,
+                        HealthPermissionType.STEPS)))
+        }
+        Mockito.`when`(viewModel.priorityList).then {
+            MutableLiveData<HealthPermissionTypesViewModel.PriorityListState>(
+                HealthPermissionTypesViewModel.PriorityListState.WithData(
+                    listOf(TEST_APP, TEST_APP_2)))
+        }
+        Mockito.`when`(viewModel.appsWithData).then {
+            MutableLiveData<HealthPermissionTypesViewModel.AppsWithDataFragmentState>(
+                HealthPermissionTypesViewModel.AppsWithDataFragmentState.WithData(listOf()))
+        }
+        Mockito.`when`(viewModel.selectedAppFilter).then { MutableLiveData("") }
+        Mockito.`when`(viewModel.editedPriorityList).then {
+            MutableLiveData(listOf(TEST_APP_2, TEST_APP))
+        }
+        Mockito.`when`(viewModel.categoryLabel).then { MutableLiveData("activity") }
+
+        val expectedAppsOrder = listOf("Health Connect test app 2", "Health Connect test app")
+
+        launchFragment<HealthPermissionTypesFragment>(activityCategoryBundle())
+
+        onView(withText("App priority")).perform(click())
+
+        for ((index, expectedItem) in expectedAppsOrder.withIndex()) {
+            onView(withId(R.id.priority_list_recycle_view))
+                .inRoot(isDialog())
+                .check(matches(atPosition(index, hasDescendant(withText(expectedItem)))))
+        }
     }
 
     @Test
