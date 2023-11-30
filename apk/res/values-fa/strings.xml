@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"هیچ‌کدام"</string>
     <string name="entry_details_title" msgid="590184849040247850">"جزئیات ورود"</string>
     <string name="backup_title" msgid="211503191266235085">"پشتیبان‌گیری"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"منابع داده و اولویت"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"منابع داده و اولویت"</string>
     <string name="set_units_title" msgid="2657822539603758029">"تنظیم واحدها"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"دسترسی اخیر"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"هیچ برنامه‌ای اخیراً به Health Connect دسترسی نداشته است"</string>

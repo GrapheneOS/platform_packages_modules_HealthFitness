@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"无"</string>
     <string name="entry_details_title" msgid="590184849040247850">"详细数据"</string>
     <string name="backup_title" msgid="211503191266235085">"备份"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"数据源和优先级"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"数据源和优先级"</string>
     <string name="set_units_title" msgid="2657822539603758029">"设置单位"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"近期数据访问情况"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"最近没有任何应用访问 Health Connect"</string>

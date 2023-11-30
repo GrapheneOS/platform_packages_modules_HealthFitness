@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ഒന്നുമില്ല"</string>
     <string name="entry_details_title" msgid="590184849040247850">"എൻട്രിയുടെ വിശദാംശങ്ങൾ"</string>
     <string name="backup_title" msgid="211503191266235085">"ബാക്കപ്പ് ചെയ്യുക"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"ഡാറ്റാ ഉറവിടങ്ങളും മുൻഗണനയും"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"ഡാറ്റ ഉറവിടങ്ങളും മുൻഗണനയും"</string>
     <string name="set_units_title" msgid="2657822539603758029">"യൂണിറ്റുകൾ സജ്ജീകരിക്കുക"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"അടുത്തിടെയുള്ള ആക്‌സസ്"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"അടുത്തിടെ Health Connect ആക്‌സസ് ചെയ്ത ആപ്പുകളൊന്നുമില്ല"</string>

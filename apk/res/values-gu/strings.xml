@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"એકપણ નહીં"</string>
     <string name="entry_details_title" msgid="590184849040247850">"એન્ટ્રીની વિગતો"</string>
     <string name="backup_title" msgid="211503191266235085">"બૅકઅપ"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"ડેટા સૉર્સ &amp; પ્રાધાન્યતા"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"ડેટા સૉર્સ અને પ્રાધાન્યતા"</string>
     <string name="set_units_title" msgid="2657822539603758029">"એકમો સેટ કરો"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"તાજેતરનો ઍક્સેસ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"કોઈ ઍપ દ્વારા તાજેતરમાં Health Connectનો ઍક્સેસ કરવામાં આવ્યો નથી"</string>
