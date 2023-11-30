@@ -18,6 +18,7 @@ package android.health.connect.aidl;
 
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.TimeRangeFilterHelper.getInstantFromLocalTime;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -159,21 +160,69 @@ public class AggregateDataResponseParcel implements Parcelable {
             getAggregateDataResponseGroupedByDuration() {
         Objects.requireNonNull(mDuration);
 
-        List<AggregateRecordsGroupedByDurationResponse<?>>
-                aggregateRecordsGroupedByDurationResponse = new ArrayList<>();
-        long mStartTime = TimeRangeFilterHelper.getFilterStartTimeMillis(mTimeRangeFilter);
-        long mEndTime = TimeRangeFilterHelper.getFilterEndTimeMillis(mTimeRangeFilter);
-        long mDelta = getDurationDelta(mDuration);
-        for (AggregateRecordsResponse<?> aggregateRecordsResponse : mAggregateRecordsResponses) {
-            aggregateRecordsGroupedByDurationResponse.add(
-                    new AggregateRecordsGroupedByDurationResponse<>(
-                            getDurationInstant(mStartTime),
-                            getDurationInstant(Math.min(mStartTime + mDelta, mEndTime)),
-                            aggregateRecordsResponse.getAggregateResults()));
-            mStartTime += mDelta;
+        if (mAggregateRecordsResponses.isEmpty()) {
+            return List.of();
         }
 
-        return aggregateRecordsGroupedByDurationResponse;
+        if (mTimeRangeFilter instanceof LocalTimeRangeFilter timeFilter) {
+            return getAggregateDataResponseForLocalTimeGroupedByDuration(
+                    timeFilter.getStartTime(), timeFilter.getEndTime());
+        }
+
+        if (mTimeRangeFilter instanceof TimeInstantRangeFilter timeFilter) {
+            return getAggregateDataResponseForInstantTimeGroupedByDuration(
+                    timeFilter.getStartTime(), timeFilter.getEndTime());
+        }
+
+        throw new IllegalArgumentException(
+                "Invalid time filter object. Object should be either TimeInstantRangeFilter or "
+                        + "LocalTimeRangeFilter.");
+    }
+
+    private List<AggregateRecordsGroupedByDurationResponse<?>>
+            getAggregateDataResponseForLocalTimeGroupedByDuration(
+                    LocalDateTime startTime, LocalDateTime endTime) {
+        List<AggregateRecordsGroupedByDurationResponse<?>> responses = new ArrayList<>();
+        Duration bucketStartTimeOffset = Duration.ZERO;
+        for (AggregateRecordsResponse<?> response : mAggregateRecordsResponses) {
+            ZoneOffset zoneOffset = response.getFirstZoneOffset();
+            Instant endTimeInstant = getInstantFromLocalTime(endTime, zoneOffset);
+            Instant bucketStartTime =
+                    getInstantFromLocalTime(startTime, zoneOffset).plus(bucketStartTimeOffset);
+            Instant bucketEndTime = bucketStartTime.plus(mDuration);
+            if (bucketEndTime.isAfter(endTimeInstant)) {
+                bucketEndTime = endTimeInstant;
+            }
+
+            responses.add(
+                    new AggregateRecordsGroupedByDurationResponse<>(
+                            bucketStartTime, bucketEndTime, response.getAggregateResults()));
+            bucketStartTimeOffset = bucketStartTimeOffset.plus(mDuration);
+        }
+
+        return responses;
+    }
+
+    private List<AggregateRecordsGroupedByDurationResponse<?>>
+            getAggregateDataResponseForInstantTimeGroupedByDuration(
+                    Instant startTime, Instant endTime) {
+        List<AggregateRecordsGroupedByDurationResponse<?>> responses = new ArrayList<>();
+        Duration offsetDuration = Duration.ZERO;
+        for (AggregateRecordsResponse<?> response : mAggregateRecordsResponses) {
+            Instant buckedStartTime = startTime.plus(offsetDuration);
+            Instant buckedEndTime = buckedStartTime.plus(mDuration);
+            if (buckedEndTime.isAfter(endTime)) {
+                buckedEndTime = endTime;
+            }
+
+            responses.add(
+                    new AggregateRecordsGroupedByDurationResponse<>(
+                            buckedStartTime, buckedEndTime, response.getAggregateResults()));
+
+            offsetDuration = offsetDuration.plus(mDuration);
+        }
+
+        return responses;
     }
 
     /**

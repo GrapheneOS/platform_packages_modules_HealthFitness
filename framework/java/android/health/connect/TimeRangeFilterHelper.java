@@ -17,6 +17,7 @@
 package android.health.connect;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -74,5 +75,16 @@ public final class TimeRangeFilterHelper {
 
     public static long getMillisOfLocalTime(LocalDateTime time) {
         return time.toInstant(LOCAL_TIME_ZERO_OFFSET).toEpochMilli();
+    }
+
+    /**
+     * Converts the provided {@link LocalDateTime} to {@link Instant} using the provided {@link
+     * ZoneOffset} if it's not null, or using the system default zone offset otherwise.
+     */
+    public static Instant getInstantFromLocalTime(
+            @NonNull LocalDateTime time, @Nullable ZoneOffset zoneOffset) {
+        return zoneOffset != null
+                ? time.toInstant(zoneOffset)
+                : time.toInstant(ZoneOffset.systemDefault().getRules().getOffset(time));
     }
 }
