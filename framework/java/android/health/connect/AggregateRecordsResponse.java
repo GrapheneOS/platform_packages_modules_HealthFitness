@@ -131,6 +131,22 @@ public final class AggregateRecordsResponse<T> {
     }
 
     /**
+     * Returns {@link ZoneOffset} of the first {@link AggregationType}.
+     *
+     * @hide
+     */
+    @Nullable
+    public ZoneOffset getFirstZoneOffset() {
+        AggregationType<T> firstAggregationType = getFirstAggregationType();
+        return firstAggregationType != null ? getZoneOffset(firstAggregationType) : null;
+    }
+
+    @Nullable
+    private AggregationType<T> getFirstAggregationType() {
+        return mAggregateResults.keySet().stream().findFirst().orElse(null);
+    }
+
+    /**
      * Returns a set of {@link DataOrigin}s for the underlying aggregation record, empty set if the
      * corresponding aggregation doesn't exist and or if multiple records were present.
      */
