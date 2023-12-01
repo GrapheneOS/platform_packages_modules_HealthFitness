@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"မရှိ"</string>
     <string name="entry_details_title" msgid="590184849040247850">"ထည့်သွင်းမှု အသေးစိတ်"</string>
     <string name="backup_title" msgid="211503191266235085">"အရန်သိမ်းရန်"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"ဒေတာရင်းမြစ်နှင့် ဦးစားပေး"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"ဒေတာရင်းမြစ်များနှင့် ဦးစားပေး"</string>
     <string name="set_units_title" msgid="2657822539603758029">"ယူနစ်သတ်မှတ်ရန်"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"မကြာသေးမီက အသုံးပြုမှု"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"မည်သည်အက်ပ်မျှ Health Connect ကို မကြာသေးမီကသုံးမထားပါ"</string>

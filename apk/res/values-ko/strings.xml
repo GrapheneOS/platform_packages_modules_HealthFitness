@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"없음"</string>
     <string name="entry_details_title" msgid="590184849040247850">"항목 세부정보"</string>
     <string name="backup_title" msgid="211503191266235085">"백업"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"데이터 소스 및 우선순위"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"데이터 소스 및 우선순위"</string>
     <string name="set_units_title" msgid="2657822539603758029">"단위 설정"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"최근 데이터에 액세스한 앱"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"최근에 헬스 커넥트를 사용한 앱이 없음"</string>

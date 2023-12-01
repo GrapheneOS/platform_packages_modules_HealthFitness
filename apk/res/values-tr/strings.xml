@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Yok"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Giriş ayrıntıları"</string>
     <string name="backup_title" msgid="211503191266235085">"Yedekle"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"Veri kaynakları ve önceliği"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Veri kaynakları ve öncelik"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Birimleri ayarla"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"En son erişim"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Yakın zamanda hiçbir uygulama Health Connect\'e erişmedi"</string>

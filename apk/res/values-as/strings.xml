@@ -33,7 +33,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"নাই"</string>
     <string name="entry_details_title" msgid="590184849040247850">"প্ৰৱিষ্টিৰ সবিশেষ"</string>
     <string name="backup_title" msgid="211503191266235085">"বেকআপ"</string>
-    <string name="data_sources_and_priority_title" msgid="3871795785418187899">"ডেটাৰ উৎস আৰু অগ্ৰাধিকাৰ"</string>
+    <string name="data_sources_and_priority_title" msgid="2360222350913604558">"ডেটাৰ উৎস আৰু অগ্ৰাধিকাৰ"</string>
     <string name="set_units_title" msgid="2657822539603758029">"একক ছেট কৰক"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"শেহতীয়া এক্সেছ"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"শেহতীয়াকৈ কোনো এপে Health Connect এক্সেছ কৰা নাই"</string>

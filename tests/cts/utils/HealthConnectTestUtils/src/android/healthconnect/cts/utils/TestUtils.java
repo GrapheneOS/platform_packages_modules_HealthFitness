@@ -61,6 +61,7 @@ import android.health.connect.HealthPermissionCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.InsertRecordsResponse;
 import android.health.connect.ReadRecordsRequest;
+import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordIdFilter;
@@ -668,6 +669,28 @@ public final class TestUtils {
                 .isNotEmpty();
     }
 
+    /** Reads all records in the DB for a given {@code recordClass}. */
+    public static <T extends Record> List<T> readAllRecords(Class<T> recordClass)
+            throws InterruptedException {
+        List<T> records = new ArrayList<>();
+        ReadRecordsResponse<T> readRecordsResponse =
+                readRecordsWithPagination(
+                        new ReadRecordsRequestUsingFilters.Builder<>(recordClass).build());
+        while (true) {
+            records.addAll(readRecordsResponse.getRecords());
+            long pageToken = readRecordsResponse.getNextPageToken();
+            if (pageToken == -1) {
+                break;
+            }
+            readRecordsResponse =
+                    readRecordsWithPagination(
+                            new ReadRecordsRequestUsingFilters.Builder<>(recordClass)
+                                    .setPageToken(pageToken)
+                                    .build());
+        }
+        return records;
+    }
+
     public static <T extends Record> ReadRecordsResponse<T> readRecordsWithPagination(
             ReadRecordsRequest<T> request) throws InterruptedException {
         HealthConnectReceiver<ReadRecordsResponse<T>> receiver = new HealthConnectReceiver<>();
@@ -727,7 +750,8 @@ public final class TestUtils {
         receiver.verifyNoExceptionOrThrow();
     }
 
-    public static void deleteRecords(List<Record> records) throws InterruptedException {
+    /** Helper function to delete records from the DB using HealthConnectManager. */
+    public static void deleteRecords(List<? extends Record> records) throws InterruptedException {
         List<RecordIdFilter> recordIdFilters =
                 records.stream()
                         .map(
