@@ -25,7 +25,6 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
-import android.health.connect.HealthDataCategory;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
@@ -48,7 +47,6 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,12 +65,6 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class DistanceRecordTest {
     private static final String TAG = "DistanceRecordTest";
-    private static final String PACKAGE_NAME = "android.healthconnect.cts";
-
-    @Before
-    public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
-    }
 
     @After
     public void tearDown() throws InterruptedException {
@@ -339,7 +331,6 @@ public class DistanceRecordTest {
 
     @Test
     public void testAggregation_DistanceTotal() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         List<Record> records =
                 Arrays.asList(
                         DistanceRecordTest.getBaseDistanceRecord(1, 74.0),
@@ -586,7 +577,6 @@ public class DistanceRecordTest {
 
     @Test
     public void testAggregation_DistanceTotal_AtOverlapStartAndEndTime() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         List<Record> records =
                 Arrays.asList(
                         getBaseDistanceRecordWithSameStartAndEndTime(74.0, Instant.now()),
@@ -607,7 +597,7 @@ public class DistanceRecordTest {
 
     static DistanceRecord getBaseDistanceRecord() {
         return new DistanceRecord.Builder(
-                        new Metadata.Builder().setDataOrigin(getDataOrigin()).build(),
+                        new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
                         Length.fromMeters(10.0))
@@ -617,7 +607,7 @@ public class DistanceRecordTest {
     static DistanceRecord getBaseDistanceRecord(int days, double distance) {
         Instant startInstant = Instant.now().minus(days, ChronoUnit.DAYS);
         return new DistanceRecord.Builder(
-                        new Metadata.Builder().setDataOrigin(getDataOrigin()).build(),
+                        new Metadata.Builder().build(),
                         startInstant,
                         startInstant.plusMillis(1000),
                         Length.fromMeters(distance))
@@ -632,9 +622,10 @@ public class DistanceRecordTest {
                         .setModel("Pixel4a")
                         .setType(2)
                         .build();
-
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
-        testMetadataBuilder.setDevice(device).setDataOrigin(getDataOrigin());
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("DR" + Math.random());
 
         return new DistanceRecord.Builder(
@@ -645,9 +636,5 @@ public class DistanceRecordTest {
                 .setStartZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .setEndZoneOffset(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))
                 .build();
-    }
-
-    private static DataOrigin getDataOrigin() {
-        return new DataOrigin.Builder().setPackageName(PACKAGE_NAME).build();
     }
 }

@@ -62,7 +62,9 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
     private var isEntryPointsEnabled =
         DeviceConfig.getBoolean(HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_ENTRY_POINTS_ENABLED, true)
 
-    private var isNewAppPriorityEnabled = true
+    private var isNewAppPriorityEnabled =
+        DeviceConfig.getBoolean(
+            HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED, false)
     private var isNewInformationArchitectureEnabled =
         DeviceConfig.getBoolean(
             HEALTH_FITNESS_FLAGS_NAMESPACE, PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED, false)
@@ -125,7 +127,9 @@ class FeatureUtilsImpl(context: Context) : FeatureUtils, DeviceConfig.OnProperti
                     PROPERTY_ENTRY_POINTS_ENABLED ->
                         isEntryPointsEnabled =
                             properties.getBoolean(PROPERTY_ENTRY_POINTS_ENABLED, true)
-                    PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED -> isNewAppPriorityEnabled = true
+                    PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED ->
+                        isNewAppPriorityEnabled =
+                            properties.getBoolean(PROPERTY_AGGREGATION_SOURCE_CONTROL_ENABLED, true)
                     PROPERTY_NEW_INFORMATION_ARCHITECTURE_ENABLED ->
                         isNewInformationArchitectureEnabled =
                             properties.getBoolean(

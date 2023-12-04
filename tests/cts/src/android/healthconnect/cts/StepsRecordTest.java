@@ -33,7 +33,6 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
-import android.health.connect.HealthDataCategory;
 import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
@@ -56,7 +55,6 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -77,12 +75,6 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class StepsRecordTest {
     private static final String TAG = "StepsRecordTest";
-    private static final String PACKAGE_NAME = "android.healthconnect.cts";
-
-    @Before
-    public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
-    }
 
     @After
     public void tearDown() throws InterruptedException {
@@ -678,11 +670,9 @@ public class StepsRecordTest {
     }
 
     @Test
-    public void testAggregation_stepsCountTotal() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
+    public void testAggregation_StepsCountTotal() throws Exception {
         List<Record> records =
                 Arrays.asList(getStepsRecord(1000, 1, 1), getStepsRecord(1000, 2, 1));
-
         AggregateRecordsRequest<Long> aggregateRecordsRequest =
                 new AggregateRecordsRequest.Builder<Long>(
                                 new TimeInstantRangeFilter.Builder()
@@ -713,11 +703,11 @@ public class StepsRecordTest {
                 .isEqualTo(oldResponse.get(STEPS_COUNT_TOTAL) + 2000);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(STEPS_COUNT_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
-            assertThat(itr.getPackageName()).isEqualTo(PACKAGE_NAME);
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
         }
         Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(STEPS_COUNT_TOTAL);
         for (DataOrigin itr : oldDataOrigin) {
-            assertThat(itr.getPackageName()).isEqualTo(PACKAGE_NAME);
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
         }
         StepsRecord record = getStepsRecord(1000, 5, 1);
         List<Record> recordNew2 = Arrays.asList(record, record);
@@ -762,7 +752,6 @@ public class StepsRecordTest {
     @Test
     public void testAggregation_recordStartsBeforeAggWindow_returnsRescaledStepsCountInResult()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant start = Instant.now().minus(1, ChronoUnit.DAYS);
         List<Record> record =
                 Arrays.asList(
@@ -789,7 +778,6 @@ public class StepsRecordTest {
 
     @Test
     public void testStepsCountAggregation_groupByDurationWithInstantFilter() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant end = Instant.now();
         Instant start = end.minus(5, ChronoUnit.DAYS);
         List<Record> records =
@@ -815,7 +803,6 @@ public class StepsRecordTest {
 
     @Test
     public void testStepsCountAggregation_groupByDuration() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant end = Instant.now();
         Instant start = end.minus(3, ChronoUnit.DAYS);
         insertStepsRecordWithDelay(1000, 3);
@@ -842,7 +829,6 @@ public class StepsRecordTest {
     @Test
     public void testAggregation_insertForEveryHour_returnsAggregateForHourAndHalfHours()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant start = Instant.now().minus(1, ChronoUnit.DAYS);
         Instant end = Instant.now();
         for (int i = 0; i < 10; i++) {
@@ -886,7 +872,6 @@ public class StepsRecordTest {
     @Test
     public void testAggregation_groupByDurationInstant_halfSizeGroupResultIsCorrect()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant end = Instant.now();
         TestUtils.insertRecords(List.of(getStepsRecord(end, 100, 1, 2)));
 
@@ -909,7 +894,6 @@ public class StepsRecordTest {
 
     @Test
     public void testAggregation_StepsCountTotal_withDuplicateEntry() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         List<Record> records =
                 Arrays.asList(getStepsRecord(1000, 1, 1), getStepsRecord(1000, 2, 1));
         AggregateRecordsResponse<Long> oldResponse =
@@ -939,11 +923,11 @@ public class StepsRecordTest {
                 .isEqualTo(oldResponse.get(STEPS_COUNT_TOTAL) + 1000);
         Set<DataOrigin> newDataOrigin = newResponse.getDataOrigins(STEPS_COUNT_TOTAL);
         for (DataOrigin itr : newDataOrigin) {
-            assertThat(itr.getPackageName()).isEqualTo(PACKAGE_NAME);
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
         }
         Set<DataOrigin> oldDataOrigin = oldResponse.getDataOrigins(STEPS_COUNT_TOTAL);
         for (DataOrigin itr : oldDataOrigin) {
-            assertThat(itr.getPackageName()).isEqualTo(PACKAGE_NAME);
+            assertThat(itr.getPackageName()).isEqualTo("android.healthconnect.cts");
         }
     }
 
@@ -1137,7 +1121,6 @@ public class StepsRecordTest {
 
     @Test
     public void testAggregateGroupByMonthPeriod_slicedCorrectly() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant startTime = Instant.now().minus(40, DAYS);
         LocalDateTime startLocalTime =
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(startTime.toEpochMilli()), UTC);
@@ -1156,28 +1139,28 @@ public class StepsRecordTest {
                         Instant.now(),
                         stepsCount1,
                         /* daysPast= */ 30,
-                        /* durationInHours= */ 1,
+                        /* durationHours= */ 1,
                         UTC);
         StepsRecord month1Steps2 =
                 getStepsRecord(
                         bucketBoundary.minus(1, HOURS),
                         stepsCount2,
                         /* daysPast= */ 0,
-                        /* durationInHours= */ 1,
+                        /* durationHours= */ 1,
                         UTC);
         StepsRecord month2Steps1 =
                 getStepsRecord(
                         bucketBoundary,
                         stepsCount3,
                         /* daysPast= */ 0,
-                        /* durationInHours= */ 1,
+                        /* durationHours= */ 1,
                         UTC);
         StepsRecord month2Steps2 =
                 getStepsRecord(
                         endTime.minus(1, HOURS),
                         stepsCount4,
                         /* daysPast= */ 0,
-                        /* durationInHours= */ 1,
+                        /* durationHours= */ 1,
                         UTC);
         TestUtils.insertRecords(
                 Arrays.asList(month1Steps1, month1Steps2, month2Steps1, month2Steps2));
@@ -1206,7 +1189,6 @@ public class StepsRecordTest {
     }
 
     private void testAggregationLocalTimeOffset(ZoneOffset offset) throws InterruptedException {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         LocalDateTime endTimeLocal = LocalDateTime.now(offset);
         LocalDateTime startTimeLocal = endTimeLocal.minusDays(4);
         Instant endTimeInstant = endTimeLocal.toInstant(offset);
@@ -1250,7 +1232,6 @@ public class StepsRecordTest {
     @Test
     public void testAggregatePeriod_withLocalDateTime_halfSizeGroupResultIsCorrect()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant end = Instant.now();
         // Insert steps from -48 hours to -12 hours, 36 hours session
         TestUtils.insertRecords(List.of(getStepsRecord(end, 2160, 2, 36, ZoneOffset.UTC)));
@@ -1276,7 +1257,6 @@ public class StepsRecordTest {
 
     @Test
     public void testAggregateLocalFilter_minOffsetRecord() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
         Instant endTimeInstant = Instant.now();
 
@@ -1312,7 +1292,6 @@ public class StepsRecordTest {
 
     @Test
     public void testAggregate_withDifferentTimeZone() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant instant = Instant.now();
         List<Record> records =
                 List.of(
@@ -1351,7 +1330,6 @@ public class StepsRecordTest {
 
     @Test
     public void testAggregateGroup_withDifferentTimeZone() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant instant = Instant.now();
         Instant endTime = Instant.now();
         LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, ZoneOffset.UTC);
@@ -1418,7 +1396,6 @@ public class StepsRecordTest {
                         .setEndZoneOffset(zonePlusSeven)
                         .build();
 
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         TestUtils.insertRecords(List.of(rec1, rec2));
 
         // Aggregating between [t1+5, t2+7] with 1 hour group duration
@@ -1464,7 +1441,6 @@ public class StepsRecordTest {
 
     private void testAggregateDurationWithLocalTimeForZoneOffset(ZoneOffset offset)
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Instant endTime = Instant.now();
         LocalDateTime endTimeLocal = LocalDateTime.ofInstant(endTime, offset);
         LocalDateTime startTimeLocal = endTimeLocal.minusDays(4);
@@ -1552,10 +1528,19 @@ public class StepsRecordTest {
 
     static StepsRecord getBaseStepsRecord() {
         return new StepsRecord.Builder(
-                        new Metadata.Builder().setDataOrigin(getDataOrigin()).build(),
+                        new Metadata.Builder().build(),
                         Instant.now(),
                         Instant.now().plusMillis(1000),
                         10)
+                .build();
+    }
+
+    static StepsRecord getStepsRecord(int count) {
+        return new StepsRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now(),
+                        Instant.now().plusMillis(1000),
+                        count)
                 .build();
     }
 
@@ -1571,7 +1556,7 @@ public class StepsRecordTest {
             Instant time, int count, int daysPast, int durationInHours, ZoneOffset offset) {
         StepsRecord.Builder builder =
                 new StepsRecord.Builder(
-                        new Metadata.Builder().setDataOrigin(getDataOrigin()).build(),
+                        new Metadata.Builder().build(),
                         time.minus(daysPast, ChronoUnit.DAYS),
                         time.minus(daysPast, ChronoUnit.DAYS).plus(durationInHours, HOURS),
                         count);
@@ -1584,7 +1569,6 @@ public class StepsRecordTest {
     static StepsRecord getStepsRecordWithClientVersion(
             int steps, int version, String clientRecordId) {
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
-        testMetadataBuilder.setDataOrigin(getDataOrigin());
         testMetadataBuilder.setClientRecordId(clientRecordId);
         testMetadataBuilder.setClientRecordVersion(version);
         Metadata testMetaData = testMetadataBuilder.build();
@@ -1600,9 +1584,5 @@ public class StepsRecordTest {
                         Instant.now().minus(days, ChronoUnit.DAYS).plusMillis(1000),
                         10)
                 .build();
-    }
-
-    private static DataOrigin getDataOrigin() {
-        return new DataOrigin.Builder().setPackageName(PACKAGE_NAME).build();
     }
 }
