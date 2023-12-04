@@ -16,7 +16,11 @@
 package android.healthconnect.cts.lib
 
 import android.Manifest
+import android.Manifest.permission.REVOKE_RUNTIME_PERMISSIONS
 import android.content.Context
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_DENIED
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.health.connect.datatypes.*
 import android.health.connect.datatypes.units.Length
 import android.os.SystemClock
@@ -48,7 +52,7 @@ object UiTestUtils {
     private val TAG = UiTestUtils::class.java.simpleName
 
     private val TEST_DEVICE: Device =
-        Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build()
+            Device.Builder().setManufacturer("google").setModel("Pixel").setType(1).build()
 
     private val PACKAGE_NAME = "android.healthconnect.cts.ui"
 
@@ -141,7 +145,7 @@ object UiTestUtils {
      * [uiObjectAction] on it.
      */
     fun waitButtonDisplayed(label: CharSequence, uiObjectAction: (UiObject2) -> Unit = {}) =
-        waitDisplayed(buttonSelector(label), uiObjectAction)
+            waitDisplayed(buttonSelector(label), uiObjectAction)
 
     /** Waits for the given [selector] not to be displayed. */
     fun waitNotDisplayed(selector: BySelector) {
@@ -187,15 +191,15 @@ object UiTestUtils {
     }
 
     private fun waitFor(
-        message: String,
-        uiAutomatorConditionTimeout: Duration,
-        uiAutomatorCondition: (Duration) -> Boolean,
+            message: String,
+            uiAutomatorConditionTimeout: Duration,
+            uiAutomatorCondition: (Duration) -> Boolean,
     ) {
         val elapsedStartMillis = SystemClock.elapsedRealtime()
         while (true) {
             getUiDevice().waitForIdle()
             val durationSinceStart =
-                Duration.ofMillis(SystemClock.elapsedRealtime() - elapsedStartMillis)
+                    Duration.ofMillis(SystemClock.elapsedRealtime() - elapsedStartMillis)
             if (durationSinceStart >= WAIT_TIMEOUT) {
                 break
             }
@@ -225,7 +229,7 @@ object UiTestUtils {
 
     fun stepsRecordFromTestApp(startTime: Instant): StepsRecord {
         return stepsRecord(
-            TEST_APP_PACKAGE_NAME, /* stepCount= */ 10, startTime, startTime.plusSeconds(100))
+                TEST_APP_PACKAGE_NAME, /* stepCount= */ 10, startTime, startTime.plusSeconds(100))
     }
 
     fun stepsRecordFromTestApp(stepCount: Long, startTime: Instant): StepsRecord {
@@ -249,17 +253,17 @@ object UiTestUtils {
     }
 
     private fun stepsRecord(
-        packageName: String,
-        stepCount: Long,
-        startTime: Instant,
-        endTime: Instant
+            packageName: String,
+            stepCount: Long,
+            startTime: Instant,
+            endTime: Instant
     ): StepsRecord {
         val dataOrigin: DataOrigin = DataOrigin.Builder().setPackageName(packageName).build()
         val testMetadataBuilder: Metadata.Builder = Metadata.Builder()
         testMetadataBuilder.setDevice(TEST_DEVICE).setDataOrigin(dataOrigin)
         testMetadataBuilder.setClientRecordId("SR" + Math.random())
         return StepsRecord.Builder(testMetadataBuilder.build(), startTime, endTime, stepCount)
-            .build()
+                .build()
     }
 
     private fun distanceRecord(packageName: String): DistanceRecord {
@@ -272,21 +276,29 @@ object UiTestUtils {
                 Instant.now().minusMillis(1000),
                 Instant.now(),
                 Length.fromMeters(500.0))
-            .build()
+                .build()
     }
 
     fun grantPermissionViaPackageManager(context: Context, packageName: String, permName: String) {
+        val pm = context.packageManager
+        if (pm.checkPermission(permName, packageName) == PERMISSION_GRANTED) {
+            return
+        }
         runWithShellPermissionIdentity(
-            { context.packageManager.grantRuntimePermission(packageName, permName, context.user) },
-            Manifest.permission.GRANT_RUNTIME_PERMISSIONS)
+                { pm.grantRuntimePermission(packageName, permName, context.user) },
+                Manifest.permission.GRANT_RUNTIME_PERMISSIONS)
     }
 
     fun revokePermissionViaPackageManager(context: Context, packageName: String, permName: String) {
+        val pm = context.packageManager
+        if (pm.checkPermission(permName, packageName) == PERMISSION_DENIED) {
+            return
+        }
         runWithShellPermissionIdentity(
-            {
-                context.packageManager.revokeRuntimePermission(
-                    packageName, permName, context.user, /* reason= */ "")
-            },
-            Manifest.permission.REVOKE_RUNTIME_PERMISSIONS)
+                {
+                    pm.revokeRuntimePermission(
+                            packageName, permName, context.user, /* reason= */ "")
+                },
+                REVOKE_RUNTIME_PERMISSIONS)
     }
 }
