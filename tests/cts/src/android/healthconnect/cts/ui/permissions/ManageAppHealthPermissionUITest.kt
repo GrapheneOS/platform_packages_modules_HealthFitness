@@ -22,7 +22,9 @@ import android.health.connect.HealthPermissions.READ_HEIGHT
 import android.health.connect.HealthPermissions.WRITE_BODY_FAT
 import android.health.connect.HealthPermissions.WRITE_HEIGHT
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
+import android.healthconnect.cts.lib.UiTestUtils
 import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_PACKAGE_NAME
+import android.healthconnect.cts.lib.UiTestUtils.clickOnContentDescription
 import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import android.healthconnect.cts.lib.UiTestUtils.grantPermissionViaPackageManager
 import android.healthconnect.cts.lib.UiTestUtils.navigateBackToHomeScreen
@@ -48,20 +50,19 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @Ignore("TODO(b/265789268): Fix flake")
     fun grantPermission_updatesAppPermissions() {
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         context.launchMainActivity {
             navigateToManageAppPermissions()
+
             clickOnText("Body fat")
+            clickOnContentDescription("Navigate up")
 
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         }
     }
 
     @Test
-    @Ignore(
-        "TODO(b/265789268): Fix flaky assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)")
     fun revokePermission_updatesAppPermissions() {
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         context.launchMainActivity {
@@ -69,22 +70,24 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
 
             clickOnText("Body fat")
+            clickOnContentDescription("Navigate up")
 
             assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         }
     }
 
     @Test
-    @Ignore(
-        "TODO(b/265789268): Fix flaky assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEIGHT)")
     fun revokeAllPermissions_revokesAllAppPermissions() {
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+
         context.launchMainActivity {
             navigateToManageAppPermissions()
             clickOnText("Allow all")
             waitDisplayed(By.text("Remove all permissions?"))
             clickOnText("Remove all")
+            clickOnContentDescription("Navigate up")
 
             assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEIGHT)
             assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
@@ -92,7 +95,6 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @Ignore("TODO(b/265789268): Fix flaky cannot find 'Remove all permissions?' view")
     fun revokeAllPermissions_allowsUserToDeleteAppData() {
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
@@ -102,20 +104,20 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
             clickOnText("Allow all")
             waitDisplayed(By.text("Remove all permissions?"))
             waitDisplayed(
-                By.text("Also delete Health Connect cts test app data from Health Connect"))
+                    By.text("Also delete Health Connect cts test app data from Health Connect"))
         }
     }
 
     @Throws(Exception::class)
     private fun assertPermNotGrantedForApp(packageName: String, permName: String) {
         assertThat(context.packageManager.checkPermission(permName, packageName))
-            .isEqualTo(PackageManager.PERMISSION_DENIED)
+                .isEqualTo(PackageManager.PERMISSION_DENIED)
     }
 
     @Throws(Exception::class)
     private fun assertPermGrantedForApp(packageName: String, permName: String) {
         assertThat(context.packageManager.checkPermission(permName, packageName))
-            .isEqualTo(PackageManager.PERMISSION_GRANTED)
+                .isEqualTo(PackageManager.PERMISSION_GRANTED)
     }
 
     private fun navigateToManageAppPermissions() {
@@ -129,7 +131,9 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     fun tearDown() {
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
         revokePermissionViaPackageManager(
-            context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+                context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+        revokePermissionViaPackageManager(
+                context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         navigateBackToHomeScreen()
     }
 }
