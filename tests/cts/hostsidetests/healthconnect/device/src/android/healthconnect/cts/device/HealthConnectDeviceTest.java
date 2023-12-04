@@ -43,7 +43,6 @@ import static android.healthconnect.cts.utils.TestUtils.getApplicationInfo;
 import static android.healthconnect.cts.utils.TestUtils.getGrantedHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.getInstantTime;
 import static android.healthconnect.cts.utils.TestUtils.grantPermission;
-import static android.healthconnect.cts.utils.TestUtils.insertRecordsForPriority;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.revokeAndThenGrantHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.revokeHealthPermissions;
@@ -385,26 +384,7 @@ public class HealthConnectDeviceTest {
 
     @Test
     public void testAggregateRecords_onlyWritePermissions_requestsOwnDataOnly_succeeds()
-            throws Exception {
-        insertRecordsForPriority(mContext.getPackageName());
-        List<DataOrigin> dataOriginPrioOrder =
-                List.of(new DataOrigin.Builder().setPackageName(mContext.getPackageName()).build());
-
-        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-        updateDataOriginPriorityOrder(
-                new UpdateDataOriginPriorityOrderRequest(
-                        dataOriginPrioOrder, HealthDataCategory.ACTIVITY));
-        List<String> oldPriorityList =
-                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
-                        .getDataOriginsPriorityOrder()
-                        .stream()
-                        .map(dataOrigin -> dataOrigin.getPackageName())
-                        .collect(Collectors.toList());
-
-        assertThat(oldPriorityList).contains(mContext.getPackageName());
-        uiAutomation.dropShellPermissionIdentity();
-
+            throws InterruptedException {
         AggregateRecordsResponse<Long> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Long>(
@@ -1131,14 +1111,7 @@ public class HealthConnectDeviceTest {
     private static StepsRecord getStepsRecord(
             int stepCount, Instant startTime, int durationInHours, String clientId) {
         return new StepsRecord.Builder(
-                        new Metadata.Builder()
-                                .setDataOrigin(
-                                        new DataOrigin.Builder()
-                                                .setPackageName(
-                                                        APP_WITH_WRITE_PERMS_ONLY.getPackageName())
-                                                .build())
-                                .setClientRecordId(clientId)
-                                .build(),
+                        new Metadata.Builder().setClientRecordId(clientId).build(),
                         startTime,
                         startTime.plus(durationInHours, ChronoUnit.HOURS),
                         stepCount)

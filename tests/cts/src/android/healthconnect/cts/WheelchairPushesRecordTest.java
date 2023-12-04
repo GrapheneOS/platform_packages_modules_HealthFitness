@@ -25,7 +25,6 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
-import android.health.connect.HealthDataCategory;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.TimeInstantRangeFilter;
@@ -45,7 +44,6 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -61,12 +59,6 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class WheelchairPushesRecordTest {
     private static final String TAG = "WheelchairPushesRecordTest";
-    private static final String PACKAGE_NAME = "android.healthconnect.cts";
-
-    @Before
-    public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
-    }
 
     @After
     public void tearDown() throws InterruptedException {
@@ -217,7 +209,6 @@ public class WheelchairPushesRecordTest {
 
     @Test
     public void testAggregation_countTotal() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         List<Record> records =
                 Arrays.asList(getBaseWheelchairPushesRecord(1), getBaseWheelchairPushesRecord(2));
         AggregateRecordsResponse<Long> oldResponse =

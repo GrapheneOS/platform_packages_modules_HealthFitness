@@ -170,7 +170,7 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     @VisibleForTesting public static final boolean BACKGROUND_READ_DEFAULT_FLAG_VALUE = false;
 
     @VisibleForTesting
-    public static final boolean ENABLE_AGGREGATION_SOURCE_CONTROLS_DEFAULT_FLAG_VALUE = true;
+    public static final boolean ENABLE_AGGREGATION_SOURCE_CONTROLS_DEFAULT_FLAG_VALUE = false;
 
     private static HealthConnectDeviceConfigManager sDeviceConfigManager;
     private final ReentrantReadWriteLock mLock = new ReentrantReadWriteLock();
@@ -282,7 +282,11 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                     BACKGROUND_READ_DEFAULT_FLAG_VALUE);
 
     @GuardedBy("mLock")
-    private boolean mAggregationSourceControlsEnabled = true;
+    private boolean mAggregationSourceControlsEnabled =
+            DeviceConfig.getBoolean(
+                    HEALTH_FITNESS_NAMESPACE,
+                    ENABLE_AGGREGATION_SOURCE_CONTROLS_FLAG,
+                    ENABLE_AGGREGATION_SOURCE_CONTROLS_DEFAULT_FLAG_VALUE);
 
     @NonNull
     @VisibleForTesting(visibility = VisibleForTesting.Visibility.PACKAGE)
@@ -700,7 +704,10 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
                                         BACKGROUND_READ_DEFAULT_FLAG_VALUE);
                         break;
                     case ENABLE_AGGREGATION_SOURCE_CONTROLS_FLAG:
-                        mAggregationSourceControlsEnabled = true;
+                        mAggregationSourceControlsEnabled =
+                                properties.getBoolean(
+                                        ENABLE_AGGREGATION_SOURCE_CONTROLS_FLAG,
+                                        ENABLE_AGGREGATION_SOURCE_CONTROLS_DEFAULT_FLAG_VALUE);
                 }
             } finally {
                 mLock.writeLock().unlock();
