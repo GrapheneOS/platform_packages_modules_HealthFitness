@@ -900,7 +900,11 @@ public class DataMigrationTest {
                         .setTimeRangeFilter(
                                 new TimeInstantRangeFilter.Builder()
                                         .setStartTime(mStartTime)
-                                        .setEndTime(mEndTime)
+                                        // Some tests in this file are using mEndTime as `time` for
+                                        // instant data points, and HC reads filters data points by
+                                        // [inclusive, exclusive), hence we need to add a positive
+                                        // amount of ms.
+                                        .setEndTime(mEndTime.plusMillis(1))
                                         .build())
                         .build(),
                 mOutcomeExecutor,
