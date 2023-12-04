@@ -117,7 +117,8 @@ class DataSourcesFragment :
         dataSourcesCategoriesStrings =
             dataSourcesCategories.map { category -> getString(category.uppercaseTitle()) }
 
-        if (requireArguments().containsKey(CATEGORY_KEY)) {
+        if (requireArguments().containsKey(CATEGORY_KEY) && savedInstanceState == null) {
+
             // Only require this from the HealthPermissionTypes screen
             // When navigating here from the Manage Data screen we pass Unknown
             // so that going back and forth to this screen does not restrict users to just one
@@ -138,7 +139,6 @@ class DataSourcesFragment :
         val currentStringSelection = spinnerPreference.selectedItem
         currentCategorySelection =
             dataSourcesCategories[dataSourcesCategoriesStrings.indexOf(currentStringSelection)]
-
         dataSourcesViewModel.loadData(currentCategorySelection)
 
         dataSourcesViewModel.dataSourcesAndAggregationsInfo.observe(viewLifecycleOwner) {

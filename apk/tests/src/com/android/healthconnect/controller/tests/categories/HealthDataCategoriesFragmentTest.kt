@@ -34,11 +34,14 @@ import com.android.healthconnect.controller.categories.HealthDataCategoriesFragm
 import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel
 import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel.CategoriesFragmentState
 import com.android.healthconnect.controller.categories.HealthDataCategoryViewModel.CategoriesFragmentState.WithData
+import com.android.healthconnect.controller.tests.utils.di.FakeFeatureUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.whenever
+import com.android.healthconnect.controller.utils.FeatureUtils
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import javax.inject.Inject
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
@@ -60,6 +63,7 @@ private val HEALTH_DATA_ALL_CATEGORIES =
 class HealthDataCategoriesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @Inject lateinit var fakeFeatureUtils: FeatureUtils
 
     @BindValue
     val viewModel: HealthDataCategoryViewModel =
@@ -74,15 +78,13 @@ class HealthDataCategoriesFragmentTest {
         whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
             MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(false)
     }
 
     @Test
     fun categoriesFragment_isDisplayed() {
         whenever(viewModel.categoriesData).then {
             MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
-        }
-        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -93,12 +95,23 @@ class HealthDataCategoriesFragmentTest {
     }
 
     @Test
-    fun categoriesFragment_emptyCategories_noDataViewIsDisplayed_deleteIconIsDisabled() {
+    fun categoriesFragment_whenNewAppPriorityEnabled_autoDeleteNotDisplayed() {
+        (fakeFeatureUtils as FakeFeatureUtils).setIsNewAppPriorityEnabled(true)
         whenever(viewModel.categoriesData).then {
             MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
         }
-        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
+        launchFragment<HealthDataCategoriesFragment>(Bundle())
+
+        onView(withText("Browse data")).check(matches(isDisplayed()))
+        onView(withText("Manage data")).check(matches(isDisplayed()))
+        onView(withText("Auto-delete")).check(doesNotExist())
+        onView(withText("Off")).check(doesNotExist())
+    }
+
+    @Test
+    fun categoriesFragment_emptyCategories_noDataViewIsDisplayed_deleteIconIsDisabled() {
+        whenever(viewModel.categoriesData).then {
+            MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -112,9 +125,6 @@ class HealthDataCategoriesFragmentTest {
         whenever(viewModel.categoriesData).then {
             MutableLiveData<CategoriesFragmentState>(WithData(HEALTH_DATA_ALL_CATEGORIES))
         }
-        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
-        }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
         onView(withText("Activity")).check(matches(isDisplayed()))
@@ -126,9 +136,6 @@ class HealthDataCategoriesFragmentTest {
         whenever(viewModel.categoriesData).then {
             MutableLiveData<CategoriesFragmentState>(WithData(HEALTH_DATA_ALL_CATEGORIES))
         }
-        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
-        }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
         onView(withText("See all categories")).check(matches(isDisplayed()))
@@ -136,19 +143,19 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun seeAllCategoriesPreference_withNoData_isDisplayed() {
-        val categories = listOf(
-            HealthCategoryUiState(category = HealthDataCategory.ACTIVITY, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.BODY_MEASUREMENTS, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.SLEEP, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.VITALS, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.CYCLE_TRACKING, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.NUTRITION, hasData = false),
-        )
+        val categories =
+            listOf(
+                HealthCategoryUiState(category = HealthDataCategory.ACTIVITY, hasData = false),
+                HealthCategoryUiState(
+                    category = HealthDataCategory.BODY_MEASUREMENTS, hasData = false),
+                HealthCategoryUiState(category = HealthDataCategory.SLEEP, hasData = false),
+                HealthCategoryUiState(category = HealthDataCategory.VITALS, hasData = false),
+                HealthCategoryUiState(
+                    category = HealthDataCategory.CYCLE_TRACKING, hasData = false),
+                HealthCategoryUiState(category = HealthDataCategory.NUTRITION, hasData = false),
+            )
         whenever(viewModel.categoriesData).then {
             MutableLiveData<CategoriesFragmentState>(WithData(categories))
-        }
-        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -157,19 +164,19 @@ class HealthDataCategoriesFragmentTest {
 
     @Test
     fun deleteAllData_withNoData_isDisabled() {
-        val categories = listOf(
-            HealthCategoryUiState(category = HealthDataCategory.ACTIVITY, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.BODY_MEASUREMENTS, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.SLEEP, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.VITALS, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.CYCLE_TRACKING, hasData = false),
-            HealthCategoryUiState(category = HealthDataCategory.NUTRITION, hasData = false),
-        )
+        val categories =
+            listOf(
+                HealthCategoryUiState(category = HealthDataCategory.ACTIVITY, hasData = false),
+                HealthCategoryUiState(
+                    category = HealthDataCategory.BODY_MEASUREMENTS, hasData = false),
+                HealthCategoryUiState(category = HealthDataCategory.SLEEP, hasData = false),
+                HealthCategoryUiState(category = HealthDataCategory.VITALS, hasData = false),
+                HealthCategoryUiState(
+                    category = HealthDataCategory.CYCLE_TRACKING, hasData = false),
+                HealthCategoryUiState(category = HealthDataCategory.NUTRITION, hasData = false),
+            )
         whenever(viewModel.categoriesData).then {
             MutableLiveData<CategoriesFragmentState>(WithData(categories))
-        }
-        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -181,9 +188,6 @@ class HealthDataCategoriesFragmentTest {
     fun deleteAllData_withData_isEnabled() {
         whenever(viewModel.categoriesData).then {
             MutableLiveData<CategoriesFragmentState>(WithData(HEALTH_DATA_ALL_CATEGORIES))
-        }
-        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
@@ -206,9 +210,6 @@ class HealthDataCategoriesFragmentTest {
         whenever(viewModel.categoriesData).then {
             MutableLiveData<CategoriesFragmentState>(WithData(allCategories))
         }
-        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
-        }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
         onView(withText("See all categories")).check(doesNotExist())
@@ -218,9 +219,6 @@ class HealthDataCategoriesFragmentTest {
     fun categoriesFragment_autoDeleteButton_displaysAutoDeleteRangeNever() {
         whenever(viewModel.categoriesData).then {
             MutableLiveData<CategoriesFragmentState>(WithData(emptyList()))
-        }
-        whenever(autoDeleteViewModel.storedAutoDeleteRange).then {
-            MutableLiveData(AutoDeleteState.WithData(AutoDeleteRange.AUTO_DELETE_RANGE_NEVER))
         }
         launchFragment<HealthDataCategoriesFragment>(Bundle())
 
