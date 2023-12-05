@@ -29,8 +29,7 @@
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
         android:layout_marginEnd="@dimen/spacing_small"
-        app:tint="?android:attr/textColorPrimary"
-        android:contentDescription="@string/data_totals_header" />
+        app:tint="?android:attr/textColorPrimary" />
     <!-- TODO (b/299940574) dynamically set content description using category of aggregation -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
