@@ -39,13 +39,14 @@
           android:exported="true"/>
     </application>
 
-    <!-- To get visibility of the app with health permissions definitions,
-         required for testing defined permissions. -->
+
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
                      android:label="CTS HealthConnect tests"
                      android:targetPackage="android.healthconnect.cts">
     </instrumentation>
 
+    <!-- To get visibility of the app with health permissions definitions,
+         required for testing defined permissions. -->
     <queries>
         <package android:name="android.healthconnect.cts.app"/>
         <package android:name="android.healthconnect.cts.app2"/>

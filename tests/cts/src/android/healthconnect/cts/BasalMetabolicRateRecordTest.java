@@ -26,7 +26,6 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
-import android.health.connect.HealthDataCategory;
 import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
@@ -51,7 +50,6 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -71,12 +69,6 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class BasalMetabolicRateRecordTest {
     private static final String TAG = "BasalMetabolicRateRecordTest";
-    private static final String PACKAGE_NAME = "android.healthconnect.cts";
-
-    @Before
-    public void setUp() throws InterruptedException {
-        TestUtils.deleteAllStagedRemoteData();
-    }
 
     @After
     public void tearDown() throws InterruptedException {
@@ -334,7 +326,6 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_noRecord() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
         AggregateRecordsResponse<Energy> response =
                 TestUtils.getAggregateResponse(
                         new AggregateRecordsRequest.Builder<Energy>(
@@ -354,7 +345,6 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_lbm() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
         List<Record> records =
                 List.of(LeanBodyMassRecordTest.getBaseLeanBodyMassRecord(Instant.now(), 50000));
         AggregateRecordsResponse<Energy> response =
@@ -395,7 +385,6 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_lbm_group() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -445,8 +434,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_groupByDuration_lbmDerived()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -482,8 +469,6 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_profile_group() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -534,8 +519,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_basalCaloriesBurntTotal_onlyWeightBeforeInterval_usesProfile()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -559,8 +542,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_basalCaloriesBurntTotal_HeightAndWeightBeforeInterval_usesProfile()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -587,8 +568,6 @@ public class BasalMetabolicRateRecordTest {
     public void
             testAggregation_basalCaloriesBurntTotal_HeightWeightBeforeAndAfterInterval_usesProfile()
                     throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -621,8 +600,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_basalCaloriesBurntTotal_onlyWeightDuringInterval_usesProfile()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -646,8 +623,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_basalCaloriesBurntTotal_onlyWeightAfterInterval_usesDefaultProfile()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(WeightRecordTest.getBaseWeightRecord(now, /* weight= */ 40000));
@@ -669,8 +644,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_basalCaloriesBurntTotal_onlyHeightBeforeInterval_usesProfile()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -694,8 +667,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_basalCaloriesBurntTotal_onlyHeightDuringInterval_usesProfile()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -719,8 +690,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_basalCaloriesBurntTotal_onlyHeightAfterInterval_usesDefaultProfile()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(HeightRecordTest.getBaseHeightRecord(now, /* height= */ 2.0));
@@ -742,8 +711,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_groupByDuration_profileDerived()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -780,8 +747,6 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testAggregation_BasalCaloriesBurntTotal() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         List<Record> records =
                 Arrays.asList(
                         getBasalMetabolicRateRecord(30.0, Instant.now().minus(3, ChronoUnit.DAYS)),
@@ -830,8 +795,6 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_groupDuration() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -877,8 +840,6 @@ public class BasalMetabolicRateRecordTest {
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_groupDurationLocalFilter()
             throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         ZoneOffset offset = ZoneOffset.MIN;
         LocalDateTime nowLocal = LocalDateTime.ofInstant(now, offset);
@@ -919,8 +880,6 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_group() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         Instant now = Instant.now();
         List<Record> records =
                 List.of(
@@ -953,8 +912,6 @@ public class BasalMetabolicRateRecordTest {
 
     @Test
     public void testAggregation_BasalCaloriesBurntTotal_profile() throws Exception {
-        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
-
         List<Record> records =
                 List.of(
                         HeightRecordTest.getBaseHeightRecord(
@@ -1246,7 +1203,7 @@ public class BasalMetabolicRateRecordTest {
 
     static BasalMetabolicRateRecord getBaseBasalMetabolicRateRecord() {
         return new BasalMetabolicRateRecord.Builder(
-                        new Metadata.Builder().setDataOrigin(getDataOrigin()).build(),
+                        new Metadata.Builder().build(),
                         Instant.now().minus(1, ChronoUnit.DAYS),
                         Power.fromWatts(100.0))
                 .build();
@@ -1259,8 +1216,10 @@ public class BasalMetabolicRateRecordTest {
                         .setModel("Pixel4a")
                         .setType(2)
                         .build();
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName("android.healthconnect.cts").build();
         Metadata.Builder testMetadataBuilder = new Metadata.Builder();
-        testMetadataBuilder.setDevice(device).setDataOrigin(getDataOrigin());
+        testMetadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
         testMetadataBuilder.setClientRecordId("BMR" + Math.random());
         testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
@@ -1269,9 +1228,5 @@ public class BasalMetabolicRateRecordTest {
                         Instant.now().minus(1, ChronoUnit.DAYS),
                         Power.fromWatts(100.0))
                 .build();
-    }
-
-    private static DataOrigin getDataOrigin() {
-        return new DataOrigin.Builder().setPackageName(PACKAGE_NAME).build();
     }
 }
