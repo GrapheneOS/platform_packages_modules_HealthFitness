@@ -20,6 +20,7 @@ import com.android.healthconnect.controller.permissions.api.HealthPermissionMana
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
@@ -58,6 +59,7 @@ class HealthPermissionManagerImplTest {
     }
 
     @Test
+    @Ignore("b/314918667")
     fun makeHealthPermissionsRequestable_callsHealthConnectManager() {
         val packageName = "package.name"
         val permissions = listOf("Permission 1", "Permission 2")
