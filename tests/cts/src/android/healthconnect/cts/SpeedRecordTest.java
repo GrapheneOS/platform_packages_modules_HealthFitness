@@ -27,6 +27,7 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
@@ -50,6 +51,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -68,6 +70,12 @@ import java.util.UUID;
 public class SpeedRecordTest {
 
     private static final String TAG = "SpeedRecordTest";
+    private static final String PACKAGE_NAME = "android.healthconnect.cts";
+
+    @Before
+    public void setUp() throws InterruptedException {
+        TestUtils.deleteAllStagedRemoteData();
+    }
 
     @After
     public void tearDown() throws InterruptedException {
@@ -345,6 +353,7 @@ public class SpeedRecordTest {
     @Test
     public void testSpeedAggregation_getAggregationFromThreerecords_aggResponsesAreCorrect()
             throws Exception {
+        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         List<Record> records =
                 Arrays.asList(
                         buildRecordForSpeed(120, 100),
