@@ -14,4 +14,8 @@ class NavigationUtils @Inject constructor() {
     fun startActivity(fragment: Fragment, intent: Intent) {
         fragment.startActivity(intent)
     }
+
+    fun popBackStack(fragment: Fragment) {
+        fragment.findNavController().popBackStack()
+    }
 }
