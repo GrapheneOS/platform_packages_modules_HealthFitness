@@ -17,10 +17,10 @@
 package android.healthconnect.cts;
 
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
-import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
+import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
@@ -30,6 +30,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Comparator.comparing;
 
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
@@ -38,7 +39,6 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.InstantRecord;
 import android.health.connect.datatypes.Metadata;
-import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
@@ -46,7 +46,6 @@ import android.healthconnect.cts.utils.TestUtils;
 
 import androidx.test.runner.AndroidJUnit4;
 
-import com.google.common.truth.Correspondence;
 
 import org.junit.After;
 import org.junit.Before;
@@ -55,7 +54,10 @@ import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
 public class SharedMemoryTest {
@@ -111,44 +113,73 @@ public class SharedMemoryTest {
     }
 
     @Test
-    public void getChangeLogs_viaSharedMemory_recordsEquals() throws Exception {
+    public void getChangeLogs_viaSharedMemory_recordsMatch() throws Exception {
         DataOrigin dataOrigin =
                 new DataOrigin.Builder()
                         .setPackageName(getApplicationContext().getPackageName())
                         .build();
         Metadata metadata = new Metadata.Builder().setDataOrigin(dataOrigin).build();
 
-        int recordCount = 5000;
-        List<HeightRecord> heightRecords = new ArrayList<>(recordCount);
-        List<WeightRecord> weightRecords = new ArrayList<>(recordCount);
+        // One less than a multiple of the default page size to allow at least one page in the
+        // response to have both upserted records and deleted logs.
+        int recordsToDeleteCount = 6999;
+
         Instant now = Instant.now();
-        for (int i = 0; i < recordCount; i++) {
-            Instant time = now.minusMillis(i);
-            heightRecords.add(
-                    new HeightRecord.Builder(
-                                    metadata, time, Length.fromMeters(3.0 * i / recordCount))
-                            .build());
-            weightRecords.add(
-                    new WeightRecord.Builder(metadata, time, Mass.fromGrams(1000.0 * 70.0 + i * 10))
-                            .build());
-        }
 
         String changeLogToken =
                 TestUtils.getChangeLogToken(new ChangeLogTokenRequest.Builder().build()).getToken();
+
+        List<HeightRecord> heightRecords = new ArrayList<>(recordsToDeleteCount);
+        for (int i = 0; i < recordsToDeleteCount; i++) {
+            heightRecords.add(
+                    new HeightRecord.Builder(
+                                    metadata,
+                                    now.minusMillis(i),
+                                    Length.fromMeters(3.0 * i / recordsToDeleteCount))
+                            .build());
+        }
         insertRecords(heightRecords);
         heightRecords = readAllRecords(HeightRecord.class);
-        deleteRecords(heightRecords);
+        List<RecordIdFilter> recordIdFiltersToDelete =
+                heightRecords.stream()
+                        .map(
+                                record ->
+                                        RecordIdFilter.fromId(
+                                                record.getClass(), record.getMetadata().getId()))
+                        .collect(Collectors.toList());
+        verifyDeleteRecords(recordIdFiltersToDelete);
+
+        // One less than a multiple of the default page size to allow at least one page in the
+        // response to have both upserted records and deleted logs.
+        int recordsToInsertCount = 4999;
+
+        now = Instant.now();
+        List<WeightRecord> weightRecords = new ArrayList<>();
+        for (int i = 0; i < recordsToInsertCount; i++) {
+            weightRecords.add(
+                    new WeightRecord.Builder(
+                                    metadata,
+                                    now.minusMillis(i),
+                                    Mass.fromGrams(1000.0 * 70.0 + i * 10))
+                            .build());
+        }
         insertRecords(weightRecords);
         weightRecords = readAllRecords(WeightRecord.class);
 
-        List<DeletedLog> deletedLogs = new ArrayList<>();
-        List<Record> upsertedRecords = new ArrayList<>();
+        Set<String> deletedLogsIds = new HashSet<>();
+        Set<String> upsertedRecordsIds = new HashSet<>();
 
         ChangeLogsResponse changeLogsResponse =
                 TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(changeLogToken).build());
         while (true) {
-            upsertedRecords.addAll(changeLogsResponse.getUpsertedRecords());
-            deletedLogs.addAll(changeLogsResponse.getDeletedLogs());
+            upsertedRecordsIds.addAll(
+                    changeLogsResponse.getUpsertedRecords().stream()
+                            .map(record -> record.getMetadata().getId())
+                            .collect(Collectors.toList()));
+            deletedLogsIds.addAll(
+                    changeLogsResponse.getDeletedLogs().stream()
+                            .map(DeletedLog::getDeletedRecordId)
+                            .collect(Collectors.toList()));
             if (!changeLogsResponse.hasMorePages()) {
                 break;
             }
@@ -157,18 +188,25 @@ public class SharedMemoryTest {
                     TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(changeLogToken).build());
         }
 
-        assertThat(deletedLogs).hasSize(recordCount);
-        assertThat(upsertedRecords).hasSize(recordCount);
-        assertThat(deletedLogs)
-                .comparingElementsUsing(
-                        Correspondence.<DeletedLog, Record>from(
-                                (deletedLog, record) ->
-                                        deletedLog
-                                                .getDeletedRecordId()
-                                                .equals(record.getMetadata().getId()),
-                                "deleted log record id is equal to deleted record id"))
-                .containsExactlyElementsIn(heightRecords);
-        assertThat(changeLogsResponse.getUpsertedRecords())
-                .containsExactlyElementsIn(weightRecords);
+        assertWithMessage("Upserted records count does not match")
+                .that(upsertedRecordsIds.size())
+                .isEqualTo(recordsToInsertCount);
+        assertWithMessage("Deleted logs count does not match")
+                .that(deletedLogsIds.size())
+                .isEqualTo(recordsToDeleteCount);
+
+        for (int i = 0; i < recordsToInsertCount; i++) {
+            String recordId = weightRecords.get(i).getMetadata().getId();
+            assertWithMessage("Missing upserted record at index %s with id %s", i, recordId)
+                    .that(upsertedRecordsIds)
+                    .contains(recordId);
+        }
+
+        for (int i = 0; i < recordsToDeleteCount; i++) {
+            String recordId = recordIdFiltersToDelete.get(i).getId();
+            assertWithMessage("Missing deleted log at index %s with id %s", i, recordId)
+                    .that(deletedLogsIds)
+                    .contains(recordId);
+        }
     }
 }
