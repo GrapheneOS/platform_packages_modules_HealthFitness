@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"एपलाई स्वास्थ्यसम्बन्धी जानकारी प्रयोग गर्न दिने कि नदिने भन्ने कुरा व्यवस्थापन गर्नुहोस्"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"अनुमति तथा डेटा"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"तपाईंको फोनमा भएका स्वास्थ्य र तन्दुरुस्तीसम्बन्धी डेटा व्यवस्थापन गर्नुहोस् र ती डेटा कुन कुन एपलाई प्रयोग गर्न दिने भन्ने कुरा नियन्त्रण गर्नुहोस्"</string>
     <string name="data_title" msgid="4456619761533380816">"डेटा र अनुमति"</string>
@@ -248,10 +249,12 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> ले अब उप्रान्त Health Connect मा भएको कुनै पनि डेटा रिड वा राइट गर्न सक्ने छैन।\n\nयसले गर्दा यो एपलाई दिइएका लोकेसन, क्यामेरा वा माइक्रोफोनलगायतका कुरा प्रयोग गर्ने अनुमति बदलिने छैन।"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect बाट <xliff:g id="APP_NAME">%1$s</xliff:g> को डेटा पनि मेटाइयोस्"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"अर्को दिन"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"चयन गरिएको दिन"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"अघिल्लो दिन"</string>
-    <string name="default_error" msgid="7966868260616403475">"कुनै समस्या आयो। कृपया फेरि प्रयास गर्नुहोस्।"</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"यो अनुमति दिइएका एपहरूले तपाईंको स्वास्थ्य र तन्दुरुस्तीसम्बन्धी जानकारी रिड तथा राइट गर्न सक्छन्।"</string>
+    <string name="default_error" msgid="7966868260616403475">"केही चिज गडबड भयो। कृपया फेरि प्रयास गर्नुहोस्।"</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connect मा भण्डारण गरिएका डेटा कुन कुन एपलाई प्रयोग गर्न दिने भन्ने कुरा नियन्त्रण गर्नुहोस्। कुनै एपले कुन कुन डेटा रिड वा राइट गर्न सक्छ भन्ने कुरा हेर्न उक्त एपमा ट्याप गर्नुहोस्।"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"डेटा प्रयोग गर्ने अनुमति पाएका एपहरू"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"डेटा प्रयोग गर्ने अनुमति नपाएका एपहरू"</string>
@@ -262,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"कुनै पनि एपलाई अनुमति दिइएको छैन"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"सबै एपलाई अनुमति दिइएको छ"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"सबै एपलाई दिइएका अनुमति हटाउने हो?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"तपाईंका कुनै पनि एपले Health Connect मा भएको जानकारी प्रयोग गर्न वा नयाँ जानकारी सेभ गर्न सक्ने छैन। यसले हालका कुनै पनि जानकारी मेटाउँदैन।\n\nयसले यो एपलाई दिइएका हुन सक्ने अन्य अनुमतिहरू (जस्तै, लोकेसन, क्यामेरा वा माइक्रोफोन) मा कुनै असर गर्दैन।"</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"सबै हटाउनुहोस्"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"एप व्यवस्थापन गर्नुहोस्"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"एपसम्बन्धी डेटा मेटाउनुहोस्"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"निष्क्रिय एपहरू"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"यी एपहरूले अबदेखि Health Connect प्रयोग गर्न पाउँदैनन् तर Health Connect मा भने अझै पनि यी एपहरूसम्बन्धी डेटा भण्डारण गरिएको छ"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> ले <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> पछि हालिएका जानकारी रिड गर्न सक्छ"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"तपाईं यो एपले प्रयोग गर्न सक्ने Android का अन्य अनुमति व्यवस्थापन गर्न चाहनुहुन्छ भने \"सेटिङ &gt; एपहरू\" मा जानुहोस्"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"तपाईंले <xliff:g id="APP_NAME">%1$s</xliff:g> सँग सेयर गर्नुभएको डेटा उक्त एपको गोपनीयता नीतिबमोजिम प्रयोग गरिन्छ"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"तपाईं यो एपले प्रयोग गर्न सक्ने Android का अन्य अनुमति व्यवस्थापन गर्न चाहनुहुन्छ भने सेटिङमा गई \"एपहरू\" मा ट्याप गर्नुहोस्"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"गोपनीयता नीति पढ्नुहोस्"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"पछिल्लो २४ घण्टामा प्रयोग गरिएको"</string>
     <string name="app_access_title" msgid="7137018424885371763">"एपलाई दिइएका अनुमति"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"तपाईंले अहिले कुनै पनि कम्प्याटिबल एप इन्स्टल गर्नुभएको छैन"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"एपलाई दिइएका अनुमति रद्द गरिएका छन्"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect ले <xliff:g id="APP_DATA">%s</xliff:g> लाई दिइएका अनुमति रद्द गरेको छ"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect ले <xliff:g id="APP_DATA_0">%1$s</xliff:g> र <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> लाई दिइएका अनुमति रद्द गरेको छ"</string>
@@ -324,7 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"<xliff:g id="APP_DATA">%2$s</xliff:g> ले हालेका <xliff:g id="DATA_TYPE">%1$s</xliff:g> सम्बन्धी सबै डेटा सदाका लागि मेटाउने हो?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"यो डेटा सदाका लागि मेटाउने हो?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"कनेक्ट गरिएका एपहरू अबदेखि Health Connect मा भएको यो डेटा हेर्न वा प्रयोग गर्न सक्ने छैनन्"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"तपाईंले यसो गर्नुभयो भने <xliff:g id="START_DATE">%1$s</xliff:g> देखि <xliff:g id="END_DATE">%2$s</xliff:g> सम्मका महिनावारीसम्बन्धी सबै इन्ट्रीहरू मेटिने छन्।"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"मेटाउनुहोस्"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"पछाडि जानुहोस्"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"सम्पन्न भयो"</string>
@@ -338,9 +345,9 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"Health Connect सम्बन्धी डेटा मेटाइँदै छ"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Health Connect सम्बन्धी डेटा मेटाइँदै छ"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"डेटा मेटाउने कार्य"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"डेटा इन्ट्री मेटाउनुहोस्"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"हालेको डेटा मेटाइयोस्"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"कुल: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{१ वाट}other{# वाट}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{१ वाट}other{# वाट}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{१ कदम}other{# कदम}}"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> निदाएको"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"ब्युँझेको"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"निद्रा नलाग्नु"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"निदाएको"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"ओछ्यानमा नभएको"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM निद्रा"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{१ मिनेट}other{# मिनेट}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> र <xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{१ दिन}other{# दिन}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{१ मि.लि./(कि.ग्रा. प्रति मिनेट)}other{# मि.लि./(कि.ग्रा. प्रति मिनेट)}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{शरीरको एक किलोग्राम वजनका लागि एक मिनेटमा १ मिलि‌लिटर अक्सिजन}other{शरीरको एक किलोग्राम वजनका लागि एक मिनेटमा # मिलि‌लिटर अक्सिजन}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"मेटाबोलिक कार्ट"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{१ किलोजुल}other{# किलोजुल}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{१%}other{#%}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{१ प्रतिशत}other{# प्रतिशत}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"रद्द गर्नुहोस्"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"एकाइहरू"</string>
     <string name="set_units_label" msgid="6566059089772896105">"डेटाको एकाइ सेट गर्नुहोस्"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"दूरी"</string>
@@ -669,23 +678,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"फरेनहाइट"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"केल्भिन"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"मद्दत र प्रतिक्रिया"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"तपाईंले इन्स्टल गरिएको एप देख्नुभएन भने सो एप अझै पनि Health Connect सँग कम्प्याटिबल नहुन सक्छ"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"चलाई हेर्नु पर्ने एपहरू"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"अपडेटहरू उपलब्ध छन् कि छैनन् भन्ने कुरा जाँच्नुहोस्"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"इन्स्टल गरिएका एपहरू अपडेट गरिएका छन् कि छैनन् भन्ने कुरा जाँच्नुहोस्"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"कम्प्याटिबल सबै एपहरू हेर्नुहोस्"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Play मा एपहरू भेट्टाउनुहोस्"</string>
     <string name="send_feedback" msgid="7756927746070096780">"प्रतिक्रिया दिनुहोस्"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"तपाईंले Health Connect मा प्रयोग गर्न चाहेका स्वास्थ्य तथा फिटनेससम्बन्धी एप कुन कुन हुन् भन्ने कुरा हामीलाई बताउनुहोस्"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play स्टोर"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"स्वतः मेटाउनुहोस्"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"स्वतः मेटाउनुहोस्"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"तोकिएको समय सकिएपछि आफ्नो डेटा मेटाउने समयतालिका तय गरेर उक्त डेटा Health Connect मा कहिलेसम्म भण्डारण गर्ने भन्ने कुरा नियन्त्रण गर्नुहोस्"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"स्वतः मेटाउने सुविधाका बारेमा थप जान्नुहोस्"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"थप जान्नुहोस्"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"डेटा स्वतः मेटाउनुहोस्"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# महिनापछि}other{# महिनापछि}}"</string>
     <string name="range_never" msgid="4429478261788361233">"कहिल्यै पनि होइन"</string>
-    <string name="range_off" msgid="8178520557618184215">"अफ छ"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"तपाईंले यी सेटिङ बदल्नुभयो भने Health Connect ले तपाईंका नयाँ प्राथमिकताहरू देखाउने प्रयोजनका लागि हालको डेटा मेटाउँछ"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# महिनापछि डेटा स्वतः मेटाउने हो?}other{# महिनापछि डेटा स्वतः मेटाउने हो?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect ले # महिनापछि नयाँ डेटा स्वतः मेटाउने छ। तपाईंले यो सेटिङ लागू गर्नुभयो भने # महिनाभन्दा पहिलाको डेटा पनि मेटिने छ।}other{Health Connect ले # महिनापछि नयाँ डेटा स्वतः मेटाउने छ। तपाईंले यो सेटिङ लागू गर्नुभयो भने # महिनाभन्दा पहिलाको डेटा पनि मेटिने छ।}}"</string>
@@ -712,66 +724,119 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई Health Connect मा भएको कसरत गर्ने मार्गका बारेमा जानकारी हेर्ने र प्रयोग गर्ने अनुमति दिने हो?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"यो एपले कसरत गर्ने मार्गका बारेमा तपाईंको विगतको लोकेसनसम्बन्धी जानकारी रिड गर्न सक्ने छ"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"कसरत गर्ने मार्गसम्बन्धी जानकारीमा लोकेसनसम्बन्धी जानकारी समावेश हुन्छ"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"यो जानकारी कसले हेर्न सक्छ?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"तपाईंले कसरतका मार्गहरू हेर्ने अनुमति दिएका एपहरूले मात्र यो जानकारी हेर्न सक्छन्"</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"एपलाई दिइएका अनुमति कसरी व्यवस्थापन गर्न सकिन्छ?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"तपाईं Health Connect का सेटिङमा गई एपलाई कसरत गर्ने मार्गहरू हेर्न दिइएको अनुमति व्यवस्थापन गर्न सक्नुहुन्छ"</string>
-    <string name="back_button" msgid="780519527385993407">"पछाडि"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"लोड गरिँदै छ…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"इन्टिग्रेट गरिँदै छ"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect Android सिस्टममा इन्टिग्रेट गरिँदै छ।\n\nतपाईंका जानकारी र अनुमति ट्रान्स्फर भइरहेकाले यो प्रक्रिया पूरा हुन केही समय लाग्न सक्छ।"</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"तपाईंले यो प्रक्रिया पूरा भएको सूचना प्राप्त नगरुन्जेल यो एप बन्द नगर्नुहोला।"</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect इन्टिग्रेट गरिँदै छ"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"अपडेट गर्नु पर्ने हुन्छ"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"तपाईं सीधै सेटिङबाटै Health Connect प्रयोग गर्न सक्नुहोस् भन्नाका लागि उक्त एप Android सिस्टममा इन्टिग्रेट गरिँदै छ।"</string>
-    <string name="update_button" msgid="4544529019832009496">"अपडेट गर्नुहोस्"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Health Connect ले तपाईंको सिस्टमसम्बन्धी सेटिङअनुसार इन्टिग्रेट गरिराख्न सकोस् भन्नाका लागि यो अपडेट गर्न थाल्नुहोस्"</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"अहिले नै अपडेट गर्नुहोस्"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"सिस्टम अपडेट गर्नु पर्ने हुन्छ"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"जारी राख्नुअघि आफ्नो फोनको सिस्टम अपडेट गर्नुहोस्।"</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"तपाईंले आफ्नो फोनको सिस्टम अपडेट गरिसक्नुभएको छ भने आफ्नो फोन रिस्टार्ट गरेर इन्टिग्रेट गर्ने प्रक्रिया जारी राख्ने प्रयास गर्नुहोस्"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Health Connect अपडेट गर्नु पर्ने हुन्छ"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"जारी राख्नुअघि Health Connect एप अपडेट गरी नवीनतम संस्करण इन्स्टल गर्नुहोस्।"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"अझ धेरै खाली ठाउँ चाहिन्छ"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect लाई इन्टिग्रेट गर्ने प्रक्रिया जारी राख्नका निम्ति तपाईंको फोनको भण्डारणमा <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> खाली ठाउँ चाहिन्छ।\n\nआफ्नो फोनको भण्डारणमा केही ठाउँ खाली गर्नुहोस् अनि फेरि प्रयास गर्नुहोस्।"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"फेरि प्रयास गर्नुहोस्"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"ठाउँ खाली गर्नुहोस्"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"अझ धेरै खाली ठाउँ चाहिन्छ"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Health Connect लाई इन्टिग्रेट गर्ने प्रक्रिया जारी राख्नका निम्ति तपाईंको फोनको भण्डारणमा <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> खाली ठाउँ चाहिन्छ।"</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"इन्टिग्रेट गर्ने प्रक्रिया पज गरिएको छ"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Android सिस्टममा इन्टिग्रेट गर्ने क्रममा Health Connect एप बन्द भएको थियो।\n\nयो एप फेरि खोल्न \"सुचारु गर्नुहोस्\" बटनमा क्लिक गर्नुहोस् र आफ्ना जानकारी तथा अनुमति ट्रान्स्फर गर्ने कार्य जारी राख्नुहोस्।"</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Health Connect मा भएको आफ्नो जानकारी सुरक्षित राख्नका निम्ति यो प्रक्रिया <xliff:g id="TIME_NEEDED">%1$s</xliff:g> भित्र पूरा गर्नुहोस्"</string>
-    <string name="resume_button" msgid="2255148549862208047">"सुचारु गर्नुहोस्"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"इन्टिग्रेट गर्ने प्रक्रिया पज गरिएको छ"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect Android सिस्टममा इन्टिग्रेट गरिँदै छ। जारी राख्न ट्याप गर्नुहोस्"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"इन्टिग्रेट गर्ने प्रक्रिया सुचारु गर्नुहोस्"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Health Connect लाई Android सिस्टममा इन्टिग्रेट गर्ने प्रक्रिया जारी राख्न ट्याप गर्नुहोस्। आफ्नो जानकारी सुरक्षित राख्नका निम्ति यो प्रक्रिया <xliff:g id="TIME_NEEDED">%1$s</xliff:g> भित्र पूरा गर्नुहोस्"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Health Connect Android system मा इन्टिग्रेट गर्ने प्रक्रिया जारी राख्न ट्याप गर्नुहोस्।"</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"जारी राख्नुहोस्"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"Health Connect इन्ट्रिग्रेट गर्ने प्रक्रिया सुचारु गर्नुहोस्"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"आफ्नो जानकारी सुरक्षित राख्नका निम्ति यो प्रक्रिया <xliff:g id="TIME_NEEDED">%1$s</xliff:g> भित्र पूरा गर्नुहोस्"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"एप अपडेट गर्नु आवश्यक छ"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> अपडेट गरेपछि मात्र Health Connect मा सो एप प्रयोग गरिराख्न मिल्छ"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"केही एपहरू अपडेट गरेपछि मात्र Health Connect मा ती एप प्रयोग गरिराख्न मिल्छ"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"अपडेटहरू उपलब्ध छन् कि छैनन् भन्ने कुरा जाँच्नुहोस्"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect इन्टिग्रेट गर्ने प्रक्रिया"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect तपाईंको Android सिस्टममा इन्टिग्रेट गर्नका लागि तयार छ। तपाईंले <xliff:g id="APP_NAME">%1$s</xliff:g> लाई अहिले नै अनुमति दिनुभयो भने केही सुविधाहरूले इन्टिग्रेट गर्ने प्रक्रिया पूरा नहुँदासम्म काम नगर्न सक्छन्।"</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect तपाईंको Android सिस्टममा इन्टिग्रेट गर्नका लागि तयार छ। तपाईंले एपहरूलाई अहिले नै अनुमति दिनुभयो भने इन्टिग्रेट गर्ने प्रक्रिया पूरा नहुँदासम्म केही सुविधाहरूले काम नगर्न सक्छन्।"</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"जारी राख्नुहोस्"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"इन्टिग्रेट गर्ने प्रक्रिया सुरु गर्नुहोस्"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect इन्टिग्रेट गरिँदै छ"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect Android सिस्टममा इन्टिग्रेट गरिँदै छ।\n\nयो प्रक्रिया पूरा भएपछि तपाईं एउटा सूचना प्राप्त गर्नु हुने छ। तपाईं त्यसपछि Health Connect मा <xliff:g id="APP_NAME">%1$s</xliff:g> प्रयोग गर्न सक्नुहुन्छ।"</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect लाई Android सिस्टममा इन्टिग्रेट गरिँदै छ।\n\nयो प्रक्रिया पूरा भएपछि तपाईं एउटा सूचना प्राप्त गर्नु हुने छ। तपाईं त्यसपछि Health Connect प्रयोग गर्न सक्नुहुन्छ।"</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"बुझेँ"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect इन्टिग्रेट गर्ने प्रक्रिया पूरा भएन"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"यो फेरि उपलब्ध भएपछि तपाईं एउटा सूचना प्राप्त गर्नु हुने छ।"</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"बुझेँ"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Health Connect इन्टिग्रेट गर्ने प्रक्रिया पूरा भएन"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"थप पढ्नुहोस्"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect इन्टिग्रेट गर्ने प्रक्रिया पूरा भयो"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"खोल्नुहोस्"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"नयाँ के छ"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"तपाईं अब सीधै सेटिङबाटै Health Connect प्रयोग गर्न सक्नुहुन्छ। जुनसुकै बेला Health Connect एप अनइन्स्टल गर्नुहोस्।"</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"बुझेँ"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>

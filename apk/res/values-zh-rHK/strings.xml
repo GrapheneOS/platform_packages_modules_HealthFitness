@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"管理應用程式的健康資料存取權"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"權限及資料"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"管理手機上的健康和健身資料，並控制哪些應用程式可存取這些資料"</string>
     <string name="data_title" msgid="4456619761533380816">"資料和存取權"</string>
@@ -26,7 +27,7 @@
     <string name="see_all_categories" msgid="5599882403901010434">"顯示所有類別"</string>
     <string name="no_data" msgid="1906986019249068659">"沒有資料"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"應用程式權限"</string>
-    <string name="connected_apps_subtitle" msgid="8464462995533399175">"管理你的應用程式和權限"</string>
+    <string name="connected_apps_subtitle" msgid="8464462995533399175">"管理您的應用程式和權限"</string>
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取 (共 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> 個應用程式)"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取"</string>
@@ -35,7 +36,7 @@
     <string name="recent_access_header" msgid="7623497371790225888">"近期存取記錄"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"最近沒有應用程式存取 Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"查看所有近期存取記錄"</string>
-    <string name="recent_access_screen_description" msgid="331101209889185402">"查看過去 24 小時內，有哪些應用程式存取過你的資料"</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"查看過去 24 小時內，有哪些應用程式存取過您的資料"</string>
     <string name="today_header" msgid="1006837293203834373">"今天"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"昨天"</string>
     <string name="read_data_access_label" msgid="7145747310980361968">"讀取：%s"</string>
@@ -58,8 +59,8 @@
     <string name="manage_data_section" msgid="5859629270946511903">"管理資料"</string>
     <string name="export_data_button" msgid="7783329820434117744">"匯出資料"</string>
     <string name="delete_all_data_button" msgid="7238755635416521487">"刪除所有資料"</string>
-    <string name="no_categories" msgid="2636778482437506241">"你在 Health Connect 中沒有任何資料"</string>
-    <string name="permission_types_title" msgid="7698058200557389436">"你的資料"</string>
+    <string name="no_categories" msgid="2636778482437506241">"您在 Health Connect 中沒有任何資料"</string>
+    <string name="permission_types_title" msgid="7698058200557389436">"您的資料"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"應用程式優先次序"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"刪除<xliff:g id="CATEGORY">%s</xliff:g>資料"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"所有應用程式"</string>
@@ -73,7 +74,7 @@
     <string name="all_entries_button" msgid="5109091107239135235">"查看所有資料"</string>
     <string name="delete_permission_type_data_button" msgid="2270819954943391797">"刪除此資料"</string>
     <string name="permgrouplab_health" msgid="468961137496587966">"Health Connect"</string>
-    <string name="permgroupdesc_health" msgid="252080476917407273">"存取你的健康資料"</string>
+    <string name="permgroupdesc_health" msgid="252080476917407273">"存取您的健康資料"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"讀取卡路里消耗量資料"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"允許應用程式讀取卡路里消耗量資料"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"活動卡路里消耗量"</string>
@@ -100,7 +101,7 @@
     <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"已行樓梯層數"</string>
     <string name="floors_climbed_read_content_description" msgid="4730764877684911752">"讀取已行樓梯層數資料"</string>
     <string name="floors_climbed_write_content_description" msgid="3480340610185615655">"寫入已行樓梯層數資料"</string>
-    <string name="power_uppercase_label" msgid="8027219480901448660">"力量"</string>
+    <string name="power_uppercase_label" msgid="8027219480901448660">"功率"</string>
     <string name="power_lowercase_label" msgid="3893286148577044369">"功率"</string>
     <string name="power_read_content_description" msgid="6821797135406643841">"讀取功率資料"</string>
     <string name="power_write_content_description" msgid="8091584558688087392">"寫入功率資料"</string>
@@ -238,20 +239,22 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"允許"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"全部允許"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"不允許"</string>
-    <string name="request_permissions_header_desc" msgid="5561173070722750153">"選擇你希望此應用程式讀取或寫入 Health Connect 的資料"</string>
+    <string name="request_permissions_header_desc" msgid="5561173070722750153">"選擇您希望此應用程式讀取或寫入 Health Connect 的資料"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="4617392728203291453">"如果授予讀取權限，此應用程式將可讀取新資料和過去 30 天內的資料"</string>
     <string name="request_permissions_header_title" msgid="4264236128614363479">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取 Health Connect 嗎？"</string>
-    <string name="request_permissions_rationale" msgid="6154280355215802538">"你可以參閱開發人員的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何處理你的資料"</string>
+    <string name="request_permissions_rationale" msgid="6154280355215802538">"您可以參閱開發人員的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何處理您的資料"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"私隱權政策"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"要移除所有權限嗎？"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"全部移除"</string>
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」將無法在 Health Connect 中讀取或寫入任何資料。\n\n這不會影響這個應用程式可能擁有的其他權限，例如位置、相機或麥克風的存取權。"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"同時從 Health Connect 刪除「<xliff:g id="APP_NAME">%1$s</xliff:g>」的資料"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"下一天"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"所選日期"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"上一天"</string>
     <string name="default_error" msgid="7966868260616403475">"發生錯誤，請再試一次。"</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"擁有此權限的應用程式可讀取和寫入你的健康和健身資料。"</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"控制哪些應用程式可存取儲存在 Health Connect 中的資料。輕按應用程式即可查看該應用程式可讀取或寫入的資料。"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"已允許存取權"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"不允許存取權"</string>
@@ -262,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"未允許任何應用程式"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"未拒絕任何應用程式"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"要移除所有應用程式的存取權嗎？"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"所有應用程式將無法存取 Health Connect，亦無法在當中新增資料。系統並不會刪除任何現有資料。\n\n此操作不會影響此應用程式可能擁有的位置、相機或麥克風等其他權限。"</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"全部移除"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"管理應用程式"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"刪除應用程式資料"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"已停用的應用程式"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"這些應用程式不再擁有存取權，但仍有資料儲存在 Health Connect"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以讀取 <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>後新增的資料"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"如要管理此應用程式可以存取的其他 Android 權限，請前往「設定」&gt; [應用程式]"</string>
-    <string name="manage_permissions_rationale" msgid="9183689798847740274">"你與「<xliff:g id="APP_NAME">%1$s</xliff:g>」分享的資料適用於該應用程式的私隱權政策"</string>
+    <string name="manage_permissions_rationale" msgid="9183689798847740274">"您與「<xliff:g id="APP_NAME">%1$s</xliff:g>」分享的資料適用於該應用程式的私隱權政策"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"如要管理此應用程式可以存取的其他 Android 權限，請前往「設定」，然後輕按 [應用程式]"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"閱讀私隱權政策"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"上次存取時間：過去 24 小時內"</string>
     <string name="app_access_title" msgid="7137018424885371763">"應用程式存取權"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"你目前未安裝任何兼容的應用程式"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"已移除應用程式權限"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect 已移除 <xliff:g id="APP_DATA">%s</xliff:g> 的權限"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect 已移除 <xliff:g id="APP_DATA_0">%1$s</xliff:g> 和 <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> 的權限"</string>
@@ -286,7 +292,7 @@
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"如果 Google Play 已移除某個應用程式或將其停權，Health Connect 會自動移除該應用程式的權限。\n\n這代表該應用程式無法再存取儲存於 Health Connect 的資料。該應用程式如曾寫入資料，則會在已停用的應用程式清單中顯示。"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"知道了"</string>
     <string name="onboarding_title" msgid="7930941018430608076">"開始使用 Health Connect"</string>
-    <string name="onboarding_description" msgid="4873129122057931161">"Health Connect 能儲存健康和健身資料，方便你同步處理手機上各個應用程式的資料"</string>
+    <string name="onboarding_description" msgid="4873129122057931161">"Health Connect 能儲存健康和健身資料，方便您同步處理手機上各個應用程式的資料"</string>
     <string name="share_data" msgid="3481932156368883946">"與應用程式分享資料"</string>
     <string name="share_data_description" msgid="2919871301634375092">"選擇每個應用程式可讀取或寫入 Health Connect 的資料"</string>
     <string name="manage_your_settings" msgid="7391184508015127137">"管理設定和私隱"</string>
@@ -324,7 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"要永久刪除「<xliff:g id="APP_DATA">%2$s</xliff:g>」新增的所有<xliff:g id="DATA_TYPE">%1$s</xliff:g>資料嗎？"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"要永久刪除此項目嗎？"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"已連結的應用程式將無法在 Health Connect 存取此資料"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"這操作將刪除 <xliff:g id="START_DATE">%1$s</xliff:g>至 <xliff:g id="END_DATE">%2$s</xliff:g>的所有經期項目。"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"刪除"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"返回"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"完成"</string>
@@ -333,14 +340,14 @@
     <string name="delete_dialog_success_message" msgid="2451953113522118128">"Health Connect 中已沒有此資料。"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"正在刪除資料"</string>
     <string name="delete_dialog_failure_title" msgid="1959020721355789496">"無法刪除資料"</string>
-    <string name="delete_dialog_failure_message" msgid="7473241488471319963">"發生錯誤，Health Connect 無法刪除你的資料"</string>
+    <string name="delete_dialog_failure_message" msgid="7473241488471319963">"發生錯誤，Health Connect 無法刪除您的資料"</string>
     <string name="delete_dialog_failure_try_again_button" msgid="4323865124609424838">"再試一次"</string>
     <string name="delete_data_notification_title" msgid="7740230240986343347">"正在刪除 Health Connect 資料"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"正在刪除 Health Connect 資料"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"資料刪除"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"刪除資料項目"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"刪除項目"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"總計：<xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 瓦特}other{# 瓦特}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 瓦特}other{# 瓦特}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 步}other{# 步}}"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g>睡眠"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"清醒"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"在床上醒著"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"睡眠"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"起床"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"快速眼動睡眠"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{1 分鐘}other{# 分鐘}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> <xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1 天}other{# 天}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 mL/(kg·min)}other{# mL/(kg·min)}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{身體每公斤體重每分鐘消耗 1 毫升氧氣}other{身體每公斤體重每分鐘消耗 # 毫升氧氣}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"新陳代謝儀"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 千焦耳}other{# 千焦耳}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}other{#%}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{百分之 1}other{百分之 #}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"取消"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"單位"</string>
     <string name="set_units_label" msgid="6566059089772896105">"設定資料單位"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"距離"</string>
@@ -669,23 +678,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"華氏"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"開爾文"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"說明與意見反映"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"如果你看不到已安裝的應用程式，可能是應用程式尚未兼容 Health Connect"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"試試其他選項"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"檢查更新"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"確保已安裝的應用程式為最新版本"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"查看所有兼容的應用程式"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"在 Google Play 上尋找應用程式"</string>
     <string name="send_feedback" msgid="7756927746070096780">"傳送意見"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"請告訴我們你希望在 Health Connect 上使用哪些健康和健身應用程式"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play 商店"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"自動刪除"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"自動刪除"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"設定在指定時間後刪除 Health Connect 中的資料，控制資料的保存期"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"進一步瞭解自動刪除功能"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"瞭解詳情"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"自動刪除資料"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# 個月後}other{# 個月後}}"</string>
     <string name="range_never" msgid="4429478261788361233">"永不"</string>
-    <string name="range_off" msgid="8178520557618184215">"已關閉"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"變更這些設定後，Health Connect 會根據新的偏好設定刪除現有資料"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{要在 # 個月後自動刪除資料嗎？}other{要在 # 個月後自動刪除資料嗎？}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect 將於 # 個月後自動刪除新資料。選用此設定後，系統亦會刪除 # 個月前的現有資料。}other{Health Connect 將於 # 個月後自動刪除新資料。選用此設定後，系統亦會刪除 # 個月前的現有資料。}}"</string>
@@ -710,68 +722,121 @@
     <string name="no_results" msgid="4007426147286897998">"沒有任何結果"</string>
     <string name="help" msgid="6028777453152686162">"說明"</string>
     <string name="request_route_header_title" msgid="6599707039845646714">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取 Health Connect 中的這條運動路線嗎？"</string>
-    <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"此應用程式可以讀取你過去在此路線上的位置"</string>
+    <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"此應用程式可以讀取您過去在此路線上的位置"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"運動路線包含位置資訊"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"誰可查看此資料？"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"只有你允許的應用程式能存取運動路線"</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"如何管理存取權？"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"你可在 Health Connect 設定中管理應用程式的運動路線存取權"</string>
-    <string name="back_button" msgid="780519527385993407">"返回"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"正在載入…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"整合中"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect 正在與 Android 系統整合。\n\n系統轉移資料和權限時可能需要一段時間。"</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"請勿關閉應用程式，直至收到程序完成的通知為止。"</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Health Connect 整合中"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"需要更新"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect 正在與 Android 系統整合，因此可直接從設定頁面存取。"</string>
-    <string name="update_button" msgid="4544529019832009496">"更新"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"開始執行更新，讓 Health Connect 可繼續與系統設定整合"</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"立即更新"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"需要安裝系統更新"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"繼續前，請更新手機系統。"</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"如果你已更新手機系統，請嘗試重新啟動手機以繼續整合"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Health Connect 需要更新"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"繼續前，請將 Health Connect 應用程式更新至最新版本。"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"需要更多儲存空間"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"Health Connect 需要 <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> 手機儲存空間才能繼續整合。\n\n請騰出手機部分儲存空間，然後再試一次。"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"再試一次"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"騰出空間"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"需要更多儲存空間"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"Health Connect 需要 <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> 手機儲存空間才能繼續整合。"</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"已暫停整合"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"與 Android 系統整合期間，Health Connect 應用程式已關閉。\n\n按一下 [恢復] 即可重新開啟應用程式，繼續轉移資料和權限。"</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"請在 <xliff:g id="TIME_NEEDED">%1$s</xliff:g>內完成此程序，你的 Health Connect 資料才得以保留"</string>
-    <string name="resume_button" msgid="2255148549862208047">"恢復"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"已暫停整合"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect 已暫停與 Android 系統整合。輕按即可繼續"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"恢復整合"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"輕按即可繼續整合 Health Connect 和 Android 系統。請在 <xliff:g id="TIME_NEEDED">%1$s</xliff:g>內完成此程序，你的資料才得以保留"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"輕按即可繼續整合 Health Connect 和 Android 系統。"</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"繼續"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"恢復整合 Health Connect"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"請在 <xliff:g id="TIME_NEEDED">%1$s</xliff:g>內完成此程序，你的資料才得以保留"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"需要更新應用程式"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」需要更新，才能繼續與 Health Connect 配合運作"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"部分應用程式需要更新，才能繼續與 Health Connect 配合運作"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"檢查更新"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect 整合"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect 已準備好與 Android 系統整合。如果你現在向「<xliff:g id="APP_NAME">%1$s</xliff:g>」授予存取權，部分功能可能無法運作，直至整合完成為止。"</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect 已準備好與 Android 系統整合。如果你現在向應用程式授予存取權，部分功能可能無法運作，直至整合完成為止。"</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"繼續"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"開始整合"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Health Connect 整合中"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect 正在與 Android 系統整合。\n\n你會在程序完成後收到通知，「<xliff:g id="APP_NAME">%1$s</xliff:g>」便可與 Health Connect 配合使用。"</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect 正在與 Android 系統整合。\n\n你會在程序完成後收到通知，然後便可使用 Health Connect。"</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"知道了"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Health Connect 未完成整合"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"你會在可再次整合時收到通知。"</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"知道了"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Health Connect 未完成整合"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"閱讀更多"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"Health Connect 整合完成"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"開啟"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"新功能"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"你現可直接從設定頁面存取 Health Connect，亦可隨時解除安裝 Health Connect 應用程式。"</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"知道了"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>

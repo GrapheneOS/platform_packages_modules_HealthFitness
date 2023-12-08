@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"I-Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Phatha ukufinyelela kwe-app kudatha yezempilo"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Izimvume nedatha"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Phatha idatha yezempilo nokufaneleka efonini yakho, futhi ulawule ukuthi yimaphi ama-app angafinyelela kuyo"</string>
     <string name="data_title" msgid="4456619761533380816">"Idatha kanye nokufinyelela"</string>
@@ -248,10 +249,12 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"I-<xliff:g id="APP_NAME">%1$s</xliff:g> ngeke isakwazi ukufunda noma ukubhala noma iyiphi idatha kusuka ku-Health Connect.\n\nLokhu akuthinti ezinye izimvume le app okungenzeka inazo, njengendawo, ikhamera, noma imakrofoni."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Futhi sula idatha ye-<xliff:g id="APP_NAME">%1$s</xliff:g> ku-Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Usuku olulandelayo"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"Usuku olukhethiwe"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Usuku lwangaphambilini"</string>
     <string name="default_error" msgid="7966868260616403475">"Kukhona okungahambanga kahle. Sicela uzame futhi."</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"Ama-app anale mvume angakwazi ukufunda futhi abhale idatha yakho yezempilo nokufaneleka."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Lawula ukuthi yimaphi ama-app angafinyelela kudatha egcinwe ku-Health Connect. Thepha i-app ukuze ubuyekeze idatha ekwazi ukuyifunda noma ukuyibhala."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Ukufinyelela okuvunyelwe"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Ukufinyelela okungavunyelwe"</string>
@@ -262,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"Awekho ama-app avunyelwe"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Awekho ama-app anqatshelwe"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Susa ukufinyelela kwawo wonke ama-app?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Awekho ama-app akho azokwazi ukufinyelela noma ukwengeza idatha entsha ku-Health Connect. Lokhu akususi noma iyiphi idatha ekhona.\n\nLokhu akuthinti ezinye izimvume le-app okungenzeka inazo, njengendawo, ikhamera, noma imakrofoni."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Susa konke"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Phatha i-app"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Sula idatha ye-app"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Izinhlelo zokusebenza ezingasebenzi"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Lawa ma-app awasenakho ukufinyelela, kodwa asenayo idatha egcinwe ku-Health Connect"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"I-<xliff:g id="APP_NAME">%1$s</xliff:g> ingafunda idatha eyengeziwe ngemva komhla ka-<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"Ukuze uphathe ezinye izimvume ze-Android le app engafinyelela kuzo, iya Kumasethingi &gt; Ama-app"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"Idatha owabelana ngayo no-<xliff:g id="APP_NAME">%1$s</xliff:g> ivikelwe yinqubomgomo yayo yobumfihlo"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Ukuze uphathe ezinye izimvume ze-Android le-app engafinyelela kuzo, yiya kokuthi Amasethingi, bese uthepha ama-App"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Funda inqubomgomo yobumfihlo"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Ifinyelelwe emahoreni angama-24 adlule"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Ukufinyelela kwe-app"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Okwamanje awunawo ama-app ahambelanayo afakiwe."</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Izimvume zama-app ezisusiwe"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"I-Health Connect isuse izimvume ze-<xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"I-Health Connect isuse izimvume ze-<xliff:g id="APP_DATA_0">%1$s</xliff:g>, ne-<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
@@ -324,7 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Sula unaphakade yonke idatha ye-<xliff:g id="DATA_TYPE">%1$s</xliff:g> engezwe i-<xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Sula unomphela lokhu kufaka?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Ama-app axhumene ngeke esakwazi ukufinyelela le datha ukusuka ku-Health Connect"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Lokhu kuzosusa konke okufakiwe kokuya esikhathini ukusuka ngomhla ka-<xliff:g id="START_DATE">%1$s</xliff:g> ukuya ku-<xliff:g id="END_DATE">%2$s</xliff:g>."</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Sula"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Iya emuva"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Kwenziwe"</string>
@@ -338,9 +345,9 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"Isula idatha ye-Health Connect"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Isula idatha ye-Health Connect"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Ukusulwa kwedatha"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"Sula okufakiwe kwedatha"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"Susa okufakwayo"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"Isamba: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{i-watt e-1}one{ama-watt angu-#}other{ama-watt angu-#}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{Isinyathelo esi-1}one{Izinyathelo ezingu-#}other{Izinyathelo ezingu-#}}"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"u-<xliff:g id="DURATION"> %1$s</xliff:g> ulele"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"uphapheme"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"uphapheme embhedeni"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"ukulala"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"awukho embhedeni"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"Ukulala kwe-REM"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{umzuzu o-1}one{imizuzu engu-#}other{imizuzu engu-#}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"U-<xliff:g id="DAYS">%1$s</xliff:g> no-<xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{Usuku olu-1}one{Izinsuku ezingu-#}other{Izinsuku ezingu-#}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{I-mL/(kg·min) e-1}one{ama-mL/(kg·min) engu-#}other{ama-mL/(kg·min) engu-#}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{Imililitha e-1 yomoyampilo yekilogramu ngayinye yesisindo somzimbo ngomzuzu}one{Amamililitha angu-# womoyampilo wekilogramu ngayinye wesisindo somzimbo ngomzuzu}other{Amamililitha angu-# womoyampilo wekilogramu ngayinye wesisindo somzimbo ngomzuzu}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"Isikali somoya-mpilo"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{Ikhilojuli e-1}one{Amakhilojuli angu-#}other{Amakhilojuli angu-#}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}one{#%}other{#%}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{iphesenti eli-1}one{amaphesenti angu-#}other{amaphesenti angu-#}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"Khansela"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"Amayunithi"</string>
     <string name="set_units_label" msgid="6566059089772896105">"Setha amayunithi edatha"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"Ibanga"</string>
@@ -669,23 +678,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"I-Fahrenheit"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"I-Kelvin"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Usizo nempendulo"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Uma ungakwazi ukubona i-app efakiwe, kungaba ukuthi ayihambelani ne-Health Connect okwamanje"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"Izinto okumele uzizame"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Hlolela izibuyekezo"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Qinisekisa ukuthi ama-app afakiwe asesikhathini samanje"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Bona wonke ama-app ahambelanayo"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Thola ama-app ku-Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Thumela impendulo"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Sitshele ukuthi yimaphi ama-app ezempilo nokufaneleka ongathanda ukusebenza ngawo nge-Health Connect"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"I-Google Play Isitolo"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Sula ngokuzenzekela"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Sula ngokuzenzekela"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Lawula ukuthi idatha yakho igcinwa isikhathi esingakanani ku-Health Connect ngokuyishejula ukuthi isulwe ngemva esisethiwe"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Funda kabanzi mayelana nokususa ngokuzenzekelayo"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"Funda kabanzi"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Sula ngokuzenzekela idatha"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Ngemuva kwenyanga engu-#}one{Ngemuva kwezinyanga ezingu-#}other{Ngemuva kwezinyanga ezingu-#}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Soze"</string>
-    <string name="range_off" msgid="8178520557618184215">"Valiwe"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Uma ushintsha lamasethingi, i-Health Connect isula idatha ekhona kakade ukuze ibonise okuncanyelwayo kwakho okusha"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Sula ngokuzenzekela idatha ngemva kwenyanga engu-#?}one{Sula ngokuzenzekela idatha ngemva kwezinyanga ezingu-#?}other{Sula ngokuzenzekela idatha ngemva kwezinyanga ezingu-#?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{I-Health Connect izosula ngokuzenzekela idatha entsha ngemva kwenyanga engu-#. Ukusetha lokhu kuzosula futhi idatha ekhona kakade engaphezu kwenyanga engu-#.}one{I-Health Connect izosula ngokuzenzekela idatha entsha ngemva kwezinyanga ezingu-#. Ukusetha lokhu kuzosula futhi idatha ekhona kakade engaphezu kwezinyanga ezingu-#.}other{I-Health Connect izosula ngokuzenzekela idatha entsha ngemva kwezinyanga ezingu-#. Ukusetha lokhu kuzosula futhi idatha ekhona kakade engaphezu kwezinyanga ezingu-#.}}"</string>
@@ -712,66 +724,119 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"Vumela i-<xliff:g id="APP_NAME">%1$s</xliff:g> ukufinyelela lo mzila wokujima ku-Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"Le-app izokwazi ukufunda indawo yakho edlule emzileni"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"Imizila yokujima ihlanganisa ulwazi lwendawo"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"Ngubani ongabona le datha?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Ama-app owavumela ukuthi afinyelele imizila yakho yokujima kuphela"</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"Ngingakuphatha kanjani ukufinyelela?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Ungaphatha ukufinyelela kwe-app emizileni yokujima kumasethingi we-Health Connect"</string>
-    <string name="back_button" msgid="780519527385993407">"Emuva"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"Iyalayisha…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Ukuhlanganisa kuyaqhubeka"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"I-Health Connect ihlanganiswa nesistimu ye-Android.\n\nKungase kuthathe isikhathi ngenkathi idatha yakho nezimvume kudluliselwa."</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Ungayivali i-app uze uthole isaziso sokuthi inqubo isiphelile."</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Ukuhlanganiswa kwe-Health Connect kuyaqhubeka"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Kudingeka isibuyekezo"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"I-Health Connect ihlanganiswa nesistimu ye-Android ukuze ukwazi ukuyifinyelela ngokuqondile ukusuka kumasethingi akho."</string>
-    <string name="update_button" msgid="4544529019832009496">"Buyekeza"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Qala lesi sibuyekezo ukuze i-Health Connect iqhubeke nokuhlanganisa namasethingi esistimu yakho"</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Buyekeza manje"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Isibuyekezo sesistimu siyadingeka"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Ngaphambi kokuqhubeka, buyekeza isistimu yefoni yakho."</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Uma usuvele ubuyekeze isistimu yefoni yakho, zama ukuqala kabusha ifoni yakho ukuze uqhubeke nokuhlanganisa"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Kudingeka isibuyekezo se-Health Connect"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Ngaphambi kokuqhubeka, buyekeza i-app ye-Health Connect ibe uhlobo lwakamuva."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Isikhala esengeziwe siyadingeka"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"I-Health Connect idinga isikhala sesitoreji esingu-<xliff:g id="SPACE_NEEDED">%1$s</xliff:g> kufoni yakho ukuze ukuhlanganiswa kuqhubeke.\n\nSula isikhala efonini yakho bese uyazama futhi."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Zama futhi"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Yenza isikhala"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"Isikhala esengeziwe siyadingeka"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"I-Health Connect idinga isikhala esingu-<xliff:g id="SPACE_NEEDED">%1$s</xliff:g> sesitoreji kufoni yakho ukuze uqhubeke nokuhlanganisa."</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"Ukuhlanganisa kumisiwe"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"I-app ye-Health Connect ivaliwe ngenkathi ihlanganiswa nesistimu ye-Android.\n\nChofoza okuthi qhubeka ukuze uvule kabusha i-app futhi uqhubeke nokudlulisa idatha yakho nezimvume."</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Ukuze ugcine idatha yakho ye-Health Connect, qedela lokhu phakathi no-<xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="resume_button" msgid="2255148549862208047">"Qhubeka"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Ukuhlanganisa kumisiwe"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"I-Health Connect ihlanganiswa nesistimu ye-Android. Thepha ukuze uqhubeke"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"Qhubeka ukuhlanganisa"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Thepha ukuze uqhubeke nokuhlanganisa i-Health Connect ngesistimu ye-Android. Ukuze ugcine idatha yakho, qedela lokhu phakathi no-<xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Thepha ukuze uqhubeke nokuhlanganisa i-Health Connect ngesistimu ye-Android."</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"Qhubeka"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"Qhubeka ukuhlanganiswa kwe-Health Connect"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"Ukuze ugcine idatha yakho, qedela lokhu phakathi no-<xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Kudingeka isibuyekezo se-app"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"I-<xliff:g id="APP_NAME">%1$s</xliff:g> idinga ukwaziswa kwamuva ukuze uqhubeke usebenza ne-Health Connect"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Amanye ama-app adinga ukuba nolwazi lwakamuva ukuze aqhubeke nokusebenza nge-Health Connect"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Hlola izibuyekezo"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Ukuhlanganiswa kwe-Health Connect"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"I-Health Connect isilungele ukuhlanganiswa nesistimu yakho ye-Android. Uma unikeza i-<xliff:g id="APP_NAME">%1$s</xliff:g> manje, ezinye izakhi zingase zingasebenzi kuze kuqedwe ukuhlanganisa."</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"I-Health Connect isilungele ukuhlanganiswa nesistimu yakho ye-Android. Uma unikeza ukufinyelela manje, ezinye izakhi zingase zingasebenzi kuze kuqedwe ukuhlanganisa."</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Qhubeka"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Qala ukuhlanganiswa"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Ukuhlanganiswa kwe-Health Connect kuyaqhubeka"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"I-Health Connect ihlanganiswa nesistimu ye-Android.\n\nUzothola isaziso uma inqubo isiqediwe futhi ungasebenzisa i-<xliff:g id="APP_NAME">%1$s</xliff:g> ne-Health Connect."</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"I-Health Connect ihlanganiswa nesistimu ye-Android.\n\nUzothola isaziso uma inqubo isiqediwe futhi ungasebenzisa i-Health Connect."</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Ngiyezwa"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Ukuhlanganiswa kwe-Health Connect akuqedanga"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Uzothola isaziso uma sesitholakala futhi."</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"Ngiyezwa"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Ukuhlanganiswa kwe-Health Connect akuqedanga"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"Funda kabanzi"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"Ukuhlanganiswa kwe-Health Connect kuqedile"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"Vula"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Yini entsha"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Manje usungakwazi ukufinyelela i-Health Connect ngokuqondile kumasethingi wakho. Khipha i-app ye-Health Connect noma nini."</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Ngiyezwa"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>

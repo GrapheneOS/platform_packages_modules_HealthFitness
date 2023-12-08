@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Управувајте со пристапот на апликациите до здравствените податоци"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Дозволи и податоци"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"Управувајте со податоците за здравјето и фитнесот на вашиот телефон и контролирајте кои апликации може да пристапуваат до нив"</string>
     <string name="data_title" msgid="4456619761533380816">"Податоци и пристап"</string>
@@ -100,8 +101,8 @@
     <string name="floors_climbed_lowercase_label" msgid="5326072443481377299">"искачени катови"</string>
     <string name="floors_climbed_read_content_description" msgid="4730764877684911752">"Читање искачени катови"</string>
     <string name="floors_climbed_write_content_description" msgid="3480340610185615655">"Запишување искачени катови"</string>
-    <string name="power_uppercase_label" msgid="8027219480901448660">"Моќност"</string>
-    <string name="power_lowercase_label" msgid="3893286148577044369">"моќност"</string>
+    <string name="power_uppercase_label" msgid="8027219480901448660">"Струја"</string>
+    <string name="power_lowercase_label" msgid="3893286148577044369">"струја"</string>
     <string name="power_read_content_description" msgid="6821797135406643841">"Читање струја"</string>
     <string name="power_write_content_description" msgid="8091584558688087392">"Запишување струја"</string>
     <string name="speed_uppercase_label" msgid="3307049861007518587">"Брзина"</string>
@@ -248,10 +249,12 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе нема да може да чита или запишува податоци од Health Connect.\n\nОва не влијае на другите дозволи што може да ги има оваа апликација, како локација, камера или микрофон."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Избриши ги и податоците на <xliff:g id="APP_NAME">%1$s</xliff:g> од Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Следниот ден"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"Избран ден"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"Претходниот ден"</string>
     <string name="default_error" msgid="7966868260616403475">"Нешто не е во ред. Обидете се повторно."</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"Апликациите со оваа дозвола може да ги читаат и запишуваат вашите податоци за здравје и фитнес."</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"Контролирајте кои апликации може да пристапуваат до податоците складирани во Health Connect. Допрете апликација за да ги прегледате податоците што може да ги чита или запишува."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Со дозвола за пристап"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Без дозвола за пристап"</string>
@@ -262,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"Нема апликации со дозвола"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Нема апликации без дозвола"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Да се отстрани пристапот за сите апликации?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Ниту една од апликациите нема да има пристап или да додава нови податоци во Health Connect. Ова нема да ги избрише постојните податоци.\n\nОва не влијае на другите дозволи што може да ги има апликацијава, како локација, камера или микрофон."</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Отстрани ги сите"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Управувајте со апликацијата"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Избриши ги податоците од апликација"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Неактивни апликации"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Апликацииве веќе немаат пристап, но уште имаат зачувани податоци во Health Connect"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> може да чита податоци додадени по <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"За да управувате со други дозволи за Android до кои може да пристапи оваа апликација, одете во „Поставки &gt; Апликации“"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"Податоците што ги споделувате со <xliff:g id="APP_NAME">%1$s</xliff:g> се опфатени со нејзината политика за приватност"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"За да управувате со други дозволи за Android до кои може да пристапи оваа апликација, одете во „Поставки“, а потоа допрете „Апликации“"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Прочитајте ја политиката за приватност"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Пристапено во минатите 24 часа"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Пристап на апликацијата"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Во моментов немате инсталирано компатибилни апликации"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Отстранети дозволи за апликации"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect ги отстрани дозволите за <xliff:g id="APP_DATA">%s</xliff:g>"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect ги отстрани дозволите за <xliff:g id="APP_DATA_0">%1$s</xliff:g> и <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
@@ -324,7 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Трајно да се избришат сите податоци за <xliff:g id="DATA_TYPE">%1$s</xliff:g> што се додадени од <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"Трајно да се избрише записов?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"Поврзаните апликации веќе нема да може да пристапуваат до податоциве од Health Connect"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"Ова ќе ги избрише сите записи за менструацијата од <xliff:g id="START_DATE">%1$s</xliff:g> до <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Избриши"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Назад"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Готово"</string>
@@ -338,9 +345,9 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"Се бришат податоците на Health Connect"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Се бришат податоците на Health Connect"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Бришење податоци"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"Бришење внес на податоци"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"Избриши го записот"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"Вкупно: <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 W}one{# W}other{# W}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 ват}one{# ват}other{# вати}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 чекор}one{# чекор}other{# чекори}}"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> спиење"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"будни"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"будни во кревет"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"спиење"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"надвор од кревет"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM-сон"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{1 минута}one{# минута}other{# минути}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> и <xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1 ден}one{# ден}other{# дена}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 mL/(kg·min)}one{# mL/(kg·min)}other{# mL/(kg·min)}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{1 милилитар кислород на килограм телесна маса во минута}one{# милилитар кислород на килограм телесна маса во минута}other{# милилитри кислород на килограм телесна маса во минута}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"Метаболичка количка"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 килоџул}one{# килоџул}other{# килоџули}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1 %}one{# %}other{# %}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 процент}one{# процент}other{# проценти}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"Откажи"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"Мерни единици"</string>
     <string name="set_units_label" msgid="6566059089772896105">"Поставете мерни единици"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"Растојание"</string>
@@ -669,23 +678,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Фаренхајт"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Келвин"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Помош и повратни информации"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ако не можете да видите инсталирана апликација, можеби уште не е компатибилна со Health Connect"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"Работи што може да ги испробате"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Проверете дали има ажурирања"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Проверете дали инсталираните апликации се ажурирани"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Видете ги сите компатибилни апликации"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Најдете апликации на Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Испратете повратни информации"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Кажете ни со кои апликации за здравје и фитнес сакате да работите со Health Connect"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Автоматско бришење"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Автоматско бришење"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Контролирајте колку долго податоците се складираат во Health Connect така што ќе закажете да се избришат после определено време"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Дознајте повеќе за автоматското бришење"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"Дознајте повеќе"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Автоматско бришење на податоците"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{По # месец}one{По # месец}other{По # месеци}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Никогаш"</string>
-    <string name="range_off" msgid="8178520557618184215">"Исклучено"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Кога ќе ги промените поставкиве, Health Connect ги брише постојните податоци согласно вашите нови поставки"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Да се постави автоматско бришење на податоците по # месец?}one{Да се постави автоматско бришење на податоците по # месец?}other{Да се постави автоматско бришење на податоците по # месеци?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{Health Connect автоматски ќе ги избрише новите податоци по # месец. Ако го поставите ова, ќе се избришат и постојните податоци постари од # месец.}one{Health Connect автоматски ќе ги избрише новите податоци по # месец. Ако го поставите ова, ќе се избришат и постојните податоци постари од # месец.}other{Health Connect автоматски ќе ги избрише новите податоци по # месеци. Ако го поставите ова, ќе се избришат и постојните податоци постари од # месеци.}}"</string>
@@ -712,66 +724,119 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"Да се дозволи <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до маршрутата за вежбање во Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"Апликацијава ќе може да ја прочита вашата претходна локација во маршрутата"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"Маршрутата за вежбање вклучува информации за локацијата"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"Кој може да ги види овие податоци?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Само апликациите на кои им дозволувате пристап до вашите маршрути за вежбање"</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"Како да управувам со пристапот?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Може да управувате со пристапот на апликацијата до маршрутите за вежбање во поставките на Health Connect"</string>
-    <string name="back_button" msgid="780519527385993407">"Назад"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"Се вчитува…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Интеграцијата е во тек"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"Health Connect се интегрира со системот Android.\n\nМоже да потрае некое време додека се префрлаат вашите податоци и дозволи."</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Не затворајте ја апликацијата додека не добиете известување дека процесот е завршен."</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"Интеграцијата на Health Connect е во тек"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Потребно е ажурирање"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect се интегрира со системот Android за да можете да пристапите директно од вашите поставки."</string>
-    <string name="update_button" msgid="4544529019832009496">"Ажурирај"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Започнете со ова ажурирање за да може Health Connect да продолжи со интегрирање со поставките на системот"</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"Ажурирајте сега"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Потребно е ажурирање на системот"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Пред да продолжите, ажурирајте го системот на телефонот."</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ако веќе сте го ажурирале системот на телефонот, обидете се да го рестартирате телефонот за да продолжите со интеграцијата"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"Потребно е ажурирање на Health Connect"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Пред да продолжите, ажурирајте ја апликацијата Health Connect на најновата верзија."</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"Потребен е поголем простор"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"На Health Connect ѝ треба простор од <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> на вашиот телефон за да продолжи со интеграцијата.\n\nОслободете простор на телефонот и обидете се повторно."</string>
-    <string name="try_again_button" msgid="8745496819992160789">"Обиди се повторно"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"Ослободете простор"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"Потребен е поголем простор"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"На Health Connect ѝ треба простор од <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> на вашиот телефон за да продолжи со интеграцијата."</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"Интеграцијата е паузирана"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"Апликацијата Health Connect се затвори додека се интегрираше со системот на Android.\n\nКликнете „продолжи“ за повторно да ја отворите апликацијата и да продолжите со пренесување на вашите податоци и дозволи."</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"За да ги зачувате вашите податоци од Health Connect, завршете го ова за <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="resume_button" msgid="2255148549862208047">"Продолжи"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"Интеграцијата е паузирана"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect се интегрира во системот Android. Допрете за да продолжите"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"Продолжи со интеграција"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Допрете за да продолжите со интегрирање на Health Connect со системот со Android. За да ги зачувате вашите податоци, завршете го ова за <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Допрете за да продолжите со интегрирање на Health Connect со системот со Android."</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"Продолжи"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"Продолжете со интеграција со Health Connect"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"За да ги зачувате вашите податоци, завршете го ова за <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Потребно е ажурирање на апликацијата"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> треба да се ажурира за да продолжи да функционира со Health Connect"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"Некои апликации треба да се ажурираат за да продолжат да функционираат со Health Connect"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Проверете дали има ажурирања"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Интеграција на Health Connect"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect е подготвена да се интегрира со системот со Android. Ако сега дадете пристап на <xliff:g id="APP_NAME">%1$s</xliff:g>, некои функции може да не функционираат додека не заврши интеграцијата."</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect е подготвена да се интегрира со системот со Android. Ако сега дадете пристап на апликациите, некои функции може да не функционираат додека не заврши интеграцијата."</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Продолжи"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Почни ја интеграцијата"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Интеграцијата на Health Connect е во тек"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"Health Connect се интегрира со системот Android.\n\nЌе добиете известување кога процесот ќе заврши и можете да ја користите <xliff:g id="APP_NAME">%1$s</xliff:g> со Health Connect."</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"Health Connect се интегрира со системот со Android.\n\nЌе добиете известување кога процесот ќе заврши и ќе може да користите Health Connect."</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"Сфатив"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Интеграцијата на Health Connect не е завршена"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Ќе добиете известување кога ќе стане повторно достапна."</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"Сфатив"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"Интеграцијата на Health Connect не е завршена"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"Прочитајте повеќе"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"Интеграцијата на Health Connect е завршена"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"Отвори"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Што има ново"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"Сега можете да пристапите до Health Connect директно од вашите поставки. Деинсталирајте ја апликацијата Health Connect во секое време."</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"Сфатив"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>

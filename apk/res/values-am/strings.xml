@@ -18,7 +18,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"የጤና አገናኝ"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"የመተግበሪያ የጤና ውሂብ መዳረሻን ያስተዳድሩ"</string>
+    <!-- no translation found for health_connect_summary (6401520186678972547) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"ፈቃዶች እና ውሂብ"</string>
     <string name="home_subtitle" msgid="1750033322147357163">"በስልክዎ ላይ ያለውን የጤና እና አካል ብቃት ውሂብ ያስተዳድሩ እና የትኛዎቹ መተግበሪያዎች ሊደርሱበት እንደሚችሉ ይቆጣጠሩ"</string>
     <string name="data_title" msgid="4456619761533380816">"ውሂብ እና መዳረሻ"</string>
@@ -180,10 +181,10 @@
     <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"ወሲባዊ እንቅስቃሴ"</string>
     <string name="sexual_activity_read_content_description" msgid="4937721417714312007">"ወሲባዊ እንቅስቃሴን ያነባል"</string>
     <string name="sexual_activity_write_content_description" msgid="3063448245882840534">"ወሲባዊ እንቅስቃሴን ይጽፋል"</string>
-    <string name="spotting_uppercase_label" msgid="5106739829390033240">"ከወር አበባ ውጭ የሚኖር የደም ፍሰት"</string>
-    <string name="spotting_lowercase_label" msgid="4361141146039580583">"ከወር አበባ ውጭ የሚኖር የደም ፍሰት"</string>
-    <string name="spotting_read_content_description" msgid="5422420770022357631">"ከወር አበባ ውጭ የሚኖር የደም ፍሰትን ያነባል"</string>
-    <string name="spotting_write_content_description" msgid="9049462631184362964">"ከወር አበባ ውጭ የሚኖር የደም ፍሰትን ይጽፋል"</string>
+    <string name="spotting_uppercase_label" msgid="5106739829390033240">"ከወር አበባ ውጪ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting_lowercase_label" msgid="4361141146039580583">"ከወር አበባ ውጪ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting_read_content_description" msgid="5422420770022357631">"ከወር አበባ ውጪ የሚኖር የደም ፍሰትን ያነባል"</string>
+    <string name="spotting_write_content_description" msgid="9049462631184362964">"ከወር አበባ ውጪ የሚኖር የደም ፍሰትን ይጽፋል"</string>
     <string name="hydration_uppercase_label" msgid="1196083392597480565">"ውሃዘልነት"</string>
     <string name="hydration_lowercase_label" msgid="7793261552870970551">"ውሃዘልነት"</string>
     <string name="hydration_read_content_description" msgid="3255941233933808082">"ውሃዘልነትን ያነባል"</string>
@@ -248,10 +249,12 @@
     <string name="permissions_disconnect_dialog_message" msgid="8679363015400954541">"<xliff:g id="APP_NAME">%1$s</xliff:g> ከጤና አገናኝ የመጣ ማንኛውም ውሂብ ከእንግዲህ ማንበብ ወይም መጻፍ አይችልም።\n\nይህ መተግበሪያ ሊኖሩት የሚችሉትን እንደ አካባቢ፣ ካሜራ ወይም ማይክሮፎን ባሉ ሌሎች ፈቃዶች ላይ ተጽዕኖ አያሳርፍም።"</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"እንዲሁም የ<xliff:g id="APP_NAME">%1$s</xliff:g> ውሂብን ከጤና አገናኝ ሰርዝ"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"ቀጣይ ቀን"</string>
-    <string name="navigation_selected_day" msgid="2510843479734091348">"የተመረጠው ቀን"</string>
+    <!-- no translation found for navigation_selected_day (2510843479734091348) -->
+    <skip />
     <string name="navigation_previous_day" msgid="718353386484938584">"ቀዳሚው ቀን"</string>
     <string name="default_error" msgid="7966868260616403475">"የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።"</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"ይህ ፈቃድ ያላቸው መተግበሪያዎች የእርስዎን የጤና እና አካል ብቃት ማንበብ እና መጻፍ ይችላሉ።"</string>
+    <!-- no translation found for health_permission_header_description (7497601695462373927) -->
+    <skip />
     <string name="connected_apps_text" msgid="1177626440966855831">"የትኛዎቹ መተግበሪያዎች በHealth Connect ውስጥ የተከማቸ ውሂብን መድረስ እንደሚችሉ ይቆጣጠሩ። አንድ መተግበሪያ ማንበብ ወይም መጻፍ የሚችለውን ውሂብ ለመገምገም መታ ያድርጉት።"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"መዳረሻ የተፈቀደላቸው"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"መዳረሻ ያልተፈቀደላቸው"</string>
@@ -262,20 +265,23 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"ምንም መተግበሪያዎች አልተፈቀደላቸውም"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"ምንም መተግበሪያዎች አልተከለከሉም"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"የሁሉም መተግበሪያዎች መዳረሻ ይወገድ?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"ማናቸውም መተግበሪያዎችዎ አዲስ ውሂብን መድረስ ወይም ወደ የጤና አገናኝ ማከል አይችሉም። ይህ ማንኛውንም ነባር ውሂብ አይሰርዝም።\n\nይህ እንደ አካባቢ፣ ካሜራ ወይም ማይክሮፎን ያሉ ይህ መተግበሪያ ሊኖሩት የሚችሉት ሌሎች ፈቃዶች ላይ ተጽዕኖ አያሳድርም።"</string>
+    <!-- no translation found for permissions_disconnect_all_dialog_message (3151109627457270499) -->
+    <skip />
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"ሁሉንም አስወግድ"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"መተግበሪያን ያስተዳድሩ"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"የመተግበሪያ ውሂብን ሰርዝ"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"የቦዘኑ መተግበሪያዎች"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"እነዚህ መተግበሪያዎች ከእንግዲህ መዳረሻ የላቸውም ነገር ግን አሁንም በጤና አገናኝ ውስጥ የተከማቸ ውሂብ አላቸው"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> ከ<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> በኋላ የታከለ ውሂብን ማንበብ ይችላል"</string>
+    <!-- no translation found for manage_permissions_time_frame (1299483940842401923) -->
+    <skip />
     <string name="other_android_permissions" msgid="8051485761573324702">"ይህ መተግበሪያ ሊደርስባቸው የሚችላቸውን ሌሎች የAndroid ፈቃዶችን ለማስተዳደር ወደ ቅንብሮች &gt; መተግበሪያዎች ይሂዱ"</string>
     <string name="manage_permissions_rationale" msgid="9183689798847740274">"ለ<xliff:g id="APP_NAME">%1$s</xliff:g> የሚያጋሩት ውሂብ በግላዊነት መመሪያቸው የተሸፈነ ነው"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"ይህ መተግበሪያ ሊደርስባቸው የሚችላቸውን ሌሎች የAndroid ፈቃዶችን ለማስተዳደር ወደ ቅንብሮች ይሂዱ፣ ከዚያም መተግበሪያዎች የሚለውን መታ ያድርጉ"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"የግላዊነት መመሪያ ያንብቡ"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"ባለፉት 24 ሰዓታት ውስጥ ተደርሶበታል"</string>
     <string name="app_access_title" msgid="7137018424885371763">"የመተግበሪያ መዳረሻ"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"በአሁኑ ጊዜ ምንም የተጫኑ ተኳዃኝ መተግበሪያዎች የሉዎትም"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (6821215432694207342) -->
+    <skip />
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"የተወገዱ የመተግበሪያ ፍቃዶች"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"የጤና አገናኝ የ<xliff:g id="APP_DATA">%s</xliff:g>ን ፈቃዶች አስወግዷል"</string>
     <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"የጤና አገናኝ የ<xliff:g id="APP_DATA_0">%1$s</xliff:g>ን እና የ<xliff:g id="APP_DATA_TWO">%2$s</xliff:g>ን ፈቃዶች አስወግዷል"</string>
@@ -324,7 +330,8 @@
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"በ<xliff:g id="APP_DATA">%2$s</xliff:g> የታከለው ሁሉም የ<xliff:g id="DATA_TYPE">%1$s</xliff:g> ውሂብ በቋሚነት ይሰረዝ?"</string>
     <string name="confirming_question_single_entry" msgid="330919962071369305">"ይህ ግቤት በቋሚነት ይሰረዝ?"</string>
     <string name="confirming_question_message" msgid="2934249835529079545">"የተገናኙ መተግበሪያዎች ከእንግዲህ ይህን ውሂብ ከHealth Connect መድረስ አይችሉም"</string>
-    <string name="confirming_question_message_menstruation" msgid="5286956266565962430">"ይህ ከ<xliff:g id="START_DATE">%1$s</xliff:g> እስከ <xliff:g id="END_DATE">%2$s</xliff:g> ሁሉንም የወር አበባ ግቤቶች ይሰርዛል።"</string>
+    <!-- no translation found for confirming_question_message_menstruation (5286956266565962430) -->
+    <skip />
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"ሰርዝ"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"ተመለስ"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"ተከናውኗል"</string>
@@ -338,9 +345,9 @@
     <string name="delete_data_notification_title" msgid="7740230240986343347">"የጤና አገናኝ ውሂብን በመሰረዝ ላይ"</string>
     <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"የጤና አገናኝ ውሂብን በመሰረዝ ላይ"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"የውሂብ ስረዛ"</string>
-    <string name="data_point_action_content_description" msgid="7872439279343967754">"የውሂብ ግቤትን ሰርዝ"</string>
+    <!-- no translation found for data_point_action_content_description (7872439279343967754) -->
+    <skip />
     <string name="delete_data_point" msgid="4234569507133768630">"ግቤትን ሰርዝ"</string>
-    <string name="aggregation_total" msgid="5641333638662325184">"ጠቅላላ፦ <xliff:g id="TOTAL_VALUE">%s</xliff:g>"</string>
     <string name="watt_format" msgid="8500953817369623803">"{value,plural, =1{1 ዋ}one{# ዋ}other{# ዋ}}"</string>
     <string name="watt_format_long" msgid="7107446926499116109">"{value,plural, =1{1 ዋት}one{# ዋት}other{# ዋት}}"</string>
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 እርምጃ}one{# እርምጃ}other{# እርምጃዎች}}"</string>
@@ -365,8 +372,8 @@
     <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"ከ<xliff:g id="MIN">%1$s</xliff:g> እስከ <xliff:g id="MAX">%2$s</xliff:g>"</string>
     <string name="sexual_activity_protected" msgid="4259473257597274326">"የተጠበቀ"</string>
     <string name="sexual_activity_unprotected" msgid="2250981470537379807">"ያልተጠበቀ"</string>
-    <string name="spotting" msgid="1637175837078770520">"ከወር አበባ ወቅት ውጭ የሚኖር የደም ፍሰት"</string>
-    <string name="flow_spotting" msgid="832418664953780156">"ከወር አበባ ወቅት ውጭ የሚኖር የደም ፍሰት"</string>
+    <string name="spotting" msgid="1637175837078770520">"ከወር አበባ ወቅት ውጪ የሚኖር የደም ፍሰት"</string>
+    <string name="flow_spotting" msgid="832418664953780156">"ከወር አበባ ወቅት ውጪ የሚኖር የደም ፍሰት"</string>
     <string name="flow_light" msgid="1937543318146228793">"ቀላል ፍሰት"</string>
     <string name="flow_medium" msgid="3783688724668943154">"መካከለኛ ፍሰት"</string>
     <string name="flow_heavy" msgid="8672261792750634294">"ከባድ ፍሰት"</string>
@@ -496,7 +503,6 @@
     <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> መተኛት"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"ንቁ"</string>
-    <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"ነቅተው በአልጋ ውስጥ ሳሉ"</string>
     <string name="sleep_stage_sleeping" msgid="5122840110107303518">"መተኛት"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"ከአልጋ ውጭ"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"አርኢኤም እንቅልፍ"</string>
@@ -511,8 +517,10 @@
     <string name="minute_duration_accessibility" msgid="399158463609534882">"{count,plural, =1{1 ደቂቃ}one{# ደቂቃ}other{# ደቂቃዎች}}"</string>
     <!-- no translation found for day_duration (3965793251448856729) -->
     <skip />
-    <string name="day_hour_duration" msgid="6174865584368017275">"<xliff:g id="DAYS">%1$s</xliff:g> እና <xliff:g id="HOURS">%2$s</xliff:g>"</string>
-    <string name="day_duration_accessibility" msgid="3023909370877112320">"{count,plural, =1{1 ቀን}one{# ቀን}other{# ቀናት}}"</string>
+    <!-- no translation found for day_hour_duration (6174865584368017275) -->
+    <skip />
+    <!-- no translation found for day_duration_accessibility (3023909370877112320) -->
+    <skip />
     <string name="vo2_max" msgid="8129489055516944647">"{value,plural, =1{1 ሚሊ/(ኪግ ደ)}one{# ሚሊ/(ኪግ·ደ)}other{# ሚሊ/(ኪግ·ደ)}}"</string>
     <string name="vo2_max_long" msgid="1031842712595851857">"{value,plural, =1{1 የኦክሲጅን ሚሊ ሊትር በሰውነት ክብደት ኪሎ ግራም በደቂቃ}one{# የኦክሲጅን ሚሊ ሊትር በሰውነት ክብደት ኪሎ ግራም በደቂቃ}other{# የኦክሲጅን ሚሊ ሊትር በሰውነት ክብደት ኪሎ ግራም በደቂቃ}}"</string>
     <string name="vo2_metabolic_cart" msgid="4724757223373717896">"ሜታቦሊክ ተሳቢ"</string>
@@ -648,7 +656,8 @@
     <string name="kj_long" msgid="1837278261960345400">"{count,plural, =1{1 ኪሎጁል}one{# ኪሎጁል}other{# ኪሎጁል}}"</string>
     <string name="percent" formatted="false" msgid="9199428244800776575">"{value,plural, =1{1%}one{#%}other{#%}}"</string>
     <string name="percent_long" msgid="2201022757867534235">"{value,plural, =1{1 መቶኛ}one{# መቶኛ}other{# መቶኛ}}"</string>
-    <string name="units_cancel" msgid="5947097690625771995">"ይቅር"</string>
+    <!-- no translation found for units_cancel (5947097690625771995) -->
+    <skip />
     <string name="units_title" msgid="6504086463237869339">"አሃዶች"</string>
     <string name="set_units_label" msgid="6566059089772896105">"የውሂብ አሃዶችን አቀናብር"</string>
     <string name="distance_unit_title" msgid="4696952932438418209">"ርቀት"</string>
@@ -669,23 +678,26 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"ፋራናይት"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"ኬልቪን"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"እገዛ እና ግብረመልስ"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"የተጫነ መተግበሪያን ማየት ካልቻሉ ገና ከጤና አገናኝን ጋር ተኳዃኝ ያልሆነ ሊሆን ይችላል"</string>
+    <!-- no translation found for cant_see_all_your_apps_description (7344859063463536472) -->
+    <skip />
     <string name="things_to_try" msgid="8200374691546152703">"የሚሞከሩ ነገሮች"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"ዝማኔዎች ካሉ ይመልከቱ"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"የተጫኑ መተግበሪያዎች ወቅታዊ እንደሆኑ ያረጋግጡ"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"ሁሉንም ተኳዃኝ መተግበሪያዎች አሳይ"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"በGoogle Play ላይ መተግበሪያዎችን ያግኙ"</string>
     <string name="send_feedback" msgid="7756927746070096780">"ግብረመልስ ላክ"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"የትኛዎቹ የጤንነት &amp;እና የአካል ብቃት መተግበሪያዎች ከጤና አገናኝ ጋር እንዲሰሩ እንደሚፈልጉ ይንገሩን"</string>
+    <!-- no translation found for send_feedback_description (2887207112856240778) -->
+    <skip />
     <string name="playstore_app_title" msgid="4138464328693481809">"Play መደብር"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"በራስ-ሰር ሰርዝ"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"በራስ-ሰር ሰርዝ"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"ከተቀናበረ ጊዜ በኋላ እንዲሰረዝ ለውሂብዎ መርሐግብር በማስያዝ በHealth Connect ውስጥ ለምን ያህል ጊዜ እንደሚከማች ይቆጣጠሩ"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"ስለ በራስ-ሰር ሰርዝ የበለጠ ይወቁ"</string>
+    <string name="auto_delete_learn_more" msgid="2853655230440111557">"የበለጠ ለመረዳት"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ውሂብን በራስ-ሰር ሰርዝ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{ከ# ወር በኋላ}one{ከ# ወር በኋላ}other{ከ# ወራት በኋላ}}"</string>
     <string name="range_never" msgid="4429478261788361233">"በጭራሽ"</string>
-    <string name="range_off" msgid="8178520557618184215">"ጠፍቷል"</string>
+    <!-- no translation found for range_off (8178520557618184215) -->
+    <skip />
     <string name="auto_delete_rationale" msgid="5255442126521464878">"እነዚህን ቅንብሮች ሲለውጡ የጤና አገናኝ የእርስዎን አዲስ ምርጫዎች ለማንፀባረቅ ነባር ውሂብን ይሰርዛል"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{ከ# ወር በኋላ ውሂብ በራስ-ሰር ይሰረዝ?}one{ከ# ወር በኋላ ውሂብ በራስ-ሰር ይሰረዝ?}other{ከ# ወራት በኋላ ውሂብ በራስ-ሰር ይሰረዝ?}}"</string>
     <string name="confirming_message_x_months" msgid="4798474593741471977">"{count,plural, =1{የጤና አገናኝ ከ# ወር በኋላ አዲስ ውሂብን በራስ-ሰር ይሰርዛል። ይህን ማቀናበር ከ# ወር በላይ የቆየ ነባር ውሂብንም ይሰርዛል።}one{የጤና አገናኝ ከ# ወር በኋላ አዲስ ውሂብን በራስ-ሰር ይሰርዛል። ይህን ማቀናበር ከ# ወር በላይ የቆየ ነባር ውሂብንም ይሰርዛል።}other{የጤና አገናኝ ከ# ወራት በኋላ አዲስ ውሂብን በራስ-ሰር ይሰርዛል። ይህን ማቀናበር ከ# ወራት በላይ የቆየ ነባር ውሂብንም ይሰርዛል።}}"</string>
@@ -712,66 +724,119 @@
     <string name="request_route_header_title" msgid="6599707039845646714">"<xliff:g id="APP_NAME">%1$s</xliff:g> በጤና አገናኝ ውስጥ ይህን የልምምድ መስመር እንዲደርስ ይፈቀድለት?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"ይህ መተግበሪያ በመስመሩ ውስጥ የእርስዎን የበፊት አካባቢ ማንበብ ይችላል"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
-    <string name="request_route_info_header_title" msgid="4149969049719763190">"የልምምድ መስመሮች የአካባቢ መረጃን ያካትታሉ"</string>
-    <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"ይህን ውሂብ ማን ማየት ይችላል?"</string>
-    <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"እርስዎ የልምምድ መስመሮችዎን እንዲደርሱ የሚፈቅዱላቸው መተግበሪያዎች ብቻ"</string>
-    <string name="request_route_info_access_management_title" msgid="3222594923675464852">"መዳረሻን እንዴት ማስተዳደር እችላለሁ?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"የልምምድ መስመሮችን የመተግበሪያ መዳረሻ በጤና አገናኝ ቅንብሮች ውስጥ ማስተዳደር ይችላሉ"</string>
-    <string name="back_button" msgid="780519527385993407">"ተመለስ"</string>
+    <!-- no translation found for request_route_info_header_title (4149969049719763190) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_title (858355329937113994) -->
+    <skip />
+    <!-- no translation found for request_route_info_who_can_see_data_summary (2439434359808367150) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_title (3222594923675464852) -->
+    <skip />
+    <!-- no translation found for request_route_info_access_management_summary (2606548838292829495) -->
+    <skip />
+    <!-- no translation found for back_button (780519527385993407) -->
+    <skip />
     <string name="loading" msgid="2526615755685950317">"በመጫን ላይ…"</string>
-    <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"ውህደት በሂደት ላይ"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"የጤና አገናኝ ከAndroid ሥርዓት ጋር እየተዋሃደ ነው።\n\nየእርስዎ ውሂብ እና ፈቃዶች እየተላለፉ ሳለ የተወሰነ ጊዜ ሊወስድ ይችላል።"</string>
-    <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"ሂደቱ እንደተጠናቀቀ ማሳወቂያ እስኪያገኙ ድረስ መተግበሪያውን እንዳይዘጉ።"</string>
-    <string name="migration_in_progress_notification_title" msgid="8873411008158407737">"የጤና አገናኝ ውህደት በሂደት ላይ"</string>
-    <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"ዝማኔ ያስፈልጋል"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"የጤና አገናኝን መዳረሻ በቀጥታ ከቅንብሮችዎ ማግኘት እንዲችሉ ከAndroid ሥርዓት ጋር እየተዋሃደ ነው።"</string>
-    <string name="update_button" msgid="4544529019832009496">"አዘምን"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"የጤና አገናኝ ከእርስዎ የሥርዓት ቅንብሮች ጋር መዋሃድ መቀጠል እንዲችል ይህን ዝማኔ ይጀምሩ"</string>
-    <string name="migration_update_needed_notification_action" msgid="1219223694165492000">"አሁን ያዘምኑ"</string>
-    <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"የሥርዓት ዝማኔ ያስፈልጋል"</string>
-    <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ከመቀጠልዎ በፊት የስልክ ሥርዓትዎን ያዘምኑ።"</string>
-    <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"አስቀድመው የስልክ ሥርዓትዎን አዘምነው ከሆነ ውህደቱን ለመቀጠል ስልክዎን ዳግም ማስጀመርን ይሞክሩ"</string>
-    <string name="migration_app_update_needed_notification_title" msgid="8971076370900025444">"የጤና አገናኝ ዝማኔ ያስፈልጋል"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"ከመቀጠልዎ በፊት የጤና አገናኝ መተግበሪያን ወደ የቅርብ ጊዜው ስሪት ያዘምኑ።"</string>
-    <string name="migration_more_space_needed_screen_title" msgid="1535473230886051579">"ተጨማሪ ቦታ ያስፈልጋል"</string>
-    <string name="migration_more_space_needed_screen_details" msgid="621140247825603412">"ውህደትን ለመቀጠል የጤና አገናኝ በስልክዎ ላይ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> የማከማቻ ቦታ ይፈልጋል።\n\nበስልክዎ ላይ የተወሰነ ቦታ ያጽዱ እና በመቀጠል እንደገና ይሞክሩ።"</string>
-    <string name="try_again_button" msgid="8745496819992160789">"እንደገና ሞክር"</string>
-    <string name="free_up_space_button" msgid="4141013808635654695">"ቦታ አስለቅቅ"</string>
-    <string name="migration_more_space_needed_notification_title" msgid="8238155395120107672">"ተጨማሪ ቦታ ያስፈልጋል"</string>
-    <string name="migration_more_space_needed_notification_content" msgid="4034728181940567836">"ውህደትን ለመቀጠል የጤና አገናኝ በስልክዎ ላይ <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> የማከማቻ ቦታ ይፈልጋል።"</string>
-    <string name="migration_paused_screen_title" msgid="8041170155372429894">"ውህደት ባለበት ቆሟል"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"የጤና አገናኝ መተግበሪያ ከAndroid ሥርዓት ጋር እየተዋሃደ ሳለ ተዘግቷል።\n\nመተግበሪያውን እንደገና ለመክፈት እና የእርስዎን ውሂብ እና ፈቃዶች ማስተላለፍ ለመቀጠል ከቆመበት ቀጥልን ጠቅ ያድርጉ።"</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"የእርስዎን የጤና አገናኝ ውሂብ ይዞ ለመቆየት፣ ይህን በ<xliff:g id="TIME_NEEDED">%1$s</xliff:g> ውስጥ ያጠናቅቁ"</string>
-    <string name="resume_button" msgid="2255148549862208047">"ከቆመበት ቀጥል"</string>
-    <string name="migration_paused_notification_title" msgid="4368414714202113077">"ውህደት ባለበት ቆሟል"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"የጤና አገናኝ ከAndroid ሥርዓቱ ጋር እየተዋሃደ ነው። ለመቀጠል መታ ያድርጉ"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"ውህደትን ከቆመበት ይቀጥሉ"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"የጤና አገናኝን ከAndroid ሥርዓት ጋር ማዋሃድን ለመቀጠል መታ ያድርጉ። ውሂብዎን ይዞ ለመቆየት፣ ይህን በ<xliff:g id="TIME_NEEDED">%1$s</xliff:g> ውስጥ ያጠናቅቁ"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"የጤና አገናኝን ከAndroid ሥርዓት ጋር ማዋሃድን ለመቀጠል መታ ያድርጉ።"</string>
-    <string name="resume_migration_banner_button" msgid="2112318760107756469">"ቀጥል"</string>
-    <string name="resume_migration_notification_title" msgid="8859575633668908327">"የጤና አገናኝ ውህደትን ካቆመበት ይቀጥሉ"</string>
-    <string name="resume_migration_notification_content" msgid="46172108837648715">"ውሂብዎን ይዞ ለመቆየት፣ ይህን በ<xliff:g id="TIME_NEEDED">%1$s</xliff:g> ውስጥ ያጠናቅቁ"</string>
-    <string name="app_update_needed_banner_title" msgid="4724335956851853802">"የመተግበሪያ ዝማኔ ያስፈልጋል"</string>
-    <string name="app_update_needed_banner_description_single" msgid="2229935331303234217">"<xliff:g id="APP_NAME">%1$s</xliff:g> ከጤና አገናኝ ጋር መስራት እንዲቀጥል ወቅታዊ መሆን አለበት"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="1523113182062764912">"ከጤና አገናኝ ጋር መስራት ለመቀጠል አንዳንድ መተግበሪያዎች ወቅታዊ መሆን አለባቸው"</string>
-    <string name="app_update_needed_banner_button" msgid="8223115764065649627">"ዝማኔዎች ካሉ ይፈትሹ"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"የጤና አገናኝ ውህደት"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"የጤና አገናኝ ከእርስዎ የAndroid ሥርዓት ጋር ለመዋሃድ ዝግጁ ነው። ለ<xliff:g id="APP_NAME">%1$s</xliff:g> አሁን መዳረሻ ከሰጡ አንዳንድ ባህሪያት ውህደት እስኪጠናቀቅ ድረስ ላይሰሩ ይችላሉ።"</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"የጤና አገናኝ ከእርስዎ የAndroid ሥርዓት ጋር ለመዋሃድ ዝግጁ ነው። ለመተግበሪያዎች አሁን መዳረሻ ከሰጡ አንዳንድ ባህሪያት ውህደት እስከሚጠናቀቅ ድረስ ላይሠሩ ይችላሉ።"</string>
-    <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"ቀጥል"</string>
-    <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"ውህደትን ጀምር"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"የጤና አገናኝ ውህደት በሂደት ላይ"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"የጤና አገናኝ ከAndroid ሥርዓቱ ጋር እየተዋሃደ ነው።\n\nሂደቱ ሲጠናቀቅ ማሳወቂያ ያገኛሉ እና ከጤና አገናኝ ጋር <xliff:g id="APP_NAME">%1$s</xliff:g>ን መጠቀም ይችላሉ።"</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"የጤና አገናኝ ከAndroid ሥርዓቱ ጋር እየተዋሃደ ነው።\n\nሂደቱ ሲጠናቀቅ ማሳወቂያ ያገኛሉ እና ጤና አገናኝን መጠቀም ይችላሉ።"</string>
-    <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"ገባኝ"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"የጤና አገናኝ ውህደት አልተጠናቀቀም"</string>
-    <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"እንደገና የሚገኝ ሲሆን ማሳወቂያ ያገኛሉ።"</string>
-    <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"ገባኝ"</string>
-    <string name="migration_not_complete_notification_title" msgid="7392885522310227293">"የጤና አገናኝ ውህደት አልተጠናቀቀም"</string>
-    <string name="migration_not_complete_notification_action" msgid="757041885992445657">"ተጨማሪ ያንብቡ"</string>
-    <string name="migration_complete_notification_title" msgid="4988631739109332404">"የጤና አገናኝ ውህደት ተጠናቅቋል"</string>
-    <string name="migration_complete_notification_action" msgid="5350322865206331186">"ክፈት"</string>
-    <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"ምን አዲስ ነገር አለ"</string>
-    <string name="migration_whats_new_dialog_content" msgid="4694000152976201257">"አሁን የጤና አገናኝን በቀጥታ ከቅንብሮችዎ መድረስ ይችላሉ። የጤና አገናኝ መተግበሪያን በማንኛውም ጊዜ ያራግፉ።"</string>
-    <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"ገባኝ"</string>
+    <!-- no translation found for migration_in_progress_screen_title (6564515269988205874) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_details (5916989113111973466) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_screen_integration_dont_close (2095732208438772444) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_notification_title (8873411008158407737) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_title (3260466598312877429) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_screen_details (7984745102006782603) -->
+    <skip />
+    <!-- no translation found for update_button (4544529019832009496) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_content (478899618719297517) -->
+    <skip />
+    <!-- no translation found for migration_update_needed_notification_action (1219223694165492000) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_notification_title (5428523284357105379) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_action (7211167950758064289) -->
+    <skip />
+    <!-- no translation found for migration_module_update_needed_restart (1246884613546321798) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_notification_title (8971076370900025444) -->
+    <skip />
+    <!-- no translation found for migration_app_update_needed_action (3289432528592774601) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_title (1535473230886051579) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_screen_details (621140247825603412) -->
+    <skip />
+    <!-- no translation found for try_again_button (8745496819992160789) -->
+    <skip />
+    <!-- no translation found for free_up_space_button (4141013808635654695) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_title (8238155395120107672) -->
+    <skip />
+    <!-- no translation found for migration_more_space_needed_notification_content (4034728181940567836) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_title (8041170155372429894) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details (5898311710030340187) -->
+    <skip />
+    <!-- no translation found for migration_paused_screen_details_timeout (353768000785837394) -->
+    <skip />
+    <!-- no translation found for resume_button (2255148549862208047) -->
+    <skip />
+    <!-- no translation found for migration_paused_notification_title (6020271090296330698) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_title (4443957114824045317) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description (6236230413670826036) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_description_fallback (6060444898839211883) -->
+    <skip />
+    <!-- no translation found for resume_migration_banner_button (2112318760107756469) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_title (8859575633668908327) -->
+    <skip />
+    <!-- no translation found for resume_migration_notification_content (46172108837648715) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_title (4724335956851853802) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_single (2229935331303234217) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_description_multiple (1523113182062764912) -->
+    <skip />
+    <!-- no translation found for app_update_needed_banner_button (8223115764065649627) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_title (6019552841791757048) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_content (6350115816948005466) -->
+    <skip />
+    <!-- no translation found for migration_pending_permissions_dialog_button_continue (258571372365364506) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_title (2188354144857156984) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_content (2249793103623253693) -->
+    <skip />
+    <!-- no translation found for migration_in_progress_permissions_dialog_button_got_it (3437208109334974656) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_title (3725576338159027149) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_content (4992771587233088606) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_dialog_button (3271842109680807482) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_title (7392885522310227293) -->
+    <skip />
+    <!-- no translation found for migration_not_complete_notification_action (757041885992445657) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_title (4988631739109332404) -->
+    <skip />
+    <!-- no translation found for migration_complete_notification_action (5350322865206331186) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_title (2349465358457105228) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_content (4694000152976201257) -->
+    <skip />
+    <!-- no translation found for migration_whats_new_dialog_button (642575552457587805) -->
+    <skip />
 </resources>

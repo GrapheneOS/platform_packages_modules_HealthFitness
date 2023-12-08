@@ -706,28 +706,28 @@ public class WeightRecordTest {
     }
 
     @Test
-    public void testAggregateLocalFilter_yearPeriod() throws Exception {
+    public void testAggregateLocalFilter_daysPeriod() throws Exception {
         LocalDateTime endTimeLocal = LocalDateTime.now(ZoneOffset.UTC);
         Instant endTimeInstant = Instant.now();
-
         TestUtils.insertRecords(
                 List.of(
                         new WeightRecord.Builder(
-                                        TestUtils.generateMetadata(),
-                                        endTimeInstant.minus(400, ChronoUnit.DAYS),
-                                        Mass.fromGrams(10.0))
+                                TestUtils.generateMetadata(),
+                                endTimeInstant.minus(20, ChronoUnit.DAYS),
+                                Mass.fromGrams(10.0))
                                 .setZoneOffset(ZoneOffset.MIN)
                                 .build()));
+
         List<AggregateRecordsGroupedByPeriodResponse<Mass>> responses =
                 TestUtils.getAggregateResponseGroupByPeriod(
                         new AggregateRecordsRequest.Builder<Mass>(
-                                        new LocalTimeRangeFilter.Builder()
-                                                .setStartTime(endTimeLocal.minusYears(2))
-                                                .setEndTime(endTimeLocal)
-                                                .build())
+                                new LocalTimeRangeFilter.Builder()
+                                        .setStartTime(endTimeLocal.minusDays(30))
+                                        .setEndTime(endTimeLocal)
+                                        .build())
                                 .addAggregationType(WEIGHT_MAX)
                                 .build(),
-                        Period.ofYears(1));
+                        Period.ofDays(15));
 
         assertThat(responses).hasSize(2);
         assertThat(responses.get(0).get(WEIGHT_MAX)).isEqualTo(Mass.fromGrams(10.0));
