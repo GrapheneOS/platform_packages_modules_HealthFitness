@@ -86,6 +86,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textAppearance="?attr/textAppearanceSummary"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="normal"
             android:textDirection="locale"
             android:visibility="gone" />
 
@@ -95,6 +97,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textAppearance="?attr/textAppearanceSummary"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="normal"
             android:textDirection="locale"
             android:visibility="gone" />
     </LinearLayout>

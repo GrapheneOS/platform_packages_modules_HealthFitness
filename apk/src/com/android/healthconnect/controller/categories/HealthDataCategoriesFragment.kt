@@ -43,6 +43,7 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.FeatureUtils
 import com.android.healthconnect.controller.utils.logging.CategoriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -67,6 +68,7 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
     }
 
     @Inject lateinit var logger: HealthConnectLogger
+    @Inject lateinit var featureUtils: FeatureUtils
 
     private val categoriesViewModel: HealthDataCategoryViewModel by viewModels()
     private val autoDeleteViewModel: AutoDeleteViewModel by activityViewModels()
@@ -90,11 +92,15 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
             childFragmentManager.commitNow { add(DeletionFragment(), FRAGMENT_TAG_DELETION) }
         }
 
-        mAutoDelete?.logName = CategoriesElement.AUTO_DELETE_BUTTON
-        mAutoDelete?.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_healthDataCategories_to_autoDelete)
-            true
+        if (!featureUtils.isNewAppPriorityEnabled()) {
+            mAutoDelete?.isVisible = true
+            mAutoDelete?.logName = CategoriesElement.AUTO_DELETE_BUTTON
+            mAutoDelete?.setOnPreferenceClickListener {
+                findNavController().navigate(R.id.action_healthDataCategories_to_autoDelete)
+                true
+            }
         }
+
         mDeleteAllData?.logName = CategoriesElement.DELETE_ALL_DATA_BUTTON
         mDeleteAllData?.setOnPreferenceClickListener {
             val deletionType = DeletionType.DeletionTypeAllData()
@@ -161,21 +167,23 @@ class HealthDataCategoriesFragment : Hilt_HealthDataCategoriesFragment() {
             }
         }
 
-        autoDeleteViewModel.storedAutoDeleteRange.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                AutoDeleteViewModel.AutoDeleteState.Loading -> {
-                    mAutoDelete?.summary = ""
-                    mAutoDelete?.icon = null
-                }
-                is AutoDeleteViewModel.AutoDeleteState.LoadingFailed -> {
-                    mAutoDelete?.summary = ""
-                    mAutoDelete?.icon = null
-                }
-                is AutoDeleteViewModel.AutoDeleteState.WithData -> {
-                    mAutoDelete?.summary = buildSummary(state.autoDeleteRange)
-                    mAutoDelete?.setIcon(
-                        AttributeResolver.getResource(
-                            requireContext(), iconAttribute(state.autoDeleteRange)))
+        if (!featureUtils.isNewAppPriorityEnabled()) {
+            autoDeleteViewModel.storedAutoDeleteRange.observe(viewLifecycleOwner) { state ->
+                when (state) {
+                    AutoDeleteViewModel.AutoDeleteState.Loading -> {
+                        mAutoDelete?.summary = ""
+                        mAutoDelete?.icon = null
+                    }
+                    is AutoDeleteViewModel.AutoDeleteState.LoadingFailed -> {
+                        mAutoDelete?.summary = ""
+                        mAutoDelete?.icon = null
+                    }
+                    is AutoDeleteViewModel.AutoDeleteState.WithData -> {
+                        mAutoDelete?.summary = buildSummary(state.autoDeleteRange)
+                        mAutoDelete?.setIcon(
+                            AttributeResolver.getResource(
+                                requireContext(), iconAttribute(state.autoDeleteRange)))
+                    }
                 }
             }
         }

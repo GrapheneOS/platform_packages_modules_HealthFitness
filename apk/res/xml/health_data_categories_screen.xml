@@ -14,7 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
   <PreferenceCategory
       android:key="browse_data_category"
       android:title="@string/browse_data_category" />
@@ -24,6 +25,7 @@
     <com.android.healthconnect.controller.shared.preference.HealthPreference
         android:key="auto_delete_button"
         android:icon="?attr/autoDeleteIcon"
+        app:isPreferenceVisible="false"
         android:title="@string/auto_delete_button" />
     <com.android.healthconnect.controller.shared.preference.HealthPreference
         android:key="delete_all_data"

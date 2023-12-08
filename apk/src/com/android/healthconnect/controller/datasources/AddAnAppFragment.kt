@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.datasources
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.categories.HealthDataCategoriesFragment.Companion.CATEGORY_KEY
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
@@ -27,15 +26,18 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.AddAnAppElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint(HealthPreferenceFragment::class)
 class AddAnAppFragment : Hilt_AddAnAppFragment() {
 
     private val dataSourcesViewModel: DataSourcesViewModel by activityViewModels()
     @HealthDataCategoryInt private var category: Int = 0
+    @Inject lateinit var navigationUtils: NavigationUtils
 
     private var currentPriority: List<AppMetadata> = listOf()
 
@@ -95,8 +97,7 @@ class AddAnAppFragment : Hilt_AddAnAppFragment() {
                                     .toList()
                             dataSourcesViewModel.updatePriorityList(
                                 newPriority.map { it.packageName }.toList(), category)
-                            findNavController()
-                                .navigate(R.id.action_addAnAppFragment_to_dataSourcesFragment)
+                            navigationUtils.popBackStack(this)
                             true
                         }
                     })
