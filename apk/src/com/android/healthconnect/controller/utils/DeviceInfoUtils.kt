@@ -1,6 +1,5 @@
 package com.android.healthconnect.controller.utils
 
-import android.app.compat.gms.GmsCompat
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -48,22 +47,12 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
             // Package name not configured. Return.
             return false
         }
-        if (!isIntentHandlerAvailable(
+        return isIntentHandlerAvailable(
             context,
             Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse(playStorePackageName)
                 setPackage(vendingPackageName)
-            })) {
-            return false
-        }
-
-        val pm = context.packageManager
-        return try {
-            val ai = pm.getApplicationInfo(playStorePackageName, 0)
-            GmsCompat.isGmsApp(ai)
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
-        }
+            })
     }
 
     override fun openHCGetStartedLink(activity: FragmentActivity) {
