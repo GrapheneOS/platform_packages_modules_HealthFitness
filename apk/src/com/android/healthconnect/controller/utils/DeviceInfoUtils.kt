@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.ext.PackageId
 import android.net.Uri
 import android.os.UserManager
 import android.text.TextUtils
@@ -52,12 +53,22 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
             // Package name not configured. Return.
             return false
         }
-        return isIntentHandlerAvailable(
+        if (!isIntentHandlerAvailable(
             context,
             Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse(playStorePackageName)
                 setPackage(vendingPackageName)
-            })
+            })) {
+            return false
+        }
+
+        val pm = context.packageManager
+        try {
+            val ai = pm.getApplicationInfo(playStorePackageName, 0)
+            return ai.ext().packageId == PackageId.PLAY_STORE
+        } catch (e: PackageManager.NameNotFoundException) {
+            return false
+        }
     }
 
     override fun openHCGetStartedLink(activity: FragmentActivity) {
