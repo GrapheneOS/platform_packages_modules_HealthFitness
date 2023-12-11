@@ -244,7 +244,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void onUserSwitching(UserHandle currentForegroundUser) {
         mCurrentForegroundUser = currentForegroundUser;
         mBackupRestore.setupForUser(currentForegroundUser);
-        HealthDataCategoryPriorityHelper.getInstance().maybeAddInactiveAppsToPriorityList(mContext);
+        HealthConnectThreadScheduler.scheduleInternalTask(
+                () -> {
+                    HealthDataCategoryPriorityHelper.getInstance()
+                            .maybeAddInactiveAppsToPriorityList(mContext);
+                });
     }
 
     @Override
