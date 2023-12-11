@@ -46,7 +46,6 @@ import android.healthconnect.cts.utils.TestUtils;
 
 import androidx.test.runner.AndroidJUnit4;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
