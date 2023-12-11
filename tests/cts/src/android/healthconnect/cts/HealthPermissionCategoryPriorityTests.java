@@ -23,21 +23,19 @@ import static android.health.connect.HealthDataCategory.NUTRITION;
 import static android.health.connect.HealthDataCategory.SLEEP;
 import static android.health.connect.HealthDataCategory.VITALS;
 import static android.healthconnect.cts.utils.TestUtils.MANAGE_HEALTH_DATA;
+import static android.healthconnect.cts.utils.TestUtils.getPriority;
+import static android.healthconnect.cts.utils.TestUtils.getPriorityWithManageHealthDataPermission;
+import static android.healthconnect.cts.utils.TestUtils.updatePriority;
+import static android.healthconnect.cts.utils.TestUtils.updatePriorityWithManageHealthDataPermission;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.app.UiAutomation;
-import android.content.Context;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.HealthConnectException;
-import android.health.connect.HealthConnectManager;
-import android.health.connect.UpdateDataOriginPriorityOrderRequest;
-import android.health.connect.datatypes.DataOrigin;
 import android.healthconnect.cts.utils.TestUtils;
-import android.os.OutcomeReceiver;
 
 import androidx.test.InstrumentationRegistry;
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
@@ -49,11 +47,6 @@ import org.junit.runner.RunWith;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthPermissionCategoryPriorityTests {
@@ -62,6 +55,9 @@ public class HealthPermissionCategoryPriorityTests {
     private static final String TAG = "PermissionCategoryPriorityTests";
     private static final UiAutomation sUiAutomation =
             InstrumentationRegistry.getInstrumentation().getUiAutomation();
+
+    public static final String PACKAGE_NAME = "android.healthconnect.cts";
+    public static final String OTHER_PACKAGE_NAME = "";
 
     @Before
     public void setUp() {
@@ -75,14 +71,8 @@ public class HealthPermissionCategoryPriorityTests {
 
     @Test
     public void testGetPriority() throws InterruptedException {
-        sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
-
-        try {
-            for (Integer permissionCategory : sAllDataCategories) {
-                assertThat(getPriority(permissionCategory)).isNotNull();
-            }
-        } finally {
-            sUiAutomation.dropShellPermissionIdentity();
+        for (Integer permissionCategory : sAllDataCategories) {
+            assertThat(getPriorityWithManageHealthDataPermission(permissionCategory)).isNotNull();
         }
     }
 
@@ -100,28 +90,30 @@ public class HealthPermissionCategoryPriorityTests {
     }
 
     @Test
-    public void testUpdatePriority_incorrectValues() throws InterruptedException {
+    public void testUpdatePriority_withNewApps_updatesCorrectly() throws InterruptedException {
         sUiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA);
 
         try {
             for (Integer permissionCategory : sAllDataCategories) {
-                FetchDataOriginsPriorityOrderResponse currentPriority =
-                        getPriority(permissionCategory);
-                assertThat(currentPriority).isNotNull();
-                updatePriority(permissionCategory, Arrays.asList("a", "b", "c"));
-                FetchDataOriginsPriorityOrderResponse newPriority = getPriority(permissionCategory);
-                assertThat(currentPriority.getDataOriginsPriorityOrder().size())
-                        .isEqualTo(newPriority.getDataOriginsPriorityOrder().size());
 
-                List<String> currentPriorityString =
-                        currentPriority.getDataOriginsPriorityOrder().stream()
-                                .map(DataOrigin::getPackageName)
-                                .toList();
-                List<String> newPriorityString =
-                        newPriority.getDataOriginsPriorityOrder().stream()
-                                .map(DataOrigin::getPackageName)
-                                .toList();
-                assertThat(currentPriorityString.equals(newPriorityString)).isTrue();
+                FetchDataOriginsPriorityOrderResponse currentPriority =
+                        getPriorityWithManageHealthDataPermission(permissionCategory);
+                assertThat(currentPriority).isNotNull();
+                // The initial priority list is empty at this stage because permissions have
+                // been granted through packageManager
+                // TODO (b/314092270) - remove when the priority list is updated via the package
+                // manager
+                assertThat(currentPriority.getDataOriginsPriorityOrder()).isEmpty();
+
+                List<String> newPriorityListPackages = Arrays.asList(PACKAGE_NAME);
+                updatePriorityWithManageHealthDataPermission(
+                        permissionCategory, newPriorityListPackages);
+                FetchDataOriginsPriorityOrderResponse newPriority =
+                        getPriorityWithManageHealthDataPermission(permissionCategory);
+
+                assertThat(newPriority.getDataOriginsPriorityOrder().size()).isEqualTo(1);
+                assertThat(newPriority.getDataOriginsPriorityOrder().get(0).getPackageName())
+                        .isEqualTo(PACKAGE_NAME);
             }
         } finally {
             sUiAutomation.dropShellPermissionIdentity();
@@ -138,87 +130,6 @@ public class HealthPermissionCategoryPriorityTests {
                 assertThat(healthConnectException.getErrorCode())
                         .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
-        }
-    }
-
-    // TODO(b/257638480): Add more tests with some actual priorities, after grant permission tests
-    // are in place
-
-    private FetchDataOriginsPriorityOrderResponse getPriority(int permissionCategory)
-            throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<FetchDataOriginsPriorityOrderResponse> response = new AtomicReference<>();
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        service.fetchDataOriginsPriorityOrder(
-                permissionCategory,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(FetchDataOriginsPriorityOrderResponse result) {
-                        response.set(result);
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        healthConnectExceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
-        }
-
-        return response.get();
-    }
-
-    private void updatePriority(int permissionCategory, List<String> packageNames)
-            throws InterruptedException {
-        Context context = ApplicationProvider.getApplicationContext();
-        HealthConnectManager service = context.getSystemService(HealthConnectManager.class);
-        assertThat(service).isNotNull();
-
-        List<DataOrigin> dataOrigins =
-                packageNames.stream()
-                        .map(
-                                (packageName) ->
-                                        new DataOrigin.Builder()
-                                                .setPackageName(packageName)
-                                                .build())
-                        .collect(Collectors.toList());
-
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<HealthConnectException> healthConnectExceptionAtomicReference =
-                new AtomicReference<>();
-        UpdateDataOriginPriorityOrderRequest updateDataOriginPriorityOrderRequest =
-                new UpdateDataOriginPriorityOrderRequest(dataOrigins, permissionCategory);
-        service.updateDataOriginPriorityOrder(
-                updateDataOriginPriorityOrderRequest,
-                Executors.newSingleThreadExecutor(),
-                new OutcomeReceiver<>() {
-                    @Override
-                    public void onResult(Void result) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(HealthConnectException exception) {
-                        healthConnectExceptionAtomicReference.set(exception);
-                        latch.countDown();
-                    }
-                });
-        assertThat(updateDataOriginPriorityOrderRequest.getDataCategory())
-                .isEqualTo(permissionCategory);
-        assertThat(updateDataOriginPriorityOrderRequest.getDataOriginInOrder()).isNotNull();
-        assertThat(latch.await(3, TimeUnit.SECONDS)).isTrue();
-        if (healthConnectExceptionAtomicReference.get() != null) {
-            throw healthConnectExceptionAtomicReference.get();
         }
     }
 

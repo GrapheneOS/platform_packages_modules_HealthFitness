@@ -27,6 +27,7 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
@@ -49,6 +50,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -66,6 +68,12 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class PowerRecordTest {
     private static final String TAG = "PowerRecordTest";
+    private static final String PACKAGE_NAME = "android.healthconnect.cts";
+
+    @Before
+    public void setUp() throws InterruptedException {
+        TestUtils.deleteAllStagedRemoteData();
+    }
 
     @After
     public void tearDown() throws InterruptedException {
@@ -281,6 +289,7 @@ public class PowerRecordTest {
 
     @Test
     public void testAggregation_power() throws Exception {
+        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         Context context = ApplicationProvider.getApplicationContext();
         List<Record> records =
                 Arrays.asList(getPowerRecord(5.0), getPowerRecord(10.0), getPowerRecord(15.0));
