@@ -18,6 +18,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import android.content.Context;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.TimeInstantRangeFilter;
@@ -34,12 +35,14 @@ import android.platform.test.annotations.AppModeFull;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -48,12 +51,19 @@ public class HistoricAccessLimitTest {
     private Context mContext;
     private Instant mNow;
 
+    private static final String PACKAGE_NAME = "android.healthconnect.cts";
+
     @Before
     public void setUp() throws InterruptedException {
         mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         mNow = Instant.now();
         deleteAllStagedRemoteData();
         TestReceiver.reset();
+    }
+
+    @After
+    public void tearDown() throws InterruptedException {
+        deleteAllStagedRemoteData();
     }
 
     @Test
@@ -166,6 +176,7 @@ public class HistoricAccessLimitTest {
 
     @Test
     public void testAggregateIntervalRecords_expectCorrectResponse() throws InterruptedException {
+        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.ACTIVITY);
         long ownRecordValueAfterHistoricLimit = 20;
         long ownRecordValueBeforeHistoricLimit = 300;
         long otherAppsRecordValueAfterHistoricLimit = 4_000;
@@ -176,6 +187,10 @@ public class HistoricAccessLimitTest {
                 daysBeforeNow(2), daysBeforeNow(1), otherAppsRecordValueAfterHistoricLimit);
         insertStepsRecordViaTestApp(
                 daysBeforeNow(50), daysBeforeNow(40), otherAppsRecordValueBeforeHistoricLimit);
+        // Add the other app to the priority list
+        TestUtils.updatePriorityWithManageHealthDataPermission(
+                HealthDataCategory.ACTIVITY,
+                Arrays.asList(PACKAGE_NAME, "android.healthconnect.test.app"));
         TimeInstantRangeFilter timeFilter =
                 new TimeInstantRangeFilter.Builder()
                         .setStartTime(daysBeforeNow(1000))
@@ -197,6 +212,7 @@ public class HistoricAccessLimitTest {
 
     @Test
     public void testAggregateInstantRecords_expectCorrectResponse() throws InterruptedException {
+        TestUtils.setupAggregation(PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS);
         long ownRecordValueAfterHistoricLimit = 20;
         long ownRecordValueBeforeHistoricLimit = 300;
         long otherAppsRecordValueAfterHistoricLimit = 4_000;
