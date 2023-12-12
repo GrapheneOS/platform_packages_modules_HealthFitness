@@ -53,8 +53,16 @@ constructor(
     val disconnectAllState: LiveData<DisconnectAllState>
         get() = _disconnectAllState
 
+    private val _alertDialogActive = MutableLiveData(false)
+    val alertDialogActive: LiveData<Boolean>
+        get() = _alertDialogActive
+
     init {
         loadConnectedApps()
+    }
+
+    fun setAlertDialogStatus(isActive: Boolean) {
+        _alertDialogActive.postValue(isActive)
     }
 
     fun loadConnectedApps() {
@@ -80,16 +88,20 @@ constructor(
                 loadConnectedApps()
                 _disconnectAllState.postValue(DisconnectAllState.Updated)
             }
+            _alertDialogActive.postValue(false)
             return true
         } catch (ex: Exception) {
             Log.e(TAG, "Failed to update permissions!", ex)
         }
+        _alertDialogActive.postValue(false)
         return false
     }
 
     sealed class DisconnectAllState {
         object NotStarted : DisconnectAllState()
+
         object Loading : DisconnectAllState()
+
         object Updated : DisconnectAllState()
     }
 }
