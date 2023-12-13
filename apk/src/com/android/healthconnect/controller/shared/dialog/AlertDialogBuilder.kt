@@ -20,7 +20,6 @@ import android.content.DialogInterface
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.AttrRes
@@ -45,6 +44,8 @@ class AlertDialogBuilder(private val context: Context) {
         LayoutInflater.from(context).inflate(R.layout.dialog_title, null)
     private var customMessageLayout: View =
         LayoutInflater.from(context).inflate(R.layout.dialog_message, null)
+    private var customDialogLayout: View =
+        LayoutInflater.from(context).inflate(R.layout.dialog_custom_layout, null)
     private var logger: HealthConnectLogger
 
     constructor(fragment: Fragment) : this(fragment.requireContext())
@@ -52,8 +53,6 @@ class AlertDialogBuilder(private val context: Context) {
     constructor(activity: FragmentActivity) : this(activity as Context)
 
     private var iconView: ImageView? = null
-    private var positiveButton: Button? = null
-    private var negativeButton: Button? = null
 
     private var positiveButtonKey: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
     private var negativeButtonKey: ElementName = ErrorPageElement.UNKNOWN_ELEMENT
@@ -70,6 +69,7 @@ class AlertDialogBuilder(private val context: Context) {
         logger = hiltEntryPoint.logger()
 
         alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setView(customDialogLayout)
     }
 
     fun setCancelable(isCancelable: Boolean): AlertDialogBuilder {
@@ -83,6 +83,17 @@ class AlertDialogBuilder(private val context: Context) {
     }
 
     fun setIcon(@AttrRes iconId: Int): AlertDialogBuilder {
+        iconView = customDialogLayout.findViewById(R.id.dialog_icon)
+        val iconDrawable = AttributeResolver.getNullableDrawable(context, iconId)
+        iconDrawable?.let {
+            iconView?.setImageDrawable(it)
+            iconView?.visibility = View.VISIBLE
+        }
+
+        return this
+    }
+
+    fun setCustomIcon(@AttrRes iconId: Int): AlertDialogBuilder {
         iconView = customTitleLayout.findViewById(R.id.dialog_icon)
         val iconDrawable = AttributeResolver.getNullableDrawable(context, iconId)
         iconDrawable?.let {
@@ -94,16 +105,30 @@ class AlertDialogBuilder(private val context: Context) {
         return this
     }
 
-    /** Sets the title in the custom title layout using the given resource id. */
+    /** Sets the title in the title text view using the given resource id. */
     fun setTitle(@StringRes titleId: Int): AlertDialogBuilder {
+        val titleView: TextView = customDialogLayout.findViewById(R.id.dialog_title)
+        titleView.setText(titleId)
+        return this
+    }
+
+    /** Sets the title in the title text view using the given string. */
+    fun setTitle(titleString: String): AlertDialogBuilder {
+        val titleView: TextView = customDialogLayout.findViewById(R.id.dialog_title)
+        titleView.text = titleString
+        return this
+    }
+
+    /** Sets the title with custom view in the custom title layout using the given resource id. */
+    fun setCustomTitle(@StringRes titleId: Int): AlertDialogBuilder {
         val titleView: TextView = customTitleLayout.findViewById(R.id.dialog_title)
         titleView.setText(titleId)
         alertDialogBuilder.setCustomTitle(customTitleLayout)
         return this
     }
 
-    /** Sets the title in the custom title layout. */
-    fun setTitle(titleString: String): AlertDialogBuilder {
+    /** Sets the title with custom view in the custom title layout. */
+    fun setCustomTitle(titleString: String): AlertDialogBuilder {
         val titleView: TextView = customTitleLayout.findViewById(R.id.dialog_title)
         titleView.text = titleString
         alertDialogBuilder.setCustomTitle(customTitleLayout)
@@ -112,21 +137,43 @@ class AlertDialogBuilder(private val context: Context) {
 
     /** Sets the message to be displayed in the dialog using the given resource id. */
     fun setMessage(@StringRes messageId: Int): AlertDialogBuilder {
+        val messageView: TextView = customDialogLayout.findViewById(R.id.dialog_custom_message)
+        messageView.text = context.getString(messageId)
+        return this
+    }
+
+    /** Sets the message to be displayed in the dialog. */
+    fun setMessage(message: CharSequence?): AlertDialogBuilder {
+        val messageView: TextView = customDialogLayout.findViewById(R.id.dialog_custom_message)
+        messageView.text = message
+        return this
+    }
+
+    fun setMessage(message: String): AlertDialogBuilder {
+        val messageView: TextView = customDialogLayout.findViewById(R.id.dialog_custom_message)
+        messageView.text = message
+        return this
+    }
+
+    /**
+     * Sets the message with custom view to be displayed in the dialog using the given resource id.
+     */
+    fun setCustomMessage(@StringRes messageId: Int): AlertDialogBuilder {
         val messageView: TextView = customMessageLayout.findViewById(R.id.dialog_custom_message)
         messageView.text = context.getString(messageId)
         alertDialogBuilder.setView(customMessageLayout)
         return this
     }
 
-    /** Sets the message to be displayed in the dialog. */
-    fun setMessage(message: CharSequence?): AlertDialogBuilder {
+    /** Sets the message with custom view to be displayed in the dialog. */
+    fun setCustomMessage(message: CharSequence?): AlertDialogBuilder {
         val messageView: TextView = customMessageLayout.findViewById(R.id.dialog_custom_message)
         messageView.text = message
         alertDialogBuilder.setView(customMessageLayout)
         return this
     }
 
-    fun setMessage(message: String): AlertDialogBuilder {
+    fun setCustomMessage(message: String): AlertDialogBuilder {
         val messageView: TextView = customMessageLayout.findViewById(R.id.dialog_custom_message)
         messageView.text = message
         alertDialogBuilder.setView(customMessageLayout)
@@ -152,7 +199,7 @@ class AlertDialogBuilder(private val context: Context) {
                 onClickListener?.onClick(dialog, which)
             }
 
-        alertDialogBuilder.setNegativeButton(textId, loggingClickListener)
+        alertDialogBuilder.setNeutralButton(textId, loggingClickListener)
         return this
     }
 
@@ -168,6 +215,7 @@ class AlertDialogBuilder(private val context: Context) {
                 logger.logInteraction(positiveButtonKey)
                 onClickListener?.onClick(dialog, which)
             }
+
         alertDialogBuilder.setPositiveButton(textId, loggingClickListener)
         return this
     }
