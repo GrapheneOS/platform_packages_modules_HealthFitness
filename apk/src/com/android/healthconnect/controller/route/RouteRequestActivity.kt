@@ -161,15 +161,19 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
 
         dialog =
             AlertDialogBuilder(this)
-                .setIcon(R.attr.healthConnectIcon)
-                .setTitle(title)
+                .setCustomIcon(R.attr.healthConnectIcon)
+                .setCustomTitle(title)
                 .setView(view)
                 .setCancelable(false)
                 .create()
-        if (!dialog!!.isShowing && migrationState in listOf(
-                        MigrationState.IDLE, MigrationState.COMPLETE, MigrationState.COMPLETE_IDLE,
-                        MigrationState.ALLOWED_MIGRATOR_DISABLED, MigrationState.ALLOWED_ERROR
-                )) {
+        if (!dialog!!.isShowing &&
+            migrationState in
+                listOf(
+                    MigrationState.IDLE,
+                    MigrationState.COMPLETE,
+                    MigrationState.COMPLETE_IDLE,
+                    MigrationState.ALLOWED_MIGRATOR_DISABLED,
+                    MigrationState.ALLOWED_ERROR)) {
             dialog?.show()
         }
     }
@@ -178,8 +182,8 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
         val view = layoutInflater.inflate(R.layout.route_sharing_info_dialog, null)
         infoDialog =
             AlertDialogBuilder(this)
-                .setIcon(R.attr.privacyPolicyIcon)
-                .setTitle(getString(R.string.request_route_info_header_title))
+                .setCustomIcon(R.attr.privacyPolicyIcon)
+                .setCustomTitle(getString(R.string.request_route_info_header_title))
                 .setNegativeButton(R.string.back_button, ErrorPageElement.UNKNOWN_ELEMENT) { _, _ ->
                     dialog?.show()
                 }
@@ -217,9 +221,7 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
                     })
             }
             MigrationState.COMPLETE -> {
-                maybeShowWhatsNewDialog(this) { _, _ ->
-                    dialog?.show()
-                }
+                maybeShowWhatsNewDialog(this) { _, _ -> dialog?.show() }
             }
             else -> {
                 // Show the request dialog

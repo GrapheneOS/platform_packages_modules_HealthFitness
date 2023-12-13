@@ -56,9 +56,9 @@ class DeletionAppDataConfirmationDialogFragment : Hilt_DeletionAppDataConfirmati
             AlertDialogBuilder(this)
                 .setLogName(
                     DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_CONTAINER)
-                .setTitle(getString(R.string.confirming_question_app_data_all, appName))
+                .setCustomTitle(getString(R.string.confirming_question_app_data_all, appName))
                 .setView(view)
-                .setIcon(R.attr.deleteIcon)
+                .setCustomIcon(R.attr.deleteIcon)
                 .setPositiveButton(
                     R.string.confirming_question_delete_button,
                     DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_DELETE_BUTTON) {

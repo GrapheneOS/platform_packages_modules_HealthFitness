@@ -50,8 +50,8 @@ class TimeRangeDialogFragment : Hilt_TimeRangeDialogFragment() {
 
         return AlertDialogBuilder(this)
             .setLogName(DeletionDialogTimeRangeElement.DELETION_DIALOG_TIME_RANGE_CONTAINER)
-            .setTitle(R.string.time_range_title)
-            .setIcon(R.attr.deletionSettingsIcon)
+            .setCustomTitle(R.string.time_range_title)
+            .setCustomIcon(R.attr.deletionSettingsIcon)
             .setView(view)
             .setNegativeButton(
                 android.R.string.cancel,
