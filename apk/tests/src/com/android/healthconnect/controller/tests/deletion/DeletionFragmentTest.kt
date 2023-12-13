@@ -61,6 +61,7 @@ class DeletionFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
+        Mockito.`when`(viewModel.isInactiveApp).then { false }
     }
 
     // Delete all data flow
@@ -747,6 +748,7 @@ class DeletionFragmentTest {
                     deletionType = deletionTypeAppData,
                     chosenRange = ChosenRange.DELETE_RANGE_ALL_DATA))
         }
+        Mockito.`when`(viewModel.isInactiveApp).then { true }
 
         launchFragment<DeletionFragment>(Bundle()) {
             (this as DeletionFragment)
@@ -765,6 +767,12 @@ class DeletionFragmentTest {
                     "Connected apps will no longer be able to access this data from Health\u00A0Connect"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
+
+        onView(
+            withText(
+                "Also remove all $TEST_APP_NAME permissions from Health\u00A0Connect"))
+            .inRoot(isDialog())
+            .check(doesNotExist())
     }
 
     @Test

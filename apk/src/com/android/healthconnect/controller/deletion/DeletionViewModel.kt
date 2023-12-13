@@ -49,6 +49,7 @@ constructor(
 
     private val _deletionParameters = MutableLiveData(DeletionParameters())
     private var _removePermissions = false
+    var isInactiveApp = false
 
     val deletionParameters: LiveData<DeletionParameters>
         get() = _deletionParameters
