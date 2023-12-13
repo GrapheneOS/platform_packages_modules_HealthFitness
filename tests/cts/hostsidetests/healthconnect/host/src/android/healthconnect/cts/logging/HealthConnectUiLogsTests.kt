@@ -20,6 +20,7 @@ import android.cts.statsdatom.lib.AtomTestUtils
 import android.cts.statsdatom.lib.ConfigUtils
 import android.cts.statsdatom.lib.DeviceUtils
 import android.cts.statsdatom.lib.ReportUtils
+import android.healthconnect.cts.HostSideTestUtil
 import android.healthconnect.cts.HostSideTestUtil.isHardwareSupported
 import android.healthfitness.ui.ElementId
 import android.healthfitness.ui.PageId
@@ -43,12 +44,14 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
     override fun setUp() {
         super.setUp()
-        if(!isHardwareSupported(device)) {
+        if (!isHardwareSupported(device)) {
             return
         }
         assertThat(mCtsBuild).isNotNull()
         ConfigUtils.removeConfig(device)
         ReportUtils.clearReports(device)
+        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
+        HostSideTestUtil.setupRateLimitingFeatureFlag(device)
         val pmResult =
             device.executeShellCommand(
                 "pm list packages com.google.android.healthconnect.controller")
@@ -72,6 +75,8 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     override fun tearDown() {
         ConfigUtils.removeConfig(device)
         ReportUtils.clearReports(device)
+        // TODO(b/313055175): Do not disable rate limiting once b/300238889 is resolved.
+        HostSideTestUtil.restoreRateLimitingFeatureFlag(device)
         super.tearDown()
     }
 
@@ -80,7 +85,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
     }
 
     fun testImpressionsAndInteractionsSent() {
-        if(!isHardwareSupported(device)) {
+        if (!isHardwareSupported(device)) {
             return
         }
         DeviceUtils.runDeviceTests(
@@ -146,10 +151,6 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         val seeAllCategoriesImpression =
             filterImpressionLogs(data, ElementId.SEE_ALL_CATEGORIES_BUTTON)
         assertThat(seeAllCategoriesImpression.size).isAtLeast(1)
-
-        val autoDeleteImpression =
-            filterImpressionLogs(data, ElementId.AUTO_DELETE_BUTTON)
-        assertThat(autoDeleteImpression.size).isAtLeast(1)
 
         val deleteAllDataImpression =
             filterImpressionLogs(data, ElementId.DELETE_ALL_DATA_BUTTON)

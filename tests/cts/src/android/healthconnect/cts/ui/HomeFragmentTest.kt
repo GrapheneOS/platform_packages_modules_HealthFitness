@@ -19,11 +19,11 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.StepsRecord
-import android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.lib.MultiAppTestUtils.insertRecordAs
 import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
+import android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords
 import androidx.test.uiautomator.By
 import com.android.cts.install.lib.TestApp
 import java.time.Instant
@@ -84,7 +84,7 @@ class HomeFragmentTest : HealthConnectBaseTest() {
             clickOnText("App permissions")
 
             waitDisplayed(By.text("Allowed access"))
-            // TODO(b/265789268): Fix flaky "DNot allowed access" not found.
+            // TODO(b/265789268): Fix flaky "Not allowed access" not found.
             // waitDisplayed(By.text("Not allowed access"))
         }
     }
@@ -96,9 +96,19 @@ class HomeFragmentTest : HealthConnectBaseTest() {
 
             waitDisplayed(By.text("Browse data"))
             waitDisplayed(By.text("Manage data"))
-            waitDisplayed(By.text("Auto-delete"))
 
             waitDisplayed(By.text("Delete all data"))
+        }
+    }
+
+    @Test
+    fun homeFragment_openManageData() {
+        context.launchMainActivity {
+            clickOnText("Manage data")
+
+            waitDisplayed(By.text("Auto-delete"))
+            waitDisplayed(By.text("Data sources and priority"))
+            waitDisplayed(By.text("Set units"))
         }
     }
 
