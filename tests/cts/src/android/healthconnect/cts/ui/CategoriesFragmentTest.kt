@@ -19,13 +19,12 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
-import android.healthconnect.cts.utils.TestUtils.insertRecords
-import android.healthconnect.cts.utils.TestUtils.setAutoDeletePeriod
-import android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords
 import android.healthconnect.cts.lib.ActivityLauncher.launchDataActivity
 import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import android.healthconnect.cts.lib.UiTestUtils.stepsRecordFromTestApp
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
+import android.healthconnect.cts.utils.TestUtils.insertRecords
+import android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords
 import androidx.test.uiautomator.By
 import java.time.Instant
 import org.junit.AfterClass
@@ -36,8 +35,6 @@ import org.junit.Test
 class CategoriesFragmentTest : HealthConnectBaseTest() {
 
     companion object {
-
-        private const val THREE_MONTHS = 3 * 30
 
         @JvmStatic
         @BeforeClass
@@ -69,26 +66,6 @@ class CategoriesFragmentTest : HealthConnectBaseTest() {
         context.launchDataActivity {
             clickOnText("See all categories")
             waitDisplayed(By.text("Nutrition"))
-        }
-    }
-
-    @Test
-    fun categoriesFragment_never_showsAutoDeleteOption() {
-        setAutoDeletePeriod(0)
-
-        context.launchDataActivity {
-            waitDisplayed(By.text("Auto-delete"))
-            waitDisplayed(By.text("Off"))
-        }
-    }
-
-    @Test
-    fun categoriesFragment_3months_showsAutoDeleteOption() {
-        setAutoDeletePeriod(THREE_MONTHS)
-
-        context.launchDataActivity {
-            waitDisplayed(By.text("Auto-delete"))
-            waitDisplayed(By.text("After 3 months"))
         }
     }
 

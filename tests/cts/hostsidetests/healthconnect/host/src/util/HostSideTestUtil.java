@@ -41,6 +41,10 @@ public class HostSideTestUtil {
     private static final String FEATURE_LEANBACK = "android.software.leanback";
     private static final String FEATURE_AUTOMOTIVE = "android.hardware.type.automotive";
 
+    private static final String ENABLE_RATE_LIMITER_FLAG = "enable_rate_limiter";
+    private static final String NAMESPACE_HEALTH_FITNESS = "health_fitness";
+    private static String sRateLimiterFlagDefaultValue;
+
     /** Clears all data on the device, including access logs. */
     public static void clearData(ITestDevice device) throws Exception {
         triggerTestInTestApp(device, DAILY_LOG_TESTS_ACTIVITY, "deleteAllRecordsAddedForTest");
@@ -125,6 +129,31 @@ public class HostSideTestUtil {
                     && !DeviceUtils.hasFeature(device, FEATURE_AUTOMOTIVE);
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    /** Temporarily disables the rate limiter feature flag. */
+    public static void setupRateLimitingFeatureFlag(ITestDevice device) throws Exception {
+        // Store default value of the flag on device for teardown.
+        sRateLimiterFlagDefaultValue =
+                DeviceUtils.getDeviceConfigFeature(
+                        device, NAMESPACE_HEALTH_FITNESS, ENABLE_RATE_LIMITER_FLAG);
+
+        DeviceUtils.putDeviceConfigFeature(
+                device, NAMESPACE_HEALTH_FITNESS, ENABLE_RATE_LIMITER_FLAG, "false");
+    }
+
+    /** Restores the rate limiter feature flag. */
+    public static void restoreRateLimitingFeatureFlag(ITestDevice device) throws Exception {
+        if (sRateLimiterFlagDefaultValue == null || sRateLimiterFlagDefaultValue.equals("null")) {
+            DeviceUtils.deleteDeviceConfigFeature(
+                    device, NAMESPACE_HEALTH_FITNESS, ENABLE_RATE_LIMITER_FLAG);
+        } else {
+            DeviceUtils.putDeviceConfigFeature(
+                    device,
+                    NAMESPACE_HEALTH_FITNESS,
+                    ENABLE_RATE_LIMITER_FLAG,
+                    sRateLimiterFlagDefaultValue);
         }
     }
 }
