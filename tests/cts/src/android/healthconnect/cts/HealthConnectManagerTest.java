@@ -773,13 +773,24 @@ public class HealthConnectManagerTest {
         List<AggregateRecordsGroupedByDurationResponse<Long>> groupByResponse =
                 TestUtils.getAggregateResponseGroupByDuration(
                         aggregateRecordsRequest, Duration.ofHours(1));
+
         assertThat(groupByResponse.get(0).getStartTime()).isEqualTo(midNight);
         assertThat(groupByResponse.get(0).getEndTime()).isEqualTo(t0100);
         assertThat(groupByResponse.get(0).getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(utcPlusOne);
         assertThat(groupByResponse.get(0).get(STEPS_COUNT_TOTAL)).isEqualTo(12);
-        assertThat(groupByResponse.get(1).getStartTime()).isEqualTo(t0100.plus(1, HOURS));
-        assertThat(groupByResponse.get(1).getEndTime()).isEqualTo(t0300);
+
+        // When no data falls in a given bucket, zone offset will be null and we use system default
+        // zone to set bucket start and end time
+        LocalDateTime localStart = t0100.atZone(utcPlusOne).toLocalDateTime();
+        LocalDateTime localEnd = localStart.plus(1, HOURS);
+        ZoneOffset startZone = ZoneOffset.systemDefault().getRules().getOffset(localStart);
+        Instant start = localStart.atZone(startZone).toInstant();
+        ZoneOffset endZone = ZoneOffset.systemDefault().getRules().getOffset(localEnd);
+        Instant end = localEnd.atZone(endZone).toInstant();
+        assertThat(groupByResponse.get(1).getStartTime()).isEqualTo(start);
+        assertThat(groupByResponse.get(1).getEndTime()).isEqualTo(end);
         assertThat(groupByResponse.get(1).getZoneOffset(STEPS_COUNT_TOTAL)).isNull();
+
         assertThat(groupByResponse.get(2).getStartTime()).isEqualTo(t0300);
         assertThat(groupByResponse.get(2).getEndTime()).isEqualTo(t0400);
         assertThat(groupByResponse.get(2).getZoneOffset(STEPS_COUNT_TOTAL)).isEqualTo(UTC);
