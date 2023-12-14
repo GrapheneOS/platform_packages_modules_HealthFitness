@@ -48,10 +48,7 @@ import android.util.Slog;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import java.nio.ByteBuffer;
-import java.time.Duration;
-import java.time.Period;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -266,6 +263,7 @@ public final class StorageUtils {
     /**
      * Reads ZoneOffset using given cursor. Returns null of column name is not present in the table.
      */
+    @SuppressWarnings("NullAway")
     public static ZoneOffset getZoneOffset(Cursor cursor, String startZoneOffsetColumnName) {
         ZoneOffset zoneOffset = null;
         if (cursor.getColumnIndex(startZoneOffsetColumnName) != -1) {

@@ -163,6 +163,7 @@ public final class HealthConnectPermissionHelper {
     }
 
     /** See {@link HealthConnectManager#revokeAllHealthPermissions}. */
+    @SuppressWarnings("NullAway")
     public void revokeAllHealthPermissions(
             @NonNull String packageName, @Nullable String reason, @NonNull UserHandle user) {
         Objects.requireNonNull(packageName);
@@ -268,6 +269,7 @@ public final class HealthConnectPermissionHelper {
      * throws {@link IllegalAccessException} if health permission is in an incorrect state where
      * first grant time can't be fetched.
      */
+    @SuppressWarnings("NullAway")
     @NonNull
     public Instant getHealthDataStartDateAccessOrThrow(String packageName, UserHandle user) {
         Instant startDateAccess = getHealthDataStartDateAccess(packageName, user);

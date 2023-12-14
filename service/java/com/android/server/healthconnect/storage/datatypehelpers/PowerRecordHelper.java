@@ -61,6 +61,7 @@ public class PowerRecordHelper
         super(RecordTypeIdentifier.RECORD_TYPE_POWER);
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public final AggregateResult<?> getAggregateResult(
             Cursor results, AggregationType<?> aggregationType) {
@@ -82,6 +83,7 @@ public class PowerRecordHelper
         return TABLE_NAME;
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     final AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

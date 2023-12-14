@@ -113,6 +113,7 @@ public class CyclingPedalingCadenceRecordHelper
         contentValues.put(EPOCH_MILLIS_COLUMN_NAME, cyclingPedalingCadenceRecord.getEpochMillis());
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public final AggregateResult<?> getAggregateResult(
             Cursor results, AggregationType<?> aggregationType) {
@@ -129,6 +130,7 @@ public class CyclingPedalingCadenceRecordHelper
         }
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     final AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

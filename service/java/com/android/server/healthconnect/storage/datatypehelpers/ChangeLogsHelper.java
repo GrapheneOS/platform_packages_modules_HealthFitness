@@ -70,6 +70,8 @@ public final class ChangeLogsHelper extends DatabaseHelper {
     private static final String OPERATION_TYPE_COLUMN_NAME = "operation_type";
     private static final String TIME_COLUMN_NAME = "time";
     private static final int NUM_COLS = 5;
+
+    @SuppressWarnings("NullAway.Init")
     private static volatile ChangeLogsHelper sChangeLogsHelper;
 
     private ChangeLogsHelper() {}
@@ -152,6 +154,7 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         return TransactionManager.getInitialisedInstance().getLastRowIdFor(TABLE_NAME);
     }
 
+    @SuppressWarnings("NullAway")
     private int addChangeLogs(Cursor cursor, Map<Integer, ChangeLogs> changeLogs) {
         @RecordTypeIdentifier.RecordType
         int recordType = getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME);
@@ -249,6 +252,7 @@ public final class ChangeLogsHelper extends DatabaseHelper {
          *     or delete.
          * @param timeStamp Time when the change log is added.
          */
+        @SuppressWarnings("NullAway")
         public ChangeLogs(@OperationType.OperationTypes int operationType, long timeStamp) {
             mOperationType = operationType;
             mChangeLogTimeStamp = timeStamp;
@@ -280,6 +284,7 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         }
 
         /** Function to add an uuid corresponding to given pair of @recordType and @appId */
+        @SuppressWarnings("NullAway")
         public void addUUID(
                 @RecordTypeIdentifier.RecordType int recordType,
                 @NonNull long appId,
@@ -316,6 +321,8 @@ public final class ChangeLogsHelper extends DatabaseHelper {
             return requests;
         }
 
+        /** Adds {@code uuids} to {@link ChangeLogs}. */
+        @SuppressWarnings("NullAway")
         public ChangeLogs addUUIDs(
                 @RecordTypeIdentifier.RecordType int recordType,
                 @NonNull long appId,

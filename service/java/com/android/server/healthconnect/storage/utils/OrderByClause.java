@@ -23,6 +23,7 @@ import java.util.List;
 
 /** @hide */
 public final class OrderByClause {
+    @SuppressWarnings("NullAway.Init")
     List<Pair<String, Boolean>> mOrderList;
 
     /**

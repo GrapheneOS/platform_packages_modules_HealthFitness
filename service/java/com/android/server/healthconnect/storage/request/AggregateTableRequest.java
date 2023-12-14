@@ -87,6 +87,7 @@ public class AggregateTableRequest {
     private final boolean mUseLocalTime;
     private List<Long> mTimeSplits;
 
+    @SuppressWarnings("NullAway.Init")
     public AggregateTableRequest(
             AggregateParams params,
             AggregationType<?> aggregationType,
@@ -284,6 +285,7 @@ public class AggregateTableRequest {
         }
     }
 
+    @SuppressWarnings("NullAway")
     private static String getSqlCommandFor(@AggregationType.AggregateOperationType int type) {
         return switch (type) {
             case MAX -> "MAX";
@@ -339,6 +341,7 @@ public class AggregateTableRequest {
         return builder.toString();
     }
 
+    @SuppressWarnings("NullAway")
     private void updateResultWithDataOriginPackageNames(Cursor metaDataCursor) {
         List<Long> packageIds = new ArrayList<>();
         while (metaDataCursor.moveToNext()) {

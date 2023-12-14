@@ -63,6 +63,7 @@ public class HeartRateRecordHelper
         super(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE);
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public final AggregateResult<?> getAggregateResult(
             Cursor results, AggregationType<?> aggregationType) {
@@ -85,6 +86,7 @@ public class HeartRateRecordHelper
         return TABLE_NAME;
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     final AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

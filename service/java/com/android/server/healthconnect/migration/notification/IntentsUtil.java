@@ -80,6 +80,7 @@ final class IntentsUtil {
     }
 
     /** Convenience method that looks up the installerPackageName for you. */
+    @SuppressWarnings("NullAway")
     @Nullable
     public static Intent createAppStoreIntent(
             @NonNull Context context, @NonNull String packageName) {
