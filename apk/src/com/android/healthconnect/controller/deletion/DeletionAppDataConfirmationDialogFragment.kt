@@ -39,26 +39,34 @@ class DeletionAppDataConfirmationDialogFragment : Hilt_DeletionAppDataConfirmati
     @Inject lateinit var logger: HealthConnectLogger
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        var isInactiveApp = viewModel.isInactiveApp
+
         val view: View = layoutInflater.inflate(R.layout.dialog_message_with_checkbox, null)
         val message = view.findViewById(R.id.dialog_message) as TextView
         val checkBox = view.findViewById(R.id.dialog_checkbox) as CheckBox
 
         val appName = viewModel.deletionParameters.value?.getAppName()
         message.text = getString(R.string.confirming_question_message)
-        checkBox.text = getString(R.string.confirming_question_app_remove_all_permissions, appName)
-        checkBox.setOnCheckedChangeListener { _, _ ->
-            logger.logInteraction(
-                DeletionDialogConfirmationElement
-                    .DELETION_DIALOG_CONFIRMATION_REMOVE_APP_PERMISSIONS_BUTTON)
+        if (isInactiveApp) {
+            checkBox.visibility = View.GONE
+        } else {
+            checkBox.visibility = View.VISIBLE
+            checkBox.text =
+                getString(R.string.confirming_question_app_remove_all_permissions, appName)
+            checkBox.setOnCheckedChangeListener { _, _ ->
+                logger.logInteraction(
+                    DeletionDialogConfirmationElement
+                        .DELETION_DIALOG_CONFIRMATION_REMOVE_APP_PERMISSIONS_BUTTON)
+            }
         }
 
         val alertDialogBuilder =
             AlertDialogBuilder(this)
                 .setLogName(
                     DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_CONTAINER)
-                .setTitle(getString(R.string.confirming_question_app_data_all, appName))
+                .setCustomTitle(getString(R.string.confirming_question_app_data_all, appName))
                 .setView(view)
-                .setIcon(R.attr.deleteIcon)
+                .setCustomIcon(R.attr.deleteIcon)
                 .setPositiveButton(
                     R.string.confirming_question_delete_button,
                     DeletionDialogConfirmationElement.DELETION_DIALOG_CONFIRMATION_DELETE_BUTTON) {
