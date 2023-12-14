@@ -51,6 +51,7 @@ public final class DeleteTransactionRequest {
     private ChangeLogsHelper.ChangeLogs mChangeLogs;
     private boolean mHasHealthDataManagementPermission;
 
+    @SuppressWarnings("NullAway.Init")
     public DeleteTransactionRequest(String packageName, DeleteUsingFiltersRequestParcel request) {
         Objects.requireNonNull(packageName);
         mDeleteTableRequests = new ArrayList<>(request.getRecordTypeFilters().size());

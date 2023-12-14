@@ -60,6 +60,7 @@ public class DeleteTableRequest {
     private WhereClauses mCustomWhereClauses;
     private long mLessThanOrEqualValue;
 
+    @SuppressWarnings("NullAway.Init")
     public DeleteTableRequest(
             @NonNull String tableName, @RecordTypeIdentifier.RecordType int recordType) {
         Objects.requireNonNull(tableName);
@@ -68,6 +69,7 @@ public class DeleteTableRequest {
         mRecordType = recordType;
     }
 
+    @SuppressWarnings("NullAway.Init")
     public DeleteTableRequest(@NonNull String tableName) {
         Objects.requireNonNull(tableName);
 

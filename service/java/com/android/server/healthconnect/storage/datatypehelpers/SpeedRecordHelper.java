@@ -99,6 +99,7 @@ public class SpeedRecordHelper
         record.setSamples(speedRecordSampleSet);
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public AggregateResult<?> getAggregateResult(
             Cursor results, AggregationType<?> aggregationType) {
@@ -114,6 +115,7 @@ public class SpeedRecordHelper
         }
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

@@ -41,6 +41,8 @@ import java.util.Set;
  */
 public class PackageInfoUtils {
     private static final String TAG = "HealthConnectPackageInfoUtils";
+
+    @SuppressWarnings("NullAway.Init")
     private static volatile PackageInfoUtils sPackageInfoUtils;
 
     /**
@@ -91,6 +93,7 @@ public class PackageInfoUtils {
         return healthAppsInfos;
     }
 
+    @SuppressWarnings("NullAway")
     boolean hasGrantedHealthPermissions(
             @NonNull String[] packageNames, @NonNull UserHandle user, @NonNull Context context) {
         for (String packageName : packageNames) {
@@ -150,6 +153,7 @@ public class PackageInfoUtils {
 
     @Nullable
     String getSharedUserNameFromUid(int uid, Context context) {
+        @SuppressWarnings("NullAway")
         String[] packages =
                 mUsersPackageManager
                         .get(UserHandle.getUserHandleForUid(uid))
@@ -181,6 +185,7 @@ public class PackageInfoUtils {
 
     @Nullable
     String[] getPackageNamesForUid(int uid) {
+        @SuppressWarnings("NullAway")
         String[] packages =
                 mUsersPackageManager
                         .get(UserHandle.getUserHandleForUid(uid))

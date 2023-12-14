@@ -97,6 +97,7 @@ public class UpsertTransactionRequest {
                 Collections.emptyMap());
     }
 
+    @SuppressWarnings("NullAway")
     public UpsertTransactionRequest(
             @Nullable String packageName,
             @NonNull List<RecordInternal<?>> recordInternals,

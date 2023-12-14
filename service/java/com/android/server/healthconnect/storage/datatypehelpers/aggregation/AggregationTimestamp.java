@@ -41,6 +41,7 @@ public class AggregationTimestamp implements Comparable<AggregationTimestamp> {
     private final long mTime;
     private AggregationRecordData mParentRecord;
 
+    @SuppressWarnings("NullAway.Init")
     public AggregationTimestamp(int type, long time) {
         mTime = time;
         mType = type;

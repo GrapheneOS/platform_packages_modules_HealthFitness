@@ -137,6 +137,7 @@ public final class ExerciseSessionRecordHelper
         }
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         List<String> sessionColumns = new ArrayList<>(super.getPriorityAggregationColumnNames());

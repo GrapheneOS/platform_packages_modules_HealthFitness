@@ -55,10 +55,16 @@ public class DeviceInfoHelper extends DatabaseHelper {
     private static final String MANUFACTURER_COLUMN_NAME = "manufacturer";
     private static final String MODEL_COLUMN_NAME = "model";
     private static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
+
+    @SuppressWarnings("NullAway.Init")
     private static volatile DeviceInfoHelper sDeviceInfoHelper;
+
     /** Map to store deviceInfoId -> DeviceInfo mapping for populating record for read */
+    @SuppressWarnings("NullAway.Init")
     private volatile ConcurrentHashMap<Long, DeviceInfo> mIdDeviceInfoMap;
+
     /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
+    @SuppressWarnings("NullAway.Init")
     private volatile ConcurrentHashMap<DeviceInfo, Long> mDeviceInfoMap;
 
     /**
@@ -102,6 +108,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
         }
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public synchronized void clearCache() {
         mDeviceInfoMap = null;

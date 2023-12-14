@@ -47,6 +47,7 @@ public final class HydrationRecordHelper extends IntervalRecordHelper<HydrationR
         super(RecordTypeIdentifier.RECORD_TYPE_HYDRATION);
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     public AggregateResult<?> getAggregateResult(
             Cursor results, AggregationType<?> aggregationType) {
@@ -73,6 +74,7 @@ public final class HydrationRecordHelper extends IntervalRecordHelper<HydrationR
         hydrationRecord.setVolume(getCursorDouble(cursor, VOLUME_COLUMN_NAME));
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
