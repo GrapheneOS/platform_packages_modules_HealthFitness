@@ -24,6 +24,7 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
+import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -74,6 +75,7 @@ class ConnectedAppsFragmentTest {
     fun setup() {
         hiltRule.inject()
         whenever(viewModel.disconnectAllState).then { MutableLiveData(NotStarted) }
+        whenever(viewModel.alertDialogActive).then { MutableLiveData(false) }
     }
 
     @Test
@@ -91,7 +93,6 @@ class ConnectedAppsFragmentTest {
     fun test_deniedApps() {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
-
         launchFragment<ConnectedAppsFragment>(Bundle())
 
         onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
@@ -106,6 +107,25 @@ class ConnectedAppsFragmentTest {
         launchFragment<ConnectedAppsFragment>(Bundle())
 
         onView(withText(R.string.disconnect_all_apps)).check(matches(isEnabled()))
+    }
+
+    @Test
+    fun allowedApps_confirmationDialogDisplayed_dialogDoesNotDisAppearWhenActivityRestarts() {
+        val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED))
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        whenever(viewModel.alertDialogActive).then { MutableLiveData(true) }
+
+        val scenario = launchFragment<ConnectedAppsFragment>(Bundle())
+
+        onView(withText("Remove access for all apps?"))
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
+
+        scenario.recreate()
+
+        onView(withText("Remove access for all apps?"))
+            .inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -134,7 +154,6 @@ class ConnectedAppsFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
         whenever(viewModel.disconnectAllState).then { MutableLiveData(Updated) }
-
         launchFragment<ConnectedAppsFragment>(Bundle())
 
         onView(withText(R.string.loading)).check(doesNotExist())
