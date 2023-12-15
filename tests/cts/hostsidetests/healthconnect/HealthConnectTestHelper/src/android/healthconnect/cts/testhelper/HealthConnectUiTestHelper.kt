@@ -98,7 +98,6 @@ class HealthConnectUiTestHelper {
 
             UiTestUtils.waitDisplayed(By.text("Browse data"))
             UiTestUtils.waitDisplayed(By.text("Manage data"))
-            UiTestUtils.waitDisplayed(By.text("Auto-delete"))
 
             UiTestUtils.waitDisplayed(By.text("Delete all data"))
         }

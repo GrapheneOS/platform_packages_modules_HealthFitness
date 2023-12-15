@@ -43,16 +43,19 @@ public final class AggregateParams {
 
     // Additional column used for time filtering. End time for interval records,
     // null for other records.
+    @SuppressWarnings("NullAway")
     private String mExtraTimeColumnName = null;
 
     private String mTimeOffsetColumnName;
 
     private PriorityAggregationExtraParams mPriorityAggregationExtraParams;
 
+    @SuppressWarnings("NullAway")
     public AggregateParams(String tableName, List<String> columnsToFetch) {
         this(tableName, columnsToFetch, null);
     }
 
+    @SuppressWarnings("NullAway.Init")
     public AggregateParams(
             String tableName, List<String> columnsToFetch, Class<?> priorityColumnDataType) {
         mTableName = tableName;
@@ -148,12 +151,14 @@ public final class AggregateParams {
         private String mExcludeIntervalEndColumnName;
         private String mExcludeIntervalStartColumnName;
 
+        @SuppressWarnings("NullAway.Init")
         public PriorityAggregationExtraParams(
                 String excludeIntervalStartColumnName, String excludeIntervalEndColumnName) {
             mExcludeIntervalStartColumnName = excludeIntervalStartColumnName;
             mExcludeIntervalEndColumnName = excludeIntervalEndColumnName;
         }
 
+        @SuppressWarnings("NullAway.Init")
         public PriorityAggregationExtraParams(
                 String columnToAggregateName, Class<?> aggregationType) {
             mColumnToAggregateName = columnToAggregateName;

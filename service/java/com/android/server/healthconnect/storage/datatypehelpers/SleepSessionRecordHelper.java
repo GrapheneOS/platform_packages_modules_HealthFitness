@@ -69,6 +69,7 @@ public final class SleepSessionRecordHelper
         return SLEEP_SESSION_RECORD_TABLE_NAME;
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         if (aggregateRequest.getAggregationTypeIdentifier() == SLEEP_SESSION_DURATION_TOTAL) {

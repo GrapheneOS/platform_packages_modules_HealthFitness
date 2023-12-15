@@ -210,6 +210,7 @@ public final class BackupRestore {
 
     private volatile UserHandle mCurrentForegroundUser;
 
+    @SuppressWarnings("NullAway.Init")
     public BackupRestore(
             FirstGrantTimeManager firstGrantTimeManager,
             MigrationStateManager migrationStateManager,
@@ -357,6 +358,7 @@ public final class BackupRestore {
         var backupFilesByFileNames = getBackupFilesByFileNames(userHandle);
         pfdsByFileName.forEach(
                 (fileName, pfd) -> {
+                    @SuppressWarnings("NullAway")
                     Path sourceFilePath = backupFilesByFileNames.get(fileName).toPath();
                     try (FileOutputStream outputStream =
                             new FileOutputStream(pfd.getFileDescriptor())) {
@@ -397,6 +399,7 @@ public final class BackupRestore {
     }
 
     /** Deletes all the staged data and resets all the states. */
+    @SuppressWarnings("NullAway")
     public void deleteAndResetEverything(@NonNull UserHandle userHandle) {
         // Don't delete anything while we are in the process of merging staged data.
         synchronized (mMergingLock) {
@@ -988,6 +991,7 @@ public final class BackupRestore {
                 mCurrentForegroundUser, userGrantTimeState);
     }
 
+    @SuppressWarnings("NullAway")
     private void mergeDatabase() {
         synchronized (mMergingLock) {
             if (!mStagedDbContext.getDatabasePath(STAGED_DATABASE_NAME).exists()) {
@@ -1054,6 +1058,7 @@ public final class BackupRestore {
         // Passing -1 for startTime and endTime as we don't want to have time based filtering in the
         // final query.
         Slog.d(TAG, "Deleting table for: " + recordTypeClass);
+        @SuppressWarnings("NullAway")
         DeleteTableRequest deleteTableRequest =
                 recordHelper.getDeleteTableRequest(
                         null /* packageFilters */,
@@ -1079,6 +1084,7 @@ public final class BackupRestore {
 
         // Working with startDateAccess of -1 as we don't want to have time based filtering in the
         // query.
+        @SuppressWarnings("NullAway")
         ReadTransactionRequest readTransactionRequest =
                 new ReadTransactionRequest(
                         null,
@@ -1203,6 +1209,7 @@ public final class BackupRestore {
         public static final String EXTRA_JOB_NAME_KEY = "job_name";
         private static final int BACKUP_RESTORE_JOB_ID = 1000;
 
+        @SuppressWarnings("NullAway.Init")
         static volatile BackupRestore sBackupRestore;
 
         @Override

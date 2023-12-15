@@ -56,6 +56,7 @@ public final class ElevationGainedRecordHelper
         return ELEVATION_GAINED_RECORD_TABLE_NAME;
     }
 
+    @SuppressWarnings("NullAway")
     @Override
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

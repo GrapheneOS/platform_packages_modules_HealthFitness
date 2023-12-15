@@ -60,11 +60,14 @@ public final class PriorityMigrationHelper extends DatabaseHelper {
             Collections.singletonList(new Pair<>(CATEGORY_COLUMN_NAME, TYPE_STRING));
 
     private static final Object sPriorityMigrationHelperLock = new Object();
+
+    @SuppressWarnings("NullAway.Init")
     private static volatile PriorityMigrationHelper sPriorityMigrationHelper;
 
     private final Object mPriorityMigrationHelperInstanceLock = new Object();
     private Map<Integer, List<Long>> mPreMigrationPriorityCache;
 
+    @SuppressWarnings("NullAway.Init")
     private PriorityMigrationHelper() {}
 
     /**
@@ -117,6 +120,7 @@ public final class PriorityMigrationHelper extends DatabaseHelper {
     }
 
     /** Delete pre-migration priority data when migration is finished. */
+    @SuppressWarnings("NullAway")
     public void clearData(@NonNull TransactionManager transactionManager) {
         synchronized (mPriorityMigrationHelperInstanceLock) {
             transactionManager.delete(new DeleteTableRequest(PRE_MIGRATION_TABLE_NAME));

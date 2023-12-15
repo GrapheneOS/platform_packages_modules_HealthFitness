@@ -172,7 +172,9 @@ public class HealthConnectDeviceConfigManager implements DeviceConfig.OnProperti
     @VisibleForTesting
     public static final boolean ENABLE_AGGREGATION_SOURCE_CONTROLS_DEFAULT_FLAG_VALUE = true;
 
+    @SuppressWarnings("NullAway.Init")
     private static HealthConnectDeviceConfigManager sDeviceConfigManager;
+
     private final ReentrantReadWriteLock mLock = new ReentrantReadWriteLock();
     private static final String HEALTH_FITNESS_NAMESPACE = DeviceConfig.NAMESPACE_HEALTH_FITNESS;
 

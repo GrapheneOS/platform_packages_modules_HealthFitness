@@ -99,12 +99,14 @@ public class MigratorPackageChangesReceiver extends BroadcastReceiver {
         return filter;
     }
 
+    @SuppressWarnings("NullAway")
     @NonNull
     private String getPackageName(@NonNull Intent intent) {
         Uri uri = intent.getData();
         return uri != null ? uri.getSchemeSpecificPart() : null;
     }
 
+    @SuppressWarnings("NullAway")
     @NonNull
     private UserHandle getUserHandle(@NonNull Intent intent) {
         final int uid = intent.getIntExtra(Intent.EXTRA_UID, -1);

@@ -82,6 +82,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
     }
 
     /** Get the date when the first health permission was granted. */
+    @SuppressWarnings("NullAway")
     @Nullable
     public Instant getFirstGrantTime(@NonNull String packageName, @NonNull UserHandle user)
             throws IllegalArgumentException {
@@ -255,6 +256,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         }
     }
 
+    @SuppressWarnings("NullAway")
     @GuardedBy("mGrantTimeLock")
     private Instant getGrantTimeReadLocked(Integer uid) {
         mGrantTimeLock.readLock().lock();
@@ -282,6 +284,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
         }
     }
 
+    @SuppressWarnings("NullAway")
     @GuardedBy("mGrantTimeLock")
     private boolean tryUpdateGrantTimeFromStagedDataLocked(UserHandle user, Integer uid) {
         UserGrantTimeState backupState = mDatastore.readForUser(user, DATA_TYPE_STAGED);
@@ -592,6 +595,7 @@ public class FirstGrantTimeManager implements PackageManager.OnPermissionsChange
                     packageNameToGrantTime, sharedUserToGrantTime, CURRENT_VERSION);
         }
 
+        @SuppressWarnings("NullAway")
         @NonNull
         UserGrantTimeState extractUserBackupGrantTimeState(@NonNull UserHandle user) {
             Map<String, Instant> sharedUserToGrantTime = new ArrayMap<>();
