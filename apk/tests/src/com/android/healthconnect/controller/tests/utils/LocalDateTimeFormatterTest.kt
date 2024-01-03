@@ -1,15 +1,19 @@
 package com.android.healthconnect.controller.tests.utils
 
 import android.content.Context
-import androidx.test.platform.app.InstrumentationRegistry.*
+import android.content.res.Configuration
+import android.os.LocaleList
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 import java.util.TimeZone
+import javax.inject.Inject
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,9 +23,7 @@ class LocalDateTimeFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    private lateinit var formatter: LocalDateTimeFormatter
-
-    private lateinit var context: Context
+    @Inject @ApplicationContext lateinit var context: Context
 
     private var previousDefaultTimeZone: TimeZone? = null
     private var previousLocale: Locale? = null
@@ -32,134 +34,137 @@ class LocalDateTimeFormatterTest {
     fun setup() {
         hiltRule.inject()
 
-        context = getInstrumentation().context
         previousDefaultTimeZone = TimeZone.getDefault()
-        previousLocale = context.resources.configuration.locale
-
-        // set default local
-        context.setLocale(Locale.UK)
+        previousLocale = Locale.getDefault()
 
         // set time zone
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
-        formatter = LocalDateTimeFormatter(context)
     }
 
+    @After
     fun tearDown() {
         TimeZone.setDefault(previousDefaultTimeZone)
-        previousLocale?.let { locale -> context.setLocale(locale) }
+        previousLocale?.let { locale -> Locale.setDefault(locale) }
     }
 
     @Test
     fun formatTime_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         assertThat(formatter.formatTime(time)).isEqualTo("14:06")
     }
 
     @Test
     fun formatTime_usLocale() {
-        context.setLocale(Locale.US)
+        val formatter = setLocaleAndCreateFormatter(Locale.US)
         assertThat(formatter.formatTime(time)).isEqualTo("2:06 PM")
     }
 
     @Test
     fun formatLongDate_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         assertThat(formatter.formatLongDate(time)).isEqualTo("20 October 2022")
     }
 
     @Test
     fun formatLongDate_usLocale() {
-        context.setLocale(Locale.US)
+        val formatter = setLocaleAndCreateFormatter(Locale.US)
         assertThat(formatter.formatLongDate(time)).isEqualTo("October 20, 2022")
     }
 
     @Test
     fun formatShortDate_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         assertThat(formatter.formatShortDate(time)).isEqualTo("20 October")
     }
 
     @Test
     fun formatShortDate_usLocale() {
-        context.setLocale(Locale.US)
+        val formatter = setLocaleAndCreateFormatter(Locale.US)
         assertThat(formatter.formatShortDate(time)).isEqualTo("October 20")
     }
 
     @Test
     fun formatTimeRange_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         val end = time.plus(1, ChronoUnit.HOURS)
         assertThat(formatter.formatTimeRange(time, end)).isEqualTo("14:06 - 15:06")
     }
 
     @Test
     fun formatTimeRange_usLocale() {
-        context.setLocale(Locale.US)
+        val formatter = setLocaleAndCreateFormatter(Locale.US)
         val end = time.plus(1, ChronoUnit.HOURS)
         assertThat(formatter.formatTimeRange(time, end)).isEqualTo("2:06 PM - 3:06 PM")
     }
 
     @Test
     fun formatTimeRangeA11y_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         val end = time.plus(1, ChronoUnit.HOURS)
         assertThat(formatter.formatTimeRangeA11y(time, end)).isEqualTo("from 14:06 to 15:06")
     }
 
     @Test
     fun formatTimeRangeA11y_usLocale() {
-        context.setLocale(Locale.US)
+        val formatter = setLocaleAndCreateFormatter(Locale.US)
         val end = time.plus(1, ChronoUnit.HOURS)
         assertThat(formatter.formatTimeRangeA11y(time, end)).isEqualTo("from 2:06 PM to 3:06 PM")
     }
 
     @Test
     fun formatDateRangeWithYear_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         val end = time.plus(10, ChronoUnit.DAYS)
         assertThat(formatter.formatDateRangeWithYear(time, end)).isEqualTo("20–30 Oct 2022")
     }
 
     @Test
     fun formatDateRangeWithoutYear_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         val end = time.plus(10, ChronoUnit.DAYS)
         assertThat(formatter.formatDateRangeWithoutYear(time, end)).isEqualTo("20–30 Oct")
     }
 
     @Test
     fun formatMonthWithYear_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         assertThat(formatter.formatMonthWithYear(time)).isEqualTo("October 2022")
     }
 
     @Test
     fun formatMonthWithoutYear_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         assertThat(formatter.formatMonthWithoutYear(time)).isEqualTo("October")
     }
 
     @Test
     fun formatWeekdayDateWithYear_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         assertThat(formatter.formatWeekdayDateWithYear(time)).isEqualTo("Thu, 20 Oct 2022")
     }
 
     @Test
     fun formatWeekdayDateWithYear_usLocale() {
-        context.setLocale(Locale.US)
+        val formatter = setLocaleAndCreateFormatter(Locale.US)
         assertThat(formatter.formatWeekdayDateWithYear(time)).isEqualTo("Thu, Oct 20, 2022")
     }
 
     @Test
     fun formatWeekdayDateWithoutYear_ukLocale() {
-        context.setLocale(Locale.UK)
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
         assertThat(formatter.formatWeekdayDateWithoutYear(time)).isEqualTo("Thu, 20 Oct")
     }
 
     @Test
     fun formatWeekdayDateWithoutYear_usLocale() {
-        context.setLocale(Locale.US)
+        val formatter = setLocaleAndCreateFormatter(Locale.US)
         assertThat(formatter.formatWeekdayDateWithoutYear(time)).isEqualTo("Thu, Oct 20")
+    }
+
+    private fun setLocaleAndCreateFormatter(locale: Locale): LocalDateTimeFormatter {
+        Locale.setDefault(locale)
+        val configuration = Configuration()
+        configuration.setLocales(LocaleList(locale))
+        return LocalDateTimeFormatter(context.createConfigurationContext(configuration))
     }
 }
