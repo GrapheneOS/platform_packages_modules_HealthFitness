@@ -1249,7 +1249,7 @@ package android.health.connect.datatypes {
     field public static final int EXERCISE_SESSION_TYPE_FOOTBALL_AUSTRALIAN = 14; // 0xe
     field public static final int EXERCISE_SESSION_TYPE_FRISBEE_DISC = 15; // 0xf
     field public static final int EXERCISE_SESSION_TYPE_GOLF = 16; // 0x10
-    field @Deprecated @FlaggedApi("com.android.healthfitness.flags.deprecate_exercise_session_type_breathing") public static final int EXERCISE_SESSION_TYPE_GUIDED_BREATHING = 17; // 0x11
+    field @Deprecated @FlaggedApi("com.android.healthfitness.flags.deprecate_exercise_session_type_guided_breathing") public static final int EXERCISE_SESSION_TYPE_GUIDED_BREATHING = 17; // 0x11
     field public static final int EXERCISE_SESSION_TYPE_GYMNASTICS = 18; // 0x12
     field public static final int EXERCISE_SESSION_TYPE_HANDBALL = 19; // 0x13
     field public static final int EXERCISE_SESSION_TYPE_HIGH_INTENSITY_INTERVAL_TRAINING = 20; // 0x14
