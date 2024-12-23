@@ -296,7 +296,8 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      * needs to be sanitised before applying the operation.
      */
     public void setPriorityOrder(int dataCategory, List<String> packagePriorityOrder) {
-        List<Long> newPriorityOrder = mAppInfoHelper.getAppInfoIds(packagePriorityOrder);
+        List<Long> newPriorityOrder =
+                packagePriorityOrder.stream().map(mAppInfoHelper::getOrInsertAppInfoId).toList();
         safelyUpdateDBAndUpdateCache(
                 new UpsertTableRequest(
                         PRIORITY_TABLE_NAME,

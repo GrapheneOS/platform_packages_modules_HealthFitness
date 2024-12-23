@@ -46,7 +46,6 @@ import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getApplicationInfo;
 import static android.healthconnect.cts.utils.TestUtils.getRecordIdFilters;
 import static android.healthconnect.cts.utils.TestUtils.getRecordIds;
-import static android.healthconnect.cts.utils.TestUtils.insertRecordsForPriority;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.updateDataOriginPriorityOrder;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
@@ -450,7 +449,6 @@ public class HealthConnectDeviceTest {
     @Test
     public void testAggregateRecords_onlyWritePermissions_requestsOwnDataOnly_succeeds()
             throws Exception {
-        insertRecordsForPriority(mContext.getPackageName());
         List<DataOrigin> dataOriginPrioOrder =
                 List.of(new DataOrigin.Builder().setPackageName(mContext.getPackageName()).build());
 

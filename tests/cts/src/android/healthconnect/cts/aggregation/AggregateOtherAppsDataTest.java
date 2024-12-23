@@ -72,10 +72,7 @@ public class AggregateOtherAppsDataTest {
 
     @Test
     public void testAppWithReadPerms_aggregateOtherAppsDistance_expectSuccess() throws Exception {
-        setupAggregation(
-                APP_WITH_WRITE_PERMS_ONLY::insertRecord,
-                APP_WITH_WRITE_PERMS_ONLY.getPackageName(),
-                HealthDataCategory.ACTIVITY);
+        setupAggregation(APP_WITH_WRITE_PERMS_ONLY.getPackageName(), HealthDataCategory.ACTIVITY);
         APP_WITH_WRITE_PERMS_ONLY.insertRecord(getDistanceRecordWithEmptyMetadata());
 
         assertAggregation(DISTANCE_TOTAL, Length.fromMeters(10));
@@ -83,10 +80,7 @@ public class AggregateOtherAppsDataTest {
 
     @Test
     public void testAppWithReadPerms_aggregateOtherAppsSteps_expectSuccess() throws Exception {
-        setupAggregation(
-                APP_WITH_WRITE_PERMS_ONLY::insertRecord,
-                APP_WITH_WRITE_PERMS_ONLY.getPackageName(),
-                HealthDataCategory.ACTIVITY);
+        setupAggregation(APP_WITH_WRITE_PERMS_ONLY.getPackageName(), HealthDataCategory.ACTIVITY);
         APP_WITH_WRITE_PERMS_ONLY.insertRecord(getStepsRecordWithEmptyMetaData());
 
         assertAggregation(STEPS_COUNT_TOTAL, 10L);
@@ -94,10 +88,7 @@ public class AggregateOtherAppsDataTest {
 
     @Test
     public void testAppWithReadPerms_aggregateOtherAppsHeartRate_expectSuccess() throws Exception {
-        setupAggregation(
-                APP_WITH_WRITE_PERMS_ONLY::insertRecord,
-                APP_WITH_WRITE_PERMS_ONLY.getPackageName(),
-                HealthDataCategory.VITALS);
+        setupAggregation(APP_WITH_WRITE_PERMS_ONLY.getPackageName(), HealthDataCategory.VITALS);
         APP_WITH_WRITE_PERMS_ONLY.insertRecord(getHeartRateRecordWithEmptyMetadata());
 
         assertAggregation(BPM_MAX, 72L);
@@ -106,10 +97,7 @@ public class AggregateOtherAppsDataTest {
     @Test
     public void testAppWithReadPerms_aggregateOtherAppsTotalCaloriesBurned_expectSuccess()
             throws Exception {
-        setupAggregation(
-                APP_WITH_WRITE_PERMS_ONLY::insertRecord,
-                APP_WITH_WRITE_PERMS_ONLY.getPackageName(),
-                HealthDataCategory.ACTIVITY);
+        setupAggregation(APP_WITH_WRITE_PERMS_ONLY.getPackageName(), HealthDataCategory.ACTIVITY);
         TotalCaloriesBurnedRecord record = getTotalCaloriesBurnedRecordWithEmptyMetadata();
         APP_WITH_WRITE_PERMS_ONLY.insertRecord(record);
 
@@ -119,10 +107,7 @@ public class AggregateOtherAppsDataTest {
 
     @Test
     public void testAppWithReadPerms_aggregateOtherAppsExercise_expectSuccess() throws Exception {
-        setupAggregation(
-                APP_WITH_WRITE_PERMS_ONLY::insertRecord,
-                APP_WITH_WRITE_PERMS_ONLY.getPackageName(),
-                HealthDataCategory.ACTIVITY);
+        setupAggregation(APP_WITH_WRITE_PERMS_ONLY.getPackageName(), HealthDataCategory.ACTIVITY);
         ExerciseSessionRecord exerciseSessionRecord = buildExerciseSessionWithEmptyMetadata();
         APP_WITH_WRITE_PERMS_ONLY.insertRecord(exerciseSessionRecord);
 
@@ -134,10 +119,7 @@ public class AggregateOtherAppsDataTest {
 
     @Test
     public void testAppWithReadPerms_aggregateOtherAppsSleep_expectSuccess() throws Exception {
-        setupAggregation(
-                APP_WITH_WRITE_PERMS_ONLY::insertRecord,
-                APP_WITH_WRITE_PERMS_ONLY.getPackageName(),
-                HealthDataCategory.SLEEP);
+        setupAggregation(APP_WITH_WRITE_PERMS_ONLY.getPackageName(), HealthDataCategory.SLEEP);
         SleepSessionRecord sleepSessionRecord = buildSleepSessionWithEmptyMetadata();
         APP_WITH_WRITE_PERMS_ONLY.insertRecord(sleepSessionRecord);
 
