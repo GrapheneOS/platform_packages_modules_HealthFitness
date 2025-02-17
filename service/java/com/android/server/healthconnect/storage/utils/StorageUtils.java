@@ -567,6 +567,23 @@ public final class StorageUtils {
         }
     }
 
+    /** Checks whether {@code columnName} exists in {@code tableName} in the {@code database}. */
+    public static boolean checkColumnExists(
+            SQLiteDatabase database, String tableName, String columnName) {
+        String query =
+                "SELECT COUNT(*) FROM pragma_table_info('"
+                        + tableName
+                        + "') WHERE name='"
+                        + columnName
+                        + "';";
+        try (Cursor cursor = database.rawQuery(query, null)) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0) > 0;
+            }
+        }
+        return false;
+    }
+
     /** Gets the last id for {@code tableName} exists in the {@code database}. */
     public static long getLastRowIdFor(SQLiteDatabase database, String tableName) {
         try (Cursor cursor =

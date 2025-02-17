@@ -31,6 +31,7 @@ public final class Constants {
     public static final int DEFAULT_INT = -1;
     public static final long DEFAULT_LONG = -1;
     public static final double DEFAULT_DOUBLE = Double.MIN_VALUE;
+    public static final float DEFAULT_FLOAT = Float.MIN_VALUE;
     public static final int DEFAULT_PAGE_SIZE = 1000;
     public static final int MINIMUM_PAGE_SIZE = 1;
     public static final int MAXIMUM_PAGE_SIZE = 5000;

@@ -16,14 +16,20 @@
 
 package android.health.connect.internal.datatypes;
 
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSegmentType;
+import android.health.connect.datatypes.units.Mass;
 import android.os.Parcel;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -33,11 +39,13 @@ import java.time.Period;
 @RunWith(AndroidJUnit4.class)
 public class ExerciseSegmentInternalTest {
 
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     private final Instant mStartTime = Instant.now().minus(Period.ofDays(1));
     private final Instant mEndTime = Instant.now();
 
     @Test
-    public void testExerciseSegmentInternal_convertToExternalAndBack_recordsAreEqual() {
+    public void testExerciseSegmentInternal_convertToExternalAndBack_recordsAreEqual_noNewFields() {
         ExerciseSegment externalSegment =
                 new ExerciseSegment.Builder(
                                 mStartTime,
@@ -50,7 +58,25 @@ public class ExerciseSegmentInternalTest {
     }
 
     @Test
-    public void testExerciseSegmentInternal_convertToExternalAndBackNoReps_recordsAreEqual() {
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    public void testExerciseSegmentInternal_convertToExternalAndBack_recordsAreEqual_newFields() {
+        ExerciseSegment externalSegment =
+                new ExerciseSegment.Builder(
+                                mStartTime,
+                                mEndTime,
+                                ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
+                        .setRepetitionsCount(45)
+                        .setWeight(Mass.fromGrams(100.0))
+                        .setSetIndex(3)
+                        .setRateOfPerceivedExertion(5f)
+                        .build();
+        ExerciseSegment converted = externalSegment.toSegmentInternal().toExternalRecord();
+        assertSegmentsAreEqual(converted, externalSegment);
+    }
+
+    @Test
+    public void
+            testExerciseSegmentInternal_convertToExternalAndBackNoRepsOrWeight_recordsAreEqual() {
         ExerciseSegment externalSegment =
                 new ExerciseSegment.Builder(
                                 mStartTime,
@@ -62,13 +88,17 @@ public class ExerciseSegmentInternalTest {
     }
 
     @Test
-    public void testExerciseSegmentInternal_writeToParcelAndBack_recordsAreEqual() {
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
+    public void testExerciseSegmentInternal_writeToParcelAndBack_recordsAreEqual_newFields() {
         ExerciseSegmentInternal segment =
                 new ExerciseSegmentInternal()
                         .setStartTime(mStartTime.toEpochMilli())
                         .setEndTime(mEndTime.toEpochMilli())
                         .setSegmentType(ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
-                        .setRepetitionsCount(10);
+                        .setRepetitionsCount(10)
+                        .setWeightGrams(100.0)
+                        .setSetIndex(1)
+                        .setRateOfPerceivedExertion(6f);
         Parcel parcel = Parcel.obtain();
         segment.writeToParcel(parcel);
         parcel.setDataPosition(0);
@@ -78,7 +108,8 @@ public class ExerciseSegmentInternalTest {
     }
 
     @Test
-    public void testExerciseSegmentInternal_writeToParcelAndBackNoReps_recordsAreEqual() {
+    public void
+            testExerciseSegmentInternal_writeToParcelAndBackNoAdditionalFields_recordsAreEqual() {
         ExerciseSegmentInternal segment =
                 new ExerciseSegmentInternal()
                         .setStartTime(mStartTime.toEpochMilli())
@@ -103,6 +134,17 @@ public class ExerciseSegmentInternalTest {
         assertThat(converted.getSegmentType()).isEqualTo(externalSegment.getSegmentType());
         assertThat(converted.getRepetitionsCount())
                 .isEqualTo(externalSegment.getRepetitionsCount());
+        assertThat(converted.getWeight()).isEqualTo(externalSegment.getWeight());
+        assertThat(converted.hasSetIndex()).isEqualTo(externalSegment.hasSetIndex());
+        if (converted.hasSetIndex()) {
+            assertThat(converted.getSetIndex()).isEqualTo(externalSegment.getSetIndex());
+        }
+        assertThat(converted.hasRateOfPerceivedExertion())
+                .isEqualTo(externalSegment.hasRateOfPerceivedExertion());
+        if (converted.hasRateOfPerceivedExertion()) {
+            assertThat(converted.getRateOfPerceivedExertion())
+                    .isEqualTo(externalSegment.getRateOfPerceivedExertion());
+        }
     }
 
     private void assertSegmentsAreEqual(
@@ -111,6 +153,10 @@ public class ExerciseSegmentInternalTest {
         assertThat(restored.getStartTime()).isEqualTo(segment.getStartTime());
         assertThat(restored.getEndTime()).isEqualTo(segment.getEndTime());
         assertThat(restored.getSegmentType()).isEqualTo(segment.getSegmentType());
+        assertThat(restored.getWeightGrams()).isEqualTo(segment.getWeightGrams());
+        assertThat(restored.getSetIndex()).isEqualTo(segment.getSetIndex());
+        assertThat(restored.getRateOfPerceivedExertion())
+                .isEqualTo(segment.getRateOfPerceivedExertion());
         assertThat(restored).isEqualTo(segment);
     }
 }

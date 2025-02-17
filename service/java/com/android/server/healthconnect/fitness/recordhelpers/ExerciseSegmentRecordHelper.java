@@ -20,7 +20,10 @@ import static android.health.connect.datatypes.ExerciseSegmentType.DURATION_EXCL
 
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.SeriesRecordHelper.PARENT_KEY_COLUMN_NAME;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.REAL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorDouble;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.isNullValue;
@@ -32,6 +35,8 @@ import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.util.ArraySet;
 import android.util.Pair;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
@@ -47,11 +52,15 @@ import java.util.List;
  * @hide
  */
 public class ExerciseSegmentRecordHelper {
-    static final String EXERCISE_SEGMENT_RECORD_TABLE_NAME = "exercise_segments_table";
+    public static final String EXERCISE_SEGMENT_RECORD_TABLE_NAME = "exercise_segments_table";
     private static final String EXERCISE_SEGMENT_START_TIME = "segment_start_time";
     private static final String EXERCISE_SEGMENT_END_TIME = "segment_end_time";
     private static final String EXERCISE_SEGMENT_TYPE = "segment_type";
     private static final String EXERCISE_SEGMENT_REPETITIONS_COUNT = "repetitions_count";
+    public static final String EXERCISE_SEGMENT_WEIGHT_GRAMS = "weight_grams";
+    public static final String EXERCISE_SEGMENT_SET_INDEX = "set_index";
+    public static final String EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION =
+            "rate_of_perceived_exertion";
 
     static CreateTableRequest getCreateSegmentsTableRequest(String parentTableName) {
         return new CreateTableRequest(
@@ -60,6 +69,20 @@ public class ExerciseSegmentRecordHelper {
                         parentTableName,
                         Collections.singletonList(PARENT_KEY_COLUMN_NAME),
                         Collections.singletonList(PRIMARY_COLUMN_NAME));
+    }
+
+    /**
+     * Returns an {@link AlterTableRequest} to add the weight, set index and RPE columns to the
+     * exercise segments table.
+     *
+     * @return AlterTableRequest to add the new columns.
+     */
+    public static AlterTableRequest getAlterTableRequestForExerciseSegmentImprovements() {
+        List<Pair<String, String>> columnInfo = new ArrayList<>();
+        columnInfo.add(new Pair<>(EXERCISE_SEGMENT_WEIGHT_GRAMS, REAL));
+        columnInfo.add(new Pair<>(EXERCISE_SEGMENT_SET_INDEX, INTEGER));
+        columnInfo.add(new Pair<>(EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION, REAL));
+        return new AlterTableRequest(EXERCISE_SEGMENT_RECORD_TABLE_NAME, columnInfo);
     }
 
     static List<UpsertTableRequest> getSegmentsUpsertRequests(
@@ -82,14 +105,28 @@ public class ExerciseSegmentRecordHelper {
         if (isNullValue(cursor, EXERCISE_SEGMENT_START_TIME)) {
             return;
         }
-
-        segmentsSet.add(
+        ExerciseSegmentInternal segment =
                 new ExerciseSegmentInternal()
                         .setStartTime(getCursorLong(cursor, EXERCISE_SEGMENT_START_TIME))
                         .setEndTime(getCursorLong(cursor, EXERCISE_SEGMENT_END_TIME))
                         .setSegmentType(getCursorInt(cursor, EXERCISE_SEGMENT_TYPE))
                         .setRepetitionsCount(
-                                getCursorInt(cursor, EXERCISE_SEGMENT_REPETITIONS_COUNT)));
+                                getCursorInt(cursor, EXERCISE_SEGMENT_REPETITIONS_COUNT));
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+            if (!isNullValue(cursor, EXERCISE_SEGMENT_WEIGHT_GRAMS)) {
+                segment.setWeightGrams(getCursorDouble(cursor, EXERCISE_SEGMENT_WEIGHT_GRAMS));
+            }
+            if (!isNullValue(cursor, EXERCISE_SEGMENT_SET_INDEX)) {
+                segment.setSetIndex(getCursorInt(cursor, EXERCISE_SEGMENT_SET_INDEX));
+            }
+            if (!isNullValue(cursor, EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION)) {
+                segment.setRateOfPerceivedExertion(
+                        (float)
+                                getCursorDouble(
+                                        cursor, EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION));
+            }
+        }
+        segmentsSet.add(segment);
     }
 
     static void populateSegmentTo(ContentValues contentValues, ExerciseSegmentInternal segment) {
@@ -97,6 +134,13 @@ public class ExerciseSegmentRecordHelper {
         contentValues.put(EXERCISE_SEGMENT_END_TIME, segment.getEndTime());
         contentValues.put(EXERCISE_SEGMENT_TYPE, segment.getSegmentType());
         contentValues.put(EXERCISE_SEGMENT_REPETITIONS_COUNT, segment.getRepetitionsCount());
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+            contentValues.put(EXERCISE_SEGMENT_WEIGHT_GRAMS, segment.getWeightGrams());
+            contentValues.put(EXERCISE_SEGMENT_SET_INDEX, segment.getSetIndex());
+            contentValues.put(
+                    EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION,
+                    segment.getRateOfPerceivedExertion());
+        }
     }
 
     static SqlJoin getJoinReadRequest(String parentTableName) {
@@ -115,6 +159,7 @@ public class ExerciseSegmentRecordHelper {
         columnInfo.add(new Pair<>(EXERCISE_SEGMENT_END_TIME, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(EXERCISE_SEGMENT_TYPE, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(EXERCISE_SEGMENT_REPETITIONS_COUNT, INTEGER_NOT_NULL));
+
         return columnInfo;
     }
 
