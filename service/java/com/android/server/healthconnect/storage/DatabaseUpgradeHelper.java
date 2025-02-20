@@ -25,6 +25,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYS
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_GENERATED_LOCAL_TIME;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PERSONAL_HEALTH_RECORD;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PLANNED_EXERCISE_SESSIONS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SKIN_TEMPERATURE;
@@ -53,6 +54,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityR
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MindfulnessSessionRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.NicotineIntakeRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.PlannedExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SkinTemperatureRecordHelper;
@@ -100,6 +102,9 @@ final class DatabaseUpgradeHelper {
     private static final Upgrader UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT =
             DatabaseUpgradeHelper::applyExerciseSegmentImprovementsDatabaseUpgrade;
 
+    private static final Upgrader UPGRADE_TO_NICOTINE_INTAKE =
+            db -> new NicotineIntakeRecordHelper().applyNicotineIntakeUpgrade(db);
+
     /**
      * A list of db version -> Upgrader to upgrade the db from the previous version to the version.
      * The upgrades must be executed one by one in the numeric order of db versions, hence TreeMap.
@@ -118,7 +123,8 @@ final class DatabaseUpgradeHelper {
                             DB_VERSION_CLOUD_BACKUP_AND_RESTORE,
                                     UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE,
                             DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS,
-                                    UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT));
+                                    UPGRADE_TO_EXERCISE_SEGMENT_WEIGHT,
+                            DB_VERSION_NICOTINE_INTAKE, UPGRADE_TO_NICOTINE_INTAKE));
 
     /**
      * Applies db upgrades to bring the current schema to the latest supported version.

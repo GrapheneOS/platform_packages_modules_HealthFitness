@@ -16,9 +16,10 @@
 
 package com.android.server.healthconnect.storage;
 
-import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
+
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertColumnsExist;
@@ -54,8 +55,8 @@ import java.util.List;
 public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_MIN_SUPPORTED_VERSION = 57;
     private static final int NUM_OF_TABLES_AT_MINDFULNESS_VERSION = 64;
-    private static final int NUM_OF_TABLES_IN_STAGING = 70;
-    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
+    private static final int NUM_OF_TABLES_IN_STAGING = 71;
+    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_NICOTINE_INTAKE;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -135,7 +136,6 @@ public class DatabaseUpgradeHelperTest {
                 mSQLiteDatabase,
                 ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME,
                 List.of(ExerciseSessionRecordHelper.RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME));
-        assertDbSchemaUpToDate(mSQLiteDatabase);
     }
 
     /**

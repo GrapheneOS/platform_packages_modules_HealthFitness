@@ -26,6 +26,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.MindfulnessSessionRecord;
+import android.health.connect.datatypes.NicotineIntakeRecord;
 import android.health.connect.datatypes.Record;
 import android.os.Bundle;
 
@@ -251,6 +252,8 @@ public abstract class RecordFactory<T extends Record> {
             return new ActivityIntensityRecordFactory();
         } else if (recordClass.equals(MindfulnessSessionRecord.class)) {
             return new MindfulnessSessionRecordFactory();
+        } else if (recordClass.equals(NicotineIntakeRecord.class)) {
+            return new NicotineIntakeRecordFactory();
         }
         return null;
     }
