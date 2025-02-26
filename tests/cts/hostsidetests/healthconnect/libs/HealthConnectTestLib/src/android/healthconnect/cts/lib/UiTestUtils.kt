@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.health.connect.HealthPermissions
 import android.health.connect.datatypes.*
 import android.health.connect.datatypes.units.Length
 import android.os.SystemClock
@@ -60,8 +61,8 @@ object UiTestUtils {
 
     private const val MASK_PERMISSION_FLAGS =
         (PackageManager.FLAG_PERMISSION_USER_SET or
-            PackageManager.FLAG_PERMISSION_USER_FIXED or
-            PackageManager.FLAG_PERMISSION_AUTO_REVOKED)
+                PackageManager.FLAG_PERMISSION_USER_FIXED or
+                PackageManager.FLAG_PERMISSION_AUTO_REVOKED)
 
     /**
      * Waits for the given [selector] to be displayed and performs the given [uiObjectAction] on it.
@@ -439,11 +440,11 @@ object UiTestUtils {
         testMetadataBuilder.setDevice(TEST_DEVICE).setDataOrigin(dataOrigin)
         testMetadataBuilder.setClientRecordId("SR" + Math.random())
         return DistanceRecord.Builder(
-                testMetadataBuilder.build(),
-                startTime,
-                endTime,
-                Length.fromMeters(500.0),
-            )
+            testMetadataBuilder.build(),
+            startTime,
+            endTime,
+            Length.fromMeters(500.0),
+        )
             .build()
     }
 
@@ -453,11 +454,11 @@ object UiTestUtils {
         testMetadataBuilder.setDevice(TEST_DEVICE).setDataOrigin(dataOrigin)
         testMetadataBuilder.setClientRecordId("SR" + Math.random())
         return DistanceRecord.Builder(
-                testMetadataBuilder.build(),
-                Instant.now().minusMillis(1000),
-                Instant.now(),
-                Length.fromMeters(500.0),
-            )
+            testMetadataBuilder.build(),
+            Instant.now().minusMillis(1000),
+            Instant.now(),
+            Length.fromMeters(500.0),
+        )
             .build()
     }
 
@@ -470,6 +471,71 @@ object UiTestUtils {
             { pm.grantRuntimePermission(packageName, permName, context.user) },
             Manifest.permission.GRANT_RUNTIME_PERMISSIONS,
         )
+    }
+
+    fun setPermissionsAsUserFixed(
+        context: Context, packageName: String, value: Boolean
+    ) {
+        val mPackageManager = context.packageManager
+
+        val flagMask = PackageManager.FLAG_PERMISSION_USER_FIXED
+        val flagValues = if (value) PackageManager.FLAG_PERMISSION_USER_FIXED else 0
+        val additionalAccessPermissions = setOf(HealthPermissions.READ_HEALTH_DATA_HISTORY, HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
+
+        runWithShellPermissionIdentity(
+            {
+                val permissions = try {
+                    mPackageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+                        .requestedPermissions?.toList() ?: emptyList()
+                } catch (e: PackageManager.NameNotFoundException) {
+                    emptyList()
+                }
+
+                for (permission in permissions.filterNot { additionalAccessPermissions.contains(it) }) {
+                    mPackageManager.updatePermissionFlags(
+                        permission, packageName, flagMask, flagValues, context.user
+                    )
+                }
+            },
+            Manifest.permission.GRANT_RUNTIME_PERMISSIONS)
+    }
+
+    fun hasUserFixedPermissions(context: Context, packageName: String): Boolean {
+        val pm = context.packageManager
+
+
+        var result = false
+        runWithShellPermissionIdentity({
+            val permissions = try {
+                pm.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+                    .requestedPermissions?.toList() ?: emptyList()
+            } catch (e: PackageManager.NameNotFoundException) {
+                emptyList()
+            }
+
+            for (permission in permissions) {
+                val flags = pm.getPermissionFlags(permission, packageName, context.user)
+                if ((flags and PackageManager.FLAG_PERMISSION_USER_FIXED) != 0) {
+                    // Found a permission with the USER_FIXED flag set.
+                    result = true
+                }
+            }
+        }, Manifest.permission.GRANT_RUNTIME_PERMISSIONS)
+
+        // No user-fixed permissions found.
+        return result
+    }
+
+    fun revokeAllPermissionsViaPackageManager(context: Context, packageName: String) {
+        val pm = context.packageManager
+        try {
+            val packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+            packageInfo.requestedPermissions?.forEach { permName ->
+                revokePermissionViaPackageManager(context, packageName, permName)
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            // ignore.
+        }
     }
 
     fun revokePermissionViaPackageManager(context: Context, packageName: String, permName: String) {

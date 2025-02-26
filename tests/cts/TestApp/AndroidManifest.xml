@@ -44,6 +44,17 @@
                 <action android:name="any.action"/>
             </intent-filter>
         </activity>
+
+        <activity-alias
+            android:name="OnboardingActivity"
+            android:targetActivity=".MainActivity"
+            android:permission="android.permission.health.START_ONBOARDING"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.health.connect.action.SHOW_ONBOARDING"/>
+            </intent-filter>
+        </activity-alias>
+
         <activity android:name="android.healthconnect.cts.utils.ProxyActivity"
                   android:exported="true">
             <intent-filter>

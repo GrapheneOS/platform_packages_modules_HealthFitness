@@ -16,7 +16,11 @@
 package com.android.healthconnect.controller.tests.home
 
 import android.Manifest
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Context
+import android.content.Intent
+import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
 import android.health.connect.HealthDataCategory
 import android.os.Build
 import android.os.Bundle
@@ -37,6 +41,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasPackage
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -60,6 +65,7 @@ import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
 import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
@@ -67,6 +73,7 @@ import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
@@ -99,6 +106,7 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -118,6 +126,10 @@ class HomeFragmentTest {
     @BindValue
     val recentAccessViewModel: RecentAccessViewModel =
         Mockito.mock(RecentAccessViewModel::class.java)
+
+    @BindValue
+    val healthPermissionReader: HealthPermissionReader =
+        Mockito.mock(HealthPermissionReader::class.java)
 
     @BindValue
     val migrationViewModel: MigrationViewModel = Mockito.mock(MigrationViewModel::class.java)
@@ -260,6 +272,7 @@ class HomeFragmentTest {
                         HealthDataCategory.SLEEP.uppercaseTitle(),
                         HealthDataCategory.NUTRITION.uppercaseTitle(),
                     ),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(listOf(recentApp)))
@@ -299,6 +312,7 @@ class HomeFragmentTest {
                         HealthDataCategory.NUTRITION.uppercaseTitle(),
                     ),
                 appPermissionsType = AppPermissionsType.MEDICAL_PERMISSIONS_ONLY,
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(listOf(recentApp)))
@@ -338,6 +352,7 @@ class HomeFragmentTest {
                         HealthDataCategory.NUTRITION.uppercaseTitle(),
                     ),
                 appPermissionsType = AppPermissionsType.COMBINED_PERMISSIONS,
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(listOf(recentApp)))
@@ -389,6 +404,7 @@ class HomeFragmentTest {
                         HealthDataCategory.SLEEP.uppercaseTitle(),
                         HealthDataCategory.NUTRITION.uppercaseTitle(),
                     ),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
 
         timeSource.setIs24Hour(false)
@@ -1013,6 +1029,7 @@ class HomeFragmentTest {
                         HealthDataCategory.SLEEP.uppercaseTitle(),
                         HealthDataCategory.NUTRITION.uppercaseTitle(),
                     ),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
 
         timeSource.setIs24Hour(true)
@@ -1511,6 +1528,7 @@ class HomeFragmentTest {
                         HealthDataCategory.SLEEP.uppercaseTitle(),
                         HealthDataCategory.NUTRITION.uppercaseTitle(),
                     ),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
 
         timeSource.setIs24Hour(false)
@@ -1582,6 +1600,104 @@ class HomeFragmentTest {
         onView(withText("No apps recently accessed Health\u00A0Connect")).check(doesNotExist())
     }
 
+    @Test
+    @EnableFlags(Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY)
+    fun onboardingActivityAvailable_navigatesToOnboardingActivityInsteadOfPermissionManagement() {
+        val recentApp =
+            RecentAccessEntry(
+                metadata = TEST_APP,
+                instantTime = Instant.parse("2022-10-20T18:40:13.00Z"),
+                isToday = true,
+                isInactive = false,
+                shouldLaunchAppOnboardingIfAvailable = true,
+                dataTypesWritten =
+                mutableSetOf(
+                    HealthDataCategory.ACTIVITY.uppercaseTitle(),
+                    HealthDataCategory.VITALS.uppercaseTitle(),
+                ),
+                dataTypesRead =
+                mutableSetOf(
+                    HealthDataCategory.SLEEP.uppercaseTitle(),
+                    HealthDataCategory.NUTRITION.uppercaseTitle(),
+                ),
+                appPermissionsType = AppPermissionsType.COMBINED_PERMISSIONS,
+            )
+        whenever(recentAccessViewModel.recentAccessApps).then {
+            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(listOf(recentApp)))
+        }
+        val testIntent = Intent(ACTION_SHOW_ONBOARDING)
+        testIntent.setPackage(TEST_APP.packageName)
+
+        // Assume that the client onboarding activity completes normally.
+        Intents.intending(hasAction(ACTION_SHOW_ONBOARDING)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_OK, Intent()
+            ))
+        whenever(healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))).thenReturn(testIntent)
+
+        launchFragment<HomeFragment>(Bundle()) {
+            navHostController.setGraph(R.navigation.nav_graph)
+            navHostController.setCurrentDestination(R.id.homeFragment)
+            Navigation.setViewNavController(this.requireView(), navHostController)
+        }
+
+        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+        onView(withText(TEST_APP_NAME)).perform(click())
+
+        intended(hasAction(ACTION_SHOW_ONBOARDING))
+        intended(hasPackage(TEST_APP_PACKAGE_NAME))
+        // We should remain where we started.
+        assertThat(navHostController.currentDestination?.id)
+            .isEqualTo(R.id.homeFragment)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY)
+    fun onboardingActivityAvailable_appAlreadyConnected_doesNotLaunchOnboarding() {
+        val recentApp =
+            RecentAccessEntry(
+                metadata = TEST_APP,
+                instantTime = Instant.parse("2022-10-20T18:40:13.00Z"),
+                isToday = true,
+                isInactive = false,
+                shouldLaunchAppOnboardingIfAvailable = false,
+                dataTypesWritten =
+                mutableSetOf(
+                    HealthDataCategory.ACTIVITY.uppercaseTitle(),
+                    HealthDataCategory.VITALS.uppercaseTitle(),
+                ),
+                dataTypesRead =
+                mutableSetOf(
+                    HealthDataCategory.SLEEP.uppercaseTitle(),
+                    HealthDataCategory.NUTRITION.uppercaseTitle(),
+                ),
+                appPermissionsType = AppPermissionsType.COMBINED_PERMISSIONS,
+            )
+        whenever(recentAccessViewModel.recentAccessApps).then {
+            MutableLiveData<RecentAccessState>(RecentAccessState.WithData(listOf(recentApp)))
+        }
+        val testIntent = Intent(ACTION_SHOW_ONBOARDING)
+        testIntent.setPackage(TEST_APP.packageName)
+
+        // Assume that the client onboarding activity completes normally.
+        Intents.intending(hasAction(ACTION_SHOW_ONBOARDING)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_OK, Intent()
+            ))
+        whenever(healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))).thenReturn(testIntent)
+
+        launchFragment<HomeFragment>(Bundle()) {
+            navHostController.setGraph(R.navigation.nav_graph)
+            navHostController.setCurrentDestination(R.id.homeFragment)
+            Navigation.setViewNavController(this.requireView(), navHostController)
+        }
+
+        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+        onView(withText(TEST_APP_NAME)).perform(click())
+
+        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.combinedPermissionsFragment)
+    }
+
     // endregion
 
     private fun setupFragmentForNavigation() {
@@ -1600,6 +1716,7 @@ class HomeFragmentTest {
                         HealthDataCategory.SLEEP.uppercaseTitle(),
                         HealthDataCategory.NUTRITION.uppercaseTitle(),
                     ),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
 
         timeSource.setIs24Hour(true)
