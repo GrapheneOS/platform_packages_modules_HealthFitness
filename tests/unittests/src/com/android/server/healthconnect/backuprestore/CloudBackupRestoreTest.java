@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package healthconnect.backuprestore;
+package com.android.server.healthconnect.backuprestore;
 
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
+import static com.android.server.healthconnect.backuprestore.ProtoTestData.TEST_PACKAGE_NAME;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -32,21 +36,17 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
-import com.android.server.healthconnect.backuprestore.CloudBackupManager;
-import com.android.server.healthconnect.backuprestore.CloudRestoreManager;
-import com.android.server.healthconnect.backuprestore.RecordProtoConverter;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
+import com.android.server.healthconnect.proto.backuprestore.AppInfoMap;
+import com.android.server.healthconnect.proto.backuprestore.Settings;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
 import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
@@ -63,7 +63,11 @@ import org.mockito.Mock;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags(Flags.FLAG_DEVELOPMENT_DATABASE)
+@EnableFlags({
+    FLAG_CLOUD_BACKUP_AND_RESTORE,
+    FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+    FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+})
 public final class CloudBackupRestoreTest {
 
     @Rule(order = 1)
@@ -77,8 +81,6 @@ public final class CloudBackupRestoreTest {
 
     private AppInfoHelper mAppInfoHelper;
     private DeviceInfoHelper mDeviceInfoHelper;
-    private AccessLogsHelper mAccessLogsHelper;
-    private ReadAccessLogsHelper mReadAccessLogsHelper;
     private DatabaseHelpers mDatabaseHelpers;
     private TransactionManager mTransactionManager;
     private TransactionTestUtils mTransactionTestUtils;
@@ -103,29 +105,26 @@ public final class CloudBackupRestoreTest {
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
-        mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
-        mReadAccessLogsHelper = healthConnectInjector.getReadAccessLogsHelper();
         mDatabaseHelpers = healthConnectInjector.getDatabaseHelpers();
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
         mRecordProtoConverter = new RecordProtoConverter();
-        mTransactionTestUtils.insertApp("packageName");
+        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         mCloudBackupManager =
                 new CloudBackupManager(
                         mTransactionManager,
                         mAppInfoHelper,
-                        mAccessLogsHelper,
                         mDeviceInfoHelper,
                         healthConnectInjector.getHealthConnectMappings(),
                         healthConnectInjector.getInternalHealthConnectMappings(),
                         healthConnectInjector.getChangeLogsHelper(),
                         healthConnectInjector.getChangeLogsRequestHelper(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
-                        healthConnectInjector.getPreferenceHelper(),
-                        mReadAccessLogsHelper);
+                        healthConnectInjector.getPreferenceHelper());
         mCloudRestoreManager =
                 new CloudRestoreManager(
                         mTransactionManager,
+                        healthConnectInjector.getInternalHealthConnectMappings(),
                         mDeviceInfoHelper,
                         mAppInfoHelper,
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
@@ -135,15 +134,20 @@ public final class CloudBackupRestoreTest {
     @Test
     public void backUpAndRestoreChanges_dataIsTheSame() {
         RecordInternal<StepsRecord> stepsRecord = createStepsRecord(123456, 654321, 123);
-        mTransactionTestUtils.insertRecords("packageName", stepsRecord);
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, stepsRecord);
 
         List<BackupChange> backupChanges =
                 mCloudBackupManager.getChangesForBackup(null).getChanges();
         assertThat(backupChanges).hasSize(1);
         mDatabaseHelpers.clearAllData(mTransactionManager);
-        mTransactionTestUtils.insertApp("packageName");
-        mCloudRestoreManager.pushChangesForRestore(
-                backupChanges.stream().map(change -> new RestoreChange(change.getData())).toList());
+        mCloudRestoreManager.restoreChanges(
+                backupChanges.stream().map(change -> new RestoreChange(change.getData())).toList(),
+                AppInfoMap.newBuilder()
+                        .putAppInfo(
+                                TEST_PACKAGE_NAME,
+                                Settings.AppInfo.newBuilder().setAppName("appName").build())
+                        .build()
+                        .toByteArray());
 
         ReadTransactionRequest readRequest =
                 mTransactionTestUtils.getReadTransactionRequest(
@@ -151,13 +155,8 @@ public final class CloudBackupRestoreTest {
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(stepsRecord.getUuid())));
         List<RecordInternal<?>> records =
-                mTransactionManager.readRecordsByIds(
-                        readRequest,
-                        mAppInfoHelper,
-                        mAccessLogsHelper,
-                        mDeviceInfoHelper,
-                        mReadAccessLogsHelper,
-                        /* shouldRecordAccessLog= */ false);
+                mTransactionManager.readRecordsByIdsWithoutAccessLogs(
+                        readRequest, mAppInfoHelper, mDeviceInfoHelper);
         assertThat(records).hasSize(1);
         // Comparing proto representations because internal records don't implement equals
         assertThat(mRecordProtoConverter.toRecordProto(records.get(0)))

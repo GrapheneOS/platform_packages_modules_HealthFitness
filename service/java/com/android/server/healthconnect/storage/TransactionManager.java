@@ -53,7 +53,6 @@ import com.android.server.healthconnect.storage.request.DeleteTransactionRequest
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TableColumnPair;
@@ -101,75 +100,14 @@ public final class TransactionManager {
         mInternalHealthConnectMappings = internalHealthConnectMappings;
     }
 
-    /** Called when we are switching users. */
-    public void onUserSwitching() {
+    /** Called when we are switching from the current user. */
+    public void shutDownCurrentUser() {
         mHealthConnectDatabase.close();
     }
 
     /** Setup the transaction manager for the new user. */
-    public void onUserUnlocked(HealthConnectContext hcContext) {
+    public void setupForUser(HealthConnectContext hcContext) {
         mHealthConnectDatabase = new HealthConnectDatabase(hcContext);
-    }
-
-    /**
-     * Inserts all the {@link RecordInternal} in {@code request} into the HealthConnect database.
-     *
-     * @param request an insert request.
-     * @return List of uids of the inserted {@link RecordInternal}, in the same order as they
-     *     presented to {@code request}.
-     */
-    // TODO(b/382009199): Refactor this class so that the helpers can be send in the constructor.
-    public List<String> insertAllRecords(
-            AppInfoHelper appInfoHelper,
-            @Nullable AccessLogsHelper accessLogsHelper,
-            UpsertTransactionRequest request)
-            throws SQLiteException {
-        if (Constants.DEBUG) {
-            Slog.d(TAG, "Inserting " + request.getUpsertRequests().size() + " requests.");
-        }
-
-        long currentTime = Instant.now().toEpochMilli();
-        ChangeLogsHelper.ChangeLogs insertionChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_UPSERT, currentTime);
-        ChangeLogsHelper.ChangeLogs modificationChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_UPSERT, currentTime);
-
-        return runAsTransaction(
-                db -> {
-                    for (UpsertTableRequest upsertRequest : request.getUpsertRequests()) {
-                        insertionChangelogs.addUUID(
-                                upsertRequest.getRecordInternal().getRecordType(),
-                                upsertRequest.getRecordInternal().getAppInfoId(),
-                                upsertRequest.getRecordInternal().getUuid());
-                        addChangelogsForOtherModifiedRecords(
-                                appInfoHelper.getAppInfoId(
-                                        upsertRequest.getRecordInternal().getPackageName()),
-                                upsertRequest,
-                                modificationChangelogs);
-                        if (request.shouldPreferNewRecord()) {
-                            insertOrReplaceOnConflict(db, upsertRequest);
-                        } else {
-                            insertOrIgnoreOnConflict(db, upsertRequest);
-                        }
-                    }
-                    for (UpsertTableRequest insertRequestsForChangeLog :
-                            insertionChangelogs.getUpsertTableRequests()) {
-                        insert(db, insertRequestsForChangeLog);
-                    }
-                    for (UpsertTableRequest modificationChangelog :
-                            modificationChangelogs.getUpsertTableRequests()) {
-                        insert(db, modificationChangelog);
-                    }
-
-                    if (request.shouldGenerateAccessLogs()) {
-                        Objects.requireNonNull(accessLogsHelper)
-                                .recordUpsertAccessLog(
-                                        db,
-                                        Objects.requireNonNull(request.getPackageName()),
-                                        request.getRecordTypeIds());
-                    }
-                    return request.getUUIdsInOrder();
-                });
     }
 
     /**
@@ -257,7 +195,7 @@ public final class TransactionManager {
      *
      * <p>Note: This function updates rather than the traditional delete + insert in SQLite
      */
-    private long insertOrReplaceOnConflict(SQLiteDatabase db, UpsertTableRequest request) {
+    public long insertOrReplaceOnConflict(SQLiteDatabase db, UpsertTableRequest request) {
         try {
             if (request.getUniqueColumnsCount() == 0) {
                 throw new RuntimeException(
@@ -327,51 +265,6 @@ public final class TransactionManager {
         }
 
         return rowId;
-    }
-
-    /**
-     * Updates all the {@link RecordInternal} in {@code request} into the HealthConnect database.
-     */
-    public void updateAllRecords(
-            AppInfoHelper appInfoHelper,
-            AccessLogsHelper accessLogsHelper,
-            UpsertTransactionRequest request) {
-        long currentTime = Instant.now().toEpochMilli();
-        ChangeLogsHelper.ChangeLogs updateChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_UPSERT, currentTime);
-        ChangeLogsHelper.ChangeLogs modificationChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_UPSERT, currentTime);
-        runAsTransaction(
-                db -> {
-                    for (UpsertTableRequest upsertRequest : request.getUpsertRequests()) {
-                        updateChangelogs.addUUID(
-                                upsertRequest.getRecordInternal().getRecordType(),
-                                upsertRequest.getRecordInternal().getAppInfoId(),
-                                upsertRequest.getRecordInternal().getUuid());
-                        // Add changelogs for affected records, e.g. a training plan being deleted
-                        // will create changelogs for affected exercise sessions.
-                        addChangelogsForOtherModifiedRecords(
-                                appInfoHelper.getAppInfoId(
-                                        upsertRequest.getRecordInternal().getPackageName()),
-                                upsertRequest,
-                                modificationChangelogs);
-                        update(db, upsertRequest);
-                    }
-
-                    for (UpsertTableRequest insertRequestsForChangeLog :
-                            updateChangelogs.getUpsertTableRequests()) {
-                        insert(db, insertRequestsForChangeLog);
-                    }
-                    for (UpsertTableRequest modificationChangelog :
-                            modificationChangelogs.getUpsertTableRequests()) {
-                        insert(db, modificationChangelog);
-                    }
-
-                    accessLogsHelper.recordUpsertAccessLog(
-                            db,
-                            Objects.requireNonNull(request.getPackageName()),
-                            request.getRecordTypeIds());
-                });
     }
 
     /** Updates data for the given request. */
@@ -555,6 +448,24 @@ public final class TransactionManager {
     }
 
     /**
+     * Reads the records {@link RecordInternal} stored in the HealthConnect database without
+     * generating any access logs.
+     *
+     * @param request a read request.
+     * @return List of records read {@link RecordInternal} from table based on ids.
+     * @throws IllegalArgumentException if the {@link ReadTransactionRequest} contains pagination
+     *     information, which should use {@link #readRecordsAndPageToken(ReadTransactionRequest)}
+     *     instead.
+     */
+    public List<RecordInternal<?>> readRecordsByIdsWithoutAccessLogs(
+            ReadTransactionRequest request,
+            AppInfoHelper appInfoHelper,
+            DeviceInfoHelper deviceInfoHelper)
+            throws SQLiteException {
+        return readRecordsByIds(request, appInfoHelper, deviceInfoHelper, null, null, false);
+    }
+
+    /**
      * Reads the records {@link RecordInternal} stored in the HealthConnect database.
      *
      * @param request a read request.
@@ -566,9 +477,9 @@ public final class TransactionManager {
     public List<RecordInternal<?>> readRecordsByIds(
             ReadTransactionRequest request,
             AppInfoHelper appInfoHelper,
-            AccessLogsHelper accessLogsHelper,
             DeviceInfoHelper deviceInfoHelper,
-            ReadAccessLogsHelper readAccessLogsHelper,
+            @Nullable AccessLogsHelper accessLogsHelper,
+            @Nullable ReadAccessLogsHelper readAccessLogsHelper,
             boolean shouldRecordAccessLog)
             throws SQLiteException {
         // TODO(b/308158714): Make this build time check once we have different classes.
@@ -588,16 +499,20 @@ public final class TransactionManager {
         }
 
         if (Flags.ecosystemMetrics() && shouldRecordAccessLog && !request.isReadingSelfData()) {
-            readAccessLogsHelper.recordAccessLogForNonAggregationReads(
-                    getWritableDb(),
-                    request.getPackageName(),
-                    /* readTimeStamp= */ Instant.now().toEpochMilli(),
-                    recordInternals);
+            Objects.requireNonNull(readAccessLogsHelper)
+                    .recordAccessLogForNonAggregationReads(
+                            getWritableDb(),
+                            request.getPackageName(),
+                            /* readTimeStamp= */ Instant.now().toEpochMilli(),
+                            recordInternals);
         }
         if (Flags.addMissingAccessLogs()) {
             if (!request.isReadingSelfData() && shouldRecordAccessLog) {
-                accessLogsHelper.recordReadAccessLog(
-                        getWritableDb(), request.getPackageName(), request.getRecordTypeIds());
+                Objects.requireNonNull(accessLogsHelper)
+                        .recordReadAccessLog(
+                                getWritableDb(),
+                                request.getPackageName(),
+                                request.getRecordTypeIds());
             }
         }
         return recordInternals;
@@ -946,32 +861,6 @@ public final class TransactionManager {
             ContentValues contentValues = childTableRequest.withParentKey(rowId).getContentValues();
             long childRowId = db.insertOrThrow(tableName, null, contentValues);
             insertChildTableRequest(childTableRequest, childRowId, db);
-        }
-    }
-
-    private void addChangelogsForOtherModifiedRecords(
-            long callingPackageAppInfoId,
-            UpsertTableRequest upsertRequest,
-            ChangeLogsHelper.ChangeLogs modificationChangelogs) {
-        // Carries out read requests provided by the record helper and uses the results to add
-        // changelogs to the transaction.
-        final RecordHelper<?> recordHelper =
-                mInternalHealthConnectMappings.getRecordHelper(upsertRequest.getRecordType());
-        for (ReadTableRequest additionalChangelogUuidRequest :
-                recordHelper.getReadRequestsForRecordsModifiedByUpsertion(
-                        upsertRequest.getRecordInternal().getUuid(),
-                        upsertRequest,
-                        callingPackageAppInfoId)) {
-            Cursor cursorAdditionalUuids = read(additionalChangelogUuidRequest);
-            while (cursorAdditionalUuids.moveToNext()) {
-                RecordHelper<?> extraRecordHelper =
-                        requireNonNull(additionalChangelogUuidRequest.getRecordHelper());
-                modificationChangelogs.addUUID(
-                        extraRecordHelper.getRecordIdentifier(),
-                        StorageUtils.getCursorLong(cursorAdditionalUuids, APP_INFO_ID_COLUMN_NAME),
-                        StorageUtils.getCursorUUID(cursorAdditionalUuids, UUID_COLUMN_NAME));
-            }
-            cursorAdditionalUuids.close();
         }
     }
 }

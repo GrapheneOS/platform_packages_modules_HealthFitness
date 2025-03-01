@@ -149,7 +149,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
-import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -259,9 +258,9 @@ public class HealthConnectServiceImplTest {
                     "runImmediateExport",
                     "getChangesForBackup",
                     "getSettingsForBackup",
-                    "pushSettingsForRestore",
+                    "restoreSettings",
                     "canRestore",
-                    "pushChangesForRestore");
+                    "restoreChanges");
 
     /** Health connect service APIs that do not block calls when data sync is in progress. */
     public static final Set<String> DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST =
@@ -292,7 +291,6 @@ public class HealthConnectServiceImplTest {
     @Rule
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(LocalManagerRegistry.class)
                     .mockStatic(HealthFitnessStatsLog.class)
                     .spyStatic(RateLimiter.class)
                     .setStrictness(Strictness.LENIENT)
@@ -358,8 +356,6 @@ public class HealthConnectServiceImplTest {
         mFakeTimeSource = new FakeTimeSource(NOW);
         mAttributionSource = mContext.getAttributionSource();
         mTestPackageName = mAttributionSource.getPackageName();
-        when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
-                .thenReturn(mAppOpsManagerLocal);
         setUpAllMedicalPermissionChecksHardDenied();
 
         HealthConnectInjector healthConnectInjector =
@@ -378,6 +374,7 @@ public class HealthConnectServiceImplTest {
                         .setMigrationUiStateManager(mMigrationUiStateManager)
                         .setAppInfoHelper(mAppInfoHelper)
                         .setTimeSource(mFakeTimeSource)
+                        .setAppOpsManagerLocal(mAppOpsManagerLocal)
                         .build();
 
         mHealthConnectService =
@@ -396,6 +393,7 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getMedicalDataSourceHelper(),
                         healthConnectInjector.getExportManager(),
                         healthConnectInjector.getExportImportSettingsStorage(),
+                        healthConnectInjector.getExportImportNotificationSender(),
                         healthConnectInjector.getBackupRestore(),
                         healthConnectInjector.getAccessLogsHelper(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
@@ -408,7 +406,8 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getPreferenceHelper(),
                         healthConnectInjector.getDatabaseHelpers(),
                         healthConnectInjector.getPreferencesManager(),
-                        healthConnectInjector.getReadAccessLogsHelper());
+                        healthConnectInjector.getReadAccessLogsHelper(),
+                        healthConnectInjector.getAppOpsManagerLocal());
         mBackupRestore = healthConnectInjector.getBackupRestore();
     }
 
@@ -2744,7 +2743,7 @@ public class HealthConnectServiceImplTest {
 
     @Test
     public void testUserSwitching() throws TimeoutException {
-        mHealthConnectService.onUserSwitching(mUserHandle);
+        mHealthConnectService.setupForUser(mUserHandle);
 
         waitForAllScheduledTasksToComplete();
     }

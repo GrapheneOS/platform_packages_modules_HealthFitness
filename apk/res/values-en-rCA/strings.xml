@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Browse data"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"See data and which apps can access it"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Auto-delete, data sources, backup and restore"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"More items"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Fewer items"</string>
     <string name="backup_title" msgid="211503191266235085">"Backup"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Data sources and priority"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Set units"</string>

@@ -23,12 +23,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceCategory
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
@@ -596,7 +598,6 @@ class MedicalAppFragmentTest {
     }
 
     @Test
-    @Ignore // TODO(b/353512381): Unignore when not flaky.
     fun footerWithGrantTime_whenHistoryRead_isNotDisplayed() {
         val permission = MedicalPermission(VACCINES)
         whenever(viewModel.medicalPermissions).then { MutableLiveData(listOf(permission)) }
@@ -622,6 +623,9 @@ class MedicalAppFragmentTest {
         )
 
         onIdle()
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        onIdle()
         onView(
                 withText(
                     "To manage other Android permissions this app can " +
@@ -630,14 +634,12 @@ class MedicalAppFragmentTest {
                         "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
                 )
             )
-            .perform(scrollTo())
             .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Read privacy policy")).check(matches(isDisplayed()))
         verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
     }
 
     @Test
-    @Ignore("b/390200557") // TODO(b/390200557): unignore
     fun footerWithoutGrantTime_isDisplayed() {
         val permission = MedicalPermission(VACCINES)
         whenever(viewModel.medicalPermissions).then { MutableLiveData(listOf(permission)) }
@@ -654,6 +656,9 @@ class MedicalAppFragmentTest {
         )
 
         onIdle()
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        onIdle()
         onView(
                 withText(
                     "To manage other Android permissions this app can " +
@@ -662,14 +667,13 @@ class MedicalAppFragmentTest {
                         "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
                 )
             )
-            .perform(scrollTo())
             .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Read privacy policy")).check(matches(isDisplayed()))
         verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
     }
 
     @Test
-    @Ignore("b/390200557") // TODO(b/390200557): unignore
+    @Ignore("b/353512381") // TODO(b/353512381): Unignore when not flaky.
     fun whenClickOnPrivacyPolicyLink_startsRationaleActivity() {
         val rationaleAction = "android.intent.action.VIEW_PERMISSION_USAGE"
         val permission = MedicalPermission(VACCINES)
@@ -687,6 +691,10 @@ class MedicalAppFragmentTest {
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
         )
 
+        onIdle()
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        onIdle()
         onView(
                 withText(
                     "To manage other Android permissions this app can " +
@@ -695,12 +703,11 @@ class MedicalAppFragmentTest {
                         "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
                 )
             )
-            .perform(scrollTo())
             .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Read privacy policy")).check(matches(isDisplayed()))
         verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
 
-        onView(withText("Read privacy policy")).perform(scrollTo()).perform(click())
+        onView(withText("Read privacy policy")).perform(click())
         intended(hasAction(rationaleAction))
     }
 
@@ -763,7 +770,6 @@ class MedicalAppFragmentTest {
     }
 
     @Test
-    @Ignore("b/390200557") // TODO(b/390200557): unignore
     fun additionalAccessState_valid_showsAdditionalAccess() {
         val validState =
             AdditionalAccessViewModel.State(
@@ -778,13 +784,14 @@ class MedicalAppFragmentTest {
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
         )
 
-        onView(withText(R.string.additional_access_label))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+        onIdle()
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        onIdle()
+        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
     }
 
     @Test
-    @Ignore("b/390200557") // TODO(b/390200557): unignore
     fun additionalAccessState_onlyOneAdditionalPermission_showsAdditionalAccess() {
         val validState =
             AdditionalAccessViewModel.State(
@@ -803,14 +810,15 @@ class MedicalAppFragmentTest {
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
         )
 
-        onView(withText(R.string.additional_access_label))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+        onIdle()
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        onIdle()
+        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
         verify(healthConnectLogger).logImpression(AppAccessElement.ADDITIONAL_ACCESS_BUTTON)
     }
 
     @Test
-    @Ignore("b/390200557") // TODO(b/390200557): unignore
     fun additionalAccessState_onClick_navigatesToAdditionalAccessFragment() {
         val validState =
             AdditionalAccessViewModel.State(
@@ -828,7 +836,12 @@ class MedicalAppFragmentTest {
             navHostController.setCurrentDestination(R.id.medicalAppFragment)
             Navigation.setViewNavController(requireView(), navHostController)
         }
-        onView(withText(R.string.additional_access_label)).perform(scrollTo()).perform(click())
+
+        onIdle()
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        onIdle()
+        onView(withText(R.string.additional_access_label)).perform(click())
 
         onIdle()
         assertThat(navHostController.currentDestination?.id)

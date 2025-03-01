@@ -240,8 +240,8 @@ public class ImportManagerTest {
                 mTransactionManager.readRecordsByIds(
                         request,
                         mAppInfoHelper,
-                        mAccessLogsHelper,
                         mDeviceInfoHelper,
+                        mAccessLogsHelper,
                         mReadAccessLogsHelper,
                         /* shouldRecordAccessLog= */ false);
         assertThat(records).hasSize(2);
@@ -253,21 +253,20 @@ public class ImportManagerTest {
 
     @Test
     public void mergesPriorityList() throws Exception {
-        // Insert data so that getPriorityOrder doesn't remove apps from priority list.
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 345, 100));
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME_2, createStepsRecord(234, 432, 200));
-        mAppInfoHelper.syncAppInfoRecordTypesUsed();
-
         mPriorityHelper.setPriorityOrder(
                 HealthDataCategory.ACTIVITY, List.of(TEST_PACKAGE_NAME, TEST_PACKAGE_NAME_2));
-        assertThat(mPriorityHelper.syncAndGetPriorityOrder(HealthDataCategory.ACTIVITY))
+        assertThat(
+                        mAppInfoHelper.getPackageNames(
+                                mPriorityHelper.getAppIdPriorityOrder(HealthDataCategory.ACTIVITY)))
                 .containsExactly(TEST_PACKAGE_NAME, TEST_PACKAGE_NAME_2)
                 .inOrder();
 
         File zipToImport = zipExportedDb(exportCurrentDb());
 
         mPriorityHelper.setPriorityOrder(HealthDataCategory.ACTIVITY, List.of(TEST_PACKAGE_NAME_2));
-        assertThat(mPriorityHelper.syncAndGetPriorityOrder(HealthDataCategory.ACTIVITY))
+        assertThat(
+                        mAppInfoHelper.getPackageNames(
+                                mPriorityHelper.getAppIdPriorityOrder(HealthDataCategory.ACTIVITY)))
                 .containsExactly(TEST_PACKAGE_NAME_2)
                 .inOrder();
 
@@ -282,22 +281,20 @@ public class ImportManagerTest {
                         ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_COMPLETE,
                         DEFAULT_USER_HANDLE);
 
-        assertThat(mPriorityHelper.syncAndGetPriorityOrder(HealthDataCategory.ACTIVITY))
+        assertThat(
+                        mAppInfoHelper.getPackageNames(
+                                mPriorityHelper.getAppIdPriorityOrder(HealthDataCategory.ACTIVITY)))
                 .containsExactly(TEST_PACKAGE_NAME_2, TEST_PACKAGE_NAME)
                 .inOrder();
     }
 
     @Test
     public void mergesPriorityList_handlesDifferentPackageNames() throws Exception {
-        // Insert data so that getPriorityOrder doesn't remove apps from priority list.
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 345, 100));
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME_2, createStepsRecord(234, 432, 200));
-        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME_3, createStepsRecord(400, 510, 305));
-        mAppInfoHelper.syncAppInfoRecordTypesUsed();
-
         mPriorityHelper.setPriorityOrder(
                 HealthDataCategory.ACTIVITY, List.of(TEST_PACKAGE_NAME, TEST_PACKAGE_NAME_2));
-        assertThat(mPriorityHelper.syncAndGetPriorityOrder(HealthDataCategory.ACTIVITY))
+        assertThat(
+                        mAppInfoHelper.getPackageNames(
+                                mPriorityHelper.getAppIdPriorityOrder(HealthDataCategory.ACTIVITY)))
                 .containsExactly(TEST_PACKAGE_NAME, TEST_PACKAGE_NAME_2)
                 .inOrder();
 
@@ -305,7 +302,9 @@ public class ImportManagerTest {
 
         mPriorityHelper.setPriorityOrder(
                 HealthDataCategory.ACTIVITY, List.of(TEST_PACKAGE_NAME_2, TEST_PACKAGE_NAME_3));
-        assertThat(mPriorityHelper.syncAndGetPriorityOrder(HealthDataCategory.ACTIVITY))
+        assertThat(
+                        mAppInfoHelper.getPackageNames(
+                                mPriorityHelper.getAppIdPriorityOrder(HealthDataCategory.ACTIVITY)))
                 .containsExactly(TEST_PACKAGE_NAME_2, TEST_PACKAGE_NAME_3)
                 .inOrder();
 
@@ -320,7 +319,9 @@ public class ImportManagerTest {
                         ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_COMPLETE,
                         DEFAULT_USER_HANDLE);
 
-        assertThat(mPriorityHelper.syncAndGetPriorityOrder(HealthDataCategory.ACTIVITY))
+        assertThat(
+                        mAppInfoHelper.getPackageNames(
+                                mPriorityHelper.getAppIdPriorityOrder(HealthDataCategory.ACTIVITY)))
                 .containsExactly(TEST_PACKAGE_NAME_2, TEST_PACKAGE_NAME_3, TEST_PACKAGE_NAME)
                 .inOrder();
     }
@@ -375,8 +376,8 @@ public class ImportManagerTest {
                 mTransactionManager.readRecordsByIds(
                         request,
                         mAppInfoHelper,
-                        mAccessLogsHelper,
                         mDeviceInfoHelper,
+                        mAccessLogsHelper,
                         mReadAccessLogsHelper,
                         /* shouldRecordAccessLog= */ false);
         assertThat(records).hasSize(1);
@@ -634,8 +635,8 @@ public class ImportManagerTest {
                 mTransactionManager.readRecordsByIds(
                         request,
                         mAppInfoHelper,
-                        mAccessLogsHelper,
                         mDeviceInfoHelper,
+                        mAccessLogsHelper,
                         mReadAccessLogsHelper,
                         /* shouldRecordAccessLog= */ false);
         assertThat(records).hasSize(2);

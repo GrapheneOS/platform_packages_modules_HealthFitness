@@ -17,7 +17,9 @@ package com.android.healthconnect.controller.permissions.request
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.AttrRes
@@ -28,6 +30,8 @@ import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.boldAppName
 import com.android.healthconnect.controller.utils.convertTextViewIntoLink
+import com.android.settingslib.widget.GroupSectionDividerMixin
+import com.android.settingslib.widget.SettingsThemeHelper
 
 internal class RequestPermissionHeaderPreference
 @JvmOverloads
@@ -36,7 +40,7 @@ constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0,
-) : Preference(context, attrs, defStyleAttr, defStyleRes) {
+) : Preference(context, attrs, defStyleAttr, defStyleRes), GroupSectionDividerMixin {
 
     private lateinit var title: TextView
     private lateinit var summary: TextView
@@ -59,6 +63,14 @@ constructor(
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
+        val headerArea = holder.findViewById(R.id.header_area) as FrameLayout
+        val headerLayoutId =
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                R.layout.widget_health_setup_header_content_expressive
+            } else {
+                R.layout.widget_health_setup_header_content_legacy
+            }
+        headerArea.addView(LayoutInflater.from(context).inflate(headerLayoutId, headerArea, false))
         title = holder.findViewById(R.id.title) as TextView
         summary = holder.findViewById(R.id.summary) as TextView
         detailedPermissions = holder.findViewById(R.id.detailed_permissions) as LinearLayout
@@ -208,6 +220,7 @@ constructor(
     }
 
     private fun updateDetailedPermissions() {
+        detailedPermissions.visibility = View.VISIBLE
         when (screenState) {
             is MedicalScreenState -> {
                 updateMedicalDetailedPermissions()

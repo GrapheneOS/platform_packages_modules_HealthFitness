@@ -19,10 +19,6 @@
 <configuration description="Runs unit tests for HealthConnectBackupRestore app.">
     <option name="test-tag" value="HealthConnectBackupRestoreUnitTests" />
 
-    <target_preparer class="com.android.tradefed.targetprep.InstallApexModuleTargetPreparer">
-        <option name="enable-rollback" value="false" />
-    </target_preparer>
-
     <!-- Install test -->
     <target_preparer class="com.android.tradefed.targetprep.suite.SuiteApkInstaller">
         <option name="test-file-name" value="HealthConnectBackupRestoreUnitTests.apk" />

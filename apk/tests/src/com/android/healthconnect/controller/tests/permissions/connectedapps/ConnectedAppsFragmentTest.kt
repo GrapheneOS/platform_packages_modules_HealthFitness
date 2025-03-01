@@ -18,8 +18,6 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps
 import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.os.Bundle
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -68,7 +66,6 @@ import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -454,8 +451,7 @@ class ConnectedAppsFragmentTest {
 
         launchFragment<ConnectedAppsFragment>(Bundle())
 
-        onView(withText("You don't currently have any compatible apps installed"))
-            .check(matches(isDisplayed()))
+        onView(withText("No compatible apps installed")).check(matches(isDisplayed()))
         onView(withText("Things to try")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Check for updates")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Make sure installed apps are up-to-date"))
@@ -484,8 +480,7 @@ class ConnectedAppsFragmentTest {
 
         launchFragment<ConnectedAppsFragment>(Bundle())
 
-        onView(withText("You don't currently have any compatible apps installed"))
-            .check(matches(isDisplayed()))
+        onView(withText("No compatible apps installed")).check(matches(isDisplayed()))
         onView(withText("Things to try")).check(doesNotExist())
         onView(withText("Check for updates")).check(doesNotExist())
         onView(withText("Make sure installed apps are up-to-date")).check(doesNotExist())
@@ -610,7 +605,9 @@ class ConnectedAppsFragmentTest {
             )
             .check(matches(isDisplayed()))
         onView(withText("Learn more")).check(matches(isDisplayed()))
-        onView(withText("Check for updates")).check(matches(not(isDisplayed())))
+        // Cannot check for the text here because it will throw a NoMatchingViewException
+        onView(withText(com.android.settingslib.widget.preference.banner.R.id.banner_positive_btn))
+            .check(doesNotExist())
 
         onView(withText("Learn more")).perform(click())
         assertThat(deviceInfoUtils.helpCenterInvoked).isTrue()

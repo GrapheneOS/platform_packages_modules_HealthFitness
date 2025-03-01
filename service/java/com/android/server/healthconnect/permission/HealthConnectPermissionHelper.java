@@ -191,15 +191,19 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
-    /** See {@link HealthConnectManager#revokeAllHealthPermissions}. */
-    public void revokeAllHealthPermissions(
+    /**
+     * See {@link HealthConnectManager#revokeAllHealthPermissions}.
+     *
+     * @return {@code true} if any health permissions were revoked, {@code false} otherwise
+     */
+    public boolean revokeAllHealthPermissions(
             String packageName, @Nullable String reason, UserHandle user) {
         enforceManageHealthPermissions(/* message= */ "revokeAllHealthPermissions");
         UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
         enforceValidPackage(packageName, checkedUser);
         final long token = Binder.clearCallingIdentity();
         try {
-            revokeAllHealthPermissionsUnchecked(packageName, checkedUser, reason);
+            return revokeAllHealthPermissionsUnchecked(packageName, checkedUser, reason);
         } finally {
             Binder.restoreCallingIdentity(token);
         }
@@ -444,7 +448,7 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
-    private void revokeAllHealthPermissionsUnchecked(
+    private boolean revokeAllHealthPermissionsUnchecked(
             String packageName, UserHandle user, @Nullable String reason) {
         List<String> grantedHealthPermissions =
                 PackageInfoUtils.getGrantedHealthPermissions(mContext, packageName, user);
@@ -458,22 +462,26 @@ public final class HealthConnectPermissionHelper {
                     user);
             removeFromPriorityListIfRequired(packageName, perm, user);
         }
+        boolean revoked = !grantedHealthPermissions.isEmpty();
         // If from split permission, automatically deny BODY_SENSORS and BACKGROUND.
         if (Flags.replaceBodySensorPermissionEnabled()
                 && isPackageRequestingSplitPermission(packageName, user)) {
-            revokeRuntimePermissionAndUpdateFlags(
-                    packageName,
-                    user,
-                    android.Manifest.permission.BODY_SENSORS,
-                    PackageManager.FLAG_PERMISSION_USER_SET,
-                    reason);
-            revokeRuntimePermissionAndUpdateFlags(
-                    packageName,
-                    user,
-                    android.Manifest.permission.BODY_SENSORS_BACKGROUND,
-                    PackageManager.FLAG_PERMISSION_USER_SET,
-                    reason);
+            revoked |=
+                    revokeRuntimePermissionAndUpdateFlags(
+                            packageName,
+                            user,
+                            android.Manifest.permission.BODY_SENSORS,
+                            PackageManager.FLAG_PERMISSION_USER_SET,
+                            reason);
+            revoked |=
+                    revokeRuntimePermissionAndUpdateFlags(
+                            packageName,
+                            user,
+                            android.Manifest.permission.BODY_SENSORS_BACKGROUND,
+                            PackageManager.FLAG_PERMISSION_USER_SET,
+                            reason);
         }
+        return revoked;
     }
 
     private void revokeRuntimePermission(
@@ -575,18 +583,21 @@ public final class HealthConnectPermissionHelper {
     }
 
     /** Sync permission denied status and flag between BODY_SENSORS and READ_HEART_RATE. */
-    private void revokeRuntimePermissionAndUpdateFlags(
+    private boolean revokeRuntimePermissionAndUpdateFlags(
             String packageName,
             UserHandle user,
             String legacyPermission,
             int permissionFlags,
             @Nullable String reason) {
+        boolean revoked = false;
         if (mPackageManager.checkPermission(legacyPermission, packageName)
                 != PackageManager.PERMISSION_DENIED) {
             mPackageManager.revokeRuntimePermission(packageName, legacyPermission, user, reason);
+            revoked = true;
         }
         mPackageManager.updatePermissionFlags(
                 legacyPermission, packageName, MASK_PERMISSION_FLAGS, permissionFlags, user);
+        return revoked;
     }
 
     /**

@@ -1,0 +1,50 @@
+{
+  "resourceType": "Procedure",
+  "id": "b-procedure-1",
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "46136006",
+        "display": "Electrocardiogram with exercise test (procedure)"
+      }
+    ],
+    "text": "Electrocardiogram with exercise test"
+  },
+  "category": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "103693007",
+        "display": "Diagnostic procedure (procedure)"
+      }
+    ],
+    "text": "Diagnostic procedure"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1"
+  },
+  "performedDateTime": "2019-08-21",
+  "recorder": {
+    "reference": "Practitioner/b-practitioner-1",
+    "display": "Dr Maria Hernandez"
+  },
+  "reasonCode": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "80313002",
+          "display": "Palpitations (finding)"
+        }
+      ],
+      "text": "Palpitations"
+    }
+  ],
+  "note": [
+    {
+      "text": "No abnormality detected."
+    }
+  ]
+}

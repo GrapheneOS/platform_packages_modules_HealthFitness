@@ -15,7 +15,7 @@
  */
 package com.android.server.healthconnect.backuprestore;
 
-import static android.health.connect.PageTokenWrapper.EMPTY_PAGE_TOKEN;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
@@ -31,7 +31,6 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BackupChangeTokenHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
@@ -39,10 +38,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsReques
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
-
-import java.util.List;
 
 /**
  * Manages Cloud Backup operations.
@@ -63,15 +59,13 @@ public final class CloudBackupManager {
     public CloudBackupManager(
             TransactionManager transactionManager,
             AppInfoHelper appInfoHelper,
-            AccessLogsHelper accessLogsHelper,
             DeviceInfoHelper deviceInfoHelper,
             HealthConnectMappings healthConnectMappings,
             InternalHealthConnectMappings internalHealthConnectMappings,
             ChangeLogsHelper changeLogsHelper,
             ChangeLogsRequestHelper changeLogsRequestHelper,
             HealthDataCategoryPriorityHelper priorityHelper,
-            PreferenceHelper preferenceHelper,
-            ReadAccessLogsHelper readAccessLogsHelper) {
+            PreferenceHelper preferenceHelper) {
         mTransactionManager = transactionManager;
         mPriorityHelper = priorityHelper;
         mPreferenceHelper = preferenceHelper;
@@ -80,13 +74,13 @@ public final class CloudBackupManager {
                 new CloudBackupDatabaseHelper(
                         transactionManager,
                         appInfoHelper,
-                        accessLogsHelper,
                         deviceInfoHelper,
                         healthConnectMappings,
                         internalHealthConnectMappings,
                         changeLogsHelper,
                         changeLogsRequestHelper,
-                        readAccessLogsHelper);
+                        priorityHelper,
+                        preferenceHelper);
     }
 
     /**
@@ -94,9 +88,9 @@ public final class CloudBackupManager {
      * null or empty changeToken means we are doing a fresh backup, and should start from the
      * beginning.
      *
-     * <p>If the changeToken is not found, it means that HealthConnect can no longer resume the
-     * backup from this point, and will respond with an Exception. The caller should restart the
-     * backup in this case.
+     * <p>If the changeToken is not valid, it means that HealthConnect can no longer resume the
+     * backup from this point, and will respond with an IllegalArgumentException. The caller should
+     * restart the backup in this case.
      *
      * <p>If no changes are returned by the API, this means that the client has synced all changes
      * as of now.
@@ -109,18 +103,14 @@ public final class CloudBackupManager {
             }
             BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
                     BackupChangeTokenHelper.getBackupChangeToken(mTransactionManager, changeToken);
-            boolean isChangeLogsTokenValid =
-                    mDatabaseHelper.isChangeLogsTokenValid(
-                            backupChangeToken.getChangeLogsRequestToken());
-            if (!isChangeLogsTokenValid) {
-                String emptyChangeToken =
-                        BackupChangeTokenHelper.getBackupChangeTokenRowId(
-                                mTransactionManager, null, EMPTY_PAGE_TOKEN.encode(), null);
-                return new GetChangesForBackupResponse(PROTO_VERSION, List.of(), emptyChangeToken);
+            if (!mDatabaseHelper.isChangeLogsTokenValid(
+                    backupChangeToken.getChangeLogsRequestToken())) {
+                throw new IllegalArgumentException("Change token invalid");
             }
-            if (backupChangeToken.getDataTableName() != null) {
+            var recordType = backupChangeToken.getRecordType();
+            if (recordType != RECORD_TYPE_UNKNOWN) {
                 return mDatabaseHelper.getChangesAndTokenFromDataTables(
-                        backupChangeToken.getDataTableName(),
+                        recordType,
                         backupChangeToken.getDataTablePageToken(),
                         backupChangeToken.getChangeLogsRequestToken());
             }

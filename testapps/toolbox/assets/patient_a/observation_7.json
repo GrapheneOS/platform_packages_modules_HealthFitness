@@ -1,0 +1,48 @@
+{
+  "resourceType": "Observation",
+  "id": "observation-7",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "social-history",
+          "display": "Social History"
+        }
+      ],
+      "text": "Social History"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "72166-2",
+        "display": "Tobacco smoking status"
+      }
+    ],
+    "text": "Tobacco smoking status"
+  },
+  "subject": {
+    "reference": "Patient/patient-1",
+    "display": "Example, Anne"
+  },
+  "valueString": "Current smoker with 20 pack-year history",
+  "encounter": {
+    "reference": "Encounter/encounter-unk",
+    "display": "GP appointment"
+  },
+  "effectiveDateTime": "2015-10-09T14:58:00Z",
+  "issued": "2015-10-09T14:58:00Z",
+  "performer": [
+    {
+      "display": "Dr Jose Rodriguez"
+    }
+  ],
+  "note": [
+    {
+      "text": "Patient given advice on local smoking cessation services."
+    }
+  ]
+}

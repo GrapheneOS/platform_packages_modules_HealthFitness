@@ -60,29 +60,29 @@ class HealthBannerPreference(context: Context, private val logName: ElementName)
     }
 
     override fun setPositiveButtonOnClickListener(
-        listener: OnClickListener
+        listener: OnClickListener?
     ): BannerMessagePreference {
         return super.setPositiveButtonOnClickListener {
             positiveButtonLogName?.let { logName -> logger.logInteraction(logName) }
-            listener.onClick(it)
+            listener?.onClick(it)
         }
     }
 
     override fun setNegativeButtonOnClickListener(
-        listener: OnClickListener
+        listener: OnClickListener?
     ): BannerMessagePreference {
         return super.setNegativeButtonOnClickListener {
             negativeButtonLogName?.let { logName -> logger.logInteraction(logName) }
-            listener.onClick(it)
+            listener?.onClick(it)
         }
     }
 
     override fun setDismissButtonOnClickListener(
-        listener: OnClickListener
+        listener: OnClickListener?
     ): BannerMessagePreference {
         return super.setDismissButtonOnClickListener {
             dismissButtonLogName?.let { logName -> logger.logInteraction(logName) }
-            listener.onClick(it)
+            listener?.onClick(it)
         }
     }
 

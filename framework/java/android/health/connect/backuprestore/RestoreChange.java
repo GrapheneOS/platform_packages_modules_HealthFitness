@@ -21,19 +21,28 @@ import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTOR
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Arrays;
 
-/** @hide */
+/**
+ * Represents a data record change to be restored into Health Connect.
+ *
+ * @hide
+ */
 @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
+@SystemApi
 public final class RestoreChange implements Parcelable {
 
     // The data is returned as bytes rather than records to keep the data opaque from the client.
     // As long as the client doesn't parse the data, it doesn't know what type of data this is.
     @NonNull private final byte[] mData;
 
+    /**
+     * @param data The data representing the change, serialized as bytes.
+     */
     public RestoreChange(@NonNull byte[] data) {
         mData = data;
     }
@@ -66,6 +75,7 @@ public final class RestoreChange implements Parcelable {
                 }
             };
 
+    /** Returns the data representing the change, serialized as bytes. */
     @Nullable
     public byte[] getData() {
         return mData;

@@ -55,6 +55,8 @@ import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.FooterPreference
+import com.android.settingslib.widget.SettingsThemeHelper
+import com.android.settingslib.widget.ZeroStatePreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -69,6 +71,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
         private const val KEY_SELECT_ALL = "key_select_all"
         private const val KEY_PERMISSION_TYPES = "key_permission_types"
         private const val KEY_NO_DATA = "no_data_preference"
+        private const val KEY_ZERO_STATE = "zero_state_preference"
         private const val KEY_FOOTER = "key_footer"
     }
 
@@ -77,7 +80,6 @@ open class AppDataFragment : Hilt_AppDataFragment() {
     }
 
     @Inject lateinit var logger: HealthConnectLogger
-
     private var packageName: String = ""
     private var appName: String = ""
 
@@ -88,7 +90,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
     private val permissionTypesListGroup: PreferenceCategory by pref(KEY_PERMISSION_TYPES)
 
     private val noDataPreference: NoDataPreference by pref(KEY_NO_DATA)
-
+    private val zeroStatePreference: ZeroStatePreference by pref(KEY_ZERO_STATE)
     private val footerPreference: FooterPreference by pref(KEY_FOOTER)
 
     // Not in deletion state
@@ -209,6 +211,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
         setupSelectAllPreference(screenState = viewModel.getDeletionScreenStateValue())
         updateMenu(viewModel.getDeletionScreenStateValue())
         noDataPreference.isVisible = false
+        zeroStatePreference.isVisible = false
         footerPreference.isVisible = false
 
         populatedCategories.forEach { permissionTypesPerCategory ->
@@ -248,7 +251,13 @@ open class AppDataFragment : Hilt_AppDataFragment() {
     }
 
     private fun setupEmptyState() {
-        noDataPreference.isVisible = true
+        if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            zeroStatePreference.isVisible = true
+            noDataPreference.isVisible = false
+        } else {
+            zeroStatePreference.isVisible = false
+            noDataPreference.isVisible = true
+        }
         footerPreference.isVisible = true
         updateMenu(screenState = VIEW, hasData = false)
         setupSelectAllPreference(screenState = VIEW)

@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Bla gjennom data"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Se data og hvilke apper som har tilgang til dem"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatisk sletting, datakilder, sikkerhetskopiering og gjenoppretting"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"Flere elementer"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Færre elementer"</string>
     <string name="backup_title" msgid="211503191266235085">"Sikkerhetskopiering"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Datakilder og prioritet"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Angi enheter"</string>
@@ -1173,10 +1175,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Trening og velvære"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Hele tiden"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"Når den er i bruk"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan bruke alle trenings- og velværedataene dine hele tiden"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan bruke alle trenings- og velværedataene dine mens den er i bruk"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Har tilgang"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Kan lese"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Disse tillatelsene gir <xliff:g id="APP_NAME">%1$s</xliff:g> tilgang til data fra enhetssensorene."</string>
@@ -1188,17 +1188,12 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Vil du fjerne <xliff:g id="DATA_TYPE">%s</xliff:g>-tilgangen for alle apper på klokken?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Hake"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Kryss"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"For øyeblikket kan <xliff:g id="APP_NAME">%1$s</xliff:g> bruke trenings- og velværedata hele tiden"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"For øyeblikket kan <xliff:g id="APP_NAME">%1$s</xliff:g> bruke trenings- og velværedata mens den er i bruk"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"Vil du gi <xliff:g id="APP_NAME">%1$s</xliff:g> tilgang til trenings- og velværedata hele tiden?"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> har tilgang til <xliff:g id="DATA_TYPES">%2$s</xliff:g>"</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Administrer tillatelser for trening og velvære"</string>
-    <!-- no translation found for used_by_apps_count (1384912521974773617) -->
-    <skip />
-    <!-- no translation found for not_used_in_past_24_hours (7918784815693928054) -->
-    <skip />
-    <!-- no translation found for accessed (4424701457530587176) -->
-    <skip />
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Brukt av 1 app}other{Brukt av # apper}}"</string>
+    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Ikke brukt de siste 24 timene"</string>
+    <string name="accessed" msgid="4424701457530587176">"Åpnet <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
 </resources>

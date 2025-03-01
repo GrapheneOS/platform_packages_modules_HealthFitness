@@ -19,6 +19,17 @@
     <com.android.settingslib.widget.TopIntroPreference
         android:order="0"
         android:key="connected_apps_top_intro"/>
+    <com.android.settingslib.widget.ZeroStatePreference
+        android:key="zero_state_preference"
+        android:title="@string/connected_apps_empty_list_section_title"
+        android:icon="?attr/appsIcon"
+        app:isPreferenceVisible="false"/>
+    <com.android.settingslib.widget.BannerMessagePreferenceGroup
+        android:key="banner_group"
+        app:expandTitle="@string/banner_group_more_items"
+        app:collapseTitle="@string/banner_group_fewer_items"
+        app:collapseIcon="?attr/collapseIcon"
+        android:order="1"/>
     <PreferenceCategory
         android:key="things_to_try_app_permissions_screen"
         android:title="@string/things_to_try"

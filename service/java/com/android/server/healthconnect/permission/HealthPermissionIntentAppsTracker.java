@@ -65,7 +65,7 @@ public class HealthPermissionIntentAppsTracker {
     }
 
     /** Setup the for the new user. */
-    public void onUserUnlocked(UserHandle userHandle) {
+    public void setupForUser(UserHandle userHandle) {
         if (Flags.permissionTrackerFixMappingInit()) {
             initPackageSetForUser(userHandle);
         }

@@ -1,0 +1,91 @@
+{
+  "resourceType": "Observation",
+  "id": "observation-44",
+  "identifier": [
+    {
+      "use": "official",
+      "system": "http://example.laboratory.com",
+      "value": "1012"
+    }
+  ],
+  "basedOn": [
+    {
+      "reference": "ServiceRequest/servicerequest_unk"
+    }
+  ],
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        }
+      ],
+      "text": "Laboratory"
+    },
+    {
+      "coding": [
+        {
+          "system": "urn:oid:1.2.345.6789",
+          "code": "Lab",
+          "display": "Lab"
+        }
+      ],
+      "text": "Laboratory"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "14647-2",
+        "display": "Cholesterol [Moles/volume] in Serum or Plasma"
+      }
+    ],
+    "text": "Total cholesterol"
+  },
+  "subject": {
+    "reference": "Patient/patient-1",
+    "display": "Example, Anne"
+  },
+  "performer": [
+    {
+      "display": "Practice Nurse"
+    }
+  ],
+  "effectiveDateTime": "2024-09-02T11:50:00Z",
+  "issued": "2024-09-03T09:00:41Z",
+  "valueQuantity": {
+    "value": 4.1,
+    "unit": "mmol/l",
+    "system": "http://unitsofmeasure.org",
+    "code": "mmol/l"
+  },
+  "referenceRange": [
+    {
+      "high": {
+        "value": 5.0,
+        "unit": "mmol/l",
+        "system": "http://unitsofmeasure.org",
+        "code": "mmol/l"
+      }
+    }
+  ],
+  "interpretation": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+          "code": "N",
+          "display": "Normal"
+        }
+      ]
+    }
+  ],
+  "specimen": {
+    "reference": "Specimen/specimen_unk",
+    "display": "Specimen"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "resourceType": "MedicationStatement",
+  "id": "b-medicationstatement-2",
+  "status": "active",
+  "category": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+        "code": "community",
+        "display": "Community"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1",
+    "display": "Ting, Tess"
+  },
+  "context": {
+    "reference": "Encounter/b-encounter-1",
+    "type": "Encounter"
+  },
+  "effectivePeriod": {
+    "start": "2022-04-11"
+  },
+  "dateAsserted": "2022-04-11",
+  "informationSource": {
+    "reference": "Patient/b-patient-1",
+    "display": "Ting, Tess"
+  },
+  "reasonReference": [
+    {
+      "reference": "Condition/b-condition-1",
+      "type": "Condition"
+    }
+  ],
+  "dosage": [
+    {
+      "sequence": 1,
+      "text": "2 tablets of 500mg Paracetamol up to 4 times daily",
+      "asNeededBoolean": true,
+      "timing": {
+        "repeat": {
+          "frequency": 4,
+          "period": 1,
+          "periodUnit": "d"
+        }
+      },
+      "route": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "26643006",
+            "display": "Oral Route"
+          }
+        ]
+      },
+      "doseAndRate": [
+        {
+          "type": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/dose-rate-type",
+                "code": "ordered",
+                "display": "Ordered"
+              }
+            ]
+          },
+          "doseQuantity": {
+            "value": 2,
+            "unit": "TAB",
+            "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+            "code": "TAB"
+          }
+        }
+      ],
+      "maxDosePerAdministration": {
+        "value": 1,
+        "unit": "g",
+        "system": "http://unitsofmeasure.org",
+        "code": "g"
+      }
+    }
+  ]
+}

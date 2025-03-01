@@ -27,6 +27,11 @@
         android:key="key_permission_types"/>
     <com.android.healthconnect.controller.shared.preference.NoDataPreference
         app:isPreferenceVisible="false"/>
+    <com.android.settingslib.widget.ZeroStatePreference
+        android:key="zero_state_preference"
+        android:title="@string/no_data"
+        android:icon="?attr/databaseIcon"
+        app:isPreferenceVisible="false"/>
     <com.android.settingslib.widget.FooterPreference
         android:key="key_footer"
         app:isPreferenceVisible="false"/>

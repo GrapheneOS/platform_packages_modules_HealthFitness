@@ -35,9 +35,6 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
         const val TAG = "AutoDeleteConfirmationDialogFragment"
         const val AUTO_DELETE_SAVED_EVENT = "AUTO_DELETE_SAVED_EVENT"
         const val AUTO_DELETE_CANCELLED_EVENT = "AUTO_DELETE_CANCELLED_EVENT"
-        const val AUTO_DELETE_CONFIRMATION_DIALOG_EVENT = "AUTO_DELETE_CONFIRMATION_DIALOG_EVENT"
-        const val NEW_AUTO_DELETE_RANGE_BUNDLE = "NEW_AUTO_DELETE_RANGE_BUNDLE"
-        const val OLD_AUTO_DELETE_RANGE_BUNDLE = "OLD_AUTO_DELETE_RANGE_BUNDLE"
     }
 
     private val viewModel: AutoDeleteViewModel by activityViewModels()
@@ -56,20 +53,22 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
                 .setMessage(buildMessage(it))
                 .setPositiveButton(
                     R.string.set_auto_delete_button,
-                    AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON) { _, _ ->
-                        setFragmentResult(
-                            AUTO_DELETE_SAVED_EVENT,
-                            bundleOf(AUTO_DELETE_SAVED_EVENT to viewModel.newAutoDeleteRange.value))
-                    }
+                    AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON,
+                ) { _, _ ->
+                    setFragmentResult(
+                        AUTO_DELETE_SAVED_EVENT,
+                        bundleOf(AUTO_DELETE_SAVED_EVENT to viewModel.newAutoDeleteRange.value),
+                    )
+                }
                 .setNeutralButton(
-                    android.R.string.cancel, AutoDeleteElement.AUTO_DELETE_DIALOG_CANCEL_BUTTON) {
-                        _,
-                        _ ->
-                        setFragmentResult(
-                            AUTO_DELETE_CANCELLED_EVENT,
-                            bundleOf(
-                                AUTO_DELETE_CANCELLED_EVENT to viewModel.oldAutoDeleteRange.value))
-                    }
+                    android.R.string.cancel,
+                    AutoDeleteElement.AUTO_DELETE_DIALOG_CANCEL_BUTTON,
+                ) { _, _ ->
+                    setFragmentResult(
+                        AUTO_DELETE_CANCELLED_EVENT,
+                        bundleOf(AUTO_DELETE_CANCELLED_EVENT to viewModel.oldAutoDeleteRange.value),
+                    )
+                }
         }
         val dialog = alertDialog.create()
         dialog.setCanceledOnTouchOutside(false)
@@ -80,13 +79,15 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
         val count = autoDeleteRange.numberOfMonths
         return MessageFormat.format(
             requireContext().getString(R.string.confirming_question_x_months),
-            mapOf("count" to count))
+            mapOf("count" to count),
+        )
     }
 
     private fun buildMessage(autoDeleteRange: AutoDeleteRange): String {
         val count = autoDeleteRange.numberOfMonths
         return MessageFormat.format(
             requireContext().getString(R.string.confirming_message_x_months),
-            mapOf("count" to count))
+            mapOf("count" to count),
+        )
     }
 }

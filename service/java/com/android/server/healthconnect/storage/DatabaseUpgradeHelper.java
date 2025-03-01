@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVITY_INTENSITY;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_GENERATED_LOCAL_TIME;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
@@ -41,6 +42,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ActivityIntensityRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.BackupChangeTokenHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
@@ -90,6 +92,9 @@ final class DatabaseUpgradeHelper {
     private static final Upgrader UPGRADE_TO_ECOSYSTEM_METRICS =
             db -> createTable(db, ReadAccessLogsHelper.getCreateTableRequest());
 
+    private static final Upgrader UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE =
+            BackupChangeTokenHelper::applyBackupTokenUpgrade;
+
     /**
      * A list of db version -> Upgrader to upgrade the db from the previous version to the version.
      * The upgrades must be executed one by one in the numeric order of db versions, hence TreeMap.
@@ -104,7 +109,9 @@ final class DatabaseUpgradeHelper {
                             DB_VERSION_MINDFULNESS_SESSION, UPGRADE_TO_MINDFULNESS_SESSION,
                             DB_VERSION_PERSONAL_HEALTH_RECORD, UPGRADE_TO_PERSONAL_HEALTH_RECORD,
                             DB_VERSION_ACTIVITY_INTENSITY, UPGRADE_TO_ACTIVITY_INTENSITY,
-                            DB_VERSION_ECOSYSTEM_METRICS, UPGRADE_TO_ECOSYSTEM_METRICS));
+                            DB_VERSION_ECOSYSTEM_METRICS, UPGRADE_TO_ECOSYSTEM_METRICS,
+                            DB_VERSION_CLOUD_BACKUP_AND_RESTORE,
+                                    UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE));
 
     /**
      * Applies db upgrades to bring the current schema to the latest supported version.
@@ -156,6 +163,9 @@ final class DatabaseUpgradeHelper {
             }
             if (effectiveOldVersion < DB_VERSION_ECOSYSTEM_METRICS) {
                 UPGRADE_TO_ECOSYSTEM_METRICS.upgrade(db);
+            }
+            if (effectiveOldVersion < DB_VERSION_CLOUD_BACKUP_AND_RESTORE) {
+                UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE.upgrade(db);
             }
         }
     }

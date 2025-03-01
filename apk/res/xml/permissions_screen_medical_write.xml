@@ -20,7 +20,7 @@
     <PreferenceCategory
         android:key="data_to_share"
         android:title="@string/medical_request_data_to_share">
-        <com.android.healthconnect.controller.shared.preference.HealthPreference
+        <com.android.healthconnect.controller.shared.preference.HealthNoBackgroundPreference
             android:key="supported_medical_permissions"/>
     </PreferenceCategory>
     <com.android.settingslib.widget.FooterPreference

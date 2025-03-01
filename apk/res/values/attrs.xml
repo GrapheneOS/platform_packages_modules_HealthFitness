@@ -33,6 +33,7 @@
     <attr name="seeAllCompatibleAppsIcon" format="reference"/>
     <attr name="sendFeedbackIcon" format="reference"/>
     <attr name="searchIcon" format="reference"/>
+    <attr name="emptySearchIcon" format="reference"/>
 
     <!-- Categories page -->
     <attr name="autoDeleteIcon" format="reference"/>
@@ -45,6 +46,7 @@
     <attr name="sleepCategoryIcon" format="reference"/>
     <attr name="vitalsCategoryIcon" format="reference"/>
     <attr name="wellnessCategoryIcon" format="reference"/>
+    <attr name="databaseIcon" format="reference" />
 
     <!-- Permission types page -->
     <attr name="appPriorityIcon" format="reference"/>
@@ -85,6 +87,7 @@
     <attr name="addIcon" format="reference"/>
     <attr name="editIcon" format="reference"/>
     <attr name="closeIcon" format="reference"/>
+    <attr name="appsIcon" format="reference"/>
 
     <!-- Backup and restore -->
     <attr name="uploadIcon" format="reference"/>
@@ -141,6 +144,8 @@
     <attr name="textAppearanceRouteRequest" format="reference"/>
     <attr name="textAppearancePreferenceCategory" format="reference"/>
     <attr name="textAppearanceErrorMessage" format="reference"/>
+    <attr name="headerTitle" format="reference"/>
+    <attr name="headerDetails" format="reference"/>
 
     <!-- Buttons -->
     <attr name="dialogButtonFull" format="reference"/>

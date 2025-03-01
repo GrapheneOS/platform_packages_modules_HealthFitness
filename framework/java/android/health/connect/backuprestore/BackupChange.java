@@ -21,19 +21,24 @@ import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTOR
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-/** @hide */
+/**
+ * Represents a record in Health Connect to be backed up.
+ *
+ * @hide
+ */
 @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
+@SystemApi
 public final class BackupChange implements Parcelable {
 
-    // A uid that identifies the specific data point this change refers to.
-    // Note: The module should ensure that this uid doesn't allow us to infer any user data.
-    @NonNull private final String mUid;
+    // A record ID that uniquely identifies the specific record this change refers to.
+    @NonNull private final String mRecordId;
 
     private final boolean mIsDeletion;
 
@@ -42,8 +47,16 @@ public final class BackupChange implements Parcelable {
     // As long as the client doesn't parse the data, it doesn't know what type of data this is.
     @Nullable private final byte[] mData;
 
-    public BackupChange(@NonNull String uid, boolean isDeletion, @Nullable byte[] data) {
-        mUid = uid;
+    /**
+     * @param recordId A record ID that uniquely identifies the specific record this change refers
+     *     to.
+     * @param isDeletion Whether this change is a deletion.
+     * @param data Only present if isDeletion is false. The data is returned as bytes rather than
+     *     records to keep the data opaque from the client. The caller shouldn't make any
+     *     assumptions about the format of the data.
+     */
+    public BackupChange(@NonNull String recordId, boolean isDeletion, @Nullable byte[] data) {
+        mRecordId = recordId;
         mIsDeletion = isDeletion;
         mData = data;
     }
@@ -53,19 +66,19 @@ public final class BackupChange implements Parcelable {
         if (this == o) return true;
         if (!(o instanceof BackupChange that)) return false;
         return mIsDeletion == that.mIsDeletion
-                && mUid.equals(that.mUid)
+                && mRecordId.equals(that.mRecordId)
                 && Arrays.equals(mData, that.mData);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(mUid, mIsDeletion);
+        int result = Objects.hash(mRecordId, mIsDeletion);
         result = 31 * result + Arrays.hashCode(mData);
         return result;
     }
 
     private BackupChange(Parcel in) {
-        mUid = in.readString();
+        mRecordId = in.readString();
         mIsDeletion = in.readByte() != 0;
         mData = in.readBlob();
     }
@@ -84,15 +97,22 @@ public final class BackupChange implements Parcelable {
                 }
             };
 
+    /** Returns the ID of the record that was changed. */
     @NonNull
-    public String getUid() {
-        return mUid;
+    public String getRecordId() {
+        return mRecordId;
     }
 
+    /** Returns whether this change is a deletion. */
     public boolean isDeletion() {
         return mIsDeletion;
     }
 
+    /**
+     * Returns the record that was changed.
+     *
+     * <p>Only present if isDeletion is false.
+     */
     @Nullable
     public byte[] getData() {
         return mData;
@@ -105,7 +125,7 @@ public final class BackupChange implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(mUid);
+        dest.writeString(mRecordId);
         dest.writeByte((byte) (mIsDeletion ? 1 : 0));
         dest.writeBlob(mData);
     }

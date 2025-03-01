@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"ውሂብን አስስ"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"ውሂብን እና የትኛዎቹ መተግበሪያዎች ሊደርሱት እንደሚችሉ ይመልከቱ"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"በራስ-ሰር ሰርዝ፣ የውሂብ ምንጮች፣ ምትኬ አስቀምጥ እና እነበረበት መልስ"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"ተጨማሪ ንጥሎች"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"ጥቂት ንጥሎች"</string>
     <string name="backup_title" msgid="211503191266235085">"ምትኬ"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"የውሂብ ምንጮች እና ቅድሚያ"</string>
     <string name="set_units_title" msgid="2657822539603758029">"ምደባዎችን አቀናብር"</string>
@@ -1173,10 +1175,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"ብቃት እና ጤንነት"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"ሁልጊዜ"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"በጥቅም ላይ ሳለ"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> ሁሉንም የእርስዎን ብቃት እና ጤንነት ውሂብ ሁልጊዜ መድረስ ይችላል"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> ሁሉንም የእርስዎን ብቃት እና ጤንነት ውሂብ ጥቅም ላይ ሳለ መድረስ ይችላል"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"ለመድረስ የተፈቀደለት"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"ለማንበብ የተፈቀደለት"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"እነዚህ ፈቃዶች ከመሣሪያዎ ዳሳሾች ለ<xliff:g id="APP_NAME">%1$s</xliff:g> የውሂብ መዳረሻ ይሰጣሉ።"</string>
@@ -1188,17 +1188,12 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"በእጅ ሰዓትዎ ላይ ላሉ ለሁሉም መተግበሪያዎች የ<xliff:g id="DATA_TYPE">%s</xliff:g> መዳረሻ ይወገድ?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"የጭረት ምልክት"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"የመስቀል ምልክት"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"በአሁኑ ጊዜ፣ <xliff:g id="APP_NAME">%1$s</xliff:g> የብቃት እና ጤንነት ውሂብን ሁልጊዜ መድረስ ይችላል"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"በአሁኑ ጊዜ፣ <xliff:g id="APP_NAME">%1$s</xliff:g> የብቃት እና ጤንነት ውሂብን በጥቅም ላይ ሳለ መድረስ ይችላል"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"ለብቃት እና ጤንነት ውሂብ ሁልጊዜ ለ<xliff:g id="APP_NAME">%1$s</xliff:g> መዳረሻ ይፈቅዳሉ?"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> ወደ <xliff:g id="DATA_TYPES">%2$s</xliff:g> መዳረሻ አለው።"</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"የብቃት እና ጤንነት ፈቃዶች አስተዳድር"</string>
-    <!-- no translation found for used_by_apps_count (1384912521974773617) -->
-    <skip />
-    <!-- no translation found for not_used_in_past_24_hours (7918784815693928054) -->
-    <skip />
-    <!-- no translation found for accessed (4424701457530587176) -->
-    <skip />
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{በ1 መተግበሪያ ጥቅም ላይ ውሏል}one{በ# መተግበሪያዎች ጥቅም ላይ ውሏል}other{በ# መተግበሪያዎች ጥቅም ላይ ውሏል}}"</string>
+    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"ባለፉት 24 ሰዓታት ውስጥ ጥቅም ላይ አልዋለም"</string>
+    <string name="accessed" msgid="4424701457530587176">"<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g> ላይ ተደርሶበታል"</string>
 </resources>

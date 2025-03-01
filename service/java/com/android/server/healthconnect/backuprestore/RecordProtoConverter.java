@@ -518,12 +518,6 @@ public final class RecordProtoConverter {
         if (plannedExerciseSessionRecordInternal.getTitle() != null) {
             builder.setTitle(plannedExerciseSessionRecordInternal.getTitle());
         }
-        if (plannedExerciseSessionRecordInternal.getCompletedExerciseSessionId() != null) {
-            builder.setCompletedExerciseSessionId(
-                    plannedExerciseSessionRecordInternal
-                            .getCompletedExerciseSessionId()
-                            .toString());
-        }
 
         return builder.build();
     }
@@ -1388,10 +1382,6 @@ public final class RecordProtoConverter {
                 plannedExerciseSessionProto.getExerciseBlockList().stream()
                         .map(RecordProtoConverter::convertToPlannedExerciseBlockInternal)
                         .toList());
-        if (plannedExerciseSessionProto.hasCompletedExerciseSessionId()) {
-            plannedExerciseSessionRecordInternal.setCompletedExerciseSessionId(
-                    UUID.fromString(plannedExerciseSessionProto.getCompletedExerciseSessionId()));
-        }
     }
 
     private static PlannedExerciseBlockInternal convertToPlannedExerciseBlockInternal(

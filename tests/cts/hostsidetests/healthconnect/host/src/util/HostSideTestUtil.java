@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 
 public class HostSideTestUtil {
 
@@ -129,6 +130,15 @@ public class HostSideTestUtil {
                     && !DeviceUtils.hasFeature(device, FEATURE_AUTOMOTIVE);
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    /** Grants {@code permissions} to {@code packageName} with ADB shell commands. */
+    public static void grantPermissionsWithAdb(
+            ITestDevice device, String packageName, List<String> permissions)
+            throws DeviceNotAvailableException {
+        for (String perm : permissions) {
+            device.executeShellCommand("pm grant " + packageName + " " + perm);
         }
     }
 

@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"I-browse ang data"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Tingnan ang data at kung aling mga app ang may access dito"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Awtomatikong i-delete, mga data source, i-backup at i-restore"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"Higit pang item"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Mas kaunting item"</string>
     <string name="backup_title" msgid="211503191266235085">"Backup"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Mga data source at priyoridad"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Itakda ang mga unit"</string>
@@ -1173,10 +1175,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness at wellness"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Sa lahat ng oras"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"Habang ginagamit"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"Maa-access ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang lahat ng iyong data ng fitness at wellness sa lahat ng oras"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"Maa-access ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang lahat ng iyong data ng fitness at wellness habang ginagamit"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Pinapayagang i-access"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Pinapayagang i-read"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Binibigyan ng mga pahintulot na ito ang <xliff:g id="APP_NAME">%1$s</xliff:g> ng access sa data mula sa mga sensor ng device mo."</string>
@@ -1188,17 +1188,12 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Alisin ang access sa <xliff:g id="DATA_TYPE">%s</xliff:g> para sa lahat ng app sa iyong relo?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Check mark"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Cross mark"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Sa ngayon, maa-access ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang data ng fitness at wellness sa lahat ng oras"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Sa ngayon, maa-access ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang data ng fitness at wellness habang ginagamit"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"Payagan ang <xliff:g id="APP_NAME">%1$s</xliff:g> na ma-access ang data ng fitness at wellness sa lahat ng oras?"</string>
     <string name="current_access" msgid="1457167070428176139">"May access sa <xliff:g id="DATA_TYPES">%2$s</xliff:g> ang <xliff:g id="APP_NAME">%1$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Pamahalaan ang mga pahintulot sa fitness at wellness"</string>
-    <!-- no translation found for used_by_apps_count (1384912521974773617) -->
-    <skip />
-    <!-- no translation found for not_used_in_past_24_hours (7918784815693928054) -->
-    <skip />
-    <!-- no translation found for accessed (4424701457530587176) -->
-    <skip />
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Ginagamit ng 1 app}one{Ginagamit ng # app}other{Ginagamit ng # na app}}"</string>
+    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Hindi ginamit sa nakalipas na 24 na oras"</string>
+    <string name="accessed" msgid="4424701457530587176">"Na-access noong <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
 </resources>

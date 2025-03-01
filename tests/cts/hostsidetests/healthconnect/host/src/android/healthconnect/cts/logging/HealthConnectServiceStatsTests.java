@@ -16,6 +16,7 @@
 
 package android.healthconnect.cts.logging;
 
+import static android.healthconnect.cts.HostSideTestUtil.grantPermissionsWithAdb;
 import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
 import static android.healthfitness.api.ApiMethod.CREATE_MEDICAL_DATA_SOURCE;
 import static android.healthfitness.api.ApiMethod.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
@@ -73,6 +74,26 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
             HostFlagsValueProvider.createCheckFlagsRule(this::getDevice);
 
     private static final String TEST_APP_PKG_NAME = "android.healthconnect.cts.testhelper";
+    private static final List<String> TEST_APP_PERMISSIONS =
+            List.of(
+                    "android.permission.health.WRITE_BLOOD_PRESSURE",
+                    "android.permission.health.WRITE_HEART_RATE",
+                    "android.permission.health.WRITE_STEPS",
+                    "android.permission.health.READ_BLOOD_PRESSURE",
+                    "android.permission.health.READ_HEART_RATE",
+                    "android.permission.health.WRITE_MEDICAL_DATA",
+                    "android.permission.health.READ_MEDICAL_DATA_VACCINES",
+                    "android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES",
+                    "android.permission.health.READ_MEDICAL_DATA_CONDITIONS",
+                    "android.permission.health.READ_MEDICAL_DATA_LABORATORY_RESULTS",
+                    "android.permission.health.READ_MEDICAL_DATA_MEDICATIONS",
+                    "android.permission.health.READ_MEDICAL_DATA_PERSONAL_DETAILS",
+                    "android.permission.health.READ_MEDICAL_DATA_PRACTITIONER_DETAILS",
+                    "android.permission.health.READ_MEDICAL_DATA_PREGNANCY",
+                    "android.permission.health.READ_MEDICAL_DATA_PROCEDURES",
+                    "android.permission.health.READ_MEDICAL_DATA_SOCIAL_HISTORY",
+                    "android.permission.health.READ_MEDICAL_DATA_VISITS",
+                    "android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS");
     private IBuildInfo mCtsBuild;
 
     @Before
@@ -85,6 +106,10 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         assertThat(mCtsBuild).isNotNull();
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
+        // b/396574091: Grant all permissions that the test helper app needs.
+        // This is another attempt to pre-grant permissions to the test helper app, another attempt
+        // was made in ag/31589102 but didn't seem to fix the problem.
+        grantPermissionsWithAdb(getDevice(), TEST_APP_PKG_NAME, TEST_APP_PERMISSIONS);
     }
 
     @After

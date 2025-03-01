@@ -1,0 +1,90 @@
+{
+  "resourceType": "Immunization",
+  "id": "immunization-1",
+  "status": "completed",
+  "vaccineCode": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/cvx",
+        "code": "115"
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/ndc",
+        "code": "58160-842-11"
+      }
+    ],
+    "text": "Tdap"
+  },
+  "patient": {
+    "reference": "Patient/patient-1",
+    "display": "Example, Anne"
+  },
+  "encounter": {
+    "reference": "Encounter/encounter-unk",
+    "display": "GP Visit"
+  },
+  "location": {
+    "reference": "Location/location-unk",
+    "display": "Nurse Room 1"
+  },
+  "occurrenceDateTime": "2018-05-21",
+  "recorded": "2018-05-21T14:05:00Z",
+  "primarySource": true,
+  "manufacturer": {
+    "display": "Sanofi Pasteur"
+  },
+  "lotNumber": "1",
+  "site": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActSite",
+        "code": "LA",
+        "display": "Left Arm"
+      }
+    ],
+    "text": "Left Arm"
+  },
+  "route": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration",
+        "code": "IM",
+        "display": "Injection, intramuscular"
+      }
+    ],
+    "text": "Injection, intramuscular"
+  },
+  "doseQuantity": {
+    "value": 0.5,
+    "unit": "mL"
+  },
+  "performer": [
+    {
+      "function": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0443",
+            "code": "AP",
+            "display": "Administering Provider"
+          }
+        ],
+        "text": "Administering Provider"
+      },
+      "actor": {
+        "reference": "Practitioner/practitioner-1",
+        "type": "Practitioner",
+        "display": "Dr Maria Hernandez"
+      }
+    }
+  ],
+  "note": [
+    {
+      "text": "Patient given information leaflet and advised on signs of adverse reaction.",
+      "authorString": "Dr Maria Hernandez"
+    },
+    {
+      "text": "Patients informed that vaccine protects against tetanus, diphtheria, and pertussis for up to 10 years, after which a booster is required.",
+      "authorString": "Dr Maria Hernandez"
+    }
+  ]
+}

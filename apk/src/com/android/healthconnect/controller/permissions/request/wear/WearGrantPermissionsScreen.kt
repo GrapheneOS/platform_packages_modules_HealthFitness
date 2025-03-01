@@ -17,6 +17,7 @@
  */
 package com.android.healthconnect.controller.permissions.request.wear
 
+import android.icu.text.ListFormatter;
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -117,7 +118,7 @@ fun GrantMultipleFitnessPermissions(
             res.getString(
                 R.string.wear_request_multiple_data_type_permissions,
                 appName,
-                dataTypes.joinToString(", "),
+                ListFormatter.getInstance().format(dataTypes),
             ),
     ) {
 

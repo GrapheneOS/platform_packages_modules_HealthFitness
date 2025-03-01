@@ -33,7 +33,6 @@ import androidx.wear.compose.material3.Text
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
-import com.android.healthconnect.controller.permissions.request.wear.elements.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionIconBuilder

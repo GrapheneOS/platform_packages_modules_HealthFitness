@@ -14,9 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
         android:key="no_search_result" />
+    <com.android.settingslib.widget.ZeroStatePreference
+        android:key="no_result"
+        android:title="@string/no_results"
+        android:icon="?attr/emptySearchIcon"
+        app:isPreferenceVisible="false"
+        android:order="0"/>
     <com.android.settingslib.widget.TopIntroPreference
         android:key="search_apps_top_intro"
         android:title="@string/connected_apps_text"/>

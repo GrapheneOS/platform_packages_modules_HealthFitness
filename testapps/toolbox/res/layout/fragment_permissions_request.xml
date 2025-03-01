@@ -20,13 +20,13 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:orientation="vertical"
         android:padding="10dp">
 
          <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
              <TextView
                  android:gravity="center_vertical"
@@ -35,7 +35,21 @@
                  android:layout_height="match_parent"
                  android:text="@string/all_permissions"/>
 
+             <TextView
+                 android:id="@+id/all_permissions_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
+             <Button
+                 android:visibility="invisible"
+                 android:layout_gravity="center"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent" />
+
              <CheckBox
+                 android:checked="true"
                  android:id="@+id/all_permissions_checkbox"
                  android:layout_width="wrap_content"
                  android:layout_height="match_parent" />
@@ -44,7 +58,7 @@
              android:paddingStart="15dp"
              android:layout_gravity="fill_horizontal"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="45dp"
              android:orientation="horizontal">
              <TextView
                  android:gravity="center_vertical"
@@ -55,6 +69,13 @@
                  android:paddingStart="1dp"
                  android:text="@string/fitness_permissions" />
 
+             <TextView
+                 android:id="@+id/fitness_permissions_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
              <Button
                  android:layout_gravity="center"
                  android:id="@+id/fitness_permissions_button"
@@ -63,6 +84,7 @@
                  android:text="@string/only" />
 
              <CheckBox
+                 android:checked="true"
                  android:id="@+id/fitness_permissions_checkbox"
                  android:layout_width="wrap_content"
                  android:layout_height="match_parent" />
@@ -70,7 +92,7 @@
          <LinearLayout
              android:paddingStart="30dp"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="45dp"
               android:orientation="horizontal">
 
               <TextView
@@ -80,13 +102,21 @@
                   android:text="@string/read_permission"
                   android:layout_height="match_parent"/>
 
-              <Button
+             <TextView
+                 android:id="@+id/fitness_read_permissions_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
+             <Button
                   android:id="@+id/fitness_read_permissions_button"
                   android:layout_width="wrap_content"
                   android:layout_height="match_parent"
                   android:text="@string/only" />
 
               <CheckBox
+                 android:checked="true"
                   android:id="@+id/fitness_read_permissions_checkbox"
                   android:layout_width="wrap_content"
                   android:layout_height="match_parent"/>
@@ -95,7 +125,7 @@
              android:paddingStart="30dp"
              android:gravity="end"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="45dp"
              android:orientation="horizontal">
 
              <TextView
@@ -106,6 +136,13 @@
                  android:layout_gravity="fill"
                  android:text="@string/write_permission" />
 
+             <TextView
+                 android:id="@+id/fitness_write_permissions_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
              <Button
                  android:id="@+id/fitness_write_permissions_button"
                  android:layout_width="wrap_content"
@@ -113,6 +150,7 @@
                  android:text="@string/only" />
 
              <CheckBox
+                 android:checked="true"
                  android:id="@+id/fitness_write_permissions_checkbox"
                  android:layout_width="wrap_content"
                  android:layout_height="match_parent"/>
@@ -120,7 +158,7 @@
          <LinearLayout
              android:paddingStart="15dp"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="45dp"
              android:orientation="horizontal">
              <TextView
                  android:gravity="center_vertical"
@@ -129,6 +167,13 @@
                  android:layout_height="match_parent"
                  android:text="@string/medical" />
 
+             <TextView
+                 android:id="@+id/personal_health_record_permissions_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
              <Button
                  android:id="@+id/personal_health_record_permissions_button"
                  android:layout_width="wrap_content"
@@ -136,6 +181,7 @@
                  android:text="@string/only" />
 
              <CheckBox
+                 android:checked="true"
                  android:id="@+id/personal_health_record_permissions_checkbox"
                  android:layout_width="wrap_content"
                  android:layout_height="match_parent"/>
@@ -143,7 +189,7 @@
          <LinearLayout
              android:paddingStart="30dp"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="45dp"
              android:orientation="horizontal">
              <TextView
                  android:gravity="center_vertical"
@@ -152,6 +198,13 @@
                  android:text="@string/read_permission"
                  android:layout_height="match_parent"/>
 
+             <TextView
+                 android:id="@+id/personal_health_record_read_permissions_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
              <Button
                  android:id="@+id/personal_health_record_read_permissions_button"
                  android:layout_width="wrap_content"
@@ -159,14 +212,16 @@
                  android:text="@string/only" />
 
              <CheckBox
+                 android:checked="true"
                  android:id="@+id/personal_health_record_read_permissions_checkbox"
                  android:layout_width="wrap_content"
-                 android:layout_height="match_parent" />
+                 android:layout_height="match_parent"
+                 />
          </LinearLayout>
          <LinearLayout
              android:paddingStart="30dp"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="45dp"
              android:orientation="horizontal">
              <TextView
                  android:gravity="center_vertical"
@@ -175,6 +230,13 @@
                  android:text="@string/write_permission"
                  android:layout_height="match_parent"/>
 
+             <TextView
+                 android:id="@+id/personal_health_record_write_permissions_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
              <Button
                  android:id="@+id/personal_health_record_write_permissions_button"
                  android:layout_width="wrap_content"
@@ -182,6 +244,7 @@
                  android:text="@string/only" />
 
              <CheckBox
+                 android:checked="true"
                  android:id="@+id/personal_health_record_write_permissions_checkbox"
                  android:layout_width="wrap_content"
                  android:layout_height="match_parent"/>
@@ -189,7 +252,7 @@
          <LinearLayout
              android:paddingStart="15dp"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="45dp"
              android:orientation="horizontal">
              <TextView
                  android:gravity="center_vertical"
@@ -198,6 +261,13 @@
                  android:text="@string/additional_permissions"
                  android:layout_height="match_parent"/>
 
+             <TextView
+                 android:id="@+id/additional_permissions_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
              <Button
                  android:id="@+id/additional_permissions_button"
                  android:layout_width="wrap_content"
@@ -205,6 +275,7 @@
                  android:text="@string/only" />
 
              <CheckBox
+                 android:checked="true"
                  android:id="@+id/additional_permissions_checkbox"
                  android:layout_width="wrap_content"
                  android:layout_height="match_parent"/>
@@ -212,7 +283,7 @@
          <LinearLayout
              android:paddingStart="30dp"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="45dp"
              android:orientation="horizontal">
              <TextView
                  android:gravity="center_vertical"
@@ -221,6 +292,13 @@
                  android:text="@string/history_read_permission"
                  android:layout_height="match_parent"/>
 
+             <TextView
+                 android:id="@+id/history_read_permission_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
              <Button
                  android:id="@+id/history_read_permission_button"
                  android:layout_width="wrap_content"
@@ -228,6 +306,7 @@
                  android:text="@string/only" />
 
              <CheckBox
+                 android:checked="true"
                  android:id="@+id/history_read_permission_checkbox"
                  android:layout_width="wrap_content"
                  android:layout_height="match_parent"/>
@@ -235,7 +314,7 @@
          <LinearLayout
              android:paddingStart="30dp"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="45dp"
              android:orientation="horizontal">
              <TextView
                  android:gravity="center_vertical"
@@ -244,6 +323,13 @@
                  android:text="@string/background_read_permission"
                  android:layout_height="match_parent"/>
 
+             <TextView
+                 android:id="@+id/background_read_permission_counter"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.2"
+                 android:gravity="center_vertical" />
+
              <Button
                  android:id="@+id/background_read_permission_button"
                  android:layout_width="wrap_content"
@@ -251,6 +337,7 @@
                  android:text="@string/only" />
 
              <CheckBox
+                 android:checked="true"
                  android:id="@+id/background_read_permission_checkbox"
                  android:layout_width="wrap_content"
                  android:layout_height="match_parent"/>
@@ -260,7 +347,7 @@
             android:layout_margin="10dp"
             android:id="@+id/request_selected_permissions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:text="@string/request_permissions"/>
     </LinearLayout>
 

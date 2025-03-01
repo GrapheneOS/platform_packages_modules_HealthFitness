@@ -19,8 +19,10 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
@@ -29,6 +31,7 @@ import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -51,7 +54,7 @@ import java.util.List;
  */
 public class BackupChangeTokenHelper {
     private static final String TABLE_NAME = "backup_change_token_table";
-    private static final String DATA_TABLE_NAME_COLUMN_NAME = "data_table_name";
+    private static final String RECORD_TYPE_COLUMN_NAME = "record_type";
     private static final String DATA_TABLE_PAGE_TOKEN_COLUMN_NAME = "data_table_page_token";
     private static final String CHANGE_LOGS_REQUEST_TOKEN_COLUMN_NAME = "change_logs_request_token";
 
@@ -60,12 +63,12 @@ public class BackupChangeTokenHelper {
      */
     public static String getBackupChangeTokenRowId(
             TransactionManager transactionManager,
-            @Nullable String dataTableName,
+            @RecordTypeIdentifier.RecordType int recordType,
             long dataTablePageToken,
             @Nullable String changeLogsRequestToken) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(DATA_TABLE_NAME_COLUMN_NAME, dataTableName);
+        contentValues.put(RECORD_TYPE_COLUMN_NAME, recordType);
         contentValues.put(DATA_TABLE_PAGE_TOKEN_COLUMN_NAME, dataTablePageToken);
         contentValues.put(CHANGE_LOGS_REQUEST_TOKEN_COLUMN_NAME, changeLogsRequestToken);
 
@@ -87,7 +90,7 @@ public class BackupChangeTokenHelper {
             }
 
             return new BackupChangeToken(
-                    getCursorString(cursor, DATA_TABLE_NAME_COLUMN_NAME),
+                    getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME),
                     getCursorLong(cursor, DATA_TABLE_PAGE_TOKEN_COLUMN_NAME),
                     getCursorString(cursor, CHANGE_LOGS_REQUEST_TOKEN_COLUMN_NAME));
         }
@@ -95,39 +98,39 @@ public class BackupChangeTokenHelper {
 
     /** A class to represent the request corresponding to a backup change token. */
     public static class BackupChangeToken {
-        private final @Nullable String mDataTableName;
+        private final @RecordTypeIdentifier.RecordType int mRecordType;
         private final long mDataTablePageToken;
         private final @Nullable String mChangeLogsRequestToken;
 
         /**
-         * @param dataTableName data table name to be backed up next
+         * @param recordType record type to be backed up next
          * @param dataTablePageToken page token for the data table to be backed up
          * @param changeLogsRequestToken row id in change logs request table to get token for change
          *     logs table
          */
         public BackupChangeToken(
-                @Nullable String dataTableName,
+                @RecordTypeIdentifier.RecordType int recordType,
                 long dataTablePageToken,
                 @Nullable String changeLogsRequestToken) {
-            mDataTableName = dataTableName;
+            mRecordType = recordType;
             mDataTablePageToken = dataTablePageToken;
             mChangeLogsRequestToken = changeLogsRequestToken;
         }
 
         /**
-         * Returns the data table name to be backed up next.
+         * Returns the record type to be backed up next.
          *
-         * <p>Set to null before a complete full backup or for an incremental backup.
+         * <p>Set to 0 before a complete full backup or for an incremental backup.
          */
-        public @Nullable String getDataTableName() {
-            return mDataTableName;
+        public @RecordTypeIdentifier.RecordType int getRecordType() {
+            return mRecordType;
         }
 
         /**
-         * Returns the page token for the data table to be backed up if the data table name field
-         * presents.
+         * Returns the page token for the data table to be backed up if the data type is not
+         * RECORD_TYPE_UNKNOWN.
          *
-         * <p>If the data table name is null, returns -1.
+         * <p>If the data type name is 0, returns -1.
          */
         public long getDataTablePageToken() {
             return mDataTablePageToken;
@@ -165,7 +168,7 @@ public class BackupChangeTokenHelper {
     private static List<Pair<String, String>> getColumnInfo() {
         List<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY));
-        columnInfo.add(new Pair<>(DATA_TABLE_NAME_COLUMN_NAME, TEXT_NULL));
+        columnInfo.add(new Pair<>(RECORD_TYPE_COLUMN_NAME, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(DATA_TABLE_PAGE_TOKEN_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(CHANGE_LOGS_REQUEST_TOKEN_COLUMN_NAME, TEXT_NULL));
         return columnInfo;

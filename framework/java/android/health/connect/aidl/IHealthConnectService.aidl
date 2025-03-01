@@ -556,12 +556,12 @@ interface IHealthConnectService {
     void getSettingsForBackup(in IGetSettingsForBackupResponseCallback callback);
 
     /**
-     * Restores the backed up settings for restore.
+     * Restores the backed up user settings.
      *
      * @param backupSettings Settings that were previously backed up.
      * @param callback Callback to receive result of performing this operation.
      */
-    void pushSettingsForRestore(in BackupSettings backupSettings, in IEmptyResponseCallback callback);
+    void restoreSettings(in BackupSettings backupSettings, in IEmptyResponseCallback callback);
 
     /**
      * Returns whether the input data version can be restored.
@@ -572,10 +572,10 @@ interface IHealthConnectService {
      void canRestore(in int dataVersion, in ICanRestoreResponseCallback callback);
 
     /**
-     * Restored the input changes.
+     * Restores the backed up changes.
      *
      * @param changes Changes to be restored.
      * @param callback Callback to receive result of performing this operation.
      */
-     void pushChangesForRestore(in List<RestoreChange> changes, in IEmptyResponseCallback callback);
+     void restoreChanges(in List<RestoreChange> changes, in byte[] appInfoMap, in IEmptyResponseCallback callback);
 }

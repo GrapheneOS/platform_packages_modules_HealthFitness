@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.permission;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -908,6 +910,23 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
+    public void revokeAllHealthPermissions_noPermissionsGranted() throws Exception {
+        PackageInfo mockPackageInfo = new PackageInfo();
+        mockPackageInfo.requestedPermissions =
+                new String[] {HealthPermissions.READ_STEPS, HealthPermissions.READ_DISTANCE};
+        mockPackageInfo.requestedPermissionsFlags = new int[] {0, 0};
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        assertThat(mPermissionHelper.getGrantedHealthPermissions(TEST_PACKAGE_NAME, CURRENT_USER))
+                .isEmpty();
+        assertThat(
+                        mPermissionHelper.revokeAllHealthPermissions(
+                                TEST_PACKAGE_NAME, "Test reason", CURRENT_USER))
+                .isFalse();
+    }
+
+    @Test
     @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void revokeAllHealthPermissions_isFromSplitPermission_revokeBodySensorsAndBackground()
             throws PackageManager.NameNotFoundException {
@@ -916,6 +935,11 @@ public class HealthConnectPermissionHelperTest {
                 new String[] {
                     HealthPermissions.READ_HEART_RATE,
                     HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND
+                };
+        mockPackageInfo.requestedPermissionsFlags =
+                new int[] {
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
@@ -928,8 +952,14 @@ public class HealthConnectPermissionHelperTest {
                         CURRENT_USER))
                 .thenReturn(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED);
 
-        mPermissionHelper.revokeAllHealthPermissions(
-                TEST_PACKAGE_NAME, /* reason= */ null, CURRENT_USER);
+        assertThat(mPermissionHelper.getGrantedHealthPermissions(TEST_PACKAGE_NAME, CURRENT_USER))
+                .containsExactly(
+                        HealthPermissions.READ_HEART_RATE,
+                        HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND);
+        assertThat(
+                        mPermissionHelper.revokeAllHealthPermissions(
+                                TEST_PACKAGE_NAME, /* reason= */ null, CURRENT_USER))
+                .isTrue();
 
         verify(mPackageManager)
                 .revokeRuntimePermission(
@@ -970,6 +1000,11 @@ public class HealthConnectPermissionHelperTest {
                     HealthPermissions.READ_HEART_RATE,
                     HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND
                 };
+        mockPackageInfo.requestedPermissionsFlags =
+                new int[] {
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                    PackageInfo.REQUESTED_PERMISSION_GRANTED
+                };
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
         when(mPackageManager.getPermissionFlags(
@@ -981,8 +1016,14 @@ public class HealthConnectPermissionHelperTest {
                         CURRENT_USER))
                 .thenReturn(PackageManager.FLAG_PERMISSION_USER_SET);
 
-        mPermissionHelper.revokeAllHealthPermissions(
-                TEST_PACKAGE_NAME, /* reason= */ null, CURRENT_USER);
+        assertThat(mPermissionHelper.getGrantedHealthPermissions(TEST_PACKAGE_NAME, CURRENT_USER))
+                .containsExactly(
+                        HealthPermissions.READ_HEART_RATE,
+                        HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND);
+        assertThat(
+                        mPermissionHelper.revokeAllHealthPermissions(
+                                TEST_PACKAGE_NAME, /* reason= */ null, CURRENT_USER))
+                .isTrue();
 
         verify(mPackageManager, never())
                 .revokeRuntimePermission(any(), eq(permission.BODY_SENSORS), any(), any());

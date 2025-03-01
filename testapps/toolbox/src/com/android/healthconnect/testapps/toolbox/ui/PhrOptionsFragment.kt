@@ -16,7 +16,9 @@
 
 package com.android.healthconnect.testapps.toolbox.ui
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.health.connect.CreateMedicalDataSourceRequest
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
@@ -37,10 +39,14 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
+import android.widget.SpinnerAdapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.asOutcomeReceiver
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.android.healthconnect.testapps.toolbox.Constants.MEDICAL_PERMISSIONS
@@ -48,25 +54,39 @@ import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.requireSystemService
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.showMessageDialog
 import java.io.IOException
+import java.io.InputStream
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
+    companion object {
+        private const val PATIENT_A_ASSET_PATH = "patient_a"
+        private const val PATIENT_B_ASSET_PATH = "patient_b"
+        private const val PATIENT_C_ASSET_PATH = "patient_c"
+        private const val CUSTOM_DATA_PATH_PLACE_HOLDER = "custom folder"
+    }
 
     private lateinit var mRequestPermissionLauncher: ActivityResultLauncher<Array<String>>
+    private lateinit var mSelectJSONDirectoryLauncher: ActivityResultLauncher<Intent>
     private val healthConnectManager: HealthConnectManager by lazy {
         requireContext().requireSystemService()
     }
+    private var mSelectedCustomDirFilesToUri: Map<String, Uri>? = null
+
+    private var mExistingDataSourceNamesToId: MutableMap<String, String> = mutableMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // Starting API Level 30 If permission is denied more than once, user doesn't see the dialog
         // asking permissions again unless they grant the permission from settings.
         mRequestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-                permissionMap: Map<String, Boolean> ->
-                requestPermissionResultHandler(permissionMap)
+                permissionMap: Map<String, Boolean> -> requestPermissionResultHandler(permissionMap)
+            }
+
+        mSelectJSONDirectoryLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult -> selectJsonDirResultHandler(result)
             }
     }
 
@@ -80,22 +100,43 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
 
         if (numberOfPermissionsMissing == 0) {
             Toast.makeText(
-                    this.requireContext(),
-                    R.string.all_medical_permissions_success,
-                    Toast.LENGTH_SHORT,
-                )
+                this.requireContext(),
+                R.string.all_medical_permissions_success,
+                Toast.LENGTH_SHORT,
+            )
                 .show()
         } else {
             Toast.makeText(
-                    this.requireContext(),
-                    getString(
-                        R.string.number_of_medical_permissions_not_granted,
-                        numberOfPermissionsMissing,
-                    ),
-                    Toast.LENGTH_SHORT,
-                )
+                this.requireContext(),
+                getString(
+                    R.string.number_of_medical_permissions_not_granted,
+                    numberOfPermissionsMissing,
+                ),
+                Toast.LENGTH_SHORT,
+            )
                 .show()
         }
+    }
+
+    private fun selectJsonDirResultHandler(result: ActivityResult) {
+        val view = requireView()
+        val uri = result.data?.data
+        if (result.resultCode != Activity.RESULT_OK || uri == null) {
+            Toast.makeText(
+                this.requireContext(),
+                "Failed to get directory access.",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            val spinner = view.findViewById<Spinner>(R.id.phr_patient_spinner)
+            spinner.setSelection(0)
+            return
+        }
+
+        val customPathText = view.findViewById<TextView>(R.id.phr_options_custom_path)
+        customPathText.text = "Selected dir: ${uri.path}"
+        customPathText.visibility = View.VISIBLE
+        setUpFhirResourceFromSpinner(view, uri)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -120,19 +161,17 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
             executeAndShowMessage { insertAllFhirResources(view) }
         }
 
-        view.requireViewById<Button>(R.id.phr_insert_immunization_button).setOnClickListener {
-            executeAndShowMessage { insertImmunization(view) }
-        }
-
-        view.requireViewById<Button>(R.id.phr_insert_allergy_button).setOnClickListener {
-            executeAndShowMessage { insertAllergy(view) }
+        view.requireViewById<Button>(R.id.phr_insert_resource_button).setOnClickListener {
+            executeAndShowMessage { insertPastedResource(view) }
         }
 
         view
             .requireViewById<Button>(R.id.phr_request_read_and_write_medical_data_button)
             .setOnClickListener { requestMedicalPermissions() }
 
-        setUpFhirResourceFromSpinner(view)
+        setUpDataSourceSpinner(view)
+
+        setUpPatientContextSpinner(view)
     }
 
     private fun executeAndShowMessage(block: suspend () -> String) {
@@ -148,68 +187,180 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
         }
     }
 
-    private suspend fun insertImmunization(view: View): String {
-        val immunizationResource =
-            loadJSONFromAsset(requireContext(), "immunization_1.json")
-                ?: return "No Immunization resource to insert"
-        Log.d("INSERT_IMMUNIZATION", "Writing immunization $immunizationResource")
-        return insertResource(view, immunizationResource)
+    private suspend fun insertPastedResource(view: View): String {
+        val pastedResource =
+            view.findViewById<EditText>(R.id.phr_pasted_resource_text).getText().toString()
+        Log.d("INSERT_RESOURCE", "Writing resource $pastedResource")
+        return insertResource(view, pastedResource)
     }
 
-    private suspend fun insertAllergy(view: View): String {
-        val allergyResource =
-            loadJSONFromAsset(requireContext(), "allergyintolerance_1.json")
-                ?: return "No Allergy resource to insert"
-        Log.d("INSERT_ALLERGY", "Writing allergy $allergyResource")
-        return insertResource(view, allergyResource)
+    private fun setUpDataSourceSpinner(
+        rootView: View,
+        dataSources: List<String> = listOf(),
+        selectPosition: Int = 0
+    ) {
+        val spinnerOptions =
+            listOf(getString(R.string.data_source_spinner_default_message)) + dataSources
+
+        val spinner = rootView.findViewById<Spinner>(R.id.phr_data_source_spinner)
+        spinner.adapter = createSpinnerAdapter(spinnerOptions)
+        spinner.setSelection(selectPosition)
     }
 
-    private fun setUpFhirResourceFromSpinner(rootView: View) {
-        val jsonFiles = getJsonFilesFromAssets(requireContext())
-        val spinnerOptions = listOf(getString(R.string.spinner_default_message)) + jsonFiles
-        val spinnerAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, spinnerOptions)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    private fun updateDataSourceSpinnerOptions(
+        view: View,
+        existingDataSources: List<String>,
+        newDataSource: String
+    ) {
+        setUpDataSourceSpinner(view, listOf(newDataSource) + existingDataSources, 1)
+    }
 
-        val spinner = rootView.findViewById<Spinner>(R.id.phr_spinner)
-        spinner.adapter = spinnerAdapter
+    private fun getDataSourceIdFromSpinner(view: View): String? {
+        val dataSourceSpinner = view.findViewById<Spinner>(R.id.phr_data_source_spinner)
+        return mExistingDataSourceNamesToId[dataSourceSpinner.selectedItem.toString()]
+    }
+
+    private fun setUpPatientContextSpinner(rootView: View) {
+        val spinnerOptions =
+            listOf(
+                PATIENT_A_ASSET_PATH,
+                PATIENT_B_ASSET_PATH,
+                PATIENT_C_ASSET_PATH,
+                CUSTOM_DATA_PATH_PLACE_HOLDER
+            )
+
+        val spinner = rootView.findViewById<Spinner>(R.id.phr_patient_spinner)
+        spinner.adapter = createSpinnerAdapter(spinnerOptions)
 
         spinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long,
                 ) {
-                    if (position == 0) { // Ignore "Select resource" default message
+                    // Clear pasted resource text
+                    rootView.findViewById<EditText>(R.id.phr_pasted_resource_text).text = null
+                    // Clear selected custom path in case it was present
+                    val customPathText =
+                        rootView.findViewById<TextView>(R.id.phr_options_custom_path)
+                    customPathText.text = null
+                    customPathText.visibility = View.GONE
+
+                    if (position == 3) {
+                        // let user select directory to read from. The callback of this will then
+                        // also set up the fhirResourceSpinner
+                        mSelectJSONDirectoryLauncher.launch(
+                            Intent(Intent.ACTION_OPEN_DOCUMENT_TREE))
                         return
                     }
 
-                    val selectedFile = spinnerOptions[position]
-                    val selectedResource =
-                        loadJSONFromAsset(requireContext(), selectedFile) ?: return
-                    Log.d("INSERT_RESOURCE_FROM_SPINNER", "Writing resource $selectedResource")
-                    executeAndShowMessage { insertResource(rootView, selectedResource) }
+                    // Otherwise update resource spinner based on the selected patient
+                    val selectedPatientContext = spinnerOptions[position]
+                    setUpFhirResourceFromSpinner(rootView, selectedPatientContext)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // No-op.
                 }
             }
+
+    }
+
+    private fun setUpFhirResourceFromSpinner(rootView: View, selectedCustomDirUri: Uri) {
+        val selectedDirectory =
+            DocumentFile.fromTreeUri(this.requireContext(), selectedCustomDirUri)
+        if (selectedDirectory == null) {
+            Toast.makeText(
+                this.requireContext(),
+                "Failed to access selected dir: $selectedCustomDirUri.",
+                Toast.LENGTH_LONG
+            )
+                .show()
+            return
+        }
+
+        mSelectedCustomDirFilesToUri = selectedDirectory.listFiles()
+            .filter { file: DocumentFile -> file.isFile && file.name != null }
+            .associate { file: DocumentFile -> Pair(file.name ?: "unknown", file.uri) }
+            .filter { (filename, uri) -> uri.toString().endsWith(".json") }
+        Log.d("SET_UP_SPINNER", "Found json files $mSelectedCustomDirFilesToUri")
+
+        val spinnerOptions =
+            listOf(getString(R.string.spinner_default_message)) +
+                    (mSelectedCustomDirFilesToUri?.keys ?: emptyList())
+
+        setUpFhirResourceSpinner(rootView, spinnerOptions, true)
+    }
+
+    private fun setUpFhirResourceFromSpinner(rootView: View, assetSubDir: String) {
+        val jsonFiles = listFhirJSONAssetFiles(requireContext(), assetSubDir) ?: emptyList()
+        val spinnerOptions = listOf(getString(R.string.spinner_default_message)) + jsonFiles
+
+        setUpFhirResourceSpinner(rootView, spinnerOptions, false, assetSubDir)
+    }
+
+    private fun setUpFhirResourceSpinner(
+        rootView: View,
+        spinnerOptions: List<String>,
+        customPatientContext: Boolean,
+        assetSubDir: String = ""
+    ) {
+        val spinner = rootView.findViewById<Spinner>(R.id.phr_spinner)
+        spinner.adapter = createSpinnerAdapter(spinnerOptions)
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                if (position == 0) { // Ignore "Select resource" default message
+                    return
+                }
+
+                var selectedResource = ""
+                val selectedFile = spinnerOptions[position]
+
+                if (customPatientContext) {
+                    val resourceUri = mSelectedCustomDirFilesToUri?.get(selectedFile) ?: return
+                    selectedResource =
+                        loadJSONFromContentUri(requireContext(), resourceUri) ?: return
+                } else {
+                    selectedResource =
+                        loadJSONFromAsset(requireContext(), assetSubDir, selectedFile) ?: return
+                }
+
+                rootView.findViewById<EditText>(R.id.phr_pasted_resource_text).setText(
+                    selectedResource
+                )
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // No-op.
+            }
+        }
+    }
+
+    private fun createSpinnerAdapter(spinnerOptions: List<String>): ArrayAdapter<String?> {
+        val spinnerAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, spinnerOptions)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        return spinnerAdapter
     }
 
     private suspend fun insertResource(view: View, resource: String): String {
-        val insertedDataSourceId =
-            view.findViewById<EditText>(R.id.phr_data_source_id_text).getText().toString()
+        val dataSourceId = getDataSourceIdFromSpinner(view) ?: return "No data source selected"
         val insertedResources =
             upsertMedicalResources(
                 listOf(
                     UpsertMedicalResourceRequest.Builder(
-                            insertedDataSourceId,
-                            FhirVersion.parseFhirVersion("4.0.1"),
-                            resource,
-                        )
+                        dataSourceId,
+                        FhirVersion.parseFhirVersion("4.0.1"),
+                        resource,
+                    )
                         .build()
                 )
             )
@@ -220,27 +371,30 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
     }
 
     private suspend fun insertAllFhirResources(view: View): String {
-        val allResources = loadAllFhirJSONs()
-        Log.d("INSERT_ALL", "Writing all FHIR resources")
-        val insertedDataSourceId =
-            view.findViewById<EditText>(R.id.phr_data_source_id_text).getText().toString()
+        val patientContext =
+            view.findViewById<Spinner>(R.id.phr_patient_spinner).selectedItem.toString()
+        val allResources = if (patientContext == CUSTOM_DATA_PATH_PLACE_HOLDER)
+            loadAllFhirJSONsFromContentUris(mSelectedCustomDirFilesToUri?.values.orEmpty().toList())
+            else loadAllFhirJSONsFromAssets(patientContext)
+        Log.d("INSERT_ALL", "Writing ${allResources.size} FHIR resources")
+        val insertedDataSourceId = getDataSourceIdFromSpinner(view)
+            ?: return "No data source selected"
         val insertedResources =
             upsertMedicalResources(
                 allResources.map {
                     UpsertMedicalResourceRequest.Builder(
-                            insertedDataSourceId,
-                            FhirVersion.parseFhirVersion("4.0.1"),
-                            it,
-                        )
+                        insertedDataSourceId,
+                        FhirVersion.parseFhirVersion("4.0.1"),
+                        it,
+                    )
                         .build()
                 }
             )
         return "SUCCESSFUL DATA UPSERT \n\nUpserted data:\n" +
-            insertedResources.joinToString(separator = "\n", transform = MedicalResource::toString)
-    }
-
-    private fun getJsonFilesFromAssets(context: Context): List<String> {
-        return context.assets.list("")?.filter { it.endsWith(".json") } ?: emptyList()
+                insertedResources.joinToString(
+                    separator = "\n",
+                    transform = MedicalResource::toString
+                )
     }
 
     private suspend fun upsertMedicalResources(
@@ -274,8 +428,10 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
                     continuation.asOutcomeReceiver(),
                 )
             }
-        view.findViewById<EditText>(R.id.phr_data_source_id_text).setText(dataSource.id)
         Log.d("CREATE_DATA_SOURCE", "Created source: $dataSource")
+        updateDataSourceSpinnerOptions(
+            view, mExistingDataSourceNamesToId.keys.toList(), dataSource.displayName)
+        mExistingDataSourceNamesToId.put(dataSource.displayName, dataSource.id)
         return "Created data source: $displayName"
     }
 
@@ -291,64 +447,95 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
             ReadMedicalResourcesInitialRequest.Builder(MEDICAL_RESOURCE_TYPE_VACCINES).build()
         val resources =
             suspendCancellableCoroutine<ReadMedicalResourcesResponse> { continuation ->
-                    receiver = continuation.asOutcomeReceiver()
-                    healthConnectManager.readMedicalResources(request, Runnable::run, receiver)
-                }
+                receiver = continuation.asOutcomeReceiver()
+                healthConnectManager.readMedicalResources(request, Runnable::run, receiver)
+            }
                 .medicalResources
         Log.d("READ_MEDICAL_RESOURCES", "Read ${resources.size} resources")
         return resources
     }
 
-    private fun loadAllFhirJSONs(): List<String> {
-        val jsonFiles = listFhirJSONFiles(requireContext())
+    private fun listFhirJSONAssetFiles(context: Context, path: String): List<String>? {
+        val assetManager = context.assets
+        return try {
+            assetManager.list(path)?.filter { it.endsWith(".json") } ?: emptyList()
+        } catch (e: IOException) {
+            Log.e("listFhirJSONAssetFiles", "Error listing assets in path $path", e)
+            Toast.makeText(
+                context,
+                "Error listing JSON files: ${e.localizedMessage}",
+                Toast.LENGTH_SHORT,
+            )
+                .show()
+            null
+        }
+    }
+
+    private fun loadAllFhirJSONsFromAssets(path: String): List<String> {
+        val jsonFiles = listFhirJSONAssetFiles(requireContext(), path)
         if (jsonFiles == null) {
-            Log.e("loadAllFhirJSONs", "No JSON files were found.")
+            Log.e("loadAllFhirJSONsAssets", "No JSON files were found.")
             Toast.makeText(context, "No JSON files were found.", Toast.LENGTH_SHORT).show()
             return emptyList()
         }
 
         return jsonFiles
-            .filter { it.endsWith(".json") }
             .mapNotNull {
-                val jsonString = loadJSONFromAsset(requireContext(), it)
-                Log.i("loadAllFhirJSONs", "$it: $jsonString")
+                val jsonString = loadJSONFromAsset(requireContext(), path, it)
+                Log.i("loadAllFhirJSONsAssets", "$it: $jsonString")
                 jsonString
             }
     }
 
-    private fun listFhirJSONFiles(context: Context, path: String = ""): List<String>? {
-        val assetManager = context.assets
+    fun loadJSONFromAsset(context: Context, path: String, fileName: String): String? {
         return try {
-            assetManager.list(path)?.toList() ?: emptyList()
+            val inputStream = context.assets.open("$path/$fileName")
+            readJSONFromInputStream(inputStream)
         } catch (e: IOException) {
-            Log.e("listFhirJSONFiles", "Error listing assets in path $path: $e")
+            Log.e("loadJSONFromAsset", "Error reading JSON file", e)
             Toast.makeText(
-                    context,
-                    "Error listing JSON files: ${e.localizedMessage}",
-                    Toast.LENGTH_SHORT,
-                )
+                context,
+                "Error reading JSON file from Asset: ${e.localizedMessage}",
+                Toast.LENGTH_SHORT,
+            )
                 .show()
             null
         }
     }
 
-    fun loadJSONFromAsset(context: Context, fileName: String): String? {
+    private fun loadAllFhirJSONsFromContentUris(uris: List<Uri>): List<String> {
+        return uris
+            .mapNotNull {
+                val jsonString = loadJSONFromContentUri(requireContext(), it)
+                Log.i("loadAllFhirJSONsUris", "$it: $jsonString")
+                jsonString
+            }
+    }
+
+    fun loadJSONFromContentUri(context: Context, uri: Uri): String? {
         return try {
-            val inputStream = context.assets.open(fileName)
-            val buffer = ByteArray(inputStream.available())
-            inputStream.read(buffer)
-            inputStream.close()
-            buffer.toString(Charsets.UTF_8)
+            val inputStream = context.contentResolver.openInputStream(uri)
+            readJSONFromInputStream(inputStream!!)
         } catch (e: IOException) {
-            Log.e("loadJSONFromAsset", "Error reading JSON file: $e")
+            Log.e("loadJSONFromContentUri", "Error reading JSON file", e)
             Toast.makeText(
-                    context,
-                    "Error reading JSON file: ${e.localizedMessage}",
-                    Toast.LENGTH_SHORT,
-                )
+                context,
+                "Error reading JSON file from content Uri: ${e.localizedMessage}",
+                Toast.LENGTH_SHORT,
+            )
                 .show()
             null
         }
+
+        val inputStream = context.contentResolver.openInputStream(uri)
+        return readJSONFromInputStream(inputStream!!)
+    }
+
+    fun readJSONFromInputStream(inputStream: InputStream): String {
+        val buffer = ByteArray(inputStream.available())
+        inputStream.read(buffer)
+        inputStream.close()
+        return buffer.toString(Charsets.UTF_8)
     }
 
     private fun requestMedicalPermissions() {

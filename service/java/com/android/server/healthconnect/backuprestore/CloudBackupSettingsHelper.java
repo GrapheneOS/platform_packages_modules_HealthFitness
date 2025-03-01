@@ -25,7 +25,7 @@ import com.android.server.healthconnect.proto.backuprestore.Settings.AutoDeleteF
 import com.android.server.healthconnect.proto.backuprestore.Settings.DistanceUnitProto;
 import com.android.server.healthconnect.proto.backuprestore.Settings.EnergyUnitProto;
 import com.android.server.healthconnect.proto.backuprestore.Settings.HeightUnitProto;
-import com.android.server.healthconnect.proto.backuprestore.Settings.PrioritizedAppIds;
+import com.android.server.healthconnect.proto.backuprestore.Settings.PriorityList;
 import com.android.server.healthconnect.proto.backuprestore.Settings.TemperatureUnitProto;
 import com.android.server.healthconnect.proto.backuprestore.Settings.WeightUnitProto;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
@@ -35,7 +35,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -91,10 +90,8 @@ public final class CloudBackupSettingsHelper {
      * priority list which should be a merged version of the old and new priority list.
      */
     public void restoreUserSettings(Settings newUserSettings) {
-        mergePriorityLists(
-                mPriorityHelper.getHealthDataCategoryToAppIdPriorityMapImmutable(),
-                fromProtoToPriorityList(newUserSettings.getPriorityListMap()));
         restoreAppInfo(newUserSettings.getAppInfoMap());
+        mergePriorityLists(newUserSettings.getPriorityListMap());
         AutoDeleteFrequencyProto newAutoDeleteFrequency = newUserSettings.getAutoDeleteFrequency();
         if (newAutoDeleteFrequency != AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED) {
             mPreferenceHelper.insertOrReplacePreference(
@@ -126,82 +123,68 @@ public final class CloudBackupSettingsHelper {
 
     /**
      * Restores a user's AppInfo settings from the passed in {@code Map<String, AppInfo>} object.
-     *
-     * @param appInfoMap the AppInfo being restored
      */
-    @VisibleForTesting
-    public void restoreAppInfo(Map<String, AppInfo> appInfoMap) {
+    void restoreAppInfo(Map<String, AppInfo> appInfoMap) {
         for (var appInfoEntry : appInfoMap.entrySet()) {
             String packageName = appInfoEntry.getKey();
             AppInfo appInfo = appInfoEntry.getValue();
-            String appName = null;
-            if (appInfo.hasAppName()) {
-                appName = appInfo.getAppName();
-            }
+            String appName = appInfo.hasAppName() ? appInfo.getAppName() : null;
             mAppInfoHelper.addOrUpdateAppInfoIfNoAppInfoEntryExists(packageName, appName);
         }
-    }
-
-    /**
-     * Converts a priority list from the proto format (entries of type {@code PrioritizedAppIds}) to
-     * the standard format (entries of type {@code List<long>}).
-     *
-     * @param priorityListProto the proto-formatted priority list
-     * @return the converted priority list
-     */
-    @VisibleForTesting
-    Map<Integer, List<Long>> fromProtoToPriorityList(
-            Map<Integer, PrioritizedAppIds> priorityListProto) {
-        Map<Integer, List<Long>> parsedPriorityList = new HashMap<>();
-        for (var priorityRecord : priorityListProto.entrySet()) {
-            parsedPriorityList.put(
-                    priorityRecord.getKey(), priorityRecord.getValue().getAppIdList());
-        }
-        return parsedPriorityList;
     }
 
     /**
      * Take two priority lists and merge them, removing any duplicate entries, and replace the
      * existing priority list settings with this newly merged version.
      *
-     * @param current the priority list currently stored in settings
      * @param imported the new priority list being restored
      */
     @VisibleForTesting
-    void mergePriorityLists(Map<Integer, List<Long>> current, Map<Integer, List<Long>> imported) {
+    void mergePriorityLists(Map<Integer, PriorityList> imported) {
         imported.forEach(
-                (category, appIdList) -> {
-                    if (appIdList.isEmpty()) {
+                (category, priorityListProto) -> {
+                    var packageNameList = priorityListProto.getPackageNameList();
+                    if (packageNameList.isEmpty()) {
                         return;
                     }
-                    List<Long> currentPriorities =
-                            Optional.ofNullable(current.get(category)).orElse(List.of());
-                    List<Long> mergedPrioritisedAppIds =
-                            Stream.concat(currentPriorities.stream(), appIdList.stream())
+
+                    List<String> currentPriorityList =
+                            mAppInfoHelper.getPackageNames(
+                                    mPriorityHelper.getAppIdPriorityOrder(category));
+                    List<String> newPriorityList =
+                            Stream.concat(currentPriorityList.stream(), packageNameList.stream())
                                     .distinct()
                                     .toList();
-                    mPriorityHelper.setPriorityOrder(
-                            category, mAppInfoHelper.getPackageNames(mergedPrioritisedAppIds));
+                    mPriorityHelper.setPriorityOrder(category, newPriorityList);
+                    Slog.d(
+                            TAG,
+                            "Added "
+                                    + packageNameList.size()
+                                    + " apps to priority list of category "
+                                    + category);
                 });
     }
 
-    private Map<Integer, PrioritizedAppIds> getPriorityList() {
+    private Map<Integer, PriorityList> getPriorityList() {
         Map<Integer, List<Long>> priorityListMap =
                 mPriorityHelper.getHealthDataCategoryToAppIdPriorityMapImmutable();
         if (priorityListMap.isEmpty()) {
             Slog.d(TAG, "Priority list is empty.");
             return Map.of();
         }
-        Map<Integer, PrioritizedAppIds> protoFormattedPriorityList = new HashMap<>();
-        for (var categoryRecord : priorityListMap.entrySet()) {
-            PrioritizedAppIds formattedAppIds =
-                    PrioritizedAppIds.newBuilder().addAllAppId(categoryRecord.getValue()).build();
-            protoFormattedPriorityList.put(categoryRecord.getKey(), formattedAppIds);
-        }
+        Map<Integer, PriorityList> protoFormattedPriorityList = new HashMap<>();
+        priorityListMap.forEach(
+                (category, priorityList) -> {
+                    protoFormattedPriorityList.put(
+                            category,
+                            PriorityList.newBuilder()
+                                    .addAllPackageName(mAppInfoHelper.getPackageNames(priorityList))
+                                    .build());
+                });
         return protoFormattedPriorityList;
     }
 
-    private Map<String, AppInfo> getAppInfo() {
+    Map<String, AppInfo> getAppInfo() {
         Map<String, AppInfo> appInfoMap = new HashMap<>();
         for (var appInfoEntry : mAppInfoHelper.getAppInfoMap().entrySet()) {
             String appName = appInfoEntry.getValue().getName();

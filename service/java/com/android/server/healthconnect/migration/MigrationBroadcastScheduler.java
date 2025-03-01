@@ -61,7 +61,7 @@ public final class MigrationBroadcastScheduler {
     }
 
     /** Sets userId. Invoked when the user is switched. */
-    public void setUserId(UserHandle userHandle) {
+    public void setupForUser(UserHandle userHandle) {
         synchronized (mLock) {
             mUserHandle = userHandle;
         }

@@ -16,7 +16,14 @@
 package com.android.server.healthconnect.backuprestore;
 
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
@@ -25,6 +32,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
+import static java.time.temporal.ChronoUnit.HOURS;
+
 import android.content.Context;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.TimeInstantRangeFilter;
@@ -32,18 +41,23 @@ import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.backuprestore.BackupChange;
 import android.health.connect.backuprestore.GetChangesForBackupResponse;
 import android.health.connect.datatypes.BloodPressureRecord;
+import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.datatypes.ExerciseSessionType;
+import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
+import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
+import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
+import android.healthconnect.cts.utils.DataFactory;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -54,6 +68,7 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BackupChangeTokenHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.BackupChangeTokenHelper.BackupChangeToken;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
@@ -77,7 +92,11 @@ import java.util.UUID;
 
 /** Unit test for class {@link CloudBackupDatabaseHelper}. */
 @RunWith(AndroidJUnit4.class)
-@EnableFlags(Flags.FLAG_DEVELOPMENT_DATABASE)
+@EnableFlags({
+    FLAG_CLOUD_BACKUP_AND_RESTORE,
+    FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+    FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+})
 public class CloudBackupDatabaseHelperTest {
 
     private static final String TEST_PACKAGE_NAME = "test.package.name";
@@ -87,9 +106,6 @@ public class CloudBackupDatabaseHelperTest {
     private static final int TEST_TIME_IN_MILLIS = 1234;
     private static final double TEST_SYSTOLIC = 60.2;
     private static final double TEST_DIASTOLIC = 92.6;
-    private static final String ACTIVE_CALORIES_BURNED_RECORD_TABLE =
-            "active_calories_burned_record_table";
-    private static final String BLOOD_PRESSURE_RECORD_TABLE = "blood_pressure_record_table";
 
     @Rule(order = 1)
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
@@ -140,13 +156,13 @@ public class CloudBackupDatabaseHelperTest {
                 new CloudBackupDatabaseHelper(
                         mTransactionManager,
                         mAppInfoHelper,
-                        mAccessLogsHelper,
                         deviceInfoHelper,
                         healthConnectMappings,
                         internalHealthConnectMappings,
                         changeLogsHelper,
                         changeLogsRequestHelper,
-                        healthConnectInjector.getReadAccessLogsHelper());
+                        healthConnectInjector.getHealthDataCategoryPriorityHelper(),
+                        healthConnectInjector.getPreferenceHelper());
     }
 
     @Test
@@ -175,22 +191,16 @@ public class CloudBackupDatabaseHelperTest {
         BackupChange stepsRecordBackupChange = changes.get(0);
         assertThat(stepsRecordBackupChange.isDeletion()).isEqualTo(false);
         StepsRecordInternal stepsRecord =
-                (StepsRecordInternal)
-                        mRecordProtoConverter.toRecordInternal(
-                                BackupData.parseFrom(stepsRecordBackupChange.getData())
-                                        .getRecord());
+                (StepsRecordInternal) parseRecordInternal(stepsRecordBackupChange);
         String uuid = stepsRecord.getUuid() != null ? stepsRecord.getUuid().toString() : null;
-        assertThat(stepsRecordBackupChange.getUid()).isEqualTo(uuid);
+        assertThat(stepsRecordBackupChange.getRecordId()).isEqualTo(uuid);
         assertThat(stepsRecord.getCount()).isEqualTo(TEST_STEP_COUNT);
         assertThat(stepsRecord.getStartTimeInMillis()).isEqualTo(TEST_START_TIME_IN_MILLIS);
         assertThat(stepsRecord.getEndTimeInMillis()).isEqualTo(TEST_END_TIME_IN_MILLIS);
         BackupChange bloodPressureBackupChange = changes.get(1);
         assertThat(stepsRecordBackupChange.isDeletion()).isEqualTo(false);
         BloodPressureRecordInternal bloodPressureRecord =
-                (BloodPressureRecordInternal)
-                        mRecordProtoConverter.toRecordInternal(
-                                BackupData.parseFrom(bloodPressureBackupChange.getData())
-                                        .getRecord());
+                (BloodPressureRecordInternal) parseRecordInternal(bloodPressureBackupChange);
         assertThat(bloodPressureRecord.getDiastolic()).isEqualTo(TEST_DIASTOLIC);
         assertThat(bloodPressureRecord.getSystolic()).isEqualTo(TEST_SYSTOLIC);
         assertThat(bloodPressureRecord.getTimeInMillis()).isEqualTo(TEST_TIME_IN_MILLIS);
@@ -216,12 +226,12 @@ public class CloudBackupDatabaseHelperTest {
         assertThat(response.getChanges().size()).isEqualTo(DEFAULT_PAGE_SIZE);
         String nextChangeTokenRowId = response.getNextChangeToken();
         assertThat(nextChangeTokenRowId).isEqualTo("1");
-        BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
+        BackupChangeToken backupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, nextChangeTokenRowId);
         // See {@link android.health.connect.PageTokenWrapper}.
         assertThat(backupChangeToken.getDataTablePageToken()).isEqualTo(6000);
-        assertThat(backupChangeToken.getDataTableName()).isEqualTo("steps_record_table");
+        assertThat(backupChangeToken.getRecordType()).isEqualTo(RECORD_TYPE_STEPS);
         assertThat(backupChangeToken.getChangeLogsRequestToken()).isEqualTo("1");
     }
 
@@ -241,24 +251,24 @@ public class CloudBackupDatabaseHelperTest {
 
         GetChangesForBackupResponse firstResponse =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
-        BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
+        BackupChangeToken backupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, firstResponse.getNextChangeToken());
         GetChangesForBackupResponse secondResponse =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables(
-                        backupChangeToken.getDataTableName(),
+                        backupChangeToken.getRecordType(),
                         backupChangeToken.getDataTablePageToken(),
                         backupChangeToken.getChangeLogsRequestToken());
 
         assertThat(secondResponse.getChanges().size()).isEqualTo(DEFAULT_PAGE_SIZE);
         String secondChangeTokenRowId = secondResponse.getNextChangeToken();
         assertThat(secondChangeTokenRowId).isEqualTo("2");
-        BackupChangeTokenHelper.BackupChangeToken secondBackupChangeToken =
+        BackupChangeToken secondBackupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, secondChangeTokenRowId);
         assertThat(secondBackupChangeToken.getDataTablePageToken()).isEqualTo(-1);
-        assertThat(secondBackupChangeToken.getDataTableName())
-                .isEqualTo(ACTIVE_CALORIES_BURNED_RECORD_TABLE);
+        assertThat(secondBackupChangeToken.getRecordType())
+                .isEqualTo(RECORD_TYPE_ACTIVE_CALORIES_BURNED);
         // Change logs token is still the same.
         assertThat(secondBackupChangeToken.getChangeLogsRequestToken())
                 .isEqualTo(backupChangeToken.getChangeLogsRequestToken());
@@ -285,13 +295,12 @@ public class CloudBackupDatabaseHelperTest {
         assertThat(response.getChanges().size()).isEqualTo(DEFAULT_PAGE_SIZE);
         String nextChangeTokenRowId = response.getNextChangeToken();
         assertThat(nextChangeTokenRowId).isEqualTo("1");
-        BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
+        BackupChangeToken backupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, nextChangeTokenRowId);
         // All data in step_record_table has been returned, page token reset as -1.
         assertThat(backupChangeToken.getDataTablePageToken()).isEqualTo(-1);
-        assertThat(backupChangeToken.getDataTableName())
-                .isEqualTo(ACTIVE_CALORIES_BURNED_RECORD_TABLE);
+        assertThat(backupChangeToken.getRecordType()).isEqualTo(RECORD_TYPE_ACTIVE_CALORIES_BURNED);
         assertThat(backupChangeToken.getChangeLogsRequestToken()).isEqualTo("1");
     }
 
@@ -312,23 +321,23 @@ public class CloudBackupDatabaseHelperTest {
 
         GetChangesForBackupResponse firstResponse =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
-        BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
+        BackupChangeToken backupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, firstResponse.getNextChangeToken());
         GetChangesForBackupResponse secondResponse =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables(
-                        backupChangeToken.getDataTableName(),
+                        backupChangeToken.getRecordType(),
                         backupChangeToken.getDataTablePageToken(),
                         backupChangeToken.getChangeLogsRequestToken());
 
         assertThat(secondResponse.getChanges().size()).isEqualTo(1);
         String secondChangeTokenRowId = secondResponse.getNextChangeToken();
         assertThat(secondChangeTokenRowId).isEqualTo("2");
-        BackupChangeTokenHelper.BackupChangeToken secondBackupChangeToken =
+        BackupChangeToken secondBackupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, secondChangeTokenRowId);
         assertThat(secondBackupChangeToken.getDataTablePageToken()).isEqualTo(-1);
-        assertThat(secondBackupChangeToken.getDataTableName()).isEqualTo(null);
+        assertThat(secondBackupChangeToken.getRecordType()).isEqualTo(RECORD_TYPE_UNKNOWN);
         // Change logs token is still the same.
         assertThat(secondBackupChangeToken.getChangeLogsRequestToken())
                 .isEqualTo(backupChangeToken.getChangeLogsRequestToken());
@@ -360,12 +369,48 @@ public class CloudBackupDatabaseHelperTest {
         assertThat(response.getChanges().size()).isEqualTo(DEFAULT_PAGE_SIZE);
         String nextChangeTokenRowId = response.getNextChangeToken();
         assertThat(nextChangeTokenRowId).isEqualTo("1");
-        BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
+        BackupChangeToken backupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, nextChangeTokenRowId);
         assertThat(backupChangeToken.getDataTablePageToken()).isEqualTo(3468);
-        assertThat(backupChangeToken.getDataTableName()).isEqualTo(BLOOD_PRESSURE_RECORD_TABLE);
+        assertThat(backupChangeToken.getRecordType()).isEqualTo(RECORD_TYPE_BLOOD_PRESSURE);
         assertThat(backupChangeToken.getChangeLogsRequestToken()).isEqualTo("1");
+    }
+
+    @Test
+    public void getChangesFromDataTables_returnsPlannedExerciseSessionsFirst() throws Exception {
+        mTransactionTestUtils.insertRecords(
+                TEST_PACKAGE_NAME, createStepsRecord(123456, 654321, 1234));
+        Metadata metadata =
+                new Metadata.Builder()
+                        .setDataOrigin(DataFactory.getDataOrigin(TEST_PACKAGE_NAME))
+                        .build();
+        PlannedExerciseSessionRecordInternal plannedExerciseSession =
+                DataFactory.plannedExerciseSession(metadata).build().toRecordInternal();
+        var plannedExerciseSessionUid =
+                mTransactionTestUtils
+                        .insertRecords(TEST_PACKAGE_NAME, plannedExerciseSession)
+                        .get(0);
+        ExerciseSessionRecordInternal exerciseSessionRecord =
+                new ExerciseSessionRecord.Builder(
+                                metadata,
+                                Instant.now().minus(3, HOURS),
+                                Instant.now().minus(1, HOURS),
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
+                        .setPlannedExerciseSessionId(plannedExerciseSessionUid)
+                        .build()
+                        .toRecordInternal();
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, exerciseSessionRecord);
+
+        List<BackupChange> changes =
+                mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables().getChanges();
+
+        assertThat(changes.size()).isEqualTo(3);
+        assertThat(parseRecordInternal(changes.get(0)))
+                .isInstanceOf(PlannedExerciseSessionRecordInternal.class);
+        assertThat(parseRecordInternal(changes.get(1)))
+                .isInstanceOf(ExerciseSessionRecordInternal.class);
+        assertThat(parseRecordInternal(changes.get(2))).isInstanceOf(StepsRecordInternal.class);
     }
 
     @Test
@@ -374,7 +419,7 @@ public class CloudBackupDatabaseHelperTest {
     }
 
     @Test
-    public void isChangeLogsTokenValid_nextChangeLogNoLongerExists_invalid() {
+    public void isChangeLogsTokenValid_changeLogNoLongerExists_invalid() {
         RecordInternal<StepsRecord> stepRecord =
                 createStepsRecord(
                         TEST_START_TIME_IN_MILLIS, TEST_END_TIME_IN_MILLIS, TEST_STEP_COUNT);
@@ -387,7 +432,7 @@ public class CloudBackupDatabaseHelperTest {
                 TEST_PACKAGE_NAME,
                 createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
 
-        // Delete some change logs.
+        // Delete the original change logs.
         mTransactionManager.delete(
                 new DeleteTableRequest(ChangeLogsHelper.TABLE_NAME, stepRecord.getRecordType()));
 
@@ -442,7 +487,7 @@ public class CloudBackupDatabaseHelperTest {
         // All data tables have been iterated through.
         GetChangesForBackupResponse response =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
-        BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
+        BackupChangeToken backupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, response.getNextChangeToken());
 
@@ -458,10 +503,7 @@ public class CloudBackupDatabaseHelperTest {
         assertThat(secondResponse.getChanges().size()).isEqualTo(1);
         BackupChange bloodPressureBackupChange = secondResponse.getChanges().get(0);
         BloodPressureRecordInternal bloodPressureRecord =
-                (BloodPressureRecordInternal)
-                        mRecordProtoConverter.toRecordInternal(
-                                BackupData.parseFrom(bloodPressureBackupChange.getData())
-                                        .getRecord());
+                (BloodPressureRecordInternal) parseRecordInternal(bloodPressureBackupChange);
         assertThat(bloodPressureRecord.getDiastolic()).isEqualTo(TEST_DIASTOLIC);
         assertThat(bloodPressureRecord.getSystolic()).isEqualTo(TEST_SYSTOLIC);
         assertThat(bloodPressureRecord.getTimeInMillis()).isEqualTo(TEST_TIME_IN_MILLIS);
@@ -479,7 +521,7 @@ public class CloudBackupDatabaseHelperTest {
         // All data tables have been iterated through.
         GetChangesForBackupResponse response =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
-        BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
+        BackupChangeToken backupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, response.getNextChangeToken());
 
@@ -507,8 +549,58 @@ public class CloudBackupDatabaseHelperTest {
         UUID bloodPressureRecordUuid = bloodPressureRecordInternal.getUuid();
         assertThat(bloodPressureRecordUuid).isNotNull();
         assertThat(deletedBloodPressureBackupChange.isDeletion()).isTrue();
-        assertThat(deletedBloodPressureBackupChange.getUid())
+        assertThat(deletedBloodPressureBackupChange.getRecordId())
                 .isEqualTo(bloodPressureRecordUuid.toString());
         assertThat(deletedBloodPressureBackupChange.getData()).isNull();
+    }
+
+    @Test
+    public void getIncrementalChanges_returnsExerciseSession_afterPlannedExerciseSessionChange()
+            throws Exception {
+        mTransactionTestUtils.insertRecords(
+                TEST_PACKAGE_NAME, createStepsRecord(123456, 654321, 1234));
+        Metadata metadata =
+                new Metadata.Builder()
+                        .setDataOrigin(DataFactory.getDataOrigin(TEST_PACKAGE_NAME))
+                        .build();
+        PlannedExerciseSessionRecordInternal plannedExerciseSession =
+                DataFactory.plannedExerciseSession(metadata).build().toRecordInternal();
+        var plannedExerciseSessionUid =
+                mTransactionTestUtils
+                        .insertRecords(TEST_PACKAGE_NAME, plannedExerciseSession)
+                        .get(0);
+        ExerciseSessionRecordInternal exerciseSessionRecord =
+                new ExerciseSessionRecord.Builder(
+                                metadata,
+                                Instant.now().minus(3, HOURS),
+                                Instant.now().minus(1, HOURS),
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_BIKING)
+                        .setPlannedExerciseSessionId(plannedExerciseSessionUid)
+                        .build()
+                        .toRecordInternal();
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, exerciseSessionRecord);
+        BackupChangeToken backupChangeToken =
+                BackupChangeTokenHelper.getBackupChangeToken(
+                        mTransactionManager,
+                        mCloudBackupDatabaseHelper
+                                .getChangesAndTokenFromDataTables()
+                                .getNextChangeToken());
+        mTransactionTestUtils.updateRecords(TEST_PACKAGE_NAME, plannedExerciseSession);
+
+        List<BackupChange> changes =
+                mCloudBackupDatabaseHelper
+                        .getIncrementalChanges(backupChangeToken.getChangeLogsRequestToken())
+                        .getChanges();
+
+        assertThat(changes.size()).isEqualTo(2);
+        assertThat(parseRecordInternal(changes.get(0)))
+                .isInstanceOf(PlannedExerciseSessionRecordInternal.class);
+        assertThat(parseRecordInternal(changes.get(1)))
+                .isInstanceOf(ExerciseSessionRecordInternal.class);
+    }
+
+    private RecordInternal<?> parseRecordInternal(BackupChange change) throws Exception {
+        return mRecordProtoConverter.toRecordInternal(
+                BackupData.parseFrom(change.getData()).getRecord());
     }
 }

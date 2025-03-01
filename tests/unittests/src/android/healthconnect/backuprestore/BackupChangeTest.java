@@ -38,7 +38,7 @@ public class BackupChangeTest {
         parcel.setDataPosition(0);
         BackupChange restoredParcel = BackupChange.CREATOR.createFromParcel(parcel);
 
-        assertThat(restoredParcel.getUid()).isEqualTo("uid123");
+        assertThat(restoredParcel.getRecordId()).isEqualTo("uid123");
         assertThat(restoredParcel.isDeletion()).isFalse();
         assertThat(restoredParcel.getData()).isEqualTo(new byte[] {1, 2, 3});
         parcel.recycle();
@@ -53,7 +53,7 @@ public class BackupChangeTest {
         parcel.setDataPosition(0);
         BackupChange restoredParcel = BackupChange.CREATOR.createFromParcel(parcel);
 
-        assertThat(restoredParcel.getUid()).isEqualTo("uid123");
+        assertThat(restoredParcel.getRecordId()).isEqualTo("uid123");
         assertThat(restoredParcel.isDeletion()).isTrue();
         assertThat(restoredParcel.getData()).isNull();
         parcel.recycle();

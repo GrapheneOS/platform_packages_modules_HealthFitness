@@ -60,7 +60,7 @@ public class MigrationUiStateManager {
     }
 
     /** Assigns a new user handle to this object. */
-    public void setUserHandle(UserHandle userHandle) {
+    public void setupForUser(UserHandle userHandle) {
         this.mUserHandle = userHandle;
     }
 

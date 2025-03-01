@@ -134,8 +134,9 @@ class AppDataFragmentTest {
             )
         )
 
-        onView(withText("No data")).check(matches(isDisplayed()))
+        onView(withText("No data")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Data from Health Connect test app will show here"))
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
     }
 
@@ -393,7 +394,7 @@ class AppDataFragmentTest {
             (fragment as AppDataFragment).triggerDeletionState(DELETE)
         }
 
-        onView(withText("Vaccines")).perform(click())
+        onView(withText("Vaccines")).perform(scrollTo()).perform(click())
         onIdle()
         assertThat(appDataViewModel.setOfPermissionTypesToBeDeleted.value)
             .containsExactlyElementsIn(setOf(MedicalPermissionType.VACCINES))

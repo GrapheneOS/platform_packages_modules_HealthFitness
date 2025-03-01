@@ -139,8 +139,8 @@ public class TransactionManagerExerciseRoutesTest {
                 mTransactionManager.readRecordsByIds(
                         request,
                         mAppInfoHelper,
-                        mAccessLogsHelper,
                         mDeviceInfoHelper,
+                        mAccessLogsHelper,
                         mReadAccessLogsHelper,
                         /* shouldRecordAccessLog= */ false);
 
@@ -180,8 +180,8 @@ public class TransactionManagerExerciseRoutesTest {
                 mTransactionManager.readRecordsByIds(
                         request,
                         mAppInfoHelper,
-                        mAccessLogsHelper,
                         mDeviceInfoHelper,
+                        mAccessLogsHelper,
                         mReadAccessLogsHelper,
                         /* shouldRecordAccessLog= */ false);
 
@@ -214,8 +214,8 @@ public class TransactionManagerExerciseRoutesTest {
                 mTransactionManager.readRecordsByIds(
                         request,
                         mAppInfoHelper,
-                        mAccessLogsHelper,
                         mDeviceInfoHelper,
+                        mAccessLogsHelper,
                         mReadAccessLogsHelper,
                         /* shouldRecordAccessLog= */ false);
 
@@ -248,8 +248,8 @@ public class TransactionManagerExerciseRoutesTest {
                 mTransactionManager.readRecordsByIds(
                         request,
                         mAppInfoHelper,
-                        mAccessLogsHelper,
                         mDeviceInfoHelper,
+                        mAccessLogsHelper,
                         mReadAccessLogsHelper,
                         /* shouldRecordAccessLog= */ false);
 

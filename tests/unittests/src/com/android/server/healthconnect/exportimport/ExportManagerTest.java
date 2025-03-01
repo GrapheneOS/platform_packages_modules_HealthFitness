@@ -146,7 +146,11 @@ public class ExportManagerTest {
         mExportImportSettingsStorage = healthConnectInjector.getExportImportSettingsStorage();
         mExportManager =
                 new ExportManager(
-                        mContext, fakeClock, mExportImportSettingsStorage, transactionManager);
+                        mContext,
+                        fakeClock,
+                        mExportImportSettingsStorage,
+                        transactionManager,
+                        healthConnectInjector.getExportImportNotificationSender());
 
         mPhrTestUtils = new PhrTestUtils(healthConnectInjector);
 

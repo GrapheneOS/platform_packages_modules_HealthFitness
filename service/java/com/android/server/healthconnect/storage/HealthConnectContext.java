@@ -53,10 +53,11 @@ public final class HealthConnectContext extends ContextWrapper {
     private final File mDatabaseDir;
 
     private HealthConnectContext(
-            Context context, UserHandle userHandle, @Nullable String databaseDirName) {
+            Context context,
+            UserHandle userHandle,
+            @Nullable String databaseDirName,
+            File environmentDataDirectory) {
         super(context.createContextAsUser(userHandle, 0));
-
-        File environmentDataDirectory = Environment.getDataDirectory();
 
         if (databaseDirName == null) {
             mDatabaseDir =
@@ -105,12 +106,23 @@ public final class HealthConnectContext extends ContextWrapper {
 
     /** Factory method */
     public static HealthConnectContext create(Context context, UserHandle userHandle) {
-        return create(context, userHandle, null);
+        return create(context, userHandle, null, Environment.getDataDirectory());
     }
 
     /** Factory method */
     public static HealthConnectContext create(
             Context context, UserHandle userHandle, @Nullable String databaseDirName) {
-        return new HealthConnectContext(context, userHandle, databaseDirName);
+        return new HealthConnectContext(
+                context, userHandle, databaseDirName, Environment.getDataDirectory());
+    }
+
+    /** Factory method */
+    public static HealthConnectContext create(
+            Context context,
+            UserHandle userHandle,
+            @Nullable String databaseDirName,
+            File environmentDataDirectory) {
+        return new HealthConnectContext(
+                context, userHandle, databaseDirName, environmentDataDirectory);
     }
 }

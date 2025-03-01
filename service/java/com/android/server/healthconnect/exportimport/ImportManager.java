@@ -85,26 +85,6 @@ public class ImportManager {
             TransactionManager transactionManager,
             DeviceInfoHelper deviceInfoHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
-            @Nullable Clock clock) {
-        this(
-                appInfoHelper,
-                context,
-                exportImportSettingsStorage,
-                transactionManager,
-                deviceInfoHelper,
-                healthDataCategoryPriorityHelper,
-                clock,
-                ExportImportNotificationSender.createSender(context));
-    }
-
-    @VisibleForTesting
-    public ImportManager(
-            AppInfoHelper appInfoHelper,
-            Context context,
-            ExportImportSettingsStorage exportImportSettingsStorage,
-            TransactionManager transactionManager,
-            DeviceInfoHelper deviceInfoHelper,
-            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             @Nullable Clock clock,
             HealthConnectNotificationSender notificationSender) {
         mContext = context;

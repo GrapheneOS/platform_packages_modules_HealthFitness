@@ -20,17 +20,26 @@ import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTOR
 
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Arrays;
 
-/** @hide */
+/**
+ * User settings to be backed up or restored.
+ *
+ * @hide
+ */
 @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
+@SystemApi
 public final class BackupSettings implements Parcelable {
 
     @NonNull private final byte[] mData;
 
+    /**
+     * @param data The user settings to be backed up.
+     */
     public BackupSettings(@NonNull byte[] data) {
         mData = data;
     }
@@ -65,6 +74,7 @@ public final class BackupSettings implements Parcelable {
                 }
             };
 
+    /** Returns the settings to be backed up or restored. */
     @NonNull
     public byte[] getData() {
         return mData;

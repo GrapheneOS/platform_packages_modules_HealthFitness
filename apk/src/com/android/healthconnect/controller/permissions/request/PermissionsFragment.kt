@@ -26,10 +26,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.preference.PreferenceFragmentCompat
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
+import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
 import com.android.healthconnect.controller.utils.increaseViewTouchTargetSize
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
@@ -37,11 +37,9 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.EntryPointAccessors
 
 /** Base fragment class for permission request screens. */
-abstract class PermissionsFragment : PreferenceFragmentCompat() {
+abstract class PermissionsFragment : HealthSetupFragment() {
 
     private lateinit var logger: HealthConnectLogger
-    private lateinit var preferenceContainer: ViewGroup
-    private lateinit var prefView: ViewGroup
 
     private lateinit var allowButton: Button
     private lateinit var dontAllowButton: Button
@@ -80,15 +78,12 @@ abstract class PermissionsFragment : PreferenceFragmentCompat() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        logger.setPageId(pageName)
-        val rootView = inflater.inflate(R.layout.fragment_permissions_request, container, false)
-        prefView = rootView.findViewById(R.id.preference_container)
-        preferenceContainer =
-            super.onCreateView(inflater, container, savedInstanceState) as ViewGroup
-        prefView.addView(preferenceContainer)
+        val rootView = super.onCreateView(inflater, container, savedInstanceState)
+        allowButton = getPrimaryButtonOutline()
+        dontAllowButton = getSecondaryButton()
 
-        allowButton = rootView.findViewById(R.id.allow)
-        dontAllowButton = rootView.findViewById(R.id.dont_allow)
+        allowButton.text = getString(R.string.request_permissions_allow)
+        dontAllowButton.text = getString(R.string.request_permissions_dont_allow)
 
         val allowParentView = allowButton.parent.parent as View
         increaseViewTouchTargetSize(requireContext(), allowButton, allowParentView)

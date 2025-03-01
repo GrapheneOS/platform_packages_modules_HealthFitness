@@ -1,0 +1,95 @@
+{
+  "resourceType": "Organization",
+  "id": "b-organization-1",
+  "identifier": [
+    {
+      "use": "official",
+      "system": "urn:oid:1.2.345.6789",
+      "value": "HCGP"
+    }
+  ],
+  "type": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        },
+        {
+          "system": "http://snomed.info/sct",
+          "code": "394761003",
+          "display": "General practitioner practice site"
+        }
+      ]
+    }
+  ],
+  "name": "Health Connect General Practice",
+  "alias": [
+    "Health Connect Surgery"
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "01122 333444",
+      "use": "work"
+    },
+    {
+      "system": "email",
+      "value": "info@healthconnectgp.org",
+      "use": "work"
+    }
+  ],
+  "address": [
+    {
+      "use": "work",
+      "type": "both",
+      "line": [
+        "6 Pancras Square"
+      ],
+      "city": "London",
+      "postalCode": "N1C 4AG",
+      "country": "UK"
+    }
+  ],
+  "contact": [
+    {
+      "purpose": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/contactentity-type",
+            "code": "ADMIN",
+            "display": "Administrative"
+          }
+        ]
+      },
+      "telecom": [
+        {
+          "system": "email",
+          "value": "admin@healthconnectgp.org"
+        }
+      ]
+    },
+    {
+      "purpose": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/contactentity-type",
+            "code": "PATINF",
+            "display": "Patient"
+          }
+        ]
+      },
+      "telecom": [
+        {
+          "system": "phone",
+          "value": "01122 333444"
+        },
+        {
+          "system": "email",
+          "value": "patient@healthconnectgp.org"
+        }
+      ]
+    }
+  ]
+}

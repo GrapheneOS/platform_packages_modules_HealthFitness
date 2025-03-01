@@ -1,0 +1,80 @@
+{
+  "resourceType": "Observation",
+  "id": "b-observation-2",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "vital-signs",
+          "display": "Vital Signs"
+        }
+      ],
+      "text": "Vital Signs"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "85354-9",
+        "display": "Blood pressure panel with all children optional"
+      }
+    ],
+    "text": "Blood pressure"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1",
+    "display": "Ting, Tess"
+  },
+  "encounter": {
+    "reference": "Encounter/b-encounter-1",
+    "display": "GP appointment"
+  },
+  "effectiveDateTime": "2023-06-14T12:53:49Z",
+  "performer": [
+    {
+      "reference": "Practitioner/b-practitioner-1",
+      "display": "Dr Maria Hernandez"
+    }
+  ],
+  "component" : [
+    {
+      "code" : {
+        "coding" : [
+          {
+            "system" : "http://loinc.org",
+            "code" : "8480-6",
+            "display" : "Systolic blood pressure"
+          }
+        ],
+        "text" : "Systolic blood pressure"
+      },
+      "valueQuantity" : {
+        "value" : 117,
+        "unit" : "mmHg",
+        "system" : "http://unitsofmeasure.org",
+        "code" : "mm[Hg]"
+      }
+    },
+    {
+      "code" : {
+        "coding" : [
+          {
+            "system" : "http://loinc.org",
+            "code" : "8462-4",
+            "display" : "Diastolic blood pressure"
+          }
+        ],
+        "text" : "Diastolic blood pressure"
+      },
+      "valueQuantity" : {
+        "value" : 78,
+        "unit" : "mmHg",
+        "system" : "http://unitsofmeasure.org",
+        "code" : "mm[Hg]"
+      }
+    }
+  ]
+}

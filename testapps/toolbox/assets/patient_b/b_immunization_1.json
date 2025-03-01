@@ -1,0 +1,75 @@
+{
+  "resourceType": "Immunization",
+  "id": "b-immunization-1",
+  "status": "completed",
+  "vaccineCode": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/cvx",
+        "code": "141"
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/ndc",
+        "code": "1951581452"
+      }
+    ],
+    "text": "Influenza, seasonal, injectable"
+  },
+  "patient": {
+    "reference": "Patient/patient-1",
+    "display": "Ting, Tess"
+  },
+  "encounter": {
+    "reference": "Encounter/encounter-unk",
+    "display": "GP Visit"
+  },
+  "occurrenceDateTime": "2023-10-01",
+  "primarySource": true,
+  "manufacturer": {
+    "display": "Sanofi Pasteur"
+  },
+  "lotNumber": "1",
+  "site": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActSite",
+        "code": "LA",
+        "display": "Left Arm"
+      }
+    ],
+    "text": "Left Arm"
+  },
+  "route": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration",
+        "code": "IM",
+        "display": "Injection, intramuscular"
+      }
+    ],
+    "text": "Injection, intramuscular"
+  },
+  "doseQuantity": {
+    "value": 0.5,
+    "unit": "mL"
+  },
+  "performer": [
+    {
+      "function": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0443",
+            "code": "AP",
+            "display": "Administering Provider"
+          }
+        ],
+        "text": "Administering Provider"
+      },
+      "actor": {
+        "reference": "Practitioner/b-practitioner-1",
+        "type": "Practitioner",
+        "display": "Dr Maria Hernandez"
+      }
+    }
+  ]
+}

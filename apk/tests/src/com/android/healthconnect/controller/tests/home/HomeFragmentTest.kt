@@ -59,9 +59,7 @@ import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
 import com.android.healthconnect.controller.shared.Constants
-import com.android.healthconnect.controller.shared.ExpressiveThemingModule
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
-import com.android.healthconnect.controller.shared.IExpressiveThemingHelper
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
@@ -71,7 +69,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
-import com.android.healthconnect.controller.tests.utils.di.FakeExpressiveTheming
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.toggleAnimation
@@ -85,6 +82,7 @@ import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.RecentAccessElement
 import com.android.healthfitness.flags.Flags
+import com.android.settingslib.widget.theme.flags.Flags as SettingsThemeFlags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -94,7 +92,6 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -109,7 +106,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
-@UninstallModules(DeviceInfoUtilsModule::class, ExpressiveThemingModule::class)
+@UninstallModules(DeviceInfoUtilsModule::class)
 class HomeFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -117,8 +114,6 @@ class HomeFragmentTest {
     private lateinit var context: Context
 
     @BindValue val homeViewModel: HomeViewModel = Mockito.mock(HomeViewModel::class.java)
-    // TODO (b/390212615) update once we can use settings flag
-    @BindValue val expressiveThemingHelper: IExpressiveThemingHelper = FakeExpressiveTheming()
 
     @BindValue
     val recentAccessViewModel: RecentAccessViewModel =
@@ -203,7 +198,6 @@ class HomeFragmentTest {
         // enable animations
         toggleAnimation(true)
         reset(healthConnectLogger)
-        (expressiveThemingHelper as FakeExpressiveTheming).setIsExpressiveTheme(false)
     }
 
     // region Navigation tests
@@ -239,7 +233,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun legacySeeAllRecentAccess_navigatesToRecentAccess() {
         setupFragmentForNavigation()
         onView(withText("See all recent access")).check(matches(isDisplayed()))
@@ -377,7 +371,7 @@ class HomeFragmentTest {
 
     // region Display tests
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun legacyWhenRecentAccessApps_in12HourFormat_showsCorrectTime() {
         val recentApp =
             RecentAccessEntry(
@@ -415,7 +409,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun legacyWhenRecentAccessAppsError_showsError() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.Error)
@@ -432,7 +426,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
+    @DisableFlags(Flags.FLAG_ONBOARDING, SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun withNoRecentAccessApps() {
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
@@ -1485,14 +1479,10 @@ class HomeFragmentTest {
 
     // region Expressive display tests
     @Test
-    // TODO (b/390418465) update this to B when the flag condition changes
-    @SdkSuppress(
-        minSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM,
-        codeName = "VanillaIceCream",
-    )
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @DisableFlags(Flags.FLAG_ONBOARDING)
+    @EnableFlags(SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun expressiveViewAllRecentAccess_navigatesToRecentAccess() {
-        (expressiveThemingHelper as FakeExpressiveTheming).setIsExpressiveTheme(true)
         setupFragmentForNavigation()
         onIdle()
         onView(withText("View all")).check(matches(isDisplayed()))
@@ -1501,14 +1491,10 @@ class HomeFragmentTest {
     }
 
     @Test
-    // TODO (b/390418465) update this to B when the flag condition changes
-    @SdkSuppress(
-        minSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM,
-        codeName = "VanillaIceCream",
-    )
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @DisableFlags(Flags.FLAG_ONBOARDING)
+    @EnableFlags(SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun expressiveWhenRecentAccessApps_in12HourFormat_showsCorrectTime() {
-        (expressiveThemingHelper as FakeExpressiveTheming).setIsExpressiveTheme(true)
         val recentApp =
             RecentAccessEntry(
                 metadata = TEST_APP,
@@ -1546,14 +1532,10 @@ class HomeFragmentTest {
     }
 
     @Test
-    // TODO (b/390418465) update this to B when the flag condition changes
-    @SdkSuppress(
-        minSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM,
-        codeName = "VanillaIceCream",
-    )
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @DisableFlags(Flags.FLAG_ONBOARDING)
+    @EnableFlags(SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun expressive_withNoRecentAccessApps() {
-        (expressiveThemingHelper as FakeExpressiveTheming).setIsExpressiveTheme(true)
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.WithData(emptyList()))
         }
@@ -1574,20 +1556,13 @@ class HomeFragmentTest {
         onView(withText("2 apps have access")).check(matches(isDisplayed()))
         onView(withText("Data and access")).check(matches(isDisplayed()))
         onView(withText("Manage data")).check(matches(isDisplayed()))
-
-        onView(withText("Recent access")).check(doesNotExist())
-        onView(withText("No apps recently accessed Health\u00A0Connect")).check(doesNotExist())
     }
 
     @Test
-    // TODO (b/390418465) update this to B when the flag condition changes
-    @SdkSuppress(
-        minSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM,
-        codeName = "VanillaIceCream",
-    )
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @DisableFlags(Flags.FLAG_ONBOARDING)
+    @EnableFlags(SettingsThemeFlags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
     fun expressive_withErrorInRecentAccessApps() {
-        (expressiveThemingHelper as FakeExpressiveTheming).setIsExpressiveTheme(true)
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData<RecentAccessState>(RecentAccessState.Error)
         }

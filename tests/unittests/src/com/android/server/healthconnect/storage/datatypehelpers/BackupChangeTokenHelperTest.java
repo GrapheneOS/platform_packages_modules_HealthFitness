@@ -16,6 +16,12 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
+
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.Mockito.mock;
@@ -27,7 +33,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -43,10 +48,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags(Flags.FLAG_DEVELOPMENT_DATABASE)
+@EnableFlags({
+    FLAG_CLOUD_BACKUP_AND_RESTORE,
+    FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+    FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+})
 public class BackupChangeTokenHelperTest {
 
-    private static final String TEST_DATA_TABLE_NAME = "step_records_table";
+    private static final int TEST_DATA_RECORD_TYPE = 1;
     private static final long TEST_DATA_TABLE_PAGE_TOKEN = 1;
     private static final String TEST_CHANGE_LOGS_REQUEST_TOKEN = "1";
 
@@ -83,7 +92,7 @@ public class BackupChangeTokenHelperTest {
         String backupChangeTokenRowId =
                 BackupChangeTokenHelper.getBackupChangeTokenRowId(
                         mTransactionManager,
-                        TEST_DATA_TABLE_NAME,
+                        TEST_DATA_RECORD_TYPE,
                         TEST_DATA_TABLE_PAGE_TOKEN,
                         TEST_CHANGE_LOGS_REQUEST_TOKEN);
 
@@ -91,7 +100,7 @@ public class BackupChangeTokenHelperTest {
 
         String anotherBackupChangeTokenRowId =
                 BackupChangeTokenHelper.getBackupChangeTokenRowId(
-                        mTransactionManager, null, -1, null);
+                        mTransactionManager, RECORD_TYPE_UNKNOWN, -1, null);
         assertThat(anotherBackupChangeTokenRowId).isEqualTo("2");
     }
 
@@ -99,14 +108,14 @@ public class BackupChangeTokenHelperTest {
     public void getBackupChangeToken_withNullValues() {
         String backupChangeTokenRowId =
                 BackupChangeTokenHelper.getBackupChangeTokenRowId(
-                        mTransactionManager, null, -1, null);
+                        mTransactionManager, RECORD_TYPE_UNKNOWN, -1, null);
 
         BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, backupChangeTokenRowId);
         assertThat(backupChangeToken.getChangeLogsRequestToken()).isNull();
         assertThat(backupChangeToken.getDataTablePageToken()).isEqualTo(-1);
-        assertThat(backupChangeToken.getDataTableName()).isNull();
+        assertThat(backupChangeToken.getRecordType()).isEqualTo(RECORD_TYPE_UNKNOWN);
     }
 
     @Test
@@ -114,7 +123,7 @@ public class BackupChangeTokenHelperTest {
         String backupChangeTokenRowId =
                 BackupChangeTokenHelper.getBackupChangeTokenRowId(
                         mTransactionManager,
-                        TEST_DATA_TABLE_NAME,
+                        TEST_DATA_RECORD_TYPE,
                         TEST_DATA_TABLE_PAGE_TOKEN,
                         TEST_CHANGE_LOGS_REQUEST_TOKEN);
 
@@ -124,6 +133,6 @@ public class BackupChangeTokenHelperTest {
         assertThat(backupChangeToken.getChangeLogsRequestToken())
                 .isEqualTo(TEST_CHANGE_LOGS_REQUEST_TOKEN);
         assertThat(backupChangeToken.getDataTablePageToken()).isEqualTo(TEST_DATA_TABLE_PAGE_TOKEN);
-        assertThat(backupChangeToken.getDataTableName()).isEqualTo(TEST_DATA_TABLE_NAME);
+        assertThat(backupChangeToken.getRecordType()).isEqualTo(TEST_DATA_RECORD_TYPE);
     }
 }

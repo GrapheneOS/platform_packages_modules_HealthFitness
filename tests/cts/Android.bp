@@ -33,6 +33,7 @@ android_test {
         "src/android/healthconnect/cts/*.java",
         "src/android/healthconnect/cts/aggregation/*.java",
         "src/android/healthconnect/cts/backgroundread/*.java",
+        "src/android/healthconnect/cts/backuprestore/*.java",
         "src/android/healthconnect/cts/changelogs/*.java",
         "src/android/healthconnect/cts/datatypes/**/*.java",
         "src/android/healthconnect/cts/migration/*.java",
@@ -47,6 +48,7 @@ android_test {
         "mcts-healthfitness",
     ],
     static_libs: [
+        "android.permission.flags-aconfig-java",
         "androidx.test.rules",
         "androidx.test.ext.truth",
         "compatibility-device-util-axt",

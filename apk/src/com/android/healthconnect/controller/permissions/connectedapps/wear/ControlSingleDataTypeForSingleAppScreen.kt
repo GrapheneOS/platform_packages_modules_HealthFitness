@@ -70,7 +70,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
         // Data type text.
         item { Row(horizontalArrangement = Arrangement.Start) { Text(dataTypeStr) } }
 
-        // "Allowed" radio button.
+        // "Allow" radio button.
         item {
             RadioButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -80,7 +80,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
                     viewModel.updatePermission(healthPermission, appMetadata!!, grant = true)
                     allowed = true
                 },
-                label = { Text(stringResource(R.string.allowed)) },
+                label = { Text(stringResource(R.string.request_permissions_allow)) },
             )
         }
 

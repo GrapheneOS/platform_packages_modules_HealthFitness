@@ -96,10 +96,10 @@ public final class DatabaseMerger {
     /*
      * Record types in this list will always be migrated such that the ordering here is respected.
      * When adding a new priority override, group the types that need to migrated together within
-     * their own list. This makes the logical separate clear and also reduces storage usage during
-     * migration, as we delete the original records
+     * their own list. This makes the logical separation clear and also reduces storage usage during
+     * migration, as we delete the original records.
      */
-    private static final List<List<Integer>> RECORD_TYPE_MIGRATION_ORDERING_OVERRIDES =
+    public static final List<List<Integer>> RECORD_TYPE_MIGRATION_ORDERING_OVERRIDES =
             List.of(
                     // Training plans must be migrated before exercise sessions. Exercise sessions
                     // may contain a reference to a training plan, so the training plan needs to
@@ -381,7 +381,9 @@ public final class DatabaseMerger {
                     }
 
                     List<String> currentPriorityList =
-                            mHealthDataCategoryPriorityHelper.syncAndGetPriorityOrder(category);
+                            mAppInfoHelper.getPackageNames(
+                                    mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                            category));
                     List<String> newPriorityList =
                             Stream.concat(currentPriorityList.stream(), importPriorityList.stream())
                                     .distinct()
@@ -444,7 +446,11 @@ public final class DatabaseMerger {
             //    correct package name.
             UpsertTransactionRequest upsertTransactionRequest =
                     UpsertTransactionRequest.createForRestore(
-                            records, mDeviceInfoHelper, mAppInfoHelper);
+                            records,
+                            mTransactionManager,
+                            mInternalHealthConnectMappings,
+                            mDeviceInfoHelper,
+                            mAppInfoHelper);
 
             // Both methods use ON CONFLICT IGNORE strategy, which means that if the source data
             // being inserted into target db already exists, the source data will be ignored. We
@@ -456,8 +462,7 @@ public final class DatabaseMerger {
                     && mTransactionManager.checkTableExists(ChangeLogsRequestHelper.TABLE_NAME)
                     && mTransactionManager.queryNumEntries(ChangeLogsRequestHelper.TABLE_NAME)
                             != 0) {
-                mTransactionManager.insertAllRecords(
-                        mAppInfoHelper, /* accessLogsHelper */ null, upsertTransactionRequest);
+                upsertTransactionRequest.execute();
             } else {
                 mTransactionManager.insertOrIgnoreAllOnConflict(
                         upsertTransactionRequest.getUpsertRequests());

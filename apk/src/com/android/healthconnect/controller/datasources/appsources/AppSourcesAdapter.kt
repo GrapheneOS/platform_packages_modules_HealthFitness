@@ -46,7 +46,7 @@ class AppSourcesAdapter(
     private val category: @HealthDataCategoryInt Int,
     private val onAppRemovedListener: OnAppRemovedFromPriorityListListener,
     private val itemMoveAttachCallbackListener: ItemMoveAttachCallbackListener,
-) : RecyclerView.Adapter<AppSourcesAdapter.AppSourcesItemViewHolder?>() {
+) : RecyclerView.Adapter<AppSourcesAdapter.AppSourcesItemViewHolder>() {
 
     private var listener: ItemTouchHelper? = null
     private var priorityList = priorityList.toMutableList()

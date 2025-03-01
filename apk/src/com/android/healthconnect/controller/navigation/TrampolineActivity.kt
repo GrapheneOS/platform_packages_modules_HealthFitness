@@ -30,6 +30,8 @@ import com.android.healthconnect.controller.MainActivity
 import com.android.healthconnect.controller.data.DataManagementActivity
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.shouldRedirectToOnboardingActivity
+import com.android.healthconnect.controller.onboarding.SkipOnboardingActivity
+import com.android.healthconnect.controller.onboarding.SkipOnboardingActivity.Companion.SKIP_HEALTH_CONNECT_ONBOARDING
 import com.android.healthconnect.controller.permissions.app.wear.WearViewAppInfoPermissionsActivity
 import com.android.healthconnect.controller.permissions.connectedapps.wear.WearSettingsPermissionActivity
 import com.android.healthconnect.controller.permissions.shared.SettingsActivity
@@ -78,6 +80,16 @@ class TrampolineActivity : Hilt_TrampolineActivity() {
             } else {
                 getHandheldTargetIntent()
             }
+
+        if (SKIP_HEALTH_CONNECT_ONBOARDING == intent.action) {
+            startActivity(
+                Intent(this, SkipOnboardingActivity::class.java).apply {
+                    action = SKIP_HEALTH_CONNECT_ONBOARDING
+                }
+            )
+            finish()
+            return
+        }
 
         // Handles showing Health Connect Onboarding.
         // Do not show onboarding UI on watch.

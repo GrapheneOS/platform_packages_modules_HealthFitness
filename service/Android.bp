@@ -54,7 +54,7 @@ java_sdk_library {
     static_libs: [
         "modules-utils-backgroundthread",
         "fhirspec-java-proto-lite",
-        "backup-data-proto",
+        "backup-restore-proto",
     ],
     jarjar_rules: "jarjar-rules.txt",
     installable: true,

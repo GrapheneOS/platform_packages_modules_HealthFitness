@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"瀏覽資料"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"查看資料以及可存取這類資料的應用程式"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"自動刪除、資料來源、備份和還原"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"更多項目"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"較少項目"</string>
     <string name="backup_title" msgid="211503191266235085">"備份"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"資料來源與優先順序"</string>
     <string name="set_units_title" msgid="2657822539603758029">"設定單位"</string>
@@ -687,7 +689,7 @@
     <string name="dumbbell_triceps_extension_left_arm" msgid="6756023069611493063">"左臂啞鈴三頭肌屈伸"</string>
     <string name="dumbbell_triceps_extension_right_arm" msgid="1498470275564554389">"右臂啞鈴三頭肌屈伸"</string>
     <string name="dumbbell_triceps_extension_two_arm" msgid="5409860665522903159">"雙臂啞鈴三頭肌屈伸"</string>
-    <string name="elliptical" msgid="5148914059968910839">"橢圓訓練機"</string>
+    <string name="elliptical" msgid="5148914059968910839">"滑步機"</string>
     <string name="exercise_class" msgid="32582249527931454">"運動課程"</string>
     <string name="fencing" msgid="410347890025055779">"擊劍"</string>
     <string name="football_american" msgid="8564554592554502623">"美式足球"</string>
@@ -1173,10 +1175,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"健身與健康"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"一律允許"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"僅在使用時允許"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以隨時存取你的所有健身與健康資料"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以在執行時存取你的所有健身與健康資料"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"允許存取"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"允許讀取"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"這些權限可讓「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取裝置感應器的資料。"</string>
@@ -1188,17 +1188,12 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"要移除手錶上所有應用程式的<xliff:g id="DATA_TYPE">%s</xliff:g>存取權嗎？"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"勾號"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"叉號"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"目前，「<xliff:g id="APP_NAME">%1$s</xliff:g>」可隨時存取健身與健康資料"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"目前，「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以在執行時存取健身與健康資料"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」隨時存取健身與健康資料嗎？"</string>
     <string name="current_access" msgid="1457167070428176139">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以存取<xliff:g id="DATA_TYPES">%2$s</xliff:g>。"</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"管理健身與健康權限"</string>
-    <!-- no translation found for used_by_apps_count (1384912521974773617) -->
-    <skip />
-    <!-- no translation found for not_used_in_past_24_hours (7918784815693928054) -->
-    <skip />
-    <!-- no translation found for accessed (4424701457530587176) -->
-    <skip />
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 個應用程式使用過}other{# 個應用程式使用過}}"</string>
+    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"過去 24 小時內未使用"</string>
+    <string name="accessed" msgid="4424701457530587176">"上次存取時間：<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
 </resources>

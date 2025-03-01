@@ -1,0 +1,33 @@
+{
+  "resourceType": "Procedure",
+  "id": "b-procedure-4",
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "173422009",
+        "display": "Tonsillectomy (procedure)"
+      }
+    ],
+    "text": "Tonsillectomy"
+  },
+  "category": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "387713003",
+        "display": "Surgical procedure (procedure)"
+      }
+    ],
+    "text": "Surgical procedure"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1"
+  },
+  "performedString": "Performed when patient was around 10 years old",
+  "recorder": {
+    "reference": "Practitioner/b-practitioner-1",
+    "display": "Dr Maria Hernandez"
+  }
+}

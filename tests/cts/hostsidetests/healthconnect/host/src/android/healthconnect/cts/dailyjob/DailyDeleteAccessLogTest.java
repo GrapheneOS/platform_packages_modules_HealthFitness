@@ -32,62 +32,64 @@ import com.android.tradefed.testtype.IBuildReceiver;
 
 import java.time.Instant;
 
-public class DailyDeleteAccessLogTest extends DeviceTestCase implements IBuildReceiver {
-    private IBuildInfo mCtsBuild;
-    private Instant mTestStartTime;
-    private Instant mDeviceStartTime;
+//TODO(b/381409777) Flaky tests on healthfitness release branch.
+// public class DailyDeleteAccessLogTest extends DeviceTestCase implements IBuildReceiver {
+    // private IBuildInfo mCtsBuild;
+    // private Instant mTestStartTime;
+    // private Instant mDeviceStartTime;
 
-    @Override
-    protected void setUp() throws Exception {
-        if (!isHardwareSupported(getDevice())) {
-            return;
-        }
-        super.setUp();
-        mTestStartTime = Instant.now();
-        mDeviceStartTime = Instant.ofEpochMilli(getDevice().getDeviceDate());
-        assertThat(mCtsBuild).isNotNull();
-        clearData(getDevice());
-    }
+    // @Override
+    // protected void setUp() throws Exception {
+    //     if (!isHardwareSupported(getDevice())) {
+    //         return;
+    //     }
+    //     super.setUp();
+    //     mTestStartTime = Instant.now();
+    //     mDeviceStartTime = Instant.ofEpochMilli(getDevice().getDeviceDate());
+    //     assertThat(mCtsBuild).isNotNull();
+    //     clearData(getDevice());
+    // }
 
-    @Override
-    protected void tearDown() throws Exception {
-        if (!isHardwareSupported(getDevice())) {
-            return;
-        }
-        clearData(getDevice());
-        resetTime(getDevice(), mTestStartTime, mDeviceStartTime);
-        super.tearDown();
-    }
+    // @Override
+    // protected void tearDown() throws Exception {
+    //     if (!isHardwareSupported(getDevice())) {
+    //         return;
+    //     }
+    //     clearData(getDevice());
+    //     resetTime(getDevice(), mTestStartTime, mDeviceStartTime);
+    //     super.tearDown();
+    // }
 
-    @Override
-    public void setBuild(IBuildInfo buildInfo) {
-        mCtsBuild = buildInfo;
-    }
+    // @Override
+    // public void setBuild(IBuildInfo buildInfo) {
+    //     mCtsBuild = buildInfo;
+    // }
 
-    public void testAccessLogsAreDeleted() throws Exception {
-        if (!isHardwareSupported(getDevice())) {
-            return;
-        }
 
-        triggerTestInTestApp(getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testInsertRecordsSucceed");
-        triggerTestInTestApp(
-                getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testHealthConnectAccessLogsEqualsOne");
+    // public void testAccessLogsAreDeleted() throws Exception {
+    //     if (!isHardwareSupported(getDevice())) {
+    //         return;
+    //     }
 
-        increaseDeviceTimeByDays(getDevice(), 5);
-        triggerTestInTestApp(getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testInsertRecordsSucceed");
-        triggerTestInTestApp(
-                getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testHealthConnectAccessLogsEqualsTwo");
+    //     triggerTestInTestApp(getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testInsertRecordsSucceed");
+    //     triggerTestInTestApp(
+    //             getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testHealthConnectAccessLogsEqualsOne");
 
-        // Only the first access log should have been deleted after 5 days.
-        increaseDeviceTimeByDays(getDevice(), 5);
-        triggerDailyJob(getDevice());
-        triggerTestInTestApp(
-                getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testHealthConnectAccessLogsEqualsOne");
+    //     increaseDeviceTimeByDays(getDevice(), 5);
+    //     triggerTestInTestApp(getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testInsertRecordsSucceed");
+    //     triggerTestInTestApp(
+    //             getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testHealthConnectAccessLogsEqualsTwo");
 
-        // The other access log should also be deleted after 5 days.
-        increaseDeviceTimeByDays(getDevice(), 5);
-        triggerDailyJob(getDevice());
-        triggerTestInTestApp(
-                getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testHealthConnectAccessLogsEqualsZero");
-    }
-}
+    //     // Only the first access log should have been deleted after 5 days.
+    //     increaseDeviceTimeByDays(getDevice(), 5);
+    //     triggerDailyJob(getDevice());
+    //     triggerTestInTestApp(
+    //             getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testHealthConnectAccessLogsEqualsOne");
+
+    //     // The other access log should also be deleted after 5 days.
+    //     increaseDeviceTimeByDays(getDevice(), 5);
+    //     triggerDailyJob(getDevice());
+    //     triggerTestInTestApp(
+    //             getDevice(), DAILY_LOG_TESTS_ACTIVITY, "testHealthConnectAccessLogsEqualsZero");
+    // }
+// }

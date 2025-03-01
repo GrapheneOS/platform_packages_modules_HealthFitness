@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Jelajahi data"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Lihat data dan jenis aplikasi yang dapat mengaksesnya"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Hapus otomatis, sumber data, pencadangan, dan pemulihan"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"Item lainnya"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Lebih sedikit item"</string>
     <string name="backup_title" msgid="211503191266235085">"Pencadangan"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Prioritas dan sumber data"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Tetapkan unit"</string>
@@ -1173,10 +1175,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Kebugaran dan kesehatan"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Sepanjang waktu"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"Saat digunakan"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> dapat mengakses semua data kebugaran dan kesehatan Anda kapan saja"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> dapat mengakses semua data kebugaran dan kesehatan Anda saat digunakan"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Diizinkan untuk mengakses"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Diizinkan untuk membaca"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Izin ini memberi <xliff:g id="APP_NAME">%1$s</xliff:g> akses ke data dari sensor perangkat Anda."</string>
@@ -1188,17 +1188,12 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Hapus akses <xliff:g id="DATA_TYPE">%s</xliff:g> untuk semua aplikasi di smartwatch?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Tanda centang"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Tanda silang"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Saat ini, <xliff:g id="APP_NAME">%1$s</xliff:g> dapat mengakses data kebugaran dan kesehatan kapan saja"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Saat ini, <xliff:g id="APP_NAME">%1$s</xliff:g> dapat mengakses data kebugaran dan kesehatan saat digunakan"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"Izinkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses data kebugaran dan kesehatan kapan saja?"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> memiliki akses ke <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Kelola izin kebugaran dan kesehatan"</string>
-    <!-- no translation found for used_by_apps_count (1384912521974773617) -->
-    <skip />
-    <!-- no translation found for not_used_in_past_24_hours (7918784815693928054) -->
-    <skip />
-    <!-- no translation found for accessed (4424701457530587176) -->
-    <skip />
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Digunakan oleh 1 aplikasi}other{Digunakan oleh # aplikasi}}"</string>
+    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Tidak digunakan dalam 24 jam terakhir"</string>
+    <string name="accessed" msgid="4424701457530587176">"Diakses <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
 </resources>

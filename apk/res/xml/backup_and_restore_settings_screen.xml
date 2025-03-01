@@ -13,7 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.android.settingslib.widget.BannerMessagePreferenceGroup
+        android:key="banner_group"
+        app:expandTitle="@string/banner_group_more_items"
+        app:collapseTitle="@string/banner_group_fewer_items"
+        app:collapseIcon="?attr/collapseIcon"
+        android:order="0"/>
     <PreferenceCategory
         android:key="settings_category"
         android:order="1">

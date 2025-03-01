@@ -33,7 +33,7 @@ class AutoDeleteViewModel
 @Inject
 constructor(
     private val loadAutoDeleteUseCase: LoadAutoDeleteUseCase,
-    private val updateAutoDeleteUseCase: UpdateAutoDeleteUseCase
+    private val updateAutoDeleteUseCase: UpdateAutoDeleteUseCase,
 ) : ViewModel() {
 
     companion object {
@@ -65,8 +65,8 @@ constructor(
         viewModelScope.launch {
             when (val result = loadAutoDeleteUseCase.invoke()) {
                 is UseCaseResults.Success -> {
-                    _storedAutoDeleteRange.postValue(
-                        AutoDeleteState.WithData(fromNumberOfMonths(result.data)))
+                    val autoDeleteRange = fromNumberOfMonths(result.data)
+                    postAutoDeleteRange(autoDeleteRange)
                 }
                 is UseCaseResults.Failed -> {
                     Log.e(TAG, "Load error ", result.exception)
@@ -80,7 +80,7 @@ constructor(
         viewModelScope.launch {
             when (val result = updateAutoDeleteUseCase.invoke(autoDeleteRange.numberOfMonths)) {
                 is UseCaseResults.Success -> {
-                    _storedAutoDeleteRange.postValue(AutoDeleteState.WithData(autoDeleteRange))
+                    postAutoDeleteRange(autoDeleteRange)
                 }
                 is UseCaseResults.Failed -> {
                     Log.e(TAG, "Update error ", result.exception)
@@ -90,17 +90,20 @@ constructor(
         }
     }
 
-    fun updateAutoDeleteDialogArguments(
-        newAutoDeleteRange: AutoDeleteRange,
-        oldAutoDeleteRange: AutoDeleteRange
-    ) {
+    private fun postAutoDeleteRange(autoDeleteRange: AutoDeleteRange) {
+        _storedAutoDeleteRange.postValue(AutoDeleteState.WithData(autoDeleteRange))
+        _oldAutoDeleteRange.postValue(autoDeleteRange)
+    }
+
+    fun updateAutoDeleteDialogArgument(newAutoDeleteRange: AutoDeleteRange) {
         _newAutoDeleteRange.value = newAutoDeleteRange
-        _oldAutoDeleteRange.value = oldAutoDeleteRange
     }
 
     sealed class AutoDeleteState {
         object Loading : AutoDeleteState()
+
         object LoadingFailed : AutoDeleteState()
+
         data class WithData(val autoDeleteRange: AutoDeleteRange) : AutoDeleteState()
     }
 }

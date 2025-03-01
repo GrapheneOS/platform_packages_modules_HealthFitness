@@ -1,0 +1,112 @@
+{
+  "resourceType": "Procedure",
+  "id": "procedure-1",
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "80146002",
+        "display": "Excision of appendix (procedure)"
+      }
+    ],
+    "text": "Excision of appendix"
+  },
+  "category": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "387713003",
+        "display": "Surgical procedure (procedure)"
+      }
+    ],
+    "text": "Surgical procedure"
+  },
+  "subject": {
+    "reference": "Patient/patient-1"
+  },
+  "performedDateTime": "2010-08-13",
+  "recorder": {
+    "reference": "Practitioner/practitioner-2",
+    "display": "Dr Aisha Muhammad"
+  },
+  "asserter": {
+    "reference": "Practitioner/practitioner-2",
+    "display": "Dr Aisha Muhammad"
+  },
+  "performer": [
+    {
+      "actor": {
+        "reference": "Practitioner/practitioner-2",
+        "display": "Dr Aisha Muhammad"
+      },
+      "function": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "309376005",
+            "display": "Gastrointestinal surgeon"
+          }
+        ],
+        "text": "Administering Provider"
+      },
+      "onBehalfOf": {
+        "reference": "Organization/organization-2",
+        "display": "Health Connect Hospital"
+      }
+    }
+  ],
+  "location": {
+    "reference": "Location/location-unk",
+    "display": "HC Hospital Operation Room 1"
+  },
+  "bodySite": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "66754008",
+          "display": "Appendix structure (body structure)"
+        }
+      ],
+      "text": "Appendix structure"
+    }
+  ],
+  "reasonCode": [
+    {
+      "text": "Generalized abdominal pain 24 hours. Localized in RIF with rebound and guarding. High WCC. Inflammation on ultrasound."
+    }
+  ],
+  "outcome": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "385669000",
+        "display": "Successful"
+      }
+    ],
+    "text": "Successful"
+  },
+  "complication": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "160245001",
+          "display": "No current problems or disability"
+        }
+      ],
+      "text": "No current problems or disability"
+    }
+  ],
+  "followUp": [
+    {
+       "text": "Review in clinic in 1 week."
+    }
+  ],
+  "note": [
+    {
+      "text": "Routine procedure with no complications"
+    }
+  ]
+}

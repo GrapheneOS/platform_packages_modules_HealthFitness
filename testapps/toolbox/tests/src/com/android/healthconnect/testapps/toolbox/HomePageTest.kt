@@ -32,7 +32,7 @@ class HomePageTest {
 
     @Test
     fun requestPermissionsButtonFound() {
-        onView(withText(R.string.request_data_type_permissions)).check(matches(isDisplayed()))
+        onView(withText(R.string.permissions_request)).check(matches(isDisplayed()))
     }
 
     @Test
