@@ -1,0 +1,57 @@
+{
+  "resourceType": "Observation",
+  "id": "observation-32",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "vital-signs",
+          "display": "Vital Signs"
+        }
+      ],
+      "text": "Vital Signs"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "2708-6",
+        "display": "Oxygen saturation in Arterial blood"
+      }
+    ],
+    "text": "Oxygen saturation"
+  },
+  "subject": {
+    "reference": "Patient/patient-1",
+    "display": "Example, Anne"
+  },
+  "valueQuantity": {
+    "value": 99,
+    "unit": "%",
+    "system": "http://unitsofmeasure.org",
+    "code": "%"
+  },
+  "referenceRange": [
+    {
+      "low": {
+        "value": 92,
+        "unit": "%",
+        "system": "http://unitsofmeasure.org",
+        "code": "%"
+      }
+    }
+  ],
+  "encounter": {
+    "reference": "Encounter/encounter-5",
+    "display": "Endocrine outpatient appointment"
+  },
+  "effectiveDateTime": "2022-09-28T09:36:00Z",
+  "note": [
+    {
+      "text": "99% on air"
+    }
+  ]
+}

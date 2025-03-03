@@ -107,6 +107,8 @@ import java.util.UUID;
 
 final class ProtoTestData {
 
+    static final String TEST_PACKAGE_NAME = "test.package.name";
+
     static Record generateRecord(@RecordTypeIdentifier.RecordType int recordType) {
         return switch (recordType) {
             case RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED ->
@@ -690,7 +692,7 @@ final class ProtoTestData {
     static Record.Builder generateCoreRecord() {
         return Record.newBuilder()
                 .setUuid(UUID.randomUUID().toString())
-                .setPackageName("packageName")
+                .setPackageName(TEST_PACKAGE_NAME)
                 .setLastModifiedTime(123456)
                 .setClientRecordId("clientId")
                 .setClientRecordVersion(3)

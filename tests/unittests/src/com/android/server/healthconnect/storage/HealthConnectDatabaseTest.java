@@ -21,6 +21,7 @@ import static android.healthconnect.cts.utils.DataFactory.NOW;
 
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
@@ -98,7 +99,8 @@ public class HealthConnectDatabaseTest {
         FLAG_DEVELOPMENT_DATABASE,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB,
-        Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+        Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
+        FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
     })
     public void onCreate_dbWithLatestSchemaCreated() {
         SQLiteDatabase sqliteDatabase =
@@ -165,8 +167,8 @@ public class HealthConnectDatabaseTest {
                                 TEST_PACKAGE_NAME,
                                 Map.of(RECORD_TYPE_STEPS, originalStepsRecordUuids)),
                         injector.getAppInfoHelper(),
-                        injector.getAccessLogsHelper(),
                         injector.getDeviceInfoHelper(),
+                        injector.getAccessLogsHelper(),
                         injector.getReadAccessLogsHelper(),
                         false);
         assertThat(recordInternals).hasSize(1);

@@ -55,6 +55,7 @@ import static android.healthconnect.cts.utils.DataFactory.NOW;
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
@@ -113,8 +114,11 @@ import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
+import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
+import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetSettingsForBackupResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
@@ -124,6 +128,7 @@ import android.health.connect.aidl.IMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
+import android.health.connect.backuprestore.BackupSettings;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
@@ -149,7 +154,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
-import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -163,6 +167,8 @@ import com.android.server.healthconnect.permission.HealthConnectPermissionHelper
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
+import com.android.server.healthconnect.proto.backuprestore.AppInfoMap;
+import com.android.server.healthconnect.proto.backuprestore.Settings;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
@@ -259,9 +265,9 @@ public class HealthConnectServiceImplTest {
                     "runImmediateExport",
                     "getChangesForBackup",
                     "getSettingsForBackup",
-                    "pushSettingsForRestore",
+                    "restoreSettings",
                     "canRestore",
-                    "pushChangesForRestore");
+                    "restoreChanges");
 
     /** Health connect service APIs that do not block calls when data sync is in progress. */
     public static final Set<String> DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST =
@@ -292,7 +298,6 @@ public class HealthConnectServiceImplTest {
     @Rule
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(LocalManagerRegistry.class)
                     .mockStatic(HealthFitnessStatsLog.class)
                     .spyStatic(RateLimiter.class)
                     .setStrictness(Strictness.LENIENT)
@@ -358,8 +363,6 @@ public class HealthConnectServiceImplTest {
         mFakeTimeSource = new FakeTimeSource(NOW);
         mAttributionSource = mContext.getAttributionSource();
         mTestPackageName = mAttributionSource.getPackageName();
-        when(LocalManagerRegistry.getManager(AppOpsManagerLocal.class))
-                .thenReturn(mAppOpsManagerLocal);
         setUpAllMedicalPermissionChecksHardDenied();
 
         HealthConnectInjector healthConnectInjector =
@@ -378,6 +381,7 @@ public class HealthConnectServiceImplTest {
                         .setMigrationUiStateManager(mMigrationUiStateManager)
                         .setAppInfoHelper(mAppInfoHelper)
                         .setTimeSource(mFakeTimeSource)
+                        .setAppOpsManagerLocal(mAppOpsManagerLocal)
                         .build();
 
         mHealthConnectService =
@@ -396,6 +400,7 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getMedicalDataSourceHelper(),
                         healthConnectInjector.getExportManager(),
                         healthConnectInjector.getExportImportSettingsStorage(),
+                        healthConnectInjector.getExportImportNotificationSender(),
                         healthConnectInjector.getBackupRestore(),
                         healthConnectInjector.getAccessLogsHelper(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
@@ -408,7 +413,8 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getPreferenceHelper(),
                         healthConnectInjector.getDatabaseHelpers(),
                         healthConnectInjector.getPreferencesManager(),
-                        healthConnectInjector.getReadAccessLogsHelper());
+                        healthConnectInjector.getReadAccessLogsHelper(),
+                        healthConnectInjector.getAppOpsManagerLocal());
         mBackupRestore = healthConnectInjector.getBackupRestore();
     }
 
@@ -2744,10 +2750,83 @@ public class HealthConnectServiceImplTest {
 
     @Test
     public void testUserSwitching() throws TimeoutException {
-        mHealthConnectService.onUserSwitching(mUserHandle);
+        mHealthConnectService.setupForUser(mUserHandle);
 
         waitForAllScheduledTasksToComplete();
     }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void getChangesForBackup_flagDisabled_unsupportedOperation() throws RemoteException {
+        IGetChangesForBackupResponseCallback callback =
+                mock(IGetChangesForBackupResponseCallback.class);
+        mHealthConnectService.getChangesForBackup(null, callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void getSettingsForBackup_flagDisabled_unsupportedOperation() throws RemoteException {
+        IGetSettingsForBackupResponseCallback callback =
+                mock(IGetSettingsForBackupResponseCallback.class);
+        mHealthConnectService.getSettingsForBackup(callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void canRestore_flagDisabled_unsupportedOperation() throws RemoteException {
+        ICanRestoreResponseCallback callback = mock(ICanRestoreResponseCallback.class);
+        mHealthConnectService.canRestore(0, callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void restoreSettings_flagDisabled_unsupportedOperation() throws RemoteException {
+        IEmptyResponseCallback callback = mock(IEmptyResponseCallback.class);
+        Settings settings =
+                Settings.newBuilder()
+                        .setWeightUnitSetting(Settings.WeightUnitProto.KILOGRAM)
+                        .setDistanceUnitSetting(Settings.DistanceUnitProto.MILES)
+                        .build();
+
+        mHealthConnectService.restoreSettings(new BackupSettings(settings.toByteArray()), callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void restoreChanges_flagDisabled_unsupportedOperation() throws RemoteException {
+        IEmptyResponseCallback callback = mock(IEmptyResponseCallback.class);
+        AppInfoMap appInfoMap =
+                AppInfoMap.newBuilder()
+                        .putAppInfo(
+                                "random.package.name",
+                                Settings.AppInfo.newBuilder().setAppName("app name 1").build())
+                        .build();
+        mHealthConnectService.restoreChanges(List.of(), appInfoMap.toByteArray(), callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void restore_flagDisabled_unsupportedOperation() throws RemoteException {}
 
     /**
      * Sets up the mocks so all checks are bypassed and all PHR API calls are successful. Although,

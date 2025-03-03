@@ -1,0 +1,30 @@
+{
+  "resourceType": "Patient",
+  "id": "b_patient_4",
+  "active": true,
+  "identifier": [
+    {
+      "use": "usual",
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical record number"
+          }
+        ],
+        "text": "Health Connect Hospital MRN"
+      },
+      "system": "urn:oid:1.2.345.6789",
+      "value": "10001"
+    }
+  ],
+  "name": [
+    {
+      "use": "temp",
+      "text": "Unknown female"
+    }
+  ],
+  "gender": "female",
+  "deceasedBoolean": false
+}

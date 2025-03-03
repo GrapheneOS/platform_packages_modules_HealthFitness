@@ -1,0 +1,19 @@
+{
+  "resourceType": "Patient",
+  "id": "b-patient-7",
+  "active": true,
+  "name": [
+    {
+      "use": "usual",
+      "text": "Tess Ting",
+      "family": "Ting",
+      "given": [
+        "Tess"
+      ]
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1987-01-01",
+  "_birthDate": "1980s",
+  "deceasedBoolean": false
+}

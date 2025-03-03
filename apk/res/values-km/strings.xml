@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"រុករកទិន្នន័យ"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"មើល​ទិន្នន័យ និង​ថាតើ​កម្មវិធី​ណាខ្លះ​អាចចូលប្រើ​វាបាន"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"ការលុបដោយស្វ័យប្រវត្តិ ប្រភពទិន្នន័យ ការបម្រុងទុក និងការស្ដារ"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"ធាតុច្រើនទៀត"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"ធាតុតិចជាងនេះ"</string>
     <string name="backup_title" msgid="211503191266235085">"បម្រុង​ទុក"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"ប្រភពទិន្នន័យ និងអាទិភាព"</string>
     <string name="set_units_title" msgid="2657822539603758029">"កំណត់ឯកតា"</string>
@@ -442,7 +444,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"អានគោលការណ៍ឯកជនភាព"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"បានចូលប្រើក្នុងរយៈពេល 24 ម៉ោងចុងក្រោយ"</string>
     <string name="app_access_title" msgid="7137018424885371763">"សិទ្ធិចូលប្រើកម្មវិធី"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"បច្ចុប្បន្ននេះ អ្នកមិនបានដំឡើង​កម្មវិធីដែលត្រូវគ្នាទេ"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"មិនបានដំឡើងកម្មវិធីដែលត្រូវគ្នា​ទេ"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"សិទ្ធិ​ចូល​ប្រើបន្ថែម"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"ទិន្នន័យពីមុន ទិន្នន័យ​ផ្ទៃ​ខាង​ក្រោយ"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"បានដកការអនុញ្ញាតបន្ថែមចេញសម្រាប់កម្មវិធីនេះ"</string>
@@ -1173,10 +1175,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"សម្បទា និងសុខុមាលភាព"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"គ្រប់ពេល"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"ពេលកំពុងប្រើ"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> អាចចូលប្រើប្រាស់ទិន្នន័យសម្បទា និងសុខុមាលភាពទាំងអស់របស់អ្នកបានគ្រប់ពេល"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> អាចចូលប្រើប្រាស់ទិន្នន័យសម្បទា និងសុខុមាលភាពទាំងអស់របស់អ្នកខណៈពេលកំពុងប្រើ"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"បានអនុញ្ញាតឱ្យចូលប្រើ"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"បានអនុញ្ញាតឱ្យអាន"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"ការ​អនុញ្ញាតទាំងនេះផ្ដល់សិទ្ធិឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើទិន្នន័យពីសេនស័រឧបករណ៍របស់អ្នក។"</string>
@@ -1188,10 +1188,8 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"ដកសិទ្ធិចូលប្រើ <xliff:g id="DATA_TYPE">%s</xliff:g> សម្រាប់កម្មវិធីទាំងអស់នៅលើនាឡិការបស់អ្នកឬ?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"សញ្ញា​ធីក"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"សញ្ញា​ខ្វែង"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"បច្ចុប្បន្ន <xliff:g id="APP_NAME">%1$s</xliff:g> អាចចូលប្រើប្រាស់ទិន្នន័យសម្បទា និងសុខុមាលភាពបានគ្រប់ពេល"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"បច្ចុប្បន្ន <xliff:g id="APP_NAME">%1$s</xliff:g> អាចចូលប្រើប្រាស់ទិន្នន័យសម្បទា និងសុខុមាលភាពខណៈពេលកំពុងប្រើ"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"អនុញ្ញាតឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើទិន្នន័យសម្បទា និងសុខុមាលភាពគ្រប់ពេលឬ?"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> មានសិទ្ធិចូលប្រើ<xliff:g id="DATA_TYPES">%2$s</xliff:g>។"</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"គ្រប់គ្រងការអនុញ្ញាតសម្បទា និងសុខុមាលភាព"</string>

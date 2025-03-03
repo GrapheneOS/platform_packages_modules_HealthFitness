@@ -20,9 +20,6 @@
     <option name="config-descriptor:metadata" key="parameter" value="not_instant_app" />
     <option name="config-descriptor:metadata" key="parameter" value="not_multi_abi" />
     <option name="config-descriptor:metadata" key="parameter" value="secondary_user" />
-    <target_preparer class="com.android.tradefed.targetprep.InstallApexModuleTargetPreparer">
-        <option name="enable-rollback" value="false" />
-    </target_preparer>
     <target_preparer class="com.android.tradefed.targetprep.suite.SuiteApkInstaller">
         <option name="cleanup-apks" value="true" />
         <option name="test-file-name" value="CtsHealthConnectControllerTestCases.apk" />
@@ -36,6 +33,10 @@
         <option name="run-command" value="settings put system font_scale 0.85" />
         <option name="run-command" value="wm density reset" />
         <option name="run-command" value="wm size reset" />
+
+        <!-- Skip health connect onboarding! -->
+        <option name="run-command" value="am start -a android.health.connect.action.SKIP_HEALTH_CONNECT_ONBOARDING" />
+       
         <!-- Dimiss keyguard -->
         <option name="run-command" value="input keyevent KEYCODE_WAKEUP" />
         <option name="run-command" value="wm dismiss-keyguard" />

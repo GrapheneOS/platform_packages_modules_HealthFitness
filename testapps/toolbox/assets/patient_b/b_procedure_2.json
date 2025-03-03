@@ -1,0 +1,73 @@
+{
+  "resourceType": "Procedure",
+  "id": "b-procedure-2",
+  "contained" : [
+    {
+      "resourceType" : "Practitioner",
+      "id" : "b-practitioner-contained",
+      "name": [
+        {
+          "text": "Dr J Patel"
+        }
+      ]
+    }
+  ],
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "25267002",
+        "display": "Insertion of intracardiac pacemaker (procedure)"
+      }
+    ],
+    "text": "Insertion of intracardiac pacemaker"
+  },
+  "category": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "387713003",
+        "display": "Surgical procedure (procedure)"
+      }
+    ],
+    "text": "Surgical procedure"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1"
+  },
+  "performedDateTime": "2020-01-23",
+  "performer": [
+    {
+      "function": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "17561000",
+            "display": "Cardiologist"
+          }
+        ]
+      },
+      "actor": {
+        "reference": "#b-practitioner-contained",
+        "type": "Practitioner"
+      }
+    }
+  ],
+  "recorder": {
+    "reference": "Practitioner/b-practitioner-1",
+    "display": "Dr Maria Hernandez"
+  },
+  "reasonCode": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "233917008",
+          "display": "Atrioventricular block (disorder)"
+        }
+      ],
+      "text": "Atrioventricular block"
+    }
+  ]
+}

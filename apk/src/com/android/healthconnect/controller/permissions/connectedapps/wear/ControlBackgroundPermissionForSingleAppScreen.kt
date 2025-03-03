@@ -17,6 +17,7 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps.wear
 
+import android.icu.text.ListFormatter;
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,7 +46,7 @@ fun ControlBackgroundReadForSingleAppScreen(
     val appName = appMetadata!!.appName
 
     val allowedDataTypePermissions by viewModel.appToAllowedDataTypes.collectAsState()
-    val allowedDataTypesStr =
+    val allowedDataTypesStrings =
         allowedDataTypePermissions[appMetadata!!]
             ?.map { permission ->
                 stringResource(
@@ -55,14 +56,13 @@ fun ControlBackgroundReadForSingleAppScreen(
                         .lowercaseLabel
                 )
             }
-            ?.joinToString(", ") ?: ""
 
     ScrollableScreen(
         materialUIVersion = materialUIVersion,
         asScalingList = true,
         showTimeText = false,
         title = stringResource(R.string.allow_all_the_time_prompt, appName),
-        subtitle = stringResource(R.string.current_access, appName, allowedDataTypesStr),
+        subtitle = stringResource(R.string.current_access, appName, ListFormatter.getInstance().format(allowedDataTypesStrings)),
     ) {
         // Allow all the time button.
         item {

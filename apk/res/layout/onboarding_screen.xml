@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  Copyright (C) 2022 The Android Open Source Project
+  Copyright (C) 2025 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,56 +13,86 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<com.google.android.setupdesign.GlifLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/onboarding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/onboarding">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/onboarding_content_layout"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:paddingHorizontal="@dimen/spacing_large"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <ImageView
-            android:id="@+id/onboarding_image"
+        <LinearLayout
+            android:id="@+id/onboarding_content_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_onboarding"
-            android:layout_marginBottom="@dimen/spacing_xlarge"
-            android:paddingHorizontal="@dimen/spacing_large"
-            android:scaleType="centerInside" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/onboarding_description_with_health_connect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:paddingHorizontal="@dimen/spacing_large"
-            android:text="@string/onboarding_description_with_health_connect"
-            android:textAppearance="?attr/textAppearanceLabel"
-            android:textColor="?android:attr/colorAccent"/>
+            <TextView
+                android:id="@+id/onboarding_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_page_title"
+                android:text="@string/onboarding_title"
+                android:hyphenationFrequency="normal"
+                android:textAppearance="?attr/textAppearanceHeadline2" />
 
-        <com.google.android.setupdesign.view.RichTextView
-            android:id="@+id/share_text"
-            android:text="@string/share_data_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="?attr/syncIcon"
-            android:drawablePadding="@dimen/spacing_normal"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            style="@style/SudGlifDescriptionMaterialYou" />
+            <TextView
+                android:id="@+id/onboarding_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_xlarge"
+                android:text="@string/onboarding_description"
+                android:textAppearance="?attr/textAppearanceSummaryLarge" />
 
-        <com.google.android.setupdesign.view.RichTextView
-            android:id="@+id/manage_text"
-            android:text="@string/manage_your_settings_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="?attr/manageSettingsIcon"
-            android:drawablePadding="@dimen/spacing_normal"
-            style="@style/SudGlifDescriptionMaterialYou" />
-    </LinearLayout>
-</com.google.android.setupdesign.GlifLayout>
+            <ImageView
+                android:id="@+id/onboarding_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_onboarding"
+                android:layout_marginBottom="@dimen/spacing_xlarge"
+                android:scaleType="centerInside" />
+
+            <TextView
+                android:id="@+id/onboarding_description_with_health_connect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:text="@string/onboarding_description_with_health_connect"
+                android:textAppearance="?attr/textAppearanceLabel"
+                android:textColor="?android:attr/colorAccent"/>
+
+            <TextView
+                android:id="@+id/share_text"
+                android:text="@string/share_data_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="?attr/syncIcon"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:textAppearance="?attr/textAppearanceSummaryLarge" />
+
+            <TextView
+                android:id="@+id/manage_text"
+                android:text="@string/manage_your_settings_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="?attr/manageSettingsIcon"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:textAppearance="?attr/textAppearanceSummaryLarge" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/button_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

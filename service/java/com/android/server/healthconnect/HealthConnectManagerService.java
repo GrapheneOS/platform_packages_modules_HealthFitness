@@ -27,19 +27,10 @@ import android.util.Slog;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.SystemService;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
-import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
-import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
-import com.android.server.healthconnect.migration.MigrationStateManager;
-import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.MigratorPackageChangesReceiver;
-import com.android.server.healthconnect.permission.PermissionPackageChangesOrchestrator;
-import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.HealthConnectContext;
-import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import java.util.Objects;
 
@@ -51,17 +42,8 @@ import java.util.Objects;
 public class HealthConnectManagerService extends SystemService {
     private static final String TAG = "HealthConnectManagerService";
     private final Context mContext;
-    private final PermissionPackageChangesOrchestrator mPermissionPackageChangesOrchestrator;
     private final HealthConnectServiceImpl mHealthConnectService;
-    private final TransactionManager mTransactionManager;
     private final UserManager mUserManager;
-    private final MigrationBroadcastScheduler mMigrationBroadcastScheduler;
-    private final MigrationUiStateManager mMigrationUiStateManager;
-    private final ExportImportSettingsStorage mExportImportSettingsStorage;
-    private final ExportManager mExportManager;
-    private final PreferenceHelper mPreferenceHelper;
-    private final MigrationStateManager mMigrationStateManager;
-    private final DatabaseHelpers mDatabaseHelpers;
     private final HealthConnectInjector mHealthConnectInjector;
 
     private UserHandle mCurrentForegroundUser;
@@ -74,32 +56,23 @@ public class HealthConnectManagerService extends SystemService {
 
         HealthConnectInjector.setInstance(new HealthConnectInjectorImpl(context));
         mHealthConnectInjector = HealthConnectInjector.getInstance();
-        mTransactionManager = mHealthConnectInjector.getTransactionManager();
-        mPreferenceHelper = mHealthConnectInjector.getPreferenceHelper();
-        mMigrationStateManager = mHealthConnectInjector.getMigrationStateManager();
-        mPermissionPackageChangesOrchestrator =
-                mHealthConnectInjector.getPermissionPackageChangesOrchestrator();
-        mExportImportSettingsStorage = mHealthConnectInjector.getExportImportSettingsStorage();
-        mExportManager = mHealthConnectInjector.getExportManager();
-        mMigrationBroadcastScheduler = mHealthConnectInjector.getMigrationBroadcastScheduler();
-        mMigrationUiStateManager = mHealthConnectInjector.getMigrationUiStateManager();
-        mDatabaseHelpers = mHealthConnectInjector.getDatabaseHelpers();
         mHealthConnectService =
                 new HealthConnectServiceImpl(
                         mContext,
                         mHealthConnectInjector.getTimeSource(),
                         mHealthConnectInjector.getInternalHealthConnectMappings(),
-                        mTransactionManager,
+                        mHealthConnectInjector.getTransactionManager(),
                         mHealthConnectInjector.getHealthConnectPermissionHelper(),
                         mHealthConnectInjector.getFirstGrantTimeManager(),
                         mHealthConnectInjector.getMigrationEntityHelper(),
-                        mMigrationStateManager,
-                        mMigrationUiStateManager,
+                        mHealthConnectInjector.getMigrationStateManager(),
+                        mHealthConnectInjector.getMigrationUiStateManager(),
                         mHealthConnectInjector.getMigrationCleaner(),
                         mHealthConnectInjector.getMedicalResourceHelper(),
                         mHealthConnectInjector.getMedicalDataSourceHelper(),
-                        mExportManager,
-                        mExportImportSettingsStorage,
+                        mHealthConnectInjector.getExportManager(),
+                        mHealthConnectInjector.getExportImportSettingsStorage(),
+                        mHealthConnectInjector.getExportImportNotificationSender(),
                         mHealthConnectInjector.getBackupRestore(),
                         mHealthConnectInjector.getAccessLogsHelper(),
                         mHealthConnectInjector.getHealthDataCategoryPriorityHelper(),
@@ -109,16 +82,19 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getPriorityMigrationHelper(),
                         mHealthConnectInjector.getAppInfoHelper(),
                         mHealthConnectInjector.getDeviceInfoHelper(),
-                        mPreferenceHelper,
-                        mDatabaseHelpers,
+                        mHealthConnectInjector.getPreferenceHelper(),
+                        mHealthConnectInjector.getDatabaseHelpers(),
                         mHealthConnectInjector.getPreferencesManager(),
-                        mHealthConnectInjector.getReadAccessLogsHelper());
+                        mHealthConnectInjector.getReadAccessLogsHelper(),
+                        mHealthConnectInjector.getAppOpsManagerLocal());
     }
 
     @Override
     public void onStart() {
-        mPermissionPackageChangesOrchestrator.registerBroadcastReceiver(mContext);
-        new MigratorPackageChangesReceiver(mMigrationStateManager)
+        mHealthConnectInjector
+                .getPermissionPackageChangesOrchestrator()
+                .registerBroadcastReceiver(mContext);
+        new MigratorPackageChangesReceiver(mHealthConnectInjector.getMigrationStateManager())
                 .registerBroadcastReceiver(mContext);
         publishBinderService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
     }
@@ -136,17 +112,19 @@ public class HealthConnectManagerService extends SystemService {
         }
 
         HealthConnectThreadScheduler.shutdownThreadPools();
-        mDatabaseHelpers.clearAllCache();
-        mTransactionManager.onUserSwitching();
         RateLimiter.clearCache();
+        HealthConnectDailyJobs.cancelAllJobs(mContext);
+        mHealthConnectInjector.getDatabaseHelpers().clearAllCache();
+        mHealthConnectInjector.getTransactionManager().shutDownCurrentUser();
+        mHealthConnectInjector.getMigrationStateManager().shutDownCurrentUser(mContext);
         HealthConnectThreadScheduler.resetThreadPools();
-        mMigrationStateManager.onUserSwitching(mContext, to.getUserHandle());
+
         mCurrentForegroundUser = to.getUserHandle();
 
         if (mUserManager.isUserUnlocked(to.getUserHandle())) {
             // The user is already in unlocked state, so we should proceed with our setup right now,
             // as we won't be getting a onUserUnlocked callback
-            switchToSetupForUser(to.getUserHandle());
+            setupForCurrentForegroundUser();
         }
     }
 
@@ -163,7 +141,7 @@ public class HealthConnectManagerService extends SystemService {
             return;
         }
 
-        switchToSetupForUser(user.getUserHandle());
+        setupForCurrentForegroundUser();
     }
 
     @Override
@@ -173,19 +151,24 @@ public class HealthConnectManagerService extends SystemService {
         return !(Objects.requireNonNull(userManager).isProfile());
     }
 
-    private void switchToSetupForUser(UserHandle user) {
-        Slog.d(TAG, "switchToSetupForUser: " + user);
+    private void setupForCurrentForegroundUser() {
+        Slog.d(TAG, "setupForCurrentForegroundUser: " + mCurrentForegroundUser);
         HealthConnectContext hcContext =
                 HealthConnectContext.create(mContext, mCurrentForegroundUser);
-        mTransactionManager.onUserUnlocked(hcContext);
-        mHealthConnectService.onUserSwitching(mCurrentForegroundUser);
-        mMigrationBroadcastScheduler.setUserId(mCurrentForegroundUser);
-        mMigrationUiStateManager.setUserHandle(mCurrentForegroundUser);
-        mPermissionPackageChangesOrchestrator.setUserHandle(mCurrentForegroundUser);
+
+        mHealthConnectService.setupForUser(mCurrentForegroundUser);
+        mHealthConnectInjector.getTransactionManager().setupForUser(hcContext);
+        mHealthConnectInjector.getMigrationStateManager().setupForUser(mCurrentForegroundUser);
+        mHealthConnectInjector
+                .getMigrationBroadcastScheduler()
+                .setupForUser(mCurrentForegroundUser);
+        mHealthConnectInjector.getMigrationUiStateManager().setupForUser(mCurrentForegroundUser);
+        mHealthConnectInjector
+                .getPermissionPackageChangesOrchestrator()
+                .setupForUser(mCurrentForegroundUser);
         mHealthConnectInjector
                 .getHealthPermissionIntentAppsTracker()
-                .onUserUnlocked(mCurrentForegroundUser);
-
+                .setupForUser(mCurrentForegroundUser);
         mHealthConnectInjector.getBackupRestore().setupForUser(mCurrentForegroundUser);
         mHealthConnectInjector.getAppInfoHelper().setupForUser(hcContext);
         mHealthConnectInjector.getHealthDataCategoryPriorityHelper().setupForUser(hcContext);
@@ -194,10 +177,8 @@ public class HealthConnectManagerService extends SystemService {
             // Clear preferences cache again after the user switching is done as there's a race
             // condition with tasks re-populating the preferences cache between clearing the cache
             // and TransactionManager switching user, see b/355426144.
-            mPreferenceHelper.clearCache();
+            mHealthConnectInjector.getPreferenceHelper().clearCache();
         }
-
-        HealthConnectDailyJobs.cancelAllJobs(mContext);
 
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
@@ -211,8 +192,11 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        mMigrationBroadcastScheduler.scheduleNewJobs(
-                                mContext, mMigrationStateManager);
+                        mHealthConnectInjector
+                                .getMigrationBroadcastScheduler()
+                                .scheduleNewJobs(
+                                        mContext,
+                                        mHealthConnectInjector.getMigrationStateManager());
                     } catch (Exception e) {
                         Slog.e(TAG, "Migration broadcast schedule failed", e);
                     }
@@ -221,7 +205,9 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        mMigrationStateManager.switchToSetupForUser(mContext);
+                        mHealthConnectInjector
+                                .getMigrationStateManager()
+                                .switchToSetupForUser(mContext);
                     } catch (Exception e) {
                         Slog.e(TAG, "Failed to start user unlocked state changes actions", e);
                     }
@@ -229,7 +215,7 @@ public class HealthConnectManagerService extends SystemService {
         HealthConnectThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
-                        mPreferenceHelper.initializePreferences();
+                        mHealthConnectInjector.getPreferenceHelper().initializePreferences();
                     } catch (Exception e) {
                         Slog.e(TAG, "Failed to initialize preferences cache", e);
                     }
@@ -241,8 +227,8 @@ public class HealthConnectManagerService extends SystemService {
                         ExportImportJobs.schedulePeriodicJobIfNotScheduled(
                                 mCurrentForegroundUser,
                                 mContext,
-                                mExportImportSettingsStorage,
-                                mExportManager);
+                                mHealthConnectInjector.getExportImportSettingsStorage(),
+                                mHealthConnectInjector.getExportManager());
                     } catch (Exception e) {
                         Slog.e(TAG, "Failed to schedule periodic export job.", e);
                     }

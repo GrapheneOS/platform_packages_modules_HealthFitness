@@ -97,9 +97,15 @@ public final class MigrationStateManager {
     }
 
     /** Re-initialize this class instance with the new user */
-    public void onUserSwitching(Context context, UserHandle userHandle) {
+    public void shutDownCurrentUser(Context context) {
         synchronized (mLock) {
             MigrationStateChangeJob.cancelAllJobs(context);
+        }
+    }
+
+    /** Re-initialize this class instance with the new user */
+    public void setupForUser(UserHandle userHandle) {
+        synchronized (mLock) {
             mUserHandle = userHandle;
         }
     }

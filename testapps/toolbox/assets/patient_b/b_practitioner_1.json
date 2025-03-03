@@ -1,0 +1,69 @@
+{
+  "resourceType" : "Practitioner",
+  "id" : "b-practitioner-1",
+  "identifier" : [
+    {
+      "use" : "official",
+      "system" : "urn:oid:1.2.345.6789",
+      "value" : "10001"
+    }
+  ],
+  "name": [
+    {
+      "use": "usual",
+      "text": "Maria Hernandez",
+      "family": "Hernandez",
+      "given": [
+        "Maria"
+      ],
+      "prefix": [
+        "Dr"
+      ]
+    }
+  ],
+  "telecom" : [
+    {
+      "system" : "phone",
+      "value" : "+441111333333",
+      "use" : "work"
+    },
+    {
+      "system" : "email",
+      "value" : "maria.hernandez@healthconnectgp.org",
+      "use" : "work"
+    }
+  ],
+  "gender" : "female",
+  "birthDate" : "1979-04-29",
+  "address" : [
+    {
+      "use" : "work",
+      "line" : [
+        "6 Pancras Square"
+      ],
+      "city" : "London",
+      "postalCode" : "N1C 4AG",
+      "country" : "UK"
+    }
+  ],
+  "qualification": [
+    {
+      "code": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0360",
+            "code": "MD",
+            "display": "Doctor of Medicine"
+          }
+        ],
+        "text": "Doctor of Medicine"
+      },
+      "period": {
+        "start": "2002"
+      },
+      "issuer": {
+        "display": "Example University"
+      }
+    }
+  ]
+}

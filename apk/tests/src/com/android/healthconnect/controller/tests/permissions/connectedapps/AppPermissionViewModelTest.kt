@@ -15,9 +15,11 @@
  */
 package com.android.healthconnect.controller.tests.permissions.connectedapps
 
-
+import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import com.android.compatibility.common.util.FeatureUtil
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
@@ -33,8 +35,8 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Me
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteAppData
- import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
- import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -56,6 +58,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assume.assumeFalse
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
@@ -80,6 +84,7 @@ class AppPermissionViewModelTest {
     @get:Rule val setFlagsRule = SetFlagsRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
+    private var appInfoReader: AppInfoReader = mock()
     private val healthPermissionReader: HealthPermissionReader = mock()
     private val getGrantedHealthPermissionsUseCase = FakeGetGrantedHealthPermissionsUseCase()
     private val loadAccessDateUseCase: LoadAccessDateUseCase = mock()
@@ -91,7 +96,6 @@ class AppPermissionViewModelTest {
 
     private lateinit var loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase
     private lateinit var appPermissionViewModel: AppPermissionViewModel
-    @Inject lateinit var appInfoReader: AppInfoReader
 
     private val readExercisePermission =
         FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.READ)
@@ -126,6 +130,7 @@ class AppPermissionViewModelTest {
             )
         appPermissionViewModel =
             AppPermissionViewModel(
+                getApplicationContext(),
                 appInfoReader,
                 loadAppPermissionsStatusUseCase,
                 grantPermissionsUseCase,
@@ -348,6 +353,7 @@ class AppPermissionViewModelTest {
 
     @Test
     fun whenPackageNotSupported_fitnessOnly_loadOnlyGrantedPermissions() = runTest {
+        assumeFalse(FeatureUtil.isWatch());
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
             .thenReturn(
@@ -393,6 +399,7 @@ class AppPermissionViewModelTest {
 
     @Test
     fun whenPackageNotSupported_medicalOnly_loadOnlyGrantedPermissions() = runTest {
+        assumeFalse(FeatureUtil.isWatch());
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
             .thenReturn(listOf(writeMedicalData.toString(), readImmunization.toString()))
@@ -430,6 +437,7 @@ class AppPermissionViewModelTest {
 
     @Test
     fun whenPackageNotSupported_fitnessAndMedical_loadOnlyGrantedPermissions() = runTest {
+        assumeFalse(FeatureUtil.isWatch());
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
             .thenReturn(
@@ -2274,6 +2282,7 @@ class AppPermissionViewModelTest {
     @Test
     fun shouldNavigateToFragment_whenPackageNotSupported_andNoPermissionsGranted_returnsFalse() =
         runTest {
+            assumeFalse(FeatureUtil.isWatch());
             whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
             whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
                 .thenReturn(
@@ -2298,8 +2307,28 @@ class AppPermissionViewModelTest {
 
     @Test
     fun isPackageSupported_callsCorrectMethod() {
+        assumeFalse(FeatureUtil.isWatch());
         appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)
         verify(healthPermissionReader).isRationaleIntentDeclared(TEST_APP_PACKAGE_NAME)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
+    fun isPackageSupported_watch_flagDisabled_callsCorrectMethod() {
+        assumeTrue(FeatureUtil.isWatch());
+
+        appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)
+
+        verify(healthPermissionReader).isRationaleIntentDeclared(TEST_APP_PACKAGE_NAME)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
+    fun isPackageSupported_watch_flagEnabled_packageSupported() {
+        assumeTrue(FeatureUtil.isWatch());
+
+        assertThat(appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).isTrue()
+        verify(healthPermissionReader, never()).isRationaleIntentDeclared(any())
     }
 
     @Test

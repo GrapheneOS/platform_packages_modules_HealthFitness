@@ -13,6 +13,8 @@
  */
 package com.android.healthconnect.controller.permissions.app
 
+import android.content.Context
+import android.content.pm.PackageManager
 import android.health.connect.HealthPermissions.READ_EXERCISE
 import android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES
 import android.util.Log
@@ -42,7 +44,9 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthfitness.flags.Flags
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -54,6 +58,7 @@ import kotlinx.coroutines.runBlocking
 class AppPermissionViewModel
 @Inject
 constructor(
+    @ApplicationContext private val context: Context,
     private val appInfoReader: AppInfoReader,
     private val loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase,
     private val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase,
@@ -109,6 +114,8 @@ constructor(
         get() = _grantedMedicalPermissions
 
     private var _additionalPermissions = MutableLiveData<List<AdditionalPermission>>(emptyList())
+    val additionalPermissions: LiveData<List<AdditionalPermission>>
+        get() = _additionalPermissions
     private var _grantedAdditionalPermissions =
         MutableLiveData<Set<AdditionalPermission>>(emptySet())
     @VisibleForTesting
@@ -679,6 +686,11 @@ constructor(
 
     /** Returns True if the packageName declares the Rationale intent, False otherwise */
     fun isPackageSupported(packageName: String): Boolean {
+        if (context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
+                Flags.replaceBodySensorPermissionEnabled()) {
+            return true
+        }
+
         return healthPermissionReader.isRationaleIntentDeclared(packageName)
     }
 

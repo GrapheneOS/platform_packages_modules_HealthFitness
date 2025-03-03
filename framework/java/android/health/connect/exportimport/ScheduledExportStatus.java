@@ -27,7 +27,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 
 /**
- * Status for a scheduled export.
+ * Status for a scheduled export. Parcelable used to communicate the status of a scheduled export
+ * between the system server and the UI components via HealthConnectService.
  *
  * @hide
  */
@@ -45,6 +46,13 @@ public final class ScheduledExportStatus implements Parcelable {
                     return new ScheduledExportStatus[size];
                 }
             };
+
+    /**
+     * No error or success state available yet.
+     *
+     * @hide
+     */
+    public static final int DATA_EXPORT_ERROR_UNSPECIFIED = -1;
 
     /**
      * No error during the last data export.
@@ -94,6 +102,7 @@ public final class ScheduledExportStatus implements Parcelable {
     // TODO(b/356393172) rename to Status & include DATA_EXPORT_STARTED during Statuses cleanup.
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
+        DATA_EXPORT_ERROR_UNSPECIFIED,
         DATA_EXPORT_ERROR_UNKNOWN,
         DATA_EXPORT_ERROR_NONE,
         DATA_EXPORT_LOST_FILE_ACCESS,

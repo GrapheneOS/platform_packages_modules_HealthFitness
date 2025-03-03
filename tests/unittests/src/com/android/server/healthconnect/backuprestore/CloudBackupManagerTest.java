@@ -17,7 +17,11 @@ package com.android.server.healthconnect.backuprestore;
 
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.PageTokenWrapper.EMPTY_PAGE_TOKEN;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
@@ -36,7 +40,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -45,7 +48,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BackupChangeTokenHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
@@ -70,7 +72,11 @@ import java.util.List;
 
 /** Unit test for class {@link CloudBackupManager}. */
 @RunWith(AndroidJUnit4.class)
-@EnableFlags(Flags.FLAG_DEVELOPMENT_DATABASE)
+@EnableFlags({
+    FLAG_CLOUD_BACKUP_AND_RESTORE,
+    FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+    FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+})
 public class CloudBackupManagerTest {
     private static final String TEST_PACKAGE_NAME = "test.package.name";
     private static final long TEST_START_TIME_IN_MILLIS = 2000;
@@ -109,7 +115,6 @@ public class CloudBackupManagerTest {
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
         AppInfoHelper appInfoHelper = healthConnectInjector.getAppInfoHelper();
-        AccessLogsHelper accessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         DeviceInfoHelper deviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         HealthDataCategoryPriorityHelper priorityHelper =
                 healthConnectInjector.getHealthDataCategoryPriorityHelper();
@@ -126,15 +131,13 @@ public class CloudBackupManagerTest {
                 new CloudBackupManager(
                         mTransactionManager,
                         appInfoHelper,
-                        accessLogsHelper,
                         deviceInfoHelper,
                         healthConnectMappings,
                         internalHealthConnectMappings,
                         changeLogsHelper,
                         changeLogsRequestHelper,
                         priorityHelper,
-                        preferenceHelper,
-                        healthConnectInjector.getReadAccessLogsHelper());
+                        preferenceHelper);
     }
 
     @Test
@@ -155,7 +158,7 @@ public class CloudBackupManagerTest {
         BackupChangeTokenHelper.BackupChangeToken secondBackupChangeToken =
                 BackupChangeTokenHelper.getBackupChangeToken(
                         mTransactionManager, secondResponse.getNextChangeToken());
-        assertThat(secondBackupChangeToken.getDataTableName()).isNull();
+        assertThat(secondBackupChangeToken.getRecordType()).isEqualTo(RECORD_TYPE_UNKNOWN);
         assertThat(secondBackupChangeToken.getDataTablePageToken())
                 .isEqualTo(EMPTY_PAGE_TOKEN.encode());
         // Same change logs token so the next incremental call will start from the same point.
@@ -185,7 +188,7 @@ public class CloudBackupManagerTest {
     }
 
     @Test
-    public void getChangesForBackup_changeLogsTokenInvalid_invalidateToken() {
+    public void getChangesForBackup_changeLogsTokenInvalid_throwsException() {
         List<RecordInternal<?>> records = new ArrayList<>();
         // Use DEFAULT_PAGE_SIZE + 1 to make sure the returned change token, which to be used for
         // the second call of getChangesForBackup, is not empty.
@@ -203,15 +206,9 @@ public class CloudBackupManagerTest {
         // Delete change logs.
         mTransactionManager.delete(new DeleteTableRequest(ChangeLogsHelper.TABLE_NAME));
 
-        GetChangesForBackupResponse secondResponse =
-                mCloudBackupManager.getChangesForBackup(response.getNextChangeToken());
-        assertThat(secondResponse.getChanges()).isEmpty();
-        BackupChangeTokenHelper.BackupChangeToken backupChangeToken =
-                BackupChangeTokenHelper.getBackupChangeToken(
-                        mTransactionManager, secondResponse.getNextChangeToken());
-        assertThat(backupChangeToken.getChangeLogsRequestToken()).isEqualTo(null);
-        assertThat(backupChangeToken.getDataTablePageToken()).isEqualTo(EMPTY_PAGE_TOKEN.encode());
-        assertThat(backupChangeToken.getDataTableName()).isEqualTo(null);
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> mCloudBackupManager.getChangesForBackup(response.getNextChangeToken()));
     }
 
     @Test

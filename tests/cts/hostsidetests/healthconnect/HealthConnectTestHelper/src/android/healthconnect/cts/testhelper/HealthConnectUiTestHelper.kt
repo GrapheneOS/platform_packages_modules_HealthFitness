@@ -98,10 +98,10 @@ class HealthConnectUiTestHelper {
         )
         context.launchMainActivity {
             UiTestUtils.skipOnboardingIfAppears()
-            UiTestUtils.waitDisplayed(By.text("App permissions"))
-            UiTestUtils.scrollDownTo(By.text("Manage data"))
-            UiTestUtils.clickOnText("Manage data")
-            UiTestUtils.waitDisplayed(By.text("Auto-delete"))
+            UiTestUtils.scrollDownToAndFindText("App permissions")
+            UiTestUtils.scrollDownToAndFindText("Manage data")
+            UiTestUtils.clickOnTextAndWaitForNewWindow("Manage data")
+            UiTestUtils.findText("Auto-delete")
         }
     }
 }

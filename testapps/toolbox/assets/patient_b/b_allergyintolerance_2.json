@@ -1,0 +1,30 @@
+{
+  "resourceType": "AllergyIntolerance",
+  "id": "b-allergyintolerance-2",
+  "substance": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "409137002",
+        "display": "No Known Drug Allergy (situation)"
+      }
+    ],
+    "text": "NKDA"
+  },
+  "recordedDate": "2011-01-08T10:00:00+00:00",
+  "recorder": {
+    "display": "Dr Jose Rodriguez"
+  },
+  "reporter": {
+    "reference": "Patient/b-patient-1"
+  },
+  "note": [
+    {
+      "text": "The patient is not aware of having any drug allergies."
+    }
+  ],
+  "patient": {
+    "reference": "Patient/b-patient-1",
+    "display": "Ting, Tess"
+  }
+}

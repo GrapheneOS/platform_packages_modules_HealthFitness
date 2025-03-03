@@ -17,8 +17,10 @@
 package com.android.server.healthconnect.storage;
 
 import static android.health.connect.Constants.DEFAULT_INT;
+import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNSPECIFIED;
 
 import static com.android.healthfitness.flags.Flags.exportImportFastFollow;
+import static com.android.healthfitness.flags.Flags.extendExportImportTelemetry;
 
 import android.annotation.Nullable;
 import android.content.ContentProviderClient;
@@ -27,6 +29,7 @@ import android.database.Cursor;
 import android.health.connect.exportimport.ImportStatus;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
+import android.health.connect.exportimport.ScheduledExportStatus.DataExportError;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.DocumentsContract;
@@ -38,7 +41,9 @@ import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper
 import java.time.Instant;
 
 /**
- * Stores the settings for the scheduled export service.
+ * Stores the settings for the scheduled export service, including settings that are exposed to the
+ * UI via ScheduledExportStatus and values used exclusively by the system server for logic and
+ * logging.
  *
  * @hide
  */
@@ -59,6 +64,9 @@ public final class ExportImportSettingsStorage {
 
     // Import State
     private static final String IMPORT_STATE_PREFERENCE_KEY = "import_state_key";
+
+    private static final String EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY =
+            "repeat_error_on_retry_count";
 
     private static final String TAG = "HealthConnectExportImport";
 
@@ -155,6 +163,15 @@ public final class ExportImportSettingsStorage {
                 LAST_SUCCESSFUL_EXPORT_URI_PREFERENCE_KEY, uri.toString());
     }
 
+    /** Convenience method for getting the last recorded Export error. */
+    public @DataExportError int getLastExportError() {
+        String lastError = mPreferenceHelper.getPreference(LAST_EXPORT_ERROR_PREFERENCE_KEY);
+        if (lastError != null) {
+            return Integer.parseInt(lastError);
+        }
+        return DATA_EXPORT_ERROR_UNSPECIFIED;
+    }
+
     /** Set errors and time during the last failed export attempt. */
     public void setLastExportError(
             @ScheduledExportStatus.DataExportError int error, Instant instant) {
@@ -223,6 +240,51 @@ public final class ExportImportSettingsStorage {
                 .build();
     }
 
+    /**
+     * Get the number of times that the current export has failed with the same error message during
+     * retries.
+     */
+    public int getExportRepeatErrorOnRetryCount() {
+        if (extendExportImportTelemetry()) {
+            String repeatErrorOnRetry_count =
+                    mPreferenceHelper.getPreference(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
+            return (repeatErrorOnRetry_count == null)
+                    ? 0
+                    : Integer.parseInt(repeatErrorOnRetry_count);
+        }
+        return 0;
+    }
+
+    /**
+     * Increase the number of times that the current export has failed with the same error message
+     * during retries. Should be called when an export fails during retries.
+     */
+    public void increaseExportRepeatErrorOnRetryCount() {
+        if (extendExportImportTelemetry()) {
+            String repeatErrorOnRetry_count =
+                    mPreferenceHelper.getPreference(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
+            int count =
+                    (repeatErrorOnRetry_count == null)
+                            ? 0
+                            : Integer.parseInt(repeatErrorOnRetry_count);
+            count++;
+            mPreferenceHelper.insertOrReplacePreference(
+                    EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY, String.valueOf(count));
+        }
+    }
+
+    /**
+     * Reset the count of times that the current export has failed with the same error message
+     * during retries. Should be called when an export succeeds, when the current error message does
+     * not match the previous error message, when export settings are changed by the user and when
+     * retries finish/a new regular export is scheduled.
+     */
+    public void resetExportRepeatErrorOnRetryCount() {
+        if (extendExportImportTelemetry()) {
+            mPreferenceHelper.removeKey(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
+        }
+    }
+
     /** Set the state of an import to started, success or an error of the last import attempt. */
     public void setImportState(@ImportStatus.DataImportState int state) {
         mPreferenceHelper.insertOrReplacePreference(
@@ -239,7 +301,7 @@ public final class ExportImportSettingsStorage {
                         : Integer.parseInt(lastImportState));
     }
 
-    /** Get the file name of the either the last or the next export, depending on the passed uri. */
+    /** Get the file name of either the last or the next export, depending on the passed uri. */
     private static @Nullable String getExportFileName(Context context, Uri destinationUri) {
         try (Cursor cursor =
                 context.getContentResolver().query(destinationUri, null, null, null, null)) {
@@ -252,7 +314,7 @@ public final class ExportImportSettingsStorage {
         return null;
     }
 
-    /** Get the app name of the either the last or the next export, depending on the passed uri. */
+    /** Get the app name of either the last or the next export, depending on the passed uri. */
     private static @Nullable String getExportAppName(Context context, Uri destinationUri) {
         try (ContentProviderClient contentProviderClient =
                 context.getContentResolver().acquireUnstableContentProviderClient(destinationUri)) {

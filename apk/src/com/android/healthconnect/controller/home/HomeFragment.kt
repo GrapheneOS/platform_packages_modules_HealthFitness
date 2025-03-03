@@ -47,13 +47,11 @@ import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_
 import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL
 import com.android.healthconnect.controller.shared.Constants.MIGRATION_NOT_COMPLETE_DIALOG_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
-import com.android.healthconnect.controller.shared.IExpressiveThemingHelper
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
-import com.android.healthconnect.controller.shared.preference.BannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthBannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthButtonPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
@@ -75,6 +73,7 @@ import com.android.healthfitness.flags.Flags.onboarding
 import com.android.healthfitness.flags.Flags.personalHealthRecordLockScreenBanner
 import com.android.settingslib.widget.BannerMessagePreference
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
+import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.ZeroStatePreference
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
@@ -110,7 +109,6 @@ class HomeFragment : Hilt_HomeFragment() {
 
     @Inject lateinit var timeSource: TimeSource
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
-    @Inject lateinit var expressiveThemingHelper: IExpressiveThemingHelper
 
     private val recentAccessViewModel: RecentAccessViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
@@ -261,7 +259,7 @@ class HomeFragment : Hilt_HomeFragment() {
     }
 
     private fun isLockScreenBannerAlreadyAdded(): Boolean {
-        return bannerGroup.findPreference<BannerPreference>(LOCK_SCREEN_BANNER_KEY) != null
+        return bannerGroup.findPreference<HealthBannerPreference>(LOCK_SCREEN_BANNER_KEY) != null
     }
 
     private fun addLockScreenBanner(bannerState: LockScreenBannerState.ShowBanner) {
@@ -626,9 +624,7 @@ class HomeFragment : Hilt_HomeFragment() {
     }
 
     private fun updateRecentApps(recentAppsList: List<RecentAccessEntry>) {
-        if (
-            expressiveThemingHelper.isExpressiveTheme(requireContext()) && recentAppsList.isEmpty()
-        ) {
+        if (SettingsThemeHelper.isExpressiveTheme(requireContext()) && recentAppsList.isEmpty()) {
             noRecentAccessPreference.isVisible = true
             recentAccessPreferenceGroup.isVisible = false
             return
@@ -668,7 +664,7 @@ class HomeFragment : Hilt_HomeFragment() {
 
     private fun getSeeAllPreference(): Preference {
         val seeAllPreference =
-            if (expressiveThemingHelper.isExpressiveTheme(requireContext())) {
+            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
                 HealthButtonPreference(requireContext()).also {
                     it.setTitle(R.string.recent_access_view_all_button)
                     it.setIcon(AttributeResolver.getResource(requireContext(), R.attr.optionsIcon))
@@ -695,7 +691,7 @@ class HomeFragment : Hilt_HomeFragment() {
     }
 
     private fun getRecentAccessPreference(recentApp: RecentAccessEntry): HealthPreference {
-        return if (expressiveThemingHelper.isExpressiveTheme(requireContext())) {
+        return if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
             HealthPreference(requireContext()).also { newPreference ->
                 newPreference.logName = RecentAccessElement.RECENT_ACCESS_ENTRY_BUTTON
                 newPreference.title = recentApp.metadata.appName

@@ -1,0 +1,42 @@
+{
+  "resourceType": "Observation",
+  "id": "b-observation-5",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        }
+      ],
+      "text": "Survey"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "715252007",
+        "display": "Depression screening using Patient Health Questionnaire Nine Item score"
+      }
+    ],
+    "text": "Depression screening using Patient Health Questionnaire Nine Item score"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1",
+    "display": "Ting, Tess"
+  },
+  "valueQuantity": {
+    "value": 1
+  },
+  "effectiveDateTime": "2022-02-04T12:53:49Z",
+  "issued": "2022-02-04T13:00:46Z",
+  "performer": [
+    {
+      "reference": "Practitioner/b-practitioner-1",
+      "display": "Dr Maria Hernandez"
+    }
+  ]
+}

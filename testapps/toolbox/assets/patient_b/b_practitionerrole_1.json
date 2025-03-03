@@ -1,0 +1,64 @@
+{
+  "resourceType": "PractitionerRole",
+  "id": "b-practitionerrole-1",
+  "identifier": [
+    {
+      "system": "urn:oid:1.2.345.6789",
+      "value": "100001"
+    }
+  ],
+  "active": true,
+  "period": {
+    "start": "2012-01-01"
+  },
+  "practitioner": {
+    "reference": "Practitioner/b-practitioner-1",
+    "display": "Dr Maria Hernandez"
+  },
+  "organization": {
+    "reference": "Organization/b-organization-1"
+  },
+  "code": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/practitioner-role",
+          "code": "doctor",
+          "display": "Doctor"
+        }
+      ]
+    },
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "59058001",
+          "display": "General physician"
+        }
+      ]
+    }
+  ],
+  "specialty": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "408443003",
+          "display": "General medical practice"
+        }
+      ]
+    }
+  ],
+  "telecom" : [
+    {
+      "system" : "phone",
+      "value" : "+441111333333",
+      "use" : "work"
+    },
+    {
+      "system" : "email",
+      "value" : "maria.hernandez@healthconnectgp.org",
+      "use" : "work"
+    }
+  ]
+}

@@ -99,12 +99,13 @@ public class ExportManager {
             Context context,
             Clock clock,
             ExportImportSettingsStorage exportImportSettingsStorage,
-            TransactionManager transactionManager) {
+            TransactionManager transactionManager,
+            HealthConnectNotificationSender notificationSender) {
         mContext = context;
         mClock = clock;
         mExportImportSettingsStorage = exportImportSettingsStorage;
         mTransactionManager = transactionManager;
-        mNotificationSender = ExportImportNotificationSender.createSender(context);
+        mNotificationSender = notificationSender;
     }
 
     /**

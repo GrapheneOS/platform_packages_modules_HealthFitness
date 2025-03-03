@@ -20,13 +20,19 @@ import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTOR
 
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Objects;
 
-/** @hide */
+/**
+ * Response of the user settings from the Health Connect service to the Health Connect backup agent.
+ *
+ * @hide
+ */
 @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
+@SystemApi
 public final class GetSettingsForBackupResponse implements Parcelable {
 
     // Version how the data was encoded.
@@ -34,6 +40,11 @@ public final class GetSettingsForBackupResponse implements Parcelable {
 
     @NonNull private final BackupSettings mSettings;
 
+    /**
+     * @param version The version of the settings contained in the response, with which the settings
+     *     are serialized.
+     * @param settings The settings to be backed up.
+     */
     public GetSettingsForBackupResponse(int version, @NonNull BackupSettings settings) {
         mVersion = version;
         mSettings = settings;
@@ -72,6 +83,7 @@ public final class GetSettingsForBackupResponse implements Parcelable {
                 }
             };
 
+    /** Returns the version with which the settings are serialized. */
     @NonNull
     public int getVersion() {
         return mVersion;

@@ -21,7 +21,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.health.connect.Constants;
 import android.net.Uri;
 import android.os.UserHandle;
@@ -125,7 +124,7 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
                                         .maybeRemoveAppWithoutWritePermissionsFromPriorityList(
                                                 packageName));
             }
-          return;
+            return;
         }
 
         // If we don't need to remove or enforce the rationale intent, we are done.
@@ -136,20 +135,18 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
 
         // Revoke all health permissions as we don't grant health permissions if permissions
         // usage intent is not supported.
-        if (Constants.DEBUG) {
-            Slog.d(
-                    TAG,
-                    "Revoking all health permissions of "
-                            + packageName
-                            + " for user: "
-                            + userHandle);
-        }
-
         try {
-            mPermissionHelper.revokeAllHealthPermissions(
+            if (mPermissionHelper.revokeAllHealthPermissions(
                     packageName,
                     "Health permissions usage activity has been removed.",
-                    userHandle);
+                    userHandle)) {
+                Slog.w(
+                        TAG,
+                        "Revoked all health permissions from "
+                                + packageName
+                                + " for user: "
+                                + userHandle);
+            }
         } catch (IllegalArgumentException ex) {
             // Catch IllegalArgumentException to fix a crash (b/24679220) due to race condition
             // in case this `revokeAllHealthPermissions()` method is called right after the
@@ -159,7 +156,7 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
     }
 
     /** Sets the current foreground user handle. */
-    public void setUserHandle(UserHandle userHandle) {
+    public void setupForUser(UserHandle userHandle) {
         mCurrentForegroundUser = userHandle;
     }
 

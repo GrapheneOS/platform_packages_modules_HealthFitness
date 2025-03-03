@@ -16,10 +16,6 @@
 <resources>
 
     <!-- REGION TYPOGRAPHY -->
-    <!-- Onboarding -->
-    <style name="TextAppearance.HealthConnect.Onboarding.Description" parent="SudGlifDescriptionMaterialYou">
-        <item name="android:layout_marginTop">0dp</item>
-    </style>
 
     <!-- Preference summary large 400/16/24-->
     <style name="TextAppearance.HealthConnect.SummaryLarge" parent="@style/TextAppearance.PreferenceSummary.SettingsLib">

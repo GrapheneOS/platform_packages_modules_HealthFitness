@@ -1,0 +1,565 @@
+syntax = "proto3";
+
+package com.android.server.healthconnect.proto.backuprestore;
+
+option java_multiple_files = true;
+
+message Settings {
+  map<int32, PriorityList> priority_list = 1;
+  reserved 2; // export-import settings removed
+  AutoDeleteFrequencyProto auto_delete_frequency = 3;
+  EnergyUnitProto energy_unit_setting = 4;
+  TemperatureUnitProto temperature_unit_setting = 5;
+  HeightUnitProto height_unit_setting = 6;
+  WeightUnitProto weight_unit_setting = 7;
+  DistanceUnitProto distance_unit_setting = 8;
+  map<string, AppInfo> app_info = 9;
+
+  message PriorityList {
+    repeated string package_name = 1;
+  }
+
+  message AppInfo {
+    optional string app_name = 1;
+  }
+
+  enum AutoDeleteFrequencyProto {
+    AUTO_DELETE_RANGE_UNSPECIFIED = 0;
+    AUTO_DELETE_RANGE_NEVER = 1;
+    AUTO_DELETE_RANGE_THREE_MONTHS = 2;
+    AUTO_DELETE_RANGE_EIGHTEEN_MONTHS = 3;
+  }
+
+  enum EnergyUnitProto {
+    ENERGY_UNIT_UNSPECIFIED = 0;
+    CALORIE = 1;
+    KILOJOULE = 2;
+  }
+
+  enum TemperatureUnitProto {
+    TEMPERATURE_UNIT_UNSPECIFIED = 0;
+    CELSIUS = 1;
+    FAHRENHEIT = 2;
+    KELVIN = 3;
+  }
+
+  enum HeightUnitProto {
+    HEIGHT_UNIT_UNSPECIFIED = 0;
+    CENTIMETERS = 1;
+    FEET = 2;
+  }
+
+  enum WeightUnitProto {
+    WEIGHT_UNIT_UNSPECIFIED = 0;
+    POUND = 1;
+    KILOGRAM = 2;
+    STONE = 3;
+  }
+
+  enum DistanceUnitProto {
+    DISTANCE_UNIT_UNSPECIFIED = 0;
+    KILOMETERS = 1;
+    MILES = 2;
+  }
+}
+
+message AppInfoMap {
+  // Key is package name
+  map<string, Settings.AppInfo> app_info = 1;
+}
+
+message BackupData {
+  Record record = 1;
+}
+
+message Record {
+  string uuid = 1;
+  optional string package_name = 2;
+  reserved 3; // App name is removed.
+  int64 last_modified_time = 4;
+  optional string client_record_id = 5;
+  int64 client_record_version = 6;
+  optional string manufacturer = 7;
+  optional string model = 8;
+  int32 device_type = 9;
+  int32 recording_method = 10;
+
+  oneof SubRecord {
+    IntervalRecord interval_record = 100;
+    InstantRecord instant_record = 101;
+  }
+}
+
+message IntervalRecord {
+  int64 start_time = 1;
+  int32 start_zone_offset = 2;
+  int64 end_time = 3;
+  int32 end_zone_offset = 4;
+
+  oneof Data {
+    ActiveCaloriesBurned active_calories_burned = 101;
+    ActivityIntensity activity_intensity = 102;
+    CyclingPedalingCadence cycling_pedaling_cadence = 103;
+    Distance distance = 104;
+    ElevationGained elevation_gained = 105;
+    ExerciseSession exercise_session = 106;
+    FloorsClimbed floors_climbed = 107;
+    HeartRate heart_rate = 108;
+    Hydration hydration = 109;
+    MenstruationPeriod menstruation_period = 110;
+    MindfulnessSession mindfulness_session = 111;
+    Nutrition nutrition = 112;
+    PlannedExerciseSession planned_exercise_session = 113;
+    Power power = 114;
+    SkinTemperature skin_temperature = 115;
+    SleepSession sleep_session = 116;
+    Speed speed = 117;
+    Steps steps = 100;
+    StepsCadence steps_cadence = 118;
+    TotalCaloriesBurned total_calories_burned = 119;
+    WheelchairPushes wheelchair_pushes = 120;
+  }
+}
+
+message InstantRecord {
+  int64 time = 1;
+  int32 zone_offset = 2;
+
+  oneof Data {
+    BasalBodyTemperature basal_body_temperature = 101;
+    BasalMetabolicRate basal_metabolic_rate = 102;
+    BloodGlucose blood_glucose = 103;
+    BloodPressure blood_pressure = 100;
+    BodyFat body_fat = 104;
+    BodyTemperature body_temperature = 105;
+    BodyWaterMass body_water_mass = 106;
+    BoneMass bone_mass = 107;
+    CervicalMucus cervical_mucus = 108;
+    HeartRateVariabilityRmssd heart_rate_variability_rmssd = 109;
+    Height height = 110;
+    IntermenstrualBleeding intermenstrual_bleeding = 111;
+    LeanBodyMass lean_body_mass = 112;
+    MenstruationFlow menstruation_flow = 113;
+    OvulationTest ovulation_test = 114;
+    OxygenSaturation oxygen_saturation = 115;
+    RespiratoryRate respiratory_rate = 116;
+    RestingHeartRate resting_heart_rate = 117;
+    SexualActivity sexual_activity = 118;
+    Vo2Max vo2_max = 119;
+    Weight weight = 120;
+  }
+}
+
+message ActiveCaloriesBurned {
+  double energy = 1;
+}
+
+message ActivityIntensity {
+  int32 activity_intensity_type = 1;
+}
+
+message BasalBodyTemperature {
+  int32 measurement_location = 1;
+  double temperature = 2;
+}
+
+message BasalMetabolicRate {
+  double basal_metabolic_rate = 1;
+}
+
+message BloodGlucose {
+  int32 specimen_source = 1;
+  double level = 2;
+  int32 relation_to_meal = 3;
+  int32 meal_type = 4;
+}
+
+message BloodPressure {
+  int32 measurement_location = 1;
+  double systolic = 2;
+  double diastolic = 3;
+  int32 body_position = 4;
+}
+
+message BodyFat {
+  double percentage = 1;
+}
+
+message BodyTemperature {
+  int32 measurement_location = 1;
+  double temperature = 2;
+}
+
+message BodyWaterMass {
+  double body_water_mass = 1;
+}
+
+message BoneMass {
+  double mass = 1;
+}
+
+message CervicalMucus {
+  int32 sensation = 1;
+  int32 appearance = 2;
+}
+
+message CyclingPedalingCadence {
+  repeated CyclingPedalingCadenceSample sample = 1;
+
+  message CyclingPedalingCadenceSample {
+    double revolutions_per_minute = 1;
+    int64 epoch_millis = 2;
+  }
+}
+
+message Distance {
+  double distance = 1;
+}
+
+message ElevationGained {
+  double elevation = 1;
+}
+
+message ExerciseSession {
+  optional string notes = 1;
+  int32 exercise_type = 2;
+  optional string title = 3;
+  bool has_route = 4;
+  optional ExerciseRoute route = 5;
+  repeated ExerciseLap lap = 6;
+  repeated ExerciseSegment segment = 7;
+  optional string planned_exercise_session_id = 8;
+
+  message ExerciseRoute {
+    repeated Location route_location = 1;
+
+    message Location {
+      int64 time = 1;
+      double latitude = 2;
+      double longitude = 3;
+      double horizontal_accuracy = 4;
+      double vertical_accuracy = 5;
+      double altitude = 6;
+    }
+  }
+
+  message ExerciseLap {
+    int64 start_time = 1;
+    int64 end_time = 2;
+    double length = 3;
+  }
+
+  message ExerciseSegment {
+    int64 start_time = 1;
+    int64 end_time = 2;
+    int32 segment_type = 3;
+    int32 repetitions_count = 4;
+  }
+}
+
+message FloorsClimbed {
+  double floors = 1;
+}
+
+message HeartRate {
+  repeated HeartRateSample sample = 1;
+
+  message HeartRateSample {
+    int32 beats_per_minute = 1;
+    int64 epoch_millis = 2;
+  }
+}
+
+message HeartRateVariabilityRmssd {
+  double heart_rate_variability_millis = 1;
+}
+
+message Height {
+  double height = 1;
+}
+
+message Hydration {
+  double volume = 1;
+}
+
+message IntermenstrualBleeding {
+  // This record type contains no data.
+}
+
+message LeanBodyMass {
+  double mass = 1;
+}
+
+message MenstruationFlow {
+  int32 flow = 1;
+}
+
+message MenstruationPeriod {
+  // This record type contains no data.
+}
+
+message MindfulnessSession {
+  int32 mindfulness_session_type = 1;
+  optional string title = 2;
+  optional string notes = 3;
+}
+
+message Nutrition {
+  double unsaturated_fat = 1;
+  double potassium = 2;
+  double thiamin = 3;
+  int32 meal_type = 4;
+  double trans_fat = 5;
+  double manganese = 6;
+  double energy_from_fat = 7;
+  double caffeine = 8;
+  double dietary_fiber = 9;
+  double selenium = 10;
+  double vitamin_b6 = 11;
+  double protein = 12;
+  double chloride = 13;
+  double cholesterol = 14;
+  double copper = 15;
+  double iodine = 16;
+  double vitamin_b12 = 17;
+  double zinc = 18;
+  double riboflavin = 19;
+  double energy = 20;
+  double molybdenum = 21;
+  double phosphorus = 22;
+  double chromium = 23;
+  double total_fat = 24;
+  double calcium = 25;
+  double vitamin_c = 26;
+  double vitamin_e = 27;
+  double biotin = 28;
+  double vitamin_d = 29;
+  double niacin = 30;
+  double magnesium = 31;
+  double total_carbohydrate = 32;
+  double vitamin_k = 33;
+  double polyunsaturated_fat = 34;
+  double saturated_fat = 35;
+  double sodium = 36;
+  double folate = 37;
+  double monounsaturated_fat = 38;
+  double pantothenic_acid = 39;
+  optional string meal_name = 40;
+  double iron = 41;
+  double vitamin_a = 42;
+  double folic_acid = 43;
+  double sugar = 44;
+}
+
+message OvulationTest {
+  int32 result = 1;
+}
+
+message OxygenSaturation {
+  double percentage = 1;
+}
+
+message PlannedExerciseSession {
+  optional string notes = 1;
+  int32 exercise_type = 2;
+  optional string title = 3;
+  bool has_explicit_time = 4;
+  repeated PlannedExerciseBlock exercise_block = 5;
+
+  message PlannedExerciseBlock {
+    int32 repetitions = 1;
+    optional string description = 2;
+    repeated PlannedExerciseStep step = 3;
+
+    message PlannedExerciseStep {
+      int32 exercise_type = 1;
+      int32 exercise_category = 2;
+      optional string description = 3;
+      ExerciseCompletionGoal completion_goal = 4;
+      repeated ExercisePerformanceGoal performance_goal = 5;
+
+      message ExerciseCompletionGoal {
+        oneof goal {
+          DistanceGoal distance_goal = 1;
+          StepsGoal steps_goal = 2;
+          DurationGoal duration_goal = 3;
+          RepetitionsGoal repetitions_goal = 4;
+          TotalCaloriesBurnedGoal total_calories_burned_goal = 5;
+          ActiveCaloriesBurnedGoal active_calories_burned_goal = 6;
+          DistanceWithVariableRestGoal distance_with_variable_rest_goal = 7;
+          UnspecifiedGoal unspecified_goal = 8;
+          UnknownGoal unknown_goal = 9;
+        }
+
+        message DistanceGoal {
+          double distance = 1;
+        }
+
+        message StepsGoal {
+          int32 steps = 1;
+        }
+
+        message DurationGoal {
+          int64 duration = 1;
+        }
+
+        message RepetitionsGoal {
+          int32 repetitions = 1;
+        }
+
+        message TotalCaloriesBurnedGoal {
+          double total_calories = 1;
+        }
+
+        message ActiveCaloriesBurnedGoal {
+          double active_calories = 1;
+        }
+
+        message DistanceWithVariableRestGoal {
+          double distance = 1;
+          int64 duration = 2;
+        }
+
+        message UnspecifiedGoal {
+          // No fields to write.
+        }
+
+        message UnknownGoal {
+          // No fields to write.
+        }
+      }
+
+      message ExercisePerformanceGoal {
+        oneof goal {
+          PowerGoal power_goal = 1;
+          SpeedGoal speed_goal = 2;
+          CadenceGoal cadence_goal = 3;
+          HeartRateGoal heart_rate_goal = 4;
+          WeightGoal weight_goal = 5;
+          RateOfPerceivedExertionGoal rate_of_perceived_exertion_goal = 6;
+          AmrapGoal amrap_goal = 7;
+          UnknownGoal unknown_goal = 8;
+        }
+
+        message PowerGoal {
+          double min_power = 1;
+          double max_power = 2;
+        }
+
+        message SpeedGoal {
+          double min_speed = 1;
+          double max_speed = 2;
+        }
+
+        message CadenceGoal {
+          double min_rpm = 1;
+          double max_rpm = 2;
+        }
+
+        message HeartRateGoal {
+          int32 min_bpm = 1;
+          int32 max_bpm = 2;
+        }
+
+        message WeightGoal {
+          double mass = 1;
+        }
+
+        message RateOfPerceivedExertionGoal {
+          int32 rpe = 1;
+        }
+
+        message AmrapGoal {
+          // No fields to write.
+        }
+        message UnknownGoal {
+          // No fields to write.
+        }
+      }
+    }
+  }
+}
+
+message Power {
+  repeated PowerSample sample = 1;
+
+  message PowerSample {
+    double power = 1;
+    int64 epoch_millis = 2;
+  }
+}
+
+message RespiratoryRate {
+  double rate = 1;
+}
+
+message RestingHeartRate {
+  int32 beats_per_minute = 1;
+}
+
+message SexualActivity {
+  int32 protection_used = 1;
+}
+
+message SkinTemperature {
+  int32 measurement_location = 1;
+  double baseline = 2;
+  repeated SkinTemperatureDeltaSample sample = 3;
+
+  message SkinTemperatureDeltaSample {
+    double temperature_delta_in_celsius = 1;
+    int64 epoch_millis = 2;
+  }
+}
+
+message SleepSession {
+  optional string notes = 1;
+  optional string title = 2;
+  repeated SleepStage stage = 3;
+
+  message SleepStage {
+    int64 start_time = 1;
+    int64 end_time = 2;
+    int32 stage_type = 3;
+
+  }
+}
+
+message Speed {
+  repeated SpeedSample sample = 1;
+
+  message SpeedSample {
+    double speed = 1;
+    int64 epoch_millis = 2;
+  }
+}
+
+message Steps {
+  int32 count = 1;
+}
+
+message StepsCadence {
+  repeated StepsCadenceSample sample = 1;
+
+  message StepsCadenceSample {
+    double rate = 1;
+    int64 epoch_millis = 2;
+  }
+}
+
+message TotalCaloriesBurned {
+  double energy = 1;
+}
+
+message Vo2Max {
+  int32 measurement_method = 1;
+  double vo2_milliliters_per_minute_kilogram = 2;
+}
+
+message Weight {
+  double weight = 1;
+}
+
+message WheelchairPushes {
+  int32 count = 1;
+}

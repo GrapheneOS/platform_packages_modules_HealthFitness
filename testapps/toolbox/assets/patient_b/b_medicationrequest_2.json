@@ -1,0 +1,130 @@
+{
+  "resourceType": "MedicationRequest",
+  "id": "b-medicationrequest-2",
+  "modifierExtension": [
+    {
+      "url": "http://example.org/fhir/StructureDefinition/anti-prescription",
+      "valueBoolean": true
+    }
+  ],
+  "identifier": [
+    {
+      "use": "usual",
+      "system": "urn:oid:1.2.345.6789",
+      "value": "10003"
+    }
+  ],
+  "status": "on-hold",
+  "intent": "plan",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/medicationrequest-category",
+          "code": "community",
+          "display": "Community"
+        }
+      ],
+      "text": "Community"
+    }
+  ],
+  "priority": "routine",
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "326309006",
+        "display": "Desogestrel 150 microgram and ethinylestradiol 20 microgram oral tablet"
+      }
+    ],
+    "text": "Combined Oral Contraceptive"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1",
+    "display": "Ting, Tess"
+  },
+  "authoredOn": "2023-06-14",
+  "requester": {
+    "reference": "Practitioner/b-practitioner-1",
+    "type": "Practitioner",
+    "display": "Dr Maria Hernandez"
+  },
+  "recorder": {
+    "reference": "Practitioner/b-practitioner-1",
+    "type": "Practitioner",
+    "display": "Dr Maria Hernandez"
+  },
+  "courseOfTherapyType": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/medicationrequest-course-of-therapy",
+        "code": "continuous",
+        "display": "Continuous long term therapy"
+      }
+    ],
+    "text": "Continuous long term therapy"
+  },
+  "dosageInstruction": [
+    {
+      "sequence": 1,
+      "text": "1 tablet once daily in the morning",
+      "timing": {
+        "repeat": {
+          "frequency": 1,
+          "period": 1,
+          "periodUnit": "d",
+          "timeOfDay": [
+            "08:00:00"
+          ]
+        }
+      },
+      "asNeededBoolean": false,
+      "route": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "26643006",
+            "display": "Oral Route"
+          }
+        ]
+      },
+      "doseAndRate": [
+        {
+          "type": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/dose-rate-type",
+                "code": "ordered",
+                "display": "Ordered"
+              }
+            ]
+          },
+          "doseQuantity": {
+            "value": 1,
+            "unit": "TAB",
+            "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+            "code": "TAB"
+          }
+        }
+      ]
+    }
+  ],
+  "dispenseRequest": {
+    "validityPeriod": {
+      "start": "2018-04-30"
+    },
+    "numberOfRepeatsAllowed": 1,
+    "quantity": {
+      "value": 90,
+      "unit": "TAB",
+      "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+      "code": "TAB"
+    },
+    "expectedSupplyDuration": {
+      "value": 3,
+      "unit": "month",
+      "system": "http://unitsofmeasure.org",
+      "code": "mo"
+    }
+  }
+}

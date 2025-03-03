@@ -138,10 +138,14 @@ public class HealthConnectManagerServiceTest {
     }
 
     @Test
-    public void testUserSwitch() {
+    public void testUserSwitch_userLocked() {
         when(mUserManager.isUserUnlocked(any())).thenReturn(false);
         mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
-        verify(mJobScheduler, times(0)).cancelAll();
+        verify(mJobScheduler, times(1)).cancelAll();
+    }
+
+    @Test
+    public void testUserSwitch_userUnlocked() {
         when(mUserManager.isUserUnlocked(any())).thenReturn(true);
         mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
         verify(mJobScheduler, times(1)).cancelAll();

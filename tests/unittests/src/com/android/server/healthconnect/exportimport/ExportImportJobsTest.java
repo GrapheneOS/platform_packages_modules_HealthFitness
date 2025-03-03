@@ -39,8 +39,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
-import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
@@ -63,18 +61,11 @@ public class ExportImportJobsTest {
 
     private static final String ANDROID_SERVER_PACKAGE_NAME = "com.android.server";
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(ExportImportNotificationSender.class)
-                    .build();
-
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock Context mContext;
     @Mock private JobScheduler mJobScheduler;
     @Mock private ExportManager mExportManager;
-    @Mock private HealthConnectNotificationSender mHealthConnectNotificationSender;
 
     @Captor ArgumentCaptor<JobInfo> mJobInfoCaptor;
     private final PreferenceHelper mFakePreferenceHelper = new FakePreferenceHelper();
@@ -90,8 +81,6 @@ public class ExportImportJobsTest {
         when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
         when(mContext.getPackageName()).thenReturn(ANDROID_SERVER_PACKAGE_NAME);
         when(mContext.createContextAsUser(any(), anyInt())).thenReturn(mContext);
-        when(ExportImportNotificationSender.createSender(any()))
-                .thenReturn(mHealthConnectNotificationSender);
     }
 
     @Test

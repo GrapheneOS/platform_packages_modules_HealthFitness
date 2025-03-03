@@ -78,10 +78,17 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
             )
         }
 
-    // Background read permission state.
+    // Background read permission request state.
+    val allRequestedAdditionalPermissions by
+        viewModel.additionalPermissions.observeAsState(emptyList())
+    val backgroundReadPermissionRequested by
+        remember(allRequestedAdditionalPermissions) {
+            derivedStateOf { allRequestedAdditionalPermissions.any { it.isBackgroundReadPermission() } }
+        }
+    // Background read permission grant state.
     val grantedAdditionalPermissions by
-        viewModel.grantedAdditionalPermissions.observeAsState(emptyList())
-    val allowAllTheTime by
+        viewModel.grantedAdditionalPermissions.observeAsState(emptySet())
+    val allowAllTheTimeGranted by
         remember(grantedAdditionalPermissions) {
             derivedStateOf { grantedAdditionalPermissions.any { it.isBackgroundReadPermission() } }
         }
@@ -150,54 +157,57 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
             }
         }
 
-        // Background permission.
-        // Allow all the time.
-        item {
-            Row(horizontalArrangement = Arrangement.Start) {
-                Text(res.getString(R.string.allowed_to_access))
+        // Only render background permission selection if the app has requested it.
+        if (backgroundReadPermissionRequested) {
+            // Background permission.
+            // Allow all the time.
+            item {
+                Row(horizontalArrangement = Arrangement.Start) {
+                    Text(res.getString(R.string.allowed_to_access))
+                }
             }
-        }
-        item {
-            RadioButton(
-                modifier = Modifier.fillMaxWidth(),
-                enabled = true,
-                selected = allowAllTheTime,
-                onSelect = {
-                    viewModel.updateAdditionalPermission(
-                        packageName,
-                        AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND,
-                        true,
-                    )
-                },
-                label = { Text(res.getString(R.string.view_permissions_all_the_time_cap)) },
-            )
-        }
-        // Allow while in use. (Deny background read permission.)
-        item {
-            RadioButton(
-                modifier = Modifier.fillMaxWidth(),
-                enabled = true,
-                selected = !allowAllTheTime,
-                onSelect = {
-                    viewModel.updateAdditionalPermission(
-                        packageName,
-                        AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND,
-                        false,
-                    )
-                },
-                label = { Text(res.getString(R.string.view_permissions_while_in_use_cap)) },
-            )
-        }
+            item {
+                RadioButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = true,
+                    selected = allowAllTheTimeGranted,
+                    onSelect = {
+                        viewModel.updateAdditionalPermission(
+                            packageName,
+                            AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND,
+                            true,
+                        )
+                    },
+                    label = { Text(res.getString(R.string.view_permissions_all_the_time_cap)) },
+                )
+            }
+            // Allow while in use. (Deny background read permission.)
+            item {
+                RadioButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = true,
+                    selected = !allowAllTheTimeGranted,
+                    onSelect = {
+                        viewModel.updateAdditionalPermission(
+                            packageName,
+                            AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND,
+                            false,
+                        )
+                    },
+                    label = { Text(res.getString(R.string.view_permissions_while_in_use_cap)) },
+                )
+            }
 
-        item {
-            Row(horizontalArrangement = Arrangement.Start) {
-                val resourceId =
-                    if (allowAllTheTime) {
-                        R.string.view_permissions_description_all_the_time
-                    } else {
-                        R.string.view_permissions_description_while_in_use
-                    }
-                Text(res.getString(resourceId, appName))
+            item {
+                Row(horizontalArrangement = Arrangement.Start) {
+                    val resourceId =
+                        if (allowAllTheTimeGranted) {
+                            R.string.view_permissions_description_all_the_time
+                        } else {
+                            R.string.view_permissions_description_while_in_use
+                        }
+                    Text(res.getString(resourceId, appName))
+                }
             }
         }
     }

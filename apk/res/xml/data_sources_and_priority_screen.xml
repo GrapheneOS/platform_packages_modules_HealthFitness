@@ -19,15 +19,21 @@
         android:key="data_type_spinner_group"
         android:order="1"
         app:isPreferenceVisible="false"/>
+    <com.android.settingslib.widget.ZeroStatePreference
+        android:key="zero_state"
+        android:title="@string/data_sources_empty_state"
+        android:icon="?attr/appsIcon"
+        android:order="2"
+        app:isPreferenceVisible="false"/>
     <PreferenceCategory
         android:key="data_totals_group"
         android:title="@string/data_totals_header"
-        android:order="2"
+        android:order="3"
         app:isPreferenceVisible="false"/>
     <PreferenceCategory
         android:key="app_sources_group"
         android:title="@string/app_sources_header"
-        android:order="3"
+        android:order="4"
         app:isPreferenceVisible="false"/>
     <com.android.settingslib.widget.FooterPreference
         android:key="data_sources_footer"

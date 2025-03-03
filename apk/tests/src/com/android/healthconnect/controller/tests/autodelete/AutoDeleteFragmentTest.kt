@@ -23,9 +23,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.autodelete.AutoDeleteFragment
 import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
@@ -126,7 +124,7 @@ class AutoDeleteFragmentTest {
 
     @Test
     @Throws(java.lang.Exception::class)
-    fun autoDelete_setRangeTo3Months_saveChanges() {
+    fun autoDelete_setRangeTo3Months_correctStringsDisplayed() {
         whenever(viewModel.storedAutoDeleteRange).then {
             MutableLiveData(
                 AutoDeleteViewModel.AutoDeleteState.WithData(
@@ -166,13 +164,26 @@ class AutoDeleteFragmentTest {
         onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
         verify(healthConnectLogger)
             .logInteraction(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
+    }
+
+    @Test
+    @Throws(java.lang.Exception::class)
+    fun autoDelete_setRangeTo3Months_radioButtonChecked() {
+        whenever(viewModel.storedAutoDeleteRange).then {
+            MutableLiveData(
+                AutoDeleteViewModel.AutoDeleteState.WithData(
+                    AutoDeleteRange.AUTO_DELETE_RANGE_THREE_MONTHS
+                )
+            )
+        }
+        launchFragment<AutoDeleteFragment>(Bundle())
 
         onView(checkBoxOf("After 3 months")).check(matches(isChecked()))
     }
 
     @Test
     @Throws(java.lang.Exception::class)
-    fun autoDelete_setRangeTo18Months_saveChanges() {
+    fun autoDelete_setRangeTo18Months_correctStringsDisplayed() {
         whenever(viewModel.storedAutoDeleteRange).then {
             MutableLiveData(
                 AutoDeleteViewModel.AutoDeleteState.WithData(
@@ -212,6 +223,19 @@ class AutoDeleteFragmentTest {
         onView(withText("Set auto-delete")).inRoot(isDialog()).perform(click())
         verify(healthConnectLogger)
             .logInteraction(AutoDeleteElement.AUTO_DELETE_DIALOG_CONFIRM_BUTTON)
+    }
+
+    @Test
+    @Throws(java.lang.Exception::class)
+    fun autoDelete_setRangeTo18Months_radioButtonChecked() {
+        whenever(viewModel.storedAutoDeleteRange).then {
+            MutableLiveData(
+                AutoDeleteViewModel.AutoDeleteState.WithData(
+                    AutoDeleteRange.AUTO_DELETE_RANGE_EIGHTEEN_MONTHS
+                )
+            )
+        }
+        launchFragment<AutoDeleteFragment>(Bundle())
 
         onView(checkBoxOf("After 18 months")).check(matches(isChecked()))
     }

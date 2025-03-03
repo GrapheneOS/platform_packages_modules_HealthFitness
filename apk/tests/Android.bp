@@ -29,6 +29,19 @@ filegroup {
     ],
 }
 
+filegroup {
+    name: "healthconnect-tests-screenshot-srcs",
+    srcs: [
+        "src/**/HiltTestRunner.kt",
+        "src/**/TestActivity.kt",
+        "src/com/android/healthconnect/controller/tests/utils/TestConstants.kt",
+        "src/com/android/healthconnect/controller/tests/utils/ScrollingUtils.kt",
+    ],
+    visibility: [
+        "//vendor:__subpackages__",
+    ],
+}
+
 java_defaults {
     name: "health-connect-controller-tests-default",
     srcs: [":healthconnect-test-srcs"],
@@ -67,6 +80,8 @@ java_defaults {
         "mockito-kotlin2",
         "platform-parametric-runner-lib",
         "android.permission.flags-aconfig-java-export",
+        "collector-device-lib",
+        "aconfig_settingstheme_exported_flags_java_lib",
     ],
     libs: [
         "kotlin-annotations",

@@ -148,17 +148,18 @@
 
   <!-- region Phr Options screen -->
   <string name="phr_options_read_immunization">Read PHR data</string>
+  <string name="phr_options_select_patient_title">Select patient context</string>
   <string name="phr_options_ingest_title">Insert PHR data</string>
   <string name="phr_options_create_data_source">Create data source</string>
-  <string name="phr_options_data_source_id_placeholder">Create data source to see the id</string>
-  <string name="phr_options_insert_immunization">Insert all vaccines</string>
-  <string name="phr_options_insert_allergy">Insert all allergies</string>
+  <string name="phr_options_pasted_resource_placeholder">Add a FHIR resource json string</string>
+  <string name="phr_options_insert_resource">Insert pasted resource</string>
   <string name="phr_options_read_by_id">Read all vaccines</string>
   <string name="phr_options_seed_fhir_jsons">Seed all FHIR resources</string>
   <string name="phr_options_request_immunization">Request read immunization permission</string>
   <string name="phr_options_request_medical">Request all medical permissions</string>
   <string name="all_medical_permissions_success">All medical permissions were successfully granted</string>
   <string name="number_of_medical_permissions_not_granted">%1$d medical permissions still not granted</string>
+  <string name="data_source_spinner_default_message">CREATE A DATA SOURCE</string>
   <string name="spinner_default_message">SELECT FHIR RESOURCE TO INSERT</string>
   <!--endregion-->
 

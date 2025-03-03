@@ -18,7 +18,7 @@ package com.android.server.healthconnect.storage;
 
 import static android.database.DatabaseUtils.queryNumEntries;
 
-import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES;
@@ -67,8 +67,8 @@ public class DatabaseUpgradeHelperTest {
 
     private static final int NUM_OF_TABLES_AT_MIN_SUPPORTED_VERSION = 57;
     private static final int NUM_OF_TABLES_AT_MINDFULNESS_VERSION = 64;
-    private static final int NUM_OF_TABLES_IN_STAGING = 69;
-    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_ECOSYSTEM_METRICS;
+    private static final int NUM_OF_TABLES_IN_STAGING = 70;
+    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 
     private SQLiteDatabase mSQLiteDatabase;
 

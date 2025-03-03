@@ -23,7 +23,6 @@ import android.util.Log;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.datatypehelpers.BackupChangeTokenHelper;
 
 /**
  * Code to manage development features of the Health Connect database before they are ready for
@@ -90,13 +89,6 @@ public final class DevelopmentDatabaseHelper {
         dropAndCreateDevelopmentSettingsTable(db, CURRENT_VERSION);
 
         // Code for under development schema changes goes in this method but below this comment
-        // TODO: b/375150124 - remove upgrade logic after DB schema is finalized
-        backupTokenForceUpgrade(db);
-    }
-
-    private static void backupTokenForceUpgrade(SQLiteDatabase db) {
-        dropTableIfExists(db, BackupChangeTokenHelper.getTableName());
-        BackupChangeTokenHelper.applyBackupTokenUpgrade(db);
     }
 
     @VisibleForTesting

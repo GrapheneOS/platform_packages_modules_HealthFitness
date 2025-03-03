@@ -36,24 +36,21 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper.ReadAccessLog;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.quality.Strictness;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -76,11 +73,7 @@ public class EcosystemStatsCollectorTest {
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    public final TemporaryFolder mTemporaryFolder = new TemporaryFolder();
 
     @Mock private ReadAccessLogsHelper mReadAccessLogsHelper;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
@@ -96,6 +89,7 @@ public class EcosystemStatsCollectorTest {
                         .setReadAccessLogsHelper(mReadAccessLogsHelper)
                         .setChangeLogsHelper(mChangeLogsHelper)
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                        .setEnvironmentDataDirectory(mTemporaryFolder.getRoot())
                         .build();
         mReadAccessLogsHelper = healthConnectInjector.getReadAccessLogsHelper();
         mEcosystemStatsCollector =

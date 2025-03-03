@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Daten durchsuchen"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Daten und Apps ansehen, die darauf zugreifen können"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatisches Löschen, Datenquellen, Sicherung und Wiederherstellung"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"Mehr Elemente"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Weniger Elemente"</string>
     <string name="backup_title" msgid="211503191266235085">"Backup machen"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Datenquellen und Priorität"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Einheiten festlegen"</string>
@@ -442,7 +444,8 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Datenschutzerklärung lesen"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Zugriff in den letzten 24 Stunden"</string>
     <string name="app_access_title" msgid="7137018424885371763">"App-Zugriff"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Derzeit sind keine kompatiblen Apps installiert"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (7684166767384190933) -->
+    <skip />
     <string name="additional_access_label" msgid="4645249249222528341">"Zusätzliche Zugriffsrechte"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Frühere Daten, Hintergrunddaten"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Zusätzliche Berechtigungen für diese App entfernt"</string>
@@ -1173,10 +1176,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness &amp; Wellness"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Immer"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"Während der Nutzung der App"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> kann jederzeit auf alle deine Fitness- und Wellnessdaten zugreifen"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> kann auf alle deine Fitness- und Wellnessdaten zugreifen, während die App verwendet wird"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Zugriff erlaubt"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Lesezugriff"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Mit diesen Berechtigungen gewährst du „<xliff:g id="APP_NAME">%1$s</xliff:g>“ Zugriff auf Daten, die von den Sensoren deines Geräts erfasst werden."</string>
@@ -1188,17 +1189,12 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Zugriff auf <xliff:g id="DATA_TYPE">%s</xliff:g>-Daten für alle Apps auf deiner Smartwatch widerrufen?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Häkchen"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Kreuz"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"<xliff:g id="APP_NAME">%1$s</xliff:g> kann momentan jederzeit auf Fitness- und Wellnessdaten zugreifen"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"<xliff:g id="APP_NAME">%1$s</xliff:g> kann momentan auf Fitness- und Wellnessdaten zugreifen, während die App verwendet wird"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ erlauben, jederzeit auf Fitness- und Wellnessdaten zuzugreifen?"</string>
     <string name="current_access" msgid="1457167070428176139">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ hat Zugriff auf <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Berechtigungen für Fitness und Wellness verwalten"</string>
-    <!-- no translation found for used_by_apps_count (1384912521974773617) -->
-    <skip />
-    <!-- no translation found for not_used_in_past_24_hours (7918784815693928054) -->
-    <skip />
-    <!-- no translation found for accessed (4424701457530587176) -->
-    <skip />
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Von 1 App verwendet}other{Von # Apps verwendet}}"</string>
+    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"In den letzten 24 Stunden nicht verwendet"</string>
+    <string name="accessed" msgid="4424701457530587176">"Zugriff: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
 </resources>

@@ -22,6 +22,11 @@ import static com.android.server.healthconnect.backuprestore.CloudBackupSettings
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.HEIGHT_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.TEMPERATURE_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.WEIGHT_UNIT_PREF_KEY;
+import static com.android.server.healthconnect.backuprestore.ProtoTestData.TEST_PACKAGE_NAME;
+import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateCoreRecord;
+import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateExerciseSession;
+import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateIntervalRecord;
+import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateRecord;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
 import static com.android.server.healthconnect.proto.backuprestore.Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED;
 import static com.android.server.healthconnect.proto.backuprestore.Settings.DistanceUnitProto.DISTANCE_UNIT_UNSPECIFIED;
@@ -34,8 +39,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 
 import android.content.Context;
+import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.backuprestore.BackupSettings;
 import android.health.connect.backuprestore.RestoreChange;
@@ -51,23 +58,26 @@ import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
+import com.android.server.healthconnect.proto.backuprestore.AppInfoMap;
 import com.android.server.healthconnect.proto.backuprestore.BackupData;
 import com.android.server.healthconnect.proto.backuprestore.Record;
 import com.android.server.healthconnect.proto.backuprestore.Settings;
+import com.android.server.healthconnect.proto.backuprestore.Settings.PriorityList;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
+import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
 import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableMap;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -84,9 +94,21 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class CloudRestoreManagerTest {
 
-    private static final String TEST_PACKAGE_NAME = "package.name";
     private static final String TEST_PACKAGE_NAME_2 = "other.app";
     private static final String TEST_PACKAGE_NAME_3 = "another.app";
+
+    private static final AppInfoMap APP_INFO_MAP =
+            AppInfoMap.newBuilder()
+                    .putAppInfo(
+                            TEST_PACKAGE_NAME,
+                            Settings.AppInfo.newBuilder().setAppName("app name 1").build())
+                    .putAppInfo(
+                            TEST_PACKAGE_NAME_2,
+                            Settings.AppInfo.newBuilder().setAppName("app name 2").build())
+                    .putAppInfo(
+                            TEST_PACKAGE_NAME_3,
+                            Settings.AppInfo.newBuilder().setAppName("app name 3").build())
+                    .build();
 
     @Rule(order = 1)
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
@@ -94,19 +116,20 @@ public class CloudRestoreManagerTest {
     @Rule(order = 2)
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(HealthConnectManager.class)
                     .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
                     .build();
 
     private AppInfoHelper mAppInfoHelper;
     private DeviceInfoHelper mDeviceInfoHelper;
-    private AccessLogsHelper mAccessLogsHelper;
-    private ReadAccessLogsHelper mReadAccessLogsHelper;
     private TransactionManager mTransactionManager;
     private TransactionTestUtils mTransactionTestUtils;
     private CloudRestoreManager mCloudRestoreManager;
     private RecordProtoConverter mRecordProtoConverter;
     private HealthDataCategoryPriorityHelper mPriorityHelper;
     private PreferenceHelper mPreferenceHelper;
+    private InternalHealthConnectMappings mMappings;
+    private DatabaseHelpers mDatabaseHelpers;
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
@@ -125,23 +148,21 @@ public class CloudRestoreManagerTest {
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
-        mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
-        mReadAccessLogsHelper = healthConnectInjector.getReadAccessLogsHelper();
         mPriorityHelper = healthConnectInjector.getHealthDataCategoryPriorityHelper();
         mPreferenceHelper = healthConnectInjector.getPreferenceHelper();
+        mMappings = healthConnectInjector.getInternalHealthConnectMappings();
+        mDatabaseHelpers = healthConnectInjector.getDatabaseHelpers();
 
         mRecordProtoConverter = new RecordProtoConverter();
         mCloudRestoreManager =
                 new CloudRestoreManager(
                         mTransactionManager,
+                        healthConnectInjector.getInternalHealthConnectMappings(),
                         mDeviceInfoHelper,
                         mAppInfoHelper,
                         mPriorityHelper,
                         mPreferenceHelper);
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME_2);
-        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME_3);
     }
 
     @Test
@@ -152,25 +173,22 @@ public class CloudRestoreManagerTest {
     }
 
     @Test
-    public void pushChangesForRestore_restoresChanges() {
-        Record stepsRecord =
-                com.android.server.healthconnect.backuprestore.ProtoTestData.generateRecord(
-                        RecordTypeIdentifier.RECORD_TYPE_STEPS);
+    public void restoreChanges_restoresChanges() {
+        Record stepsRecord = generateRecord(RecordTypeIdentifier.RECORD_TYPE_STEPS);
         RestoreChange stepsChange =
                 new RestoreChange(
                         BackupData.newBuilder().setRecord(stepsRecord).build().toByteArray());
         Record bloodPressureRecord =
-                com.android.server.healthconnect.backuprestore.ProtoTestData.generateRecord(
-                        RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE);
+                generateRecord(RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE);
         RestoreChange bloodPressureChange =
                 new RestoreChange(
                         BackupData.newBuilder()
                                 .setRecord(bloodPressureRecord)
                                 .build()
                                 .toByteArray());
-        mTransactionTestUtils.insertApp("packageName");
 
-        mCloudRestoreManager.pushChangesForRestore(List.of(stepsChange, bloodPressureChange));
+        mCloudRestoreManager.restoreChanges(
+                List.of(stepsChange, bloodPressureChange), APP_INFO_MAP.toByteArray());
 
         ReadTransactionRequest request =
                 mTransactionTestUtils.getReadTransactionRequest(
@@ -180,13 +198,8 @@ public class CloudRestoreManagerTest {
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
                                 List.of(UUID.fromString(bloodPressureRecord.getUuid()))));
         List<RecordInternal<?>> records =
-                mTransactionManager.readRecordsByIds(
-                        request,
-                        mAppInfoHelper,
-                        mAccessLogsHelper,
-                        mDeviceInfoHelper,
-                        mReadAccessLogsHelper,
-                        /* shouldRecordAccessLog= */ false);
+                mTransactionManager.readRecordsByIdsWithoutAccessLogs(
+                        request, mAppInfoHelper, mDeviceInfoHelper);
         assertThat(records).hasSize(2);
         assertThat(mRecordProtoConverter.toRecordProto(records.get(0))).isEqualTo(stepsRecord);
         assertThat(mRecordProtoConverter.toRecordProto(records.get(1)))
@@ -200,60 +213,172 @@ public class CloudRestoreManagerTest {
     }
 
     @Test
-    public void whenPushSettingsForRestoreCalled_settingsSuccessfullyRestored() {
+    public void
+            whenRestoreSettingsForRestoreCalled_noExportSettings_settingsSuccessfullyRestored() {
         CloudBackupSettingsHelper cloudBackupSettingsHelper =
                 new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);
-
-        Settings.PrioritizedAppIds expectedAppIds =
-                Settings.PrioritizedAppIds.newBuilder()
-                        .addAppId(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME))
-                        .addAppId(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME_2))
-                        .addAppId(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME_3))
-                        .build();
-        Map<Integer, Settings.PrioritizedAppIds> expectedPriorityList = new HashMap<>();
-        expectedPriorityList.put(HealthDataCategory.ACTIVITY, expectedAppIds);
-
         setupInitialSettings();
         Settings settingsToRestore = createSettingsToRestore(false);
-        BackupSettings backupSettings = new BackupSettings(settingsToRestore.toByteArray());
-
-        mCloudRestoreManager.pushSettingsForRestore(backupSettings);
+        mCloudRestoreManager.restoreSettings(new BackupSettings(settingsToRestore.toByteArray()));
 
         Settings currentSettings = cloudBackupSettingsHelper.collectUserSettings();
+        mDatabaseHelpers.clearAllData(mTransactionManager);
 
+        Map<Integer, PriorityList> expectedPriorityList =
+                Map.of(
+                        HealthDataCategory.ACTIVITY,
+                        PriorityList.newBuilder()
+                                .addPackageName(TEST_PACKAGE_NAME)
+                                .addPackageName(TEST_PACKAGE_NAME_2)
+                                .addPackageName(TEST_PACKAGE_NAME_3)
+                                .build());
         assertSettingsCorrectlyUpdated(settingsToRestore, currentSettings, expectedPriorityList);
     }
 
     @Test
-    public void
-            whenPushSettingsForRestoreCalled_withUnspecifiedEnums_settingsSuccessfullyRestored() {
+    public void whenRestoreSettingsCalled_withUnspecifiedEnums_settingsSuccessfullyRestored() {
         CloudBackupSettingsHelper cloudBackupSettingsHelper =
                 new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);
-
         mPreferenceHelper.insertOrReplacePreference(
                 ENERGY_UNIT_PREF_KEY, Settings.EnergyUnitProto.CALORIE.toString());
-
-        Settings.PrioritizedAppIds expectedAppIds =
-                Settings.PrioritizedAppIds.newBuilder()
-                        .addAppId(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME))
-                        .addAppId(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME_2))
-                        .addAppId(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME_3))
-                        .build();
-        Map<Integer, Settings.PrioritizedAppIds> expectedPriorityList = new HashMap<>();
-        expectedPriorityList.put(HealthDataCategory.ACTIVITY, expectedAppIds);
-
         setupInitialSettings();
         Settings settingsToRestore = createSettingsToRestore(true);
-        BackupSettings backupSettings = new BackupSettings(settingsToRestore.toByteArray());
-
-        mCloudRestoreManager.pushSettingsForRestore(backupSettings);
+        mCloudRestoreManager.restoreSettings(new BackupSettings(settingsToRestore.toByteArray()));
 
         Settings currentSettings = cloudBackupSettingsHelper.collectUserSettings();
+        mDatabaseHelpers.clearAllData(mTransactionManager);
 
+        Map<Integer, PriorityList> expectedPriorityList =
+                Map.of(
+                        HealthDataCategory.ACTIVITY,
+                        PriorityList.newBuilder()
+                                .addPackageName(TEST_PACKAGE_NAME)
+                                .addPackageName(TEST_PACKAGE_NAME_2)
+                                .addPackageName(TEST_PACKAGE_NAME_3)
+                                .build());
         assertSettingsCorrectlyUpdated(settingsToRestore, currentSettings, expectedPriorityList);
     }
 
+    @Test
+    public void restoreChanges_exerciseSession_withMissingTrainingPlan_removesReference() {
+        Record exerciseSessionRecord =
+                generateRecord(RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION);
+        Record sessionWithPlanReference =
+                exerciseSessionRecord.toBuilder()
+                        .setIntervalRecord(
+                                exerciseSessionRecord.getIntervalRecord().toBuilder()
+                                        .setExerciseSession(
+                                                exerciseSessionRecord
+                                                        .getIntervalRecord()
+                                                        .getExerciseSession()
+                                                        .toBuilder()
+                                                        .setPlannedExerciseSessionId(
+                                                                UUID.randomUUID().toString())))
+                        .build();
+
+        mCloudRestoreManager.restoreChanges(
+                List.of(
+                        new RestoreChange(
+                                BackupData.newBuilder()
+                                        .setRecord(sessionWithPlanReference)
+                                        .build()
+                                        .toByteArray())),
+                APP_INFO_MAP.toByteArray());
+
+        var restoredSession = readExerciseSession(exerciseSessionRecord.getUuid());
+        assertThat(mRecordProtoConverter.toRecordProto(restoredSession))
+                .isEqualTo(exerciseSessionRecord);
+    }
+
+    @Test
+    public void restoreChanges_exerciseSession_withTrainingPlanInChanges_keepsReference() {
+        Record plannedExerciseSessionRecord =
+                generateRecord(RecordTypeIdentifier.RECORD_TYPE_PLANNED_EXERCISE_SESSION);
+        Record exerciseSessionRecord =
+                generateCoreRecord()
+                        .setIntervalRecord(
+                                generateIntervalRecord()
+                                        .setExerciseSession(
+                                                generateExerciseSession().toBuilder()
+                                                        .setPlannedExerciseSessionId(
+                                                                plannedExerciseSessionRecord
+                                                                        .getUuid())))
+                        .build();
+
+        mCloudRestoreManager.restoreChanges(
+                List.of(
+                        new RestoreChange(
+                                BackupData.newBuilder()
+                                        .setRecord(plannedExerciseSessionRecord)
+                                        .build()
+                                        .toByteArray()),
+                        new RestoreChange(
+                                BackupData.newBuilder()
+                                        .setRecord(exerciseSessionRecord)
+                                        .build()
+                                        .toByteArray())),
+                APP_INFO_MAP.toByteArray());
+
+        var restoredSession = readExerciseSession(exerciseSessionRecord.getUuid());
+        assertThat(mRecordProtoConverter.toRecordProto(restoredSession))
+                .isEqualTo(exerciseSessionRecord);
+    }
+
+    @Test
+    public void restoreChanges_exerciseSession_withTrainingPlanRestoredEarlier_keepsReference() {
+        Record plannedExerciseSessionRecord =
+                generateRecord(RecordTypeIdentifier.RECORD_TYPE_PLANNED_EXERCISE_SESSION);
+        mCloudRestoreManager.restoreChanges(
+                List.of(
+                        new RestoreChange(
+                                BackupData.newBuilder()
+                                        .setRecord(plannedExerciseSessionRecord)
+                                        .build()
+                                        .toByteArray())),
+                APP_INFO_MAP.toByteArray());
+        Record exerciseSessionRecord =
+                generateCoreRecord()
+                        .setIntervalRecord(
+                                generateIntervalRecord()
+                                        .setExerciseSession(
+                                                generateExerciseSession().toBuilder()
+                                                        .setPlannedExerciseSessionId(
+                                                                plannedExerciseSessionRecord
+                                                                        .getUuid())))
+                        .build();
+        mCloudRestoreManager.restoreChanges(
+                List.of(
+                        new RestoreChange(
+                                BackupData.newBuilder()
+                                        .setRecord(exerciseSessionRecord)
+                                        .build()
+                                        .toByteArray())),
+                APP_INFO_MAP.toByteArray());
+
+        var restoredSession = readExerciseSession(exerciseSessionRecord.getUuid());
+        assertThat(mRecordProtoConverter.toRecordProto(restoredSession))
+                .isEqualTo(exerciseSessionRecord);
+    }
+
+    @Test
+    public void restoreInvalidSettings_throwsException() {
+        BackupSettings backupSettings = new BackupSettings(new byte[] {45, 36});
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> mCloudRestoreManager.restoreSettings(backupSettings));
+    }
+
+    @Test
+    public void restoreInvalidChanges_skipsInvalidChange() {
+        RestoreChange restoreChange = new RestoreChange(new byte[] {45, 36});
+        // test that no exceptions are thrown
+        mCloudRestoreManager.restoreChanges(List.of(restoreChange), APP_INFO_MAP.toByteArray());
+    }
+
     private void setupInitialSettings() {
+        mAppInfoHelper.addOrUpdateAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME, "app name 1");
+        mAppInfoHelper.addOrUpdateAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME_2, "app name 2");
+        mAppInfoHelper.addOrUpdateAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME_3, "app name 3");
         mPriorityHelper.setPriorityOrder(
                 HealthDataCategory.ACTIVITY, List.of(TEST_PACKAGE_NAME, TEST_PACKAGE_NAME_2));
         mPreferenceHelper.insertOrReplacePreference(
@@ -273,13 +398,13 @@ public class CloudRestoreManagerTest {
 
     private Settings createSettingsToRestore(boolean setEnergyUnitAsUnspecified) {
 
-        Settings.PrioritizedAppIds newAppIds =
-                Settings.PrioritizedAppIds.newBuilder()
-                        .addAppId(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME_2))
-                        .addAppId(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME_3))
-                        .addAppId(mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME))
+        PriorityList newAppIds =
+                PriorityList.newBuilder()
+                        .addPackageName(TEST_PACKAGE_NAME_2)
+                        .addPackageName(TEST_PACKAGE_NAME_3)
+                        .addPackageName(TEST_PACKAGE_NAME)
                         .build();
-        Map<Integer, Settings.PrioritizedAppIds> newPriorityList = new HashMap<>();
+        Map<Integer, PriorityList> newPriorityList = new HashMap<>();
         newPriorityList.put(HealthDataCategory.ACTIVITY, newAppIds);
 
         Settings.Builder settingsRecordBuilder = Settings.newBuilder();
@@ -290,6 +415,7 @@ public class CloudRestoreManagerTest {
                         : Settings.EnergyUnitProto.KILOJOULE;
 
         settingsRecordBuilder
+                .putAllAppInfo(APP_INFO_MAP.getAppInfoMap())
                 .putAllPriorityList(newPriorityList)
                 .setAutoDeleteFrequency(
                         Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_THREE_MONTHS)
@@ -305,7 +431,7 @@ public class CloudRestoreManagerTest {
     private void assertSettingsCorrectlyUpdated(
             Settings settingsFromBackup,
             Settings restoredSettings,
-            Map<Integer, Settings.PrioritizedAppIds> expectedMergedPriorityList) {
+            Map<Integer, PriorityList> expectedMergedPriorityList) {
 
         if (settingsFromBackup.getEnergyUnitSetting() == ENERGY_UNIT_UNSPECIFIED) {
             assertNotSame(ENERGY_UNIT_UNSPECIFIED, restoredSettings.getEnergyUnitSetting());
@@ -338,11 +464,35 @@ public class CloudRestoreManagerTest {
                 settingsFromBackup.getDistanceUnitSetting(),
                 restoredSettings.getDistanceUnitSetting());
 
-        assertThat(expectedMergedPriorityList.get(HealthDataCategory.ACTIVITY).getAppIdList())
+        assertThat(expectedMergedPriorityList.get(HealthDataCategory.ACTIVITY).getPackageNameList())
                 .isEqualTo(
                         restoredSettings
                                 .getPriorityListMap()
                                 .get(HealthDataCategory.ACTIVITY)
-                                .getAppIdList());
+                                .getPackageNameList());
+    }
+
+    @NotNull
+    private RecordInternal<?> readExerciseSession(String sessionId) {
+        ReadTransactionRequest request =
+                new ReadTransactionRequest(
+                        mAppInfoHelper,
+                        /* packageName= */ "",
+                        ImmutableMap.of(
+                                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
+                                List.of(UUID.fromString(sessionId))),
+                        /* startDateAccessMillis= */ 0,
+                        Set.copyOf(
+                                mMappings
+                                        .getRecordHelper(
+                                                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION)
+                                        .getExtraReadPermissions()),
+                        /* isInForeground= */ true,
+                        /* isReadingSelfData= */ false);
+        List<RecordInternal<?>> records =
+                mTransactionManager.readRecordsByIdsWithoutAccessLogs(
+                        request, mAppInfoHelper, mDeviceInfoHelper);
+        assertThat(records.size()).isEqualTo(1);
+        return records.get(0);
     }
 }

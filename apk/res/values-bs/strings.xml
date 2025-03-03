@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Pregledajte podatke"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Pogledajte podatke i koje aplikacije im mogu pristupati"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatsko brisanje, izvori podataka, izrada sigurnosne kopije i vraćanje"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"Više stavki"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Manje stavki"</string>
     <string name="backup_title" msgid="211503191266235085">"Sigurnosna kopija"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Izvori podataka i prioritet"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Postavite jedinice"</string>
@@ -442,7 +444,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Pročitajte pravila privatnosti"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Pristupljeno u posljednja 24 sata"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Pristup aplikacije"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Trenutno nemate instaliranu nijednu kompatibilnu aplikaciju"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Nije instalirana nijedna kompatibilna aplikacija"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Dodatni pristup"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Prijašnji i pozadinski podaci"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Uklonjena su dodatna odobrenja za ovu aplikaciju"</string>
@@ -1173,10 +1175,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitnes i wellness"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Sve vrijeme"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"Tokom upotrebe"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> može pristupati svim podacima o fitnesu i wellnessu sve vrijeme"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> može pristupati svim podacima o fitnesu i wellnessu tokom upotrebe"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Dozvoljen pristup"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Dozvoljeno čitanje"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Ova odobrenja daju aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> pristup podacima sa senzora uređaja."</string>
@@ -1188,14 +1188,12 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Ukloniti pristup podacima vrste \"<xliff:g id="DATA_TYPE">%s</xliff:g>\" za sve aplikacije na satu?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Kvačica"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Znak prekriženo"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> trenutno može pristupati podacima o fitnesu i wellnessu sve vrijeme"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> trenutno može pristupati podacima o fitnesu i wellnessu tokom upotrebe"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"Dozvoliti da <xliff:g id="APP_NAME">%1$s</xliff:g> pristupa podacima o fitnesu i wellnessu sve vrijeme?"</string>
     <string name="current_access" msgid="1457167070428176139">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ima pristup podacima vrste <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Upravljajte odobrenjima za fitnes i wellness"</string>
-    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Koristi ga 1 aplikacija}one{Koristi ga # aplikacija}few{Koriste ga # aplikacije}other{Koristi ga # aplikacija}}"</string>
-    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Nije korišteno u posljednja 24 sata"</string>
-    <string name="accessed" msgid="4424701457530587176">"Pristupljeno: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Koristi 1 aplikacija}one{Koristi # aplikacija}few{Koriste # aplikacije}other{Koristi # aplikacija}}"</string>
+    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Nije korišteno u prethodna 24 sata"</string>
+    <string name="accessed" msgid="4424701457530587176">"Pristupljeno je u <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
 </resources>

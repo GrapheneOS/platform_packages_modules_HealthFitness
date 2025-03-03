@@ -1,0 +1,75 @@
+{
+  "resourceType": "Procedure",
+  "id": "procedure-2",
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "439477003",
+        "display": "Femoral neck DEXA scan"
+      }
+    ],
+    "text": "Femoral neck DEXA scan"
+  },
+  "category": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "165197003",
+        "display": "Diagnostic assessment (procedure)"
+      }
+    ],
+    "text": "Diagnostic assessment"
+  },
+  "subject": {
+    "reference": "Patient/patient-1"
+  },
+  "performedDateTime": "2020-06-02",
+  "recorder": {
+    "reference": "Practitioner/practitioner-unk",
+    "display": "Li Chen - Radiographer"
+  },
+  "encounter": {
+    "reference": "Encounter/encounter-unk",
+    "display": "Hospital Outpatient Visit"
+  },
+  "asserter": {
+    "reference": "Practitioner/practitioner-unk",
+    "display": "Li Chen - Radiographer"
+  },
+  "performer": [
+    {
+      "actor": {
+        "reference": "Practitioner/practitioner-unk",
+        "display": "Li Chen - Radiographer"
+      },
+      "onBehalfOf": {
+        "reference": "Organization/organization-2",
+        "display": "Health Connect Hospital"
+      }
+    }
+  ],
+  "bodySite": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "29627003",
+          "display": "Neck of femur"
+        }
+      ],
+      "text": "Neck of femur"
+    }
+  ],
+  "reasonCode": [
+    {
+      "text": "Patient over 50 with risk factors for osteoporosis."
+    }
+  ],
+  "followUp": [
+    {
+       "text": "Results discussed with patient. No follow-up required."
+    }
+  ]
+}

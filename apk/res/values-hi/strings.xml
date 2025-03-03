@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"डेटा ब्राउज़ करें"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"डेटा देखें और जानें कि कौनसे ऐप्लिकेशन इसे ऐक्सेस कर सकते हैं"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"अपने-आप मिटने की सुविधा, डेटा सोर्स, बैकअप, और डेटा वापस पाने की सुविधा"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"ज़्यादा आइटम"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"कम आइटम"</string>
     <string name="backup_title" msgid="211503191266235085">"बैकअप लें"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"डेटा सोर्स और प्राथमिकता"</string>
     <string name="set_units_title" msgid="2657822539603758029">"इकाइयां सेट करें"</string>
@@ -442,7 +444,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"ऐप्लिकेशन की निजता नीति पढ़ें"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"पिछले 24 घंटे में ऐक्सेस किया गया"</string>
     <string name="app_access_title" msgid="7137018424885371763">"ऐप्लिकेशन को दिया गया ऐक्सेस"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"फ़िलहाल, आपके डिवाइस में कोई ऐसा ऐप्लिकेशन इंस्टॉल नहीं है जो Health Connect के साथ काम करता हो"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"ऐसा कोई ऐप्लिकेशन इंस्टॉल नहीं है जो Health Connect के साथ काम करता हो"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"अन्य ऐक्सेस"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"पुराना डेटा और बैकग्राउंड डेटा"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"इस ऐप्लिकेशन को मिली अन्य अनुमतियां हटाई गईं"</string>
@@ -543,7 +545,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Store पर जाएं"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect का इस्तेमाल शुरू करें"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect में, आपकी सेहत और फ़िटनेस से जुड़ा डेटा सेव किया जाता है. इससे अपने डिवाइस में अलग-अलग ऐप्लिकेशन को आसानी से सिंक करने में मदद मिलती है"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect, अलग-अलग ऐप्लिकेशन से सेहत और फ़िटनेस से जुड़ा आपका डेटा सेव और सिंक करता है.\n\n"<b>"फ़िटनेस और तंदुरुस्ती का डेटा"</b>"  कसरत के सेशन, कदमों की संख्या, पोषण, नींद वगैरह का डेटा शामिल है\n\n"<b>"सेहत का डेटा"</b>" जिसमें टीकाकरण की जानकारी, लैब के नतीजे वगैरह शामिल हैं"</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect, अलग-अलग ऐप्लिकेशन से सेहत और फ़िटनेस से जुड़ा आपका डेटा सेव और सिंक करता है.\n\n"<b>"फ़िटनेस और तंदुरुस्ती का डेटा"</b>"  कसरत के सेशन, कदमों की संख्या, पोषण, नींद वगैरह का डेटा शामिल है\n\n"<b>"सेहत का डेटा"</b>" जिसमें टीकाकरण की जानकारी, लैब टेस्ट की रिपोर्ट वगैरह शामिल हैं"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect की मदद से ये काम करें"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"ऐप्लिकेशन के साथ डेटा शेयर करें"</b>\n"ऐप्लिकेशन के लिए, यह चुनें कि Health Connect में मौजूद कौनसा डेटा पढ़ने या सेव करने की अनुमति देनी है"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"सेटिंग और निजता को मैनेज करें"</b>\n" किसी भी समय, ऐप्लिकेशन को दी गई अनुमतियों में बदलाव करें और अपना डेटा मैनेज करें"</string>
@@ -1173,10 +1175,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"फ़िटनेस और सेहत से जुड़ी अनुमतियां"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"हमेशा"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"इस्तेमाल करते समय"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g>, फ़िटनेस और सेहत से जुड़ा आपका पूरा डेटा हमेशा ऐक्सेस कर सकता है"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> का इस्तेमाल करते समय, वह फ़िटनेस और सेहत से जुड़ा आपका पूरा डेटा ऐक्सेस कर सकता है"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"डेटा ऐक्सेस करने की अनुमति है"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"डेटा देखने की अनुमति है"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"ये अनुमतियां देने पर, <xliff:g id="APP_NAME">%1$s</xliff:g> आपके डिवाइस के सेंसर से डेटा ऐक्सेस कर सकता है."</string>
@@ -1188,10 +1188,8 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"क्या आपको अपनी स्मार्ट वॉच पर मौजूद सभी ऐप्लिकेशन के लिए, <xliff:g id="DATA_TYPE">%s</xliff:g> का ऐक्सेस हटाना है?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"सही का निशान"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"गलत का निशान"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"फ़िलहाल, <xliff:g id="APP_NAME">%1$s</xliff:g> फ़िटनेस और सेहत से जुड़ा डेटा हमेशा ऐक्सेस कर सकता है"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"फ़िलहाल, <xliff:g id="APP_NAME">%1$s</xliff:g> का इस्तेमाल करते समय, वह फ़िटनेस और सेहत से जुड़ा डेटा ऐक्सेस कर सकता है"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"क्या आपको <xliff:g id="APP_NAME">%1$s</xliff:g> को फ़िटनेस और तंदुरुस्ती से जुड़ा डेटा, हमेशा ऐक्सेस करने की अनुमति देनी है?"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास <xliff:g id="DATA_TYPES">%2$s</xliff:g> का ऐक्सेस है."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"फ़िटनेस और सेहत से जुड़ी अनुमतियों को मैनेज करें"</string>

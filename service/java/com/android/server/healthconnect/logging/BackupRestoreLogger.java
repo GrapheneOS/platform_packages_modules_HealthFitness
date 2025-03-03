@@ -16,7 +16,40 @@
 
 package com.android.server.healthconnect.logging;
 
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_FULL;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_INCREMENTAL;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_UNSPECIFIED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_ERROR_NONE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_ERROR_PARTIAL_BACKUP;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_ERROR_UNKNOWN;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_ERROR_UNSPECIFIED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_STARTED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_RESTORE_INVOKED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_CONVERSION_FAILED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_NONE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_PARTIAL_RESTORE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_UNKNOWN;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_UNSPECIFIED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_STARTED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RESTORE_ELIGIBILITY_CHECKED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_COLLATION_FAILED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_NONE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_PARTIAL_BACKUP;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_UNKNOWN;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_UNSPECIFIED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_STARTED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_CONVERSION_FAILED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_NONE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_PARTIAL_RESTORE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_UNKNOWN;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_UNSPECIFIED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_STARTED;
+
 import android.annotation.IntDef;
+import android.health.HealthFitnessStatsLog;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,43 +60,69 @@ import java.lang.annotation.RetentionPolicy;
  * @hide
  */
 public class BackupRestoreLogger {
-
-    // TODO(b/394767444): Replace uses with the correct values once atoms implemented.
-    public static final int NOT_IMPLEMENTED = -1;
-
     /**
      * Status enums used in logging.
      *
      * @hide
      */
     public static final class BackupRestoreEnums {
+        // enums for DataBackupType
+        public static final int DATA_BACKUP_TYPE_UNSPECIFIED =
+                HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_UNSPECIFIED;
+        public static final int DATA_BACKUP_TYPE_FULL =
+                HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_FULL;
+        public static final int DATA_BACKUP_TYPE_INCREMENTAL =
+                HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_INCREMENTAL;
         // enums for DataBackupStatus
-        public static final int DATA_BACKUP_STATUS_ERROR_UNSPECIFIED = NOT_IMPLEMENTED;
-        public static final int DATA_BACKUP_STATUS_ERROR_NONE = NOT_IMPLEMENTED;
-        public static final int DATA_BACKUP_STATUS_ERROR_UNKNOWN = NOT_IMPLEMENTED;
-        public static final int DATA_BACKUP_STATUS_ERROR_PARTIAL_BACKUP = NOT_IMPLEMENTED;
-        public static final int DATA_BACKUP_STATUS_STARTED = NOT_IMPLEMENTED;
+        public static final int DATA_BACKUP_STATUS_ERROR_UNSPECIFIED =
+                HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_ERROR_UNSPECIFIED;
+        public static final int DATA_BACKUP_STATUS_ERROR_NONE =
+                HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_ERROR_NONE;
+        public static final int DATA_BACKUP_STATUS_ERROR_UNKNOWN =
+                HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_ERROR_UNKNOWN;
+        public static final int DATA_BACKUP_STATUS_ERROR_PARTIAL_BACKUP =
+                HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_ERROR_PARTIAL_BACKUP;
+        public static final int DATA_BACKUP_STATUS_STARTED =
+                HEALTH_CONNECT_DATA_BACKUP_INVOKED__STATUS__DATA_BACKUP_STATUS_STARTED;
         // enums for SettingsBackupStatus
-        public static final int SETTINGS_BACKUP_STATUS_ERROR_UNSPECIFIED = NOT_IMPLEMENTED;
-        public static final int SETTINGS_BACKUP_STATUS_ERROR_NONE = NOT_IMPLEMENTED;
-        public static final int SETTINGS_BACKUP_STATUS_ERROR_UNKNOWN = NOT_IMPLEMENTED;
-        public static final int SETTINGS_BACKUP_STATUS_ERROR_COLLATION_FAILED = NOT_IMPLEMENTED;
-        public static final int SETTINGS_BACKUP_STATUS_ERROR_PARTIAL_BACKUP = NOT_IMPLEMENTED;
-        public static final int SETTINGS_BACKUP_STATUS_STARTED = NOT_IMPLEMENTED;
+        public static final int SETTINGS_BACKUP_STATUS_ERROR_UNSPECIFIED =
+                HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_UNSPECIFIED;
+        public static final int SETTINGS_BACKUP_STATUS_ERROR_NONE =
+                HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_NONE;
+        public static final int SETTINGS_BACKUP_STATUS_ERROR_UNKNOWN =
+                HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_UNKNOWN;
+        public static final int SETTINGS_BACKUP_STATUS_ERROR_COLLATION_FAILED =
+                HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_COLLATION_FAILED;
+        public static final int SETTINGS_BACKUP_STATUS_ERROR_PARTIAL_BACKUP =
+                HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_PARTIAL_BACKUP;
+        public static final int SETTINGS_BACKUP_STATUS_STARTED =
+                HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_STARTED;
         // enums for DataRestoreStatus
-        public static final int DATA_RESTORE_STATUS_ERROR_UNSPECIFIED = NOT_IMPLEMENTED;
-        public static final int DATA_RESTORE_STATUS_ERROR_NONE = NOT_IMPLEMENTED;
-        public static final int DATA_RESTORE_STATUS_ERROR_UNKNOWN = NOT_IMPLEMENTED;
-        public static final int DATA_RESTORE_STATUS_ERROR_CONVERSION_FAILED = NOT_IMPLEMENTED;
-        public static final int DATA_RESTORE_STATUS_ERROR_PARTIAL_RESTORE = NOT_IMPLEMENTED;
-        public static final int DATA_RESTORE_STATUS_STARTED = NOT_IMPLEMENTED;
+        public static final int DATA_RESTORE_STATUS_ERROR_UNSPECIFIED =
+                HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_UNSPECIFIED;
+        public static final int DATA_RESTORE_STATUS_ERROR_NONE =
+                HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_NONE;
+        public static final int DATA_RESTORE_STATUS_ERROR_UNKNOWN =
+                HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_UNKNOWN;
+        public static final int DATA_RESTORE_STATUS_ERROR_CONVERSION_FAILED =
+                HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_CONVERSION_FAILED;
+        public static final int DATA_RESTORE_STATUS_ERROR_PARTIAL_RESTORE =
+                HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_PARTIAL_RESTORE;
+        public static final int DATA_RESTORE_STATUS_STARTED =
+                HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_STARTED;
         // enums for SettingsRestoreStatus
-        public static final int SETTINGS_RESTORE_STATUS_ERROR_UNSPECIFIED = NOT_IMPLEMENTED;
-        public static final int SETTINGS_RESTORE_STATUS_ERROR_NONE = NOT_IMPLEMENTED;
-        public static final int SETTINGS_RESTORE_STATUS_ERROR_UNKNOWN = NOT_IMPLEMENTED;
-        public static final int SETTINGS_RESTORE_STATUS_ERROR_CONVERSION_FAILED = NOT_IMPLEMENTED;
-        public static final int SETTINGS_RESTORE_STATUS_ERROR_PARTIAL_RESTORE = NOT_IMPLEMENTED;
-        public static final int SETTINGS_RESTORE_STATUS_STARTED = NOT_IMPLEMENTED;
+        public static final int SETTINGS_RESTORE_STATUS_ERROR_UNSPECIFIED =
+                HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_UNSPECIFIED;
+        public static final int SETTINGS_RESTORE_STATUS_ERROR_NONE =
+                HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_NONE;
+        public static final int SETTINGS_RESTORE_STATUS_ERROR_UNKNOWN =
+                HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_UNKNOWN;
+        public static final int SETTINGS_RESTORE_STATUS_ERROR_CONVERSION_FAILED =
+                HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_CONVERSION_FAILED;
+        public static final int SETTINGS_RESTORE_STATUS_ERROR_PARTIAL_RESTORE =
+                HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_PARTIAL_RESTORE;
+        public static final int SETTINGS_RESTORE_STATUS_STARTED =
+                HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_STARTED;
 
         @IntDef({
             DATA_BACKUP_STATUS_ERROR_UNSPECIFIED,
@@ -107,49 +166,97 @@ public class BackupRestoreLogger {
         })
         @Retention(RetentionPolicy.SOURCE)
         public @interface SettingsRestoreState {}
+
+        @IntDef({DATA_BACKUP_TYPE_UNSPECIFIED, DATA_BACKUP_TYPE_FULL, DATA_BACKUP_TYPE_INCREMENTAL})
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface DataBackupType {}
     }
 
-    /** The type of data backup being logged - either incremental or full. */
-    public enum DataBackupType {
-        INCREMENTAL_BACKUP,
-        FULL_BACKUP
-    }
-
-    /** Log the data backup metrics. */
+    /**
+     * Log the data backup metrics.
+     *
+     * @param dataBackupStatus the status of the invoked data backup
+     * @param timeToSucceedOrFailMillis time between invoking a data backup and the status being
+     *     returned
+     * @param dataSize the size of the data being backed up
+     * @param dataBackupType the type of data backup that was invoked
+     */
     public static void logDataBackupStatus(
             @BackupRestoreEnums.DataBackupState int dataBackupStatus,
             int timeToSucceedOrFailMillis,
             int dataSize,
-            DataBackupType dataBackupType) {
-        throw new UnsupportedOperationException();
+            @BackupRestoreEnums.DataBackupType int dataBackupType) {
+        HealthFitnessStatsLog.write(
+                HEALTH_CONNECT_DATA_BACKUP_INVOKED,
+                dataBackupStatus,
+                timeToSucceedOrFailMillis,
+                dataSize,
+                dataBackupType);
     }
 
-    /** Log the settings backup metrics. */
+    /**
+     * Log the settings backup metrics.
+     *
+     * @param settingsBackupStatus the status of the invoked settings backup
+     * @param timeToSucceedOrFailMillis time between invoking a settings backup and the status being
+     *     returned
+     * @param dataSize the size of the settings being backed up
+     */
     public static void logSettingsBackupStatus(
             @BackupRestoreEnums.SettingsBackupState int settingsBackupStatus,
             int timeToSucceedOrFailMillis,
             int dataSize) {
-        throw new UnsupportedOperationException();
+        HealthFitnessStatsLog.write(
+                HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED,
+                settingsBackupStatus,
+                timeToSucceedOrFailMillis,
+                dataSize);
     }
 
-    /** Log the data restore metrics. */
+    /**
+     * Log the data restore metrics.
+     *
+     * @param dataRestoreStatus the status of the invoked data restore
+     * @param timeToSucceedOrFailMillis time between invoking a data restore and the status being
+     *     returned
+     * @param dataSize the size of the data being restored
+     */
     public static void logDataRestoreStatus(
             @BackupRestoreEnums.DataRestoreState int dataRestoreStatus,
             int timeToSucceedOrFailMillis,
             int dataSize) {
-        throw new UnsupportedOperationException();
+        HealthFitnessStatsLog.write(
+                HEALTH_CONNECT_DATA_RESTORE_INVOKED,
+                dataRestoreStatus,
+                timeToSucceedOrFailMillis,
+                dataSize);
     }
 
-    /** Log the settings restore metrics. */
+    /**
+     * Log the settings restore metrics.
+     *
+     * @param settingsRestoreStatus the status of the invoked settings restore
+     * @param timeToSucceedOrFailMillis time between invoking a settings restore and the status
+     *     being returned
+     * @param dataSize the size of the settings being restored
+     */
     public static void logSettingsRestoreStatus(
             @BackupRestoreEnums.SettingsRestoreState int settingsRestoreStatus,
             int timeToSucceedOrFailMillis,
             int dataSize) {
-        throw new UnsupportedOperationException();
+        HealthFitnessStatsLog.write(
+                HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED,
+                settingsRestoreStatus,
+                timeToSucceedOrFailMillis,
+                dataSize);
     }
 
-    /** Log the data restore eligibility metrics. */
-    public static void logDataRestoreEligibility(boolean eligibility) {
-        throw new UnsupportedOperationException();
+    /**
+     * Log the data restore eligibility metrics.
+     *
+     * @param eligibility Whether or not the system is eligible for a data restore.
+     */
+    public static void logRestoreEligibility(boolean eligibility) {
+        HealthFitnessStatsLog.write(HEALTH_CONNECT_RESTORE_ELIGIBILITY_CHECKED, eligibility);
     }
 }

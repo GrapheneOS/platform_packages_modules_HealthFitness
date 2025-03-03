@@ -35,8 +35,8 @@ import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.health.connect.HealthPermissions.READ_EXERCISE
 import android.health.connect.HealthPermissions.READ_HEALTH_DATA_HISTORY
-import android.health.connect.HealthPermissions.READ_HEART_RATE
 import android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND
+import android.health.connect.HealthPermissions.READ_HEART_RATE
 import android.health.connect.HealthPermissions.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES
 import android.health.connect.HealthPermissions.READ_MEDICAL_DATA_CONDITIONS
 import android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES
@@ -46,17 +46,16 @@ import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA
 import android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE
 import android.health.connect.HealthPermissions.WRITE_SLEEP
+import android.os.Build
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
-import android.os.Build
 import android.widget.Button
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -118,8 +117,7 @@ class PermissionsActivityTest {
             arrayOf(READ_EXERCISE, READ_MEDICAL_DATA_VACCINES)
         private val fitnessAndAdditionalPermissions =
             arrayOf(WRITE_SLEEP, READ_HEALTH_DATA_IN_BACKGROUND)
-        private val medicalPermissions =
-            arrayOf(READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
+        private val medicalPermissions = arrayOf(READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
         private val medicalAndAdditionalPermissions =
             arrayOf(READ_MEDICAL_DATA_VACCINES, READ_HEALTH_DATA_IN_BACKGROUND)
         private val allThreeCombined =
@@ -197,7 +195,7 @@ class PermissionsActivityTest {
         onView(withText("Sleep")).check(matches(isDisplayed()))
 
         scenario.onActivity { activity: PermissionsActivity ->
-            activity.findViewById<Button>(R.id.allow).callOnClick()
+            activity.findViewById<Button>(R.id.primary_button_outline).callOnClick()
         }
 
         assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
@@ -230,7 +228,7 @@ class PermissionsActivityTest {
         onView(withText("Skin temperature")).check(matches(isDisplayed()))
 
         scenario.onActivity { activity: PermissionsActivity ->
-            activity.findViewById<Button>(R.id.allow).callOnClick()
+            activity.findViewById<Button>(R.id.primary_button_outline).callOnClick()
         }
 
         assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
@@ -264,7 +262,7 @@ class PermissionsActivityTest {
         onView(withText("Skin temperature")).check(matches(isDisplayed()))
 
         scenario.onActivity { activity: PermissionsActivity ->
-            activity.findViewById<Button>(R.id.allow).callOnClick()
+            activity.findViewById<Button>(R.id.primary_button_outline).callOnClick()
         }
 
         assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
@@ -423,11 +421,7 @@ class PermissionsActivityTest {
     @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
     fun requestMedicalPermissions_someGrantedSomeDenied_clickOnAllow_includesAllInResponse() {
         val permissions =
-            arrayOf(
-                READ_MEDICAL_DATA_CONDITIONS,
-                READ_MEDICAL_DATA_VACCINES,
-                WRITE_MEDICAL_DATA,
-            )
+            arrayOf(READ_MEDICAL_DATA_CONDITIONS, READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
         val startActivityIntent = getPermissionScreenIntent(permissions)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
             TEST_APP_PACKAGE_NAME,
@@ -459,11 +453,7 @@ class PermissionsActivityTest {
     @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
     fun requestMedicalPermissions_someGrantedSomeDenied_clickOnDontAllow_includesAllInResponse() {
         val permissions =
-            arrayOf(
-                READ_MEDICAL_DATA_CONDITIONS,
-                READ_MEDICAL_DATA_VACCINES,
-                WRITE_MEDICAL_DATA,
-            )
+            arrayOf(READ_MEDICAL_DATA_CONDITIONS, READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
         val startActivityIntent = getPermissionScreenIntent(permissions)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
             TEST_APP_PACKAGE_NAME,
@@ -647,13 +637,13 @@ class PermissionsActivityTest {
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @RequiresFlagsEnabled(
         Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
+        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
     )
     @Test
     fun requestFitnessPermissions_notSplitPermissionRequest_redirectsToOnboarding() {
         val permissions = arrayOf(READ_HEART_RATE)
-        val startActivityIntent = getPermissionScreenIntent(
-            permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
+        val startActivityIntent =
+            getPermissionScreenIntent(permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
         (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
             BODY_SENSORS_TEST_APP_PACKAGE_NAME,
             mapOf(READ_HEART_RATE to FLAG_PERMISSION_USER_FIXED),
@@ -670,17 +660,19 @@ class PermissionsActivityTest {
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @RequiresFlagsEnabled(
         Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
+        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
     )
     @Test
     fun requestFitnessPermissions_legacyBodySensorsApp_onboardingSkipped() {
         val permissions = arrayOf(READ_HEART_RATE)
-        val startActivityIntent = getPermissionScreenIntent(
-            permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
+        val startActivityIntent =
+            getPermissionScreenIntent(permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
         (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
             BODY_SENSORS_TEST_APP_PACKAGE_NAME,
-            mapOf(READ_HEART_RATE to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
-                  READ_HEALTH_DATA_IN_BACKGROUND to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED),
+            mapOf(
+                READ_HEART_RATE to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
+                READ_HEALTH_DATA_IN_BACKGROUND to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
+            ),
         )
         // Ensure this app has never shown onboarding before.
         showOnboarding(context, true)
@@ -695,17 +687,19 @@ class PermissionsActivityTest {
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @RequiresFlagsEnabled(
         Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
+        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
     )
     @Test
     fun requestFitnessPermissions_legacyBodySensors_canGrantPermissions() {
         val permissions = arrayOf(READ_HEART_RATE)
-        val startActivityIntent = getPermissionScreenIntent(
-            permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
+        val startActivityIntent =
+            getPermissionScreenIntent(permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
         (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
             BODY_SENSORS_TEST_APP_PACKAGE_NAME,
-            mapOf(READ_HEART_RATE to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
-                  READ_HEALTH_DATA_IN_BACKGROUND to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED),
+            mapOf(
+                READ_HEART_RATE to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
+                READ_HEALTH_DATA_IN_BACKGROUND to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
+            ),
         )
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
@@ -721,25 +715,28 @@ class PermissionsActivityTest {
         val expectedResults = intArrayOf(PERMISSION_GRANTED)
         assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
             .isEqualTo(expectedResults)
-        assertThat(permissionManager.getGrantedHealthPermissions(
-            BODY_SENSORS_TEST_APP_PACKAGE_NAME))
+        assertThat(
+                permissionManager.getGrantedHealthPermissions(BODY_SENSORS_TEST_APP_PACKAGE_NAME)
+            )
             .containsExactlyElementsIn(listOf(READ_HEART_RATE))
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @RequiresFlagsEnabled(
         Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
+        android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
     )
     @Test
     fun requestFitnessPermissions_legacyBodySensors_canGrantBackgroundPermission() {
         val permissions = arrayOf(READ_HEART_RATE, READ_HEALTH_DATA_IN_BACKGROUND)
-        val startActivityIntent = getPermissionScreenIntent(
-            permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
+        val startActivityIntent =
+            getPermissionScreenIntent(permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
         (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
             BODY_SENSORS_TEST_APP_PACKAGE_NAME,
-            mapOf(READ_HEART_RATE to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
-                  READ_HEALTH_DATA_IN_BACKGROUND to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED),
+            mapOf(
+                READ_HEART_RATE to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
+                READ_HEALTH_DATA_IN_BACKGROUND to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
+            ),
         )
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
@@ -759,10 +756,10 @@ class PermissionsActivityTest {
         val expectedResults = intArrayOf(PERMISSION_GRANTED, PERMISSION_GRANTED)
         assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
             .isEqualTo(expectedResults)
-        assertThat(permissionManager.getGrantedHealthPermissions(
-            BODY_SENSORS_TEST_APP_PACKAGE_NAME))
-            .containsExactlyElementsIn(
-                listOf(READ_HEART_RATE, READ_HEALTH_DATA_IN_BACKGROUND))
+        assertThat(
+                permissionManager.getGrantedHealthPermissions(BODY_SENSORS_TEST_APP_PACKAGE_NAME)
+            )
+            .containsExactlyElementsIn(listOf(READ_HEART_RATE, READ_HEALTH_DATA_IN_BACKGROUND))
     }
 
     @Test
@@ -1211,8 +1208,9 @@ class PermissionsActivityTest {
     }
 
     private fun getPermissionScreenIntent(
-            permissions: Array<String>,
-            testAppName: String = TEST_APP_PACKAGE_NAME): Intent =
+        permissions: Array<String>,
+        testAppName: String = TEST_APP_PACKAGE_NAME,
+    ): Intent =
         Intent.makeMainActivity(ComponentName(context, PermissionsActivity::class.java))
             .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions)
             .putExtra(EXTRA_PACKAGE_NAME, testAppName)

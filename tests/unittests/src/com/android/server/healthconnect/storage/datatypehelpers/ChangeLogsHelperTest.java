@@ -22,6 +22,9 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.APP_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
@@ -44,7 +47,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -170,7 +172,7 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
     public void getDeleteRequestForAutoDelete_byDefault_removeChangeLogsMoreThan32DaysOld() {
         insertChangeLog(
                 /* recordType= */ RECORD_TYPE_STEPS,
@@ -197,7 +199,11 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
+    @EnableFlags({
+        FLAG_CLOUD_BACKUP_AND_RESTORE,
+        FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+    })
     public void getDeleteRequestForAutoDelete_doesNotRemoveChangeLogsLessThan90DaysOld() {
         insertChangeLog(
                 /* recordType= */ RECORD_TYPE_STEPS,
@@ -211,7 +217,11 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
+    @EnableFlags({
+        FLAG_CLOUD_BACKUP_AND_RESTORE,
+        FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+    })
     public void getDeleteRequestForAutoDelete_removeChangeLogsMoreThan90DaysOld() {
         insertChangeLog(
                 /* recordType= */ RECORD_TYPE_STEPS,

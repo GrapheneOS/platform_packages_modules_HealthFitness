@@ -52,6 +52,8 @@ import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsSpinnerAdapter
 import com.android.settingslib.widget.SettingsSpinnerPreference
+import com.android.settingslib.widget.SettingsThemeHelper
+import com.android.settingslib.widget.ZeroStatePreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -65,6 +67,7 @@ class DataSourcesFragment :
         private const val DATA_TOTALS_PREFERENCE_KEY = "data_totals_preference"
         private const val APP_SOURCES_PREFERENCE_GROUP = "app_sources_group"
         private const val APP_SOURCES_PREFERENCE_KEY = "app_sources"
+        private const val ZERO_STATE_PREFERENCE_KEY = "zero_state"
         private const val ADD_AN_APP_PREFERENCE_KEY = "add_an_app"
         private const val NON_EMPTY_FOOTER_PREFERENCE_KEY = "data_sources_footer"
         private const val EMPTY_STATE_HEADER_PREFERENCE_KEY = "empty_state_header"
@@ -93,6 +96,8 @@ class DataSourcesFragment :
         pref(DATA_TYPE_SPINNER_PREFERENCE_GROUP)
 
     private val dataTotalsPreferenceGroup: PreferenceGroup by pref(DATA_TOTALS_PREFERENCE_GROUP)
+
+    private val zeroStatePreference: ZeroStatePreference by pref(ZERO_STATE_PREFERENCE_KEY)
 
     private val appSourcesPreferenceGroup: PreferenceGroup by pref(APP_SOURCES_PREFERENCE_GROUP)
 
@@ -328,13 +333,22 @@ class DataSourcesFragment :
         removeNonEmptyState()
         removeEmptyState()
 
-        preferenceScreen.addPreference(getEmptyStateHeaderPreference())
+        addEmptyHeader()
         preferenceScreen.addPreference(getEmptyStateFooterPreference())
+    }
+
+    private fun addEmptyHeader() {
+        if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            zeroStatePreference.isVisible = true
+        } else {
+            preferenceScreen.addPreference(getEmptyStateHeaderPreference())
+        }
     }
 
     private fun removeEmptyState() {
         preferenceScreen.removePreferenceRecursively(EMPTY_STATE_HEADER_PREFERENCE_KEY)
         preferenceScreen.removePreferenceRecursively(EMPTY_STATE_FOOTER_PREFERENCE_KEY)
+        zeroStatePreference.isVisible = false
     }
 
     private fun removeNonEmptyState() {

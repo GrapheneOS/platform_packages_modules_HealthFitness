@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"ಡೇಟಾ ಬ್ರೌಸ್ ಮಾಡಿ"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"ಡೇಟಾವನ್ನು ಮತ್ತು ಯಾವ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್‌ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ನೋಡಿ"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"ಸ್ವಯಂ-ಅಳಿಸುವಿಕೆ, ಡೇಟಾ ಮೂಲಗಳು, ಬ್ಯಾಕಪ್ ಮತ್ತು ಮರುಸ್ಥಾಪನೆ"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"ಇನ್ನಷ್ಟು ಐಟಂಗಳು"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"ಕಡಿಮೆ ಐಟಂಗಳು"</string>
     <string name="backup_title" msgid="211503191266235085">"ಬ್ಯಾಕಪ್"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"ಡೇಟಾ ಮೂಲಗಳು ಮತ್ತು ಆದ್ಯತೆ"</string>
     <string name="set_units_title" msgid="2657822539603758029">"ಯೂನಿಟ್‌ಗಳನ್ನು ಸೆಟ್ ಮಾಡಿ"</string>
@@ -442,7 +444,8 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"ಗೌಪ್ಯತೆ ನೀತಿಯನ್ನು ಓದಿ"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"ಕಳೆದ 24 ಗಂಟೆಗಳಲ್ಲಿ ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲಾಗಿದೆ"</string>
     <string name="app_access_title" msgid="7137018424885371763">"ಆ್ಯಪ್ ಆ್ಯಕ್ಸೆಸ್"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"ಹೊಂದಾಣಿಕೆಯಾಗುವ ಯಾವುದೇ ಆ್ಯಪ್‌ಗಳನ್ನು ನೀವು ಪ್ರಸ್ತುತ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿಲ್ಲ"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (7684166767384190933) -->
+    <skip />
     <string name="additional_access_label" msgid="4645249249222528341">"ಹೆಚ್ಚುವರಿ ಆ್ಯಕ್ಸೆಸ್"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"ಹಿಂದಿನ ಡೇಟಾ, ಹಿನ್ನೆಲೆ ಡೇಟಾ"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"ಈ ಆ್ಯಪ್‌ಗೆ ಹೆಚ್ಚುವರಿ ಅನುಮತಿಗಳನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ"</string>
@@ -1173,10 +1176,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"ಯಾವಾಗಲೂ"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"ಬಳಕೆಯಲ್ಲಿರುವಾಗ"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> ನಿಮ್ಮ ಎಲ್ಲಾ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಎಲ್ಲಾ ಸಮಯದಲ್ಲೂ ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> ಬಳಕೆಯಲ್ಲಿರುವಾಗ ಅದು ನಿಮ್ಮ ಎಲ್ಲಾ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಅನುಮತಿಸಲಾಗಿದೆ"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"ಓದಲು ಅನುಮತಿಸಲಾಗಿದೆ"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"ಈ ಅನುಮತಿಗಳು ನಿಮ್ಮ ಸಾಧನದ ಸೆನ್ಸರ್‌ಗಳಲ್ಲಿನ ಡೇಟಾಗೆ <xliff:g id="APP_NAME">%1$s</xliff:g> ಗೆ ಆ್ಯಕ್ಸೆಸ್ ನೀಡುತ್ತದೆ."</string>
@@ -1188,10 +1189,8 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"ನಿಮ್ಮ ವಾಚ್‌ನಲ್ಲಿರುವ ಎಲ್ಲಾ ಆ್ಯಪ್‌ಗಳಿಗೆ <xliff:g id="DATA_TYPE">%s</xliff:g> ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ತೆಗೆದುಹಾಕಬೇಕೇ?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"ಚೆಕ್‌ ಮಾರ್ಕ್"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"ಅಡ್ಡ ಗುರುತು"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"ಪ್ರಸ್ತುತ, <xliff:g id="APP_NAME">%1$s</xliff:g> ಎಲ್ಲಾ ಸಮಯದಲ್ಲೂ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"ಪ್ರಸ್ತುತ, <xliff:g id="APP_NAME">%1$s</xliff:g> ಬಳಕೆಯಲ್ಲಿರುವಾಗ ಅದು ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"ಎಲ್ಲಾ ಸಮಯದಲ್ಲೂ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾಗೆ <xliff:g id="APP_NAME">%1$s</xliff:g> ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ಅನುಮತಿಸಬೇಕೇ?"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> <xliff:g id="DATA_TYPES">%2$s</xliff:g> ಗೆ ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ಹೊಂದಿದೆ."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಅನುಮತಿಗಳನ್ನು ನಿರ್ವಹಿಸಿ"</string>

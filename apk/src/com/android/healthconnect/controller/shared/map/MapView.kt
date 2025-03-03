@@ -26,7 +26,6 @@ import android.view.View
 import com.android.settingslib.widget.theme.R
 import java.lang.Math.toDegrees
 import java.lang.Math.toRadians
-import kotlin.math.abs
 import kotlin.math.asin
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -92,12 +91,9 @@ constructor(
         val height = MeasureSpec.getSize(heightMeasureSpec)
 
         mapBounds.set(
-            width * PADDING,
-            height * PADDING,
-            width * (1 - PADDING),
-            height * (1 - PADDING),
-        )
+            width * PADDING, height * PADDING, width * (1 - PADDING), height * (1 - PADDING))
     }
+
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -128,8 +124,7 @@ constructor(
                 min(routeBounds.left, lon),
                 max(routeBounds.top, lat),
                 max(routeBounds.right, lon),
-                min(routeBounds.bottom, lat),
-            )
+                min(routeBounds.bottom, lat))
         }
         var previous = translate(adjustedRoute[0])
 
@@ -147,30 +142,10 @@ constructor(
     }
 
     private fun translate(point: Pair<Double, Double>): Pair<Float, Float> {
-
-        // Width and height of the route bounds
-        val routeWidth = abs(routeBounds.width())
-        val routeHeight = abs(routeBounds.height())
-
-        // Width and height of the map view bounds
-        val mapWidth = abs(mapBounds.width())
-        val mapHeight = abs(mapBounds.height())
-
-        // Determine the scale factor (scale uniformly based on the larger dimension)
-        val scale = min(mapWidth / routeWidth, mapHeight / routeHeight)
-
-        // Center the route within the map bounds
-        val xOffset = mapBounds.left + (mapWidth - (scale * routeWidth)) / 2
-        val yOffset = mapBounds.top + (mapWidth - (scale * routeHeight)) / 2
-
-        // Calculate the normalized coordinates based on route bounds
-        val xRatio = abs((point.second - routeBounds.left) / routeWidth)
-        val yRatio = abs((point.first - routeBounds.top) / routeHeight)
-
-        // Apply the scaling and offset to translate the point into the map bounds
-        val mapX = (xRatio * (routeWidth * scale)) + xOffset
-        val mapY = (yRatio * (routeHeight * scale)) + yOffset
-
+        val yRatio = (point.first - routeBounds.top) / (routeBounds.bottom - routeBounds.top)
+        val xRatio = (point.second - routeBounds.left) / (routeBounds.right - routeBounds.left)
+        val mapX = xRatio * (mapBounds.right - mapBounds.left) + mapBounds.left
+        val mapY = yRatio * (mapBounds.bottom - mapBounds.top) + mapBounds.top
         return Pair(mapX.toFloat(), mapY.toFloat())
     }
 

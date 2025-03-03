@@ -35,6 +35,7 @@ public final class DatabaseVersions {
 
     public static final int DB_VERSION_ACTIVITY_INTENSITY = 16;
     public static final int DB_VERSION_ECOSYSTEM_METRICS = 17;
+    public static final int DB_VERSION_CLOUD_BACKUP_AND_RESTORE = 18;
 
     // For historical reasons, we do not support versions below this
     // See go/hc-mainline-dev/trunk_stable/db-and-aconfig#a-bit-of-history

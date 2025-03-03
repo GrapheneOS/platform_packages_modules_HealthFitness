@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Procházet data"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Zobrazit data a aplikace, které k nim mají přístup"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatické mazání, zdroje dat, zálohování a obnovení"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"Více položek"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Méně položek"</string>
     <string name="backup_title" msgid="211503191266235085">"Záloha"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Zdroje dat a priorita"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Nastavit jednotky"</string>
@@ -442,7 +444,8 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Zobrazit zásady ochrany soukromí"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Použito během posledních 24 hodin"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Přístup aplikace"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Momentálně nemáte nainstalované žádné kompatibilní aplikace"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (7684166767384190933) -->
+    <skip />
     <string name="additional_access_label" msgid="4645249249222528341">"Další přístup"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Dřívější data, data na pozadí"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Této aplikaci byla odebrána další oprávnění"</string>
@@ -1173,10 +1176,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness a wellness"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Neustále"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"Při používání"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má trvalý přístup ke všem vašim datům o fitness a wellness"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má přístup ke všem vašim datům o fitness a wellness, když ji používáte"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Přístup povolen"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Smí číst"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Tato oprávnění dávají aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k datům ze senzorů vašeho zařízení."</string>
@@ -1188,17 +1189,12 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Odebrat všem aplikacím v hodinkách přístup k datům typu <xliff:g id="DATA_TYPE">%s</xliff:g>?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Značka zaškrtnutí"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Křížek"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má trvalý přístup ke všem vašim datům o fitness a wellness"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má přístup ke všem vašim datům o fitness a wellness, když ji používáte"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> neustálý přístup k datům o fitness a wellness?"</string>
     <string name="current_access" msgid="1457167070428176139">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má přístup k těmto datům: <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Spravovat oprávnění pro fitness a wellness"</string>
-    <!-- no translation found for used_by_apps_count (1384912521974773617) -->
-    <skip />
-    <!-- no translation found for not_used_in_past_24_hours (7918784815693928054) -->
-    <skip />
-    <!-- no translation found for accessed (4424701457530587176) -->
-    <skip />
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Využíváno 1 aplikací}few{Využíváno # aplikacemi}many{Využíváno # aplikace}other{Využíváno # aplikacemi}}"</string>
+    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Během uplynulých 24 hodin nepoužito"</string>
+    <string name="accessed" msgid="4424701457530587176">"Poslední přístup: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
 </resources>

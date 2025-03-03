@@ -1,0 +1,44 @@
+{
+  "resourceType": "Observation",
+  "id": "b-observation-4",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "social-history",
+          "display": "Social History"
+        }
+      ],
+      "text": "Social History"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "82810-3",
+        "display": "Pregnancy status"
+      }
+    ],
+    "text": "Pregnancy status"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1",
+    "display": "Ting, Tess"
+  },
+  "valueString": "Not pregnant",
+  "encounter": {
+    "reference": "Encounter/b-encounter-1",
+    "display": "GP appointment"
+  },
+  "effectiveDateTime": "2021-02-04T21:43:49Z",
+  "issued": "2021-02-04T22:00:46Z",
+  "performer": [
+    {
+      "reference": "Practitioner/b-practitioner-1",
+      "display": "Dr Maria Hernandez"
+    }
+  ]
+}

@@ -138,6 +138,14 @@ public final class ExportImportSettingsStorageTest {
     }
 
     @Test
+    public void testGetLastExportError() {
+        assertThat(mExportImportSettingsStorage.getLastExportError()).isEqualTo(-1);
+        mExportImportSettingsStorage.setLastExportError(
+                ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN, mInstant);
+        assertThat(mExportImportSettingsStorage.getLastExportError()).isEqualTo(1);
+    }
+
+    @Test
     @DisableFlags({Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW})
     public void testConfigure_uri_flagDisabled_setsSequentialNumberToZero() {
         mExportImportSettingsStorage.configure(
@@ -224,6 +232,26 @@ public final class ExportImportSettingsStorageTest {
                 new ScheduledExportSettings.Builder().setUri(Uri.parse(TEST_URI)).build());
 
         assertThat(mExportImportSettingsStorage.getUri()).isEqualTo(Uri.parse(TEST_URI));
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_EXTEND_EXPORT_IMPORT_TELEMETRY})
+    public void getExportRepeatErrorOnRetryCount() {
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+        mExportImportSettingsStorage.increaseExportRepeatErrorOnRetryCount();
+        mExportImportSettingsStorage.increaseExportRepeatErrorOnRetryCount();
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(2);
+        mExportImportSettingsStorage.resetExportRepeatErrorOnRetryCount();
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_EXTEND_EXPORT_IMPORT_TELEMETRY})
+    public void getExportRepeatErrorOnRetryCountDisabled() {
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+        mExportImportSettingsStorage.increaseExportRepeatErrorOnRetryCount();
+        mExportImportSettingsStorage.increaseExportRepeatErrorOnRetryCount();
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
     }
 
     @Test

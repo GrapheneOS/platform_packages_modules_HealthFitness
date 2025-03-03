@@ -71,7 +71,7 @@ public class HealthPermissionIntentAppsTrackerTest {
         setSelfIntentSupport(/* intentSupported= */ true);
         HealthPermissionIntentAppsTracker mTracker =
                 new HealthPermissionIntentAppsTracker(mContext);
-        mTracker.onUserUnlocked(CURRENT_USER);
+        mTracker.setupForUser(CURRENT_USER);
         assertThat(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .isTrue();
     }
@@ -81,7 +81,7 @@ public class HealthPermissionIntentAppsTrackerTest {
         setSelfIntentSupport(/* intentSupported= */ false);
         HealthPermissionIntentAppsTracker mTracker =
                 new HealthPermissionIntentAppsTracker(mContext);
-        mTracker.onUserUnlocked(CURRENT_USER);
+        mTracker.setupForUser(CURRENT_USER);
         assertThat(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .isFalse();
     }
@@ -101,7 +101,7 @@ public class HealthPermissionIntentAppsTrackerTest {
         setSelfIntentSupport(/* intentSupported= */ true);
         HealthPermissionIntentAppsTracker mTracker =
                 new HealthPermissionIntentAppsTracker(mContext);
-        mTracker.onUserUnlocked(CURRENT_USER);
+        mTracker.setupForUser(CURRENT_USER);
         assertThat(mTracker.supportsPermissionUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .isTrue();
         setSelfIntentSupport(/* intentSupported= */ false);

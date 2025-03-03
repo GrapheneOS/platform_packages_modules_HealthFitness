@@ -378,6 +378,15 @@ flag {
 }
 
 flag {
+    name: "cloud_backup_and_restore_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables DB modification for cloud B&R."
+    bug: "369798725"
+    is_fixed_read_only: true
+    is_exported: true
+}
+
+flag {
     name: "ecosystem_metrics_db_changes"
     namespace: "health_fitness_aconfig"
     description: "Enables DB modification to allow collection of ecosystem metrics."
@@ -530,6 +539,15 @@ flag {
     namespace: "health_fitness_aconfig"
     description: "Flag for adding improved logging for export import"
     bug: "375394408"
+    is_fixed_read_only: true
+    is_exported: true
+}
+
+flag {
+    name: "launch_onboarding_activity"
+    namespace: "health_fitness_aconfig"
+    description: "Flag for launching an onboarding activity exported by a client app"
+    bug: "270672374"
     is_fixed_read_only: true
     is_exported: true
 }

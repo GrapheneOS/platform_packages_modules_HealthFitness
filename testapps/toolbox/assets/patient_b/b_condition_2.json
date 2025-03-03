@@ -1,0 +1,61 @@
+{
+  "resourceType": "Condition",
+  "id": "b-condition-2",
+  "clinicalStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+        "code": "active",
+        "display": "Active"
+      }
+    ],
+    "text": "Active"
+  },
+  "verificationStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+        "code": "confirmed",
+        "display": "Confirmed"
+      }
+    ],
+    "text": "Confirmed"
+  },
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+          "code": "encounter-diagnosis",
+          "display": "Encounter Diagnosis"
+        }
+      ],
+      "text": "Encounter Diagnosis"
+    }
+  ],
+  "severity": {
+    "text": "Mild"
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "195967001",
+        "display": "Asthma (disorder)"
+      }
+    ],
+    "text": "Asthma"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1",
+    "display": "Ting, Tess"
+  },
+  "asserter": {
+    "reference": "Practitioner/b-practitioner-1",
+    "type": "Practitioner",
+     "display": "Dr Maria Hernandez"
+  },
+  "onsetDateTime": "1995",
+  "abatementDateTime": "2004",
+  "recordedDate": "2016-04-10"
+}

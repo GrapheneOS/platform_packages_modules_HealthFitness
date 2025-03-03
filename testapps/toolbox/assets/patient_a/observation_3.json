@@ -1,0 +1,94 @@
+{
+  "resourceType": "Observation",
+  "id": "observation-3",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "vital-signs",
+          "display": "Vital Signs"
+        }
+      ],
+      "text": "Vital Signs"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "8310-5",
+        "display": "Body temperature"
+      }
+    ],
+    "text": "Body temperature"
+  },
+  "subject": {
+    "reference": "Patient/patient-1",
+    "display": "Example, Anne"
+  },
+  "valueQuantity": {
+    "value": 36.7,
+    "unit": "C",
+    "system": "http://unitsofmeasure.org",
+    "code": "Cel"
+  },
+  "encounter": {
+    "reference": "Encounter/encounter-4",
+    "display": "GP appointment"
+  },
+  "effectiveDateTime": "2023-06-14T12:53:49Z",
+  "issued": "2023-06-14T12:53:49Z",
+  "performer": [
+    {
+      "reference": "Practitioner/practitioner-1",
+      "display": "Dr Maria Hernandez"
+    }
+  ],
+  "bodySite": {
+    "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "74262004",
+          "display": "Oral cavity"
+        }
+    ]
+  },
+  "method": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "89003005",
+        "display": "Oral temperature taking"
+      }
+    ]
+  },
+  "referenceRange": [
+    {
+      "low": {
+        "value": 36.5,
+        "unit": "C",
+        "system": "http://unitsofmeasure.org",
+        "code": "Cel"
+      },
+      "high": {
+        "value": 37.2,
+        "unit": "C",
+        "system": "http://unitsofmeasure.org",
+        "code": "Cel"
+      }
+    }
+  ],
+  "interpretation": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+          "code": "N",
+          "display": "Normal"
+        }
+      ]
+    }
+  ]
+}

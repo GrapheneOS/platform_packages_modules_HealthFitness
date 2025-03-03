@@ -18,6 +18,7 @@ package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.DB_VERSION_TO_DB_FLAG_MAP;
 import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersion;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isEcosystemMetricsEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
@@ -32,7 +33,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,14 +46,11 @@ public class AconfigFlagHelperTest {
     @ClassRule public static final SetFlagsRule.ClassRule mClassRule = new SetFlagsRule.ClassRule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
-    @Before
-    public void setup() {
-        DB_VERSION_TO_DB_FLAG_MAP.clear();
-    }
-
     @Test
     @DisableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void infraToGuardDbChangesDisabled() {
+        // clear the map to setup a hypothetical test case
+        DB_VERSION_TO_DB_FLAG_MAP.clear();
         // putting a very high DB version mapping to true to the map
         DB_VERSION_TO_DB_FLAG_MAP.put(1000_000, () -> true);
 
@@ -66,12 +63,16 @@ public class AconfigFlagHelperTest {
     @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
     public void infraToGuardDbChangesEnabled() {
+        // clear the map to setup a hypothetical test case
+        DB_VERSION_TO_DB_FLAG_MAP.clear();
         assertThat(getDbVersion()).isEqualTo(LAST_ROLLED_OUT_DB_VERSION);
     }
 
     @Test
     @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void readDbVersionToDbFlagMap_expectNoDbVersionSmallerThanBaseline() {
+        // clear the map to setup a hypothetical test case
+        DB_VERSION_TO_DB_FLAG_MAP.clear();
         // The baseline is the DB version when go/hc-aconfig-and-db is first introduced, which is
         // LAST_ROLLED_OUT_DB_VERSION.
         int baseline = LAST_ROLLED_OUT_DB_VERSION;
@@ -87,6 +88,8 @@ public class AconfigFlagHelperTest {
     @Test
     @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void testGetDbVersion_true_true_true() {
+        // clear the map to setup a hypothetical test case
+        DB_VERSION_TO_DB_FLAG_MAP.clear();
         // initialize DB_VERSION_TO_DB_FLAG_MAP, so it won't be empty when getDbVersion() is called,
         // so the entries created in this test will be used.
         DB_VERSION_TO_DB_FLAG_MAP.put(1, () -> true);
@@ -99,6 +102,8 @@ public class AconfigFlagHelperTest {
     @Test
     @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void testGetDbVersion_true_false_true() {
+        // clear the map to setup a hypothetical test case
+        DB_VERSION_TO_DB_FLAG_MAP.clear();
         // initialize DB_VERSION_TO_DB_FLAG_MAP, so it won't be empty when getDbVersion() is called,
         // so the entries created in this test will be used.
         DB_VERSION_TO_DB_FLAG_MAP.put(1, () -> true);
@@ -111,6 +116,8 @@ public class AconfigFlagHelperTest {
     @Test
     @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void testGetDbVersion_true_false_false() {
+        // clear the map to setup a hypothetical test case
+        DB_VERSION_TO_DB_FLAG_MAP.clear();
         // initialize DB_VERSION_TO_DB_FLAG_MAP, so it won't be empty when getDbVersion() is called,
         // so the entries created in this test will be used.
         DB_VERSION_TO_DB_FLAG_MAP.put(1, () -> true);
@@ -197,10 +204,38 @@ public class AconfigFlagHelperTest {
     @EnableFlags({
         Flags.FLAG_ECOSYSTEM_METRICS,
         Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        Flags.FLAG_ACTIVITY_INTENSITY_DB
     })
     public void isEcosystemMetricsEnabled_bothFlagsOn_expectTrue() {
         assertThat(isEcosystemMetricsEnabled()).isTrue();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE,
+        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+    })
+    public void cloudBackupAndRestore_featureFlagTrueAndDbFlagTrue_expectTrue() {
+        assertThat(isCloudBackupRestoreEnabled()).isTrue();
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_CLOUD_BACKUP_AND_RESTORE, Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB})
+    public void cloudBackupAndRestore_featureFlagFalseAndDbFlagFalse_expectFalse() {
+        assertThat(isCloudBackupRestoreEnabled()).isFalse();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
+    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB)
+    public void cloudBackupAndRestore_featureFlagFalseAndDbTrue_expectFalse() {
+        assertThat(isCloudBackupRestoreEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
+    @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB)
+    public void cloudBackupAndRestore_featureFlagTrueAndDbFalse_expectFalse() {
+        assertThat(isCloudBackupRestoreEnabled()).isFalse();
     }
 }

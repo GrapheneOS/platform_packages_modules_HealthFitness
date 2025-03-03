@@ -1,0 +1,87 @@
+{
+  "resourceType": "Observation",
+  "id": "observation-31",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "vital-signs",
+          "display": "Vital Signs"
+        }
+      ],
+      "text": "Vital Signs"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "8310-5",
+        "display": "Body temperature"
+      }
+    ],
+    "text": "Body temperature"
+  },
+  "subject": {
+    "reference": "Patient/patient-1",
+    "display": "Example, Anne"
+  },
+  "valueQuantity": {
+    "value": 37.1,
+    "unit": "C",
+    "system": "http://unitsofmeasure.org",
+    "code": "Cel"
+  },
+  "encounter": {
+    "reference": "Encounter/encounter-5",
+    "display": "Endocrine outpatient appointment"
+  },
+  "effectiveDateTime": "2022-09-28T09:36:00Z",
+  "bodySite": {
+    "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "74262004",
+          "display": "Oral cavity"
+        }
+    ]
+  },
+  "method": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "89003005",
+        "display": "Oral temperature taking"
+      }
+    ]
+  },
+  "referenceRange": [
+    {
+      "low": {
+        "value": 36.5,
+        "unit": "C",
+        "system": "http://unitsofmeasure.org",
+        "code": "Cel"
+      },
+      "high": {
+        "value": 37.2,
+        "unit": "C",
+        "system": "http://unitsofmeasure.org",
+        "code": "Cel"
+      }
+    }
+  ],
+  "interpretation": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+          "code": "N",
+          "display": "Normal"
+        }
+      ]
+    }
+  ]
+}

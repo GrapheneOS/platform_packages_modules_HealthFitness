@@ -1,0 +1,110 @@
+{
+  "resourceType": "Patient",
+  "id": "b-patient-1",
+  "active": true,
+  "identifier": [
+    {
+      "use": "usual",
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical record number"
+          }
+        ],
+        "text": "Health Connect Hospital MRN"
+      },
+      "system": "urn:oid:1.2.345.6789",
+      "value": "10001"
+    },
+    {
+      "use": "usual",
+      "type": {
+        "text": "FHIR"
+      },
+      "system": "http://example.ehr.com/FHIR/StructureDefinition/patient-r4-fhir-id",
+      "value": "aB1c.d2EFGH.I3JK"
+    }
+  ],
+  "name": [
+    {
+      "use": "usual",
+      "text": "Tess Ting",
+      "family": "Ting",
+      "given": [
+        "Tess"
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+447111111111",
+      "use": "mobile"
+    },
+    {
+      "system": "phone",
+      "value": "+441111222222",
+      "use": "home"
+    },
+    {
+      "system": "email",
+      "value": "tess.ting@gmail.com",
+      "rank": 1
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1987-06-10",
+  "deceasedBoolean": false,
+  "address": [
+    {
+      "use": "home",
+      "line": [
+        "1 Unhappy Path"
+      ],
+      "city": "London",
+      "postalCode": "N10 2AB",
+      "country": "UK",
+      "period": {
+        "start": "2020-03-01"
+      }
+    }
+  ],
+  "maritalStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+        "code": "T",
+        "display": "Domestic partner"
+      }
+    ],
+    "text": "Domestic partner"
+  },
+  "communication": [
+    {
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "en",
+            "display": "English"
+          }
+        ],
+        "text": "English"
+      },
+      "preferred": true
+    }
+  ],
+  "generalPractitioner": [
+    {
+      "reference": "Practitioner/b-practitioner-1",
+      "type": "Practitioner",
+      "display": "Dr Maria Hernandez"
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/b-organization-1",
+    "display": "Health Connect General Practice"
+  }
+}

@@ -45,7 +45,7 @@ import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.ImportUiStatus
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
-import com.android.healthconnect.controller.shared.preference.BannerPreference
+import com.android.healthconnect.controller.shared.preference.HealthBannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
@@ -62,6 +62,7 @@ import com.android.healthconnect.controller.utils.withinOneHourAfter
 import com.android.healthconnect.controller.utils.withinOneMinuteAfter
 import com.android.healthconnect.controller.utils.withinOneYearAfter
 import com.android.healthfitness.flags.Flags.exportImportFastFollow
+import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.FooterPreference
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Duration
@@ -81,6 +82,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
         const val IMPORT_ERROR_BANNER_ORDER = 0
         const val PREVIOUS_EXPORT_STATUS_ORDER = 2
         const val IMPORT_FILE_URI_KEY = "selectedUri"
+        const val BANNER_GROUP = "banner_group"
         const val TAG = "BackupAndRestoreSettingsFragment"
     }
 
@@ -106,6 +108,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     private val scheduledExportPreference: HealthPreference by pref(SCHEDULED_EXPORT_PREFERENCE_KEY)
 
     private val importDataPreference: HealthPreference by pref(IMPORT_DATA_PREFERENCE_KEY)
+    private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
 
     private val settingsCategory: PreferenceGroup by
         pref(EXPORT_IMPORT_SETTINGS_CATEGORY_PREFERENCE_KEY)
@@ -268,19 +271,19 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     }
 
     private fun maybeShowImportErrorBanner(importUiState: ImportUiState) {
-        val importErrorBanner = preferenceScreen.findPreference<Preference>(IMPORT_ERROR_BANNER_KEY)
+        val importErrorBanner = bannerGroup.findPreference<Preference>(IMPORT_ERROR_BANNER_KEY)
         if (importErrorBanner != null) {
-            preferenceScreen.removePreferenceRecursively(IMPORT_ERROR_BANNER_KEY)
+            bannerGroup.removePreferenceRecursively(IMPORT_ERROR_BANNER_KEY)
         }
         when (importUiState.dataImportState) {
             ImportUiState.DataImportState.DATA_IMPORT_ERROR_WRONG_FILE -> {
-                preferenceScreen.addPreference(getImportWrongFileErrorBanner())
+                bannerGroup.addPreference(getImportWrongFileErrorBanner())
             }
             ImportUiState.DataImportState.DATA_IMPORT_ERROR_VERSION_MISMATCH -> {
-                preferenceScreen.addPreference(getImportVersionMismatchErrorBanner())
+                bannerGroup.addPreference(getImportVersionMismatchErrorBanner())
             }
             ImportUiState.DataImportState.DATA_IMPORT_ERROR_UNKNOWN -> {
-                preferenceScreen.addPreference(getImportOtherErrorBanner())
+                bannerGroup.addPreference(getImportOtherErrorBanner())
             }
             ImportUiState.DataImportState.DATA_IMPORT_ERROR_NONE -> {
                 // Do nothing.
@@ -291,68 +294,66 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
         }
     }
 
-    private fun getImportWrongFileErrorBanner(): BannerPreference {
-        return BannerPreference(
+    private fun getImportWrongFileErrorBanner(): HealthBannerPreference {
+        return HealthBannerPreference(
                 requireContext(),
                 BackupAndRestoreElement.IMPORT_WRONG_FILE_ERROR_BANNER,
             )
-            .also {
-                it.setPrimaryButton(
+            .also { banner ->
+                banner.setPositiveButton(
                     getString(R.string.import_wrong_file_error_banner_button),
                     BackupAndRestoreElement.IMPORT_WRONG_FILE_ERROR_BANNER_BUTTON,
-                )
-                it.title = getString(R.string.import_error_banner_title)
-                it.key = IMPORT_ERROR_BANNER_KEY
-                it.summary = getString(R.string.import_wrong_file_error_banner_summary)
-                it.icon =
+                ) {
+                    triggerImport()
+                }
+                banner.title = getString(R.string.import_error_banner_title)
+                banner.key = IMPORT_ERROR_BANNER_KEY
+                banner.summary = getString(R.string.import_wrong_file_error_banner_summary)
+                banner.icon =
                     AttributeResolver.getNullableDrawable(requireContext(), R.attr.warningIcon)
-                it.setPrimaryButtonOnClickListener { triggerImport() }
-                it.order = IMPORT_ERROR_BANNER_ORDER
             }
     }
 
-    private fun getImportVersionMismatchErrorBanner(): BannerPreference {
-        return BannerPreference(
+    private fun getImportVersionMismatchErrorBanner(): HealthBannerPreference {
+        return HealthBannerPreference(
                 requireContext(),
                 BackupAndRestoreElement.IMPORT_VERSION_MISMATCH_ERROR_BANNER,
             )
-            .also {
-                it.setPrimaryButton(
+            .also { banner ->
+                banner.setPositiveButton(
                     getString(R.string.import_version_mismatch_error_banner_button),
                     BackupAndRestoreElement.IMPORT_VERSION_MISMATCH_ERROR_BANNER_BUTTON,
-                )
-                it.title = getString(R.string.import_error_banner_title)
-                it.key = IMPORT_ERROR_BANNER_KEY
-                it.summary = getString(R.string.import_version_mismatch_error_banner_summary)
-                it.icon =
-                    AttributeResolver.getNullableDrawable(requireContext(), R.attr.warningIcon)
-                it.setPrimaryButtonOnClickListener {
+                ) {
                     findNavController()
                         .navigate(
                             R.id.action_backupAndRestoreSettingsFragment_to_systemUpdateActivity
                         )
                 }
-                it.order = IMPORT_ERROR_BANNER_ORDER
+                banner.title = getString(R.string.import_error_banner_title)
+                banner.key = IMPORT_ERROR_BANNER_KEY
+                banner.summary = getString(R.string.import_version_mismatch_error_banner_summary)
+                banner.icon =
+                    AttributeResolver.getNullableDrawable(requireContext(), R.attr.warningIcon)
             }
     }
 
-    private fun getImportOtherErrorBanner(): BannerPreference {
-        return BannerPreference(
+    private fun getImportOtherErrorBanner(): HealthBannerPreference {
+        return HealthBannerPreference(
                 requireContext(),
                 BackupAndRestoreElement.IMPORT_GENERAL_ERROR_BANNER,
             )
-            .also {
-                it.setPrimaryButton(
+            .also { banner ->
+                banner.setPositiveButton(
                     getString(R.string.import_other_error_banner_button),
                     BackupAndRestoreElement.IMPORT_GENERAL_ERROR_BANNER_BUTTON,
-                )
-                it.title = getString(R.string.import_error_banner_title)
-                it.key = IMPORT_ERROR_BANNER_KEY
-                it.summary = getString(R.string.import_other_error_banner_summary)
-                it.icon =
+                ) {
+                    triggerImport()
+                }
+                banner.title = getString(R.string.import_error_banner_title)
+                banner.key = IMPORT_ERROR_BANNER_KEY
+                banner.summary = getString(R.string.import_other_error_banner_summary)
+                banner.icon =
                     AttributeResolver.getNullableDrawable(requireContext(), R.attr.warningIcon)
-                it.setPrimaryButtonOnClickListener { triggerImport() }
-                it.order = IMPORT_ERROR_BANNER_ORDER
             }
     }
 

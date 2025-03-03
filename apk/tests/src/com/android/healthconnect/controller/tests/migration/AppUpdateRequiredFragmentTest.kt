@@ -3,6 +3,7 @@ package com.android.healthconnect.controller.tests.migration
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -20,9 +21,11 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import javax.inject.Inject
 import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
@@ -45,6 +48,8 @@ class AppUpdateRequiredFragmentTest {
     @BindValue val appStoreUtils: AppStoreUtils = Mockito.mock(AppStoreUtils::class.java)
     @BindValue val navigationUtils: NavigationUtils = Mockito.mock(NavigationUtils::class.java)
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
+
+    @Inject @ApplicationContext lateinit var applicationContext: Context
 
     @Before
     fun setup() {
@@ -120,13 +125,17 @@ class AppUpdateRequiredFragmentTest {
     @Test
     fun appUpdateRequiredFragment_whenCancelButtonPressed_setsSharedPreferences() {
         doNothing().whenever(navigationUtils).navigate(any(), any())
-        val scenario = launchFragment<AppUpdateRequiredFragment>(Bundle())
+        launchFragment<AppUpdateRequiredFragment>(Bundle())
         onView(withText("Cancel")).check(matches(isDisplayed()))
         onView(withText("Cancel")).perform(click())
 
-        scenario.onActivity { activity ->
+        // Can't use onActivity as it may already be destroyed
+        onIdle {
             val preferences =
-                activity.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+                applicationContext.getSharedPreferences(
+                    "USER_ACTIVITY_TRACKER",
+                    Context.MODE_PRIVATE,
+                )
             assertThat(preferences.getBoolean("App Update Seen", false)).isTrue()
         }
         verify(healthConnectLogger)

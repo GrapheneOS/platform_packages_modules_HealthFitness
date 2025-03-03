@@ -1,0 +1,78 @@
+{
+  "resourceType": "Procedure",
+  "id": "b-procedure-3",
+  "contained" : [
+    {
+      "resourceType": "Device",
+      "id": "b-device-contained",
+      "manufacturer": "Health Connect Medical Devices Inc",
+      "lotNumber": "1234",
+      "type": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "14106009",
+            "display": "Cardiac pacemaker, device (physical object)"
+          }
+        ]
+      }
+    }
+  ],
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "25267002",
+        "display": "Insertion of intracardiac pacemaker (procedure)"
+      }
+    ],
+    "text": "Insertion of intracardiac pacemaker"
+  },
+  "category": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "387713003",
+        "display": "Surgical procedure (procedure)"
+      }
+    ],
+    "text": "Surgical procedure"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1"
+  },
+  "performedDateTime": "2020-01-23",
+  "recorder": {
+    "reference": "Practitioner/b-practitioner-1",
+    "display": "Dr Maria Hernandez"
+  },
+  "reasonCode": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "233917008",
+          "display": "Atrioventricular block (disorder)"
+        }
+      ],
+      "text": "Atrioventricular block"
+    }
+  ],
+  "focalDevice": [
+    {
+      "action": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/device-action",
+            "code": "implanted"
+          }
+        ]
+      },
+      "manipulated" : {
+        "type": "Device",
+        "reference": "#b-device-contained"
+      }
+    }
+  ]
+}

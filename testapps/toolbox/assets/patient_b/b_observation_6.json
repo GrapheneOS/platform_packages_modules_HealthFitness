@@ -1,0 +1,27 @@
+{
+  "resourceType" : "Observation",
+  "id": "b-observation-6",
+  "status" : "final",
+  "code" : {
+    "coding" : [
+      {
+        "system" : "http://loinc.org",
+        "code" : "11640-0",
+        "display" : "[#] Births total"
+      }
+    ],
+    "text": "[#] Births total"
+  },
+  "subject": {
+    "reference": "Patient/b-patient-1",
+    "display": "Ting, Tess"
+  },
+  "effectiveDateTime" : "2023-06-14",
+  "performer": [
+    {
+      "reference": "Practitioner/b-practitioner-1",
+      "display": "Dr Maria Hernandez"
+    }
+  ],
+  "valueInteger" : "1"
+}

@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"مرور داده‌ها"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"دیدن داده‌ها و برنامه‌هایی که می‌توانند به آن دسترسی داشته باشند"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"حذف خودکار، منابع داده، پشتیبان‌گیری و بازیابی"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"موارد بیشتر"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"موارد کمتر"</string>
     <string name="backup_title" msgid="211503191266235085">"پشتیبان‌گیری"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"منابع داده و اولویت"</string>
     <string name="set_units_title" msgid="2657822539603758029">"تنظیم واحدها"</string>
@@ -442,7 +444,8 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"خواندن خط‌مشی رازداری"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"آخرین دسترسی: در ۲۴ ساعت گذشته"</string>
     <string name="app_access_title" msgid="7137018424885371763">"دسترسی برنامه"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"درحال‌حاضر هیچ برنامه سازگاری نصب نکرده‌اید"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (7684166767384190933) -->
+    <skip />
     <string name="additional_access_label" msgid="4645249249222528341">"دسترسی اضافی"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"داده‌های قبلی، داده‌های پس‌زمینه"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"اجازه‌های اضافی این برنامه برداشته شد"</string>
@@ -548,7 +551,7 @@
     <string name="share_data_text" msgid="6898398345784931678"><b>"هم‌رسانی داده با برنامه‌ها"</b>\n"می‌توانید داده‌هایی را که هر برنامه اجازه دارد در Health Connect بخواند یا بنویسد انتخاب کنید"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"مدیریت تنظیمات و حریم خصوصی"</b>\n"می‌توانید در هر زمانی اجازه‌های برنامه را تغییر دهید و داده‌هایتان را مدیریت کنید"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"برگشتن"</string>
-    <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"شروع"</string>
+    <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"شروع به کار"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"حذف داده"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"ورود به حالت حذف"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"خروج از حالت حذف"</string>
@@ -1173,10 +1176,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"تناسب اندام و تندرستی"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"همیشه"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"درحین استفاده"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> همیشه می‌تواند به همه داده‌های تناسب اندام و تندرستی شما دسترسی داشته باشد"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> درحین استفاده می‌تواند به همه داده‌های تناسب اندام و تندرستی شما دسترسی داشته باشد"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"مجاز به دسترسی داشتن"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"مجاز به خواندن"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"با این اجازه‌ها «<xliff:g id="APP_NAME">%1$s</xliff:g>» می‌تواند به داده‌ها از حسگرهای دستگاهتان دسترسی داشته باشد."</string>
@@ -1188,10 +1189,8 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"دسترسی به <xliff:g id="DATA_TYPE">%s</xliff:g> برای همه برنامه‌های روی ساعت برداشته شود؟"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"علامت تأیید"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"علامت ضربدر"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"درحال‌حاضر <xliff:g id="APP_NAME">%1$s</xliff:g> همیشه می‌تواند به داده‌های تناسب اندام و تندرستی دسترسی داشته باشد"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"درحال‌حاضر <xliff:g id="APP_NAME">%1$s</xliff:g> درحین استفاده می‌تواند به داده‌های تناسب اندام و تندرستی دسترسی داشته باشد"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه می‌دهید همیشه به داده‌های تناسب اندام و تندرستی دسترسی داشته باشد؟"</string>
     <string name="current_access" msgid="1457167070428176139">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> به <xliff:g id="DATA_TYPES">%2$s</xliff:g> دسترسی دارد."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"مدیریت اجازه‌های تناسب اندام و تندرستی"</string>

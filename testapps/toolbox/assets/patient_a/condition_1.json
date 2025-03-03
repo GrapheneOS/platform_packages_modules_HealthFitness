@@ -1,0 +1,79 @@
+{
+  "resourceType": "Condition",
+  "id": "condition-1",
+  "clinicalStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+        "code": "resolved",
+        "display": "Resolved"
+      }
+    ],
+    "text": "Resolved"
+  },
+  "verificationStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+        "code": "confirmed",
+        "display": "Confirmed"
+      }
+    ],
+    "text": "Confirmed"
+  },
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+          "code": "encounter-diagnosis",
+          "display": "Encounter Diagnosis"
+        }
+      ],
+      "text": "Encounter Diagnosis"
+    }
+  ],
+  "severity": {
+    "text": "Medium"
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "code": "G43.9"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "37796009"
+      }
+    ],
+    "text": "Migraine (disorder)"
+  },
+  "subject": {
+    "reference": "Patient/patient-1",
+    "display": "Example, Anne"
+  },
+  "asserter": {
+    "reference": "Practitioner/practitioner-1",
+    "type": "Practitioner",
+     "display": "Dr Maria Hernandez"
+  },
+  "recorder": {
+    "reference": "Practitioner/practitioner-1",
+    "type": "Practitioner",
+    "display": "Dr Maria Hernandez"
+  },
+  "encounter": {
+    "reference": "Encounter/encounter-4"
+  },
+  "onsetPeriod": {
+    "start": "2023-05-01"
+  },
+  "abatementDateTime": "2023-06-10",
+  "recordedDate": "2023-06-14",
+  "note": [
+    {
+      "text": "Patient reports headaches improved in the last few days but remains concerned."
+    }
+  ]
+}

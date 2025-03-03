@@ -39,6 +39,8 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Arakatu datuak"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Ikusi datuak eta zer aplikaziok erabil ditzaketen"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Ezabatze automatikoa, datu-iturburuak, babeskopiak eta leheneratzea"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"Elementu gehiago"</string>
+    <string name="banner_group_fewer_items" msgid="3792478123282046349">"Elementu gutxiago"</string>
     <string name="backup_title" msgid="211503191266235085">"Babeskopiak"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Datu-iturburuak eta lehentasuna"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Ezarri unitateak"</string>
@@ -442,7 +444,8 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Irakurri pribatutasun-gidalerroak"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Azken 24 orduetan atzitu dira"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Aplikazioak duen sarbidea"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Une honetan ez daukazu aplikazio bateragarririk instalatuta"</string>
+    <!-- no translation found for connected_apps_empty_list_section_title (7684166767384190933) -->
+    <skip />
     <string name="additional_access_label" msgid="4645249249222528341">"Sarbide gehigarria"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Iraganeko eta atzeko planoko datuak"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Kendu dira aplikazio honen baimen gehigarriak"</string>
@@ -1173,10 +1176,8 @@
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitnessa eta ongizatea"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Beti"</string>
     <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"Erabili bitartean"</string>
-    <!-- no translation found for view_permissions_description_all_the_time (3434945199164069475) -->
-    <skip />
-    <!-- no translation found for view_permissions_description_while_in_use (507698943902581557) -->
-    <skip />
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak fitnessari eta ongizateari buruzko datu guztiak atzi ditzake beti"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak fitnessari eta ongizateari buruzko datu guztiak atzi ditzake aplikazioa erabiltzen denean soilik"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Atzitzeko baimena"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Irakurtzeko baimena"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Baimen hauek gailuaren sentsoreetako datuak atzitzeko baimena ematen diote <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari."</string>
@@ -1188,17 +1189,12 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Erlojuko aplikazio guztiei datu mota hau atzitzeko baimena kendu nahi diezu: <xliff:g id="DATA_TYPE">%s</xliff:g>?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Hautamarka"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Gurutzea"</string>
-    <!-- no translation found for current_allow_mode_all_the_time (3329625277933258855) -->
-    <skip />
-    <!-- no translation found for current_allow_mode_while_in_use (6358053330935305061) -->
-    <skip />
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Une honetan, <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak fitnessari eta ongizateari buruzko datuak atzi ditzake beti"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Une honetan, <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak fitnessari eta ongizateari buruzko datuak atzi ditzake aplikazioa erabiltzen denean soilik"</string>
     <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"Fitnessari eta ongizateari buruzko datuak edonoiz atzitzeko baimena eman nahi diozu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari?"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak datu mota hauek atzi ditzake: <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Kudeatu baimenak: fitnessa eta ongizatea"</string>
-    <!-- no translation found for used_by_apps_count (1384912521974773617) -->
-    <skip />
-    <!-- no translation found for not_used_in_past_24_hours (7918784815693928054) -->
-    <skip />
-    <!-- no translation found for accessed (4424701457530587176) -->
-    <skip />
+    <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Aplikazio batek erabili du}other{# aplikaziok erabili dute}}"</string>
+    <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Ez da erabili azken 24 orduetan"</string>
+    <string name="accessed" msgid="4424701457530587176">"Atzitze-data: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
 </resources>

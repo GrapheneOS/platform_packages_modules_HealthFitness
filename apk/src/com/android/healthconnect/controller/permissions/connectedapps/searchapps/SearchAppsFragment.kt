@@ -42,17 +42,20 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.INACTIVE
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
+import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.TopIntroPreference
+import com.android.settingslib.widget.ZeroStatePreference
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /** Fragment for search apps screen. */
-@AndroidEntryPoint(PreferenceFragmentCompat::class)
+@AndroidEntryPoint(HealthPreferenceFragment::class)
 class SearchAppsFragment : Hilt_SearchAppsFragment() {
 
     companion object {
@@ -61,10 +64,10 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
         private const val INACTIVE_APPS = "inactive_apps"
         private const val EMPTY_SEARCH_RESULT = "no_search_result_preference"
         private const val TOP_INTRO_PREF = "search_apps_top_intro"
+        private const val ZERO_STATE_PREF = "no_result"
     }
 
     @Inject lateinit var logger: HealthConnectLogger
-    private val pageName = PageName.SEARCH_APPS_PAGE
 
     private var searchView: SearchView? = null
     private val viewModel: ConnectedAppsViewModel by viewModels()
@@ -78,6 +81,7 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
     private val emptySearchResultsPreference: NoSearchResultPreference by pref(EMPTY_SEARCH_RESULT)
 
     private val topIntroPreference: TopIntroPreference by pref(TOP_INTRO_PREF)
+    private val zeroStatePreference: ZeroStatePreference by pref(ZERO_STATE_PREF)
 
     private val menuProvider =
         object : MenuProvider, SearchView.OnQueryTextListener {
@@ -119,9 +123,8 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
             }
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        logger.setPageId(pageName)
+    init {
+        this.setPageName(PageName.SEARCH_APPS_PAGE)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -134,14 +137,24 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
         setupMenu()
         hideTitleFromCollapsingToolbarLayout()
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
-            emptySearchResultsPreference.isVisible = connectedApps.isEmpty()
-            emptySearchResultsPreference.isSelectable = false
+            updateEmptySearchResultsPreference(connectedApps)
             topIntroPreference.isVisible = connectedApps.isNotEmpty()
 
             val connectedAppsGroup = connectedApps.groupBy { it.status }
             updateAllowedApps(connectedAppsGroup[ALLOWED].orEmpty())
             updateDeniedApps(connectedAppsGroup[DENIED].orEmpty())
             updateInactiveApps(connectedAppsGroup[INACTIVE].orEmpty())
+        }
+    }
+
+    private fun updateEmptySearchResultsPreference(connectedApps: List<ConnectedAppMetadata>) {
+        if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            zeroStatePreference.isVisible = connectedApps.isEmpty()
+            emptySearchResultsPreference.isVisible = false
+        } else {
+            zeroStatePreference.isVisible = false
+            emptySearchResultsPreference.isVisible = connectedApps.isEmpty()
+            emptySearchResultsPreference.isSelectable = false
         }
     }
 
@@ -153,17 +166,6 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
     override fun onResume() {
         super.onResume()
         hideTitleFromCollapsingToolbarLayout()
-        logger.setPageId(pageName)
-        logger.logPageImpression()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        logger.setPageId(pageName)
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     private fun updateInactiveApps(appsList: List<ConnectedAppMetadata>) {
