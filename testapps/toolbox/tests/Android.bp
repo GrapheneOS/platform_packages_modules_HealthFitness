@@ -37,6 +37,7 @@ android_test {
         "androidx.test.rules",
         "androidx.compose.ui_ui-test-junit4",
         "androidx.compose.ui_ui-test-manifest",
+        "mockito-kotlin2",
     ],
     libs: [
         "kotlin-annotations",
