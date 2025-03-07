@@ -83,61 +83,61 @@ import android.health.connect.internal.datatypes.WeightRecordInternal;
 import android.health.connect.internal.datatypes.WheelchairPushesRecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 
-import com.android.server.healthconnect.proto.backuprestore.ActiveCaloriesBurned;
-import com.android.server.healthconnect.proto.backuprestore.ActivityIntensity;
-import com.android.server.healthconnect.proto.backuprestore.BasalBodyTemperature;
-import com.android.server.healthconnect.proto.backuprestore.BasalMetabolicRate;
-import com.android.server.healthconnect.proto.backuprestore.BloodGlucose;
-import com.android.server.healthconnect.proto.backuprestore.BloodPressure;
-import com.android.server.healthconnect.proto.backuprestore.BodyFat;
-import com.android.server.healthconnect.proto.backuprestore.BodyTemperature;
-import com.android.server.healthconnect.proto.backuprestore.BodyWaterMass;
-import com.android.server.healthconnect.proto.backuprestore.BoneMass;
-import com.android.server.healthconnect.proto.backuprestore.CervicalMucus;
-import com.android.server.healthconnect.proto.backuprestore.CyclingPedalingCadence;
-import com.android.server.healthconnect.proto.backuprestore.CyclingPedalingCadence.CyclingPedalingCadenceSample;
-import com.android.server.healthconnect.proto.backuprestore.Distance;
-import com.android.server.healthconnect.proto.backuprestore.ElevationGained;
-import com.android.server.healthconnect.proto.backuprestore.ExerciseSession;
-import com.android.server.healthconnect.proto.backuprestore.ExerciseSession.ExerciseLap;
-import com.android.server.healthconnect.proto.backuprestore.ExerciseSession.ExerciseRoute;
-import com.android.server.healthconnect.proto.backuprestore.ExerciseSession.ExerciseRoute.Location;
-import com.android.server.healthconnect.proto.backuprestore.ExerciseSession.ExerciseSegment;
-import com.android.server.healthconnect.proto.backuprestore.FloorsClimbed;
-import com.android.server.healthconnect.proto.backuprestore.HeartRate;
-import com.android.server.healthconnect.proto.backuprestore.HeartRateVariabilityRmssd;
-import com.android.server.healthconnect.proto.backuprestore.Height;
-import com.android.server.healthconnect.proto.backuprestore.Hydration;
-import com.android.server.healthconnect.proto.backuprestore.InstantRecord;
-import com.android.server.healthconnect.proto.backuprestore.IntermenstrualBleeding;
-import com.android.server.healthconnect.proto.backuprestore.IntervalRecord;
-import com.android.server.healthconnect.proto.backuprestore.LeanBodyMass;
-import com.android.server.healthconnect.proto.backuprestore.MenstruationFlow;
-import com.android.server.healthconnect.proto.backuprestore.MenstruationPeriod;
-import com.android.server.healthconnect.proto.backuprestore.MindfulnessSession;
-import com.android.server.healthconnect.proto.backuprestore.Nutrition;
-import com.android.server.healthconnect.proto.backuprestore.OvulationTest;
-import com.android.server.healthconnect.proto.backuprestore.OxygenSaturation;
-import com.android.server.healthconnect.proto.backuprestore.PlannedExerciseSession;
-import com.android.server.healthconnect.proto.backuprestore.PlannedExerciseSession.PlannedExerciseBlock;
-import com.android.server.healthconnect.proto.backuprestore.PlannedExerciseSession.PlannedExerciseBlock.PlannedExerciseStep;
-import com.android.server.healthconnect.proto.backuprestore.PlannedExerciseSession.PlannedExerciseBlock.PlannedExerciseStep.ExerciseCompletionGoal;
-import com.android.server.healthconnect.proto.backuprestore.PlannedExerciseSession.PlannedExerciseBlock.PlannedExerciseStep.ExercisePerformanceGoal;
-import com.android.server.healthconnect.proto.backuprestore.Record;
-import com.android.server.healthconnect.proto.backuprestore.RespiratoryRate;
-import com.android.server.healthconnect.proto.backuprestore.RestingHeartRate;
-import com.android.server.healthconnect.proto.backuprestore.SexualActivity;
-import com.android.server.healthconnect.proto.backuprestore.SkinTemperature;
-import com.android.server.healthconnect.proto.backuprestore.SleepSession;
-import com.android.server.healthconnect.proto.backuprestore.SleepSession.SleepStage;
-import com.android.server.healthconnect.proto.backuprestore.Speed;
-import com.android.server.healthconnect.proto.backuprestore.Speed.SpeedSample;
-import com.android.server.healthconnect.proto.backuprestore.Steps;
-import com.android.server.healthconnect.proto.backuprestore.StepsCadence;
-import com.android.server.healthconnect.proto.backuprestore.TotalCaloriesBurned;
-import com.android.server.healthconnect.proto.backuprestore.Vo2Max;
-import com.android.server.healthconnect.proto.backuprestore.Weight;
-import com.android.server.healthconnect.proto.backuprestore.WheelchairPushes;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActiveCaloriesBurned;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ActivityIntensity;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalBodyTemperature;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BasalMetabolicRate;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BloodGlucose;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BloodPressure;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BodyFat;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BodyTemperature;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BodyWaterMass;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BoneMass;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CervicalMucus;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence.CyclingPedalingCadenceSample;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Distance;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ElevationGained;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ExerciseSession;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ExerciseSession.ExerciseLap;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ExerciseSession.ExerciseRoute;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ExerciseSession.ExerciseRoute.Location;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.ExerciseSession.ExerciseSegment;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.FloorsClimbed;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.HeartRate;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.HeartRateVariabilityRmssd;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Height;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Hydration;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.InstantRecord;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntermenstrualBleeding;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntervalRecord;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.LeanBodyMass;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationFlow;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationPeriod;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MindfulnessSession;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Nutrition;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OvulationTest;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.OxygenSaturation;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.PlannedExerciseSession;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.PlannedExerciseSession.PlannedExerciseBlock;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.PlannedExerciseSession.PlannedExerciseBlock.PlannedExerciseStep;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.PlannedExerciseSession.PlannedExerciseBlock.PlannedExerciseStep.ExerciseCompletionGoal;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.PlannedExerciseSession.PlannedExerciseBlock.PlannedExerciseStep.ExercisePerformanceGoal;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Record;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.RespiratoryRate;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.RestingHeartRate;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.SexualActivity;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.SkinTemperature;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.SleepSession;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.SleepSession.SleepStage;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Speed;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Speed.SpeedSample;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Steps;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.StepsCadence;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.TotalCaloriesBurned;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Vo2Max;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Weight;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.WheelchairPushes;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
@@ -718,20 +718,25 @@ public final class RecordProtoConverter {
         }
     }
 
-    private static com.android.server.healthconnect.proto.backuprestore.Power toPowerProto(
-            PowerRecordInternal powerRecordInternal) {
-        List<com.android.server.healthconnect.proto.backuprestore.Power.PowerSample> samples =
-                powerRecordInternal.getSamples().stream()
-                        .map(
-                                sample ->
-                                        com.android.server.healthconnect.proto.backuprestore.Power
-                                                .PowerSample.newBuilder()
-                                                .setPower(sample.getPower())
-                                                .setEpochMillis(sample.getEpochMillis())
-                                                .build())
-                        .toList();
+    private static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Power
+            toPowerProto(PowerRecordInternal powerRecordInternal) {
+        List<
+                        com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto
+                                .Power.PowerSample>
+                samples =
+                        powerRecordInternal.getSamples().stream()
+                                .map(
+                                        sample ->
+                                                com.android.server.healthconnect.proto.backuprestore
+                                                        .BackupRestoreProto.Power.PowerSample
+                                                        .newBuilder()
+                                                        .setPower(sample.getPower())
+                                                        .setEpochMillis(sample.getEpochMillis())
+                                                        .build())
+                                .toList();
 
-        return com.android.server.healthconnect.proto.backuprestore.Power.newBuilder()
+        return com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Power
+                .newBuilder()
                 .addAllSample(samples)
                 .build();
     }
@@ -1498,7 +1503,8 @@ public final class RecordProtoConverter {
     }
 
     private static void populatePowerRecordInternal(
-            com.android.server.healthconnect.proto.backuprestore.Power powerProto,
+            com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Power
+                    powerProto,
             PowerRecordInternal powerRecordInternal) {
         powerRecordInternal.setSamples(
                 powerProto.getSampleList().stream()
