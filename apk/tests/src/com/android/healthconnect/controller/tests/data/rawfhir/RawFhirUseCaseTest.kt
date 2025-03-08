@@ -45,7 +45,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers
-import org.mockito.Matchers
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
@@ -86,8 +85,8 @@ class RawFhirUseCaseTest {
             .`when`(manager)
             .readMedicalResources(
                 ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                Matchers.any(),
-                Matchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
             )
 
         val result = rawFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
@@ -105,8 +104,8 @@ class RawFhirUseCaseTest {
             .`when`(manager)
             .readMedicalResources(
                 ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                Matchers.any(),
-                Matchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
             )
 
         val result = rawFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
@@ -123,8 +122,8 @@ class RawFhirUseCaseTest {
             .`when`(manager)
             .readMedicalResources(
                 ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                Matchers.any(),
-                Matchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
             )
 
         val result = rawFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)

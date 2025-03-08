@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.exportimport;
 
 import static com.android.healthfitness.flags.Flags.exportImportFastFollow;
+import static com.android.healthfitness.flags.Flags.extendExportImportTelemetry;
 
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
@@ -47,7 +48,13 @@ public class ExportImportJobs {
 
     public static final String PERIODIC_EXPORT_JOB_NAME = "periodic_export_job";
 
-    /** Checks if the rescheduling is needed and schedules the periodic export job if so. */
+    /**
+     * Checks if the rescheduling is needed and schedules the periodic export job if so.
+     *
+     * <p>Needed in particular for device restarts and user switches. The job is persisted in those
+     * cases and we want to avoid rescheduling, because otherwise, if a user restarts their phone
+     * often, the job may never complete.
+     */
     public static void schedulePeriodicJobIfNotScheduled(
             UserHandle userHandle,
             Context context,
@@ -70,6 +77,12 @@ public class ExportImportJobs {
             ExportImportSettingsStorage exportImportSettingsStorage,
             ExportManager exportManager) {
         int periodInDays = exportImportSettingsStorage.getScheduledExportPeriodInDays();
+
+        if (extendExportImportTelemetry()) {
+            // A new export is set up, reset the retry count for logging
+            exportImportSettingsStorage.resetExportRepeatErrorOnRetryCount();
+        }
+
         if (exportImportFastFollow()) {
             // We should always cancel the job as we are persisting the job now.
             Objects.requireNonNull(context.getSystemService(JobScheduler.class))
@@ -78,7 +91,7 @@ public class ExportImportJobs {
 
             // TODO(b/364855153): Move to next condition once fast follow flag is enabled.
             // If export is off we try to delete the local files, just in case it happened the
-            // rare case where those files weren't delete after the last export.
+            // rare case where those files weren't deleted after the last export.
             if (periodInDays <= 0) {
                 exportManager.deleteLocalExportFiles(userHandle);
             }
@@ -130,6 +143,8 @@ public class ExportImportJobs {
                                 flexInMillis)
                         .setExtras(extras);
         if (exportImportFastFollow()) {
+            // Persist the job to avoid rescheduling when restarting the device.
+            // Otherwise if the user repeatedly restarts their phone, an export may never happen.
             builder = builder.setPersisted(true);
         }
 

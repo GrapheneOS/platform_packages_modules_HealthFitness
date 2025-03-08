@@ -518,6 +518,7 @@ const val OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME = "android.healthconnect.control
 const val MEDICAL_PERMISSIONS_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app5"
 const val BODY_SENSORS_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app6"
 const val WEAR_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app7"
+const val BODY_SENSORS_AND_HEALTH_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app8"
 const val TEST_APP_NAME = "Health Connect test app"
 const val TEST_APP_NAME_2 = "Health Connect test app 2"
 const val TEST_APP_NAME_3 = "Health Connect test app 3"

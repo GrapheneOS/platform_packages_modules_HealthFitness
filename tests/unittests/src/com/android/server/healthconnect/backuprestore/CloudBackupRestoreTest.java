@@ -36,7 +36,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -47,9 +46,6 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableMap;
@@ -57,9 +53,15 @@ import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
@@ -70,14 +72,9 @@ import java.util.List;
 })
 public final class CloudBackupRestoreTest {
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
-                    .build();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
     private AppInfoHelper mAppInfoHelper;
     private DeviceInfoHelper mDeviceInfoHelper;
@@ -87,6 +84,7 @@ public final class CloudBackupRestoreTest {
     private CloudBackupManager mCloudBackupManager;
     private CloudRestoreManager mCloudRestoreManager;
     private RecordProtoConverter mRecordProtoConverter;
+    private Instant mTimeStamp;
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
@@ -100,6 +98,7 @@ public final class CloudBackupRestoreTest {
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
         mTransactionManager = healthConnectInjector.getTransactionManager();
@@ -110,9 +109,13 @@ public final class CloudBackupRestoreTest {
         mRecordProtoConverter = new RecordProtoConverter();
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
 
+        mTimeStamp = Instant.parse("2024-06-04T16:39:12Z");
+        Clock fakeClock = Clock.fixed(mTimeStamp, ZoneId.of("UTC"));
+
         mCloudBackupManager =
                 new CloudBackupManager(
                         mTransactionManager,
+                        healthConnectInjector.getFitnessRecordReadHelper(),
                         mAppInfoHelper,
                         mDeviceInfoHelper,
                         healthConnectInjector.getHealthConnectMappings(),
@@ -120,15 +123,20 @@ public final class CloudBackupRestoreTest {
                         healthConnectInjector.getChangeLogsHelper(),
                         healthConnectInjector.getChangeLogsRequestHelper(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
-                        healthConnectInjector.getPreferenceHelper());
+                        healthConnectInjector.getPreferenceHelper(),
+                        fakeClock,
+                        healthConnectInjector.getBackupRestoreLogger());
         mCloudRestoreManager =
                 new CloudRestoreManager(
                         mTransactionManager,
+                        healthConnectInjector.getFitnessRecordReadHelper(),
                         healthConnectInjector.getInternalHealthConnectMappings(),
                         mDeviceInfoHelper,
                         mAppInfoHelper,
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
-                        healthConnectInjector.getPreferenceHelper());
+                        healthConnectInjector.getPreferenceHelper(),
+                        fakeClock,
+                        healthConnectInjector.getBackupRestoreLogger());
     }
 
     @Test
@@ -149,14 +157,11 @@ public final class CloudBackupRestoreTest {
                         .build()
                         .toByteArray());
 
-        ReadTransactionRequest readRequest =
-                mTransactionTestUtils.getReadTransactionRequest(
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(stepsRecord.getUuid())));
-        List<RecordInternal<?>> records =
-                mTransactionManager.readRecordsByIdsWithoutAccessLogs(
-                        readRequest, mAppInfoHelper, mDeviceInfoHelper);
         assertThat(records).hasSize(1);
         // Comparing proto representations because internal records don't implement equals
         assertThat(mRecordProtoConverter.toRecordProto(records.get(0)))

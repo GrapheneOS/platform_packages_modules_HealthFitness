@@ -49,7 +49,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers
-import org.mockito.Matchers
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
@@ -91,8 +90,8 @@ class RawFhirViewModelTest {
             .`when`(manager)
             .readMedicalResources(
                 ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                Matchers.any(),
-                Matchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
             )
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
@@ -110,8 +109,8 @@ class RawFhirViewModelTest {
             .`when`(manager)
             .readMedicalResources(
                 ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                Matchers.any(),
-                Matchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
             )
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
@@ -162,8 +161,8 @@ class RawFhirViewModelTest {
             .`when`(manager)
             .readMedicalResources(
                 ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                Matchers.any(),
-                Matchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
             )
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()
@@ -265,8 +264,8 @@ class RawFhirViewModelTest {
             .`when`(manager)
             .readMedicalResources(
                 ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                Matchers.any(),
-                Matchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
             )
 
         val testObserver = TestObserver<RawFhirViewModel.RawFhirState>()

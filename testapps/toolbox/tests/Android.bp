@@ -30,10 +30,13 @@ android_test {
         "HealthConnectToolboxLibrary",
         "kotlin-stdlib",
         // test dependencies
+        "androidx.compose.runtime_runtime",
         "androidx.test.espresso.contrib",
         "androidx.test.ext.junit",
         "androidx.test.ext.truth",
         "androidx.test.rules",
+        "androidx.compose.ui_ui-test-junit4",
+        "androidx.compose.ui_ui-test-manifest",
     ],
     libs: [
         "kotlin-annotations",

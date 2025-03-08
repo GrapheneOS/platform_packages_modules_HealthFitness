@@ -25,6 +25,10 @@ import android.util.Log
 import android.view.WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
 import com.android.healthfitness.flags.Flags
@@ -68,7 +72,11 @@ class WearViewAppInfoPermissionsActivity : Hilt_WearViewAppInfoPermissionsActivi
         viewModel.loadPermissionsForPackage(getPackageNameExtra())
 
         val root = ComposeView(this)
-        root.setContent { WearViewAppPermissionsScreen(viewModel) }
+        root.setContent {
+            Box(modifier = Modifier.background(Color.Black)) {
+                WearViewAppPermissionsScreen(viewModel)
+            }
+        }
         setContentView(root)
     }
 

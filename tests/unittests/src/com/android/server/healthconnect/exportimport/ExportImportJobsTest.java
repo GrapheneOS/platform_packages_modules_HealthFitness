@@ -359,4 +359,26 @@ public class ExportImportJobsTest {
 
         verify(mJobScheduler, times(0)).schedule(any());
     }
+
+    @Test
+    @EnableFlags({Flags.FLAG_EXTEND_EXPORT_IMPORT_TELEMETRY})
+    public void schedulePeriodicJob_resetsRetryCount() {
+        mExportImportSettingsStorage.configure(
+                new ScheduledExportSettings.Builder().setPeriodInDays(1).build());
+        mExportImportSettingsStorage.increaseExportRepeatErrorOnRetryCount();
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(1);
+
+        // This scheduling option is called during user switching
+        ExportImportJobs.schedulePeriodicJobIfNotScheduled(
+                UserHandle.CURRENT, mContext, mExportImportSettingsStorage, mExportManager);
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+
+        mExportImportSettingsStorage.increaseExportRepeatErrorOnRetryCount();
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(1);
+
+        // This scheduling is used during export/import settings changes
+        ExportImportJobs.schedulePeriodicExportJob(
+                UserHandle.CURRENT, mContext, mExportImportSettingsStorage, mExportManager);
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+    }
 }

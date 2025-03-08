@@ -44,6 +44,7 @@ import android.health.connect.accesslog.AccessLog;
 import android.health.connect.accesslog.AccessLog.OperationType;
 import android.health.connect.datatypes.MedicalResource.MedicalResourceType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.os.UserHandle;
 import android.util.Pair;
 import android.util.Slog;
 
@@ -90,14 +91,17 @@ public final class AccessLogsHelper extends DatabaseHelper {
 
     private final TransactionManager mTransactionManager;
     private final AppInfoHelper mAppInfoHelper;
+    private final AppOpLogsHelper mAppOpLogsHelper;
 
     public AccessLogsHelper(
             TransactionManager transactionManager,
             AppInfoHelper appInfoHelper,
+            AppOpLogsHelper appOpLogsHelper,
             DatabaseHelpers databaseHelpers) {
         super(databaseHelpers);
         mTransactionManager = transactionManager;
         mAppInfoHelper = appInfoHelper;
+        mAppOpLogsHelper = appOpLogsHelper;
     }
 
     public static CreateTableRequest getCreateTableRequest() {
@@ -107,7 +111,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
     /**
      * @return AccessLog list
      */
-    public List<AccessLog> queryAccessLogs() {
+    public List<AccessLog> queryAccessLogs(UserHandle callingUserHandle) {
         final ReadTableRequest readTableRequest = new ReadTableRequest(TABLE_NAME);
 
         List<AccessLog> accessLogsList = new ArrayList<>();
@@ -153,6 +157,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
             }
         }
 
+        accessLogsList.addAll(mAppOpLogsHelper.getAccessLogsFromAppOps(callingUserHandle));
         return accessLogsList;
     }
 
@@ -160,6 +165,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
      * Returns the timestamp of the latest access log and {@link Long#MIN_VALUE} if there is no
      * access log.
      */
+    // TODO: b/364643016 - Should this include the AppOps data as well?
     public long getLatestUpsertOrReadOperationAccessLogTimeStamp() {
         final ReadTableRequest readTableRequest =
                 new ReadTableRequest(TABLE_NAME)
@@ -286,8 +292,21 @@ public final class AccessLogsHelper extends DatabaseHelper {
             Slog.w(TAG, "invalid package name " + packageName + " used for access log");
             return;
         }
+
+        Set<Integer> filteredRecordTypeIds = new HashSet<>(recordTypeIds);
+        // Remove records for system AppOps so that we don't record them twice
+        // (they are already recorded via historical AppOps).
+        if (operationType == AccessLog.OperationType.OPERATION_TYPE_READ) {
+            Set<Integer> recordsWithSystemAppOps = mAppOpLogsHelper.getRecordsWithSystemAppOps();
+            filteredRecordTypeIds.removeAll(recordsWithSystemAppOps);
+        }
+        if (filteredRecordTypeIds.isEmpty()) {
+            return;
+        }
+
         ContentValues contentValues =
-                populateCommonColumns(appInfoId, recordTypeIds.stream().toList(), operationType);
+                populateCommonColumns(
+                        appInfoId, filteredRecordTypeIds.stream().toList(), operationType);
         UpsertTableRequest request = new UpsertTableRequest(TABLE_NAME, contentValues);
         mTransactionManager.insert(db, request);
     }

@@ -42,6 +42,7 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
@@ -76,6 +77,8 @@ public class ImportManager {
     private final TransactionManager mTransactionManager;
     private final HealthConnectNotificationSender mNotificationSender;
     private final ExportImportSettingsStorage mExportImportSettingsStorage;
+    private final File mEnvironmentDataDirectory;
+    private final ExportImportLogger mExportImportLogger;
     @Nullable private final Clock mClock;
 
     public ImportManager(
@@ -83,21 +86,27 @@ public class ImportManager {
             Context context,
             ExportImportSettingsStorage exportImportSettingsStorage,
             TransactionManager transactionManager,
+            FitnessRecordReadHelper fitnessRecordReadHelper,
             DeviceInfoHelper deviceInfoHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             @Nullable Clock clock,
-            HealthConnectNotificationSender notificationSender) {
+            HealthConnectNotificationSender notificationSender,
+            File environmentDataDirectory,
+            ExportImportLogger exportImportLogger) {
         mContext = context;
         mDatabaseMerger =
                 new DatabaseMerger(
                         appInfoHelper,
                         deviceInfoHelper,
                         healthDataCategoryPriorityHelper,
-                        transactionManager);
+                        transactionManager,
+                        fitnessRecordReadHelper);
         mTransactionManager = transactionManager;
         mExportImportSettingsStorage = exportImportSettingsStorage;
         mClock = clock;
         mNotificationSender = notificationSender;
+        mEnvironmentDataDirectory = environmentDataDirectory;
+        mExportImportLogger = exportImportLogger;
     }
 
     /** Reads and merges the backup data from a local file. */
@@ -108,7 +117,7 @@ public class ImportManager {
         mNotificationSender.sendNotificationAsUser(
                 NOTIFICATION_TYPE_IMPORT_IN_PROGRESS, userHandle);
 
-        ExportImportLogger.logImportStatus(
+        mExportImportLogger.logImportStatus(
                 DATA_IMPORT_STARTED,
                 ExportImportLogger.NO_VALUE_RECORDED,
                 ExportImportLogger.NO_VALUE_RECORDED,
@@ -116,7 +125,8 @@ public class ImportManager {
 
         Context userContext = mContext.createContextAsUser(userHandle, 0);
         HealthConnectContext dbContext =
-                HealthConnectContext.create(mContext, userHandle, IMPORT_DATABASE_DIR_NAME);
+                HealthConnectContext.create(
+                        mContext, userHandle, IMPORT_DATABASE_DIR_NAME, mEnvironmentDataDirectory);
         File importDbFile = dbContext.getDatabasePath(IMPORT_DATABASE_FILE_NAME);
 
         int zipFileSize = getZipFileSize(userContext, uri);
@@ -309,7 +319,7 @@ public class ImportManager {
         if (!Flags.exportImportFastFollow()) return;
         // Convert to int to save on logs storage, int can hold about 68 years
         int timeToErrorMillis = mClock != null ? (int) (mClock.millis() - startTimeMillis) : -1;
-        ExportImportLogger.logImportStatus(
+        mExportImportLogger.logImportStatus(
                 importStatus, timeToErrorMillis, originalDataSizeKb, compressedDataSizeKb);
     }
 
@@ -319,7 +329,7 @@ public class ImportManager {
         if (!Flags.exportImportFastFollow()) return;
         // Convert to int to save on logs storage, int can hold about 68 years
         int timeToErrorMillis = mClock != null ? (int) (mClock.millis() - startTimeMillis) : -1;
-        ExportImportLogger.logImportStatus(
+        mExportImportLogger.logImportStatus(
                 DATA_IMPORT_ERROR_NONE,
                 timeToErrorMillis,
                 originalDataSizeKb,

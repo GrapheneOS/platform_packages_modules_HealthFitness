@@ -31,45 +31,12 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
 import com.android.healthconnect.controller.utils.increaseViewTouchTargetSize
-import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
-import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
-import com.android.healthconnect.controller.utils.logging.PageName
-import dagger.hilt.android.EntryPointAccessors
 
 /** Base fragment class for permission request screens. */
 abstract class PermissionsFragment : HealthSetupFragment() {
 
-    private lateinit var logger: HealthConnectLogger
-
     private lateinit var allowButton: Button
     private lateinit var dontAllowButton: Button
-
-    private var pageName: PageName = PageName.UNKNOWN_PAGE
-
-    fun setPageName(pageName: PageName) {
-        this.pageName = pageName
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        setupLogger()
-        super.onCreate(savedInstanceState)
-    }
-
-    private fun setupLogger() {
-        val hiltEntryPoint =
-            EntryPointAccessors.fromApplication(
-                requireContext().applicationContext,
-                HealthConnectLoggerEntryPoint::class.java,
-            )
-        logger = hiltEntryPoint.logger()
-        logger.setPageId(pageName)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        logger.setPageId(pageName)
-        logger.logPageImpression()
-    }
 
     // Places the preference fragment inside the preference container and allows us
     // to have the action buttons in the same fragment

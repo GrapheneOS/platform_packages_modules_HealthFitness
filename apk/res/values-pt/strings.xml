@@ -444,7 +444,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Leia a Política de Privacidade"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Acessado nas últimas 24 horas"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Acesso de apps"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"Não há apps compatíveis instalados no momento"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Nenhum app compatível instalado"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Acesso adicional"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Dados anteriores, dados em segundo plano"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Outras permissões foram removidas desse app"</string>
@@ -1012,7 +1012,11 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Mover para o fim"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Botão para arrastar e reorganizar <xliff:g id="SELECTED_APP">%s</xliff:g> na lista de prioridades"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Botão para remover <xliff:g id="SELECTED_APP">%s</xliff:g> da lista de prioridades"</string>
+    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
+    <skip />
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Toque duas vezes e arraste para reordenar"</string>
+    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
+    <skip />
     <string name="search_keywords_home" msgid="5386515593026555327">"condicionamento físico, bem-estar"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"permissões"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"conexão saúde, dados de saúde, categorias de saúde, acesso aos dados, atividade, medidas corporais, monitoramento de ciclo, nutrição, sono, sinais vitais"</string>
@@ -1106,6 +1110,12 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Adicionar um app"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Editar fontes de apps"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Padrão do dispositivo"</string>
+    <!-- no translation found for move_up (9136155291380319606) -->
+    <skip />
+    <!-- no translation found for move_down (4404970288236170693) -->
+    <skip />
+    <!-- no translation found for remove (1340423400489007362) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Dados do app"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Os dados do app <xliff:g id="APP_NAME">%1$s</xliff:g> vão aparecer aqui"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Os dados de apps com acesso à Conexão Saúde vão aparecer aqui"</string>
@@ -1160,6 +1170,10 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Excluir permanentemente as entradas selecionadas do app <xliff:g id="APP_NAME">%1$s</xliff:g> em <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Excluir permanentemente essa entrada do app <xliff:g id="APP_NAME">%s</xliff:g>?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Excluir permanentemente os dados de <xliff:g id="DATA_TYPE">%1$s</xliff:g> no app <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
+    <!-- no translation found for menu_show_system (5608880605989914394) -->
+    <skip />
+    <!-- no translation found for menu_hide_system (9218325603953186714) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Ativado"</string>
     <string name="off" msgid="6996623844428550649">"Desativado"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Último acesso: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

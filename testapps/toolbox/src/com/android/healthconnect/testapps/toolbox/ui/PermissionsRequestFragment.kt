@@ -37,6 +37,7 @@ import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.android.healthconnect.testapps.toolbox.R
+import kotlin.system.exitProcess
 
 class PermissionsRequestFragment : Fragment(R.layout.fragment_permissions_request) {
     private val readPermissionsPrefix = "android.permission.health.READ_"
@@ -156,28 +157,49 @@ class PermissionsRequestFragment : Fragment(R.layout.fragment_permissions_reques
             }
         }
         updateCounters(tree)
+        view.requireViewById<Button>(R.id.exit_process_button).setOnClickListener {
+            exitProcess(status = 0)
+        }
+        view.requireViewById<Button>(R.id.revoke_selected_permissions).setOnClickListener {
+            val permissionsToRevoke = getCheckedPermissions()
+            val permissionsToRevokeSize =
+                permissionsToRevoke.size - permissionsToRevoke.count { !isPermissionGranted(it) }
+            if (permissionsToRevoke.isNotEmpty())
+                requireContext().revokeSelfPermissionsOnKill(permissionsToRevoke)
+            Log.i(tag, "Revoking ${permissionsToRevoke.size} permissions")
+            val text =
+                if (permissionsToRevoke.any { isPermissionGranted(it) }) {
+                    "$permissionsToRevokeSize permissions will be revoked on next application kill"
+                } else {
+                    "Permissions already revoked"
+                }
+            Toast.makeText(this.requireContext(), text, Toast.LENGTH_LONG).show()
+        }
 
         view.requireViewById<Button>(R.id.request_selected_permissions).setOnClickListener {
-            val permissionsToGrant = mutableListOf<String>()
-            tree.forEach {
-                if (it.checkBoxId.getView<CheckBox>().isChecked) {
-                    permissionsToGrant.addAll(it.permissions)
-                }
-            }
+            val permissionsToGrant = getCheckedPermissions()
             Log.i(tag, "Requesting ${permissionsToGrant.size} permissions")
-            if (permissionsToGrant.all{isPermissionGranted(it)}){
+            if (permissionsToGrant.all { isPermissionGranted(it) }) {
                 Toast.makeText(
-                        this.requireContext(),
-                        if (permissionsToGrant.isEmpty())
-                            "No permissions requested, please select permissions to request"
-                        else getString(R.string.all_permissions_already_granted_toast),
-                        Toast.LENGTH_SHORT,
-                    )
+                    this.requireContext(),
+                    getString(R.string.all_permissions_already_granted_toast),
+                    Toast.LENGTH_LONG,
+                )
                     .show()
             } else {
                 mRequestPermissionLauncher.launch(permissionsToGrant.toTypedArray())
             }
         }
+    }
+
+    private fun getCheckedPermissions(): List<String> {
+        val checkedPermissions = mutableListOf<String>()
+        tree.forEach {
+            if (it.checkBoxId.getView<CheckBox>().isChecked) {
+                checkedPermissions.addAll(it.permissions)
+            }
+        }
+        return checkedPermissions
     }
 
     private fun isMedicalPermission(permission: String) =
@@ -195,23 +217,23 @@ class PermissionsRequestFragment : Fragment(R.layout.fragment_permissions_reques
 
     private fun isFitnessPermission(permission: String) =
         !(isMedicalPermission(permission) ||
-            isAdditionalPermission(permission) ||
-            READ_EXERCISE_ROUTES == permission)
+                isAdditionalPermission(permission) ||
+                READ_EXERCISE_ROUTES == permission)
 
     private fun handlePermissionsResult(permissionMap: Map<String, Boolean>) {
         val numberOfPermissionsGranted = permissionMap.values.count { it }
         val numberOfPermissionsDenied = permissionMap.keys.size - numberOfPermissionsGranted
         Toast.makeText(
-                this.requireContext(),
-                "Granted: $numberOfPermissionsGranted Denied: $numberOfPermissionsDenied",
-                Toast.LENGTH_LONG,
-            )
+            this.requireContext(),
+            "Granted: $numberOfPermissionsGranted Denied: $numberOfPermissionsDenied",
+            Toast.LENGTH_LONG,
+        )
             .show()
         updateCounters(tree)
     }
 
     private fun isPermissionGranted(permission: String) =
-            ContextCompat.checkSelfPermission(requireContext(), permission) ==
+        ContextCompat.checkSelfPermission(requireContext(), permission) ==
                 PackageManager.PERMISSION_GRANTED
 
     private class PermissionCounter(val grantedPermissions: Int, val totalPermissions: Int)
@@ -262,6 +284,17 @@ class PermissionsRequestFragment : Fragment(R.layout.fragment_permissions_reques
             )
             treeNode = treeNode.parent
         }
+        setButtonsEnabled(atLeastOneIsChecked(tree))
+    }
+
+    private fun atLeastOneIsChecked(treeNode: TreeNode): Boolean {
+        return treeNode.checkBoxId.getView<CheckBox>().isChecked ||
+                treeNode.children.any { atLeastOneIsChecked(it) }
+    }
+
+    private fun setButtonsEnabled(enabled: Boolean) {
+        R.id.revoke_selected_permissions.getView<Button>().isEnabled = enabled
+        R.id.request_selected_permissions.getView<Button>().isEnabled = enabled
     }
 
     private fun setCheckBoxChecked(treeNode: TreeNode, checked: Boolean) {

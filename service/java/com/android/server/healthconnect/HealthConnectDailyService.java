@@ -90,30 +90,36 @@ public class HealthConnectDailyService extends JobService {
                 healthConnectInjector.getMigrationStateManager();
         UsageStatsCollector usageStatsCollector =
                 healthConnectInjector.getUsageStatsCollector(
-                        HealthConnectContext.create(context, sUserHandle));
+                        HealthConnectContext.create(
+                                context,
+                                sUserHandle,
+                                /* databaseDirName= */ null,
+                                healthConnectInjector.getEnvironmentDataDirectory()));
         DatabaseStatsCollector databaseStatsCollector =
                 healthConnectInjector.getDatabaseStatsCollector();
         EcosystemStatsCollector ecosystemStatsCollector =
                 new EcosystemStatsCollector(
                         healthConnectInjector.getReadAccessLogsHelper(),
                         healthConnectInjector.getChangeLogsHelper());
+        HealthConnectThreadScheduler threadScheduler = healthConnectInjector.getThreadScheduler();
 
         // This service executes each incoming job on a Handler running on the application's
         // main thread. This means that we must offload the execution logic to background executor.
         switch (jobName) {
             case HC_DAILY_JOB:
-                HealthConnectThreadScheduler.scheduleInternalTask(
+                threadScheduler.scheduleInternalTask(
                         () -> {
                             HealthConnectDailyJobs.execute(
                                     usageStatsCollector,
                                     databaseStatsCollector,
                                     dailyCleanupJob,
-                                    ecosystemStatsCollector);
+                                    ecosystemStatsCollector,
+                                    healthConnectInjector.getHealthFitnessStatsLog());
                             jobFinished(params, false);
                         });
                 return true;
             case MIGRATION_COMPLETE_JOB_NAME:
-                HealthConnectThreadScheduler.scheduleInternalTask(
+                threadScheduler.scheduleInternalTask(
                         () -> {
                             MigrationStateChangeJob.executeMigrationCompletionJob(
                                     context, preferenceHelper, migrationStateManager);
@@ -121,7 +127,7 @@ public class HealthConnectDailyService extends JobService {
                         });
                 return true;
             case MIGRATION_PAUSE_JOB_NAME:
-                HealthConnectThreadScheduler.scheduleInternalTask(
+                threadScheduler.scheduleInternalTask(
                         () -> {
                             MigrationStateChangeJob.executeMigrationPauseJob(
                                     context, preferenceHelper, migrationStateManager);
@@ -129,7 +135,7 @@ public class HealthConnectDailyService extends JobService {
                         });
                 return true;
             case PERIODIC_EXPORT_JOB_NAME:
-                HealthConnectThreadScheduler.scheduleInternalTask(
+                threadScheduler.scheduleInternalTask(
                         () -> {
                             boolean isExportSuccessful =
                                     ExportImportJobs.executePeriodicExportJob(
@@ -140,6 +146,10 @@ public class HealthConnectDailyService extends JobService {
                                             exportImportSettingsStorage);
                             // If the export is not successful, reschedule the job.
                             jobFinished(params, !isExportSuccessful);
+                            // TODO(b/374702524) distinguish between a new job and a retry.
+                            // Call exportImportSettingsStorage.resetExportRepeatErrorOnRetryCount()
+                            // for new jobs. Like that we can filter out repeat errors for each of
+                            // the regular (weekly, daily etc) exports.
                         });
                 return true;
             default:

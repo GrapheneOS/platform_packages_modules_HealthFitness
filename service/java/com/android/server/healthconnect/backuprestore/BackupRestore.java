@@ -65,6 +65,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.exportimport.DatabaseMerger;
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
@@ -202,10 +203,12 @@ public final class BackupRestore {
 
     private final PreferenceHelper mPreferenceHelper;
     private final TransactionManager mTransactionManager;
+    private final File mEnvironmentDataDirectory;
 
     private boolean mActivelyStagingRemoteData = false;
 
     private volatile UserHandle mCurrentForegroundUser;
+    private final HealthConnectThreadScheduler mThreadScheduler;
 
     @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public BackupRestore(
@@ -214,9 +217,12 @@ public final class BackupRestore {
             MigrationStateManager migrationStateManager,
             PreferenceHelper preferenceHelper,
             TransactionManager transactionManager,
+            FitnessRecordReadHelper fitnessRecordReadHelper,
             Context context,
             DeviceInfoHelper deviceInfoHelper,
-            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper) {
+            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
+            HealthConnectThreadScheduler threadScheduler,
+            File environmentDataDirectory) {
         mFirstGrantTimeManager = firstGrantTimeManager;
         mMigrationStateManager = migrationStateManager;
         mContext = context;
@@ -226,15 +232,18 @@ public final class BackupRestore {
                         appInfoHelper,
                         deviceInfoHelper,
                         healthDataCategoryPriorityHelper,
-                        transactionManager);
+                        transactionManager,
+                        fitnessRecordReadHelper);
         mPreferenceHelper = preferenceHelper;
         mTransactionManager = transactionManager;
+        mThreadScheduler = threadScheduler;
+        mEnvironmentDataDirectory = environmentDataDirectory;
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
         Slog.d(TAG, "Performing user switch operations.");
         mCurrentForegroundUser = currentForegroundUser;
-        HealthConnectThreadScheduler.scheduleInternalTask(this::scheduleAllJobs);
+        mThreadScheduler.scheduleInternalTask(this::scheduleAllJobs);
     }
 
     /**
@@ -277,7 +286,8 @@ public final class BackupRestore {
             UserHandle userHandle,
             IDataStagingFinishedCallback callback) {
         HealthConnectContext dbContext =
-                HealthConnectContext.create(mContext, userHandle, STAGED_DATABASE_DIR);
+                HealthConnectContext.create(
+                        mContext, userHandle, STAGED_DATABASE_DIR, mEnvironmentDataDirectory);
         File stagedRemoteDataDir = dbContext.getDataDir();
         try {
             stagedRemoteDataDir.mkdirs();
@@ -375,7 +385,8 @@ public final class BackupRestore {
         // is enabled, it will be updated to be database copy path.
         File databasePath = mTransactionManager.getDatabasePath();
         HealthConnectContext dbContext =
-                HealthConnectContext.create(mContext, userHandle, BACKUP_DIR);
+                HealthConnectContext.create(
+                        mContext, userHandle, BACKUP_DIR, mEnvironmentDataDirectory);
         File backupDataDir = dbContext.getDataDir();
         if (Flags.personalHealthRecordDisableD2d()) {
             databasePath = new File(backupDataDir, DATABASE_BACKUP_FILE_NAME);
@@ -477,7 +488,8 @@ public final class BackupRestore {
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public void deleteAndResetEverything(UserHandle userHandle) {
         HealthConnectContext dbContext =
-                HealthConnectContext.create(mContext, userHandle, STAGED_DATABASE_DIR);
+                HealthConnectContext.create(
+                        mContext, userHandle, STAGED_DATABASE_DIR, mEnvironmentDataDirectory);
 
         // Don't delete anything while we are in the process of merging staged data.
         synchronized (mMergingLock) {
@@ -533,7 +545,8 @@ public final class BackupRestore {
     @VisibleForTesting
     public Set<String> getStagedRemoteFileNames(UserHandle userHandle) {
         HealthConnectContext dbContext =
-                HealthConnectContext.create(mContext, userHandle, STAGED_DATABASE_DIR);
+                HealthConnectContext.create(
+                        mContext, userHandle, STAGED_DATABASE_DIR, mEnvironmentDataDirectory);
         File[] allFiles = dbContext.getDataDir().listFiles();
         if (allFiles == null) {
             return Collections.emptySet();
@@ -674,7 +687,11 @@ public final class BackupRestore {
 
         int currentDbVersion = mTransactionManager.getDatabaseVersion();
         HealthConnectContext dbContext =
-                HealthConnectContext.create(mContext, mCurrentForegroundUser, STAGED_DATABASE_DIR);
+                HealthConnectContext.create(
+                        mContext,
+                        mCurrentForegroundUser,
+                        STAGED_DATABASE_DIR,
+                        mEnvironmentDataDirectory);
         File stagedDbFile = dbContext.getDatabasePath(STAGED_DATABASE_NAME);
         if (stagedDbFile.exists()) {
             try (SQLiteDatabase stagedDb =
@@ -1006,7 +1023,7 @@ public final class BackupRestore {
     }
 
     private void triggerMergingIfApplicable() {
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        mThreadScheduler.scheduleInternalTask(
                 () -> {
                     if (shouldAttemptMerging()) {
                         Slog.i(TAG, "Attempting merging.");
@@ -1110,7 +1127,7 @@ public final class BackupRestore {
                 return false;
             }
 
-            HealthConnectThreadScheduler.scheduleInternalTask(
+            sBackupRestore.mThreadScheduler.scheduleInternalTask(
                     () -> jobFinished(params, sBackupRestore.handleJob(params.getExtras())));
 
             return true;

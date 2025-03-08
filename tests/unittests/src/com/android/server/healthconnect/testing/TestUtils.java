@@ -56,21 +56,22 @@ public final class TestUtils {
         }
     }
 
-    public static void waitForAllScheduledTasksToComplete() throws TimeoutException {
+    /** Wait for all the tasks to complete on the given scheduler. */
+    public static void waitForAllScheduledTasksToComplete(
+            HealthConnectThreadScheduler threadScheduler) throws TimeoutException {
         waitForCondition(
                 (unused) ->
-                        (HealthConnectThreadScheduler.sInternalBackgroundExecutor.getTaskCount()
-                                        == HealthConnectThreadScheduler.sInternalBackgroundExecutor
+                        (threadScheduler.mInternalBackgroundExecutor.getTaskCount()
+                                        == threadScheduler.mInternalBackgroundExecutor
                                                 .getCompletedTaskCount())
-                                && (HealthConnectThreadScheduler.sControllerExecutor.getTaskCount()
-                                        == HealthConnectThreadScheduler.sControllerExecutor
+                                && (threadScheduler.mControllerExecutor.getTaskCount()
+                                        == threadScheduler.mControllerExecutor
                                                 .getCompletedTaskCount())
-                                && (HealthConnectThreadScheduler.sBackgroundThreadExecutor
-                                                .getTaskCount()
-                                        == HealthConnectThreadScheduler.sBackgroundThreadExecutor
+                                && (threadScheduler.mBackgroundThreadExecutor.getTaskCount()
+                                        == threadScheduler.mBackgroundThreadExecutor
                                                 .getCompletedTaskCount())
-                                && (HealthConnectThreadScheduler.sForegroundExecutor.getTaskCount()
-                                        == HealthConnectThreadScheduler.sForegroundExecutor
+                                && (threadScheduler.mForegroundExecutor.getTaskCount()
+                                        == threadScheduler.mForegroundExecutor
                                                 .getCompletedTaskCount()),
                 15);
     }

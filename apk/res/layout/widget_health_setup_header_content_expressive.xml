@@ -23,7 +23,6 @@
         android:layout_height="@dimen/app_header_icon_size"
         android:contentDescription="@string/app_label"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/health_connect_logo"
         android:backgroundTint="@color/settingslib_materialColorPrimary"/>
 
     <TextView
@@ -39,7 +38,6 @@
         android:gravity="start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceSummaryLarge"
-        android:paddingBottom="@dimen/spacing_normal"
+        android:textAppearance="?attr/headerSummary"
         android:visibility="gone"/>
 </LinearLayout>

@@ -46,6 +46,7 @@ import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.utils.ProxyActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.android.cts.install.lib.TestApp;
 
@@ -60,6 +61,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /** Performs API calls to HC on behalf of test apps. */
 public class TestAppProxy {
+    private static final String TAG = "TestAppProxy";
     private static final String TEST_APP_RECEIVER_CLASS_NAME =
             "android.healthconnect.cts.testhelper.TestAppReceiver";
     private static final long POLLING_TIMEOUT_MILLIS = TimeUnit.SECONDS.toMillis(55);
@@ -331,13 +333,15 @@ public class TestAppProxy {
 
         // Register broadcast receiver
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(bundleToCreateIntent.getString(QUERY_TYPE));
+        String action = bundleToCreateIntent.getString(QUERY_TYPE);
+        intentFilter.addAction(action);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         getContext().registerReceiver(broadcastReceiver, intentFilter, Context.RECEIVER_EXPORTED);
 
         // Launch the test app.
         Intent intent;
 
+        Log.d(TAG, "launchTestApp(): action=" + action + " - inBackground=" + mInBackground);
         if (mInBackground) {
             intent = new Intent().setClassName(mPackageName, TEST_APP_RECEIVER_CLASS_NAME);
         } else {

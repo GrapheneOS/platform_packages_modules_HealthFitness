@@ -53,6 +53,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.logging.ExportImportLogger;
@@ -69,12 +70,9 @@ import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.D
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.testing.TestUtils;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableList;
@@ -84,6 +82,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.quality.Strictness;
@@ -119,10 +118,10 @@ public class ImportManagerTest {
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
                     .mockStatic(HealthConnectManager.class)
-                    .mockStatic(ExportImportLogger.class)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
                     .setStrictness(Strictness.LENIENT)
                     .build();
+
+    @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
 
     private ImportManager mImportManagerSpy;
 
@@ -137,12 +136,14 @@ public class ImportManagerTest {
     private DeviceInfoHelper mDeviceInfoHelper;
     private ReadAccessLogsHelper mReadAccessLogsHelper;
     private InternalHealthConnectMappings mInternalHealthConnectMappings;
+    private HealthConnectThreadScheduler mThreadScheduler;
 
     @Mock private HealthConnectNotificationSender mNotificationSender;
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
+    @Mock private ExportImportLogger mExportImportLogger;
 
     @Before
     public void setUp() throws Exception {
@@ -152,6 +153,7 @@ public class ImportManagerTest {
                         .setPreferenceHelper(new FakePreferenceHelper())
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mDatabaseHelpers = healthConnectInjector.getDatabaseHelpers();
@@ -161,6 +163,7 @@ public class ImportManagerTest {
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mInternalHealthConnectMappings = healthConnectInjector.getInternalHealthConnectMappings();
         mReadAccessLogsHelper = healthConnectInjector.getReadAccessLogsHelper();
+        mThreadScheduler = healthConnectInjector.getThreadScheduler();
 
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
@@ -179,10 +182,13 @@ public class ImportManagerTest {
                         mContext,
                         mExportImportSettingsStorage,
                         mTransactionManager,
+                        healthConnectInjector.getFitnessRecordReadHelper(),
                         mDeviceInfoHelper,
                         mPriorityHelper,
                         fakeClock,
-                        mNotificationSender);
+                        mNotificationSender,
+                        mEnvironmentDataDirectory.getRoot(),
+                        mExportImportLogger);
         mImportManagerSpy = ExtendedMockito.spy(importManager);
         doReturn(TEST_COMPRESSED_FILE_SIZE)
                 .when(mImportManagerSpy)
@@ -191,7 +197,7 @@ public class ImportManagerTest {
 
     @After
     public void tearDown() throws Exception {
-        TestUtils.waitForAllScheduledTasksToComplete();
+        TestUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
 
         File testDir = mContext.getDir(TEST_DIRECTORY_NAME, Context.MODE_PRIVATE);
         File[] allContents = testDir.listFiles();
@@ -228,22 +234,14 @@ public class ImportManagerTest {
 
         List<UUID> stepsUuids = ImmutableList.of(UUID.fromString(uuids.get(0)));
         List<UUID> bloodPressureUuids = ImmutableList.of(UUID.fromString(uuids.get(1)));
-        ReadTransactionRequest request =
-                mTransactionTestUtils.getReadTransactionRequest(
+
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 stepsUuids,
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
                                 bloodPressureUuids));
-
-        List<RecordInternal<?>> records =
-                mTransactionManager.readRecordsByIds(
-                        request,
-                        mAppInfoHelper,
-                        mDeviceInfoHelper,
-                        mAccessLogsHelper,
-                        mReadAccessLogsHelper,
-                        /* shouldRecordAccessLog= */ false);
         assertThat(records).hasSize(2);
         assertThat(records.get(0).getUuid()).isEqualTo(stepsUuids.get(0));
         assertThat(records.get(1).getUuid()).isEqualTo(bloodPressureUuids.get(0));
@@ -364,22 +362,14 @@ public class ImportManagerTest {
 
         List<UUID> stepsUuids = ImmutableList.of(UUID.fromString(uuids.get(0)));
         List<UUID> bloodPressureUuids = ImmutableList.of(UUID.fromString(uuids.get(1)));
-        ReadTransactionRequest request =
-                mTransactionTestUtils.getReadTransactionRequest(
+
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 stepsUuids,
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
                                 bloodPressureUuids));
-
-        List<RecordInternal<?>> records =
-                mTransactionManager.readRecordsByIds(
-                        request,
-                        mAppInfoHelper,
-                        mDeviceInfoHelper,
-                        mAccessLogsHelper,
-                        mReadAccessLogsHelper,
-                        /* shouldRecordAccessLog= */ false);
         assertThat(records).hasSize(1);
         assertThat(records.get(0).getUuid()).isEqualTo(bloodPressureUuids.get(0));
     }
@@ -401,7 +391,11 @@ public class ImportManagerTest {
                         DEFAULT_USER_HANDLE);
 
         File databaseDir =
-                HealthConnectContext.create(mContext, mContext.getUser(), IMPORT_DATABASE_DIR_NAME)
+                HealthConnectContext.create(
+                                mContext,
+                                mContext.getUser(),
+                                IMPORT_DATABASE_DIR_NAME,
+                                mEnvironmentDataDirectory.getRoot())
                         .getDataDir();
         assertThat(new File(databaseDir, IMPORT_DATABASE_FILE_NAME).exists()).isFalse();
     }
@@ -415,18 +409,14 @@ public class ImportManagerTest {
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logImportStatus(
-                                eq(DATA_IMPORT_STARTED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED)),
-                times(1));
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logImportStatus(
-                                DATA_IMPORT_ERROR_WRONG_FILE, 0, 0, TEST_COMPRESSED_FILE_SIZE));
+        verify(mExportImportLogger, times(1))
+                .logImportStatus(
+                        eq(DATA_IMPORT_STARTED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED));
+        verify(mExportImportLogger)
+                .logImportStatus(DATA_IMPORT_ERROR_WRONG_FILE, 0, 0, TEST_COMPRESSED_FILE_SIZE);
     }
 
     @Test
@@ -494,16 +484,13 @@ public class ImportManagerTest {
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logImportStatus(
-                                eq(DATA_IMPORT_STARTED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED)),
-                times(1));
-        ExtendedMockito.verify(
-                () -> ExportImportLogger.logImportStatus(DATA_IMPORT_ERROR_WRONG_FILE, 0, 0, 0));
+        verify(mExportImportLogger, times(1))
+                .logImportStatus(
+                        eq(DATA_IMPORT_STARTED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED));
+        verify(mExportImportLogger).logImportStatus(DATA_IMPORT_ERROR_WRONG_FILE, 0, 0, 0);
     }
 
     @Test
@@ -557,14 +544,12 @@ public class ImportManagerTest {
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logImportStatus(
-                                eq(DATA_IMPORT_STARTED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED)),
-                times(1));
+        verify(mExportImportLogger, times(1))
+                .logImportStatus(
+                        eq(DATA_IMPORT_STARTED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED));
     }
 
     @Test
@@ -575,23 +560,19 @@ public class ImportManagerTest {
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logImportStatus(
-                                eq(DATA_IMPORT_STARTED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED),
-                                eq(ExportImportLogger.NO_VALUE_RECORDED)),
-                times(1));
+        verify(mExportImportLogger, times(1))
+                .logImportStatus(
+                        eq(DATA_IMPORT_STARTED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED),
+                        eq(ExportImportLogger.NO_VALUE_RECORDED));
 
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logImportStatus(
-                                DATA_IMPORT_ERROR_NONE,
-                                0,
-                                expectedOriginalFileSize,
-                                TEST_COMPRESSED_FILE_SIZE),
-                times(1));
+        verify(mExportImportLogger, times(1))
+                .logImportStatus(
+                        DATA_IMPORT_ERROR_NONE,
+                        0,
+                        expectedOriginalFileSize,
+                        TEST_COMPRESSED_FILE_SIZE);
     }
 
     @Test
@@ -623,22 +604,14 @@ public class ImportManagerTest {
 
         List<UUID> stepsUuids = ImmutableList.of(UUID.fromString(uuids.get(0)));
         List<UUID> bloodPressureUuids = ImmutableList.of(UUID.fromString(uuids.get(1)));
-        ReadTransactionRequest request =
-                mTransactionTestUtils.getReadTransactionRequest(
+
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 stepsUuids,
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
                                 bloodPressureUuids));
-
-        List<RecordInternal<?>> records =
-                mTransactionManager.readRecordsByIds(
-                        request,
-                        mAppInfoHelper,
-                        mDeviceInfoHelper,
-                        mAccessLogsHelper,
-                        mReadAccessLogsHelper,
-                        /* shouldRecordAccessLog= */ false);
         assertThat(records).hasSize(2);
         assertThat(records.get(0).getUuid()).isEqualTo(stepsUuids.get(0));
         assertThat(records.get(1).getUuid()).isEqualTo(bloodPressureUuids.get(0));

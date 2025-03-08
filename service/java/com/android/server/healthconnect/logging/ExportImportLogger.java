@@ -88,8 +88,14 @@ public class ExportImportLogger {
                 DATA_IMPORT_STARTED, HEALTH_CONNECT_IMPORT_INVOKED__STATUS__IMPORT_STATUS_STARTED);
     }
 
+    private final HealthFitnessStatsLog mStatsLog;
+
+    public ExportImportLogger(HealthFitnessStatsLog statsLog) {
+        mStatsLog = statsLog;
+    }
+
     /**
-     * Log Export metrics
+     * Log Export metrics.
      *
      * @param exportStatus The status of the Export as defined by the status codes in
      *     ExportStatus.java
@@ -97,12 +103,12 @@ public class ExportImportLogger {
      * @param originalDataSizeKb Size of the data that is being exported, before compression
      * @param compressedDataSizeKb Size of the data that is being exported, after compression
      */
-    public static void logExportStatus(
+    public void logExportStatus(
             int exportStatus,
             int timeToSucceedOrFailMillis,
             int originalDataSizeKb,
             int compressedDataSizeKb) {
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HEALTH_CONNECT_EXPORT_INVOKED,
                 ExportImportLogger.EXPORT_STATUS_LOG_TAGS.get(exportStatus),
                 timeToSucceedOrFailMillis,
@@ -111,7 +117,7 @@ public class ExportImportLogger {
     }
 
     /**
-     * Log Import metrics
+     * Log Import metrics.
      *
      * @param importStatus The status of the Import as defined by the status codes in
      *     ImportStatus.java
@@ -119,12 +125,12 @@ public class ExportImportLogger {
      * @param originalDataSizeKb Size of the data that is being imported, after decompression
      * @param compressedDataSizeKb Size of the data that is being imported, before decompression
      */
-    public static void logImportStatus(
+    public void logImportStatus(
             int importStatus,
             int timeToSucceedOrFailMillis,
             int originalDataSizeKb,
             int compressedDataSizeKb) {
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HEALTH_CONNECT_IMPORT_INVOKED,
                 IMPORT_STATUS_LOG_TAGS.get(importStatus),
                 timeToSucceedOrFailMillis,

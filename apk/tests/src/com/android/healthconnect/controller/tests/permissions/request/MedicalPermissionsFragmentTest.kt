@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -308,7 +309,7 @@ class MedicalPermissionsFragmentTest {
                 false // makes sure the preference is on so OnPreferenceChecked is triggered
         }
 
-        onView(withText(allowAllPreference?.title?.toString())).perform(click())
+        onView(withText(allowAllPreference?.title?.toString())).perform(scrollTo()).perform(click())
 
         verify(viewModel).updateMedicalPermissions(eq(true))
         // TODO (b/325680041) this is not triggered?
@@ -344,7 +345,7 @@ class MedicalPermissionsFragmentTest {
                 true // makes sure the preference is on so OnPreferenceChecked is triggered
         }
 
-        onView(withText(allowAllPreference?.title?.toString())).perform(click())
+        onView(withText(allowAllPreference?.title?.toString())).perform(scrollTo()).perform(click())
 
         assertThat(viewModel.grantedMedicalPermissions.value).isEmpty()
     }

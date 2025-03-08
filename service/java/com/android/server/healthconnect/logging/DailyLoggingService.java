@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.logging;
 
+import android.health.HealthFitnessStatsLog;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
@@ -34,33 +35,41 @@ public class DailyLoggingService {
     public static void logDailyMetrics(
             UsageStatsCollector usageStatsCollector,
             DatabaseStatsCollector databaseStatsCollector,
-            EcosystemStatsCollector ecosystemStatsCollector) {
-        logDatabaseStats(databaseStatsCollector, usageStatsCollector);
-        logUsageStats(usageStatsCollector);
-        logEcosystemStats(ecosystemStatsCollector);
+            EcosystemStatsCollector ecosystemStatsCollector,
+            HealthFitnessStatsLog statsLog) {
+        UsageStatsLogger usageStatsLogger = new UsageStatsLogger(statsLog);
+        DatabaseStatsLogger databaseStatsLogger = new DatabaseStatsLogger(statsLog);
+        EcosystemStatsLogger ecosystemStatsLogger = new EcosystemStatsLogger(statsLog);
+        logDatabaseStats(databaseStatsCollector, usageStatsCollector, databaseStatsLogger);
+        logUsageStats(usageStatsCollector, usageStatsLogger);
+        logEcosystemStats(ecosystemStatsCollector, ecosystemStatsLogger);
     }
 
     private static void logDatabaseStats(
             DatabaseStatsCollector databaseStatsCollector,
-            UsageStatsCollector usageStatsCollector) {
+            UsageStatsCollector usageStatsCollector,
+            DatabaseStatsLogger databaseStatsLogger) {
         try {
-            DatabaseStatsLogger.log(databaseStatsCollector, usageStatsCollector);
+            databaseStatsLogger.log(databaseStatsCollector, usageStatsCollector);
         } catch (Exception exception) {
             Slog.e(HEALTH_CONNECT_DAILY_LOGGING_SERVICE, "Failed to log database stats", exception);
         }
     }
 
-    private static void logUsageStats(UsageStatsCollector usageStatsCollector) {
+    private static void logUsageStats(
+            UsageStatsCollector usageStatsCollector, UsageStatsLogger usageStatsLogger) {
         try {
-            UsageStatsLogger.log(usageStatsCollector);
+            usageStatsLogger.log(usageStatsCollector);
         } catch (Exception exception) {
             Slog.e(HEALTH_CONNECT_DAILY_LOGGING_SERVICE, "Failed to log usage stats", exception);
         }
     }
 
-    private static void logEcosystemStats(EcosystemStatsCollector ecosystemStatsCollector) {
+    private static void logEcosystemStats(
+            EcosystemStatsCollector ecosystemStatsCollector,
+            EcosystemStatsLogger ecosystemStatsLogger) {
         try {
-            EcosystemStatsLogger.log(ecosystemStatsCollector);
+            ecosystemStatsLogger.log(ecosystemStatsCollector);
         } catch (Exception exception) {
             Slog.e(
                     HEALTH_CONNECT_DAILY_LOGGING_SERVICE,

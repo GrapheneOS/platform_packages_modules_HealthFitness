@@ -47,37 +47,37 @@ public final class HealthConnectThreadScheduler {
     private static final int NUM_EXECUTOR_THREADS_CONTROLLER = 2;
     private static final long KEEP_ALIVE_TIME_CONTROLLER = 60L;
 
-    // Scheduler to run the tasks in a RR fashion based on client package names.
-    private static final HealthConnectRoundRobinScheduler
-            HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER =
-                    new HealthConnectRoundRobinScheduler();
     private static final String TAG = "HealthConnectScheduler";
 
-    // Executor to run HC background tasks
-    @VisibleForTesting
-    public static volatile ThreadPoolExecutor sBackgroundThreadExecutor =
-            createBackgroundExecutor();
+    // Scheduler to run the tasks in a RR fashion based on client package names.
+    private final HealthConnectRoundRobinScheduler mRoundRobinScheduler =
+            new HealthConnectRoundRobinScheduler();
 
     // Executor to run HC background tasks
     @VisibleForTesting
-    public static volatile ThreadPoolExecutor sInternalBackgroundExecutor =
+    public volatile ThreadPoolExecutor mBackgroundThreadExecutor = createBackgroundExecutor();
+
+    // Executor to run HC background tasks
+    @VisibleForTesting
+    public volatile ThreadPoolExecutor mInternalBackgroundExecutor =
             createInternalBackgroundExecutor();
 
     // Executor to run HC tasks for clients
     @VisibleForTesting
-    public static volatile ThreadPoolExecutor sForegroundExecutor = createForegroundExecutor();
+    public volatile ThreadPoolExecutor mForegroundExecutor = createForegroundExecutor();
 
     // Executor to run HC controller tasks
     @VisibleForTesting
-    public static volatile ThreadPoolExecutor sControllerExecutor = createControllerExecutor();
+    public volatile ThreadPoolExecutor mControllerExecutor = createControllerExecutor();
 
-    public static void resetThreadPools() {
-        sInternalBackgroundExecutor = createInternalBackgroundExecutor();
-        sBackgroundThreadExecutor = createBackgroundExecutor();
-        sForegroundExecutor = createForegroundExecutor();
-        sControllerExecutor = createControllerExecutor();
+    /** Reset all the executor thread pools in this executor */
+    public void resetThreadPools() {
+        mInternalBackgroundExecutor = createInternalBackgroundExecutor();
+        mBackgroundThreadExecutor = createBackgroundExecutor();
+        mForegroundExecutor = createForegroundExecutor();
+        mControllerExecutor = createControllerExecutor();
 
-        HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.resume();
+        mRoundRobinScheduler.resume();
     }
 
     private static ThreadPoolExecutor createInternalBackgroundExecutor() {
@@ -120,35 +120,35 @@ public final class HealthConnectThreadScheduler {
                 new NamedThreadFactory("hc-ctrl-"));
     }
 
-    static void shutdownThreadPools() {
-        HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.killTasksAndPauseScheduler();
+    void shutdownThreadPools() {
+        mRoundRobinScheduler.killTasksAndPauseScheduler();
 
-        sInternalBackgroundExecutor.shutdownNow();
-        sBackgroundThreadExecutor.shutdownNow();
-        sForegroundExecutor.shutdownNow();
-        sControllerExecutor.shutdownNow();
+        mInternalBackgroundExecutor.shutdownNow();
+        mBackgroundThreadExecutor.shutdownNow();
+        mForegroundExecutor.shutdownNow();
+        mControllerExecutor.shutdownNow();
     }
 
     /** Schedules the task on the executor dedicated for performing internal tasks */
-    public static void scheduleInternalTask(Runnable task) {
-        safeExecute(sInternalBackgroundExecutor, getSafeRunnable(task));
+    public void scheduleInternalTask(Runnable task) {
+        safeExecute(mInternalBackgroundExecutor, getSafeRunnable(task));
     }
 
     /** Schedules the task on the executor dedicated for performing controller tasks */
-    static void scheduleControllerTask(Runnable task) {
-        safeExecute(sControllerExecutor, getSafeRunnable(task));
+    void scheduleControllerTask(Runnable task) {
+        safeExecute(mControllerExecutor, getSafeRunnable(task));
     }
 
     /** Schedules the task on the best possible executor based on the parameters */
-    static void schedule(Context context, Runnable task, int uid, boolean isController) {
+    void schedule(Context context, Runnable task, int uid, boolean isController) {
         if (isController) {
-            safeExecute(sControllerExecutor, getSafeRunnable(task));
+            safeExecute(mControllerExecutor, getSafeRunnable(task));
             return;
         }
 
         if (isUidInForeground(context, uid)) {
             safeExecute(
-                    sForegroundExecutor,
+                    mForegroundExecutor,
                     getSafeRunnable(
                             () -> {
                                 if (!isUidInForeground(context, uid)) {
@@ -157,28 +157,20 @@ public final class HealthConnectThreadScheduler {
                                     // only be used by the foreground app and since the request of
                                     // this task is no longer in foreground we don't want it to
                                     // consume foreground resource anymore.
-                                    HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.addTask(
-                                            uid, task);
+                                    mRoundRobinScheduler.addTask(uid, task);
                                     safeExecute(
-                                            sBackgroundThreadExecutor,
-                                            () ->
-                                                    HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER
-                                                            .getNextTask()
-                                                            .run());
+                                            mBackgroundThreadExecutor,
+                                            () -> mRoundRobinScheduler.getNextTask().run());
                                     return;
                                 }
 
                                 task.run();
                             }));
         } else {
-            HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER.addTask(uid, task);
+            mRoundRobinScheduler.addTask(uid, task);
             safeExecute(
-                    sBackgroundThreadExecutor,
-                    getSafeRunnable(
-                            () ->
-                                    HEALTH_CONNECT_BACKGROUND_ROUND_ROBIN_SCHEDULER
-                                            .getNextTask()
-                                            .run()));
+                    mBackgroundThreadExecutor,
+                    getSafeRunnable(() -> mRoundRobinScheduler.getNextTask().run()));
         }
     }
 

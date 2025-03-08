@@ -85,6 +85,7 @@ android_test {
     srcs: [
         "src/android/healthconnect/cts/nopermission/HealthConnectManagerNoPermissionsGrantedTest.java",
         "src/android/healthconnect/cts/nopermission/*NoPermissionsDeclaredTest.java",
+        "src/android/healthconnect/cts/nopermission/CloudBackupRestoreNoPermissionsGrantedTest.java",
     ],
     // Tag this module as a cts test artifact
     test_suites: [
@@ -94,6 +95,7 @@ android_test {
         "mcts-healthfitness",
     ],
     static_libs: [
+        "android.permission.flags-aconfig-java",
         "androidx.test.rules",
         "androidx.test.ext.truth",
         "compatibility-device-util-axt",

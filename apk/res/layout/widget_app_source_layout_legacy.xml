@@ -28,7 +28,7 @@
         android:layout_height="match_parent"
         android:minHeight="@dimen/app_header_icon_size"
         android:minWidth="@dimen/app_header_icon_size"
-        android:layout_marginEnd="@dimen/spacing_data_entries"
+        android:layout_margin="@dimen/spacing_data_entries"
         android:layout_gravity="center_vertical">
 
         <TextView
@@ -67,7 +67,6 @@
             android:maxLines="1"
             android:visibility="gone"
             android:textAppearance="?attr/textAppearanceSummary" />
-
     </LinearLayout>
 
     <FrameLayout
@@ -75,9 +74,11 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.32"
+        android:minHeight="@dimen/app_header_icon_size"
         android:minWidth="@dimen/button_size"
         android:paddingStart="0dp"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:layout_margin="@dimen/spacing_data_entries"
         android:layout_gravity="center_vertical">
 
         <ImageView
@@ -86,9 +87,7 @@
             android:layout_gravity="center_vertical|end"
             android:longClickable="false"
             android:id="@+id/action_icon_background"
-            android:minHeight="@dimen/icon_size"
-            android:minWidth="@dimen/icon_size"
-            android:background="?attr/priorityItemDragIcon"/>
+            android:background="?attr/moreVertIcon"/>
     </FrameLayout>
 
 </LinearLayout>

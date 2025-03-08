@@ -23,6 +23,8 @@
         <!-- END REGION -->
 
         <item name="headerTitle">@style/TextAppearance.HealthConnect.Expressive.Heading</item>
+        <item name="headerSummary">@style/TextAppearance.SettingsLib.BodyLarge</item>
+        <item name="permissionHeaderTitle">@style/TextAppearance.HealthConnect.Expressive.PermissionHeading</item>
         <item name="headerDetails">@style/TextAppearance.HealthConnect.Expressive.DetailedHeading</item>
 
     </style>

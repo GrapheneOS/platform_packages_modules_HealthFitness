@@ -64,11 +64,13 @@ import android.healthconnect.cts.lib.BundleHelper;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.List;
 import java.util.concurrent.Executors;
 
 final class TestAppHelper {
+    private static final String TAG = "TestAppHelper";
 
     static Intent handleRequest(Context context, Bundle bundle) {
         String queryType = bundle.getString(QUERY_TYPE);
@@ -76,14 +78,17 @@ final class TestAppHelper {
         try {
             Bundle responseBundle = handleRequestUnchecked(context, bundle, queryType);
             response.putExtras(responseBundle);
+            Log.d(TAG, queryType + " - SUCCEEDED: response: " + responseBundle);
         } catch (Exception e) {
             response.putExtra(INTENT_EXCEPTION, e);
+            Log.e(TAG, queryType + " - FAILED", e);
         }
         return response;
     }
 
     private static Bundle handleRequestUnchecked(Context context, Bundle bundle, String queryType)
             throws Exception {
+        Log.d(TAG, "Handling request: " + queryType);
         return switch (queryType) {
             case INSERT_RECORDS_QUERY -> handleInsertRecords(context, bundle);
             case DELETE_RECORDS_QUERY -> handleDeleteRecords(context, bundle);

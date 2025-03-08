@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.storage;
 
-import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
@@ -36,22 +35,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.health.connect.Constants;
 import android.health.connect.HealthConnectException;
-import android.health.connect.PageTokenWrapper;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.util.Pair;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
-import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -59,10 +52,7 @@ import com.android.server.healthconnect.storage.utils.TableColumnPair;
 
 import java.io.File;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -447,170 +437,6 @@ public final class TransactionManager {
         db.execSQL(request.getDeleteCommand());
     }
 
-    /**
-     * Reads the records {@link RecordInternal} stored in the HealthConnect database without
-     * generating any access logs.
-     *
-     * @param request a read request.
-     * @return List of records read {@link RecordInternal} from table based on ids.
-     * @throws IllegalArgumentException if the {@link ReadTransactionRequest} contains pagination
-     *     information, which should use {@link #readRecordsAndPageToken(ReadTransactionRequest)}
-     *     instead.
-     */
-    public List<RecordInternal<?>> readRecordsByIdsWithoutAccessLogs(
-            ReadTransactionRequest request,
-            AppInfoHelper appInfoHelper,
-            DeviceInfoHelper deviceInfoHelper)
-            throws SQLiteException {
-        return readRecordsByIds(request, appInfoHelper, deviceInfoHelper, null, null, false);
-    }
-
-    /**
-     * Reads the records {@link RecordInternal} stored in the HealthConnect database.
-     *
-     * @param request a read request.
-     * @return List of records read {@link RecordInternal} from table based on ids.
-     * @throws IllegalArgumentException if the {@link ReadTransactionRequest} contains pagination
-     *     information, which should use {@link #readRecordsAndPageToken(ReadTransactionRequest)}
-     *     instead.
-     */
-    public List<RecordInternal<?>> readRecordsByIds(
-            ReadTransactionRequest request,
-            AppInfoHelper appInfoHelper,
-            DeviceInfoHelper deviceInfoHelper,
-            @Nullable AccessLogsHelper accessLogsHelper,
-            @Nullable ReadAccessLogsHelper readAccessLogsHelper,
-            boolean shouldRecordAccessLog)
-            throws SQLiteException {
-        // TODO(b/308158714): Make this build time check once we have different classes.
-        checkArgument(
-                request.getPageToken() == null && request.getPageSize().isEmpty(),
-                "Expect read by id request, but request contains pagination info.");
-        List<RecordInternal<?>> recordInternals = new ArrayList<>();
-        for (ReadTableRequest readTableRequest : request.getReadRequests()) {
-            RecordHelper<?> helper = readTableRequest.getRecordHelper();
-            requireNonNull(helper);
-            try (Cursor cursor = read(readTableRequest)) {
-                List<RecordInternal<?>> internalRecords =
-                        helper.getInternalRecords(cursor, deviceInfoHelper, appInfoHelper);
-                populateInternalRecordsWithExtraData(internalRecords, readTableRequest);
-                recordInternals.addAll(internalRecords);
-            }
-        }
-
-        if (Flags.ecosystemMetrics() && shouldRecordAccessLog && !request.isReadingSelfData()) {
-            Objects.requireNonNull(readAccessLogsHelper)
-                    .recordAccessLogForNonAggregationReads(
-                            getWritableDb(),
-                            request.getPackageName(),
-                            /* readTimeStamp= */ Instant.now().toEpochMilli(),
-                            recordInternals);
-        }
-        if (Flags.addMissingAccessLogs()) {
-            if (!request.isReadingSelfData() && shouldRecordAccessLog) {
-                Objects.requireNonNull(accessLogsHelper)
-                        .recordReadAccessLog(
-                                getWritableDb(),
-                                request.getPackageName(),
-                                request.getRecordTypeIds());
-            }
-        }
-        return recordInternals;
-    }
-
-    /**
-     * Reads the records {@link RecordInternal} stored in the HealthConnect database and returns the
-     * next page token. Does not generate access logs.
-     *
-     * @param request a read request. Only one {@link ReadTableRequest} is expected in the {@link
-     *     ReadTransactionRequest request}.
-     * @return Pair containing records list read {@link RecordInternal} from the table and a page
-     *     token for pagination.
-     * @throws IllegalArgumentException if the {@link ReadTransactionRequest} doesn't contain
-     *     pagination information, which should use {@link
-     *     #readRecordsByIds(ReadTransactionRequest)} instead.
-     */
-    public Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecordsAndPageTokenWithoutAccessLogs(
-            ReadTransactionRequest request,
-            AppInfoHelper appInfoHelper,
-            DeviceInfoHelper deviceInfoHelper,
-            @Nullable Map<Long, String> packageNamesByAppIds)
-            throws SQLiteException {
-        return readRecordsAndPageToken(
-                request, appInfoHelper, deviceInfoHelper, false, null, null, packageNamesByAppIds);
-    }
-
-    /**
-     * Reads the records {@link RecordInternal} stored in the HealthConnect database and returns the
-     * next page token.
-     *
-     * @param request a read request. Only one {@link ReadTableRequest} is expected in the {@link
-     *     ReadTransactionRequest request}.
-     * @return Pair containing records list read {@link RecordInternal} from the table and a page
-     *     token for pagination.
-     * @throws IllegalArgumentException if the {@link ReadTransactionRequest} doesn't contain
-     *     pagination information, which should use {@link
-     *     #readRecordsByIds(ReadTransactionRequest)} instead.
-     */
-    public Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecordsAndPageToken(
-            ReadTransactionRequest request,
-            AppInfoHelper appInfoHelper,
-            DeviceInfoHelper deviceInfoHelper,
-            boolean shouldRecordAccessLog,
-            @Nullable AccessLogsHelper accessLogsHelper,
-            @Nullable ReadAccessLogsHelper readAccessLogsHelper,
-            @Nullable Map<Long, String> packageNamesByAppIds)
-            throws SQLiteException {
-        // TODO(b/308158714): Make these build time checks once we have different classes.
-        checkArgument(
-                request.getPageToken() != null && request.getPageSize().isPresent(),
-                "Expect read by filter request, but request doesn't contain pagination info.");
-        checkArgument(
-                request.getReadRequests().size() == 1,
-                "Expected read by filter request, but request contains multiple read requests.");
-        checkArgument(!shouldRecordAccessLog || accessLogsHelper != null);
-        checkArgument(!shouldRecordAccessLog || readAccessLogsHelper != null);
-        ReadTableRequest readTableRequest = request.getReadRequests().get(0);
-        List<RecordInternal<?>> recordInternalList;
-        RecordHelper<?> helper = readTableRequest.getRecordHelper();
-        requireNonNull(helper);
-
-        PageTokenWrapper pageToken;
-        try (Cursor cursor = read(readTableRequest)) {
-            Pair<List<RecordInternal<?>>, PageTokenWrapper> readResult =
-                    helper.getNextInternalRecordsPageAndToken(
-                            deviceInfoHelper,
-                            cursor,
-                            request.getPageSize().orElse(DEFAULT_PAGE_SIZE),
-                            // pageToken is never null for read by filter requests
-                            requireNonNull(request.getPageToken()),
-                            packageNamesByAppIds,
-                            appInfoHelper);
-            recordInternalList = readResult.first;
-            pageToken = readResult.second;
-            populateInternalRecordsWithExtraData(recordInternalList, readTableRequest);
-            if (Flags.ecosystemMetrics() && shouldRecordAccessLog && !request.isReadingSelfData()) {
-                Objects.requireNonNull(readAccessLogsHelper)
-                        .recordAccessLogForNonAggregationReads(
-                                getWritableDb(),
-                                request.getPackageName(),
-                                /* readTimeStamp= */ Instant.now().toEpochMilli(),
-                                recordInternalList);
-            }
-        }
-
-        if (Flags.addMissingAccessLogs()) {
-            if (!request.isReadingSelfData() && shouldRecordAccessLog) {
-                Objects.requireNonNull(accessLogsHelper)
-                        .recordReadAccessLog(
-                                getWritableDb(),
-                                request.getPackageName(),
-                                request.getRecordTypeIds());
-            }
-        }
-        return Pair.create(recordInternalList, pageToken);
-    }
-
     /** Note: It is the responsibility of the caller to close the returned cursor */
     public Cursor read(ReadTableRequest request) {
         if (Constants.DEBUG) {
@@ -797,26 +623,6 @@ public final class TransactionManager {
             throw new InternalError("SQLite DB not found");
         }
         return sqLiteDatabase;
-    }
-
-    /**
-     * Do extra sql requests to populate optional extra data. Used to populate {@link
-     * android.health.connect.internal.datatypes.ExerciseRouteInternal}.
-     */
-    public void populateInternalRecordsWithExtraData(
-            List<RecordInternal<?>> records, ReadTableRequest request) {
-        if (request.getExtraReadRequests() == null) {
-            return;
-        }
-        for (ReadTableRequest extraDataRequest : request.getExtraReadRequests()) {
-            Cursor cursorExtraData = read(extraDataRequest);
-            RecordHelper<?> recordHelper = request.getRecordHelper();
-            if (recordHelper == null) {
-                throw new IllegalArgumentException(
-                        "Extra read request with no attached record helper.");
-            }
-            recordHelper.updateInternalRecordsWithExtraFields(records, cursorExtraData);
-        }
     }
 
     private long updateEntriesIfRequired(

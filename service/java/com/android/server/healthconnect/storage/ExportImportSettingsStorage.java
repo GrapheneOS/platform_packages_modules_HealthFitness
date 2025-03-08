@@ -20,7 +20,6 @@ import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNSPECIFIED;
 
 import static com.android.healthfitness.flags.Flags.exportImportFastFollow;
-import static com.android.healthfitness.flags.Flags.extendExportImportTelemetry;
 
 import android.annotation.Nullable;
 import android.content.ContentProviderClient;
@@ -245,14 +244,11 @@ public final class ExportImportSettingsStorage {
      * retries.
      */
     public int getExportRepeatErrorOnRetryCount() {
-        if (extendExportImportTelemetry()) {
             String repeatErrorOnRetry_count =
                     mPreferenceHelper.getPreference(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
             return (repeatErrorOnRetry_count == null)
                     ? 0
                     : Integer.parseInt(repeatErrorOnRetry_count);
-        }
-        return 0;
     }
 
     /**
@@ -260,7 +256,6 @@ public final class ExportImportSettingsStorage {
      * during retries. Should be called when an export fails during retries.
      */
     public void increaseExportRepeatErrorOnRetryCount() {
-        if (extendExportImportTelemetry()) {
             String repeatErrorOnRetry_count =
                     mPreferenceHelper.getPreference(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
             int count =
@@ -270,7 +265,6 @@ public final class ExportImportSettingsStorage {
             count++;
             mPreferenceHelper.insertOrReplacePreference(
                     EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY, String.valueOf(count));
-        }
     }
 
     /**
@@ -280,9 +274,7 @@ public final class ExportImportSettingsStorage {
      * retries finish/a new regular export is scheduled.
      */
     public void resetExportRepeatErrorOnRetryCount() {
-        if (extendExportImportTelemetry()) {
             mPreferenceHelper.removeKey(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
-        }
     }
 
     /** Set the state of an import to started, success or an error of the last import attempt. */

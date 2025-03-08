@@ -444,7 +444,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"গোপনীয়তা নীতি পড়ুন"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"গত ২৪ ঘণ্টায় অ্যাক্সেস করা হয়েছে"</string>
     <string name="app_access_title" msgid="7137018424885371763">"অ্যাপের অ্যাক্সেস"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="6821215432694207342">"বর্তমানে আপনার কাছে মানানসই কোনও অ্যাপ ইনস্টল করা নেই"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"এমন কোনও অ্যাপ ইনস্টল করা নেই যা ব্যবহার করা যেতে পারে"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"অতিরিক্ত অ্যাক্সেস"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"পুরনো ডেটা, ব্যাকগ্রাউন্ড ডেটা"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"এই অ্যাপের জন্য অতিরিক্ত অনুমতি সরানো হয়েছে"</string>
@@ -1012,7 +1012,11 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"নিচে সরিয়ে দিন"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"অগ্রাধিকারের তালিকায় <xliff:g id="SELECTED_APP">%s</xliff:g> টেনে এনে আবার সাজানোর বোতাম"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"অগ্রাধিকারের তালিকা থেকে <xliff:g id="SELECTED_APP">%s</xliff:g> সরানোর বোতাম"</string>
+    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
+    <skip />
     <string name="reorder_button_action_description" msgid="5197462036756192214">"নতুন করে সাজাতে, ডবল ট্যাপ করে টেনে আনুন"</string>
+    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
+    <skip />
     <string name="search_keywords_home" msgid="5386515593026555327">"ফিটনেস, সুস্থতা"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"অনুমতি"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"Health Connect, স্বাস্থ্য সংক্রান্ত ডেটা, স্বাস্থ্য বিভাগ, ডেটা অ্যাক্সেস, অ্যাক্টিভিটি, শরীরের পরিমাপ সংক্রান্ত ডেটা, সাইকেল ট্র্যাকিং, নিউট্রিশন, স্লিপ, জরুরি তথ্য"</string>
@@ -1106,6 +1110,12 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"অ্যাপ যোগ করুন"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"অ্যাপের সোর্স এডিট করুন"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ডিভাইসের ডিফল্ট অ্যাপ"</string>
+    <!-- no translation found for move_up (9136155291380319606) -->
+    <skip />
+    <!-- no translation found for move_down (4404970288236170693) -->
+    <skip />
+    <!-- no translation found for remove (1340423400489007362) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"অ্যাপ ডেটা"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"<xliff:g id="APP_NAME">%1$s</xliff:g> থেকে পাওয়া ডেটা এখানে দেখানো হবে"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Health Connect-এর অ্যাক্সেস সহ অ্যাপ থেকে পাওয়া ডেটা এখানে দেখানো হবে"</string>
@@ -1160,6 +1170,10 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>-এর বেছে নেওয়া <xliff:g id="APP_NAME">%1$s</xliff:g> সম্পর্কিত ডেটা স্থায়ীভাবে মুছে দিতে চান?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"এই <xliff:g id="APP_NAME">%s</xliff:g> সম্পর্কিত এন্ট্রি স্থায়ীভাবে মুছে দিতে চান?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g>-এর <xliff:g id="DATA_TYPE">%1$s</xliff:g> ডেটা স্থায়ীভাবে মুছে ফেলতে চান?"</string>
+    <!-- no translation found for menu_show_system (5608880605989914394) -->
+    <skip />
+    <!-- no translation found for menu_hide_system (9218325603953186714) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"চালু আছে"</string>
     <string name="off" msgid="6996623844428550649">"বন্ধ আছে"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>-এ অ্যাক্সেস করা হয়েছে"</string>
@@ -1184,7 +1198,7 @@
     <string name="no_apps_requesting" msgid="8088684445910698363">"কোনও অ্যাপ অনুমতি দেওয়ার অনুরোধ করেনি"</string>
     <string name="allowed" msgid="4158456017482263737">"অনুমোদিত"</string>
     <string name="not_allowed" msgid="6092523505093372147">"অননুমোদিত"</string>
-    <string name="access_sensor_note" msgid="7949933977197789634">"এই অনুমতি আছে এমন অ্যাপ আপনার ডিভাইসের সেন্সর থেকে <xliff:g id="DATA_TYPE">%s</xliff:g> ডেটা অ্যাক্সেস করতে পারবে।"</string>
+    <string name="access_sensor_note" msgid="7949933977197789634">"এই অনুমতি আছে এমন অ্যাপ আপনার ডিভাইসের সেন্সর থেকে <xliff:g id="DATA_TYPE">%s</xliff:g> অ্যাক্সেস করতে পারবে।"</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"আপনার স্মার্টওয়াচে সব অ্যাপের জন্য <xliff:g id="DATA_TYPE">%s</xliff:g> অ্যাক্সেস সরাতে চান?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"টিক চিহ্ন"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"ক্রস চিহ্ন"</string>

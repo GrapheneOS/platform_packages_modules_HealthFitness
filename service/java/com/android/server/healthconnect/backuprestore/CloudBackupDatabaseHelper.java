@@ -43,6 +43,7 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Pair;
 import android.util.Slog;
 
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.proto.backuprestore.AppInfoMap;
 import com.android.server.healthconnect.proto.backuprestore.BackupData;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -55,7 +56,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCatego
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
-import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
@@ -72,10 +72,10 @@ import java.util.stream.Stream;
  *
  * @hide
  */
-@FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
 public class CloudBackupDatabaseHelper {
     private final AppInfoHelper mAppInfoHelper;
     private final TransactionManager mTransactionManager;
+    private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final HealthConnectMappings mHealthConnectMappings;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
@@ -89,6 +89,7 @@ public class CloudBackupDatabaseHelper {
 
     public CloudBackupDatabaseHelper(
             TransactionManager transactionManager,
+            FitnessRecordReadHelper fitnessRecordReadHelper,
             AppInfoHelper appInfoHelper,
             DeviceInfoHelper deviceInfoHelper,
             HealthConnectMappings healthConnectMappings,
@@ -98,6 +99,7 @@ public class CloudBackupDatabaseHelper {
             HealthDataCategoryPriorityHelper priorityHelper,
             PreferenceHelper preferenceHelper) {
         mTransactionManager = transactionManager;
+        mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mAppInfoHelper = appInfoHelper;
         mDeviceInfoHelper = deviceInfoHelper;
         mHealthConnectMappings = healthConnectMappings;
@@ -189,9 +191,9 @@ public class CloudBackupDatabaseHelper {
                                 .setPageSize(pageSize)
                                 .setPageToken(nextDataTablePageToken)
                                 .build();
-                ReadTransactionRequest readTransactionRequest =
-                        new ReadTransactionRequest(
-                                mAppInfoHelper,
+                Pair<List<RecordInternal<?>>, PageTokenWrapper> readResult =
+                        mFitnessRecordReadHelper.readRecords(
+                                mTransactionManager,
                                 // Keep as empty to avoid package name filters.
                                 /* callingPackageName= */ "",
                                 readRecordsRequest.toReadRecordsRequestParcel(),
@@ -202,12 +204,8 @@ public class CloudBackupDatabaseHelper {
                                 grantedExtraReadPermissions,
                                 // Only used when querying the API call quota. Cloud backup &
                                 // restore APIs enforce no quota limits so this value is irrelevant.
-                                /* isInForeground= */ true);
-                Pair<List<RecordInternal<?>>, PageTokenWrapper> readResult =
-                        mTransactionManager.readRecordsAndPageTokenWithoutAccessLogs(
-                                readTransactionRequest,
-                                mAppInfoHelper,
-                                mDeviceInfoHelper,
+                                /* isInForeground= */ true,
+                                /* shouldRecordAccessLog= */ false,
                                 /* packageNamesByAppIds= */ null);
                 backupChanges.addAll(convertRecordsToBackupChange(readResult.first));
                 nextDataTablePageToken = readResult.second.encode();
@@ -280,17 +278,15 @@ public class CloudBackupDatabaseHelper {
                         .collect(Collectors.toSet());
 
         List<RecordInternal<?>> internalRecords =
-                mTransactionManager.readRecordsByIdsWithoutAccessLogs(
-                        new ReadTransactionRequest(
-                                mAppInfoHelper,
-                                /* packageName= */ "",
-                                recordTypeToInsertedUuids,
-                                DEFAULT_LONG,
-                                grantedExtraReadPermissions,
-                                /* isInForeground= */ true,
-                                /* isReadingSelfData= */ false),
-                        mAppInfoHelper,
-                        mDeviceInfoHelper);
+                mFitnessRecordReadHelper.readRecords(
+                        mTransactionManager,
+                        /* callingPackageName= */ "",
+                        recordTypeToInsertedUuids,
+                        DEFAULT_LONG,
+                        grantedExtraReadPermissions,
+                        /* isInForeground= */ true,
+                        /* shouldRecordAccessLog= */ false,
+                        /* isReadingSelfData= */ false);
 
         // Read the exercise sessions that refer to any training plans included in the changes and
         // append them to the list of changes. This is to always have exercise sessions restore
@@ -305,19 +301,15 @@ public class CloudBackupDatabaseHelper {
             }
         }
         List<RecordInternal<?>> exerciseSessions =
-                mTransactionManager.readRecordsByIdsWithoutAccessLogs(
-                        new ReadTransactionRequest(
-                                mAppInfoHelper,
-                                /* packageName= */ "",
-                                Map.of(
-                                        RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
-                                        sessionIds),
-                                DEFAULT_LONG,
-                                grantedExtraReadPermissions,
-                                /* isInForeground= */ true,
-                                /* isReadingSelfData= */ false),
-                        mAppInfoHelper,
-                        mDeviceInfoHelper);
+                mFitnessRecordReadHelper.readRecords(
+                        mTransactionManager,
+                        /* callingPackageName= */ "",
+                        Map.of(RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION, sessionIds),
+                        DEFAULT_LONG,
+                        grantedExtraReadPermissions,
+                        /* isInForeground= */ true,
+                        /* shouldRecordAccessLog= */ false,
+                        /* isReadingSelfData= */ false);
         internalRecords.addAll(exerciseSessions);
 
         List<BackupChange> backupChanges =

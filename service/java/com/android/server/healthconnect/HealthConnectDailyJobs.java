@@ -23,6 +23,7 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
+import android.health.HealthFitnessStatsLog;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
 
@@ -73,9 +74,11 @@ public class HealthConnectDailyJobs {
             UsageStatsCollector usageStatsCollector,
             DatabaseStatsCollector databaseStatsCollector,
             DailyCleanupJob dailyCleanupJob,
-            EcosystemStatsCollector ecosystemStatsCollector) {
+            EcosystemStatsCollector ecosystemStatsCollector,
+            HealthFitnessStatsLog statsLog) {
         dailyCleanupJob.startDailyCleanup();
         DailyLoggingService.logDailyMetrics(
-                usageStatsCollector, databaseStatsCollector, ecosystemStatsCollector);
+                usageStatsCollector, databaseStatsCollector,
+                ecosystemStatsCollector, statsLog);
     }
 }

@@ -17,7 +17,7 @@
  */
 package com.android.healthconnect.controller.permissions.connectedapps.wear
 
-import android.icu.text.ListFormatter;
+import android.icu.text.ListFormatter
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,7 +29,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission.Companion.READ_HEALTH_DATA_IN_BACKGROUND
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
-import com.android.permissioncontroller.wear.permission.components.theme.ResourceHelper
 
 /** Wear Settings Permissions Screen to allow/disallow background permission for an app. */
 @Composable
@@ -39,7 +38,6 @@ fun ControlBackgroundReadForSingleAppScreen(
     onBackClick: () -> Unit,
     onAppInfoPermissionClick: () -> Unit,
 ) {
-    val materialUIVersion = ResourceHelper.materialUIVersionInApp
     // Get app metadata. PackageName is passed from allowed/denied apps page and must be in the
     // connectedApps list, thus it's safe to have nonnull!! assert.
     val appMetadata by viewModel.getAppMetadataByPackageName(packageName).collectAsState()
@@ -47,22 +45,25 @@ fun ControlBackgroundReadForSingleAppScreen(
 
     val allowedDataTypePermissions by viewModel.appToAllowedDataTypes.collectAsState()
     val allowedDataTypesStrings =
-        allowedDataTypePermissions[appMetadata!!]
-            ?.map { permission ->
-                stringResource(
-                    FitnessPermissionStrings.fromPermissionType(
-                            (permission as HealthPermission.FitnessPermission).fitnessPermissionType
-                        )
-                        .lowercaseLabel
-                )
-            }
+        allowedDataTypePermissions[appMetadata!!]?.map { permission ->
+            stringResource(
+                FitnessPermissionStrings.fromPermissionType(
+                        (permission as HealthPermission.FitnessPermission).fitnessPermissionType
+                    )
+                    .lowercaseLabel
+            )
+        }
 
     ScrollableScreen(
-        materialUIVersion = materialUIVersion,
         asScalingList = true,
         showTimeText = false,
         title = stringResource(R.string.allow_all_the_time_prompt, appName),
-        subtitle = stringResource(R.string.current_access, appName, ListFormatter.getInstance().format(allowedDataTypesStrings)),
+        subtitle =
+            stringResource(
+                R.string.current_access,
+                appName,
+                ListFormatter.getInstance().format(allowedDataTypesStrings),
+            ),
     ) {
         // Allow all the time button.
         item {

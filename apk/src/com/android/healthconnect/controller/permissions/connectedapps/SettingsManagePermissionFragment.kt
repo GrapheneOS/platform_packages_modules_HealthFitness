@@ -55,6 +55,8 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.shared.preference.addIntroOrPermissionHeaderPreference
+import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
@@ -96,6 +98,14 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        addIntroOrPermissionHeaderPreference(
+            preferenceScreen,
+            requireContext(),
+            getString(R.string.app_label),
+            AttributeResolver.getDrawable(requireContext(), R.attr.healthConnectIcon),
+            getString(R.string.health_permission_header_description),
+        )
+
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             val connectedAppsGroup = connectedApps.groupBy { it.status }
             updateAllowedApps(connectedAppsGroup[ALLOWED].orEmpty())

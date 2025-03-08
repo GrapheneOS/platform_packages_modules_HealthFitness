@@ -51,14 +51,14 @@ import static com.android.server.healthconnect.storage.datatypehelpers.MedicalRe
 import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper.getParentColumnReference;
 import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper.getTableName;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
-import static com.android.server.healthconnect.testing.storage.PhrTestUtils.ACCESS_LOG_EQUIVALENCE;
-import static com.android.server.healthconnect.testing.storage.PhrTestUtils.makeUpsertRequest;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.generateMedicalResourceUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getHexString;
+import static com.android.server.healthconnect.testing.storage.PhrTestUtils.ACCESS_LOG_EQUIVALENCE;
+import static com.android.server.healthconnect.testing.storage.PhrTestUtils.makeUpsertRequest;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -77,6 +77,7 @@ import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.cts.phr.utils.PhrDataFactory;
+import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
@@ -85,7 +86,6 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -98,8 +98,6 @@ import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.testing.fakes.FakeTimeSource;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.PhrTestUtils;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
@@ -107,8 +105,11 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.quality.Strictness;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -126,25 +127,22 @@ import java.util.stream.Stream;
 @RunWith(AndroidJUnit4.class)
 public class MedicalResourceHelperTest {
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private static final long DATA_SOURCE_ROW_ID = 1234;
     private static final String INVALID_PAGE_TOKEN = "aw==";
     private static final Instant INSTANT_NOW = Instant.now();
+
+    @Mock private AppOpLogsHelper mAppOpLogsHelper;
 
     private MedicalResourceHelper mMedicalResourceHelper;
     private TransactionManager mTransactionManager;
     private AccessLogsHelper mAccessLogsHelper;
     private PhrTestUtils mUtil;
     private FakeTimeSource mFakeTimeSource;
+    private UserHandle mUserHandle;
 
     @Before
     public void setup() {
@@ -155,12 +153,15 @@ public class MedicalResourceHelperTest {
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
+                        .setAppOpLogsHelper(mAppOpLogsHelper)
                         .setTimeSource(mFakeTimeSource)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mMedicalResourceHelper = healthConnectInjector.getMedicalResourceHelper();
         mUtil = new PhrTestUtils(healthConnectInjector);
+        mUserHandle = context.getUser();
 
         TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
         transactionTestUtils.insertApp(DATA_SOURCE_PACKAGE_NAME);
@@ -808,7 +809,7 @@ public class MedicalResourceHelperTest {
                 /* hasWritePermission= */ true,
                 /* isCalledFromBgWithoutBgRead= */ true);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test
@@ -822,7 +823,7 @@ public class MedicalResourceHelperTest {
                 /* hasWritePermission= */ true,
                 /* isCalledFromBgWithoutBgRead= */ true);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test
@@ -836,7 +837,7 @@ public class MedicalResourceHelperTest {
                 /* hasWritePermission= */ false,
                 /* isCalledFromBgWithoutBgRead= */ true);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test
@@ -885,7 +886,7 @@ public class MedicalResourceHelperTest {
                         /* medicalResourceTypes= */ Set.of(
                                 MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(expected);
     }
@@ -928,7 +929,7 @@ public class MedicalResourceHelperTest {
                         OPERATION_TYPE_READ,
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(expected);
     }
@@ -965,7 +966,7 @@ public class MedicalResourceHelperTest {
                         OPERATION_TYPE_READ,
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(expected);
     }
@@ -981,7 +982,7 @@ public class MedicalResourceHelperTest {
                 /* hasWritePermission= */ true,
                 /* isCalledFromBgWithoutBgRead= */ false);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test
@@ -997,7 +998,7 @@ public class MedicalResourceHelperTest {
 
         // No access log should be created since app is intending to access self data as it has
         // no read permissions.
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test
@@ -1031,7 +1032,7 @@ public class MedicalResourceHelperTest {
                         OPERATION_TYPE_READ,
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(expected);
     }
@@ -1072,7 +1073,7 @@ public class MedicalResourceHelperTest {
                         OPERATION_TYPE_READ,
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(expected);
     }
@@ -1437,7 +1438,7 @@ public class MedicalResourceHelperTest {
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(expected);
     }
@@ -1454,7 +1455,7 @@ public class MedicalResourceHelperTest {
                 DATA_SOURCE_PACKAGE_NAME,
                 /* enforceSelfRead= */ true);
 
-        List<AccessLog> accessLogs = mAccessLogsHelper.queryAccessLogs();
+        List<AccessLog> accessLogs = mAccessLogsHelper.queryAccessLogs(mUserHandle);
 
         assertThat(accessLogs).isEmpty();
     }
@@ -1646,7 +1647,7 @@ public class MedicalResourceHelperTest {
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .contains(expected);
     }
@@ -1671,7 +1672,7 @@ public class MedicalResourceHelperTest {
                                 MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES),
                         /* isMedicalDataSourceAccessed= */ false);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .contains(expected);
     }
@@ -1709,7 +1710,7 @@ public class MedicalResourceHelperTest {
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsAtLeast(insertAccessLog, updateAccessLog);
     }
@@ -1947,7 +1948,7 @@ public class MedicalResourceHelperTest {
         mMedicalResourceHelper.deleteMedicalResourcesByIdsWithPermissionChecks(
                 List.of(getMedicalResourceId()), DATA_SOURCE_PACKAGE_NAME);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test
@@ -1963,7 +1964,7 @@ public class MedicalResourceHelperTest {
         mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(
                 List.of(resource1.getId()));
 
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test
@@ -1994,7 +1995,7 @@ public class MedicalResourceHelperTest {
                         OPERATION_TYPE_DELETE,
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
     }
@@ -2030,7 +2031,7 @@ public class MedicalResourceHelperTest {
                                 MEDICAL_RESOURCE_TYPE_VACCINES,
                                 MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
     }
@@ -2484,7 +2485,7 @@ public class MedicalResourceHelperTest {
                                 MEDICAL_RESOURCE_TYPE_VACCINES,
                                 MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
     }
@@ -2520,7 +2521,7 @@ public class MedicalResourceHelperTest {
                         OPERATION_TYPE_DELETE,
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
     }
@@ -2556,7 +2557,7 @@ public class MedicalResourceHelperTest {
                         OPERATION_TYPE_DELETE,
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
     }
@@ -2588,7 +2589,7 @@ public class MedicalResourceHelperTest {
                         /* medicalResourceTypes= */ Set.of(
                                 MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
     }
@@ -2612,7 +2613,7 @@ public class MedicalResourceHelperTest {
                         .build(),
                 /* callingPackageName= */ DATA_SOURCE_PACKAGE_NAME);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test
@@ -2639,7 +2640,7 @@ public class MedicalResourceHelperTest {
                         OPERATION_TYPE_DELETE,
                         /* medicalResourceTypes= */ Set.of(MEDICAL_RESOURCE_TYPE_VACCINES),
                         /* isMedicalDataSourceAccessed= */ false);
-        assertThat(mAccessLogsHelper.queryAccessLogs())
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle))
                 .comparingElementsUsing(ACCESS_LOG_EQUIVALENCE)
                 .containsExactly(deleteAccessLog);
     }
@@ -2659,7 +2660,7 @@ public class MedicalResourceHelperTest {
                         .build(),
                 /* callingPackageName= */ DATA_SOURCE_PACKAGE_NAME);
 
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test
@@ -2676,7 +2677,7 @@ public class MedicalResourceHelperTest {
                         .addDataSourceId(dataSource1.getId())
                         .build());
 
-        assertThat(mAccessLogsHelper.queryAccessLogs()).isEmpty();
+        assertThat(mAccessLogsHelper.queryAccessLogs(mUserHandle)).isEmpty();
     }
 
     @Test

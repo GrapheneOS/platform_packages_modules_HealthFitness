@@ -38,20 +38,20 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.modules.utils.testing.ExtendedMockitoRule;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.testing.TestUtils;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -69,11 +69,12 @@ public class HealthDataCategoryPriorityHelperTest {
     private static final String APP_PACKAGE_NAME_3 = "android.healthconnect.mocked.app3";
     private static final String APP_PACKAGE_NAME_4 = "android.healthconnect.mocked.app4";
 
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+
     @Rule
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
                     .mockStatic(HealthConnectManager.class)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
                     .build();
 
     @Mock private PackageInfoUtils mPackageInfoUtils;
@@ -91,6 +92,7 @@ public class HealthDataCategoryPriorityHelperTest {
 
     private AppInfoHelper mAppInfoHelper;
     private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
+    private HealthConnectThreadScheduler mThreadScheduler;
 
     @Before
     public void setUp() throws Exception {
@@ -101,6 +103,7 @@ public class HealthDataCategoryPriorityHelperTest {
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setPreferenceHelper(mPreferenceHelper)
                         .setPackageInfoUtils(mPackageInfoUtils)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
         TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
@@ -117,11 +120,12 @@ public class HealthDataCategoryPriorityHelperTest {
 
         mHealthDataCategoryPriorityHelper =
                 healthConnectInjector.getHealthDataCategoryPriorityHelper();
+        mThreadScheduler = healthConnectInjector.getThreadScheduler();
     }
 
     @After
     public void tearDown() throws Exception {
-        TestUtils.waitForAllScheduledTasksToComplete();
+        TestUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
     }
 
     @Test

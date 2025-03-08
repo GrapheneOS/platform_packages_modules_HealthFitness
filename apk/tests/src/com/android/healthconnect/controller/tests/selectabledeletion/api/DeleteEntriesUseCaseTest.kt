@@ -33,8 +33,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
-import org.mockito.Matchers.any
-import org.mockito.Matchers.anyListOf
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyList
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
@@ -61,7 +61,7 @@ class DeleteEntryUseCaseTest {
     fun invoke_deleteEntries_callsHealthManager() = runTest {
         doAnswer(prepareAnswer())
             .`when`(manager)
-            .deleteRecords(anyListOf(RecordIdFilter::class.java), any(), any())
+            .deleteRecords(anyList(), any(), any())
 
         useCase.invoke(
             DeleteEntries(

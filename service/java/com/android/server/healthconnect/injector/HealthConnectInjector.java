@@ -16,14 +16,19 @@
 
 package com.android.server.healthconnect.injector;
 
+import android.health.HealthFitnessStatsLog;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.server.appop.AppOpsManagerLocal;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.exportimport.ExportManager;
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
+import com.android.server.healthconnect.logging.BackupRestoreLogger;
+import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.logging.UsageStatsCollector;
 import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
 import com.android.server.healthconnect.migration.MigrationCleaner;
@@ -56,7 +61,10 @@ import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.PreferencesManager;
+import com.android.server.healthconnect.tracker.TrackerManager;
 import com.android.server.healthconnect.utils.TimeSource;
+
+import java.io.File;
 
 /**
  * Interface for Health Connect Dependency Injector.
@@ -166,6 +174,12 @@ public abstract class HealthConnectInjector {
     public abstract MigrationCleaner getMigrationCleaner();
 
     /**
+     * Getter for {@link FitnessRecordReadHelper} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract FitnessRecordReadHelper getFitnessRecordReadHelper();
+
+    /**
      * Getter for {@link MedicalResourceHelper} instance initialised by the Health Connect Injector.
      */
     public abstract MedicalResourceHelper getMedicalResourceHelper();
@@ -236,6 +250,36 @@ public abstract class HealthConnectInjector {
      * Getter for {@link AppOpsManagerLocal} instance initialised by the Health Connect Injector.
      */
     public abstract AppOpsManagerLocal getAppOpsManagerLocal();
+
+    /**
+     * Getter for {@link HealthConnectThreadScheduler} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract HealthConnectThreadScheduler getThreadScheduler();
+
+    /**
+     * Getter for {@link File} instance representing root directory where Health Connect data should
+     * be stored. Use this instead of {@link Environment#getDataDirectory}.
+     */
+    public abstract File getEnvironmentDataDirectory();
+
+    /**
+     * Getter for {@link HealthFitnessStatsLog} instance initialised by the Health Connect Injector.
+     */
+    public abstract HealthFitnessStatsLog getHealthFitnessStatsLog();
+
+    /**
+     * Getter for {@link ExportImportLogger} instance initialised by the Health Connect Injector.
+     */
+    public abstract ExportImportLogger getExportImportLogger();
+
+    /**
+     * Getter for {@link BackupRestoreLogger} instance initialised by the Health Connect Injector.
+     */
+    public abstract BackupRestoreLogger getBackupRestoreLogger();
+
+    /** Getter for {@link TrackerManager} instance initialised by the Health Connect Injector. */
+    public abstract TrackerManager getTrackerManager();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {

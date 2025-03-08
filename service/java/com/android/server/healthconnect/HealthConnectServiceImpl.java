@@ -35,8 +35,8 @@ import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKG
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.datatypes.MedicalDataSource.validateMedicalDataSourceIds;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
-import static com.android.healthfitness.flags.Flags.cloudBackupAndRestore;
 import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetry;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
@@ -68,6 +68,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteException;
+import android.health.HealthFitnessStatsLog;
 import android.health.connect.Constants;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
@@ -181,6 +182,9 @@ import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.exportimport.ImportManager;
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
+import com.android.server.healthconnect.logging.BackupRestoreLogger;
+import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.migration.DataMigrationManager;
 import com.android.server.healthconnect.migration.MigrationCleaner;
@@ -214,7 +218,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHe
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
 import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
-import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
@@ -224,6 +227,7 @@ import com.android.server.healthconnect.utils.TimeSource;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -284,6 +288,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final ExportImportSettingsStorage mExportImportSettingsStorage;
     private final PreferenceHelper mPreferenceHelper;
+    private FitnessRecordReadHelper mFitnessRecordReadHelper;
     private MedicalResourceHelper mMedicalResourceHelper;
     private MedicalDataSourceHelper mMedicalDataSourceHelper;
     private final ExportManager mExportManager;
@@ -298,8 +303,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final DatabaseHelpers mDatabaseHelpers;
     private final PreferencesManager mPreferencesManager;
     private final ReadAccessLogsHelper mReadAccessLogsHelper;
+    private final RateLimiter mRateLimiter;
     // This will be null if the phr_fhir_structural_validation flag is false.
     @Nullable private FhirResourceValidator mFhirResourceValidator;
+    private final HealthConnectThreadScheduler mThreadScheduler;
+    private final HealthFitnessStatsLog mStatsLog;
 
     private volatile UserHandle mCurrentForegroundUser;
 
@@ -314,6 +322,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MigrationStateManager migrationStateManager,
             MigrationUiStateManager migrationUiStateManager,
             MigrationCleaner migrationCleaner,
+            FitnessRecordReadHelper fitnessRecordReadHelper,
             MedicalResourceHelper medicalResourceHelper,
             MedicalDataSourceHelper medicalDataSourceHelper,
             ExportManager exportManager,
@@ -332,7 +341,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             DatabaseHelpers databaseHelpers,
             PreferencesManager preferencesManager,
             ReadAccessLogsHelper readAccessLogsHelper,
-            AppOpsManagerLocal appOpsManagerLocal) {
+            AppOpsManagerLocal appOpsManagerLocal,
+            HealthConnectThreadScheduler threadScheduler,
+            RateLimiter rateLimiter,
+            File environmentDataDirectory,
+            ExportImportLogger exportImportLogger,
+            HealthFitnessStatsLog statsLog,
+            BackupRestoreLogger backupRestoreLogger) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -351,6 +366,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mMigrationUiStateManager.attachTo(migrationStateManager);
         migrationCleaner.attachTo(migrationStateManager);
 
+        mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mMedicalResourceHelper = medicalResourceHelper;
         mMedicalDataSourceHelper = medicalDataSourceHelper;
 
@@ -370,6 +386,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mDatabaseHelpers = databaseHelpers;
         mPreferencesManager = preferencesManager;
         mReadAccessLogsHelper = readAccessLogsHelper;
+        mThreadScheduler = threadScheduler;
+        mRateLimiter = rateLimiter;
 
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
         mAppOpsManagerLocal = appOpsManagerLocal;
@@ -377,22 +395,26 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mDataPermissionEnforcer =
                 new DataPermissionEnforcer(
                         mPermissionManager, mContext, internalHealthConnectMappings);
-        Clock clockForLogging = Flags.exportImportFastFollow() ? Clock.systemUTC() : null;
+        Clock clockForLogging = Clock.systemUTC();
         mImportManager =
                 new ImportManager(
                         mAppInfoHelper,
                         mContext,
                         mExportImportSettingsStorage,
                         mTransactionManager,
+                        mFitnessRecordReadHelper,
                         mDeviceInfoHelper,
                         mHealthDataCategoryPriorityHelper,
-                        clockForLogging,
-                        exportImportNotificationSender);
+                        Flags.exportImportFastFollow() ? clockForLogging : null,
+                        exportImportNotificationSender,
+                        environmentDataDirectory,
+                        exportImportLogger);
 
         mCloudBackupManager =
-                cloudBackupAndRestore()
+                isCloudBackupRestoreEnabled()
                         ? new CloudBackupManager(
                                 mTransactionManager,
+                                mFitnessRecordReadHelper,
                                 mAppInfoHelper,
                                 mDeviceInfoHelper,
                                 mHealthConnectMappings,
@@ -400,18 +422,24 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 mChangeLogsHelper,
                                 mChangeLogsRequestHelper,
                                 mHealthDataCategoryPriorityHelper,
-                                mPreferenceHelper)
+                                mPreferenceHelper,
+                                clockForLogging,
+                                backupRestoreLogger)
                         : null;
         mCloudRestoreManager =
-                cloudBackupAndRestore()
+                isCloudBackupRestoreEnabled()
                         ? new CloudRestoreManager(
                                 mTransactionManager,
+                                mFitnessRecordReadHelper,
                                 mInternalHealthConnectMappings,
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
                                 mHealthDataCategoryPriorityHelper,
-                                mPreferenceHelper)
+                                mPreferenceHelper,
+                                clockForLogging,
+                                backupRestoreLogger)
                         : null;
+        mStatsLog = statsLog;
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
@@ -508,6 +536,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(false, INSERT_DATA)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
 
         ErrorCallback errorCallback = callback::onError;
@@ -549,7 +578,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     List<String> uuids = insertRequest.execute();
                     tryAndReturnResult(callback, uuids, logger);
 
-                    HealthConnectThreadScheduler.scheduleInternalTask(
+                    mThreadScheduler.scheduleInternalTask(
                             () -> postInsertTasks(attributionSource, recordsParcel));
 
                     logRecordTypeSpecificUpsertMetrics(
@@ -593,6 +622,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, READ_AGGREGATED_DATA)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
 
         ErrorCallback errorCallback = callback::onError;
@@ -706,6 +736,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 Objects.requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, READ_DATA)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callingPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -781,48 +812,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             }
                         }
 
-                        ReadTransactionRequest readTransactionRequest =
-                                new ReadTransactionRequest(
-                                        mAppInfoHelper,
+                        boolean shouldRecordAccessLog = !holdsDataManagementPermission;
+                        Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecordsResponse =
+                                mFitnessRecordReadHelper.readRecords(
+                                        mTransactionManager,
                                         callingPackageName,
                                         request,
                                         startDateAccessEpochMilli,
                                         enforceSelfRead,
                                         grantedExtraReadPermissions,
-                                        isInForeground);
-                        // throw an exception if read requested is not for a single record type
-                        // i.e. size of read table request is not equal to 1.
-                        if (readTransactionRequest.getReadRequests().size() != 1) {
-                            throw new IllegalArgumentException(
-                                    "Read requested is not for a single record type");
-                        }
+                                        isInForeground,
+                                        shouldRecordAccessLog,
+                                        /* packageNamesByAppIds= */ null);
+                        List<RecordInternal<?>> records = readRecordsResponse.first;
+                        long pageToken = readRecordsResponse.second.encode();
 
-                        List<RecordInternal<?>> records;
-                        long pageToken;
-                        boolean shouldRecordAccessLog = !holdsDataManagementPermission;
-                        if (request.getRecordIdFiltersParcel() != null) {
-                            records =
-                                    mTransactionManager.readRecordsByIds(
-                                            readTransactionRequest,
-                                            mAppInfoHelper,
-                                            mDeviceInfoHelper,
-                                            mAccessLogsHelper,
-                                            mReadAccessLogsHelper,
-                                            shouldRecordAccessLog);
-                            pageToken = DEFAULT_LONG;
-                        } else {
-                            Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecordsResponse =
-                                    mTransactionManager.readRecordsAndPageToken(
-                                            readTransactionRequest,
-                                            mAppInfoHelper,
-                                            mDeviceInfoHelper,
-                                            shouldRecordAccessLog,
-                                            mAccessLogsHelper,
-                                            mReadAccessLogsHelper,
-                                            /* packageNamesByAppIds= */ null);
-                            records = readRecordsResponse.first;
-                            pageToken = readRecordsResponse.second.encode();
-                        }
                         logger.setNumberOfRecords(records.size());
 
                         if (Constants.DEBUG) {
@@ -850,7 +854,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } catch (TypeNotPresentException exception) {
                         // All the requested package names are not present, so simply
                         // return an empty list
-                        if (ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME.equals(
+                        if (FitnessRecordReadHelper.TYPE_NOT_PRESENT_PACKAGE_NAME.equals(
                                 exception.typeName())) {
                             if (Constants.DEBUG) {
                                 Slog.d(TAG, "No app info recorded for " + callingPackageName);
@@ -908,6 +912,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(false, UPDATE_DATA)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
         scheduleLoggingHealthDataApiErrors(
                 () -> {
@@ -949,7 +954,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             recordInternals, attributionSource.getPackageName());
                     logger.setDataTypesFromRecordInternals(recordInternals);
                     // Update activity dates table
-                    HealthConnectThreadScheduler.scheduleInternalTask(
+                    mThreadScheduler.scheduleInternalTask(
                             () ->
                                     mActivityDateHelper.reSyncByRecordTypeIds(
                                             recordInternals.stream()
@@ -978,6 +983,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES_TOKEN)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
         scheduleLoggingHealthDataApiErrors(
                 () -> {
@@ -1028,6 +1034,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final String callerPackageName = Objects.requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callerPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -1092,21 +1099,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     .getPackageNamesToFilter()
                                     .equals(singletonList(callerPackageName));
                     List<RecordInternal<?>> recordInternals =
-                            mTransactionManager.readRecordsByIds(
-                                    new ReadTransactionRequest(
-                                            mAppInfoHelper,
-                                            callerPackageName,
-                                            recordTypeToInsertedUuids,
-                                            startDateAccessEpochMilli,
-                                            grantedExtraReadPermissions,
-                                            isInForeground,
-                                            isReadingSelfData),
-                                    mAppInfoHelper,
-                                    mDeviceInfoHelper,
-                                    mAccessLogsHelper,
-                                    mReadAccessLogsHelper,
-                                    /* shouldRecordAccessLog= */ true);
-
+                            mFitnessRecordReadHelper.readRecords(
+                                    mTransactionManager,
+                                    callerPackageName,
+                                    recordTypeToInsertedUuids,
+                                    startDateAccessEpochMilli,
+                                    grantedExtraReadPermissions,
+                                    isInForeground,
+                                    /* shouldRecordAccessLog= */ true,
+                                    isReadingSelfData);
                     List<DeletedLog> deletedLogs =
                             ChangeLogsHelper.getDeletedLogs(changeLogsResponse.getChangeLogsMap());
 
@@ -1148,6 +1149,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, DELETE_DATA)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
 
         scheduleLoggingHealthDataApiErrors(
@@ -1214,6 +1216,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, DELETE_DATA)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
 
         final RequestContext requestContext = RequestContext.create();
@@ -1269,8 +1272,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mTransactionManager.deleteAllRecords(
                         deleteTransactionRequest, shouldRecordDeleteAccessLogs, mAccessLogsHelper);
         tryAndReturnResult(callback, logger);
-        HealthConnectThreadScheduler.scheduleInternalTask(
-                () -> postDeleteTasks(recordTypeIdsToDelete));
+        mThreadScheduler.scheduleInternalTask(() -> postDeleteTasks(recordTypeIdsToDelete));
 
         logger.setNumberOfRecords(numberOfRecordsDeleted)
                 .setDataTypesFromRecordTypes(recordTypeIdsToDelete);
@@ -1286,7 +1288,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -1335,7 +1337,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -1373,7 +1375,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -1435,7 +1437,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -1481,7 +1483,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -1519,13 +1521,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
 
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
-                        final List<AccessLog> accessLogsList = mAccessLogsHelper.queryAccessLogs();
+                        final List<AccessLog> accessLogsList =
+                                mAccessLogsHelper.queryAccessLogs(userHandle);
                         callback.onResult(new AccessLogsResponseParcel(accessLogsList));
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
@@ -1563,7 +1566,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
 
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -1609,7 +1612,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
 
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        mThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -1655,7 +1658,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
 
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        mThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -1693,7 +1696,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int pid = Binder.getCallingPid();
         UserHandle callingUserHandle = getCallingUserHandle();
 
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        mThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(callingUserHandle);
@@ -1736,7 +1739,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
 
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        mThreadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -1792,7 +1795,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 }
             }
 
-            HealthConnectThreadScheduler.scheduleInternalTask(
+            mThreadScheduler.scheduleInternalTask(
                     () -> {
                         if (!mBackupRestore.prepForStagingIfNotAlreadyDone()) {
                             try {
@@ -1861,7 +1864,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             mBackupRestore.deleteAndResetEverything(userHandle);
             mMigrationStateManager.clearCaches(mContext);
             mDatabaseHelpers.clearAllData(mTransactionManager);
-            RateLimiter.clearCache();
+            mRateLimiter.clearCache();
             String[] packageNames = mContext.getPackageManager().getPackagesForUid(uid);
             for (String packageName : packageNames) {
                 mFirstGrantTimeManager.setFirstGrantTime(packageName, Instant.now(), userHandle);
@@ -1880,7 +1883,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         // to shell in a mainline update.
         mContext.enforceCallingPermission(
                 DELETE_STAGED_HEALTH_CONNECT_REMOTE_DATA_PERMISSION, null);
-        RateLimiter.setLowerRateLimitsForTesting(enabled);
+        mRateLimiter.setLowerRateLimitsForTesting(enabled);
     }
 
     /**
@@ -1909,7 +1912,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     MANAGE_HEALTH_DATA_PERMISSION, Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);
             final UserHandle userHandle = Binder.getCallingUserHandle();
             enforceIsForegroundUser(userHandle);
-            HealthConnectThreadScheduler.schedule(
+            mThreadScheduler.schedule(
                     mContext,
                     () -> {
                         try {
@@ -1973,7 +1976,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -2035,7 +2038,24 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             mContext.enforceCallingPermission(MANAGE_HEALTH_DATA_PERMISSION, null);
             mExportImportSettingsStorage.configure(settings);
 
-            HealthConnectThreadScheduler.scheduleInternalTask(
+            // Trigger a one time immediate export when periodic export is scheduled.
+            if (Flags.immediateExport() && settings != null && settings.getPeriodInDays() > 0) {
+                mThreadScheduler.scheduleInternalTask(
+                        () -> {
+                            try {
+                                final int uid = Binder.getCallingUid();
+                                final int pid = Binder.getCallingPid();
+
+                                mContext.enforcePermission(
+                                        MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+                                mExportManager.runExport(userHandle);
+                            } catch (Exception e) {
+                                Slog.e(TAG, "Failed to trigger a one time immediate export.", e);
+                            }
+                        });
+            }
+
+            mThreadScheduler.scheduleInternalTask(
                     () -> {
                         try {
                             ExportImportJobs.schedulePeriodicExportJob(
@@ -2072,7 +2092,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -2122,7 +2142,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -2150,7 +2170,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -2170,7 +2190,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -2194,7 +2214,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
 
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
                         enforceIsForegroundUser(userHandle);
@@ -2237,6 +2257,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, CREATE_MEDICAL_DATA_SOURCE)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(packageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -2306,6 +2327,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, GET_MEDICAL_DATA_SOURCES_BY_IDS)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callingPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -2425,6 +2447,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, GET_MEDICAL_DATA_SOURCES_BY_REQUESTS)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callingPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -2521,6 +2544,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, DELETE_MEDICAL_DATA_SOURCE_WITH_DATA)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callingPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -2623,6 +2647,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, UPSERT_MEDICAL_RESOURCES)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callingPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -2729,6 +2754,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, READ_MEDICAL_RESOURCES_BY_IDS)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callingPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -2856,6 +2882,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, READ_MEDICAL_RESOURCES_BY_REQUESTS)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callingPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -2979,6 +3006,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, DELETE_MEDICAL_RESOURCES_BY_IDS)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callingPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -3050,6 +3078,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, DELETE_MEDICAL_RESOURCES_BY_REQUESTS)
+                        .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(callingPackageName);
 
         scheduleLoggingHealthDataApiErrors(
@@ -3106,7 +3135,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             ErrorCallback errorCallback,
             int uid,
             boolean isController) {
-        HealthConnectThreadScheduler.schedule(
+        mThreadScheduler.schedule(
                 mContext,
                 () -> {
                     int errorCode = ERROR_UNKNOWN;
@@ -3200,7 +3229,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     if (!isPersonalHealthRecordEnabled()) {
                         HealthConnectException unsupportedException =
@@ -3241,24 +3270,29 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @TargetApi(Build.VERSION_CODES.BAKLAVA)
     public void getChangesForBackup(
             @Nullable String changeToken, IGetChangesForBackupResponseCallback callback) {
-        // TODO: b/399075964 - add proper exception handling
-        if (mCloudBackupManager == null) return;
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final ErrorCallback errorCallback = callback::onError;
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        enforceIsForegroundUser(userHandle);
-                        if (cloudBackupAndRestore()) {
-                            mContext.enforcePermission(
-                                    BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS,
-                                    pid,
-                                    uid,
-                                    "Caller does not have permission to call getChangesForBackup.");
-                            callback.onResult(mCloudBackupManager.getChangesForBackup(changeToken));
+                        if (mCloudBackupManager == null || !isCloudBackupRestoreEnabled()) {
+                            throw new UnsupportedOperationException(
+                                    "getChangesForBackup is not supported.");
                         }
+                        enforceIsForegroundUser(userHandle);
+
+                        mContext.enforcePermission(
+                                BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS,
+                                pid,
+                                uid,
+                                "Caller does not have permission to call getChangesForBackup.");
+                        callback.onResult(mCloudBackupManager.getChangesForBackup(changeToken));
+                    } catch (UnsupportedOperationException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
+                    } catch (SecurityException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_SECURITY);
                     } catch (IllegalArgumentException e) {
                         tryAndThrowException(errorCallback, e, ERROR_INVALID_ARGUMENT);
                     } catch (Exception e) {
@@ -3270,25 +3304,30 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     @TargetApi(Build.VERSION_CODES.BAKLAVA)
     public void getSettingsForBackup(IGetSettingsForBackupResponseCallback callback) {
-        if (mCloudBackupManager == null) return;
         checkParamsNonNull(callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final ErrorCallback errorCallback = callback::onError;
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        enforceIsForegroundUser(userHandle);
-                        if (cloudBackupAndRestore()) {
-                            mContext.enforcePermission(
-                                    BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS,
-                                    pid,
-                                    uid,
-                                    "Caller does not have permission to call"
-                                            + " getSettingsForBackup.");
-                            callback.onResult(mCloudBackupManager.getSettingsForBackup());
+                        if (mCloudBackupManager == null || !isCloudBackupRestoreEnabled()) {
+                            throw new UnsupportedOperationException(
+                                    "getSettingsForBackup is not supported.");
                         }
+                        enforceIsForegroundUser(userHandle);
+                        mContext.enforcePermission(
+                                BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS,
+                                pid,
+                                uid,
+                                "Caller does not have permission to call"
+                                        + " getSettingsForBackup.");
+                        callback.onResult(mCloudBackupManager.getSettingsForBackup());
+                    } catch (UnsupportedOperationException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
+                    } catch (SecurityException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_SECURITY);
                     } catch (Exception e) {
                         tryAndThrowException(errorCallback, e, ERROR_INTERNAL);
                     }
@@ -3298,27 +3337,34 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     @TargetApi(Build.VERSION_CODES.BAKLAVA)
     public void restoreSettings(BackupSettings backupSettings, IEmptyResponseCallback callback) {
-        // TODO: b/399075964 - add proper exception handling
-        if (mCloudRestoreManager == null) return;
         checkParamsNonNull(backupSettings);
         checkParamsNonNull(callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final ErrorCallback errorCallback = callback::onError;
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        enforceIsForegroundUser(userHandle);
-                        if (cloudBackupAndRestore()) {
-                            mContext.enforcePermission(
-                                    RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS,
-                                    pid,
-                                    uid,
-                                    "Caller does not have permission to call restoreSettings.");
-                            mCloudRestoreManager.restoreSettings(backupSettings);
-                            callback.onResult();
+                        if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
+                            throw new UnsupportedOperationException(
+                                    "restoreSettings is not supported.");
                         }
+                        enforceIsForegroundUser(userHandle);
+
+                        mContext.enforcePermission(
+                                RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS,
+                                pid,
+                                uid,
+                                "Caller does not have permission to call restoreSettings.");
+                        mCloudRestoreManager.restoreSettings(backupSettings);
+                        callback.onResult();
+                    } catch (UnsupportedOperationException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
+                    } catch (SecurityException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_SECURITY);
+                    } catch (IllegalArgumentException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_INVALID_ARGUMENT);
                     } catch (Exception e) {
                         tryAndThrowException(errorCallback, e, ERROR_INTERNAL);
                     }
@@ -3328,25 +3374,28 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     @TargetApi(Build.VERSION_CODES.BAKLAVA)
     public void canRestore(int dataVersion, ICanRestoreResponseCallback callback) {
-        // TODO: b/399075964 - add proper exception handling
-        if (mCloudRestoreManager == null) return;
         checkParamsNonNull(dataVersion);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final ErrorCallback errorCallback = callback::onError;
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        enforceIsForegroundUser(userHandle);
-                        if (cloudBackupAndRestore()) {
-                            mContext.enforcePermission(
-                                    RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS,
-                                    pid,
-                                    uid,
-                                    "Caller does not have permission to call canRestore.");
-                            callback.onResult(mCloudRestoreManager.canRestore(dataVersion));
+                        if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
+                            throw new UnsupportedOperationException("canRestore is not supported.");
                         }
+                        enforceIsForegroundUser(userHandle);
+                        mContext.enforcePermission(
+                                RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS,
+                                pid,
+                                uid,
+                                "Caller does not have permission to call canRestore.");
+                        callback.onResult(mCloudRestoreManager.canRestore(dataVersion));
+                    } catch (UnsupportedOperationException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
+                    } catch (SecurityException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_SECURITY);
                     } catch (Exception e) {
                         tryAndThrowException(errorCallback, e, ERROR_INTERNAL);
                     }
@@ -3357,26 +3406,32 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @TargetApi(Build.VERSION_CODES.BAKLAVA)
     public void restoreChanges(
             List<RestoreChange> changes, byte[] appInfoMap, IEmptyResponseCallback callback) {
-        // TODO: b/399075964 - add proper exception handling
-        if (mCloudRestoreManager == null) return;
         checkParamsNonNull(changes);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final ErrorCallback errorCallback = callback::onError;
-        HealthConnectThreadScheduler.scheduleControllerTask(
+        mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        enforceIsForegroundUser(userHandle);
-                        if (cloudBackupAndRestore()) {
-                            mContext.enforcePermission(
-                                    RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS,
-                                    pid,
-                                    uid,
-                                    "Caller does not have permission to call" + " restoreChanges.");
-                            mCloudRestoreManager.restoreChanges(changes, appInfoMap);
+                        if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
+                            throw new UnsupportedOperationException(
+                                    "restoreChanges is not supported.");
                         }
+                        enforceIsForegroundUser(userHandle);
+                        mContext.enforcePermission(
+                                RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS,
+                                pid,
+                                uid,
+                                "Caller does not have permission to call" + " restoreChanges.");
+                        mCloudRestoreManager.restoreChanges(changes, appInfoMap);
                         callback.onResult();
+                    } catch (UnsupportedOperationException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
+                    } catch (SecurityException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_SECURITY);
+                    } catch (IllegalArgumentException e) {
+                        tryAndThrowException(errorCallback, e, ERROR_INVALID_ARGUMENT);
                     } catch (Exception e) {
                         tryAndThrowException(errorCallback, e, ERROR_INTERNAL);
                     }
@@ -3394,7 +3449,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             boolean isInForeground,
             HealthConnectServiceLogger.Builder logger) {
         try {
-            RateLimiter.tryAcquireApiCallQuota(uid, quotaCategory, isInForeground);
+            mRateLimiter.tryAcquireApiCallQuota(uid, quotaCategory, isInForeground);
         } catch (RateLimiterException rateLimiterException) {
             logger.setRateLimit(
                     rateLimiterException.getRateLimiterQuotaBucket(),
@@ -3411,7 +3466,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             HealthConnectServiceLogger.Builder logger,
             long memoryCost) {
         try {
-            RateLimiter.tryAcquireApiCallQuota(uid, quotaCategory, isInForeground, memoryCost);
+            mRateLimiter.tryAcquireApiCallQuota(uid, quotaCategory, isInForeground, memoryCost);
         } catch (RateLimiterException rateLimiterException) {
             logger.setRateLimit(
                     rateLimiterException.getRateLimiterQuotaBucket(),
@@ -3422,8 +3477,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     private void enforceMemoryRateLimit(List<Long> recordsSize, long recordsChunkSize) {
-        recordsSize.forEach(RateLimiter::checkMaxRecordMemoryUsage);
-        RateLimiter.checkMaxChunkMemoryUsage(recordsChunkSize);
+        recordsSize.forEach(mRateLimiter::checkMaxRecordMemoryUsage);
+        mRateLimiter.checkMaxChunkMemoryUsage(recordsChunkSize);
     }
 
     /**
@@ -3608,7 +3663,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             RecordHelper<?> recordHelper =
                     mInternalHealthConnectMappings.getRecordHelper(
                             recordTypeToRecordInternalsEntry.getKey());
-            recordHelper.logUpsertMetrics(recordTypeToRecordInternalsEntry.getValue(), packageName);
+            recordHelper.logUpsertMetrics(
+                    mStatsLog, recordTypeToRecordInternalsEntry.getValue(), packageName);
         }
     }
 
@@ -3623,7 +3679,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             RecordHelper<?> recordHelper =
                     mInternalHealthConnectMappings.getRecordHelper(
                             recordTypeToRecordInternalsEntry.getKey());
-            recordHelper.logReadMetrics(recordTypeToRecordInternalsEntry.getValue(), packageName);
+            recordHelper.logReadMetrics(
+                    mStatsLog, recordTypeToRecordInternalsEntry.getValue(), packageName);
         }
     }
 

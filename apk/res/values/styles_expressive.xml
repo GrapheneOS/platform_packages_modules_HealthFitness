@@ -22,13 +22,16 @@
     <style name="Widget.HealthConnect.SetupButton.Expressive.Full" parent="@style/SettingsLibButtonStyle.Expressive.Filled">
         <item name="android:paddingVertical">@dimen/spacing_normal</item>
         <item name="android:paddingHorizontal">@dimen/spacing_large</item>
-        <item name="android:textColor">@color/settingslib_materialColorOnPrimary</item>
-        <item name="android:backgroundTint">@color/settingslib_materialColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.HealthConnect.Expressive.PermissionHeading" parent="@style/SettingsLibCollapsingToolbarTitle.Expanded">
+        <item name="android:textSize">28sp</item>
+        <item name="android:lineHeight">36sp</item>
     </style>
 
     <style name="TextAppearance.HealthConnect.Expressive.Heading" parent="@style/SettingsLibCollapsingToolbarTitle.Expanded">
-        <item name="android:textSize">28sp</item>
-        <item name="android:lineHeight">36sp</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:lineHeight">44sp</item>
     </style>
 
     <style name="TextAppearance.HealthConnect.Expressive.DetailedHeading" parent="@style/SettingsLibCollapsingToolbarTitle.Expanded">

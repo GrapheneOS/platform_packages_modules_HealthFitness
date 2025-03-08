@@ -24,8 +24,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.settingslib.widget.SettingsBasePreferenceFragment
 import com.android.settingslib.widget.SettingsThemeHelper
+import dagger.hilt.android.EntryPointAccessors
 
 /** Base fragment class for AOB-like screens that need a bottom button bar. */
 abstract class HealthSetupFragment : SettingsBasePreferenceFragment() {
@@ -35,12 +39,30 @@ abstract class HealthSetupFragment : SettingsBasePreferenceFragment() {
     private lateinit var primaryButtonFull: Button
     private lateinit var primaryButtonOutline: Button
     private lateinit var secondaryButton: Button
+    private var pageName: PageName = PageName.UNKNOWN_PAGE
+    private lateinit var logger: HealthConnectLogger
+
+    fun setPageName(pageName: PageName) {
+        this.pageName = pageName
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setupLogger()
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logger.setPageId(pageName)
+        logger.logPageImpression()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        logger.setPageId(pageName)
         val rootView = inflater.inflate(R.layout.fragment_setup, container, false)
 
         val buttonLayoutId =
@@ -79,4 +101,14 @@ abstract class HealthSetupFragment : SettingsBasePreferenceFragment() {
     }
 
     fun getSecondaryButton(): Button = secondaryButton
+
+    private fun setupLogger() {
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(
+                requireContext().applicationContext,
+                HealthConnectLoggerEntryPoint::class.java,
+            )
+        logger = hiltEntryPoint.logger()
+        logger.setPageId(pageName)
+    }
 }

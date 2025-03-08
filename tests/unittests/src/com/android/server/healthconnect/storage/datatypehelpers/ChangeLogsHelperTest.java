@@ -22,6 +22,9 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.APP_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
@@ -44,8 +47,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -53,14 +54,14 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -71,15 +72,9 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class ChangeLogsHelperTest {
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private ChangeLogsHelper mChangeLogsHelper;
     private TransactionManager mTransactionManager;
@@ -92,6 +87,7 @@ public class ChangeLogsHelperTest {
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mChangeLogsHelper = healthConnectInjector.getChangeLogsHelper();
         mTransactionManager = healthConnectInjector.getTransactionManager();
@@ -170,7 +166,7 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
     public void getDeleteRequestForAutoDelete_byDefault_removeChangeLogsMoreThan32DaysOld() {
         insertChangeLog(
                 /* recordType= */ RECORD_TYPE_STEPS,
@@ -197,7 +193,11 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
+    @EnableFlags({
+        FLAG_CLOUD_BACKUP_AND_RESTORE,
+        FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+    })
     public void getDeleteRequestForAutoDelete_doesNotRemoveChangeLogsLessThan90DaysOld() {
         insertChangeLog(
                 /* recordType= */ RECORD_TYPE_STEPS,
@@ -211,7 +211,11 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
+    @EnableFlags({
+        FLAG_CLOUD_BACKUP_AND_RESTORE,
+        FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        FLAG_ECOSYSTEM_METRICS_DB_CHANGES
+    })
     public void getDeleteRequestForAutoDelete_removeChangeLogsMoreThan90DaysOld() {
         insertChangeLog(
                 /* recordType= */ RECORD_TYPE_STEPS,

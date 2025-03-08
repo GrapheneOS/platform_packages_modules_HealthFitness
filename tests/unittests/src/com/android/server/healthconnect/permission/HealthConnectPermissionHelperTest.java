@@ -45,7 +45,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
@@ -54,7 +53,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectPermissionHelperTest {
@@ -64,12 +64,10 @@ public class HealthConnectPermissionHelperTest {
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this).setStrictness(Strictness.LENIENT).build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private HealthConnectPermissionHelper mPermissionHelper;
-    private HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
+    private final HealthConnectMappings mHealthConnectMappings = new HealthConnectMappings();
 
     @Mock private Context mContext;
     @Mock private PackageManager mPackageManager;
@@ -88,7 +86,7 @@ public class HealthConnectPermissionHelperTest {
                         mFirstGrantTimeManager,
                         mHealthDataCategoryPriorityHelper,
                         mAppInfoHelper,
-                        healthConnectMappings);
+                        mHealthConnectMappings);
         when(mContext.createContextAsUser(any(), anyInt())).thenReturn(mContext);
         when(mContext.getApplicationContext()).thenReturn(mContext);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);

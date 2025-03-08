@@ -551,3 +551,29 @@ flag {
     is_fixed_read_only: true
     is_exported: true
 }
+
+flag {
+    name: "exercise_segment_weight"
+    namespace: "health_fitness_aconfig"
+    description: "Enables changes to add optional weight data to exercise segments APIs"
+    bug: "396405077"
+    is_fixed_read_only: true
+    is_exported: true
+}
+
+flag {
+    name: "exercise_segment_weight_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables database changes to add optional weight data to exercise segments APIs"
+    bug: "396405077"
+    is_fixed_read_only: true
+    is_exported: true
+}
+flag {
+    name: "step_tracking_enabled"
+    namespace: "health_fitness_aconfig"
+    description: "Enables native step tracking within Health Connect"
+    bug: "397419824"
+    is_fixed_read_only: true
+    is_exported: true
+}

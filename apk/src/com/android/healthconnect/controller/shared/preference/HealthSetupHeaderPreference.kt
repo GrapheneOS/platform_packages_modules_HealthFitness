@@ -17,9 +17,12 @@ package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
@@ -39,6 +42,9 @@ constructor(
     private lateinit var title: TextView
     private lateinit var summary: TextView
     private lateinit var icon: ImageView
+    private var centerIcon = true
+    private var centerTitle = false
+    private var centerSummary = false
 
     init {
         layoutResource = R.layout.widget_health_setup_header_container
@@ -48,12 +54,16 @@ constructor(
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         val contentArea = holder.findViewById(R.id.header_content) as FrameLayout
-        val contentLayoutId =
-            if (SettingsThemeHelper.isExpressiveTheme(context)) {
-                R.layout.widget_health_setup_header_content_expressive
-            } else {
-                R.layout.widget_health_setup_header_content_legacy
-            }
+        val contentLayoutId: Int
+        if (SettingsThemeHelper.isExpressiveTheme(context)) {
+            contentLayoutId = R.layout.widget_health_setup_header_content_expressive
+            centerIcon = true
+            centerTitle = false
+            centerSummary = false
+        } else {
+            contentLayoutId = R.layout.widget_health_setup_header_content_legacy
+            centerIcon = false
+        }
         contentArea.addView(
             LayoutInflater.from(context).inflate(contentLayoutId, contentArea, false)
         )
@@ -62,7 +72,33 @@ constructor(
         icon = holder.findViewById(R.id.icon) as ImageView
 
         title.text = getTitle()
-        summary.text = getSummary()
-        icon.setBackground(getIcon())
+        val summaryText = getSummary()
+        if (!summaryText.isNullOrEmpty()) {
+            summary.visibility = View.VISIBLE
+            summary.text = summaryText
+        } else {
+            summary.visibility = View.GONE
+        }
+        icon.setBackgroundDrawable(getIcon())
+
+        maybeCenterLayout(icon, centerIcon)
+        maybeCenterLayout(title, centerTitle)
+        maybeCenterLayout(summary, centerSummary)
+    }
+
+    private fun maybeCenterLayout(view: View, shouldCenter: Boolean) {
+        val params = view.layoutParams as LayoutParams
+        if (shouldCenter) {
+            params.gravity = Gravity.CENTER_HORIZONTAL
+            if (view is TextView) {
+                view.gravity = Gravity.CENTER_HORIZONTAL
+            }
+        } else {
+            params.gravity = Gravity.START
+            if (view is TextView) {
+                view.gravity = Gravity.START
+            }
+        }
+        view.layoutParams = params
     }
 }

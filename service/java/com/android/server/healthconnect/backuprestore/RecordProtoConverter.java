@@ -154,7 +154,6 @@ import java.util.UUID;
  *
  * @hide
  */
-@FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
 public final class RecordProtoConverter {
 
     public static final int PROTO_VERSION = 1;

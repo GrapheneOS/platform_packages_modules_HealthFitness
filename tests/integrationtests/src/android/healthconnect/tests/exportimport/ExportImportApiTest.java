@@ -48,6 +48,7 @@ import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.TestUtils;
 import android.net.Uri;
+import android.os.Environment;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
@@ -111,7 +112,10 @@ public class ExportImportApiTest {
         runShellCommandForHCJob("cancel -n");
         mExportedDbContext =
                 HealthConnectContext.create(
-                        mContext, mContext.getUser(), REMOTE_EXPORT_DATABASE_DIR_NAME);
+                        mContext,
+                        mContext.getUser(),
+                        REMOTE_EXPORT_DATABASE_DIR_NAME,
+                        Environment.getDataDirectory());
         // TODO(b/318484678): Improve tests using Uri from a different app.
         mRemoteExportFileUri =
                 Uri.fromFile(

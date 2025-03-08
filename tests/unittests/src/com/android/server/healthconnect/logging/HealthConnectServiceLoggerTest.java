@@ -44,19 +44,21 @@ import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import android.health.HealthFitnessStatsLog;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectServiceLoggerTest {
@@ -69,53 +71,53 @@ public class HealthConnectServiceLoggerTest {
             HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__BACKGROUND;
     private static final String TEST_APP_PACKAGE_NAME = "com.test.app";
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this).mockStatic(HealthFitnessStatsLog.class).build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+
+    @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
 
     @Test
     public void testDoNotLog_HoldsDataManagementPermission() {
 
-        new HealthConnectServiceLogger.Builder(true, ApiMethods.API_METHOD_UNKNOWN).build().log();
+        new HealthConnectServiceLogger.Builder(true, ApiMethods.API_METHOD_UNKNOWN)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
+                .build()
+                .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                anyInt(),
-                                anyInt(),
-                                anyInt(),
-                                anyInt(),
-                                anyLong(),
-                                anyInt(),
-                                anyInt(),
-                                anyInt(),
-                                anyString()),
-                times(0));
+        verify(mHealthFitnessStatsLog, times(0))
+                .write(
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        anyString());
     }
 
     @Test
     public void testLogs_notHoldsDataManagementPermission() {
 
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.NOT_USED),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.NOT_USED),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -124,23 +126,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setRateLimit(QUOTA_BUCKET_READS_PER_15M_FOREGROUND, 3000)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.FOREGROUND_15_MIN_BW_3000_TO_4000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.FOREGROUND_15_MIN_BW_3000_TO_4000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -149,23 +150,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setRateLimit(QUOTA_BUCKET_READS_PER_15M_BACKGROUND, 3000)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -174,23 +174,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setRateLimit(QUOTA_BUCKET_READS_PER_24H_BACKGROUND, 3000)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.BACKGROUND_24_HRS_BW_3000_TO_4000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.BACKGROUND_24_HRS_BW_3000_TO_4000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -199,23 +198,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setRateLimit(QUOTA_BUCKET_READS_PER_24H_FOREGROUND, 3000)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.FOREGROUND_24_HRS_BW_3000_TO_4000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.FOREGROUND_24_HRS_BW_3000_TO_4000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -224,23 +222,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setRateLimit(QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND, 3000)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.FOREGROUND_15_MIN_BW_3000_TO_4000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.FOREGROUND_15_MIN_BW_3000_TO_4000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -249,23 +246,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setRateLimit(QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND, 3000)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -274,23 +270,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setRateLimit(QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND, 3000)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.BACKGROUND_24_HRS_BW_3000_TO_4000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.BACKGROUND_24_HRS_BW_3000_TO_4000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -299,23 +294,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setRateLimit(QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND, 3000)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.FOREGROUND_24_HRS_BW_3000_TO_4000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.FOREGROUND_24_HRS_BW_3000_TO_4000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -324,23 +318,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setHealthDataServiceApiStatusSuccess()
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.NOT_USED),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.NOT_USED),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -349,23 +342,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setHealthDataServiceApiStatusError(2)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
-                                eq(2),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.NOT_USED),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        eq(2),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.NOT_USED),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -374,23 +366,22 @@ public class HealthConnectServiceLoggerTest {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setNumberOfRecords(10)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(10),
-                                eq(RateLimitingRanges.NOT_USED),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(10),
+                        eq(RateLimitingRanges.NOT_USED),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -398,6 +389,7 @@ public class HealthConnectServiceLoggerTest {
 
         new HealthConnectServiceLogger.Builder(false, ApiMethods.INSERT_DATA)
                 .setHealthDataServiceApiStatusSuccess()
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .setRateLimit(QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND, 3000)
                 .setNumberOfRecords(10)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
@@ -405,19 +397,17 @@ public class HealthConnectServiceLoggerTest {
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__INSERT_DATA),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
-                                eq(0),
-                                anyLong(),
-                                eq(10),
-                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__INSERT_DATA),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        eq(0),
+                        anyLong(),
+                        eq(10),
+                        eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
@@ -425,6 +415,7 @@ public class HealthConnectServiceLoggerTest {
 
         new HealthConnectServiceLogger.Builder(false, ApiMethods.INSERT_DATA)
                 .setHealthDataServiceApiStatusError(1)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .setRateLimit(QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND, 3000)
                 .setNumberOfRecords(10)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
@@ -432,65 +423,63 @@ public class HealthConnectServiceLoggerTest {
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__INSERT_DATA),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
-                                eq(1),
-                                anyLong(),
-                                eq(10),
-                                eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
-                                eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
-                                eq(TEST_APP_PACKAGE_NAME)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__INSERT_DATA),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        eq(1),
+                        anyLong(),
+                        eq(10),
+                        eq(RateLimitingRanges.BACKGROUND_15_MIN_ABOVE_3000),
+                        eq(CALLER_FOREGROUND_STATE_UNSPECIFIED),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
     public void testCallerForegroundState() {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .setCallerForegroundState(true)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.NOT_USED),
-                                eq(CALLER_FOREGROUND_STATE_FOREGROUND),
-                                eq(TEST_APP_PACKAGE_NAME)));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.NOT_USED),
+                        eq(CALLER_FOREGROUND_STATE_FOREGROUND),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     @Test
     public void testCallerBackgroundState() {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
                 .setCallerForegroundState(false)
                 .setPackageName(TEST_APP_PACKAGE_NAME)
                 .build()
                 .log();
 
         // then
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
-                                eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
-                                eq(0),
-                                anyLong(),
-                                eq(0),
-                                eq(RateLimitingRanges.NOT_USED),
-                                eq(CALLER_FOREGROUND_STATE_BACKGROUND),
-                                eq(TEST_APP_PACKAGE_NAME)));
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.NOT_USED),
+                        eq(CALLER_FOREGROUND_STATE_BACKGROUND),
+                        eq(TEST_APP_PACKAGE_NAME));
     }
 
     private static final class RateLimitingRanges {

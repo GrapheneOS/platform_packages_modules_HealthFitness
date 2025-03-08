@@ -20,7 +20,6 @@ import android.annotation.Nullable;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
 import android.os.UserHandle;
 import android.util.Slog;
 
@@ -102,18 +101,6 @@ public final class HealthConnectContext extends ContextWrapper {
     @Override
     public File getDatabasePath(String name) {
         return new File(getDataDir(), name);
-    }
-
-    /** Factory method */
-    public static HealthConnectContext create(Context context, UserHandle userHandle) {
-        return create(context, userHandle, null, Environment.getDataDirectory());
-    }
-
-    /** Factory method */
-    public static HealthConnectContext create(
-            Context context, UserHandle userHandle, @Nullable String databaseDirName) {
-        return new HealthConnectContext(
-                context, userHandle, databaseDirName, Environment.getDataDirectory());
     }
 
     /** Factory method */

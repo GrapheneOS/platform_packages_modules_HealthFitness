@@ -16,18 +16,5 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="grant_dialog_button_deny_dont_ask_again" msgid="447319176127586823">"অস্বীকাৰ কৰক, পুনৰাই নুসুধিব"</string>
-    <string name="current_permission_template" msgid="5087270072681333816">"<xliff:g id="CURRENT_PERMISSION_INDEX">%1$s</xliff:g> / <xliff:g id="PERMISSION_COUNT">%2$s</xliff:g>"</string>
-    <string name="preference_show_system_apps" msgid="5460435572605508583">"ছিষ্টেম এপ্‌সমূহ দেখুৱাওক"</string>
-    <string name="permission_summary_enforced_by_policy" msgid="7815543330908097941">"সলনি কৰিব নোৱাৰি"</string>
-    <string name="generic_yes" msgid="1848509358960489829">"হয়"</string>
-    <string name="generic_cancel" msgid="4711554477526672789">"বাতিল কৰক"</string>
-    <string name="permission_access_always" msgid="2467435064916327043">"সকলো সময়তে"</string>
-    <string name="permission_access_only_foreground" msgid="3459669908945871129">"এপ্‌টো ব্যৱহাৰ কৰা সময়ত"</string>
-    <string name="app_permission_button_allow_always" msgid="2715780455080602405">"সকলো সময়তে"</string>
-    <string name="app_permission_button_allow_foreground" msgid="162880415357772038">"এপ্‌টো ব্যৱহাৰ কৰা সময়ত"</string>
-    <string name="grant_dialog_button_allow_always" msgid="5216642447029937725">"সকলো সময়তে"</string>
-    <string name="grant_dialog_button_allow_foreground" msgid="2911675370133933600">"এপ্‌টো ব্যৱহাৰ কৰা সময়ত"</string>
-    <string name="grant_dialog_button_allow_background" msgid="7827419162341440169">"সকলো সময়তে"</string>
     <string name="permgrouplab_health" msgid="6793578181776346442">"ফিটনেছ আৰু সুস্থতা"</string>
 </resources>

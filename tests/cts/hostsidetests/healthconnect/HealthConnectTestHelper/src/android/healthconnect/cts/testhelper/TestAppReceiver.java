@@ -32,7 +32,7 @@ public class TestAppReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i(TAG, "onReceive");
+        Log.i(TAG, TAG + " onReceive(): " + intent);
         Intent returnIntent = TestAppHelper.handleRequest(context, intent.getExtras());
         context.sendBroadcast(returnIntent);
     }

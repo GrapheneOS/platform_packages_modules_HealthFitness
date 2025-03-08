@@ -74,6 +74,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
 
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private final MigrationStateManager mMigrationStateManager;
+    private final HealthConnectThreadScheduler mThreadScheduler;
 
     public FirstGrantTimeManager(
             Context context,
@@ -81,7 +82,8 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
             FirstGrantTimeDatastore datastore,
             PackageInfoUtils packageInfoUtils,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
-            MigrationStateManager migrationStateManager) {
+            MigrationStateManager migrationStateManager,
+            HealthConnectThreadScheduler threadScheduler) {
         mContext = context;
         mTracker = tracker;
         mDatastore = datastore;
@@ -93,6 +95,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
         mUserManager = context.getSystemService(UserManager.class);
         mPackageManager = context.getPackageManager();
         mPackageManager.addOnPermissionsChangeListener(this);
+        mThreadScheduler = threadScheduler;
     }
 
     /**
@@ -189,7 +192,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
             updateFirstGrantTimesFromPermissionState(uid, user, packageNames);
         } else {
             try {
-                HealthConnectThreadScheduler.scheduleInternalTask(
+                mThreadScheduler.scheduleInternalTask(
                         () -> updateFirstGrantTimesFromPermissionState(uid, user, packageNames));
             } catch (RejectedExecutionException executionException) {
                 Log.e(
@@ -226,7 +229,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
                     // Update priority table only if migration is not in progress as it should
                     // already take care of merging permissions.
                     if (!mMigrationStateManager.isMigrationInProgress()) {
-                        HealthConnectThreadScheduler.scheduleInternalTask(
+                        mThreadScheduler.scheduleInternalTask(
                                 () -> removeAppsFromPriorityList(packageNames));
                     }
                 } else {
@@ -245,7 +248,7 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
                 // Update priority table only if migration is not in progress as it should already
                 // take care of merging permissions
                 if (!mMigrationStateManager.isMigrationInProgress()) {
-                    HealthConnectThreadScheduler.scheduleInternalTask(
+                    mThreadScheduler.scheduleInternalTask(
                             () -> {
                                 for (String packageName : packageNames) {
                                     mHealthDataCategoryPriorityHelper

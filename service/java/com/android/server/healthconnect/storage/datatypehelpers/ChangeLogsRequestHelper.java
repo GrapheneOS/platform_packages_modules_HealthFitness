@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static com.android.healthfitness.flags.Flags.cloudBackupAndRestore;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
@@ -145,7 +145,7 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
 
     public static DeleteTableRequest getDeleteRequestForAutoDelete() {
         int changeLogTimePeriod =
-                cloudBackupAndRestore()
+                isCloudBackupRestoreEnabled()
                         ? NEW_CHANGE_LOG_TIME_PERIOD_IN_DAYS
                         : DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
         return new DeleteTableRequest(TABLE_NAME)

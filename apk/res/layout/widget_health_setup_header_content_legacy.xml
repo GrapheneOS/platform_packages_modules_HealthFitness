@@ -22,8 +22,7 @@
         android:id="@+id/icon"
         android:layout_width="@dimen/app_header_icon_size"
         android:layout_height="@dimen/app_header_icon_size"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/health_connect_logo"/>
+        android:layout_gravity="center_horizontal"/>
 
     <TextView
         android:id="@+id/title"
@@ -31,7 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginHorizontal="@dimen/spacing_large"
         android:paddingVertical="@dimen/spacing_large"
         style="?attr/headerTitle" />
 
@@ -41,7 +39,7 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceSummaryLarge"
+        android:textAppearance="?attr/headerSummary"
         android:paddingBottom="@dimen/spacing_normal"
         android:visibility="gone"/>
 

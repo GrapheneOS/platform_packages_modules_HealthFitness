@@ -22,6 +22,8 @@ import com.android.healthconnect.controller.tests.utils.di.FakeUpdatePriorityLis
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.time.Instant
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -33,8 +35,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.time.Instant
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -45,19 +45,17 @@ class DataSourcesViewModelTest {
             FormattedEntry.FormattedAggregation(
                 aggregation = aggregation,
                 aggregationA11y = aggregation,
-                contributingApps = "Test App")
+                contributingApps = "Test App",
+            )
     }
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
+    @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Inject
-    lateinit var appInfoReader: AppInfoReader
+    @Inject lateinit var appInfoReader: AppInfoReader
 
     private lateinit var viewModel: DataSourcesViewModel
     private val loadMostRecentAggregationsUseCase = FakeLoadMostRecentAggregationsUseCase()
@@ -69,13 +67,14 @@ class DataSourcesViewModelTest {
     fun setup() {
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
-        viewModel = DataSourcesViewModel(
-            loadMostRecentAggregationsUseCase,
-            loadPotentialAppSourcesUseCase,
-            loadPriorityListUseCase,
-            updatePriorityListUseCase,
-            appInfoReader
-        )
+        viewModel =
+            DataSourcesViewModel(
+                loadMostRecentAggregationsUseCase,
+                loadPotentialAppSourcesUseCase,
+                loadPriorityListUseCase,
+                updatePriorityListUseCase,
+                appInfoReader,
+            )
     }
 
     @After
@@ -94,27 +93,15 @@ class DataSourcesViewModelTest {
     }
 
     @Test
-    fun setEditedPriorityList_setsCorrectPriorityList() = runTest {
-        val editedPriorityList = listOf(TEST_APP, TEST_APP_2)
-        viewModel.setEditedPriorityList(editedPriorityList)
-        assertThat(viewModel.getEditedPriorityList()).isEqualTo(editedPriorityList)
-    }
-
-    @Test
-    fun setEditedPotentialAppSources_setsCorrectAppSources() = runTest {
-        val editedAppSources = listOf(TEST_APP_2, TEST_APP_3)
-        viewModel.setEditedPotentialAppSources(editedAppSources)
-        assertThat(viewModel.getEditedPotentialAppSources()).isEqualTo(editedAppSources)
-    }
-
-    @Test
     fun loadData_withAllData_returnsDataSourcesAndAggregationsInfoWithData() = runTest {
-        val mostRecentAggregations = listOf(
-            AggregationCardInfo(
-                FitnessPermissionType.STEPS,
-                formattedAggregation("100 steps"),
-                Instant.now())
-        )
+        val mostRecentAggregations =
+            listOf(
+                AggregationCardInfo(
+                    FitnessPermissionType.STEPS,
+                    formattedAggregation("100 steps"),
+                    Instant.now(),
+                )
+            )
         val priorityList = listOf(TEST_APP, TEST_APP_2)
         val potentialAppSources = listOf(TEST_APP_3)
         loadMostRecentAggregationsUseCase.updateMostRecentAggregations(mostRecentAggregations)
@@ -129,8 +116,9 @@ class DataSourcesViewModelTest {
         val expected =
             DataSourcesAndAggregationsInfo(
                 priorityListState = PriorityListState.WithData(true, priorityList),
-                potentialAppSourcesState = PotentialAppSourcesState.WithData(true, potentialAppSources),
-                aggregationCardsState = AggregationCardsState.WithData(true, mostRecentAggregations)
+                potentialAppSourcesState =
+                    PotentialAppSourcesState.WithData(true, potentialAppSources),
+                aggregationCardsState = AggregationCardsState.WithData(true, mostRecentAggregations),
             )
         assertThat(actual).isEqualTo(expected)
     }

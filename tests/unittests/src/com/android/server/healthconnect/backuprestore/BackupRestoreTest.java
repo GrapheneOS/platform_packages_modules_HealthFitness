@@ -71,7 +71,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.restore.BackupFileNamesSet;
 import android.health.connect.restore.StageRemoteDataRequest;
-import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
@@ -95,13 +94,13 @@ import com.android.server.healthconnect.permission.UserGrantTimeState;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
 import com.android.server.healthconnect.utils.FilesUtil;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -124,8 +123,6 @@ public class BackupRestoreTest {
     @Rule(order = 1)
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
-    private final EnvironmentFixture mEnvironmentFixture = new EnvironmentFixture();
-
     @Rule(order = 2)
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
@@ -133,8 +130,9 @@ public class BackupRestoreTest {
                     .mockStatic(SQLiteDatabase.class)
                     .spyStatic(GrantTimeXmlHelper.class)
                     .setStrictness(Strictness.LENIENT)
-                    .addStaticMockFixtures(() -> mEnvironmentFixture)
                     .build();
+
+    @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
 
     @Mock Context mServiceContext;
     @Mock private TransactionManager mTransactionManager;
@@ -169,6 +167,7 @@ public class BackupRestoreTest {
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setTransactionManager(mTransactionManager)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();
 
         mBackupRestore =
@@ -178,9 +177,12 @@ public class BackupRestoreTest {
                         healthConnectInjector.getMigrationStateManager(),
                         healthConnectInjector.getPreferenceHelper(),
                         healthConnectInjector.getTransactionManager(),
+                        healthConnectInjector.getFitnessRecordReadHelper(),
                         mServiceContext,
                         healthConnectInjector.getDeviceInfoHelper(),
-                        healthConnectInjector.getHealthDataCategoryPriorityHelper());
+                        healthConnectInjector.getHealthDataCategoryPriorityHelper(),
+                        healthConnectInjector.getThreadScheduler(),
+                        healthConnectInjector.getEnvironmentDataDirectory());
     }
 
     @After
@@ -214,7 +216,7 @@ public class BackupRestoreTest {
     @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_D2D})
     public void testGetAllBackupData_forDeviceToDevice_copiesAllData() throws Exception {
         File dbFileToBackup =
-                createAndGetNonEmptyFile(mEnvironmentFixture.getDataDirectory(), DATABASE_NAME);
+                createAndGetNonEmptyFile(mEnvironmentDataDirectory.getRoot(), DATABASE_NAME);
         File dbFileBacked = createAndGetEmptyFile(mMockBackedDataDirectory, STAGED_DATABASE_NAME);
         File grantTimeFileBacked =
                 createAndGetEmptyFile(mMockBackedDataDirectory, GRANT_TIME_FILE_NAME);
@@ -848,7 +850,7 @@ public class BackupRestoreTest {
 
         File hcDirectory =
                 FilesUtil.getDataSystemCeHCDirectoryForUser(
-                        Environment.getDataDirectory(), mUserHandle.getIdentifier());
+                        mEnvironmentDataDirectory.getRoot(), mUserHandle.getIdentifier());
         File databaseDir = new File(hcDirectory, STAGED_DATABASE_DIR);
         createAndGetEmptyFile(databaseDir, STAGED_DATABASE_NAME);
 

@@ -34,6 +34,7 @@
     <option name="test-file-name" value="MedicalPermissionsTestApp.apk"/>
     <option name="test-file-name" value="HealthConnectUIBodySensorsTestApp.apk"/>
     <option name="test-file-name" value="HealthConnectUIWearTestApp.apk"/>
+    <option name="test-file-name" value="HealthConnectUIBodySensorsAndHealthTestApp.apk"/>
   </target_preparer>
   <target_preparer class="com.android.tradefed.targetprep.RunCommandTargetPreparer">
     <!-- Reset display and font -->

@@ -21,7 +21,7 @@ import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.Constants.DELETE;
 import static android.health.connect.Constants.UPSERT;
 
-import static com.android.healthfitness.flags.Flags.cloudBackupAndRestore;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper.DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper.NEW_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
@@ -88,7 +88,7 @@ public final class ChangeLogsHelper extends DatabaseHelper {
 
     public static DeleteTableRequest getDeleteRequestForAutoDelete() {
         int changeLogTimePeriod =
-                cloudBackupAndRestore()
+                isCloudBackupRestoreEnabled()
                         ? NEW_CHANGE_LOG_TIME_PERIOD_IN_DAYS
                         : DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
         return new DeleteTableRequest(TABLE_NAME)

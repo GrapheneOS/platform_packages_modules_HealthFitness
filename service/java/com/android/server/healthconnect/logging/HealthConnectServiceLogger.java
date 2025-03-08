@@ -227,6 +227,7 @@ import java.util.Set;
  */
 public class HealthConnectServiceLogger {
 
+    private final HealthFitnessStatsLog mStatsLog;
     private final int mHealthDataServiceApiMethod;
     private final int mHealthDataServiceApiStatus;
     private final int mErrorCode;
@@ -468,6 +469,7 @@ public class HealthConnectServiceLogger {
 
         private final long mStartTime;
         private final int mHealthDataServiceApiMethod;
+        private HealthFitnessStatsLog mStatsLog;
         private int mHealthDataServiceApiStatus;
         private int mErrorCode;
         private long mDuration;
@@ -480,6 +482,7 @@ public class HealthConnectServiceLogger {
         private int mCallerForegroundState;
 
         public Builder(boolean holdsDataManagementPermission, @ApiMethods.ApiMethod int apiMethod) {
+            mStatsLog = new HealthFitnessStatsLog();
             mStartTime = System.currentTimeMillis();
             mHealthDataServiceApiMethod = apiMethod;
             mHealthDataServiceApiStatus = HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN;
@@ -493,6 +496,12 @@ public class HealthConnectServiceLogger {
             mPackageName = "UNKNOWN";
             mCallerForegroundState =
                     HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__UNSPECIFIED;
+        }
+
+        /** Set the class to write logs to. */
+        public Builder setHealthFitnessStatsLog(HealthFitnessStatsLog logger) {
+            mStatsLog = logger;
+            return this;
         }
 
         /** Set the API was called successfully. */
@@ -762,6 +771,7 @@ public class HealthConnectServiceLogger {
         mMedicalResourceTypes = builder.mMedicalResourceTypes;
         mPackageName = builder.mPackageName;
         mCallerForegroundState = builder.mCallerForegroundState;
+        mStatsLog = builder.mStatsLog;
     }
 
     /** Log to statsd. */
@@ -777,7 +787,7 @@ public class HealthConnectServiceLogger {
             return;
         }
 
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HEALTH_CONNECT_API_CALLED,
                 mHealthDataServiceApiMethod,
                 mHealthDataServiceApiStatus,
@@ -790,7 +800,7 @@ public class HealthConnectServiceLogger {
 
         // For private logging, max 6 data types per request are being logged
         // rest will be ignored
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HEALTH_CONNECT_API_INVOKED,
                 mHealthDataServiceApiMethod,
                 mHealthDataServiceApiStatus,
@@ -807,7 +817,7 @@ public class HealthConnectServiceLogger {
 
     private void writePhrLogs() {
         if (personalHealthRecordTelemetry()) { // normal WW
-            HealthFitnessStatsLog.write(
+            mStatsLog.write(
                     HEALTH_CONNECT_API_CALLED,
                     mHealthDataServiceApiMethod,
                     mHealthDataServiceApiStatus,
@@ -831,7 +841,7 @@ public class HealthConnectServiceLogger {
     }
 
     private void writePhrApiInvoked(int medicalResourceTypeLoggingEnum) {
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HEALTH_CONNECT_PHR_API_INVOKED,
                 mHealthDataServiceApiMethod,
                 mHealthDataServiceApiStatus,

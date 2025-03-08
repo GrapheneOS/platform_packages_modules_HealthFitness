@@ -22,7 +22,7 @@ import static android.health.connect.PageTokenWrapper.EMPTY_PAGE_TOKEN;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_PLANNED_EXERCISE_SESSION;
 
-import static com.android.healthfitness.flags.Flags.cloudBackupAndRestore;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper.APP_ID_PRIORITY_ORDER_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper.HEALTH_DATA_CATEGORY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper.PRIORITY_TABLE_NAME;
@@ -50,6 +50,7 @@ import android.util.Pair;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
@@ -64,7 +65,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceI
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
-import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -87,6 +87,7 @@ public final class DatabaseMerger {
     private static final String TAG = "HealthConnectDatabaseMerger";
 
     private final TransactionManager mTransactionManager;
+    private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final HealthConnectMappings mHealthConnectMappings;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
@@ -116,8 +117,10 @@ public final class DatabaseMerger {
             AppInfoHelper appInfoHelper,
             DeviceInfoHelper deviceInfoHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
-            TransactionManager transactionManager) {
+            TransactionManager transactionManager,
+            FitnessRecordReadHelper fitnessRecordReadHelper) {
         mTransactionManager = transactionManager;
+        mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mAppInfoHelper = appInfoHelper;
         mHealthConnectMappings = HealthConnectMappings.getInstance();
         mInternalHealthConnectMappings = InternalHealthConnectMappings.getInstance();
@@ -458,7 +461,7 @@ public final class DatabaseMerger {
             //
             // Only generate change logs when any change logs token are present. Client apps can
             // only read change logs if they have ever requested a change logs token.
-            if (cloudBackupAndRestore()
+            if (isCloudBackupRestoreEnabled()
                     && mTransactionManager.checkTableExists(ChangeLogsRequestHelper.TABLE_NAME)
                     && mTransactionManager.queryNumEntries(ChangeLogsRequestHelper.TABLE_NAME)
                             != 0) {
@@ -512,23 +515,17 @@ public final class DatabaseMerger {
 
         // Working with startDateAccess of -1 as we don't want to have time based filtering in the
         // query.
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-        ReadTransactionRequest readTransactionRequest =
-                new ReadTransactionRequest(
-                        mAppInfoHelper,
-                        null,
-                        readRecordsRequest.toReadRecordsRequestParcel(),
-                        // Avoid time based filtering.
-                        /* startDateAccessMillis= */ DEFAULT_LONG,
-                        /* enforceSelfRead= */ false,
-                        grantedExtraReadPermissions,
-                        // Make sure foreground only types get included in the response.
-                        /* isInForeground= */ true);
-
-        return stagedTransactionManager.readRecordsAndPageTokenWithoutAccessLogs(
-                readTransactionRequest,
-                mAppInfoHelper,
-                mDeviceInfoHelper,
+        return mFitnessRecordReadHelper.readRecords(
+                stagedTransactionManager,
+                /* callingPackageName */ "",
+                readRecordsRequest.toReadRecordsRequestParcel(),
+                // Avoid time based filtering.
+                /* startDateAccessMillis= */ DEFAULT_LONG,
+                /* enforceSelfRead= */ false,
+                grantedExtraReadPermissions,
+                // Make sure foreground only types get included in the response.
+                /* isInForeground= */ true,
+                /* shouldRecordAccessLog= */ false,
                 stagedPackageNamesByAppIds);
     }
 

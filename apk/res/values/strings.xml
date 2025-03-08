@@ -1380,7 +1380,9 @@
     <string name="action_drag_label_move_bottom" description="Label for an accessibility action that moves an app to the bottom of the ordered app priority list [CHAR LIMIT=50]">Move to bottom</string>
     <string name="reorder_button_content_description" description="Content description of a button for accessibility that is used to reorder selected app in the app priority list [CHAR LIMIT=NONE]">Button to drag and reorder <xliff:g example="Test app" id="selected_app">%s</xliff:g> in the priority list</string>
     <string name="remove_button_content_description" description="Content description of a button for accessibility that is used to remove selected app from the app priority list [CHAR LIMIT=NONE]">Button to remove <xliff:g example="Test app" id="selected_app">%s</xliff:g> from the priority list</string>
+    <string name="see_actions_button_content_description" description="Content description of a button that is used to show the potential actions the user can take: remove selected app, move up or down an app in the priority list [CHAR LIMIT=NONE]">Button to reorder or remove <xliff:g example="Test app" id="selected_app">%s</xliff:g> from the app sources list</string>
     <string name="reorder_button_action_description" description="Action description of a button for accessibility that is used to reorder selected app from the app priority list [CHAR LIMIT=NONE]">Double tap and drag to reorder</string>
+    <string name="priority_list_item_content_description" description="Content description of an app in the priority list, and the position in the list [CHAR LIMIT=NONE]"> <xliff:g example="1st" id="position">%1$s</xliff:g> in the list <xliff:g example="Test app" id="selected_app">%2$s</xliff:g></string>
     <!--  endregion-->
 
     <!--  region Search Indexable-->
@@ -1536,6 +1538,9 @@
     <string name="data_sources_add_app" description="Title for preference in the data sources screen used to add an app to the list of data sources [CHAR_LIMIT=NONE]">Add an app</string>
     <string name="edit_data_sources" description="Menu option for adding or removing apps from the app sources list">Edit app sources</string>
     <string name="default_app_summary" description="Text for an app on the priority list that is the device default app for health connect data [CHAR_LIMIT=50]">Device default</string>
+    <string name="move_up" description="Menu option for moving an app up in the app sources list">Move up</string>
+    <string name="move_down" description="Menu option for moving an app down in the app sources list">Move down</string>
+    <string name="remove" description="Menu option for removing an app from the app sources list">Remove</string>
     <!--  endregion -->
 
     <!-- region App data -->
@@ -1625,6 +1630,13 @@
     <!-- region Inactive app data -->
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" description="Title for dialog asking the user to confirm they want to delete the selected permission type for an inactive app">Permanently delete <xliff:g example="steps" id="data_type">%1$s</xliff:g> data for <xliff:g example="Run Tracker" id="app_name">%2$s</xliff:g>?</string>
     <!-- endregion -->
+    <!-- endregion -->
+
+    <!-- region Show/hide system apps menu -->
+    <!-- [CHAR LIMIT=NONE] Menu for manage permissions to control whether system apps are shown -->
+    <string name="menu_show_system">Show system</string>
+    <!-- [CHAR LIMIT=NONE] Menu for manage permissions to control whether system apps are hidden -->
+    <string name="menu_hide_system">Hide system</string>
     <!-- endregion -->
 
     <!-- region Wear -->

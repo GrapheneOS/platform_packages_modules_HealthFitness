@@ -22,7 +22,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Matchers
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.eq
@@ -59,8 +59,8 @@ class LoadPriorityListUseCaseTest {
             .`when`(manager)
             .fetchDataOriginsPriorityOrder(
                 eq(HealthDataCategory.ACTIVITY),
-                Matchers.any(),
-                Matchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
             )
 
         val loadedAppsPriorityList = usecase.execute(HealthDataCategory.ACTIVITY)

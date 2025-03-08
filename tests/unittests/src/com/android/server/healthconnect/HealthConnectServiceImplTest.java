@@ -34,8 +34,6 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.HealthPermissions.getAllMedicalPermissions;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
-import static android.health.connect.ratelimiter.RateLimiter.QuotaCategory.QUOTA_CATEGORY_READ;
-import static android.health.connect.ratelimiter.RateLimiter.QuotaCategory.QUOTA_CATEGORY_WRITE;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_DISPLAY_NAME;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_FHIR_BASE_URI;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_FHIR_VERSION;
@@ -55,6 +53,8 @@ import static android.healthconnect.cts.utils.DataFactory.NOW;
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
+import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
@@ -101,20 +101,27 @@ import static org.mockito.Mockito.when;
 import android.app.ActivityManager;
 import android.content.AttributionSource;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PermissionGroupInfo;
+import android.content.pm.PermissionInfo;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteException;
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.HealthPermissions;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
+import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
+import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetSettingsForBackupResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
@@ -124,6 +131,7 @@ import android.health.connect.aidl.IMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
+import android.health.connect.backuprestore.BackupSettings;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
@@ -147,8 +155,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -162,6 +168,8 @@ import com.android.server.healthconnect.permission.HealthConnectPermissionHelper
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
+import com.android.server.healthconnect.proto.backuprestore.AppInfoMap;
+import com.android.server.healthconnect.proto.backuprestore.Settings;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
@@ -170,18 +178,19 @@ import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceH
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.utils.PreferencesManager;
 import com.android.server.healthconnect.testing.fakes.FakeTimeSource;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -283,19 +292,14 @@ public class HealthConnectServiceImplTest {
     private static final String TEST_URI = "content://com.android.server.healthconnect/testuri";
     private static final long DEFAULT_PACKAGE_APP_INFO = 123L;
 
+    private static final String HC_PACKAGE_NAME = "com.android.healthconnect";
+
     /** Package name where {@link HealthConnectServiceImplTest this test} runs in. */
     private static final String THIS_TEST_PACKAGE_NAME = "com.android.healthconnect.unittests";
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(HealthFitnessStatsLog.class)
-                    .spyStatic(RateLimiter.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .addStaticMockFixtures(EnvironmentFixture::new)
-                    .build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
     @Mock private TransactionManager mTransactionManager;
     @Mock private AppInfoHelper mAppInfoHelper;
@@ -308,6 +312,7 @@ public class HealthConnectServiceImplTest {
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private PreferencesManager mPreferencesManager;
     @Mock private AppOpsManagerLocal mAppOpsManagerLocal;
+    @Mock private RateLimiter mRateLimiter;
     @Mock private PackageManager mPackageManager;
     @Mock private PermissionManager mPermissionManager;
     @Mock private MedicalDataSourceHelper mMedicalDataSourceHelper;
@@ -321,6 +326,7 @@ public class HealthConnectServiceImplTest {
     @Mock IEmptyResponseCallback mEmptyResponseCallback;
     @Mock IMedicalResourcesResponseCallback mMedicalResourcesResponseCallback;
     @Mock IMedicalResourceListParcelResponseCallback mMedicalResourceListParcelResponseCallback;
+    @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
     @Captor ArgumentCaptor<List<MedicalDataSource>> mMedicalDataSourcesResponseCaptor;
     private FakeTimeSource mFakeTimeSource;
@@ -331,6 +337,7 @@ public class HealthConnectServiceImplTest {
     private BackupRestore mBackupRestore;
     private ThreadPoolExecutor mInternalTaskScheduler;
     private String mTestPackageName;
+    private HealthConnectThreadScheduler mThreadScheduler;
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -344,6 +351,7 @@ public class HealthConnectServiceImplTest {
         mUserHandle = mContext.getUser();
 
         when(mPackageManager.getPackageUid(anyString(), anyInt())).thenReturn(Process.myUid());
+        when(mServiceContext.getApplicationContext()).thenReturn(mServiceContext);
         when(mServiceContext.getPackageManager()).thenReturn(mPackageManager);
         when(mServiceContext.getUser()).thenReturn(mUserHandle);
         when(mServiceContext.createContextAsUser(mUserHandle, 0)).thenReturn(mServiceContext);
@@ -351,8 +359,8 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(mContext.getSystemService(ActivityManager.class));
         when(mServiceContext.getSystemService(PermissionManager.class))
                 .thenReturn(mPermissionManager);
+        setUpHealthPermissions();
 
-        mInternalTaskScheduler = HealthConnectThreadScheduler.sInternalBackgroundExecutor;
         mFakeTimeSource = new FakeTimeSource(NOW);
         mAttributionSource = mContext.getAttributionSource();
         mTestPackageName = mAttributionSource.getPackageName();
@@ -375,7 +383,11 @@ public class HealthConnectServiceImplTest {
                         .setAppInfoHelper(mAppInfoHelper)
                         .setTimeSource(mFakeTimeSource)
                         .setAppOpsManagerLocal(mAppOpsManagerLocal)
+                        .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
+        mThreadScheduler = healthConnectInjector.getThreadScheduler();
+        mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -389,6 +401,7 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getMigrationStateManager(),
                         healthConnectInjector.getMigrationUiStateManager(),
                         healthConnectInjector.getMigrationCleaner(),
+                        healthConnectInjector.getFitnessRecordReadHelper(),
                         healthConnectInjector.getMedicalResourceHelper(),
                         healthConnectInjector.getMedicalDataSourceHelper(),
                         healthConnectInjector.getExportManager(),
@@ -407,13 +420,19 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getDatabaseHelpers(),
                         healthConnectInjector.getPreferencesManager(),
                         healthConnectInjector.getReadAccessLogsHelper(),
-                        healthConnectInjector.getAppOpsManagerLocal());
+                        healthConnectInjector.getAppOpsManagerLocal(),
+                        healthConnectInjector.getThreadScheduler(),
+                        mRateLimiter,
+                        healthConnectInjector.getEnvironmentDataDirectory(),
+                        healthConnectInjector.getExportImportLogger(),
+                        healthConnectInjector.getHealthFitnessStatsLog(),
+                        healthConnectInjector.getBackupRestoreLogger());
         mBackupRestore = healthConnectInjector.getBackupRestore();
     }
 
     @After
     public void tearDown() throws TimeoutException {
-        waitForAllScheduledTasksToComplete();
+        waitForAllScheduledTasksToComplete(mThreadScheduler);
         clearInvocations(mPreferenceHelper);
         clearInvocations(mPreferencesManager);
     }
@@ -651,14 +670,36 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testConfigureScheduledExport_schedulesAnInternalTask() throws Exception {
+    @EnableFlags({FLAG_IMMEDIATE_EXPORT})
+    public void testConfigureScheduledExport_withPeriodZero_schedulesOneInternalTask()
+            throws Exception {
         long taskCount = mInternalTaskScheduler.getCompletedTaskCount();
         mHealthConnectService.configureScheduledExport(
-                new ScheduledExportSettings.Builder().setUri(Uri.parse(TEST_URI)).build(),
+                new ScheduledExportSettings.Builder()
+                        .setUri(Uri.parse(TEST_URI))
+                        .setPeriodInDays(0)
+                        .build(),
                 mUserHandle);
         awaitAllExecutorsIdle();
 
         assertThat(mInternalTaskScheduler.getCompletedTaskCount()).isEqualTo(taskCount + 1);
+    }
+
+    @Test
+    @EnableFlags({FLAG_IMMEDIATE_EXPORT})
+    public void testConfigureScheduledExport_withPeriodGreaterThanZero_schedulesTwoInternalTask()
+            throws Exception {
+        long taskCount = mInternalTaskScheduler.getCompletedTaskCount();
+        mHealthConnectService.configureScheduledExport(
+                new ScheduledExportSettings.Builder()
+                        .setUri(Uri.parse(TEST_URI))
+                        .setPeriodInDays(1)
+                        .build(),
+                mUserHandle);
+        awaitAllExecutorsIdle();
+
+        // 2 internal tasks are scheduled: 1 for immediate export and 1 for periodic export.
+        assertThat(mInternalTaskScheduler.getCompletedTaskCount()).isEqualTo(taskCount + 2);
     }
 
     /**
@@ -2745,8 +2786,81 @@ public class HealthConnectServiceImplTest {
     public void testUserSwitching() throws TimeoutException {
         mHealthConnectService.setupForUser(mUserHandle);
 
-        waitForAllScheduledTasksToComplete();
+        waitForAllScheduledTasksToComplete(mThreadScheduler);
     }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void getChangesForBackup_flagDisabled_unsupportedOperation() throws RemoteException {
+        IGetChangesForBackupResponseCallback callback =
+                mock(IGetChangesForBackupResponseCallback.class);
+        mHealthConnectService.getChangesForBackup(null, callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void getSettingsForBackup_flagDisabled_unsupportedOperation() throws RemoteException {
+        IGetSettingsForBackupResponseCallback callback =
+                mock(IGetSettingsForBackupResponseCallback.class);
+        mHealthConnectService.getSettingsForBackup(callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void canRestore_flagDisabled_unsupportedOperation() throws RemoteException {
+        ICanRestoreResponseCallback callback = mock(ICanRestoreResponseCallback.class);
+        mHealthConnectService.canRestore(0, callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void restoreSettings_flagDisabled_unsupportedOperation() throws RemoteException {
+        IEmptyResponseCallback callback = mock(IEmptyResponseCallback.class);
+        Settings settings =
+                Settings.newBuilder()
+                        .setWeightUnitSetting(Settings.WeightUnitProto.KILOGRAM)
+                        .setDistanceUnitSetting(Settings.DistanceUnitProto.MILES)
+                        .build();
+
+        mHealthConnectService.restoreSettings(new BackupSettings(settings.toByteArray()), callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void restoreChanges_flagDisabled_unsupportedOperation() throws RemoteException {
+        IEmptyResponseCallback callback = mock(IEmptyResponseCallback.class);
+        AppInfoMap appInfoMap =
+                AppInfoMap.newBuilder()
+                        .putAppInfo(
+                                "random.package.name",
+                                Settings.AppInfo.newBuilder().setAppName("app name 1").build())
+                        .build();
+        mHealthConnectService.restoreChanges(List.of(), appInfoMap.toByteArray(), callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
+    public void restore_flagDisabled_unsupportedOperation() throws RemoteException {}
 
     /**
      * Sets up the mocks so all checks are bypassed and all PHR API calls are successful. Although,
@@ -2760,40 +2874,12 @@ public class HealthConnectServiceImplTest {
         when(mPermissionManager.checkPermissionForDataDelivery(any(), any(), any()))
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt())).thenReturn(true);
-        ExtendedMockito.doNothing()
-                .when(
-                        () ->
-                                RateLimiter.tryAcquireApiCallQuota(
-                                        anyInt(),
-                                        eq(QUOTA_CATEGORY_WRITE),
-                                        anyBoolean(),
-                                        anyLong()));
-        ExtendedMockito.doNothing()
-                .when(
-                        () ->
-                                RateLimiter.tryAcquireApiCallQuota(
-                                        anyInt(),
-                                        eq(QUOTA_CATEGORY_READ),
-                                        anyBoolean(),
-                                        anyLong()));
-        ExtendedMockito.doNothing().when(() -> RateLimiter.checkMaxChunkMemoryUsage(anyLong()));
-        ExtendedMockito.doNothing().when(() -> RateLimiter.checkMaxRecordMemoryUsage(anyLong()));
         setUpPhrMocksWithIrrelevantResponses();
     }
 
     private void setUpCreateMedicalDataSourceDefaultMocks() {
         setDataManagementPermission(PERMISSION_DENIED);
         when(mAppOpsManagerLocal.isUidInForeground(anyInt())).thenReturn(true);
-        ExtendedMockito.doNothing()
-                .when(
-                        () ->
-                                RateLimiter.tryAcquireApiCallQuota(
-                                        anyInt(),
-                                        eq(QUOTA_CATEGORY_WRITE),
-                                        anyBoolean(),
-                                        anyLong()));
-        ExtendedMockito.doNothing().when(() -> RateLimiter.checkMaxRecordMemoryUsage(anyLong()));
-        ExtendedMockito.doNothing().when(() -> RateLimiter.checkMaxChunkMemoryUsage(anyLong()));
         when(mMedicalDataSourceHelper.createMedicalDataSource(
                         eq(getCreateMedicalDataSourceRequest()), any()))
                 .thenReturn(getMedicalDataSourceRequiredFieldsOnly());
@@ -2841,23 +2927,21 @@ public class HealthConnectServiceImplTest {
 
     // Suppliers must to be used because Matchers can't be passed directly through method calls.
     // See https://stackoverflow.com/a/55297901
-    private static void assertPhrApiWestWorldWrites(
+    private void assertPhrApiWestWorldWrites(
             Supplier<Integer> apiMethodMatcherSupplier,
             Supplier<Integer> apiStatusMatcherSupplier,
             int wantedNumberOfInvocations) {
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_API_CALLED),
-                                apiMethodMatcherSupplier.get(),
-                                apiStatusMatcherSupplier.get(),
-                                anyInt(),
-                                anyLong(),
-                                anyInt(),
-                                anyInt(),
-                                anyInt(),
-                                eq(THIS_TEST_PACKAGE_NAME)),
-                times(wantedNumberOfInvocations));
+        verify(mHealthFitnessStatsLog, times(wantedNumberOfInvocations))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        apiMethodMatcherSupplier.get(),
+                        apiStatusMatcherSupplier.get(),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(THIS_TEST_PACKAGE_NAME));
     }
 
     /**
@@ -2866,21 +2950,19 @@ public class HealthConnectServiceImplTest {
      */
     // Suppliers must to be used because Matchers can't be passed directly through method calls.
     // See https://stackoverflow.com/a/55297901
-    private static void assertPhrApiPrivateWestWorldWrites(
+    private void assertPhrApiPrivateWestWorldWrites(
             Supplier<Integer> apiMethodMatcherSupplier,
             Supplier<Integer> apiStatusMatcherSupplier,
             Collection<Integer> medicalResourceTypes,
             int wantedNumberOfInvocations) {
         for (int medicalResourceType : medicalResourceTypes) {
-            ExtendedMockito.verify(
-                    () ->
-                            HealthFitnessStatsLog.write(
-                                    eq(HEALTH_CONNECT_PHR_API_INVOKED),
-                                    apiMethodMatcherSupplier.get(),
-                                    apiStatusMatcherSupplier.get(),
-                                    eq(THIS_TEST_PACKAGE_NAME),
-                                    eq(medicalResourceType)),
-                    times(wantedNumberOfInvocations));
+            verify(mHealthFitnessStatsLog, times(wantedNumberOfInvocations))
+                    .write(
+                            eq(HEALTH_CONNECT_PHR_API_INVOKED),
+                            apiMethodMatcherSupplier.get(),
+                            apiStatusMatcherSupplier.get(),
+                            eq(THIS_TEST_PACKAGE_NAME),
+                            eq(medicalResourceType));
         }
     }
 
@@ -2890,19 +2972,17 @@ public class HealthConnectServiceImplTest {
      */
     // Suppliers must to be used because Matchers can't be passed directly through method calls.
     // See https://stackoverflow.com/a/55297901
-    private static void assertPhrApiPrivateWestWorldWrites(
+    private void assertPhrApiPrivateWestWorldWrites(
             Supplier<Integer> apiMethodMatcherSupplier,
             Supplier<Integer> apiStatusMatcherSupplier,
             int wantedNumberOfInvocations) {
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_PHR_API_INVOKED),
-                                apiMethodMatcherSupplier.get(),
-                                apiStatusMatcherSupplier.get(),
-                                eq(THIS_TEST_PACKAGE_NAME),
-                                eq(MEDICAL_RESOURCE_TYPE_NOT_ASSIGNED_DEFAULT_VALUE)),
-                times(wantedNumberOfInvocations));
+        verify(mHealthFitnessStatsLog, times(wantedNumberOfInvocations))
+                .write(
+                        eq(HEALTH_CONNECT_PHR_API_INVOKED),
+                        apiMethodMatcherSupplier.get(),
+                        apiStatusMatcherSupplier.get(),
+                        eq(THIS_TEST_PACKAGE_NAME),
+                        eq(MEDICAL_RESOURCE_TYPE_NOT_ASSIGNED_DEFAULT_VALUE));
     }
 
     private void setDataManagementPermission(int result) {
@@ -2943,6 +3023,33 @@ public class HealthConnectServiceImplTest {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         permission, mAttributionSource, null))
                 .thenReturn(PermissionManager.PERMISSION_GRANTED);
+    }
+
+    private void setUpHealthPermissions() throws PackageManager.NameNotFoundException {
+        PermissionGroupInfo info = new PermissionGroupInfo();
+        info.packageName = HC_PACKAGE_NAME;
+        when(mPackageManager.getPermissionGroupInfo(
+                        eq(HealthPermissions.HEALTH_PERMISSION_GROUP), eq(0)))
+                .thenReturn(info);
+
+        PackageInfo mockPackageInfo = new PackageInfo();
+        // For now add a few of the HealthPermissions just for the test.
+        mockPackageInfo.permissions =
+                new PermissionInfo[] {
+                    createPermissionInfo(HealthPermissions.READ_HEART_RATE),
+                    createPermissionInfo(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                    createPermissionInfo(HealthPermissions.READ_SKIN_TEMPERATURE),
+                    createPermissionInfo(HealthPermissions.READ_OXYGEN_SATURATION),
+                };
+        when(mPackageManager.getPackageInfo(eq(HC_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+    }
+
+    private PermissionInfo createPermissionInfo(String permissionName) {
+        PermissionInfo permissionInfo = new PermissionInfo();
+        permissionInfo.name = permissionName;
+        permissionInfo.group = HealthPermissions.HEALTH_PERMISSION_GROUP;
+        return permissionInfo;
     }
 
     private void setUpPassingPermissionCheckFor(String permission) {

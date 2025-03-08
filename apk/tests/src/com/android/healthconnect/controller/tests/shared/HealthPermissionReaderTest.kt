@@ -24,12 +24,13 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.COMBINED_PERMISSIONS
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.FITNESS_PERMISSIONS_ONLY
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.MEDICAL_PERMISSIONS_ONLY
+import com.android.healthconnect.controller.tests.utils.BODY_SENSORS_AND_HEALTH_TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.BODY_SENSORS_TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.MEDICAL_PERMISSIONS_TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.UNSUPPORTED_TEST_APP_PACKAGE_NAME
-import com.android.healthconnect.controller.tests.utils.BODY_SENSORS_TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.WEAR_TEST_APP_PACKAGE_NAME
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
@@ -254,11 +255,35 @@ class HealthPermissionReaderTest {
     }
 
     @Test
-    fun getAppsWithHealthPermissions_returnsSupportedApps_handHeldDevices() = runTest {
+    fun getAppsWithHealthPermissions_handHeldDevices_returnsSupportedApps() = runTest {
         assumeFalse(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
         assertThat(permissionReader.getAppsWithHealthPermissions())
             .containsAtLeast(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2)
     }
+
+    // Still need the SDK version check here because @RequiresFlagsEnabled
+    // won't work on older platforms where the flags aren't defined (b/383440585).
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @RequiresFlagsEnabled(
+        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+    )
+    fun getAppsWithHealthPermissions_handHeldDevices_replaceBodySensors_returnsSplitPermissionApps() =
+        runTest {
+            assumeFalse(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
+            runWithShellPermissionIdentity(
+                {
+                    assertThat(permissionReader.getAppsWithHealthPermissions())
+                        .containsAtLeast(
+                            TEST_APP_PACKAGE_NAME,
+                            TEST_APP_PACKAGE_NAME_2,
+                            BODY_SENSORS_TEST_APP_PACKAGE_NAME,
+                        )
+                },
+                MANAGE_HEALTH_PERMISSIONS,
+            )
+        }
 
     @Test
     fun getAppsWithHealthPermissions_returnsDistinctApps() = runTest {
@@ -267,18 +292,40 @@ class HealthPermissionReaderTest {
     }
 
     @Test
-    fun getAppsWithHealthPermissions_doesNotReturnUnsupportedApps_handHeldDevices() = runTest {
+    @RequiresFlagsDisabled(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
+    fun getAppsWithHealthPermissions_handHeldDevices_doesNotReturnUnsupportedOrSplitPermissionApps() =
+        runTest {
+            assumeFalse(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
+
+            val healthApps: MutableList<String> = mutableListOf()
+            runWithShellPermissionIdentity(
+                { healthApps.addAll(permissionReader.getAppsWithHealthPermissions()) },
+                MANAGE_HEALTH_PERMISSIONS,
+            )
+            assertThat(healthApps).doesNotContain(UNSUPPORTED_TEST_APP_PACKAGE_NAME)
+            assertThat(healthApps).doesNotContain(BODY_SENSORS_TEST_APP_PACKAGE_NAME)
+        }
+
+    // Still need the SDK version check here because @RequiresFlagsEnabled
+    // won't work on older platforms where the flags aren't defined (b/383440585).
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @RequiresFlagsEnabled(
+        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+    )
+    fun getAppsWithHealthPermissions_handHeldDevices_doesNotReturnUnsupportedApps() = runTest {
         assumeFalse(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
         assertThat(permissionReader.getAppsWithHealthPermissions())
             .doesNotContain(UNSUPPORTED_TEST_APP_PACKAGE_NAME)
     }
 
+    @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @RequiresFlagsEnabled(
         FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
-        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
+        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
     )
-    @Test
     fun getAppsWithHealthPermissions_returnAppsRequestingHealthPermissions_wearDevices() = runTest {
         assumeTrue(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
 
@@ -296,9 +343,121 @@ class HealthPermissionReaderTest {
             .doesNotContain(MEDICAL_PERMISSIONS_TEST_APP_PACKAGE_NAME)
     }
 
+    @Test
+    @RequiresFlagsDisabled(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
+    fun isBodySensorSplitPermissionApp_flagDisabled_notSplitPermissionApp() = runTest {
+        runWithShellPermissionIdentity(
+            {
+                assertThat(
+                        permissionReader.isBodySensorSplitPermissionApp(
+                            BODY_SENSORS_TEST_APP_PACKAGE_NAME
+                        )
+                    )
+                    .isFalse()
+            },
+            MANAGE_HEALTH_PERMISSIONS,
+        )
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @RequiresFlagsEnabled(
+        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+    )
+    fun isBodySensorSplitPermissionApp_flagEnabled_readHrApp_notSplitPermissionApp() = runTest {
+        runWithShellPermissionIdentity(
+            {
+                assertThat(
+                        permissionReader.isBodySensorSplitPermissionApp(WEAR_TEST_APP_PACKAGE_NAME)
+                    )
+                    .isFalse()
+            },
+            MANAGE_HEALTH_PERMISSIONS,
+        )
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @RequiresFlagsEnabled(
+        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+    )
+    fun isBodySensorSplitPermissionApp_flagEnabled_bodySensorAndBackgroundApp_returnsSplitPermissionApp() =
+        runTest {
+            runWithShellPermissionIdentity(
+                {
+                    assertThat(
+                            permissionReader.isBodySensorSplitPermissionApp(
+                                BODY_SENSORS_TEST_APP_PACKAGE_NAME
+                            )
+                        )
+                        .isTrue()
+                },
+                MANAGE_HEALTH_PERMISSIONS,
+            )
+        }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @RequiresFlagsEnabled(
+        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+    )
+    fun isBodySensorSplitPermissionApp_flagEnabled_returnsNotSplitPermissionApp() = runTest {
+        runWithShellPermissionIdentity(
+            {
+                assertThat(permissionReader.isBodySensorSplitPermissionApp(TEST_APP_PACKAGE_NAME))
+                    .isFalse()
+            },
+            MANAGE_HEALTH_PERMISSIONS,
+        )
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @RequiresFlagsEnabled(
+        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+    )
+    fun isBodySensorSplitPermissionApp_flagEnabled_bodySensorAndHealthApp_notSplitPermissionApp() =
+        runTest {
+            runWithShellPermissionIdentity(
+                {
+                    assertThat(
+                            permissionReader.isBodySensorSplitPermissionApp(
+                                BODY_SENSORS_AND_HEALTH_TEST_APP_PACKAGE_NAME
+                            )
+                        )
+                        .isFalse()
+                },
+                MANAGE_HEALTH_PERMISSIONS,
+            )
+        }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @RequiresFlagsEnabled(
+        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+    )
+    fun isBodySensorSplitPermissionApp_returnsSplitPermissionApp() = runTest {
+        assumeFalse(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
+        runWithShellPermissionIdentity(
+            {
+                assertThat(permissionReader.getAppsWithHealthPermissions())
+                    .containsAtLeast(
+                        TEST_APP_PACKAGE_NAME,
+                        TEST_APP_PACKAGE_NAME_2,
+                        BODY_SENSORS_TEST_APP_PACKAGE_NAME,
+                    )
+            },
+            MANAGE_HEALTH_PERMISSIONS,
+        )
+    }
+
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @RequiresFlagsEnabled(FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
-    @Test
     fun getSystemHealthPermissions_returnSystemHealthPermissions() = runTest {
         assertThat(permissionReader.getSystemHealthPermissions())
             .containsExactly(

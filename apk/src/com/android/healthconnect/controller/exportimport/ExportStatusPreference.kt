@@ -21,17 +21,17 @@ import android.util.AttributeSet
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
-import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.preference.HealthPreference
 
 /** Preference for showing export status. */
 class ExportStatusPreference(
     context: Context,
     private val exportTime: String,
     private val exportLocation: String?,
-    attrs: AttributeSet? = null
-) : Preference(context, attrs) {
+    attrs: AttributeSet? = null,
+) : HealthPreference(context, attrs) {
     // TODO: b/325914485 - Add proper logging for this preference.
 
     companion object {

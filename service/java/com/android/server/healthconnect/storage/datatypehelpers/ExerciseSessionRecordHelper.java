@@ -44,6 +44,7 @@ import static com.android.server.healthconnect.storage.utils.WhereClauses.Logica
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.HealthFitnessStatsLog;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -104,6 +105,7 @@ public final class ExerciseSessionRecordHelper
     public ExerciseSessionRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION);
     }
+
 
     /** Returns the table name to be created corresponding to this helper */
     @Override
@@ -421,20 +423,28 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
-    public void logUpsertMetrics(List<RecordInternal<?>> recordInternals, String packageName) {
+    public void logUpsertMetrics(
+            HealthFitnessStatsLog statsLog,
+            List<RecordInternal<?>> recordInternals,
+            String packageName) {
         Objects.requireNonNull(recordInternals);
 
         ExerciseRoutesLogger.log(
+                statsLog,
                 Operations.UPSERT,
                 packageName,
                 getNumberOfRecordsWithExerciseRoutes(recordInternals));
     }
 
     @Override
-    public void logReadMetrics(List<RecordInternal<?>> recordInternals, String packageName) {
+    public void logReadMetrics(
+            HealthFitnessStatsLog statsLog,
+            List<RecordInternal<?>> recordInternals,
+            String packageName) {
         Objects.requireNonNull(recordInternals);
 
         ExerciseRoutesLogger.log(
+                statsLog,
                 Operations.READ,
                 packageName,
                 getNumberOfRecordsWithExerciseRoutes(recordInternals));
