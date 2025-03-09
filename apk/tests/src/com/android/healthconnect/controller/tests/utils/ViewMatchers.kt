@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.tests.utils
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -26,6 +25,7 @@ import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.hasSibling
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isNotChecked
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withTagValue
@@ -78,6 +78,39 @@ fun checkBoxOf(keyText: String): Matcher<View> {
         isDescendantOfA(
             allOf(withId(android.R.id.widget_frame), hasSibling(hasDescendant(withText(keyText))))
         ),
+    )
+}
+
+/**
+ * Matches a view that is an indirect sibling of a given target view. An indirect sibling means the
+ * view is a descendant of a view that has a sibling which contains the target view somewhere in its
+ * hierarchy.
+ *
+ * Example: If `View A` and `View B` are inside `Parent 1`, and `Parent 1` has a sibling `Parent 2`
+ * that contains `View C`, then `View A` has an indirect sibling relationship with `View C`.
+ *
+ * @param targetMatcher The matcher for the target view that should be an indirect sibling.
+ * @return A matcher that verifies the indirect sibling relationship.
+ */
+fun hasIndirectSibling(targetMatcher: Matcher<View>): Matcher<View> {
+    return isDescendantOfA(hasSibling(hasDescendant(targetMatcher)))
+}
+
+/** A custom matcher to find a [Preference] with the given title and summary. */
+fun withTitleAndSummary(titleText: String, summaryText: String): Matcher<View> {
+    return allOf(
+        withId(android.R.id.title),
+        withText(titleText),
+        hasSibling(hasDescendant(withText(summaryText))),
+    )
+}
+
+/** A custom matcher to find a [Preference] with the given title and no visible summary. */
+fun withTitleNoSummary(titleText: String): Matcher<View> {
+    return allOf(
+        withId(android.R.id.title),
+        withText(titleText),
+        hasSibling(hasDescendant(allOf(withId(android.R.id.summary), not(isDisplayed())))),
     )
 }
 

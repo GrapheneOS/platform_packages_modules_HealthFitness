@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.backuprestore;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
+
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.AUTO_DELETE_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.DISTANCE_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.ENERGY_UNIT_PREF_KEY;
@@ -42,7 +44,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 
 import android.content.Context;
-import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.backuprestore.BackupSettings;
 import android.health.connect.backuprestore.RestoreChange;
@@ -53,7 +54,7 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -69,10 +70,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.D
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
-import com.android.server.healthconnect.storage.request.ReadTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import com.google.common.collect.ImmutableMap;
@@ -81,9 +79,15 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,19 +114,14 @@ public class CloudRestoreManagerTest {
                             Settings.AppInfo.newBuilder().setAppName("app name 3").build())
                     .build();
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(HealthConnectManager.class)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
-                    .build();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
     private AppInfoHelper mAppInfoHelper;
     private DeviceInfoHelper mDeviceInfoHelper;
     private TransactionManager mTransactionManager;
+    private FitnessRecordReadHelper mFitnessRecordReadHelper;
     private TransactionTestUtils mTransactionTestUtils;
     private CloudRestoreManager mCloudRestoreManager;
     private RecordProtoConverter mRecordProtoConverter;
@@ -130,6 +129,7 @@ public class CloudRestoreManagerTest {
     private PreferenceHelper mPreferenceHelper;
     private InternalHealthConnectMappings mMappings;
     private DatabaseHelpers mDatabaseHelpers;
+    private Instant mTimeStamp;
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
@@ -143,9 +143,11 @@ public class CloudRestoreManagerTest {
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
         mTransactionManager = healthConnectInjector.getTransactionManager();
+        mFitnessRecordReadHelper = healthConnectInjector.getFitnessRecordReadHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mPriorityHelper = healthConnectInjector.getHealthDataCategoryPriorityHelper();
@@ -153,15 +155,21 @@ public class CloudRestoreManagerTest {
         mMappings = healthConnectInjector.getInternalHealthConnectMappings();
         mDatabaseHelpers = healthConnectInjector.getDatabaseHelpers();
 
+        mTimeStamp = Instant.parse("2024-06-04T16:39:12Z");
+        Clock fakeClock = Clock.fixed(mTimeStamp, ZoneId.of("UTC"));
+
         mRecordProtoConverter = new RecordProtoConverter();
         mCloudRestoreManager =
                 new CloudRestoreManager(
                         mTransactionManager,
-                        healthConnectInjector.getInternalHealthConnectMappings(),
+                        mFitnessRecordReadHelper,
+                        mMappings,
                         mDeviceInfoHelper,
                         mAppInfoHelper,
                         mPriorityHelper,
-                        mPreferenceHelper);
+                        mPreferenceHelper,
+                        fakeClock,
+                        healthConnectInjector.getBackupRestoreLogger());
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
     }
 
@@ -190,16 +198,13 @@ public class CloudRestoreManagerTest {
         mCloudRestoreManager.restoreChanges(
                 List.of(stepsChange, bloodPressureChange), APP_INFO_MAP.toByteArray());
 
-        ReadTransactionRequest request =
-                mTransactionTestUtils.getReadTransactionRequest(
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readRecordsByIds(
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS,
                                 List.of(UUID.fromString(stepsRecord.getUuid())),
                                 RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
                                 List.of(UUID.fromString(bloodPressureRecord.getUuid()))));
-        List<RecordInternal<?>> records =
-                mTransactionManager.readRecordsByIdsWithoutAccessLogs(
-                        request, mAppInfoHelper, mDeviceInfoHelper);
         assertThat(records).hasSize(2);
         assertThat(mRecordProtoConverter.toRecordProto(records.get(0))).isEqualTo(stepsRecord);
         assertThat(mRecordProtoConverter.toRecordProto(records.get(1)))
@@ -474,24 +479,22 @@ public class CloudRestoreManagerTest {
 
     @NotNull
     private RecordInternal<?> readExerciseSession(String sessionId) {
-        ReadTransactionRequest request =
-                new ReadTransactionRequest(
-                        mAppInfoHelper,
-                        /* packageName= */ "",
+        List<RecordInternal<?>> records =
+                mFitnessRecordReadHelper.readRecords(
+                        mTransactionManager,
+                        /* callingPackageName= */ "",
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
                                 List.of(UUID.fromString(sessionId))),
-                        /* startDateAccessMillis= */ 0,
+                        DEFAULT_LONG,
                         Set.copyOf(
                                 mMappings
                                         .getRecordHelper(
                                                 RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION)
                                         .getExtraReadPermissions()),
                         /* isInForeground= */ true,
+                        /* shouldRecordAccessLog= */ false,
                         /* isReadingSelfData= */ false);
-        List<RecordInternal<?>> records =
-                mTransactionManager.readRecordsByIdsWithoutAccessLogs(
-                        request, mAppInfoHelper, mDeviceInfoHelper);
         assertThat(records.size()).isEqualTo(1);
         return records.get(0);
     }

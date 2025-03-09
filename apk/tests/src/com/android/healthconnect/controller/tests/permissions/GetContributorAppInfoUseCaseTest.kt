@@ -42,7 +42,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Matchers.*
+import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
 

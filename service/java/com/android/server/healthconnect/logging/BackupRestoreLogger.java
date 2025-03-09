@@ -172,6 +172,12 @@ public class BackupRestoreLogger {
         public @interface DataBackupType {}
     }
 
+    private final HealthFitnessStatsLog mStatsLog;
+
+    public BackupRestoreLogger(HealthFitnessStatsLog statsLog) {
+        mStatsLog = statsLog;
+    }
+
     /**
      * Log the data backup metrics.
      *
@@ -181,12 +187,12 @@ public class BackupRestoreLogger {
      * @param dataSize the size of the data being backed up
      * @param dataBackupType the type of data backup that was invoked
      */
-    public static void logDataBackupStatus(
+    public void logDataBackupStatus(
             @BackupRestoreEnums.DataBackupState int dataBackupStatus,
             int timeToSucceedOrFailMillis,
             int dataSize,
             @BackupRestoreEnums.DataBackupType int dataBackupType) {
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HEALTH_CONNECT_DATA_BACKUP_INVOKED,
                 dataBackupStatus,
                 timeToSucceedOrFailMillis,
@@ -202,11 +208,11 @@ public class BackupRestoreLogger {
      *     returned
      * @param dataSize the size of the settings being backed up
      */
-    public static void logSettingsBackupStatus(
+    public void logSettingsBackupStatus(
             @BackupRestoreEnums.SettingsBackupState int settingsBackupStatus,
             int timeToSucceedOrFailMillis,
             int dataSize) {
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED,
                 settingsBackupStatus,
                 timeToSucceedOrFailMillis,
@@ -221,11 +227,11 @@ public class BackupRestoreLogger {
      *     returned
      * @param dataSize the size of the data being restored
      */
-    public static void logDataRestoreStatus(
+    public void logDataRestoreStatus(
             @BackupRestoreEnums.DataRestoreState int dataRestoreStatus,
             int timeToSucceedOrFailMillis,
             int dataSize) {
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HEALTH_CONNECT_DATA_RESTORE_INVOKED,
                 dataRestoreStatus,
                 timeToSucceedOrFailMillis,
@@ -240,11 +246,11 @@ public class BackupRestoreLogger {
      *     being returned
      * @param dataSize the size of the settings being restored
      */
-    public static void logSettingsRestoreStatus(
+    public void logSettingsRestoreStatus(
             @BackupRestoreEnums.SettingsRestoreState int settingsRestoreStatus,
             int timeToSucceedOrFailMillis,
             int dataSize) {
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED,
                 settingsRestoreStatus,
                 timeToSucceedOrFailMillis,
@@ -256,7 +262,7 @@ public class BackupRestoreLogger {
      *
      * @param eligibility Whether or not the system is eligible for a data restore.
      */
-    public static void logRestoreEligibility(boolean eligibility) {
-        HealthFitnessStatsLog.write(HEALTH_CONNECT_RESTORE_ELIGIBILITY_CHECKED, eligibility);
+    public void logRestoreEligibility(boolean eligibility) {
+        mStatsLog.write(HEALTH_CONNECT_RESTORE_ELIGIBILITY_CHECKED, eligibility);
     }
 }

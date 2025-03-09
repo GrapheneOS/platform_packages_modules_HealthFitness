@@ -30,17 +30,13 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
-
 import com.google.common.base.Preconditions;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.quality.Strictness;
 
 import java.io.File;
 
@@ -57,17 +53,17 @@ public class DevelopmentDatabaseHelperTest {
     @Rule(order = 0)
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
-    @Rule(order = 1)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final TemporaryFolder mTemporaryFolder = new TemporaryFolder();
 
     @Before
     public void setup() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        mHcContext = HealthConnectContext.create(context, context.getUser());
+        mHcContext =
+                HealthConnectContext.create(
+                        context,
+                        context.getUser(),
+                        /* databaseDirName= */ null,
+                        mTemporaryFolder.getRoot());
     }
 
     @Test

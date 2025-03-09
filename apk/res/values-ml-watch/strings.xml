@@ -16,18 +16,5 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="grant_dialog_button_deny_dont_ask_again" msgid="447319176127586823">"നിരസിക്കുക, വീണ്ടും ആവശ്യപ്പെടരുത്"</string>
-    <string name="current_permission_template" msgid="5087270072681333816">"<xliff:g id="CURRENT_PERMISSION_INDEX">%1$s</xliff:g> / <xliff:g id="PERMISSION_COUNT">%2$s</xliff:g>"</string>
-    <string name="preference_show_system_apps" msgid="5460435572605508583">"സിസ്‌റ്റം ആപ്പുകൾ കാണിക്കുക"</string>
-    <string name="permission_summary_enforced_by_policy" msgid="7815543330908097941">"മാറ്റാനാവില്ല"</string>
-    <string name="generic_yes" msgid="1848509358960489829">"അതെ"</string>
-    <string name="generic_cancel" msgid="4711554477526672789">"റദ്ദാക്കുക"</string>
-    <string name="permission_access_always" msgid="2467435064916327043">"എല്ലായ്‌പ്പോഴും"</string>
-    <string name="permission_access_only_foreground" msgid="3459669908945871129">"ആപ്പ് ഉപയോഗിക്കുമ്പോൾ"</string>
-    <string name="app_permission_button_allow_always" msgid="2715780455080602405">"എല്ലായ്‌പ്പോഴും"</string>
-    <string name="app_permission_button_allow_foreground" msgid="162880415357772038">"ആപ്പ് ഉപയോഗിക്കുമ്പോൾ"</string>
-    <string name="grant_dialog_button_allow_always" msgid="5216642447029937725">"എല്ലായ്‌പ്പോഴും"</string>
-    <string name="grant_dialog_button_allow_foreground" msgid="2911675370133933600">"ആപ്പ് ഉപയോഗിക്കുമ്പോൾ"</string>
-    <string name="grant_dialog_button_allow_background" msgid="7827419162341440169">"എല്ലായ്‌പ്പോഴും"</string>
     <string name="permgrouplab_health" msgid="6793578181776346442">"ഫിറ്റ്നസും ശാരീരികക്ഷമതയും"</string>
 </resources>

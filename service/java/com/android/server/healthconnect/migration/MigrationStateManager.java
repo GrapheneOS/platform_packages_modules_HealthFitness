@@ -85,15 +85,18 @@ public final class MigrationStateManager {
 
     private final Object mLock = new Object();
     private final MigrationBroadcastScheduler mMigrationBroadcastScheduler;
+    private final HealthConnectThreadScheduler mThreadScheduler;
     private UserHandle mUserHandle;
 
     public MigrationStateManager(
             UserHandle userHandle,
             PreferenceHelper preferenceHelper,
-            MigrationBroadcastScheduler migrationBroadcastScheduler) {
+            MigrationBroadcastScheduler migrationBroadcastScheduler,
+            HealthConnectThreadScheduler threadScheduler) {
         mUserHandle = userHandle;
         mPreferenceHelper = preferenceHelper;
         mMigrationBroadcastScheduler = migrationBroadcastScheduler;
+        mThreadScheduler = threadScheduler;
     }
 
     /** Re-initialize this class instance with the new user */
@@ -427,7 +430,7 @@ public final class MigrationStateManager {
         mPreferenceHelper.insertOrReplacePreferencesTransaction(preferences);
 
         //noinspection Convert2Lambda
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        mThreadScheduler.scheduleInternalTask(
                 new Runnable() {
                     @Override
                     public void run() {

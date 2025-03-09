@@ -82,6 +82,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     private final TransactionManager mTransactionManager;
     private final PreferenceHelper mPreferenceHelper;
     private final HealthConnectMappings mHealthConnectMappings;
+    private final HealthConnectThreadScheduler mThreadScheduler;
 
     /**
      * map of {@link HealthDataCategory} to list of app ids from {@link AppInfoHelper}, in the order
@@ -97,7 +98,8 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
             PreferenceHelper preferenceHelper,
             PackageInfoUtils packageInfoUtils,
             HealthConnectMappings healthConnectMappings,
-            DatabaseHelpers databaseHelpers) {
+            DatabaseHelpers databaseHelpers,
+            HealthConnectThreadScheduler threadScheduler) {
         super(databaseHelpers);
         mUserContext = userContext;
         mAppInfoHelper = appInfoHelper;
@@ -105,6 +107,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
         mTransactionManager = transactionManager;
         mPreferenceHelper = preferenceHelper;
         mHealthConnectMappings = healthConnectMappings;
+        mThreadScheduler = threadScheduler;
     }
 
     /**
@@ -127,7 +130,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
         // here in case any of the methods below was called in between that initialized the cache
         // with the wrong context.
         clearCache();
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        mThreadScheduler.scheduleInternalTask(
                 () -> {
                     reSyncHealthDataPriorityTable();
                     addInactiveAppsWhenFirstMigratingToNewAggregationControl();

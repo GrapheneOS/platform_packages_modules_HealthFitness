@@ -23,8 +23,8 @@ import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 import static android.health.connect.Constants.PARENT_KEY;
 import static android.health.connect.PageTokenWrapper.EMPTY_PAGE_TOKEN;
 
+import static com.android.server.healthconnect.fitness.FitnessRecordReadHelper.TYPE_NOT_PRESENT_PACKAGE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.request.ReadTransactionRequest.TYPE_NOT_PRESENT_PACKAGE_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_UNIQUE_NON_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_UNIQUE_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
@@ -42,6 +42,7 @@ import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.health.HealthFitnessStatsLog;
 import android.health.connect.AggregateResult;
 import android.health.connect.PageTokenWrapper;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
@@ -418,20 +419,28 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     /**
      * Logs metrics specific to a record type's insertion/update.
      *
+     * @param statsLog the log to write to
      * @param recordInternals List of records being inserted/updated
      * @param packageName Caller package name
      */
-    public void logUpsertMetrics(List<RecordInternal<?>> recordInternals, String packageName) {
+    public void logUpsertMetrics(
+            HealthFitnessStatsLog statsLog,
+            List<RecordInternal<?>> recordInternals,
+            String packageName) {
         // Do nothing, implement in record specific helpers
     }
 
     /**
      * Logs metrics specific to a record type's read.
      *
+     * @param statsLog the log to write to
      * @param recordInternals List of records being read
      * @param packageName Caller package name
      */
-    public void logReadMetrics(List<RecordInternal<?>> recordInternals, String packageName) {
+    public void logReadMetrics(
+            HealthFitnessStatsLog statsLog,
+            List<RecordInternal<?>> recordInternals,
+            String packageName) {
         // Do nothing, implement in record specific helpers
     }
 
@@ -572,6 +581,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             PageTokenWrapper prevPageToken,
             @Nullable Map<Long, String> packageNamesByAppIds,
             AppInfoHelper appInfoHelper) {
+        Slog.d("HealthConnectRecordHelper", "requestSize = " + requestSize);
         // Ignore <offset> records of the same start time, because it was returned in previous
         // page(s).
         // If the offset is greater than number of records in the cursor, it'll move to the last

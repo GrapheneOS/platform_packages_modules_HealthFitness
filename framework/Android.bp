@@ -23,7 +23,8 @@ genrule {
     tools: ["stats-log-api-gen"],
     cmd: "$(location stats-log-api-gen) --java $(out) --module healthfitness" +
         " --javaPackage android.health" +
-        " --javaClass HealthFitnessStatsLog --minApiLevel 34",
+        " --javaClass HealthFitnessStatsLog --minApiLevel 34" +
+        " --nonStatic",
     out: ["android/health/HealthFitnessStatsLog.java"],
 }
 

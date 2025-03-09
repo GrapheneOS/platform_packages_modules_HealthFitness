@@ -28,6 +28,11 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PERMISSION_STA
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_STORAGE_STATS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_USAGE_STATS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__DATA_TYPE_UNKNOWN;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__DISTANCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__HEART_RATE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING_PER_DATA_TYPE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_STORAGE_STATS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_USAGE_STATS;
 import static android.health.connect.HealthPermissions.READ_DISTANCE;
@@ -49,6 +54,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.health.HealthFitnessStatsLog;
@@ -59,8 +65,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper;
@@ -74,6 +78,8 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -87,12 +93,12 @@ public class DailyLoggingServiceTest {
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this).mockStatic(HealthFitnessStatsLog.class).build();
+    public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private UsageStatsCollector mUsageStatsCollector;
     @Mock private DatabaseStatsCollector mDatabaseStatsCollector;
     @Mock private EcosystemStatsCollector mEcosystemStatsCollector;
+    @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Captor private ArgumentCaptor<List<String>> mStringListCaptor;
 
     private static final String CONNECTED_APP_PACKAGE_NAME = "connected.app";
@@ -107,18 +113,19 @@ public class DailyLoggingServiceTest {
         when(mDatabaseStatsCollector.getNumberOfSeriesRecordRows()).thenReturn(5L);
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_STORAGE_STATS),
-                                /* databaseSize */ eq(1L),
-                                /* numberOfInstantRecords */ eq(3L),
-                                /* numberOfIntervalRecords */ eq(4L),
-                                /* numberOfSeriesRecords */ eq(5L),
-                                /* numberOfChangeLogs */ eq(2L)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_STORAGE_STATS),
+                        /* databaseSize */ eq(1L),
+                        /* numberOfInstantRecords */ eq(3L),
+                        /* numberOfIntervalRecords */ eq(4L),
+                        /* numberOfSeriesRecords */ eq(5L),
+                        /* numberOfChangeLogs */ eq(2L));
     }
 
     @Test
@@ -129,16 +136,14 @@ public class DailyLoggingServiceTest {
         when(mDatabaseStatsCollector.getNumberOfIntervalRecordRows()).thenReturn(0L);
         when(mDatabaseStatsCollector.getNumberOfSeriesRecordRows()).thenReturn(0L);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_STORAGE_STATS),
-                                anyLong(),
-                                anyLong(),
-                                anyLong(),
-                                anyLong(),
-                                anyLong()),
-                never());
+        verify(mHealthFitnessStatsLog, never())
+                .write(
+                        eq(HEALTH_CONNECT_STORAGE_STATS),
+                        anyLong(),
+                        anyLong(),
+                        anyLong(),
+                        anyLong(),
+                        anyLong());
     }
 
     @Test
@@ -150,16 +155,17 @@ public class DailyLoggingServiceTest {
         when(mUsageStatsCollector.isUserMonthlyActive()).thenReturn(false);
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_USAGE_STATS), /* connectedAppsCount */
-                                eq(1), /* availableAppsCount */
-                                eq(2), /* isUserMonthlyActive */
-                                eq(false)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_USAGE_STATS), /* connectedAppsCount */
+                        eq(1), /* availableAppsCount */
+                        eq(2), /* isUserMonthlyActive */
+                        eq(false));
     }
 
     @Test
@@ -171,16 +177,17 @@ public class DailyLoggingServiceTest {
         when(mUsageStatsCollector.isUserMonthlyActive()).thenReturn(true);
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_USAGE_STATS), /* connectedAppsCount */
-                                eq(1), /* availableAppsCount */
-                                eq(2), /* isUserMonthlyActive */
-                                eq(true)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_USAGE_STATS), /* connectedAppsCount */
+                        eq(1), /* availableAppsCount */
+                        eq(2), /* isUserMonthlyActive */
+                        eq(true));
     }
 
     @Test
@@ -196,25 +203,24 @@ public class DailyLoggingServiceTest {
                                 List.of(READ_STEPS)));
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_PERMISSION_STATS),
-                                eq(CONNECTED_APP_PACKAGE_NAME),
-                                eq(new String[] {"READ_DISTANCE", "READ_EXERCISE"})),
-                times(1));
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_PERMISSION_STATS),
-                                eq(CONNECTED_APP_TWO_PACKAGE_NAME),
-                                eq(
-                                        new String[] {
-                                            "READ_STEPS",
-                                        })),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_PERMISSION_STATS),
+                        eq(CONNECTED_APP_PACKAGE_NAME),
+                        eq(new String[] {"READ_DISTANCE", "READ_EXERCISE"}));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_PERMISSION_STATS),
+                        eq(CONNECTED_APP_TWO_PACKAGE_NAME),
+                        eq(
+                                new String[] {
+                                    "READ_STEPS",
+                                }));
     }
 
     @Test
@@ -229,15 +235,16 @@ public class DailyLoggingServiceTest {
                                 List.of(READ_STEPS)));
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_PERMISSION_STATS),
-                                eq(CONNECTED_APP_PACKAGE_NAME),
-                                eq(new String[] {"READ_DISTANCE"})),
-                never());
+        verify(mHealthFitnessStatsLog, never())
+                .write(
+                        eq(HEALTH_CONNECT_PERMISSION_STATS),
+                        eq(CONNECTED_APP_PACKAGE_NAME),
+                        eq(new String[] {"READ_DISTANCE"}));
     }
 
     @Test
@@ -246,21 +253,16 @@ public class DailyLoggingServiceTest {
         when(mUsageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect()).thenReturn(1);
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_PHR_USAGE_STATS),
-                                anyInt(),
-                                anyInt(),
-                                anyInt(),
-                                anyInt()),
-                never());
+        verify(mHealthFitnessStatsLog, never())
+                .write(eq(HEALTH_CONNECT_PHR_USAGE_STATS), anyInt(), anyInt(), anyInt(), anyInt());
 
-        ExtendedMockito.verify(
-                () -> HealthFitnessStatsLog.write(eq(HEALTH_CONNECT_PHR_STORAGE_STATS), anyInt()),
-                never());
+        verify(mHealthFitnessStatsLog, never())
+                .write(eq(HEALTH_CONNECT_PHR_STORAGE_STATS), anyInt());
     }
 
     @Test
@@ -277,17 +279,18 @@ public class DailyLoggingServiceTest {
         when(mUsageStatsCollector.getGrantedPhrAppsCount()).thenReturn(1L);
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_PHR_USAGE_STATS),
-                                /* medicalDataSourcesCount */ eq(101),
-                                /* medicalResourcesCount */ eq(204),
-                                /* isPhrMonthlyActiveUser */ eq(true),
-                                /* phrAppsCount */ eq(1)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_PHR_USAGE_STATS),
+                        /* medicalDataSourcesCount */ eq(101),
+                        /* medicalResourcesCount */ eq(204),
+                        /* isPhrMonthlyActiveUser */ eq(true),
+                        /* phrAppsCount */ eq(1));
     }
 
     @Test
@@ -304,17 +307,18 @@ public class DailyLoggingServiceTest {
         when(mUsageStatsCollector.getGrantedPhrAppsCount()).thenReturn(0L);
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_PHR_USAGE_STATS),
-                                /* medicalDataSourcesCount */ eq(101),
-                                /* medicalResourcesCount */ eq(204),
-                                /* isPhrMonthlyActiveUser */ eq(false),
-                                /* phrAppsCount */ eq(0)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_PHR_USAGE_STATS),
+                        /* medicalDataSourcesCount */ eq(101),
+                        /* medicalResourcesCount */ eq(204),
+                        /* isPhrMonthlyActiveUser */ eq(false),
+                        /* phrAppsCount */ eq(0));
     }
 
     @Test
@@ -332,13 +336,14 @@ public class DailyLoggingServiceTest {
                                         MedicalResourceIndicesHelper.getTableName()))))
                 .thenReturn(101L);
         when(mUsageStatsCollector.getMedicalResourcesCount()).thenReturn(1);
-
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () -> HealthFitnessStatsLog.write(eq(HEALTH_CONNECT_PHR_STORAGE_STATS), eq(101L)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(eq(HEALTH_CONNECT_PHR_STORAGE_STATS), eq(101L));
     }
 
     @Test
@@ -353,12 +358,14 @@ public class DailyLoggingServiceTest {
         when(mUsageStatsCollector.getMedicalDataSourcesCount()).thenReturn(0);
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
         Mockito.verify(mDatabaseStatsCollector, never()).getFileBytes(any());
-        ExtendedMockito.verify(
-                () -> HealthFitnessStatsLog.write(eq(HEALTH_CONNECT_PHR_STORAGE_STATS), anyInt()),
-                never());
+        verify(mHealthFitnessStatsLog, never())
+                .write(eq(HEALTH_CONNECT_PHR_STORAGE_STATS), anyInt());
     }
 
     @Test
@@ -390,38 +397,39 @@ public class DailyLoggingServiceTest {
         when(mEcosystemStatsCollector.getNumberOfAppPairings()).thenReturn(5);
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_ECOSYSTEM_STATS),
-                                argThat(
-                                        new ArrayMatcher(
-                                                new int[] {
-                                                    HEALTH_CONNECT_ECOSYSTEM_STATS__READ__HEIGHT,
-                                                    HEALTH_CONNECT_ECOSYSTEM_STATS__READ__BASAL_METABOLIC_RATE
-                                                })),
-                                argThat(
-                                        new ArrayMatcher(
-                                                new int[] {
-                                                    HEALTH_CONNECT_ECOSYSTEM_STATS__READ__BLOOD_PRESSURE,
-                                                    HEALTH_CONNECT_ECOSYSTEM_STATS__READ__BLOOD_GLUCOSE
-                                                })),
-                                argThat(
-                                        new ArrayMatcher(
-                                                new int[] {
-                                                    HEALTH_CONNECT_ECOSYSTEM_STATS__READ__HEIGHT,
-                                                    HEALTH_CONNECT_ECOSYSTEM_STATS__READ__HEART_RATE
-                                                })),
-                                argThat(
-                                        new ArrayMatcher(
-                                                new int[] {
-                                                    HEALTH_CONNECT_ECOSYSTEM_STATS__READ__DISTANCE,
-                                                    HEALTH_CONNECT_ECOSYSTEM_STATS__READ__STEPS
-                                                })),
-                                eq(5)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_ECOSYSTEM_STATS),
+                        argThat(
+                                new ArrayMatcher(
+                                        new int[] {
+                                            HEALTH_CONNECT_ECOSYSTEM_STATS__READ__HEIGHT,
+                                            HEALTH_CONNECT_ECOSYSTEM_STATS__READ__BASAL_METABOLIC_RATE
+                                        })),
+                        argThat(
+                                new ArrayMatcher(
+                                        new int[] {
+                                            HEALTH_CONNECT_ECOSYSTEM_STATS__READ__BLOOD_PRESSURE,
+                                            HEALTH_CONNECT_ECOSYSTEM_STATS__READ__BLOOD_GLUCOSE
+                                        })),
+                        argThat(
+                                new ArrayMatcher(
+                                        new int[] {
+                                            HEALTH_CONNECT_ECOSYSTEM_STATS__READ__HEIGHT,
+                                            HEALTH_CONNECT_ECOSYSTEM_STATS__READ__HEART_RATE
+                                        })),
+                        argThat(
+                                new ArrayMatcher(
+                                        new int[] {
+                                            HEALTH_CONNECT_ECOSYSTEM_STATS__READ__DISTANCE,
+                                            HEALTH_CONNECT_ECOSYSTEM_STATS__READ__STEPS
+                                        })),
+                        eq(5));
     }
 
     @Test
@@ -450,60 +458,43 @@ public class DailyLoggingServiceTest {
                                         Set.of(CONNECTED_APP_PACKAGE_NAME))));
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
-                                eq(CONNECTED_APP_PACKAGE_NAME),
-                                eq(CONNECTED_APP_TWO_PACKAGE_NAME),
-                                eq(
-                                        HealthFitnessStatsLog
-                                                .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__DATA_TYPE_UNKNOWN),
-                                eq(
-                                        HealthFitnessStatsLog
-                                                .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING)),
-                times(1));
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
-                                eq(CONNECTED_APP_PACKAGE_NAME),
-                                eq(CONNECTED_APP_TWO_PACKAGE_NAME),
-                                eq(
-                                        HealthFitnessStatsLog
-                                                .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__DISTANCE),
-                                eq(
-                                        HealthFitnessStatsLog
-                                                .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING_PER_DATA_TYPE)),
-                times(1));
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
-                                eq(CONNECTED_APP_TWO_PACKAGE_NAME),
-                                eq(CONNECTED_APP_PACKAGE_NAME),
-                                eq(
-                                        HealthFitnessStatsLog
-                                                .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__DATA_TYPE_UNKNOWN),
-                                eq(
-                                        HealthFitnessStatsLog
-                                                .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING)),
-                times(1));
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
-                                eq(CONNECTED_APP_TWO_PACKAGE_NAME),
-                                eq(CONNECTED_APP_PACKAGE_NAME),
-                                eq(
-                                        HealthFitnessStatsLog
-                                                .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__HEART_RATE),
-                                eq(
-                                        HealthFitnessStatsLog
-                                                .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING_PER_DATA_TYPE)),
-                times(1));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
+                        eq(CONNECTED_APP_PACKAGE_NAME),
+                        eq(CONNECTED_APP_TWO_PACKAGE_NAME),
+                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__DATA_TYPE_UNKNOWN),
+                        eq(
+                                HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
+                        eq(CONNECTED_APP_PACKAGE_NAME),
+                        eq(CONNECTED_APP_TWO_PACKAGE_NAME),
+                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__DISTANCE),
+                        eq(
+                                HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING_PER_DATA_TYPE));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
+                        eq(CONNECTED_APP_TWO_PACKAGE_NAME),
+                        eq(CONNECTED_APP_PACKAGE_NAME),
+                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__DATA_TYPE_UNKNOWN),
+                        eq(
+                                HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
+                        eq(CONNECTED_APP_TWO_PACKAGE_NAME),
+                        eq(CONNECTED_APP_PACKAGE_NAME),
+                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__HEART_RATE),
+                        eq(
+                                HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING_PER_DATA_TYPE));
     }
 
     @Test
@@ -553,27 +544,20 @@ public class DailyLoggingServiceTest {
                                         Set.of(CONNECTED_APP_PACKAGE_NAME))));
 
         DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector, mDatabaseStatsCollector, mEcosystemStatsCollector);
+                mUsageStatsCollector,
+                mDatabaseStatsCollector,
+                mEcosystemStatsCollector,
+                mHealthFitnessStatsLog);
 
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_ECOSYSTEM_STATS),
-                                any(),
-                                any(),
-                                any(),
-                                any(),
-                                anyInt()),
-                never());
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
-                                anyString(),
-                                anyString(),
-                                anyInt(),
-                                anyInt()),
-                never());
+        verify(mHealthFitnessStatsLog, never())
+                .write(eq(HEALTH_CONNECT_ECOSYSTEM_STATS), any(), any(), any(), any(), anyInt());
+        verify(mHealthFitnessStatsLog, never())
+                .write(
+                        eq(HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS),
+                        anyString(),
+                        anyString(),
+                        anyInt(),
+                        anyInt());
     }
 
     public static class ArrayMatcher implements ArgumentMatcher<int[]> {

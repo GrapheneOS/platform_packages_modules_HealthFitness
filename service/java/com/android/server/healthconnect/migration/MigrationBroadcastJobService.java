@@ -26,6 +26,7 @@ import android.os.UserHandle;
 import android.util.Slog;
 
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.injector.HealthConnectInjector;
 
 /**
  * A service that sends migration broadcast to migration aware apps.
@@ -45,7 +46,9 @@ public class MigrationBroadcastJobService extends JobService {
             PersistableBundle extras = params.getExtras();
             int userId = extras.getInt(EXTRA_USER_ID);
 
-            HealthConnectThreadScheduler.scheduleInternalTask(
+            HealthConnectThreadScheduler threadScheduler =
+                    HealthConnectInjector.getInstance().getThreadScheduler();
+            threadScheduler.scheduleInternalTask(
                     () -> {
                         try {
                             MigrationBroadcast migrationBroadcast =

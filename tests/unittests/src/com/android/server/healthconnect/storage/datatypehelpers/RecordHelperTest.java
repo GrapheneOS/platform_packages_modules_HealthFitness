@@ -21,9 +21,9 @@ import static android.health.connect.PageTokenWrapper.EMPTY_PAGE_TOKEN;
 
 import static com.android.server.healthconnect.storage.datatypehelpers.BloodPressureRecordHelper.BLOOD_PRESSURE_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.StepsRecordHelper.STEPS_TABLE_NAME;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
-import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -45,7 +45,6 @@ import android.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -54,15 +53,15 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -74,12 +73,8 @@ import java.util.UUID;
 public class RecordHelperTest {
     private static final String TEST_PACKAGE_NAME = "package.name";
 
-    @Rule(order = 1)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private TransactionTestUtils mTransactionTestUtils;
 
@@ -95,6 +90,7 @@ public class RecordHelperTest {
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();

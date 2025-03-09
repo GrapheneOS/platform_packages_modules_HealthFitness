@@ -43,7 +43,6 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionSt
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
-import com.android.permissioncontroller.wear.permission.components.theme.ResourceHelper
 
 /**
  * Wear View App Permissions Screen. This screen includes: Allow/Deny foreground and background
@@ -83,7 +82,9 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
         viewModel.additionalPermissions.observeAsState(emptyList())
     val backgroundReadPermissionRequested by
         remember(allRequestedAdditionalPermissions) {
-            derivedStateOf { allRequestedAdditionalPermissions.any { it.isBackgroundReadPermission() } }
+            derivedStateOf {
+                allRequestedAdditionalPermissions.any { it.isBackgroundReadPermission() }
+            }
         }
     // Background read permission grant state.
     val grantedAdditionalPermissions by
@@ -94,7 +95,6 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
         }
 
     ScrollableScreen(
-        materialUIVersion = ResourceHelper.materialUIVersionInApp,
         asScalingList = true,
         showTimeText = false,
         title = res.getString(R.string.fitness_and_wellness),

@@ -16,7 +16,7 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <com.android.healthconnect.controller.permissions.connectedapps.PermissionHeaderPreference
-        android:key="connected_apps_top_intro"
+        android:key="permission_header_preference"
         android:icon="@drawable/health_connect_logo"
         android:title="@string/permgrouplab_health"
         android:summary="@string/health_permission_header_description" />

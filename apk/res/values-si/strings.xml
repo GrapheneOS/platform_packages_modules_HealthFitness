@@ -444,8 +444,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"පෞද්ගලිකත්ව ප්‍රතිපත්තිය කියවන්න"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"පසුගිය පැය 24 තුළ ප්‍රවේශ විය"</string>
     <string name="app_access_title" msgid="7137018424885371763">"යෙදුම් ප්‍රවේශය"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (7684166767384190933) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"අනුකූල යෙදුම් කිසිවක් ස්ථාපනය කර නැත"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"අතිරේක ප්‍රවේශය"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"අතීත දත්ත, පසුබිම් දත්ත"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"මෙම යෙදුම සඳහා අතිරේක අවසර ඉවත් කරන ලදි"</string>
@@ -1013,7 +1012,11 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"පතුළට ගෙන යන්න"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"ප්‍රමුඛතා ලැයිස්තුවේ <xliff:g id="SELECTED_APP">%s</xliff:g> ඇද නැවත ඇණවුම් කිරීමට බොත්තම"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"ප්‍රමුඛතා ලැයිස්තුවෙන් <xliff:g id="SELECTED_APP">%s</xliff:g> ඉවත් කිරීමට බොත්තම"</string>
+    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
+    <skip />
     <string name="reorder_button_action_description" msgid="5197462036756192214">"යළි අනුපිළිවෙලට සැකසීමට දෙවරක් තට්ටු කර අදින්න"</string>
+    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
+    <skip />
     <string name="search_keywords_home" msgid="5386515593026555327">"යෝග්‍යතාව, සුවතාවය"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"අවසර"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, සෞඛ්‍ය දත්ත, සෞඛ්‍ය ප්‍රවර්ග, දත්ත ප්‍රවේශය, ක්‍රියාකාරකම්, ශරීර මිනුම්, ඔසප් චක්‍ර ලුහුබැඳීම, පෝෂණය, නින්ද, vitals"</string>
@@ -1107,6 +1110,12 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"යෙදුමක් එක් කරන්න"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"යෙදුම් මූලාශ්‍ර සංස්කරණය කරන්න"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"උපාංගයේ පෙරනිමිය"</string>
+    <!-- no translation found for move_up (9136155291380319606) -->
+    <skip />
+    <!-- no translation found for move_down (4404970288236170693) -->
+    <skip />
+    <!-- no translation found for remove (1340423400489007362) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"යෙදුම් දත්ත"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"<xliff:g id="APP_NAME">%1$s</xliff:g> වෙතින් දත්ත මෙහි පෙන්වනු ඇත"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Health Connect වෙත ප්‍රවේශය ඇති යෙදුම් වෙතින් දත්ත මෙහි පෙන්වනු ඇත"</string>
@@ -1161,6 +1170,10 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g> සඳහා තෝරා ගත් <xliff:g id="APP_NAME">%1$s</xliff:g> ඇතුළත් කිරීම් ස්ථිරවම මකන්න ද?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"මෙම <xliff:g id="APP_NAME">%s</xliff:g> ඇතුළත් කිරීම ස්ථිරවම මකන්න ද?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> සඳහා <xliff:g id="DATA_TYPE">%1$s</xliff:g> දත්ත ස්ථිරවම මකන්න ද?"</string>
+    <!-- no translation found for menu_show_system (5608880605989914394) -->
+    <skip />
+    <!-- no translation found for menu_hide_system (9218325603953186714) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"ක්‍රියාත්මකයි"</string>
     <string name="off" msgid="6996623844428550649">"ක්‍රියාවිරහිතයි"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"ප්‍රවේශ වූයේ <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

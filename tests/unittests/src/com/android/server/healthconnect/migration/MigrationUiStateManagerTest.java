@@ -32,7 +32,6 @@ import android.os.UserHandle;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.migration.notification.MigrationNotificationSender;
 
 import org.junit.Before;
@@ -41,15 +40,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 /** Test class for the MigrationUiStateManager class. */
 @RunWith(AndroidJUnit4.class)
 public class MigrationUiStateManagerTest {
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this).setStrictness(Strictness.LENIENT).build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private Context mContext;
     @Mock private MigrationStateManager mMigrationStateManager;

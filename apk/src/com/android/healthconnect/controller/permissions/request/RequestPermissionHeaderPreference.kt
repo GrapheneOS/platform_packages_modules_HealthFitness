@@ -20,6 +20,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.AttrRes
@@ -71,7 +72,12 @@ constructor(
                 R.layout.widget_health_setup_header_content_legacy
             }
         headerArea.addView(LayoutInflater.from(context).inflate(headerLayoutId, headerArea, false))
+        val headerIcon = holder.findViewById(R.id.icon) as ImageView
+        headerIcon.setBackgroundResource(R.drawable.health_connect_logo)
         title = holder.findViewById(R.id.title) as TextView
+        title.setTextAppearance(
+            AttributeResolver.getResource(context, R.attr.permissionHeaderTitle)
+        )
         summary = holder.findViewById(R.id.summary) as TextView
         detailedPermissions = holder.findViewById(R.id.detailed_permissions) as LinearLayout
         dataAccessType = holder.findViewById(R.id.data_access_type) as TextView

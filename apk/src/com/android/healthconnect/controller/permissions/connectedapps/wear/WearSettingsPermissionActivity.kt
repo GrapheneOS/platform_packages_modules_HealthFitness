@@ -24,6 +24,10 @@ import android.util.Log
 import android.view.WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.android.healthfitness.flags.Flags
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,7 +57,11 @@ class WearSettingsPermissionActivity : Hilt_WearSettingsPermissionActivity() {
         // They use the same UI layout and sequence except for labels:
         // Permission Manager shows "[xx] of [yy] apps allowed",
         // Privacy Dashboard shows "Used by xx apps", and "Accessed [time]".
-        setContent { WearSettingsPermissionsNavGraph(!getReasonExtra().isEmpty()) }
+        setContent {
+            Box(modifier = Modifier.background(Color.Black)) {
+                WearSettingsPermissionsNavGraph(!getReasonExtra().isEmpty())
+            }
+        }
     }
 
     private fun getReasonExtra(): String {

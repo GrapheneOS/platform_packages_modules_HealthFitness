@@ -87,7 +87,7 @@
         <item name="editIcon">@drawable/ic_edit</item>
         <item name="closeIcon">@drawable/ic_close</item>
         <item name="appsIcon">@drawable/ic_apps</item>
-
+        <item name="moreVertIcon">@drawable/more_vert</item>
 
         <!-- Backup and restore -->
 
@@ -146,7 +146,9 @@
         <item name="textAppearanceRouteRequest">@style/TextAppearance.HealthConnect.RouteRequest</item>
         <item name="textAppearancePreferenceCategory">@style/TextAppearance.HealthConnect.CategoryTitle</item>
         <item name="textAppearanceErrorMessage">@style/TextAppearance.HealthConnect.ErrorMessage</item>
-        <item name="headerTitle">@style/TextAppearance.HealthConnect.Headline4</item>
+        <item name="permissionHeaderTitle">@style/TextAppearance.HealthConnect.Headline4</item>
+        <item name="headerTitle">@style/TextAppearance.HealthConnect.Headline2</item>
+        <item name="headerSummary">@style/TextAppearance.HealthConnect.SummaryLarge</item>
         <item name="headerDetails">@style/TextAppearance.HealthConnect.SummaryLarge</item>
 
         <!-- Buttons -->
@@ -181,6 +183,7 @@
 
         <!-- Popup Menu -->
         <item name="android:itemBackground">@color/settingslib_dialog_background</item>
+        <item name="popupMenuStyle">@style/Widget.HealthConnect.PopUpMenu</item>
         <!-- END REGION -->
 
         <!-- REGION CLIPPING -->

@@ -444,8 +444,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"પ્રાઇવસી પૉલિસી વાંચો"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"છેલ્લા 24 કલાકમાં ઍક્સેસ કરેલી પરવાનગીઓ"</string>
     <string name="app_access_title" msgid="7137018424885371763">"ઍપનો ઍક્સેસ"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (7684166767384190933) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"કોઈ સુસંગત ઍપ ઇન્સ્ટૉલ કરેલી નથી"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"વધારાનો ઍક્સેસ"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"ભૂતકાળનો ડેટા, બૅકગ્રાઉન્ડ ડેટા"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"આ ઍપ માટેની વધારાની પરવાનગીઓ કાઢી નાખી"</string>
@@ -1013,7 +1012,11 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"સૌથી નીચે ખસેડો"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"પ્રાધાન્યતા સૂચિમાં <xliff:g id="SELECTED_APP">%s</xliff:g>ને ખેંચવા તેમજ તેનો ક્રમ બદલવા માટેનું બટન"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"પ્રાધાન્યતા સૂચિમાંથી <xliff:g id="SELECTED_APP">%s</xliff:g> કાઢી નાખવા માટેનું બટન"</string>
+    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
+    <skip />
     <string name="reorder_button_action_description" msgid="5197462036756192214">"ક્રમમાં ફેરફાર કરવા માટે બે વાર ટૅપ કરો અને ખેંચો"</string>
+    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
+    <skip />
     <string name="search_keywords_home" msgid="5386515593026555327">"ફિટનેસ, સુખાકારી"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"પરવાનગીઓ"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"Health Connect, હેલ્થ ડેટા, હેલ્થ કૅટેગરી, ડેટા ઍક્સેસ, પ્રવૃત્તિ, શરીરના માપ, સાઇકલ ટ્રૅકિંગ, પોષણ, ઊંઘ, આરોગ્ય વિશેની મહત્ત્વપૂર્ણ માહિતી"</string>
@@ -1107,6 +1110,12 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"કોઈ ઍપ ઉમેરો"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"ઍપના સૉર્સમાં ફેરફાર કરો"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ડિવાઇસ પર ડિફૉલ્ટ"</string>
+    <!-- no translation found for move_up (9136155291380319606) -->
+    <skip />
+    <!-- no translation found for move_down (4404970288236170693) -->
+    <skip />
+    <!-- no translation found for remove (1340423400489007362) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"ઍપનો ડેટા"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"<xliff:g id="APP_NAME">%1$s</xliff:g>માંનો ડેટા અહીં દેખાશે"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Health Connectનો ઍક્સેસ ધરાવતી ઍપનો ડેટા અહીં દેખાશે"</string>
@@ -1161,6 +1170,10 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g> માટે, પસંદ કરવામાં આવેલી <xliff:g id="APP_NAME">%1$s</xliff:g>ની એન્ટ્રીને કાયમ માટે ડિલીટ કરીએ?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"શું <xliff:g id="APP_NAME">%s</xliff:g>ની આ એન્ટ્રી કાયમ માટે ડિલીટ કરીએ?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> માટે <xliff:g id="DATA_TYPE">%1$s</xliff:g> ડેટા કાયમી રીતે ડિલીટ કરીએ?"</string>
+    <!-- no translation found for menu_show_system (5608880605989914394) -->
+    <skip />
+    <!-- no translation found for menu_hide_system (9218325603953186714) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"ચાલુ છે"</string>
     <string name="off" msgid="6996623844428550649">"બંધ છે"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"છેલ્લે <xliff:g id="TIME_DATE">%1$s</xliff:g> વાગ્યે ઍક્સેસ કરી"</string>

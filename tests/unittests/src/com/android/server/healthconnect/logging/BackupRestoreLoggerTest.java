@@ -29,21 +29,31 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_SETTINGS_RESTO
 
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import android.health.HealthFitnessStatsLog;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 public class BackupRestoreLoggerTest {
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this).mockStatic(HealthFitnessStatsLog.class).build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+
+    @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
+
+    private BackupRestoreLogger mBackupRestoreLogger;
+
+    @Before
+    public void setUp() {
+        mBackupRestoreLogger = new BackupRestoreLogger(mHealthFitnessStatsLog);
+    }
 
     @Test
     public void test_logDataBackupStatus() {
@@ -53,17 +63,16 @@ public class BackupRestoreLoggerTest {
         int backupTypeIncremental =
                 HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_INCREMENTAL;
 
-        BackupRestoreLogger.logDataBackupStatus(
+        mBackupRestoreLogger.logDataBackupStatus(
                 statusPartialBackup, 100, 2000, backupTypeIncremental);
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_DATA_BACKUP_INVOKED),
-                                eq(statusPartialBackup),
-                                eq(100),
-                                eq(2000),
-                                eq(backupTypeIncremental)),
-                times(1));
+
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_DATA_BACKUP_INVOKED),
+                        eq(statusPartialBackup),
+                        eq(100),
+                        eq(2000),
+                        eq(backupTypeIncremental));
     }
 
     @Test
@@ -72,15 +81,13 @@ public class BackupRestoreLoggerTest {
         int statusSettingsBackup =
                 HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED__STATUS__SETTINGS_BACKUP_STATUS_ERROR_COLLATION_FAILED;
 
-        BackupRestoreLogger.logSettingsBackupStatus(statusSettingsBackup, 100, 2000);
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED),
-                                eq(statusSettingsBackup),
-                                eq(100),
-                                eq(2000)),
-                times(1));
+        mBackupRestoreLogger.logSettingsBackupStatus(statusSettingsBackup, 100, 2000);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_SETTINGS_BACKUP_INVOKED),
+                        eq(statusSettingsBackup),
+                        eq(100),
+                        eq(2000));
     }
 
     @Test
@@ -89,15 +96,13 @@ public class BackupRestoreLoggerTest {
         int statusDataRestore =
                 HEALTH_CONNECT_DATA_RESTORE_INVOKED__STATUS__DATA_RESTORE_STATUS_ERROR_NONE;
 
-        BackupRestoreLogger.logDataRestoreStatus(statusDataRestore, 100, 2000);
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_DATA_RESTORE_INVOKED),
-                                eq(statusDataRestore),
-                                eq(100),
-                                eq(2000)),
-                times(1));
+        mBackupRestoreLogger.logDataRestoreStatus(statusDataRestore, 100, 2000);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_DATA_RESTORE_INVOKED),
+                        eq(statusDataRestore),
+                        eq(100),
+                        eq(2000));
     }
 
     @Test
@@ -106,24 +111,19 @@ public class BackupRestoreLoggerTest {
         int statusSettingsRestore =
                 HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED__STATUS__SETTINGS_RESTORE_STATUS_ERROR_NONE;
 
-        BackupRestoreLogger.logSettingsRestoreStatus(statusSettingsRestore, 100, 2000);
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED),
-                                eq(statusSettingsRestore),
-                                eq(100),
-                                eq(2000)),
-                times(1));
+        mBackupRestoreLogger.logSettingsRestoreStatus(statusSettingsRestore, 100, 2000);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_SETTINGS_RESTORE_INVOKED),
+                        eq(statusSettingsRestore),
+                        eq(100),
+                        eq(2000));
     }
 
     @Test
     public void test_logRestoreEligibility() {
-        BackupRestoreLogger.logRestoreEligibility(true);
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_RESTORE_ELIGIBILITY_CHECKED), eq(true)),
-                times(1));
+        mBackupRestoreLogger.logRestoreEligibility(true);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(eq(HEALTH_CONNECT_RESTORE_ELIGIBILITY_CHECKED), eq(true));
     }
 }

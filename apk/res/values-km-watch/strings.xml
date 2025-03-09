@@ -16,18 +16,5 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="grant_dialog_button_deny_dont_ask_again" msgid="447319176127586823">"បដិសេធ សូមកុំសួរម្តងទៀត"</string>
-    <string name="current_permission_template" msgid="5087270072681333816">"<xliff:g id="CURRENT_PERMISSION_INDEX">%1$s</xliff:g> / <xliff:g id="PERMISSION_COUNT">%2$s</xliff:g>"</string>
-    <string name="preference_show_system_apps" msgid="5460435572605508583">"បង្ហាញកម្មវិធីប្រព័ន្ធ"</string>
-    <string name="permission_summary_enforced_by_policy" msgid="7815543330908097941">"មិនអាចប្តូរបានទេ"</string>
-    <string name="generic_yes" msgid="1848509358960489829">"បាទ/ចាស"</string>
-    <string name="generic_cancel" msgid="4711554477526672789">"បោះបង់"</string>
-    <string name="permission_access_always" msgid="2467435064916327043">"គ្រប់ពេល"</string>
-    <string name="permission_access_only_foreground" msgid="3459669908945871129">"ពេលកំពុងប្រើកម្មវិធី"</string>
-    <string name="app_permission_button_allow_always" msgid="2715780455080602405">"គ្រប់ពេល"</string>
-    <string name="app_permission_button_allow_foreground" msgid="162880415357772038">"ពេលកំពុងប្រើកម្មវិធី"</string>
-    <string name="grant_dialog_button_allow_always" msgid="5216642447029937725">"គ្រប់ពេល"</string>
-    <string name="grant_dialog_button_allow_foreground" msgid="2911675370133933600">"ពេលកំពុងប្រើកម្មវិធី"</string>
-    <string name="grant_dialog_button_allow_background" msgid="7827419162341440169">"គ្រប់ពេល"</string>
     <string name="permgrouplab_health" msgid="6793578181776346442">"សម្បទា និងសុខុមាលភាព"</string>
 </resources>

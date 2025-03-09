@@ -74,12 +74,24 @@ class WearGrantPermissionsActivity : Hilt_WearGrantPermissionsActivity() {
             healthPermissionReader.getSystemHealthPermissions().toMutableList().also {
                 it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
             }
-        val permissionStrings =
+        val allowedRequestedPermissions =
             rawPermissionStrings.intersect(allowedPermissionsToRequest.toSet()).toTypedArray()
-        requestPermissionsViewModel.init(packageName, permissionStrings)
+
+        // Dismiss this request if there are no valid permissions requested.
+        if (allowedRequestedPermissions.isEmpty()) {
+            finish()
+            return
+        }
+
+        requestPermissionsViewModel.init(packageName, allowedRequestedPermissions)
 
         // Dismiss this request if any permission is USER_FIXED.
-        if (requestPermissionsViewModel.isAnyPermissionUserFixed(packageName, permissionStrings)) {
+        if (
+            requestPermissionsViewModel.isAnyPermissionUserFixed(
+                packageName,
+                allowedRequestedPermissions,
+            )
+        ) {
             handlePermissionResults()
             finish()
             return

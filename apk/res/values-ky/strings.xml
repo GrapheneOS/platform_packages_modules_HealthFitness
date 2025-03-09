@@ -444,8 +444,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Купуялык эрежелерин окуп чыгуу"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Акыркы 24 сааттын ичинде колдонулган"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Колдонмого жеткиликтүү нерселер"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (7684166767384190933) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Шайкеш колдонмолор орнотулган эмес"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Кошумча мүмкүнчүлүк берүү"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Мурунку маалыматтар, фондук режим"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Бул колдонмонун кошумча уруксаттары өчүрүлдү"</string>
@@ -1013,7 +1012,11 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Аягына жылдыруу"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"<xliff:g id="SELECTED_APP">%s</xliff:g> колдонмосун маанилүүлөр тизмесинде түзөтүү үчүн сүйрөө баскычы"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"<xliff:g id="SELECTED_APP">%s</xliff:g> колдонмосун маанилүүлөр тизмесинен өчүрүү баскычы"</string>
+    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
+    <skip />
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Иретин өзгөртүү үчүн эки жолу басып, сүйрөңүз"</string>
+    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
+    <skip />
     <string name="search_keywords_home" msgid="5386515593026555327">"фитнес, саламаттык"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"уруксаттар"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, ден соолукка байланыштуу нерселер, ден соолук категориялары, маалыматка мүмкүнчүлүк алуу, кыймылдуулук, дене-бой өлчөмдөрү, циклге көз салуу, тамактануу, уйку, организмдин негизги көрсөткүчтөрү"</string>
@@ -1107,6 +1110,12 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Колдонмо кошуу"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Колдонмо булактарын түзөтүү"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Түзмөктүн демейки параметри"</string>
+    <!-- no translation found for move_up (9136155291380319606) -->
+    <skip />
+    <!-- no translation found for move_down (4404970288236170693) -->
+    <skip />
+    <!-- no translation found for remove (1340423400489007362) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Колдонмонун дайындары"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосундагы маалымат бул жерде көрсөтүлөт"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Колдонмолордогу Health Connect кызматына байланыштуу нерселер ушул жерде көрүнөт"</string>
@@ -1161,6 +1170,10 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Белгилүү бир ай (<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>) боюнча тандалган <xliff:g id="APP_NAME">%1$s</xliff:g> маалыматы биротоло өчүрүлсүнбү?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"<xliff:g id="APP_NAME">%s</xliff:g> маалыматын биротоло өчүрөсүзбү?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> колдонмосундагы <xliff:g id="DATA_TYPE">%1$s</xliff:g> биротоло өчүрүлсүнбү?"</string>
+    <!-- no translation found for menu_show_system (5608880605989914394) -->
+    <skip />
+    <!-- no translation found for menu_hide_system (9218325603953186714) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Күйүк"</string>
     <string name="off" msgid="6996623844428550649">"Өчүк"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Cаат <xliff:g id="TIME_DATE">%1$s</xliff:g> колдонулду"</string>

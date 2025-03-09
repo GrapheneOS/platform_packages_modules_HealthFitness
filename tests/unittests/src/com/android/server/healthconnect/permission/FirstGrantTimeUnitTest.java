@@ -18,7 +18,6 @@ package com.android.server.healthconnect.permission;
 
 import static com.android.server.healthconnect.permission.FirstGrantTimeDatastore.DATA_TYPE_CURRENT;
 import static com.android.server.healthconnect.permission.FirstGrantTimeDatastore.DATA_TYPE_STAGED;
-import static com.android.server.healthconnect.testing.TestUtils.waitForAllScheduledTasksToComplete;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -49,7 +48,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -76,7 +74,6 @@ public class FirstGrantTimeUnitTest {
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
                     .mockStatic(HealthConnectManager.class)
-                    .mockStatic(HealthConnectThreadScheduler.class)
                     .setStrictness(Strictness.LENIENT)
                     .build();
 
@@ -96,6 +93,7 @@ public class FirstGrantTimeUnitTest {
     @Mock private UserManager mUserManager;
     @Mock private Context mContext;
     @Mock private FirstGrantTimeDatastore mDatastore;
+    @Mock private HealthConnectThreadScheduler mThreadScheduler;
 
     private FirstGrantTimeManager mFirstGrantTimeManager;
 
@@ -145,13 +143,9 @@ public class FirstGrantTimeUnitTest {
                         .setFirstGrantTimeDatastore(mDatastore)
                         .setHealthPermissionIntentAppsTracker(mTracker)
                         .setHealthDataCategoryPriorityHelper(mHealthDataCategoryPriorityHelper)
+                        .setThreadScheduler(mThreadScheduler)
                         .build()
                         .getFirstGrantTimeManager();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        waitForAllScheduledTasksToComplete();
     }
 
     @Test
@@ -231,7 +225,6 @@ public class FirstGrantTimeUnitTest {
         when(mDatastore.readForUser(CURRENT_USER, DATA_TYPE_CURRENT)).thenReturn(null);
         when(mDatastore.readForUser(CURRENT_USER, DATA_TYPE_STAGED)).thenReturn(null);
         mFirstGrantTimeManager.onPermissionsChanged(SELF_PACKAGE_UID);
-        waitForAllScheduledTasksToComplete();
         // after device is unlocked
         when(mUserManager.isUserUnlocked(any())).thenReturn(true);
         UserGrantTimeState currentGrantTimeState = new UserGrantTimeState(DEFAULT_VERSION);
@@ -248,8 +241,7 @@ public class FirstGrantTimeUnitTest {
     public void testOnPermissionsChanged_withHealthPermissionsUid_expectBackgroundTaskAdded() {
         mFirstGrantTimeManager.onPermissionsChanged(SELF_PACKAGE_UID);
 
-        ExtendedMockito.verify(
-                () -> HealthConnectThreadScheduler.scheduleInternalTask(any()), times(1));
+        verify(mThreadScheduler, times(1)).scheduleInternalTask(any());
     }
 
     @Test
@@ -259,8 +251,7 @@ public class FirstGrantTimeUnitTest {
 
         mFirstGrantTimeManager.onPermissionsChanged(SELF_PACKAGE_UID);
 
-        ExtendedMockito.verify(
-                () -> HealthConnectThreadScheduler.scheduleInternalTask(any()), times(0));
+        verify(mThreadScheduler, times(0)).scheduleInternalTask(any());
     }
 
     @Test

@@ -36,7 +36,7 @@ import android.os.UserHandle;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import org.junit.Before;
@@ -44,16 +44,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
 public class PermissionPackageChangesOrchestratorTest {
     private static final String SELF_PACKAGE_NAME = "com.android.healthconnect.unittests";
     private static final UserHandle CURRENT_USER = Process.myUserHandle();
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this).setStrictness(Strictness.LENIENT).build();
+    @Rule public final MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private int mCurrentUid;
     private PermissionPackageChangesOrchestrator mOrchestrator;
@@ -76,7 +75,8 @@ public class PermissionPackageChangesOrchestratorTest {
                         mFirstGrantTimeManager,
                         mHelper,
                         mUserHandle,
-                        mHealthDataCategoryPriorityHelper);
+                        mHealthDataCategoryPriorityHelper,
+                        new HealthConnectThreadScheduler());
         setIntentIsPresent(/* isIntentPresent= */ true);
         setShouldEnforcePermissionUsageIntent(/* shouldEnforce= */ true);
     }

@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.fragment.app.FragmentManager
 import androidx.preference.PreferenceCategory
@@ -47,7 +48,7 @@ constructor(
     private val options: List<RadioButtonOption>,
     private val logger: HealthConnectLogger,
     preferenceKey: String,
-    preferenceTitleResId: Int,
+    preferenceTitleResId: Int? = null,
     currentSelectedKey: String? = null,
     attrs: AttributeSet? = null,
 ) : PreferenceCategory(context, attrs) {
@@ -56,7 +57,12 @@ constructor(
 
     init {
         key = preferenceKey
-        title = context.getString(preferenceTitleResId)
+        title =
+            if (preferenceTitleResId != null) {
+                context.getString(preferenceTitleResId)
+            } else {
+                ""
+            }
     }
 
     data class RadioButtonOption(
@@ -64,6 +70,8 @@ constructor(
         val title: String,
         val element: ElementName,
         val listener: SelectorWithWidgetPreference.OnClickListener,
+        val summary: String? = null,
+        val icon: Drawable? = null,
     )
 
     override fun onAttached() {
@@ -79,6 +87,8 @@ constructor(
         val selectorPreference =
             SelectorWithWidgetPreference(context).apply {
                 title = option.title
+                summary = option.summary
+                icon = option.icon
                 key = option.key
                 setOnClickListener {
                     logger.logInteraction(option.element)
@@ -102,4 +112,15 @@ constructor(
         selectedKey = newSelectedOptionKey
         updateSelectedPreference()
     }
+
+    fun updateSummary(optionKey: String, newSummary: String) {
+        for (i in 0 until preferenceCount) {
+            val preference = getPreference(i)
+            if (preference is SelectorWithWidgetPreference && preference.key == optionKey) {
+                preference.summary = newSummary
+            }
+        }
+    }
+
+    fun getSelectedOption(): String? = selectedKey
 }

@@ -21,12 +21,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.hasSibling
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withTagValue
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
@@ -38,7 +39,9 @@ import com.android.healthconnect.controller.datasources.DataSourcesViewModel.Agg
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.DataSourcesAndAggregationsInfo
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
+import com.android.healthconnect.controller.navigation.CATEGORY_KEY
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppUtils
 import com.android.healthconnect.controller.shared.app.AppUtilsModule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
@@ -47,8 +50,8 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
-import com.android.healthconnect.controller.tests.utils.atPosition
 import com.android.healthconnect.controller.tests.utils.di.FakeAppUtils
+import com.android.healthconnect.controller.tests.utils.hasIndirectSibling
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.toggleAnimation
@@ -64,7 +67,6 @@ import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
 import org.hamcrest.Matchers.allOf
-import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
@@ -77,7 +79,6 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import com.android.healthconnect.controller.navigation.CATEGORY_KEY
 
 @UninstallModules(AppUtilsModule::class)
 @HiltAndroidTest
@@ -97,6 +98,7 @@ class DataSourcesFragmentTest {
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
         hiltRule.inject()
         whenever(dataSourcesViewModel.getCurrentSelection()).then { HealthDataCategory.ACTIVITY }
+        whenever(dataSourcesViewModel.shouldShowAddAnAppButton).then { MutableLiveData(false) }
         toggleAnimation(false)
     }
 
@@ -135,8 +137,7 @@ class DataSourcesFragmentTest {
             )
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList())
-            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(
                 AggregationCardsState.WithData(
@@ -163,6 +164,8 @@ class DataSourcesFragmentTest {
         verify(healthConnectLogger).logImpression(DataSourcesElement.DATA_TOTALS_CARD)
         verify(healthConnectLogger).logImpression(DataSourcesElement.DATA_TYPE_SPINNER)
         verify(healthConnectLogger, times(2)).logImpression(DataSourcesElement.APP_SOURCE_BUTTON)
+        verify(healthConnectLogger, times(2))
+            .logImpression(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
         verify(healthConnectLogger).logImpression(DataSourcesElement.ADD_AN_APP_BUTTON)
     }
 
@@ -178,7 +181,7 @@ class DataSourcesFragmentTest {
                 )
             )
         }
-        whenever(dataSourcesViewModel.getEditedPriorityList()).then { listOf(TEST_APP, TEST_APP_2) }
+        whenever(dataSourcesViewModel.getPriorityList()).then { listOf(TEST_APP, TEST_APP_2) }
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
@@ -197,29 +200,8 @@ class DataSourcesFragmentTest {
                 )
             )
             .check(matches(isDisplayed()))
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))),
-                    )
-                )
-            )
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                        ),
-                    )
-                )
-            )
-
+        verifyTestApp()
+        verifyTestApp2()
         verify(healthConnectLogger, atLeast(1)).setPageId(PageName.DATA_SOURCES_PAGE)
         verify(healthConnectLogger, atLeast(1)).logPageImpression()
     }
@@ -251,8 +233,7 @@ class DataSourcesFragmentTest {
             )
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList())
-            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(
                 AggregationCardsState.WithData(
@@ -288,27 +269,8 @@ class DataSourcesFragmentTest {
             )
             .check(matches(isDisplayed()))
 
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))),
-                    )
-                )
-            )
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                        ),
-                    )
-                )
-            )
+        verifyTestApp()
+        verifyTestApp2()
     }
 
     @Test
@@ -338,8 +300,7 @@ class DataSourcesFragmentTest {
             )
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList())
-            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(
                 AggregationCardsState.WithData(
@@ -393,8 +354,7 @@ class DataSourcesFragmentTest {
             )
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList())
-            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(
                 AggregationCardsState.WithData(
@@ -427,28 +387,8 @@ class DataSourcesFragmentTest {
                 )
             )
             .check(matches(isDisplayed()))
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))),
-                    )
-                )
-            )
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                        ),
-                    )
-                )
-            )
+        verifyTestApp()
+        verifyTestApp2()
     }
 
     @Test
@@ -480,8 +420,7 @@ class DataSourcesFragmentTest {
             )
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList())
-            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(
                 AggregationCardsState.WithData(
@@ -514,28 +453,8 @@ class DataSourcesFragmentTest {
                 )
             )
             .check(matches(isDisplayed()))
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))),
-                    )
-                )
-            )
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                        ),
-                    )
-                )
-            )
+        verifyTestApp()
+        verifyTestApp2()
     }
 
     @Test
@@ -567,8 +486,7 @@ class DataSourcesFragmentTest {
             )
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList())
-            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(
                 AggregationCardsState.WithData(
@@ -601,28 +519,8 @@ class DataSourcesFragmentTest {
                 )
             )
             .check(matches(isDisplayed()))
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))),
-                    )
-                )
-            )
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                        ),
-                    )
-                )
-            )
+        verifyTestApp()
+        verifyTestApp2()
     }
 
     @Test
@@ -665,8 +563,7 @@ class DataSourcesFragmentTest {
                 )
             )
         }
-        whenever(dataSourcesViewModel.getEditedPriorityList())
-            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
@@ -686,51 +583,18 @@ class DataSourcesFragmentTest {
             )
             .check(matches(isDisplayed()))
 
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(hasDescendant(withText("1")), hasDescendant(withText(TEST_APP_NAME))),
-                    )
-                )
-            )
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                        ),
-                    )
-                )
-            )
+        verifyTestApp()
+        verifyTestApp2()
     }
 
     @Test
     fun appOnPriorityList_whenDefaultApp_showsAsDeviceDefault() {
-        whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
-            MutableLiveData(
-                DataSourcesAndAggregationsInfo(
-                    priorityListState =
-                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
-                    potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
-                    aggregationCardsState = AggregationCardsState.WithData(true, listOf()),
-                )
-            )
-        }
-        whenever(dataSourcesViewModel.getEditedPriorityList()).then { listOf(TEST_APP, TEST_APP_2) }
-        whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.WithData(true, listOf()))
-        }
         (appUtils as FakeAppUtils).setDefaultApp(TEST_APP_PACKAGE_NAME)
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment(listOf(TEST_APP, TEST_APP_2))
         onIdle()
 
         onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("Data totals")).check(doesNotExist())
+        onView(withText("Data totals")).check(matches(isDisplayed()))
         onView(withText("App sources")).check(matches(isDisplayed()))
         onView(withText("Add an app")).check(doesNotExist())
         onView(
@@ -740,35 +604,28 @@ class DataSourcesFragmentTest {
                         "from contributing to totals, but it will still have write permissions."
                 )
             )
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
 
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(
-                            hasDescendant(withText("1")),
-                            hasDescendant(withText(TEST_APP_NAME)),
-                            hasDescendant(withText("Device default")),
-                        ),
-                    )
+        onView(
+                allOf(
+                    withText(TEST_APP_NAME),
+                    hasIndirectSibling(withText("1")),
+                    hasSibling(withText("Device default")),
                 )
             )
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
 
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                            hasDescendant(not(withText("Device default"))),
-                        ),
-                    )
+        onView(
+                allOf(
+                    withText(TEST_APP_NAME_2),
+                    hasIndirectSibling(withText("2")),
+                    hasSibling(not(withText("Device default"))),
                 )
             )
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -784,8 +641,7 @@ class DataSourcesFragmentTest {
             )
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList())
-            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(AggregationCardsState.Loading(false))
         }
@@ -806,8 +662,7 @@ class DataSourcesFragmentTest {
             )
         }
 
-        whenever(dataSourcesViewModel.getEditedPriorityList())
-            .thenReturn(listOf(TEST_APP, TEST_APP_2))
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(listOf(TEST_APP, TEST_APP_2))
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
@@ -818,148 +673,126 @@ class DataSourcesFragmentTest {
     }
 
     @Test
-    fun triggerEditMode_changesActionItems() {
-        whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
-            MutableLiveData(
-                DataSourcesAndAggregationsInfo(
-                    priorityListState =
-                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
-                    potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
-                    aggregationCardsState = AggregationCardsState.WithData(true, listOf()),
+    fun clickOnTopAppSource_menuHasCorrectOptions() {
+        launchFragment(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
+
+        onView(
+                withContentDescription(
+                    "Button to reorder or remove Health Connect test app from the app sources list"
                 )
             )
-        }
-        whenever(dataSourcesViewModel.getEditedPriorityList()).then { listOf(TEST_APP, TEST_APP_2) }
-        whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.WithData(true, listOf()))
-        }
-        (appUtils as FakeAppUtils).setDefaultApp(TEST_APP_PACKAGE_NAME)
-        val scenario =
-            launchFragment<DataSourcesFragment>(
-                bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY)
-            )
+            .perform(scrollTo())
+            .perform(click())
         onIdle()
 
-        scenario.onActivity { activity ->
-            val fragment = activity.supportFragmentManager.findFragmentByTag("")
-            (fragment as DataSourcesFragment).editPriorityList()
-        }
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(
-                            hasDescendant(withText("1")),
-                            hasDescendant(withText(TEST_APP_NAME)),
-                            hasDescendant(withTagValue(`is`("edit_mode"))),
-                        ),
-                    )
-                )
-            )
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                            hasDescendant(withTagValue(`is`("edit_mode"))),
-                        ),
-                    )
-                )
-            )
+        verify(healthConnectLogger).logInteraction(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
+        onView(withText("Move up")).check(doesNotExist())
+        onView(withText("Move down")).check(matches(isDisplayed()))
+        onView(withText("Remove")).check(matches(isDisplayed()))
+        verify(healthConnectLogger)
+            .logImpression(DataSourcesElement.MOVE_APP_SOURCE_DOWN_MENU_BUTTON)
+        verify(healthConnectLogger).logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
     }
 
     @Test
-    fun triggerEditMode_whenChangingCategory_resetsToDrag() {
+    fun clickOnMiddleAppSource_menuHasCorrectOptions() {
+        launchFragment(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
+
+        onView(
+                withContentDescription(
+                    "Button to reorder or remove Health Connect test app 2 from the app sources list"
+                )
+            )
+            .perform(scrollTo())
+            .perform(click())
+        onIdle()
+
+        verify(healthConnectLogger).logInteraction(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
+        onView(withText("Move up")).check(matches(isDisplayed()))
+        onView(withText("Move down")).check(matches(isDisplayed()))
+        onView(withText("Remove")).check(matches(isDisplayed()))
+        verify(healthConnectLogger).logImpression(DataSourcesElement.MOVE_APP_SOURCE_UP_MENU_BUTTON)
+        verify(healthConnectLogger)
+            .logImpression(DataSourcesElement.MOVE_APP_SOURCE_DOWN_MENU_BUTTON)
+        verify(healthConnectLogger).logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
+    }
+
+    @Test
+    fun clickOnBottomAppSource_menuHasCorrectOptions() {
+        launchFragment(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
+
+        onView(
+                withContentDescription(
+                    "Button to reorder or remove Health Connect test app 3 from the app sources list"
+                )
+            )
+            .perform(scrollTo())
+            .perform(click())
+        onIdle()
+
+        verify(healthConnectLogger).logInteraction(DataSourcesElement.OPEN_APP_SOURCE_MENU_BUTTON)
+        onView(withText("Move up")).check(matches(isDisplayed()))
+        onView(withText("Move down")).check(doesNotExist())
+        onView(withText("Remove")).check(matches(isDisplayed()))
+        verify(healthConnectLogger).logImpression(DataSourcesElement.MOVE_APP_SOURCE_UP_MENU_BUTTON)
+        verify(healthConnectLogger).logImpression(DataSourcesElement.REMOVE_APP_SOURCE_MENU_BUTTON)
+    }
+
+    private fun launchFragment(priorityList: List<AppMetadata>) {
         whenever(dataSourcesViewModel.dataSourcesAndAggregationsInfo).then {
             MutableLiveData(
                 DataSourcesAndAggregationsInfo(
-                    priorityListState =
-                        PriorityListState.WithData(true, listOf(TEST_APP, TEST_APP_2)),
+                    priorityListState = PriorityListState.WithData(true, priorityList),
                     potentialAppSourcesState = PotentialAppSourcesState.WithData(true, listOf()),
-                    aggregationCardsState = AggregationCardsState.WithData(true, listOf()),
+                    aggregationCardsState =
+                        AggregationCardsState.WithData(
+                            true,
+                            listOf(
+                                AggregationCardInfo(
+                                    FitnessPermissionType.STEPS,
+                                    FormattedEntry.FormattedAggregation(
+                                        "1234 steps",
+                                        "1234 steps",
+                                        "TestApp",
+                                    ),
+                                    Instant.parse("2022-10-19T07:06:05.432Z"),
+                                )
+                            ),
+                        ),
                 )
             )
         }
-        whenever(dataSourcesViewModel.getEditedPriorityList()).then { listOf(TEST_APP, TEST_APP_2) }
+        whenever(dataSourcesViewModel.getPriorityList()).thenReturn(priorityList)
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
-            MutableLiveData(AggregationCardsState.WithData(true, listOf()))
+            MutableLiveData(
+                AggregationCardsState.WithData(
+                    true,
+                    listOf(
+                        AggregationCardInfo(
+                            FitnessPermissionType.STEPS,
+                            FormattedEntry.FormattedAggregation(
+                                "1234 steps",
+                                "1234 steps",
+                                "TestApp",
+                            ),
+                            Instant.parse("2022-10-19T07:06:05.432Z"),
+                        )
+                    ),
+                )
+            )
         }
+        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+    }
 
-        (appUtils as FakeAppUtils).setDefaultApp(TEST_APP_PACKAGE_NAME)
-        val scenario =
-            launchFragment<DataSourcesFragment>(
-                bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY)
-            )
-        onIdle()
+    private fun verifyTestApp() {
+        onView(allOf(withText(TEST_APP_NAME), hasIndirectSibling(withText("1"))))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
+    }
 
-        scenario.onActivity { activity ->
-            val fragment = activity.supportFragmentManager.findFragmentByTag("")
-            (fragment as DataSourcesFragment).editPriorityList()
-        }
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(
-                            hasDescendant(withText("1")),
-                            hasDescendant(withText(TEST_APP_NAME)),
-                            hasDescendant(withTagValue(`is`("edit_mode"))),
-                        ),
-                    )
-                )
-            )
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                            hasDescendant(withTagValue(`is`("edit_mode"))),
-                        ),
-                    )
-                )
-            )
-
-        onView(withId(com.android.settingslib.widget.spinner.R.id.spinner)).perform(click())
-        onView(withText("Sleep")).perform(click())
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        0,
-                        allOf(
-                            hasDescendant(withText("1")),
-                            hasDescendant(withText(TEST_APP_NAME)),
-                            hasDescendant(withTagValue(`is`("drag_mode"))),
-                        ),
-                    )
-                )
-            )
-
-        onView(withId(R.id.linear_layout_recycle_view))
-            .check(
-                matches(
-                    atPosition(
-                        1,
-                        allOf(
-                            hasDescendant(withText("2")),
-                            hasDescendant(withText(TEST_APP_NAME_2)),
-                            hasDescendant(withTagValue(`is`("drag_mode"))),
-                        ),
-                    )
-                )
-            )
+    private fun verifyTestApp2() {
+        onView(allOf(withText(TEST_APP_NAME_2), hasIndirectSibling(withText("2"))))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 }

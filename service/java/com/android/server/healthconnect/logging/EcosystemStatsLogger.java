@@ -29,10 +29,16 @@ import java.util.Set;
  *
  * @hide
  */
-public class EcosystemStatsLogger {
+class EcosystemStatsLogger {
+
+    private final HealthFitnessStatsLog mStatsLog;
+
+    EcosystemStatsLogger(HealthFitnessStatsLog statsLog) {
+        mStatsLog = statsLog;
+    }
 
     /** Write Health Connect Ecosystem stats to statsd. */
-    static void log(EcosystemStatsCollector ecosystemStatsCollector) {
+    void log(EcosystemStatsCollector ecosystemStatsCollector) {
         if (!AconfigFlagHelper.isEcosystemMetricsEnabled()) {
             return;
         }
@@ -41,7 +47,7 @@ public class EcosystemStatsLogger {
         logDirectionalAppPairings(ecosystemStatsCollector);
         logDirectionalAppPairingsPerDataType(ecosystemStatsCollector);
 
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HealthFitnessStatsLog.HEALTH_CONNECT_ECOSYSTEM_STATS,
                 convertRecordTypeIdSetToLoggableArray(
                         ecosystemStatsCollector.getDataTypesReadOrWritten()),
@@ -52,7 +58,7 @@ public class EcosystemStatsLogger {
                 ecosystemStatsCollector.getNumberOfAppPairings());
     }
 
-    private static void logDirectionalAppPairings(EcosystemStatsCollector ecosystemStatsCollector) {
+    private void logDirectionalAppPairings(EcosystemStatsCollector ecosystemStatsCollector) {
         Map<String, Set<String>> directionalAppPairings =
                 ecosystemStatsCollector.getDirectionalAppPairings();
 
@@ -60,7 +66,7 @@ public class EcosystemStatsLogger {
                 directionalAppPairings.entrySet()) {
             String writerPackageName = directionalAppPairing.getKey();
             for (String readerPackageName : directionalAppPairing.getValue()) {
-                HealthFitnessStatsLog.write(
+                mStatsLog.write(
                         HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS,
                         writerPackageName,
                         readerPackageName,
@@ -72,7 +78,7 @@ public class EcosystemStatsLogger {
         }
     }
 
-    private static void logDirectionalAppPairingsPerDataType(
+    private void logDirectionalAppPairingsPerDataType(
             EcosystemStatsCollector ecosystemStatsCollector) {
         Map<String, Map<Integer, Set<String>>> directionalAppPairingsForDataTypes =
                 ecosystemStatsCollector.getDirectionalAppPairingsPerDataType();
@@ -88,7 +94,7 @@ public class EcosystemStatsLogger {
                         internalHealthConnectMappings.getLoggingEnumForRecordTypeId(
                                 dataTypeToReaderPackageName.getKey());
                 for (String readerPackageName : dataTypeToReaderPackageName.getValue()) {
-                    HealthFitnessStatsLog.write(
+                    mStatsLog.write(
                             HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS,
                             writerPackageName,
                             readerPackageName,

@@ -444,8 +444,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Lees die privaatheidsbeleid"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"In afgelope 24 uur gebruik"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Apptoegang"</string>
-    <!-- no translation found for connected_apps_empty_list_section_title (7684166767384190933) -->
-    <skip />
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Geen versoenbare apps geïnstalleer nie"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Bykomende toegang"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Vorige data, agtergronddata"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Het bykomende toestemmings vir hierdie app verwyder"</string>
@@ -1013,7 +1012,11 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Skuif na onder"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Knoppie om <xliff:g id="SELECTED_APP">%s</xliff:g> in die prioriteitslys te sleep en herrangskik"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Knoppie om <xliff:g id="SELECTED_APP">%s</xliff:g> van die prioriteitslys te verwyder"</string>
+    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
+    <skip />
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Dubbeltik en sleep om te herrangskik"</string>
+    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
+    <skip />
     <string name="search_keywords_home" msgid="5386515593026555327">"fiksheid, welstand"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"toestemmings"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, gesondheiddata, gesondheidkategorieë, datatoegang, aktiwiteit, liggaamsmetings, siklusnasporing, voeding, slaap, lewensfunksies"</string>
@@ -1107,6 +1110,12 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Voeg ’n app by"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Wysig appbronne"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Toestelverstek"</string>
+    <!-- no translation found for move_up (9136155291380319606) -->
+    <skip />
+    <!-- no translation found for move_down (4404970288236170693) -->
+    <skip />
+    <!-- no translation found for remove (1340423400489007362) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"Appdata"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Data van <xliff:g id="APP_NAME">%1$s</xliff:g> af sal hier wys"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Data vanaf apps met toegang tot Health Connect sal hier gewys word"</string>
@@ -1161,6 +1170,10 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Vee geselekteerde <xliff:g id="APP_NAME">%1$s</xliff:g>-inskrywings vir <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g> permanent uit?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Vee hierdie <xliff:g id="APP_NAME">%s</xliff:g>-inskrywing permanent uit?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vee <xliff:g id="DATA_TYPE">%1$s</xliff:g>-data vir <xliff:g id="APP_NAME">%2$s</xliff:g> permanent uit?"</string>
+    <!-- no translation found for menu_show_system (5608880605989914394) -->
+    <skip />
+    <!-- no translation found for menu_hide_system (9218325603953186714) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Aan"</string>
     <string name="off" msgid="6996623844428550649">"Af"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Ingegaan <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

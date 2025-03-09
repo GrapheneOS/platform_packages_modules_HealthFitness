@@ -25,50 +25,49 @@ import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXP
 
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import android.health.HealthFitnessStatsLog;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
 public class ExportImportLoggerTest {
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this).mockStatic(HealthFitnessStatsLog.class).build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+
+    @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
 
     @Test
     public void test_LogExportStatus() {
 
-        ExportImportLogger.logExportStatus(DATA_EXPORT_STARTED, 1, 2, 3);
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_EXPORT_INVOKED),
-                                eq(HEALTH_CONNECT_EXPORT_INVOKED__STATUS__EXPORT_STATUS_STARTED),
-                                eq(1),
-                                eq(2),
-                                eq(3)),
-                times(1));
+        new ExportImportLogger(mHealthFitnessStatsLog)
+                .logExportStatus(DATA_EXPORT_STARTED, 1, 2, 3);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_EXPORT_INVOKED),
+                        eq(HEALTH_CONNECT_EXPORT_INVOKED__STATUS__EXPORT_STATUS_STARTED),
+                        eq(1),
+                        eq(2),
+                        eq(3));
     }
 
     @Test
     public void test_logImportStatus() {
         // Create variable to comply with java formatter line length.
         int error = HEALTH_CONNECT_IMPORT_INVOKED__STATUS__IMPORT_STATUS_ERROR_VERSION_MISMATCH;
-        ExportImportLogger.logImportStatus(DATA_IMPORT_ERROR_VERSION_MISMATCH, 2, 3, 4);
-        ExtendedMockito.verify(
-                () ->
-                        HealthFitnessStatsLog.write(
-                                eq(HEALTH_CONNECT_IMPORT_INVOKED), eq(error), eq(2), eq(3), eq(4)),
-                times(1));
+        new ExportImportLogger(mHealthFitnessStatsLog)
+                .logImportStatus(DATA_IMPORT_ERROR_VERSION_MISMATCH, 2, 3, 4);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(eq(HEALTH_CONNECT_IMPORT_INVOKED), eq(error), eq(2), eq(3), eq(4));
     }
 }

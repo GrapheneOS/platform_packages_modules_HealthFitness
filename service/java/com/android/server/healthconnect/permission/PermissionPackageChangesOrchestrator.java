@@ -47,18 +47,21 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
     private final HealthConnectPermissionHelper mPermissionHelper;
     private UserHandle mCurrentForegroundUser;
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
+    private final HealthConnectThreadScheduler mThreadScheduler;
 
     public PermissionPackageChangesOrchestrator(
             HealthPermissionIntentAppsTracker permissionIntentTracker,
             FirstGrantTimeManager grantTimeManager,
             HealthConnectPermissionHelper permissionHelper,
             UserHandle userHandle,
-            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper) {
+            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
+            HealthConnectThreadScheduler threadScheduler) {
         mPermissionIntentTracker = permissionIntentTracker;
         mFirstGrantTimeManager = grantTimeManager;
         mPermissionHelper = permissionHelper;
         mCurrentForegroundUser = userHandle;
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
+        mThreadScheduler = threadScheduler;
     }
 
     /**
@@ -118,7 +121,7 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
             UserManager userManager = context.getSystemService(UserManager.class);
             if (userHandle.equals(mCurrentForegroundUser)
                     && userManager.isUserUnlocked(userHandle)) {
-                HealthConnectThreadScheduler.scheduleInternalTask(
+                mThreadScheduler.scheduleInternalTask(
                         () ->
                                 mHealthDataCategoryPriorityHelper
                                         .maybeRemoveAppWithoutWritePermissionsFromPriorityList(

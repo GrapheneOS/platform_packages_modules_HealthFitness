@@ -15,21 +15,19 @@ package com.android.healthconnect.controller.datasources
 
 import android.health.connect.HealthDataCategory
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
-import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.AggregationCardsState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
-import com.android.healthconnect.controller.datasources.appsources.AppSourcesAdapter
-import com.android.healthconnect.controller.datasources.appsources.AppSourcesPreference
+import com.android.healthconnect.controller.datasources.appsources.AppSourcesPreferenceCategory
 import com.android.healthconnect.controller.navigation.CATEGORY_KEY
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
@@ -47,8 +45,6 @@ import com.android.healthconnect.controller.utils.logging.DataSourcesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
-import com.android.healthconnect.controller.utils.setupMenu
-import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsSpinnerAdapter
 import com.android.settingslib.widget.SettingsSpinnerPreference
@@ -58,8 +54,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint(HealthPreferenceFragment::class)
-class DataSourcesFragment :
-    Hilt_DataSourcesFragment(), AppSourcesAdapter.OnAppRemovedFromPriorityListListener {
+class DataSourcesFragment : Hilt_DataSourcesFragment() {
 
     companion object {
         private const val DATA_TYPE_SPINNER_PREFERENCE_GROUP = "data_type_spinner_group"
@@ -72,7 +67,6 @@ class DataSourcesFragment :
         private const val NON_EMPTY_FOOTER_PREFERENCE_KEY = "data_sources_footer"
         private const val EMPTY_STATE_HEADER_PREFERENCE_KEY = "empty_state_header"
         private const val EMPTY_STATE_FOOTER_PREFERENCE_KEY = "empty_state_footer"
-        private const val IS_EDIT_MODE = "is_edit_mode"
 
         private val dataSourcesCategories =
             arrayListOf(HealthDataCategory.ACTIVITY, HealthDataCategory.SLEEP)
@@ -84,7 +78,6 @@ class DataSourcesFragment :
 
     @Inject lateinit var logger: HealthConnectLogger
     @Inject lateinit var appUtils: AppUtils
-    private var isEditMode = false
 
     private val dataSourcesViewModel: DataSourcesViewModel by activityViewModels()
     private lateinit var spinnerPreference: SettingsSpinnerPreference
@@ -103,21 +96,7 @@ class DataSourcesFragment :
 
     private val nonEmptyFooterPreference: FooterPreference by pref(NON_EMPTY_FOOTER_PREFERENCE_KEY)
 
-    private val onEditMenuItemSelected: (MenuItem) -> Boolean = { menuItem ->
-        when (menuItem.itemId) {
-            R.id.menu_edit -> {
-                editPriorityList()
-                true
-            }
-            else -> false
-        }
-    }
-
     private var cardContainerPreference: CardContainerPreference? = null
-
-    override fun onAppRemovedFromPriorityList() {
-        exitEditMode()
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -128,18 +107,8 @@ class DataSourcesFragment :
         setupSpinnerPreference()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean(IS_EDIT_MODE, isEditMode)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        savedInstanceState?.let { bundle ->
-            val savedIsEditMode = bundle.getBoolean(IS_EDIT_MODE, false)
-            isEditMode = savedIsEditMode
-        }
 
         setLoading(true)
         val currentStringSelection = spinnerPreference.selectedItem
@@ -169,8 +138,7 @@ class DataSourcesFragment :
                 if (priorityList.isEmpty() && potentialAppSources.isEmpty()) {
                     addEmptyState()
                 } else {
-                    updateMenu(priorityList.size > 1 && !isEditMode)
-                    updateAppSourcesSection(priorityList, potentialAppSources)
+                    updateAppSourcesSection(potentialAppSources)
                     updateDataTotalsSection(cardInfos)
                 }
             }
@@ -190,6 +158,17 @@ class DataSourcesFragment :
                 }
             }
         }
+
+        dataSourcesViewModel.shouldShowAddAnAppButton.observe(viewLifecycleOwner) {
+            showAddAnAppButton ->
+            if (showAddAnAppButton) {
+                updateAddApp(true)
+            }
+        }
+
+        // Prevents incorrect item indexing in the priority list item content descriptions.
+        val recyclerView = view.findViewById<RecyclerView>(androidx.preference.R.id.recycler_view)
+        recyclerView?.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
     }
 
     override fun onResume() {
@@ -197,68 +176,39 @@ class DataSourcesFragment :
         dataSourcesViewModel.loadData(currentCategorySelection)
     }
 
-    private fun updateMenu(shouldShowEditButton: Boolean) {
-        if (shouldShowEditButton) {
-            setupMenu(R.menu.data_sources, viewLifecycleOwner, logger, onEditMenuItemSelected)
-        } else {
-            setupSharedMenu(viewLifecycleOwner, logger)
-        }
-    }
-
-    @VisibleForTesting
-    fun editPriorityList() {
-        isEditMode = true
-        updateMenu(shouldShowEditButton = false)
-        appSourcesPreferenceGroup.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
-        val appSourcesPreference =
-            preferenceScreen?.findPreference<AppSourcesPreference>(APP_SOURCES_PREFERENCE_KEY)
-        appSourcesPreference?.toggleEditMode(true)
-    }
-
-    private fun exitEditMode() {
-        appSourcesPreferenceGroup
-            .findPreference<AppSourcesPreference>(APP_SOURCES_PREFERENCE_KEY)
-            ?.toggleEditMode(false)
-        updateMenu(dataSourcesViewModel.getEditedPriorityList().size > 1)
-        updateAddApp(dataSourcesViewModel.getEditedPotentialAppSources().isNotEmpty())
-        isEditMode = false
-    }
-
     /** Updates the priority list preference. */
-    private fun updateAppSourcesSection(
-        priorityList: List<AppMetadata>,
-        potentialAppSources: List<AppMetadata>,
-    ) {
+    private fun updateAppSourcesSection(potentialAppSources: List<AppMetadata>) {
         removeEmptyState()
         appSourcesPreferenceGroup.isVisible = true
         appSourcesPreferenceGroup.removePreferenceRecursively(APP_SOURCES_PREFERENCE_KEY)
 
-        dataSourcesViewModel.setEditedPriorityList(priorityList)
         appSourcesPreferenceGroup.addPreference(
-            AppSourcesPreference(
+            AppSourcesPreferenceCategory(
                     requireContext(),
+                    logger,
                     appUtils,
                     dataSourcesViewModel,
                     currentCategorySelection,
-                    this,
                 )
-                .also {
-                    it.key = APP_SOURCES_PREFERENCE_KEY
-                    it.setEditMode(isEditMode)
-                }
+                .also { it.key = APP_SOURCES_PREFERENCE_KEY }
         )
 
-        updateAddApp(potentialAppSources.isNotEmpty() && !isEditMode)
+        updateAddApp(potentialAppSources.isNotEmpty())
         nonEmptyFooterPreference.isVisible = true
     }
 
     /**
      * Shows the "Add an app" button when there is at least one potential app for the priority list.
      *
-     * <p> Hides the button in edit mode and when there are no other potential apps for the priority
-     * list.
+     * <p> Hides the button when there are no other potential apps for the priority list.
      */
     private fun updateAddApp(shouldShow: Boolean) {
+        val button = appSourcesPreferenceGroup.findPreference<Preference>(ADD_AN_APP_PREFERENCE_KEY)
+        val currentVisibility = button?.isVisible ?: false
+        if (currentVisibility == shouldShow) {
+            return
+        }
+
         appSourcesPreferenceGroup.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
 
         if (!shouldShow) {
@@ -290,7 +240,7 @@ class DataSourcesFragment :
     private fun updateDataTotalsSection(cardInfos: List<AggregationCardInfo>) {
         dataTotalsPreferenceGroup.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_KEY)
         // Do not show data cards when there are no apps on the priority list
-        if (appSourcesPreferenceGroup.isVisible == false) {
+        if (!appSourcesPreferenceGroup.isVisible) {
             return
         }
 
@@ -401,7 +351,6 @@ class DataSourcesFragment :
 
                     val currentCategory = dataSourcesCategories[position]
                     currentCategorySelection = dataSourcesCategories[position]
-                    exitEditMode()
 
                     // Reload the data sources information when a new category has been selected
                     dataSourcesViewModel.loadData(currentCategory)

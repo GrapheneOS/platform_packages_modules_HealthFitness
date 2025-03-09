@@ -1012,7 +1012,11 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"सबसे नीचे ले जाएं"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"प्राथमिकता सूची में, <xliff:g id="SELECTED_APP">%s</xliff:g> को ड्रैग करके उसका क्रम बदलने वाला बटन"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"प्राथमिकता सूची से <xliff:g id="SELECTED_APP">%s</xliff:g> को हटाने का बटन"</string>
+    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
+    <skip />
     <string name="reorder_button_action_description" msgid="5197462036756192214">"क्रम बदलने के लिए, दो बार टैप करके ड्रैग करें"</string>
+    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
+    <skip />
     <string name="search_keywords_home" msgid="5386515593026555327">"फ़िटनेस, सेहत"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"अनुमतियां"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"Health Connect, स्वास्थ्य की जानकारी से जुड़ा डेटा, स्वास्थ्य की कैटगरी, डेटा ऐक्सेस, गतिविधि, शरीर की माप, पीरियड साइकल को ट्रैक करना, पोषण, नींद, शरीर से जुड़ी ज़रूरी जानकारी"</string>
@@ -1106,6 +1110,12 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"ऐप्लिकेशन जोड़ें"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"ऐप्लिकेशन के सोर्स बदलें"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"डिवाइस की डिफ़ॉल्ट सेटिंग"</string>
+    <!-- no translation found for move_up (9136155291380319606) -->
+    <skip />
+    <!-- no translation found for move_down (4404970288236170693) -->
+    <skip />
+    <!-- no translation found for remove (1340423400489007362) -->
+    <skip />
     <string name="app_data_title" msgid="6499967982291000837">"ऐप्लिकेशन का डेटा"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"<xliff:g id="APP_NAME">%1$s</xliff:g> का डेटा यहां दिखेगा"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Health Connect का ऐक्सेस रखने वाले ऐप्लिकेशन का डेटा यहां दिखेगा"</string>
@@ -1160,6 +1170,10 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"क्या आपको <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g> के लिए, <xliff:g id="APP_NAME">%1$s</xliff:g> की चुनी हुई एंट्री हमेशा के लिए मिटानी हैं?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"क्या आपको <xliff:g id="APP_NAME">%s</xliff:g> की इस एंट्री को हमेशा के लिए मिटाना है?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"क्या आपको <xliff:g id="APP_NAME">%2$s</xliff:g> के लिए, <xliff:g id="DATA_TYPE">%1$s</xliff:g> का डेटा हमेशा के लिए मिटाना है?"</string>
+    <!-- no translation found for menu_show_system (5608880605989914394) -->
+    <skip />
+    <!-- no translation found for menu_hide_system (9218325603953186714) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"चालू है"</string>
     <string name="off" msgid="6996623844428550649">"बंद है"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> को ऐक्सेस किया गया"</string>

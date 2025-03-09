@@ -16,8 +16,10 @@
 
 package com.android.server.healthconnect.exportimport;
 
+import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_CLEARING_LOG_TABLES;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_NONE;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN;
+import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNSPECIFIED;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_STARTED;
 
 import static com.android.server.healthconnect.exportimport.ExportManager.LOCAL_EXPORT_DATABASE_FILE_NAME;
@@ -33,6 +35,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.ContentResolver;
@@ -69,8 +72,6 @@ import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.PhrTestUtils;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
@@ -78,6 +79,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.quality.Strictness;
@@ -103,10 +105,10 @@ public class ExportManagerTest {
     @Rule(order = 2)
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(ExportImportLogger.class)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
                     .setStrictness(Strictness.LENIENT)
                     .build();
+
+    @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -126,6 +128,7 @@ public class ExportManagerTest {
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
+    @Mock private ExportImportLogger mExportImportLogger;
 
     @Before
     public void setUp() throws Exception {
@@ -135,6 +138,7 @@ public class ExportManagerTest {
                         .setPreferenceHelper(new FakePreferenceHelper())
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
@@ -150,13 +154,18 @@ public class ExportManagerTest {
                         fakeClock,
                         mExportImportSettingsStorage,
                         transactionManager,
-                        healthConnectInjector.getExportImportNotificationSender());
+                        healthConnectInjector.getExportImportNotificationSender(),
+                        healthConnectInjector.getEnvironmentDataDirectory(),
+                        mExportImportLogger);
 
         mPhrTestUtils = new PhrTestUtils(healthConnectInjector);
 
         mExportedDbContext =
                 HealthConnectContext.create(
-                        mContext, mContext.getUser(), REMOTE_EXPORT_DATABASE_DIR_NAME);
+                        mContext,
+                        mContext.getUser(),
+                        REMOTE_EXPORT_DATABASE_DIR_NAME,
+                        mEnvironmentDataDirectory.getRoot());
         configureExportUri();
     }
 
@@ -300,14 +309,12 @@ public class ExportManagerTest {
         mExportManager.recordError(DATA_EXPORT_ERROR_UNKNOWN, exportStartTime, 100, 50);
 
         assertErrorStatusStored(DATA_EXPORT_ERROR_UNKNOWN, Instant.parse("2024-06-04T16:39:12Z"));
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logExportStatus(
-                                eq(DATA_EXPORT_ERROR_UNKNOWN),
-                                eq(/* timeToError= */ 2000),
-                                eq(/* originalFileSizeKb= */ 100),
-                                eq(/* compressedFileSizeKb= */ 50)),
-                times(1));
+        verify(mExportImportLogger, times(1))
+                .logExportStatus(
+                        eq(DATA_EXPORT_ERROR_UNKNOWN),
+                        eq(/* timeToError= */ 2000),
+                        eq(/* originalFileSizeKb= */ 100),
+                        eq(/* compressedFileSizeKb= */ 50));
     }
 
     @Test
@@ -333,7 +340,11 @@ public class ExportManagerTest {
         assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
 
         HealthConnectContext hcContext =
-                HealthConnectContext.create(mContext, mContext.getUser(), LOCAL_EXPORT_DIR_NAME);
+                HealthConnectContext.create(
+                        mContext,
+                        mContext.getUser(),
+                        LOCAL_EXPORT_DIR_NAME,
+                        mEnvironmentDataDirectory.getRoot());
         assertThat(hcContext.getDatabasePath(LOCAL_EXPORT_DATABASE_FILE_NAME).exists()).isFalse();
         assertThat(hcContext.getDatabasePath(LOCAL_EXPORT_ZIP_FILE_NAME).exists()).isFalse();
     }
@@ -347,14 +358,12 @@ public class ExportManagerTest {
 
         // Time not recorded due to fake clock.
         assertErrorStatusStored(DATA_EXPORT_ERROR_UNKNOWN, mTimeStamp);
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logExportStatus(
-                                eq(ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN),
-                                eq(/* timeToError= */ 0),
-                                /* originalFileSizeKb= */ anyInt(),
-                                /* compressedFileSizeKb= */ anyInt()),
-                times(1));
+        verify(mExportImportLogger, times(1))
+                .logExportStatus(
+                        eq(ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN),
+                        eq(/* timeToError= */ 0),
+                        /* originalFileSizeKb= */ anyInt(),
+                        /* compressedFileSizeKb= */ anyInt());
         ExtendedMockito.verify(
                 () ->
                         Slog.e(
@@ -371,14 +380,12 @@ public class ExportManagerTest {
         assertThat(mExportManager.runExport(mContext.getUser())).isFalse();
         // Time not recorded due to fake clock.
         assertErrorStatusStored(DATA_EXPORT_ERROR_UNKNOWN, mTimeStamp);
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logExportStatus(
-                                eq(ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN),
-                                eq(/* timeToError= */ 0),
-                                /* originalFileSizeKb= */ anyInt(),
-                                /* compressedFileSizeKb= */ anyInt()),
-                times(1));
+        verify(mExportImportLogger, times(1))
+                .logExportStatus(
+                        eq(ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN),
+                        eq(/* timeToError= */ 0),
+                        /* originalFileSizeKb= */ anyInt(),
+                        /* compressedFileSizeKb= */ anyInt());
         ExtendedMockito.verify(
                 () -> Slog.e(eq("HealthConnectExportImport"), eq("Failed to export to URI"), any()),
                 times(1));
@@ -387,7 +394,11 @@ public class ExportManagerTest {
     @Test
     public void deleteLocalExportFiles_deletesLocalCopies() {
         HealthConnectContext hcContext =
-                HealthConnectContext.create(mContext, mContext.getUser(), LOCAL_EXPORT_DIR_NAME);
+                HealthConnectContext.create(
+                        mContext,
+                        mContext.getUser(),
+                        LOCAL_EXPORT_DIR_NAME,
+                        mEnvironmentDataDirectory.getRoot());
         new File(hcContext.getDataDir(), LOCAL_EXPORT_DATABASE_FILE_NAME).mkdirs();
         new File(hcContext.getDataDir(), LOCAL_EXPORT_ZIP_FILE_NAME).mkdirs();
 
@@ -432,14 +443,12 @@ public class ExportManagerTest {
 
         // time not recorded due to fake clock
         assertErrorStatusStored(ScheduledExportStatus.DATA_EXPORT_LOST_FILE_ACCESS, mTimeStamp);
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logExportStatus(
-                                eq(ScheduledExportStatus.DATA_EXPORT_LOST_FILE_ACCESS),
-                                eq(/* timeToError= */ 0),
-                                /* originalFileSizeKb= */ anyInt(),
-                                /* compressedFileSizeKb= */ anyInt()),
-                times(1));
+        verify(mExportImportLogger, times(1))
+                .logExportStatus(
+                        eq(ScheduledExportStatus.DATA_EXPORT_LOST_FILE_ACCESS),
+                        eq(/* timeToError= */ 0),
+                        /* originalFileSizeKb= */ anyInt(),
+                        /* compressedFileSizeKb= */ anyInt());
         ExtendedMockito.verify(
                 () ->
                         Slog.e(
@@ -526,6 +535,47 @@ public class ExportManagerTest {
                 .isEqualTo(REMOTE_EXPORT_ZIP_FILE_NAME);
     }
 
+    @Test
+    @EnableFlags({Flags.FLAG_EXTEND_EXPORT_IMPORT_TELEMETRY})
+    public void repeatErrorCount_updatedCorrectly() {
+        assertThat(mExportImportSettingsStorage.getLastExportError())
+                .isEqualTo(DATA_EXPORT_ERROR_UNSPECIFIED);
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+
+        // The first error isn't counted as a repeat error
+        mExportManager.recordError(DATA_EXPORT_ERROR_UNKNOWN, mTimeStamp.toEpochMilli(), 100, 50);
+        assertThat(mExportImportSettingsStorage.getLastExportError())
+                .isEqualTo(DATA_EXPORT_ERROR_UNKNOWN);
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+
+        // If there is more than one of the same error, count the repeat errors
+        mExportManager.recordError(
+                DATA_EXPORT_ERROR_UNKNOWN, Instant.now().toEpochMilli(), 100, 50);
+        mExportManager.recordError(
+                DATA_EXPORT_ERROR_UNKNOWN, Instant.now().toEpochMilli(), 100, 50);
+        assertThat(mExportImportSettingsStorage.getLastExportError())
+                .isEqualTo(DATA_EXPORT_ERROR_UNKNOWN);
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(2);
+
+        // If it is not a repetition of the same error, reset the repeat error count
+        mExportManager.recordError(
+                DATA_EXPORT_ERROR_CLEARING_LOG_TABLES, mTimeStamp.toEpochMilli(), 100, 50);
+        assertThat(mExportImportSettingsStorage.getLastExportError())
+                .isEqualTo(DATA_EXPORT_ERROR_CLEARING_LOG_TABLES);
+        mExportManager.recordError(DATA_EXPORT_ERROR_UNKNOWN, mTimeStamp.toEpochMilli(), 100, 50);
+        assertThat(mExportImportSettingsStorage.getLastExportError())
+                .isEqualTo(DATA_EXPORT_ERROR_UNKNOWN);
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+
+        // If an export was successful, the next error is not considered a repeat error
+        mExportManager.recordError(DATA_EXPORT_ERROR_UNKNOWN, mTimeStamp.toEpochMilli(), 100, 50);
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(1);
+        mExportManager.recordSuccess(mTimeStamp.toEpochMilli(), 100, 50, Uri.parse("uri"));
+        assertThat(mExportImportSettingsStorage.getLastExportError())
+                .isEqualTo(DATA_EXPORT_ERROR_UNSPECIFIED);
+        assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+    }
+
     private void configureExportUri() {
         mExportImportSettingsStorage.configure(
                 new ScheduledExportSettings.Builder()
@@ -537,14 +587,12 @@ public class ExportManagerTest {
     }
 
     private void assertExportStartRecorded() {
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logExportStatus(
-                                eq(DATA_EXPORT_STARTED),
-                                eq(-1 /* no value recorded*/),
-                                eq(-1 /* no value recorded*/),
-                                eq(-1 /* no value recorded*/)),
-                times(1));
+        verify(mExportImportLogger, times(1))
+                .logExportStatus(
+                        eq(DATA_EXPORT_STARTED),
+                        eq(-1 /* no value recorded*/),
+                        eq(-1 /* no value recorded*/),
+                        eq(-1 /* no value recorded*/));
     }
 
     private void assertSuccessRecorded(
@@ -552,14 +600,12 @@ public class ExportManagerTest {
             int timeToSuccess,
             int originalFileSizeKb,
             int compressedFileSizeKb) {
-        ExtendedMockito.verify(
-                () ->
-                        ExportImportLogger.logExportStatus(
-                                eq(DATA_EXPORT_ERROR_NONE),
-                                eq(timeToSuccess),
-                                eq(originalFileSizeKb),
-                                eq(compressedFileSizeKb)),
-                times(1));
+        verify(mExportImportLogger, times(1))
+                .logExportStatus(
+                        eq(DATA_EXPORT_ERROR_NONE),
+                        eq(timeToSuccess),
+                        eq(originalFileSizeKb),
+                        eq(compressedFileSizeKb));
         Instant lastSuccessfulExport =
                 mExportImportSettingsStorage
                         .getScheduledExportStatus(mContext)

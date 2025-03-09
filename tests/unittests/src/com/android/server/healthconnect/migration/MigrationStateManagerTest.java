@@ -74,6 +74,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateManager.IllegalMigrationStateException;
@@ -118,6 +119,7 @@ public class MigrationStateManagerTest {
     @Mock private SigningInfo mSigningInfo;
     @Mock private MockListener mMockListener;
     private MigrationStateManager mMigrationStateManager;
+    private HealthConnectThreadScheduler mThreadScheduler;
 
     private static final UserHandle DEFAULT_USER_HANDLE = UserHandle.of(UserHandle.myUserId());
 
@@ -139,11 +141,12 @@ public class MigrationStateManagerTest {
                         .build();
         mMigrationStateManager = healthConnectInjector.getMigrationStateManager();
         mMigrationStateManager.addStateChangedListener(mMockListener::onMigrationStateChanged);
+        mThreadScheduler = healthConnectInjector.getThreadScheduler();
     }
 
     @After
     public void tearDown() throws TimeoutException {
-        TestUtils.waitForAllScheduledTasksToComplete();
+        TestUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
         clearInvocations(mPreferenceHelper);
     }
 

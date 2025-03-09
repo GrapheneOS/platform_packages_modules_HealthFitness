@@ -684,10 +684,17 @@ constructor(
         }
     }
 
-    /** Returns True if the packageName declares the Rationale intent, False otherwise */
+    /**
+     * Returns True if the packageName meets the required conditions to use
+     * health permissions.
+     */
     fun isPackageSupported(packageName: String): Boolean {
         if (context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
                 Flags.replaceBodySensorPermissionEnabled()) {
+            return true
+        }
+
+        if (healthPermissionReader.isBodySensorSplitPermissionApp(packageName)) {
             return true
         }
 

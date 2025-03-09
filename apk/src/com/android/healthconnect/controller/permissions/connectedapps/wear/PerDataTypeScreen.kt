@@ -36,7 +36,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Fi
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionIconBuilder
-import com.android.permissioncontroller.wear.permission.components.theme.ResourceHelper
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
@@ -52,14 +51,8 @@ fun PerDataTypeScreen(
     onAppChipClick: (String, String, String) -> Unit,
     onRemoveAllAppAccessButtonClick: (String, String) -> Unit,
 ) {
-    val materialUIVersion = ResourceHelper.materialUIVersionInApp
     val healthPermission = fromPermissionString(permissionStr)
-    ScrollableScreen(
-        materialUIVersion = materialUIVersion,
-        asScalingList = true,
-        showTimeText = false,
-        title = dataTypeStr,
-    ) {
+    ScrollableScreen(asScalingList = true, showTimeText = false, title = dataTypeStr) {
         // Allowed apps.
         item {
             AllowedAppsList(

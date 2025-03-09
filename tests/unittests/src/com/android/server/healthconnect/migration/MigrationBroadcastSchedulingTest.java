@@ -26,6 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,8 +38,6 @@ import android.os.UserHandle;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
@@ -48,7 +47,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.mockito.stubbing.Answer;
 import org.mockito.verification.VerificationMode;
 
@@ -58,17 +58,13 @@ import java.util.Objects;
 @RunWith(AndroidJUnit4.class)
 public class MigrationBroadcastSchedulingTest {
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(HealthConnectThreadScheduler.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private Context mContext;
     @Mock private JobScheduler mJobScheduler;
     @Mock private MigrationStateManager mMigrationStateManager;
     @Mock private PreferenceHelper mPreferenceHelper;
+    @Mock private HealthConnectThreadScheduler mThreadScheduler;
 
     private MigrationBroadcastScheduler mMigrationBroadcastScheduler;
 
@@ -90,20 +86,22 @@ public class MigrationBroadcastSchedulingTest {
     public void testPrescheduleNewJobs_updateMigrationState_newJobsScheduled() {
         when(mJobScheduler.forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE))
                 .thenReturn(mJobScheduler);
-        ExtendedMockito.doAnswer(
+        doAnswer(
                         (Answer<Void>)
                                 invocationOnMock -> {
                                     Runnable task = invocationOnMock.getArgument(0);
                                     task.run();
                                     return null;
                                 })
-                .when(() -> HealthConnectThreadScheduler.scheduleInternalTask(any()));
+                .when(mThreadScheduler)
+                .scheduleInternalTask(any());
 
         MigrationStateManager migrationStateManager =
                 new MigrationStateManager(
                         UserHandle.getUserHandleForUid(0),
                         mPreferenceHelper,
-                        mMigrationBroadcastScheduler);
+                        mMigrationBroadcastScheduler,
+                        mThreadScheduler);
         migrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_IN_PROGRESS);
 
         verify(mMigrationBroadcastScheduler, times(1)).scheduleNewJobs(any(), any());

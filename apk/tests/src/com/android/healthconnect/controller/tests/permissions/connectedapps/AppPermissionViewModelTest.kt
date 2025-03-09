@@ -2308,7 +2308,11 @@ class AppPermissionViewModelTest {
     @Test
     fun isPackageSupported_callsCorrectMethod() {
         assumeFalse(FeatureUtil.isWatch());
+        whenever(healthPermissionReader.isBodySensorSplitPermissionApp(TEST_APP_PACKAGE_NAME))
+            .thenReturn(false)
+
         appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)
+
         verify(healthPermissionReader).isRationaleIntentDeclared(TEST_APP_PACKAGE_NAME)
     }
 
@@ -2328,6 +2332,18 @@ class AppPermissionViewModelTest {
         assumeTrue(FeatureUtil.isWatch());
 
         assertThat(appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).isTrue()
+        verify(healthPermissionReader, never()).isRationaleIntentDeclared(any())
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
+    fun isPackageSupported_notWatch_flagEnabled_splitPermissionApp_packageSupported() {
+        assumeFalse(FeatureUtil.isWatch());
+        whenever(healthPermissionReader.isBodySensorSplitPermissionApp(TEST_APP_PACKAGE_NAME))
+            .thenReturn(true)
+
+        assertThat(appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).isTrue()
+
         verify(healthPermissionReader, never()).isRationaleIntentDeclared(any())
     }
 

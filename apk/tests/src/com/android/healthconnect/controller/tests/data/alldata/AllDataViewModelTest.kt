@@ -58,8 +58,8 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Matchers
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
@@ -189,7 +189,7 @@ class AllDataViewModelTest {
                 )
             )
             .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(Matchers.any(), Matchers.any())
+            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
         viewModel.allData.observeForever(testObserver)
@@ -213,7 +213,7 @@ class AllDataViewModelTest {
             )
         doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(Matchers.any(), Matchers.any())
+            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
         viewModel.allData.observeForever(testObserver)

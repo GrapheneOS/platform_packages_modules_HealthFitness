@@ -45,11 +45,13 @@ public class HealthConnectManagerService extends SystemService {
     private final HealthConnectServiceImpl mHealthConnectService;
     private final UserManager mUserManager;
     private final HealthConnectInjector mHealthConnectInjector;
+    private final RateLimiter mRateLimiter;
 
     private UserHandle mCurrentForegroundUser;
 
     public HealthConnectManagerService(Context context) {
         super(context);
+        mRateLimiter = new RateLimiter();
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mUserManager = context.getSystemService(UserManager.class);
@@ -68,6 +70,7 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getMigrationStateManager(),
                         mHealthConnectInjector.getMigrationUiStateManager(),
                         mHealthConnectInjector.getMigrationCleaner(),
+                        mHealthConnectInjector.getFitnessRecordReadHelper(),
                         mHealthConnectInjector.getMedicalResourceHelper(),
                         mHealthConnectInjector.getMedicalDataSourceHelper(),
                         mHealthConnectInjector.getExportManager(),
@@ -86,7 +89,13 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getDatabaseHelpers(),
                         mHealthConnectInjector.getPreferencesManager(),
                         mHealthConnectInjector.getReadAccessLogsHelper(),
-                        mHealthConnectInjector.getAppOpsManagerLocal());
+                        mHealthConnectInjector.getAppOpsManagerLocal(),
+                        mHealthConnectInjector.getThreadScheduler(),
+                        mRateLimiter,
+                        mHealthConnectInjector.getEnvironmentDataDirectory(),
+                        mHealthConnectInjector.getExportImportLogger(),
+                        mHealthConnectInjector.getHealthFitnessStatsLog(),
+                        mHealthConnectInjector.getBackupRestoreLogger());
     }
 
     @Override
@@ -111,13 +120,14 @@ public class HealthConnectManagerService extends SystemService {
             mHealthConnectService.cancelBackupRestoreTimeouts();
         }
 
-        HealthConnectThreadScheduler.shutdownThreadPools();
-        RateLimiter.clearCache();
+        HealthConnectThreadScheduler threadScheduler = mHealthConnectInjector.getThreadScheduler();
+        threadScheduler.shutdownThreadPools();
+        mRateLimiter.clearCache();
         HealthConnectDailyJobs.cancelAllJobs(mContext);
         mHealthConnectInjector.getDatabaseHelpers().clearAllCache();
         mHealthConnectInjector.getTransactionManager().shutDownCurrentUser();
         mHealthConnectInjector.getMigrationStateManager().shutDownCurrentUser(mContext);
-        HealthConnectThreadScheduler.resetThreadPools();
+        threadScheduler.resetThreadPools();
 
         mCurrentForegroundUser = to.getUserHandle();
 
@@ -154,7 +164,11 @@ public class HealthConnectManagerService extends SystemService {
     private void setupForCurrentForegroundUser() {
         Slog.d(TAG, "setupForCurrentForegroundUser: " + mCurrentForegroundUser);
         HealthConnectContext hcContext =
-                HealthConnectContext.create(mContext, mCurrentForegroundUser);
+                HealthConnectContext.create(
+                        mContext,
+                        mCurrentForegroundUser,
+                        /* databaseDirName= */ null,
+                        mHealthConnectInjector.getEnvironmentDataDirectory());
 
         mHealthConnectService.setupForUser(mCurrentForegroundUser);
         mHealthConnectInjector.getTransactionManager().setupForUser(hcContext);
@@ -180,7 +194,8 @@ public class HealthConnectManagerService extends SystemService {
             mHealthConnectInjector.getPreferenceHelper().clearCache();
         }
 
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        HealthConnectThreadScheduler threadScheduler = mHealthConnectInjector.getThreadScheduler();
+        threadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         HealthConnectDailyJobs.schedule(mContext, mCurrentForegroundUser);
@@ -189,7 +204,7 @@ public class HealthConnectManagerService extends SystemService {
                     }
                 });
 
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        threadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         mHealthConnectInjector
@@ -202,7 +217,7 @@ public class HealthConnectManagerService extends SystemService {
                     }
                 });
 
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        threadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         mHealthConnectInjector
@@ -212,7 +227,7 @@ public class HealthConnectManagerService extends SystemService {
                         Slog.e(TAG, "Failed to start user unlocked state changes actions", e);
                     }
                 });
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        threadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         mHealthConnectInjector.getPreferenceHelper().initializePreferences();
@@ -221,7 +236,7 @@ public class HealthConnectManagerService extends SystemService {
                     }
                 });
 
-        HealthConnectThreadScheduler.scheduleInternalTask(
+        threadScheduler.scheduleInternalTask(
                 () -> {
                     try {
                         ExportImportJobs.schedulePeriodicJobIfNotScheduled(
@@ -233,6 +248,17 @@ public class HealthConnectManagerService extends SystemService {
                         Slog.e(TAG, "Failed to schedule periodic export job.", e);
                     }
                 });
+
+        if (Flags.stepTrackingEnabled()) {
+            threadScheduler.scheduleInternalTask(
+                    () -> {
+                        try {
+                            mHealthConnectInjector.getTrackerManager().initialize();
+                        } catch (Exception e) {
+                            Slog.e(TAG, "Failed to initialize steps tracker.", e);
+                        }
+                    });
+        }
     }
 
     private static Context getUserContext(Context context, UserHandle user) {

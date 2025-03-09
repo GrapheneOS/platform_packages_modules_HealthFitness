@@ -22,6 +22,7 @@ import android.view.View.OnClickListener
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.PreferenceScreen
+import com.android.healthconnect.controller.permissions.connectedapps.PermissionHeaderPreference
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.settingslib.widget.AppHeaderPreference
@@ -31,6 +32,7 @@ import com.android.settingslib.widget.TopIntroPreference
 
 private const val APP_HEADER_PREFERENCE_KEY = "app_header_preference"
 private const val INTRO_PREFERENCE_KEY = "intro_preference"
+private const val PERMISSION_HEADER_PREFERENCE_KEY = "permission_header_preference"
 
 fun topIntroPreference(
     context: Context,
@@ -87,6 +89,26 @@ fun addIntroOrAppHeaderPreference(
     safelyRemovePreference(preferenceScreen, keyToRemove)
 }
 
+fun addIntroOrPermissionHeaderPreference(
+    preferenceScreen: PreferenceScreen,
+    context: Context,
+    title: String,
+    icon: Drawable?,
+    summary: String,
+) {
+    val isExpressiveTheme = isExpressiveAndBuildVersion(context)
+
+    val (keyToUpsert, keyToRemove) =
+        if (isExpressiveTheme) {
+            Pair(INTRO_PREFERENCE_KEY, PERMISSION_HEADER_PREFERENCE_KEY)
+        } else {
+            Pair(PERMISSION_HEADER_PREFERENCE_KEY, INTRO_PREFERENCE_KEY)
+        }
+
+    updateOrCreatePreference(preferenceScreen, context, title, icon, summary, keyToUpsert)
+    safelyRemovePreference(preferenceScreen, keyToRemove)
+}
+
 private fun updateOrCreatePreference(
     preferenceScreen: PreferenceScreen,
     context: Context,
@@ -112,10 +134,44 @@ private fun updateOrCreatePreference(
     }
 }
 
+private fun updateOrCreatePreference(
+    preferenceScreen: PreferenceScreen,
+    context: Context,
+    title: String,
+    icon: Drawable?,
+    summary: String,
+    key: String,
+) {
+    val existingPreference = preferenceScreen.findPreference<Preference>(key)
+    if (existingPreference != null) {
+        existingPreference.apply {
+            setIcon(icon)
+            setTitle(title)
+            setSummary(summary)
+        }
+    } else {
+        val newPreference =
+            createPreference(context, key).apply {
+                setIcon(icon)
+                setTitle(title)
+                setSummary(summary)
+                this.key = key
+                order = 0
+            }
+
+        preferenceScreen.addPreference(newPreference)
+    }
+}
+
 private fun createPreference(context: Context, key: String): Preference {
     return when (key) {
-        INTRO_PREFERENCE_KEY -> IntroPreference(context)
+        INTRO_PREFERENCE_KEY ->
+            IntroPreference(context).also {
+                it.setCollapsable(false)
+                it.setMinLines(4)
+            }
         APP_HEADER_PREFERENCE_KEY -> AppHeaderPreference(context)
+        PERMISSION_HEADER_PREFERENCE_KEY -> PermissionHeaderPreference(context)
         else -> Preference(context)
     }
 }

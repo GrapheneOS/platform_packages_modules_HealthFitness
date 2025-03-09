@@ -50,30 +50,32 @@ public class HealthConnectThreadSchedulerTest {
     private long mForegroundTaskSchedulerCompletedJobs;
     private long mBackgroundTaskSchedulerCompletedJobs;
     private Context mContext;
+    private HealthConnectThreadScheduler mHealthConnectThreadScheduler;
 
     @Mock private Context mMockContext;
     @Mock private ActivityManager mActivityManager;
 
     @Before
     public void setUp() {
+        mHealthConnectThreadScheduler = new HealthConnectThreadScheduler();
         MockitoAnnotations.initMocks(this);
 
-        HealthConnectThreadScheduler.resetThreadPools();
+        mHealthConnectThreadScheduler.resetThreadPools();
 
-        mInternalTaskScheduler = HealthConnectThreadScheduler.sInternalBackgroundExecutor;
+        mInternalTaskScheduler = mHealthConnectThreadScheduler.mInternalBackgroundExecutor;
         mInternalTaskSchedulerCompletedJobs = mInternalTaskScheduler.getCompletedTaskCount();
-        mControllerTaskScheduler = HealthConnectThreadScheduler.sControllerExecutor;
+        mControllerTaskScheduler = mHealthConnectThreadScheduler.mControllerExecutor;
         mControllerTaskSchedulerCompletedJobs = mControllerTaskScheduler.getCompletedTaskCount();
-        mForegroundTaskScheduler = HealthConnectThreadScheduler.sForegroundExecutor;
+        mForegroundTaskScheduler = mHealthConnectThreadScheduler.mForegroundExecutor;
         mForegroundTaskSchedulerCompletedJobs = mForegroundTaskScheduler.getCompletedTaskCount();
-        mBackgroundTaskScheduler = HealthConnectThreadScheduler.sBackgroundThreadExecutor;
+        mBackgroundTaskScheduler = mHealthConnectThreadScheduler.mBackgroundThreadExecutor;
         mBackgroundTaskSchedulerCompletedJobs = mBackgroundTaskScheduler.getCompletedTaskCount();
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
     }
 
     @Test
     public void testHealthConnectSchedulerScheduleInternal() throws Exception {
-        HealthConnectThreadScheduler.scheduleInternalTask(() -> {});
+        mHealthConnectThreadScheduler.scheduleInternalTask(() -> {});
         TestUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mInternalTaskScheduler.getCompletedTaskCount()
@@ -81,7 +83,7 @@ public class HealthConnectThreadSchedulerTest {
                         throw new RuntimeException();
                     }
                 });
-        HealthConnectThreadScheduler.scheduleControllerTask(() -> {});
+        mHealthConnectThreadScheduler.scheduleControllerTask(() -> {});
         TestUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mControllerTaskScheduler.getCompletedTaskCount()
@@ -89,7 +91,7 @@ public class HealthConnectThreadSchedulerTest {
                         throw new RuntimeException();
                     }
                 });
-        HealthConnectThreadScheduler.schedule(mContext, () -> {}, Process.myUid(), false);
+        mHealthConnectThreadScheduler.schedule(mContext, () -> {}, Process.myUid(), false);
         TestUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mBackgroundTaskScheduler.getCompletedTaskCount()
@@ -106,7 +108,7 @@ public class HealthConnectThreadSchedulerTest {
                 ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
         when(mActivityManager.getRunningAppProcesses()).thenReturn(List.of(runningAppProcessInfo));
 
-        HealthConnectThreadScheduler.schedule(mMockContext, () -> {}, Process.myUid(), false);
+        mHealthConnectThreadScheduler.schedule(mMockContext, () -> {}, Process.myUid(), false);
         TestUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mForegroundTaskScheduler.getCompletedTaskCount()
@@ -121,7 +123,7 @@ public class HealthConnectThreadSchedulerTest {
         when(mMockContext.getSystemService(ActivityManager.class)).thenReturn(mActivityManager);
         when(mActivityManager.getRunningAppProcesses()).thenReturn(null);
 
-        HealthConnectThreadScheduler.scheduleInternalTask(() -> {});
+        mHealthConnectThreadScheduler.scheduleInternalTask(() -> {});
         TestUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mInternalTaskScheduler.getCompletedTaskCount()
@@ -141,12 +143,12 @@ public class HealthConnectThreadSchedulerTest {
 
     @Test
     public void testScheduleAfterTheSchedulersAreShutdown_expectNoException() {
-        HealthConnectThreadScheduler.shutdownThreadPools();
+        mHealthConnectThreadScheduler.shutdownThreadPools();
 
-        HealthConnectThreadScheduler.schedule(mContext, () -> {}, Process.myUid(), false);
-        HealthConnectThreadScheduler.schedule(mContext, () -> {}, Process.myUid(), true);
-        HealthConnectThreadScheduler.scheduleInternalTask(() -> {});
-        HealthConnectThreadScheduler.scheduleControllerTask(() -> {});
+        mHealthConnectThreadScheduler.schedule(mContext, () -> {}, Process.myUid(), false);
+        mHealthConnectThreadScheduler.schedule(mContext, () -> {}, Process.myUid(), true);
+        mHealthConnectThreadScheduler.scheduleInternalTask(() -> {});
+        mHealthConnectThreadScheduler.scheduleControllerTask(() -> {});
     }
 
     @Test

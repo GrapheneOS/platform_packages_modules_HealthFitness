@@ -17,6 +17,54 @@ package {
     default_team: "trendy_team_android_health",
 }
 
+// Tests that require the test SDK to run.
+android_test {
+    name: "HealthFitnessTestSdkUnitTests",
+    min_sdk_version: "34",
+    sdk_version: "test_current",
+    manifest: "AndroidManifest.xml",
+    test_config: "AndroidTest_testSdk.xml",
+    srcs: [
+        "src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
+    ],
+    test_suites: [
+        "mts-healthfitness",
+        "general-tests",
+    ],
+    defaults: [
+        "mts-target-sdk-version-current",
+        "modules-utils-testable-device-config-defaults",
+    ],
+    static_libs: [
+        "service-healthfitness.impl",
+        "framework-healthfitness.impl",
+        "flag-junit",
+        "androidx.test.ext.junit",
+        "androidx.test.runner",
+        "mockito-target-extended-minus-junit4",
+        "truth",
+        "services.core",
+        "androidx.test.ext.truth",
+        "framework-annotations-lib",
+        "android.permission.flags-aconfig-java-export",
+    ],
+    jni_libs: [
+        // Required for ExtendedMockito
+        "libdexmakerjvmtiagent",
+        "libstaticjvmtiagent",
+    ],
+    libs: [
+        "android.test.base.stubs.system",
+        "android.test.mock.stubs.system",
+        "android.test.runner.stubs.system",
+        "framework-sdkextensions.stubs.module_lib",
+        "framework-configinfrastructure.stubs.module_lib",
+    ],
+    // Test coverage system runs on different devices. Need to
+    // compile for all architecture.
+    compile_multilib: "both",
+}
+
 android_test {
     name: "HealthFitnessUnitTests",
     min_sdk_version: "34",
@@ -25,6 +73,9 @@ android_test {
     test_config: "AndroidTest.xml",
     srcs: [
         "src/**/*.java",
+    ],
+    exclude_srcs: [
+        "src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
     ],
     test_suites: [
         "mts-healthfitness",
@@ -54,7 +105,6 @@ android_test {
         "androidx.test.ext.truth",
         "cts-healthconnect-utils",
         "cts-healthconnect-phr-lib",
-        "flag-junit",
         "platform-parametric-runner-lib",
         "framework-annotations-lib",
     ],

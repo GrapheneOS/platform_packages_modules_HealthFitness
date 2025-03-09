@@ -1,17 +1,17 @@
 /*
- * Copyright (C) 2023 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.android.healthconnect.controller.data.entries
 
@@ -51,7 +51,6 @@ import com.android.healthconnect.controller.permissions.data.fromPermissionTypeN
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
 import com.android.healthconnect.controller.shared.DataType
-import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -86,7 +85,7 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
     private lateinit var noDataView: TextView
     private lateinit var loadingView: View
     private lateinit var errorView: View
-    private lateinit var adapter: RecyclerViewAdapter
+    private lateinit var adapter: EntriesAdapter
     private var aggregation: FormattedEntry.FormattedAggregation? = null
 
     // VIEW state click listener
@@ -261,7 +260,7 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
         adapter =
-            RecyclerViewAdapter.Builder()
+            EntriesAdapter.Builder()
                 .setViewBinder(FormattedEntry.SelectAllHeader::class.java, selectAllViewBinder)
                 .setViewBinder(FormattedEntry.FormattedDataEntry::class.java, entryViewBinder)
                 .setViewBinder(

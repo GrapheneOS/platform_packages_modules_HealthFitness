@@ -41,6 +41,7 @@ import android.health.connect.accesslog.AccessLog;
 import android.health.connect.aidl.AggregateDataRequestParcel;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.os.UserHandle;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -49,7 +50,6 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -57,18 +57,19 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.AppOpLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.util.List;
@@ -78,15 +79,9 @@ public class AggregateTransactionRequestTest {
 
     private static final String TEST_PACKAGE_NAME = "package.name";
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private TransactionManager mTransactionManager;
     private AppInfoHelper mAppInfoHelper;
@@ -95,6 +90,7 @@ public class AggregateTransactionRequestTest {
     private ReadAccessLogsHelper mReadAccessLogsHelper;
     private InternalHealthConnectMappings mInternalHealthConnectMappings;
     private TransactionTestUtils mTransactionTestUtils;
+    private UserHandle mUserHandle;
 
     @Before
     public void setup() {
@@ -104,6 +100,8 @@ public class AggregateTransactionRequestTest {
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
+                        .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
         mTransactionManager = healthConnectInjector.getTransactionManager();
@@ -113,6 +111,7 @@ public class AggregateTransactionRequestTest {
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mReadAccessLogsHelper = spy(healthConnectInjector.getReadAccessLogsHelper());
         mInternalHealthConnectMappings = healthConnectInjector.getInternalHealthConnectMappings();
+        mUserHandle = context.getUser();
 
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
@@ -144,7 +143,7 @@ public class AggregateTransactionRequestTest {
                         /* shouldRecordAccessLog= */ true);
         aggregateTransactionRequest.getAggregateDataResponseParcel();
 
-        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs();
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         AccessLog log = result.get(0);
         assertThat(log.getPackageName()).isEqualTo(TEST_PACKAGE_NAME);
         assertThat(log.getRecordTypes()).containsExactly(HeartRateRecord.class);

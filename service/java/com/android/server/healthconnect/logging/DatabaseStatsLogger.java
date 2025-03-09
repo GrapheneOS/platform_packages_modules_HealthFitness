@@ -35,16 +35,21 @@ import java.util.Set;
  * @hide
  */
 class DatabaseStatsLogger {
+    private final HealthFitnessStatsLog mStatsLog;
+
+    DatabaseStatsLogger(HealthFitnessStatsLog statsLog) {
+        mStatsLog = statsLog;
+    }
 
     /** Write Health Connect database stats to statsd. */
-    static void log(
+    void log(
             DatabaseStatsCollector databaseStatsCollector,
             UsageStatsCollector usageStatsCollector) {
         logGeneralDatabaseStats(databaseStatsCollector);
         logPhrDatabaseStats(databaseStatsCollector, usageStatsCollector);
     }
 
-    private static void logGeneralDatabaseStats(DatabaseStatsCollector databaseStatsCollector) {
+    private void logGeneralDatabaseStats(DatabaseStatsCollector databaseStatsCollector) {
         long numberOfInstantRecords = databaseStatsCollector.getNumberOfInstantRecordRows();
         long numberOfIntervalRecords = databaseStatsCollector.getNumberOfIntervalRecordRows();
         long numberOfSeriesRecords = databaseStatsCollector.getNumberOfSeriesRecordRows();
@@ -60,7 +65,7 @@ class DatabaseStatsLogger {
             return;
         }
 
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HealthFitnessStatsLog.HEALTH_CONNECT_STORAGE_STATS,
                 databaseStatsCollector.getDatabaseSize(),
                 numberOfInstantRecords,
@@ -70,7 +75,7 @@ class DatabaseStatsLogger {
     }
 
     /** Writes PHR database stats to statsd. */
-    private static void logPhrDatabaseStats(
+    private void logPhrDatabaseStats(
             DatabaseStatsCollector databaseStatsCollector,
             UsageStatsCollector usageStatsCollector) {
         if (!personalHealthRecordTelemetry()
@@ -86,7 +91,7 @@ class DatabaseStatsLogger {
                                 MedicalResourceHelper.getMainTableName(),
                                 MedicalResourceIndicesHelper.getTableName()));
         if (phrDbSizeLong != null) {
-            HealthFitnessStatsLog.write(HEALTH_CONNECT_PHR_STORAGE_STATS, phrDbSizeLong);
+            mStatsLog.write(HEALTH_CONNECT_PHR_STORAGE_STATS, phrDbSizeLong);
         }
     }
 }

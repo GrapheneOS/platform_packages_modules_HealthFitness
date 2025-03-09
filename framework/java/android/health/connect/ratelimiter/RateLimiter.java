@@ -44,19 +44,6 @@ public final class RateLimiter {
     public static final String RECORD_SIZE_LIMIT_IN_BYTES = "record_size_limit_in_bytes";
     private static final int DEFAULT_API_CALL_COST = 1;
 
-    private static final ReentrantReadWriteLock sLockAcrossAppQuota = new ReentrantReadWriteLock();
-    private static final Map<Integer, Quota> sQuotaBucketToAcrossAppsRemainingMemoryQuota =
-            new HashMap<>();
-
-    private static final Map<Integer, Map<Integer, Quota>> sUserIdToQuotasMap = new HashMap<>();
-
-    private static final ConcurrentMap<Integer, Integer> sLocks = new ConcurrentHashMap<>();
-
-    private static final Map<Integer, Integer> QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP =
-            new HashMap<>();
-    private static final Map<String, Integer> QUOTA_BUCKET_TO_MAX_MEMORY_QUOTA_MAP =
-            new HashMap<>();
-
     public static final int QUOTA_BUCKET_READS_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE = 2000;
     public static final int QUOTA_BUCKET_READS_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE = 16000;
     public static final int QUOTA_BUCKET_READS_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE = 1000;
@@ -70,60 +57,80 @@ public final class RateLimiter {
     public static final int DATA_PUSH_LIMIT_PER_APP_15M_DEFAULT_FLAG_VALUE = 35000000;
     public static final int DATA_PUSH_LIMIT_ACROSS_APPS_15M_DEFAULT_FLAG_VALUE = 100000000;
 
-    static {
-        initQuotaBuckets();
-    }
+    private final Map<Integer, Integer> mQuotaBucketToMaxRollingQuota = new HashMap<>();
+    private final Map<String, Integer> mQuotaBucketToMaxMemoryQuota = new HashMap<>();
 
-    private static void initQuotaBuckets() {
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+    private final ReentrantReadWriteLock mLockAcrossAppQuota = new ReentrantReadWriteLock();
+    private final Map<Integer, Quota> mQuotaBucketToAcrossAppsRemainingMemoryQuota =
+            new HashMap<>();
+
+    private final Map<Integer, Map<Integer, Quota>> mUserIdToQuotasMap = new HashMap<>();
+
+    private final ConcurrentMap<Integer, Integer> mLocks = new ConcurrentHashMap<>();
+
+    private void initQuotaBuckets() {
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_24H_FOREGROUND,
                 QUOTA_BUCKET_READS_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_24H_BACKGROUND,
                 QUOTA_BUCKET_READS_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_15M_FOREGROUND,
                 QUOTA_BUCKET_READS_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_READS_PER_15M_BACKGROUND,
                 QUOTA_BUCKET_READS_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND,
                 QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND,
                 QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND,
                 QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND,
                 QUOTA_BUCKET_WRITES_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_PER_APP_15M,
                 DATA_PUSH_LIMIT_PER_APP_15M_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.put(
+        mQuotaBucketToMaxRollingQuota.put(
                 QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_ACROSS_APPS_15M,
                 DATA_PUSH_LIMIT_ACROSS_APPS_15M_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_MEMORY_QUOTA_MAP.put(
+        mQuotaBucketToMaxMemoryQuota.put(
                 RateLimiter.CHUNK_SIZE_LIMIT_IN_BYTES,
                 CHUNK_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE);
-        QUOTA_BUCKET_TO_MAX_MEMORY_QUOTA_MAP.put(
+        mQuotaBucketToMaxMemoryQuota.put(
                 RateLimiter.RECORD_SIZE_LIMIT_IN_BYTES,
                 RECORD_SIZE_LIMIT_IN_BYTES_DEFAULT_FLAG_VALUE);
     }
 
+    public RateLimiter() {
+        initQuotaBuckets();
+    }
+
     /** Allows setting lower rate limits in tests. */
-    public static void setLowerRateLimitsForTesting(boolean enabled) {
+    public void setLowerRateLimitsForTesting(boolean enabled) {
         initQuotaBuckets();
 
         if (enabled) {
-            QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.replaceAll((k, v) -> v / 10);
-            QUOTA_BUCKET_TO_MAX_MEMORY_QUOTA_MAP.replaceAll((k, v) -> v / 10);
+            mQuotaBucketToMaxRollingQuota.replaceAll((k, v) -> v / 10);
+            mQuotaBucketToMaxMemoryQuota.replaceAll((k, v) -> v / 10);
         }
     }
 
-    public static void tryAcquireApiCallQuota(
+    /**
+     * Acquire api call quota for the given category.
+     *
+     * @param uid the uid for the calling app
+     * @param quotaCategory the category for which to request quota
+     * @param isInForeground true if the app is in the foreground, false otherwise
+     * @throws RateLimiterException if insufficient quota is available
+     * @throws IllegalArgumentException if quota category is invalid
+     */
+    public void tryAcquireApiCallQuota(
             int uid, @QuotaCategory.Type int quotaCategory, boolean isInForeground) {
         if (quotaCategory == QuotaCategory.QUOTA_CATEGORY_UNDEFINED) {
             throw new IllegalArgumentException("Quota category not defined.");
@@ -142,7 +149,17 @@ public final class RateLimiter {
         }
     }
 
-    public static void tryAcquireApiCallQuota(
+    /**
+     * Acquire api call quota for the given category.
+     *
+     * @param uid the uid for the calling app
+     * @param quotaCategory the category for which to request quota
+     * @param isInForeground true if the app is in the foreground, false otherwise
+     * @param memoryCost how much memory cost is required for this call
+     * @throws RateLimiterException if insufficient quota is available
+     * @throws IllegalArgumentException if quota category is invalid
+     */
+    public void tryAcquireApiCallQuota(
             int uid,
             @QuotaCategory.Type int quotaCategory,
             boolean isInForeground,
@@ -158,7 +175,7 @@ public final class RateLimiter {
         if (quotaCategory != QuotaCategory.QUOTA_CATEGORY_WRITE) {
             throw new IllegalArgumentException("Quota category must be QUOTA_CATEGORY_WRITE.");
         }
-        sLockAcrossAppQuota.writeLock().lock();
+        mLockAcrossAppQuota.writeLock().lock();
         try {
             synchronized (getLockObject(uid)) {
                 spendApiAndMemoryResourcesIfAvailable(
@@ -170,11 +187,17 @@ public final class RateLimiter {
                         isInForeground);
             }
         } finally {
-            sLockAcrossAppQuota.writeLock().unlock();
+            mLockAcrossAppQuota.writeLock().unlock();
         }
     }
 
-    public static void checkMaxChunkMemoryUsage(long memoryCost) {
+    /**
+     * Checks if the given cost is higher than the memory limit per chunk.
+     *
+     * @param memoryCost the cost to check
+     * @throws HealthConnectException if the cost is higher than the memory limit per chunk
+     */
+    public void checkMaxChunkMemoryUsage(long memoryCost) {
         long memoryLimit = getConfiguredMaxApiMemoryQuota(CHUNK_SIZE_LIMIT_IN_BYTES);
         if (memoryCost > memoryLimit) {
             throw new HealthConnectException(
@@ -186,7 +209,13 @@ public final class RateLimiter {
         }
     }
 
-    public static void checkMaxRecordMemoryUsage(long memoryCost) {
+    /**
+     * Checks if the given cost is higher than the memory limit byte size per record.
+     *
+     * @param memoryCost the cost to check
+     * @throws HealthConnectException if the cost is higher than the memory limit per record
+     */
+    public void checkMaxRecordMemoryUsage(long memoryCost) {
         long memoryLimit = getConfiguredMaxApiMemoryQuota(RECORD_SIZE_LIMIT_IN_BYTES);
         if (memoryCost > memoryLimit) {
             throw new HealthConnectException(
@@ -198,26 +227,26 @@ public final class RateLimiter {
         }
     }
 
-    public static void clearCache() {
-        sUserIdToQuotasMap.clear();
-        sQuotaBucketToAcrossAppsRemainingMemoryQuota.clear();
+    /** Clears the cached quota usage for all apps. */
+    public void clearCache() {
+        mUserIdToQuotasMap.clear();
+        mQuotaBucketToAcrossAppsRemainingMemoryQuota.clear();
     }
 
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private static Object getLockObject(int uid) {
-        sLocks.putIfAbsent(uid, uid);
-        return sLocks.get(uid);
+    private Object getLockObject(int uid) {
+        mLocks.putIfAbsent(uid, uid);
+        return mLocks.get(uid);
     }
 
-    private static void spendApiCallResourcesIfAvailable(
-            int uid, List<Integer> quotaBuckets, int cost) {
+    private void spendApiCallResourcesIfAvailable(int uid, List<Integer> quotaBuckets, int cost) {
         Map<Integer, Float> quotaBucketToAvailableQuotaMap =
                 getQuotaBucketToAvailableQuotaMap(uid, quotaBuckets);
         checkIfResourcesAreAvailable(quotaBucketToAvailableQuotaMap, quotaBuckets, cost);
         spendAvailableResources(uid, quotaBucketToAvailableQuotaMap, quotaBuckets, cost);
     }
 
-    private static void spendApiAndMemoryResourcesIfAvailable(
+    private void spendApiAndMemoryResourcesIfAvailable(
             int uid,
             List<Integer> apiQuotaBuckets,
             List<Integer> memoryQuotaBuckets,
@@ -251,7 +280,7 @@ public final class RateLimiter {
     }
 
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private static void checkIfResourcesAreAvailable(
+    private void checkIfResourcesAreAvailable(
             Map<Integer, Float> quotaBucketToAvailableQuotaMap,
             List<Integer> quotaBuckets,
             long cost) {
@@ -260,13 +289,13 @@ public final class RateLimiter {
         }
     }
 
-    private static void spendAvailableResources(Quota quota, Integer quotaBucket, long memoryCost) {
+    private void spendAvailableResources(Quota quota, Integer quotaBucket, long memoryCost) {
         quota.setRemainingQuota(getAvailableQuota(quotaBucket, quota) - memoryCost);
         quota.setLastUpdatedTimeMillis(SystemClock.elapsedRealtime());
     }
 
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private static void spendAvailableResources(
+    private void spendAvailableResources(
             int uid,
             Map<Integer, Float> quotaBucketToAvailableQuotaMap,
             List<Integer> quotaBuckets,
@@ -277,9 +306,9 @@ public final class RateLimiter {
     }
 
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private static void spendResources(
+    private void spendResources(
             int uid, @QuotaBucket.Type int quotaBucket, float availableQuota, long cost) {
-        sUserIdToQuotasMap
+        mUserIdToQuotasMap
                 .get(uid)
                 .put(
                         quotaBucket,
@@ -288,7 +317,7 @@ public final class RateLimiter {
                                 availableQuota - cost));
     }
 
-    private static Map<Integer, Float> getQuotaBucketToAvailableQuotaMap(
+    private Map<Integer, Float> getQuotaBucketToAvailableQuotaMap(
             int uid, List<Integer> quotaBuckets) {
         return quotaBuckets.stream()
                 .collect(
@@ -299,7 +328,7 @@ public final class RateLimiter {
                                                 quotaBucket, getQuota(uid, quotaBucket))));
     }
 
-    private static void hasSufficientQuota(
+    private void hasSufficientQuota(
             float availableQuota, long cost, @QuotaBucket.Type int quotaBucket) {
         if (availableQuota < cost) {
             throw new RateLimiterException(
@@ -312,7 +341,7 @@ public final class RateLimiter {
         }
     }
 
-    private static float getAvailableQuota(@QuotaBucket.Type int quotaBucket, Quota quota) {
+    private float getAvailableQuota(@QuotaBucket.Type int quotaBucket, Quota quota) {
         long lastUpdatedTimeMillis = quota.getLastUpdatedTimeMillis();
         long currentTimeMillis = SystemClock.elapsedRealtime();
         long timeSinceLastQuotaSpendMillis = currentTimeMillis - lastUpdatedTimeMillis;
@@ -325,12 +354,12 @@ public final class RateLimiter {
                 quota.getRemainingQuota() + accumulated, getConfiguredMaxRollingQuota(quotaBucket));
     }
 
-    private static Quota getQuota(int uid, @QuotaBucket.Type int quotaBucket) {
+    private Quota getQuota(int uid, @QuotaBucket.Type int quotaBucket) {
         // Handles first request scenario.
-        if (!sUserIdToQuotasMap.containsKey(uid)) {
-            sUserIdToQuotasMap.put(uid, new HashMap<>());
+        if (!mUserIdToQuotasMap.containsKey(uid)) {
+            mUserIdToQuotasMap.put(uid, new HashMap<>());
         }
-        Map<Integer, Quota> packageQuotas = sUserIdToQuotasMap.get(uid);
+        Map<Integer, Quota> packageQuotas = mUserIdToQuotasMap.get(uid);
         Quota quota = packageQuotas.get(quotaBucket);
         if (quota == null) {
             quota = getInitialQuota(quotaBucket);
@@ -338,19 +367,19 @@ public final class RateLimiter {
         return quota;
     }
 
-    private static Quota getQuota(@QuotaBucket.Type int quotaBucket) {
+    private Quota getQuota(@QuotaBucket.Type int quotaBucket) {
         // Handles first request scenario.
-        if (!sQuotaBucketToAcrossAppsRemainingMemoryQuota.containsKey(quotaBucket)) {
-            sQuotaBucketToAcrossAppsRemainingMemoryQuota.put(
+        if (!mQuotaBucketToAcrossAppsRemainingMemoryQuota.containsKey(quotaBucket)) {
+            mQuotaBucketToAcrossAppsRemainingMemoryQuota.put(
                     quotaBucket,
                     new Quota(
                             /* lastUpdatedTimeMillis= */ SystemClock.elapsedRealtime(),
                             getConfiguredMaxRollingQuota(quotaBucket)));
         }
-        return sQuotaBucketToAcrossAppsRemainingMemoryQuota.get(quotaBucket);
+        return mQuotaBucketToAcrossAppsRemainingMemoryQuota.get(quotaBucket);
     }
 
-    private static Quota getInitialQuota(@QuotaBucket.Type int bucket) {
+    private Quota getInitialQuota(@QuotaBucket.Type int bucket) {
         return new Quota(
                 /* lastUpdatedTimeMillis= */ SystemClock.elapsedRealtime(),
                 getConfiguredMaxRollingQuota(bucket));
@@ -376,20 +405,20 @@ public final class RateLimiter {
         throw new IllegalArgumentException("Invalid quota bucket.");
     }
 
-    private static float getConfiguredMaxRollingQuota(@QuotaBucket.Type int quotaBucket) {
-        if (!QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.containsKey(quotaBucket)) {
+    private float getConfiguredMaxRollingQuota(@QuotaBucket.Type int quotaBucket) {
+        if (!mQuotaBucketToMaxRollingQuota.containsKey(quotaBucket)) {
             throw new IllegalArgumentException(
                     "Max quota not found for quotaBucket: " + quotaBucket);
         }
-        return QUOTA_BUCKET_TO_MAX_ROLLING_QUOTA_MAP.get(quotaBucket);
+        return mQuotaBucketToMaxRollingQuota.get(quotaBucket);
     }
 
-    private static int getConfiguredMaxApiMemoryQuota(String quotaBucket) {
-        if (!QUOTA_BUCKET_TO_MAX_MEMORY_QUOTA_MAP.containsKey(quotaBucket)) {
+    private int getConfiguredMaxApiMemoryQuota(String quotaBucket) {
+        if (!mQuotaBucketToMaxMemoryQuota.containsKey(quotaBucket)) {
             throw new IllegalArgumentException(
                     "Max quota not found for quotaBucket: " + quotaBucket);
         }
-        return QUOTA_BUCKET_TO_MAX_MEMORY_QUOTA_MAP.get(quotaBucket);
+        return mQuotaBucketToMaxMemoryQuota.get(quotaBucket);
     }
 
     private static List<Integer> getAffectedAPIQuotaBuckets(

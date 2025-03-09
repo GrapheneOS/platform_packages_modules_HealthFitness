@@ -30,6 +30,8 @@ import android.health.connect.backuprestore.GetSettingsForBackupResponse;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Slog;
 
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
+import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BackupChangeTokenHelper;
@@ -40,12 +42,13 @@ import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCatego
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 
+import java.time.Clock;
+
 /**
  * Manages Cloud Backup operations.
  *
  * @hide
  */
-@FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
 public final class CloudBackupManager {
 
     private static final String TAG = "CloudBackupManager";
@@ -55,9 +58,12 @@ public final class CloudBackupManager {
     private final HealthDataCategoryPriorityHelper mPriorityHelper;
     private final PreferenceHelper mPreferenceHelper;
     private final AppInfoHelper mAppInfoHelper;
+    private final Clock mClock;
+    private final BackupRestoreLogger mBackupRestoreLogger;
 
     public CloudBackupManager(
             TransactionManager transactionManager,
+            FitnessRecordReadHelper fitnessRecordReadHelper,
             AppInfoHelper appInfoHelper,
             DeviceInfoHelper deviceInfoHelper,
             HealthConnectMappings healthConnectMappings,
@@ -65,7 +71,9 @@ public final class CloudBackupManager {
             ChangeLogsHelper changeLogsHelper,
             ChangeLogsRequestHelper changeLogsRequestHelper,
             HealthDataCategoryPriorityHelper priorityHelper,
-            PreferenceHelper preferenceHelper) {
+            PreferenceHelper preferenceHelper,
+            Clock clock,
+            BackupRestoreLogger backupRestoreLogger) {
         mTransactionManager = transactionManager;
         mPriorityHelper = priorityHelper;
         mPreferenceHelper = preferenceHelper;
@@ -73,6 +81,7 @@ public final class CloudBackupManager {
         mDatabaseHelper =
                 new CloudBackupDatabaseHelper(
                         transactionManager,
+                        fitnessRecordReadHelper,
                         appInfoHelper,
                         deviceInfoHelper,
                         healthConnectMappings,
@@ -81,6 +90,8 @@ public final class CloudBackupManager {
                         changeLogsRequestHelper,
                         priorityHelper,
                         preferenceHelper);
+        mClock = clock;
+        mBackupRestoreLogger = backupRestoreLogger;
     }
 
     /**

@@ -34,8 +34,14 @@ import java.util.Map;
  */
 final class UsageStatsLogger {
 
+    private final HealthFitnessStatsLog mStatsLog;
+
+    UsageStatsLogger(HealthFitnessStatsLog statsLog) {
+        mStatsLog = statsLog;
+    }
+
     /** Write Health Connect usage stats to statsd. */
-    static void log(UsageStatsCollector usageStatsCollector) {
+    void log(UsageStatsCollector usageStatsCollector) {
         usageStatsCollector.upsertLastAccessLogTimeStamp();
         Map<String, List<String>> packageNameToPermissionsGranted =
                 usageStatsCollector.getPackagesHoldingHealthPermissions();
@@ -55,21 +61,21 @@ final class UsageStatsLogger {
         logPermissionStats(packageNameToPermissionsGranted);
         logPhrStats(usageStatsCollector);
 
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HealthFitnessStatsLog.HEALTH_CONNECT_USAGE_STATS,
                 numberOfConnectedApps,
                 numberOfAvailableApps,
                 isUserMonthlyActive);
     }
 
-    private static void logPhrStats(UsageStatsCollector usageStatsCollector) {
+    private void logPhrStats(UsageStatsCollector usageStatsCollector) {
         if (!personalHealthRecordTelemetry()) {
             return;
         }
 
         int medicalDataSourcesCount = usageStatsCollector.getMedicalDataSourcesCount();
         int medicalResourcesCount = usageStatsCollector.getMedicalResourcesCount();
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HealthFitnessStatsLog.HEALTH_CONNECT_PHR_USAGE_STATS,
                 medicalDataSourcesCount,
                 medicalResourcesCount,
@@ -77,13 +83,13 @@ final class UsageStatsLogger {
                 (int) usageStatsCollector.getGrantedPhrAppsCount());
     }
 
-    static void logExportImportStats(UsageStatsCollector usageStatsCollector) {
+    void logExportImportStats(UsageStatsCollector usageStatsCollector) {
         int exportFrequency = usageStatsCollector.getExportFrequency();
-        HealthFitnessStatsLog.write(
+        mStatsLog.write(
                 HealthFitnessStatsLog.HEALTH_CONNECT_EXPORT_IMPORT_STATS_REPORTED, exportFrequency);
     }
 
-    static void logPermissionStats(Map<String, List<String>> packageNameToPermissionsGranted) {
+    void logPermissionStats(Map<String, List<String>> packageNameToPermissionsGranted) {
 
         if (!Flags.permissionMetrics()) {
             return;
@@ -105,7 +111,7 @@ final class UsageStatsLogger {
                         grantedPermission.substring(grantedPermission.lastIndexOf('.') + 1);
             }
 
-            HealthFitnessStatsLog.write(
+            mStatsLog.write(
                     HEALTH_CONNECT_PERMISSION_STATS,
                     connectedAppToPermissionsGranted.getKey(),
                     grantedPermissionsShortened);

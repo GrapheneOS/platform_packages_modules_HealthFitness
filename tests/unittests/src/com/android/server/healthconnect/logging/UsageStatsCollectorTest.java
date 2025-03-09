@@ -121,7 +121,11 @@ public class UsageStatsCollectorTest {
         doReturn(context).when(context).createContextAsUser(eq(userHandle), anyInt());
         mUsageStatsCollector =
                 healthConnectInjector.getUsageStatsCollector(
-                        HealthConnectContext.create(context, userHandle));
+                        HealthConnectContext.create(
+                                context,
+                                userHandle,
+                                /* databaseDirName= */ null,
+                                healthConnectInjector.getEnvironmentDataDirectory()));
 
         doReturn(mPackageManager).when(context).getPackageManager();
         doReturn(

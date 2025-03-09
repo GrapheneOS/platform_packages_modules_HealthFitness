@@ -49,23 +49,22 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
-import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.io.File;
 import java.util.List;
@@ -78,16 +77,9 @@ public class HealthConnectDatabaseTest {
 
     private Context mContext;
 
-    @Rule(order = 0)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 1)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(ExportImportLogger.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .addStaticMockFixtures(EnvironmentFixture::new)
-                    .build();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
 
     @Before
     public void setup() {
@@ -162,15 +154,8 @@ public class HealthConnectDatabaseTest {
         assertPhrTablesExist(transactionManager);
         // read the StepsRecord and assert that it's intact
         List<RecordInternal<?>> recordInternals =
-                transactionManager.readRecordsByIds(
-                        transactionTestUtils.getReadTransactionRequest(
-                                TEST_PACKAGE_NAME,
-                                Map.of(RECORD_TYPE_STEPS, originalStepsRecordUuids)),
-                        injector.getAppInfoHelper(),
-                        injector.getDeviceInfoHelper(),
-                        injector.getAccessLogsHelper(),
-                        injector.getReadAccessLogsHelper(),
-                        false);
+                transactionTestUtils.readRecordsByIds(
+                        TEST_PACKAGE_NAME, Map.of(RECORD_TYPE_STEPS, originalStepsRecordUuids));
         assertThat(recordInternals).hasSize(1);
         assertThat(recordInternals.get(0).toExternalRecord())
                 .isEqualTo(originalStepsRecordInternal.toExternalRecord());
@@ -218,7 +203,11 @@ public class HealthConnectDatabaseTest {
     private HealthConnectDatabase initializeEmptyHealthConnectDatabase() {
         HealthConnectDatabase healthConnectDatabase =
                 new HealthConnectDatabase(
-                        HealthConnectContext.create(mContext, mContext.getUser()));
+                        HealthConnectContext.create(
+                                mContext,
+                                mContext.getUser(),
+                                /* databaseDirName= */ null,
+                                mEnvironmentDataDirectory.getRoot()));
 
         // Make sure there is nothing there already.
         File databasePath = healthConnectDatabase.getDatabasePath();
@@ -253,10 +242,11 @@ public class HealthConnectDatabaseTest {
                 });
     }
 
-    private static HealthConnectInjector getHealthConnectInjector(Context context) {
+    private HealthConnectInjector getHealthConnectInjector(Context context) {
         return HealthConnectInjectorImpl.newBuilderForTest(context)
                 .setHealthPermissionIntentAppsTracker(mock(HealthPermissionIntentAppsTracker.class))
                 .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                 .build();
     }
 }

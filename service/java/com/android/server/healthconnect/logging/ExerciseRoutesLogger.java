@@ -51,11 +51,13 @@ public class ExerciseRoutesLogger {
     /**
      * Log exercise route metrics
      *
+     * @param statsLog the log to write to
      * @param operation Operation being done on the record
      * @param packageName Package name of the caller
      * @param numberOfRecordsWithExerciseRoutes Number of records with Exercise Routes
      */
     public static void log(
+            HealthFitnessStatsLog statsLog,
             @Operations.Operation int operation,
             String packageName,
             int numberOfRecordsWithExerciseRoutes) {
@@ -65,7 +67,7 @@ public class ExerciseRoutesLogger {
             return;
         }
 
-        HealthFitnessStatsLog.write(
+        statsLog.write(
                 EXERCISE_ROUTE_API_CALLED,
                 operation,
                 packageName,
