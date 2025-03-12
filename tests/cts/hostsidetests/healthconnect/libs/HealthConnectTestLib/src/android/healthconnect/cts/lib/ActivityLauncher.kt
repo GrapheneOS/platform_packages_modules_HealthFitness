@@ -54,7 +54,7 @@ object ActivityLauncher {
     fun Context.launchRequestPermissionActivity(
         packageName: String = TEST_APP_PACKAGE_NAME,
         permissions: List<String>,
-        block: () -> Unit
+        block: () -> Unit,
     ) {
         val intent =
             Intent(HealthConnectManager.ACTION_REQUEST_HEALTH_PERMISSIONS).apply {
@@ -69,7 +69,24 @@ object ActivityLauncher {
                     startActivity(intent)
                     skipOnboardingIfAppears()
                 },
-                GRANT_RUNTIME_PERMISSIONS)
+                GRANT_RUNTIME_PERMISSIONS,
+            )
+        }
+    }
+
+    fun Context.launchManageHealthPermissionActivity(block: () -> Unit) {
+        val intent =
+            Intent(HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        executeBlockAndExit(block) {
+            SystemUtil.runWithShellPermissionIdentity(
+                {
+                    startActivity(intent)
+                    skipOnboardingIfAppears()
+                },
+                GRANT_RUNTIME_PERMISSIONS,
+            )
         }
     }
 
