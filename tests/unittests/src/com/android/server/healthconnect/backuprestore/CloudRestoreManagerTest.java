@@ -201,6 +201,39 @@ public class CloudRestoreManagerTest {
     }
 
     @Test
+    public void restoreChanges_duplicatedChangesIgnored() {
+        Record stepsRecord = generateRecord(RecordTypeIdentifier.RECORD_TYPE_STEPS);
+        RestoreChange stepsChange =
+                new RestoreChange(
+                        BackupData.newBuilder().setRecord(stepsRecord).build().toByteArray());
+        Record bloodPressureRecord =
+                generateRecord(RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE);
+        RestoreChange bloodPressureChange =
+                new RestoreChange(
+                        BackupData.newBuilder()
+                                .setRecord(bloodPressureRecord)
+                                .build()
+                                .toByteArray());
+
+        // First restore
+        mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
+
+        // Second restore does not throw any exceptions
+        mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readRecordsByIds(
+                        ImmutableMap.of(
+                                RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                                List.of(UUID.fromString(stepsRecord.getUuid())),
+                                RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
+                                List.of(UUID.fromString(bloodPressureRecord.getUuid()))));
+        assertThat(records).hasSize(2);
+        assertThat(mRecordProtoConverter.toRecordProto(records.get(0))).isEqualTo(stepsRecord);
+        assertThat(mRecordProtoConverter.toRecordProto(records.get(1)))
+                .isEqualTo(bloodPressureRecord);
+    }
+
+    @Test
     public void whenRestoreSettingsCalled_noExportSettings_settingsSuccessfullyRestored() {
         CloudBackupSettingsHelper cloudBackupSettingsHelper =
                 new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);

@@ -48,6 +48,7 @@ import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
+import com.android.server.healthconnect.proto.backuprestore.BackupData;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -104,6 +105,7 @@ public class CloudBackupManagerTest {
     private TransactionManager mTransactionManager;
     private TransactionTestUtils mTransactionTestUtils;
     private CloudBackupManager mCloudBackupManager;
+    private RecordProtoConverter mRecordProtoConverter;
     private Instant mTimeStamp;
 
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
@@ -154,6 +156,8 @@ public class CloudBackupManagerTest {
                         preferenceHelper,
                         fakeClock,
                         healthConnectInjector.getBackupRestoreLogger());
+
+        mRecordProtoConverter = new RecordProtoConverter();
     }
 
     @Test
@@ -349,6 +353,43 @@ public class CloudBackupManagerTest {
         assertThat(thirdResponse.getChanges().get(0).isDeletion()).isTrue();
     }
 
+    @Test
+    public void multipleIncrementalBackup_correctResponsesReturned() throws Exception {
+        List<RecordInternal<?>> initialRecords = createStepRecords(2);
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, initialRecords);
+        // First full data backup call
+        GetChangesForBackupResponse firstResponse = mCloudBackupManager.getChangesForBackup(null);
+
+        // Insert records and backup
+        var recordToBeInserted =
+                createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, recordToBeInserted);
+        GetChangesForBackupResponse secondResponse =
+                mCloudBackupManager.getChangesForBackup(firstResponse.getNextChangeToken());
+        assertThat(secondResponse.getChanges().size()).isEqualTo(1);
+        assertThat(secondResponse.getChanges().get(0).getData())
+                .isEqualTo(serializeRecordInternal(recordToBeInserted));
+
+        // Modifies one record during the backup
+        var modifiedRecord = ((StepsRecordInternal) initialRecords.get(0)).setCount(2);
+        mTransactionTestUtils.updateRecords(TEST_PACKAGE_NAME, modifiedRecord);
+        GetChangesForBackupResponse thirdResponse =
+                mCloudBackupManager.getChangesForBackup(secondResponse.getNextChangeToken());
+        assertThat(thirdResponse.getChanges().size()).isEqualTo(1);
+        assertThat(thirdResponse.getChanges().get(0).getData())
+                .isEqualTo(serializeRecordInternal(modifiedRecord));
+
+        // Delete one record during the backup
+        mTransactionTestUtils.deleteRecords(
+                TEST_PACKAGE_NAME,
+                RecordIdFilter.fromId(
+                        StepsRecord.class, initialRecords.get(1).getUuid().toString()));
+        GetChangesForBackupResponse fourthResponse =
+                mCloudBackupManager.getChangesForBackup(thirdResponse.getNextChangeToken());
+        assertThat(fourthResponse.getChanges().size()).isEqualTo(1);
+        assertThat(fourthResponse.getChanges().get(0).isDeletion()).isTrue();
+    }
+
     private List<RecordInternal<?>> createStepRecords(int recordSize) {
         List<RecordInternal<?>> records = new ArrayList<>();
         for (int recordNumber = 0; recordNumber < recordSize; recordNumber++) {
@@ -361,5 +402,12 @@ public class CloudBackupManagerTest {
                             TEST_STEP_COUNT));
         }
         return records;
+    }
+
+    private byte[] serializeRecordInternal(RecordInternal<?> recordInternal) {
+        return BackupData.newBuilder()
+                .setRecord(mRecordProtoConverter.toRecordProto(recordInternal))
+                .build()
+                .toByteArray();
     }
 }
