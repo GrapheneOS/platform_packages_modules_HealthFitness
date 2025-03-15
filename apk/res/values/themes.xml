@@ -143,6 +143,8 @@
         <item name="textAppearanceSubheader">@style/TextAppearance.HealthConnect.Subheader</item>
         <item name="textAppearanceSubheader2">@style/TextAppearance.HealthConnect.Subheader2</item>
         <item name="textAppearanceSubheader3">@style/TextAppearance.HealthConnect.Subheader3</item>
+        <item name="textAppearanceSubheader4">@style/TextAppearance.HealthConnect.Subheader4</item>
+        <item name="textAppearanceSubheader5">@style/TextAppearance.HealthConnect.Subheader5</item>
         <item name="textAppearanceRouteRequest">@style/TextAppearance.HealthConnect.RouteRequest</item>
         <item name="textAppearancePreferenceCategory">@style/TextAppearance.HealthConnect.CategoryTitle</item>
         <item name="textAppearanceErrorMessage">@style/TextAppearance.HealthConnect.ErrorMessage</item>

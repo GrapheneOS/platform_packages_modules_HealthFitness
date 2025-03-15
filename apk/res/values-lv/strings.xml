@@ -613,7 +613,7 @@
     <string name="steps_value" msgid="5779393974668105298">"{count,plural, =1{1 solis}zero{# soļu}one{# solis}other{# soļi}}"</string>
     <string name="steps_per_minute" msgid="5527133010067502098">"{value,plural, =1{1 solis/min}zero{# soļu/min}one{# solis/min}other{# soļi/min}}"</string>
     <string name="steps_per_minute_long" msgid="6146224261144843301">"{value,plural, =1{1 solis minūtē}zero{# soļu minūtē}one{# solis minūtē}other{# soļi minūtē}}"</string>
-    <string name="heart_rate_value" msgid="6936476566204248578">"{count,plural, =1{1 sit./min}zero{# sit./min}one{# sit./min}other{# sit./min}}"</string>
+    <string name="heart_rate_value" msgid="6936476566204248578">"{count,plural, =1{1 bpm}zero{# bpm}one{# bpm}other{# bpm}}"</string>
     <string name="heart_rate_long_value" msgid="7865319425119507300">"{count,plural, =1{1 sitiens minūtē}zero{# sitienu minūtē}one{# sitiens minūtē}other{# sitieni minūtē}}"</string>
     <string name="velocity_speed_miles" msgid="616312758726506781">"{value,plural, =1{1 jūdze/h}zero{# jūdžu/h}one{# jūdze/h}other{# jūdzes/h}}"</string>
     <string name="velocity_speed_km" msgid="2807705003203399350">"{value,plural, =1{1 km/h}zero{# km/h}one{# km/h}other{# km/h}}"</string>
@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Pārvietot uz beigām"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Poga lietotnes <xliff:g id="SELECTED_APP">%s</xliff:g> vilkšanai un pārvietošanai prioritāšu sarakstā"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Poga lietotnes <xliff:g id="SELECTED_APP">%s</xliff:g> noņemšanai no prioritāšu saraksta"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Poga, ar kuru pārkārtot vai noņemt lietotni <xliff:g id="SELECTED_APP">%s</xliff:g> no lietotņu avotu saraksta"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Veikt dubultskārienu un vilkt, lai pārvietotu"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> sarakstā <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fiziskā sagatavotība, labsajūta"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"atļaujas"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, veselības dati, veselības kategorijas, piekļuve datiem, aktivitātes, ķermeņa rādītāji, cikla uzskaite, uzturs, miegs, veselības rādījumi"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Pievienot lietotni"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Rediģēt lietotņu avotus"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Ierīces noklusējuma lietotne"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Pārvietot uz augšu"</string>
+    <string name="move_down" msgid="4404970288236170693">"Pārvietot uz leju"</string>
+    <string name="remove" msgid="1340423400489007362">"Noņemt"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Lietotnes dati"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Šeit tiks rādīti dati no lietotnes <xliff:g id="APP_NAME">%1$s</xliff:g>."</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Šeit būs redzami dati no lietotnēm, kurām ir piekļuve platformai Health Connect."</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Vai neatgriezeniski dzēst atlasītos lietotnes <xliff:g id="APP_NAME">%1$s</xliff:g> ierakstus par šo mēnesi: <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Vai neatgriezeniski dzēst šo lietotnes <xliff:g id="APP_NAME">%s</xliff:g> ierakstu?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vai neatgriezeniski dzēst datus (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) lietotnei <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Rādīt sistēmas lietotnes"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Paslēpt sistēmas lietotnes"</string>
     <string name="on" msgid="8266542510798355807">"Ieslēgts"</string>
     <string name="off" msgid="6996623844428550649">"Izslēgts"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Pēdējā piekļuves reize: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

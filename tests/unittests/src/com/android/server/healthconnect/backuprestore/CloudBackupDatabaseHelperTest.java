@@ -58,6 +58,7 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -72,7 +73,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
-import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
@@ -114,6 +114,7 @@ public class CloudBackupDatabaseHelperTest {
     private CloudBackupDatabaseHelper mCloudBackupDatabaseHelper;
     private TransactionTestUtils mTransactionTestUtils;
     private TransactionManager mTransactionManager;
+    private FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private AccessLogsHelper mAccessLogsHelper;
     private AppInfoHelper mAppInfoHelper;
     private final RecordProtoConverter mRecordProtoConverter = new RecordProtoConverter();
@@ -133,6 +134,7 @@ public class CloudBackupDatabaseHelperTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mTransactionManager = healthConnectInjector.getTransactionManager();
+        mFitnessRecordDeleteHelper = healthConnectInjector.getFitnessRecordDeleteHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
 
@@ -153,7 +155,6 @@ public class CloudBackupDatabaseHelperTest {
                         mTransactionManager,
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         mAppInfoHelper,
-                        deviceInfoHelper,
                         healthConnectMappings,
                         internalHealthConnectMappings,
                         changeLogsHelper,
@@ -205,16 +206,7 @@ public class CloudBackupDatabaseHelperTest {
 
     @Test
     public void getChangesFromDataTables_singleRecordsExceedPageSize_correctResponseReturned() {
-        List<RecordInternal<?>> records = new ArrayList<>();
-        for (int recordNumber = 0; recordNumber < DEFAULT_PAGE_SIZE * 2; recordNumber++) {
-            records.add(
-                    createStepsRecord(
-                            // Add offsets to start time and end time for distinguishing different
-                            // records.
-                            TEST_START_TIME_IN_MILLIS + recordNumber,
-                            TEST_END_TIME_IN_MILLIS + recordNumber,
-                            TEST_STEP_COUNT));
-        }
+        List<RecordInternal<?>> records = createStepRecords(2 * DEFAULT_PAGE_SIZE);
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
         GetChangesForBackupResponse response =
@@ -234,16 +226,7 @@ public class CloudBackupDatabaseHelperTest {
 
     @Test
     public void getChangesFromDataTables_withSingleRecords_usingToken_correctResponseReturned() {
-        List<RecordInternal<?>> records = new ArrayList<>();
-        for (int recordNumber = 0; recordNumber < DEFAULT_PAGE_SIZE * 2; recordNumber++) {
-            records.add(
-                    createStepsRecord(
-                            // Add offsets to start time and end time for distinguishing different
-                            // records.
-                            TEST_START_TIME_IN_MILLIS + recordNumber,
-                            TEST_END_TIME_IN_MILLIS + recordNumber,
-                            TEST_STEP_COUNT));
-        }
+        List<RecordInternal<?>> records = createStepRecords(2 * DEFAULT_PAGE_SIZE);
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
         GetChangesForBackupResponse firstResponse =
@@ -273,16 +256,7 @@ public class CloudBackupDatabaseHelperTest {
 
     @Test
     public void getChangesFromDataTables_mixedRecordsNotInSamePage_correctChangeTokenReturned() {
-        List<RecordInternal<?>> records = new ArrayList<>();
-        for (int recordNumber = 0; recordNumber < DEFAULT_PAGE_SIZE; recordNumber++) {
-            records.add(
-                    createStepsRecord(
-                            // Add offsets to start time and end time for distinguishing different
-                            // records.
-                            TEST_START_TIME_IN_MILLIS + recordNumber,
-                            TEST_END_TIME_IN_MILLIS + recordNumber,
-                            TEST_STEP_COUNT));
-        }
+        List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE);
         records.add(createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
@@ -303,16 +277,7 @@ public class CloudBackupDatabaseHelperTest {
 
     @Test
     public void getChangesFromDataTables_mixedRecordsNotInSamePage_usingToken_responseReturned() {
-        List<RecordInternal<?>> records = new ArrayList<>();
-        for (int recordNumber = 0; recordNumber < DEFAULT_PAGE_SIZE; recordNumber++) {
-            records.add(
-                    createStepsRecord(
-                            // Add offsets to start time and end time for distinguishing different
-                            // records.
-                            TEST_START_TIME_IN_MILLIS + recordNumber,
-                            TEST_END_TIME_IN_MILLIS + recordNumber,
-                            TEST_STEP_COUNT));
-        }
+        List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE);
         records.add(createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
@@ -342,22 +307,8 @@ public class CloudBackupDatabaseHelperTest {
 
     @Test
     public void getChangesFromDataTables_mixedRecordsWithinSamePage_correctChangeTokenReturned() {
-        List<RecordInternal<?>> records = new ArrayList<>();
-        // Create 2500 step records and 2501 blood pressure records.
-        for (int recordNumber = 0; recordNumber < DEFAULT_PAGE_SIZE / 2; recordNumber++) {
-            records.add(
-                    createStepsRecord(
-                            // Add offsets to start time and end time for distinguishing different
-                            // records.
-                            TEST_START_TIME_IN_MILLIS + recordNumber,
-                            TEST_END_TIME_IN_MILLIS + recordNumber,
-                            TEST_STEP_COUNT));
-        }
-        for (int recordNumber = 0; recordNumber < DEFAULT_PAGE_SIZE / 2 + 1; recordNumber++) {
-            records.add(
-                    createBloodPressureRecord(
-                            TEST_TIME_IN_MILLIS + recordNumber, TEST_SYSTOLIC, TEST_DIASTOLIC));
-        }
+        List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE / 2);
+        records.addAll(createBloodPressureRecords(DEFAULT_PAGE_SIZE / 2 + 1));
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
 
         GetChangesForBackupResponse response =
@@ -430,8 +381,7 @@ public class CloudBackupDatabaseHelperTest {
                 createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC));
 
         // Delete the original change logs.
-        mTransactionManager.delete(
-                new DeleteTableRequest(ChangeLogsHelper.TABLE_NAME, stepRecord.getRecordType()));
+        mTransactionManager.delete(new DeleteTableRequest(ChangeLogsHelper.TABLE_NAME));
 
         assertThat(mCloudBackupDatabaseHelper.isChangeLogsTokenValid(response.getNextChangeToken()))
                 .isFalse();
@@ -531,11 +481,11 @@ public class CloudBackupDatabaseHelperTest {
                                         .setStartTime(Instant.EPOCH)
                                         .build())
                         .build();
-        DeleteUsingFiltersRequestParcel parcel = new DeleteUsingFiltersRequestParcel(deleteRequest);
-        mTransactionManager.deleteAllRecords(
-                new DeleteTransactionRequest(TEST_PACKAGE_NAME, parcel, mAppInfoHelper),
-                /* shouldRecordDeleteAccessLogs= */ true,
-                mAccessLogsHelper);
+        mFitnessRecordDeleteHelper.deleteRecords(
+                TEST_PACKAGE_NAME,
+                new DeleteUsingFiltersRequestParcel(deleteRequest),
+                /* holdsDataManagementPermission= */ false,
+                /* shouldRecordAccessLog= */ false);
 
         GetChangesForBackupResponse secondResponse =
                 mCloudBackupDatabaseHelper.getIncrementalChanges(
@@ -599,5 +549,29 @@ public class CloudBackupDatabaseHelperTest {
     private RecordInternal<?> parseRecordInternal(BackupChange change) throws Exception {
         return mRecordProtoConverter.toRecordInternal(
                 BackupData.parseFrom(change.getData()).getRecord());
+    }
+
+    private List<RecordInternal<?>> createStepRecords(int recordSize) {
+        List<RecordInternal<?>> records = new ArrayList<>();
+        for (int recordNumber = 0; recordNumber < recordSize; recordNumber++) {
+            records.add(
+                    createStepsRecord(
+                            // Add offsets to start time and end time for distinguishing different
+                            // records.
+                            TEST_START_TIME_IN_MILLIS + recordNumber,
+                            TEST_END_TIME_IN_MILLIS + recordNumber,
+                            TEST_STEP_COUNT));
+        }
+        return records;
+    }
+
+    private List<RecordInternal<?>> createBloodPressureRecords(int recordSize) {
+        List<RecordInternal<?>> records = new ArrayList<>();
+        for (int recordNumber = 0; recordNumber < recordSize; recordNumber++) {
+            records.add(
+                    createBloodPressureRecord(
+                            TEST_TIME_IN_MILLIS + recordNumber, TEST_SYSTOLIC, TEST_DIASTOLIC));
+        }
+        return records;
     }
 }

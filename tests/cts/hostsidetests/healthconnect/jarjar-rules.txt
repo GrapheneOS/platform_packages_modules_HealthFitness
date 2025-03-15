@@ -1,0 +1,4 @@
+rule com.android.os.healthfitness.api.** com.android.os.healthfitness.api.@0
+rule com.android.os.healthfitness.ui.** com.android.os.healthfitness.ui.@0
+rule android.healthfitness.api.** android.healthfitness.api.@0
+rule android.healthfitness.ui.&& android.healthfitness.ui.@0

@@ -89,6 +89,9 @@ constructor(
     /** A list of [HealthPermission] that are at system level (not restricted to HC-only). */
     val systemHealthPermissions = MutableStateFlow<List<HealthPermission>>(emptyList())
 
+    /** A state flow of whether user chooses to show system apps, which by default is not-show. */
+    val showSystemFlow = MutableStateFlow(false)
+
     init {
         loadConnectedApps()
     }
@@ -104,6 +107,10 @@ constructor(
             loadDataTypeToAppsMapping()
             loadRecentAccessMapping()
         }
+    }
+
+    fun updateShowSystem(showSystem: Boolean) {
+        showSystemFlow.compareAndSet(!showSystem, showSystem)
     }
 
     /** Load system health permissions and granular permission to allowed and denied apps maps. */

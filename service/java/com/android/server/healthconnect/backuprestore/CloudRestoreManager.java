@@ -16,12 +16,8 @@
 
 package com.android.server.healthconnect.backuprestore;
 
-import static android.health.connect.Constants.DEFAULT_LONG;
-
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
 
-import android.annotation.FlaggedApi;
 import android.annotation.Nullable;
 import android.health.connect.backuprestore.BackupSettings;
 import android.health.connect.backuprestore.RestoreChange;
@@ -46,7 +42,6 @@ import com.android.server.healthconnect.storage.request.UpsertTransactionRequest
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 
 import java.time.Clock;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -186,9 +181,8 @@ public class CloudRestoreManager {
             }
         }
         List<RecordInternal<?>> existingPlannedSessions =
-                mFitnessRecordReadHelper.readRecords(
+                mFitnessRecordReadHelper.readRecordsUnrestricted(
                         mTransactionManager,
-                        /* callingPackageName= */ "",
                         Map.of(
                                 RecordTypeIdentifier.RECORD_TYPE_PLANNED_EXERCISE_SESSION,
                                 sessionsToCheck.stream()
@@ -196,12 +190,7 @@ public class CloudRestoreManager {
                                                 ExerciseSessionRecordInternal
                                                         ::getPlannedExerciseSessionId)
                                         .filter(Objects::nonNull)
-                                        .toList()),
-                        DEFAULT_LONG,
-                        Collections.emptySet(),
-                        /* isInForeground= */ true,
-                        /* shouldRecordAccessLog= */ false,
-                        /* isReadingSelfData= */ false);
+                                        .toList()));
         Set<UUID> existingPlannedSessionIds =
                 existingPlannedSessions.stream()
                         .map(RecordInternal::getUuid)

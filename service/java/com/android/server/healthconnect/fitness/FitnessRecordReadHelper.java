@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.fitness;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
+
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
@@ -38,10 +40,12 @@ import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappi
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Read FitnessRecords from the database based on the given request, using the TransactionManager.
@@ -58,34 +62,54 @@ public class FitnessRecordReadHelper {
     private final AppInfoHelper mAppInfoHelper;
     private final AccessLogsHelper mAccessLogsHelper;
     private final ReadAccessLogsHelper mReadAccessLogsHelper;
+    private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
+    // TODO(b/399825886): Inject transactionManager once this bug is fixed.
     public FitnessRecordReadHelper(
             DeviceInfoHelper deviceInfoHelper,
             AppInfoHelper appInfoHelper,
             AccessLogsHelper accessLogsHelper,
-            ReadAccessLogsHelper readAccessLogsHelper) {
+            ReadAccessLogsHelper readAccessLogsHelper,
+            InternalHealthConnectMappings internalHealthConnectMappings) {
         mDeviceInfoHelper = deviceInfoHelper;
         mAppInfoHelper = appInfoHelper;
         mAccessLogsHelper = accessLogsHelper;
         mReadAccessLogsHelper = readAccessLogsHelper;
+        mInternalHealthConnectMappings = internalHealthConnectMappings;
     }
 
     /**
      * Reads and returns a list of records for the given request, along with the next page token.
+     *
+     * @param transactionManager The TransactionManager to be used to perform this request.
+     * @param callingPackageName The package name of the app making this request. This can be empty
+     *     for internal calls.
+     * @param request The read request describing what to read.
+     * @param grantedExtraReadPermissions List of permissions granted to this app to read associated
+     *     data.
+     * @param startDateAccessMillis The earliest time this app is allowed to read from.
+     * @param isInForeground If the calling app is in the foreground.
+     * @param shouldRecordAccessLog If access logs should be recorded for this call.
+     * @param enforceSelfRead Whether returned data should be filtered for data written by the
+     *     calling app.
+     * @param packageNamesByAppIds Map of package names to app Ids. If this is not present, app info
+     *     is read using AppInfoHelper.
+     * @return A pair containing the list of records for this request, along with the page token.
      */
+    // TODO(b/399825886): packageNamesByAppIds is not consistently used and should be removed once
+    // this bug is fixed.
     public Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecords(
             TransactionManager transactionManager,
             String callingPackageName,
             ReadRecordsRequestParcel request,
-            long startDateAccessMillis,
-            boolean enforceSelfRead,
             Set<String> grantedExtraReadPermissions,
+            long startDateAccessMillis,
             boolean isInForeground,
             boolean shouldRecordAccessLog,
+            boolean enforceSelfRead,
             @Nullable Map<Long, String> packageNamesByAppIds) {
         int recordTypeId = request.getRecordType();
-        RecordHelper<?> recordHelper =
-                InternalHealthConnectMappings.getInstance().getRecordHelper(recordTypeId);
+        RecordHelper<?> recordHelper = mInternalHealthConnectMappings.getRecordHelper(recordTypeId);
         ReadTableRequest readTableRequest =
                 recordHelper.getReadTableRequest(
                         request,
@@ -98,14 +122,13 @@ public class FitnessRecordReadHelper {
 
         if (request.getRecordIdFiltersParcel() != null) {
             return Pair.create(
-                    readRecordsByIdsInternal(
+                    readRecords(
                             transactionManager,
                             callingPackageName,
                             Set.of(recordTypeId),
                             singletonList(readTableRequest),
-                            shouldRecordAccessLog,
-                            // TODO(b/366149374): Consider the case of read by id from other apps
-                            true /* isReadingSelfData */),
+                            // TODO(b/366149374): Access logs are not logged for read by id request.
+                            /* shouldRecordAccessLog= */ false),
                     PageTokenWrapper.EMPTY_PAGE_TOKEN);
         }
 
@@ -139,22 +162,70 @@ public class FitnessRecordReadHelper {
         return readResult;
     }
 
-    /** Reads and returns a list of records for the given record ids. */
+    /**
+     * Reads and returns a list of records for the given request, along with the next page token.
+     *
+     * <p>This method is used for internal use cases, and aims to remove any possible checks to
+     * maximise the data read.
+     */
+    public Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecordsUnrestricted(
+            TransactionManager transactionManager,
+            ReadRecordsRequestParcel request,
+            @Nullable Map<Long, String> packageNamesByAppIds) {
+        // Passing in empty package name is a hacky solution here.
+        // This method uses the package name to read extra data based on
+        // grantedExtraReadPermissions. Since the extra read permissions contains all permissions,
+        // this package name doesn't get used for this call.
+        String callingPackageName = "";
+        // Include all permissions so that we read all the data.
+        Set<String> grantedExtraReadPermissions =
+                new HashSet<>(
+                        mInternalHealthConnectMappings
+                                .getRecordHelper(request.getRecordType())
+                                .getExtraReadPermissions());
+
+        return readRecords(
+                transactionManager,
+                callingPackageName,
+                request,
+                grantedExtraReadPermissions,
+                /* startDateAccessMillis= */ DEFAULT_LONG,
+                // Pass in caller as foreground so that all data is read.
+                /* isInForeground= */ true,
+                // Don't record access logs for internal reads.
+                /* shouldRecordAccessLog= */ false,
+                /* enforceSelfRead= */ false,
+                packageNamesByAppIds);
+    }
+
+    /**
+     * Reads and returns a list of records for the given record ids.
+     *
+     * @param transactionManager The TransactionManager to be used to perform this request.
+     * @param callingPackageName The package name of the app making this request. This can be empty
+     *     for internal calls.
+     * @param recordTypeToUuids A map from record types to the list of UUIDs of that record type to
+     *     be read.
+     * @param grantedExtraReadPermissions List of permissions granted to this app to read associated
+     *     data.
+     * @param startDateAccessMillis The earliest time this app is allowed to read from.
+     * @param isInForeground If the calling app is in the foreground.
+     * @param shouldRecordAccessLog If access logs should be recorded for this call.
+     * @return A list of records for this request.
+     */
     public List<RecordInternal<?>> readRecords(
             TransactionManager transactionManager,
             String callingPackageName,
             Map<Integer, List<UUID>> recordTypeToUuids,
-            long startDateAccessMillis,
             Set<String> grantedExtraReadPermissions,
+            long startDateAccessMillis,
             boolean isInForeground,
-            boolean shouldRecordAccessLog,
-            boolean isReadingSelfData) {
-        Set<Integer> recordTypeIds = recordTypeToUuids.keySet();
+            boolean shouldRecordAccessLog) {
         List<ReadTableRequest> readTableRequests = new ArrayList<>();
         recordTypeToUuids.forEach(
                 (recordType, uuids) ->
                         readTableRequests.add(
-                                InternalHealthConnectMappings.getInstance()
+                                mInternalHealthConnectMappings
                                         .getRecordHelper(recordType)
                                         .getReadTableRequest(
                                                 callingPackageName,
@@ -164,22 +235,52 @@ public class FitnessRecordReadHelper {
                                                 isInForeground,
                                                 mAppInfoHelper)));
 
-        return readRecordsByIdsInternal(
+        return readRecords(
                 transactionManager,
                 callingPackageName,
-                recordTypeIds,
+                recordTypeToUuids.keySet(),
                 readTableRequests,
-                shouldRecordAccessLog,
-                isReadingSelfData);
+                shouldRecordAccessLog);
     }
 
-    private List<RecordInternal<?>> readRecordsByIdsInternal(
+    /**
+     * Reads and returns a list of records for the given record ids.
+     *
+     * <p>This method is used for internal use cases, and aims to remove any possible checks to
+     * maximise the data read.
+     */
+    public List<RecordInternal<?>> readRecordsUnrestricted(
+            TransactionManager transactionManager, Map<Integer, List<UUID>> recordTypeToUuids) {
+        // Passing in empty package name is a hacky solution here.
+        // This method uses the package name to read extra data based on
+        // grantedExtraReadPermissions. Since the extra read permissions contains all permissions,
+        // this package name doesn't get used for this call.
+        String callingPackageName = "";
+        // Include all permissions so that we read all the data.
+        Set<String> grantedExtraReadPermissions =
+                recordTypeToUuids.keySet().stream()
+                        .map(mInternalHealthConnectMappings::getRecordHelper)
+                        .flatMap(recordHelper -> recordHelper.getExtraReadPermissions().stream())
+                        .collect(Collectors.toSet());
+
+        return readRecords(
+                transactionManager,
+                callingPackageName,
+                recordTypeToUuids,
+                grantedExtraReadPermissions,
+                /* startDateAccessMillis= */ DEFAULT_LONG,
+                // Pass in caller as foreground so that all data is read.
+                /* isInForeground= */ true,
+                // Don't record access logs for internal reads.
+                /* shouldRecordAccessLog= */ false);
+    }
+
+    private List<RecordInternal<?>> readRecords(
             TransactionManager transactionManager,
             String callingPackageName,
             Set<Integer> recordTypeIds,
             List<ReadTableRequest> readTableRequests,
-            boolean shouldRecordAccessLog,
-            boolean isReadingSelfData) {
+            boolean shouldRecordAccessLog) {
         List<RecordInternal<?>> recordInternals = new ArrayList<>();
         for (ReadTableRequest readTableRequest : readTableRequests) {
             RecordHelper<?> helper = readTableRequest.getRecordHelper();
@@ -198,7 +299,7 @@ public class FitnessRecordReadHelper {
                 callingPackageName,
                 recordTypeIds,
                 recordInternals,
-                shouldRecordAccessLog && !isReadingSelfData);
+                shouldRecordAccessLog);
 
         return recordInternals;
     }

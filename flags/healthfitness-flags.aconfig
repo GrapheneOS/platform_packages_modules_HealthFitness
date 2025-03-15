@@ -196,6 +196,15 @@ flag {
 }
 
 flag {
+    name: "phr_fhir_resource_validator_use_weak_reference"
+    namespace: "health_fitness_aconfig"
+    description: "Flag for using WeakReference for the FhirResourceValidator to allow it to be garbage collected."
+    bug: "375153151"
+    is_fixed_read_only: true
+    is_exported: true
+}
+
+flag {
     name: "phr_upsert_fix_parcel_size_calculation"
     namespace: "health_fitness_aconfig"
     description: "Flag for fixing the UpsertMedicalResourceRequest parcel size calculation."
@@ -500,6 +509,7 @@ flag {
     is_fixed_read_only: true
     is_exported: true
 }
+
 flag {
     name: "entries_pagination"
     namespace: "health_fitness_aconfig"
@@ -569,11 +579,30 @@ flag {
     is_fixed_read_only: true
     is_exported: true
 }
+
 flag {
     name: "step_tracking_enabled"
     namespace: "health_fitness_aconfig"
     description: "Enables native step tracking within Health Connect"
     bug: "397419824"
+    is_fixed_read_only: true
+    is_exported: true
+}
+
+flag {
+    name: "phr_change_logs"
+    namespace: "health_fitness_aconfig"
+    description: "Enables PHR support in change logs API"
+    bug: "362968743"
+    is_fixed_read_only: true
+    is_exported: true
+}
+
+flag {
+    name: "phr_change_logs_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables PHR support in change logs API"
+    bug: "362968743"
     is_fixed_read_only: true
     is_exported: true
 }

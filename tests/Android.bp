@@ -1,0 +1,186 @@
+// A group of files known not to work with deviceless (aka bivalent aka robolectric) tests
+// Please avoid adding new tests to the filegroup, we are trying to reduce it to empty.
+filegroup {
+    name: "robo-tests-sources-exclude",
+    srcs: [
+        // Not sure, it is getting an index out of bounds for shared memory
+        "unittests/src/android/health/connect/MigrationEntityParcelTest.java",
+        // PackageManager getPermissionsInfo (needs HealthPermissionsMocker?)
+        "unittests/src/android/health/connect/HealthPermissionsTest.java",
+        // Uses CTS TestUtils
+        "unittests/src/android/healthconnect/aidl/ReadMedicalResourcesRequestParcelTest.java",
+        // Needs parcel native code
+        "unittests/src/android/healthconnect/internal/datatypes/SleepStageInternalTest.java",
+        "unittests/src/android/healthconnect/internal/datatypes/SleepSessionInternalTest.java",
+        // Still uses ExtendedMockito
+        "unittests/src/com/android/server/healthconnect/HealthConnectManagerServiceTest.java",
+        // - SystemUtil.eventually from cts
+        "unittests/src/com/android/server/healthconnect/HealthConnectServiceImplTest.java",
+        // TestUtils.waitForTaskToFinishSuccessfully is timing out
+        "unittests/src/com/android/server/healthconnect/HealthConnectThreadSchedulerTest.java",
+        // Uses ExtendedMockito
+        "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreTest.java",
+        // Uses CTS TestUtils
+        "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreWithoutMocksTest.java",
+        // These fail because the Robolectric mocks for package manager return null rather
+        // than application icon or throw exception for getApplicationIcon() when not set.
+        "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupRestoreTest.java",
+        "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupSettingsHelperTest.java",
+        "unittests/src/com/android/server/healthconnect/backuprestore/CloudRestoreManagerTest.java",
+        // Uses ExtendedMockito
+        "unittests/src/com/android/server/healthconnect/exportimport/ExportManagerTest.java",
+        // Doesn't work because tries to read resources from the Health Connect APK.
+        // POssibly this can be fixed by changing "Instrumentation for" or something like that
+        "unittests/src/com/android/server/healthconnect/exportimport/ExportImportNotificationFactoryTest.java",
+        // Requires TestUtils for waitForAllTasksToCOmplete()
+        "unittests/src/com/android/server/healthconnect/exportimport/ImportManagerTest.java",
+        // Not passing because the SQLite library we have doesn't support dbstat
+        "unittests/src/com/android/server/healthconnect/logging/DatabaseStatsCollectorTest.java",
+        // Fails due to Mockito issue
+        // Mockito cannot mock this class: class android.content.pm.PackageManager.
+        "unittests/src/com/android/server/healthconnect/logging/UsageStatsCollectorTest.java",
+        // Uses ExtendedMockito
+        "unittests/src/com/android/server/healthconnect/migration/MigrationStateChangeJobTest.java",
+        // Uses ExtendedMockito
+        "unittests/src/com/android/server/healthconnect/migration/MigrationStateManagerTest.java",
+        // Fails due to resources not included
+        "unittests/src/com/android/server/healthconnect/migration/notification/MigrationNotificationFactoryTest.java",
+        // getPermissionInfo failing HealthPermissionsMocker)
+        "unittests/src/com/android/server/healthconnect/permission/FirstGrantTimeUnitTest.java",
+        // Doesn't work: invalid health permissions
+        "unittests/src/com/android/server/healthconnect/permission/HealthConnectPermissionHelperTest.java",
+        // Doesn't work: getOPackageUid failing
+        "unittests/src/com/android/server/healthconnect/permission/PermissionPackageChangesOrchestratorTest.java",
+        // Doesn't work because threadScheduler is null (so can't read member)
+        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/HealthDataCategoryPriorityHelperTest.java",
+        // Need PhrHelperTestUtils, which has CTS dependencies that don't work
+        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/MedicalDataSourceHelperTest.java",
+        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/MedicalResourceHelperTest.java",
+        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/MedicalResourceIndicesHelperTest.java",
+        // ExtendedMockito cannot be used in Robolectric tests so these fixtures aren't used.
+        "unittests/src/com/android/server/healthconnect/testing/fixtures/EnvironmentFixture.java",
+        "unittests/src/com/android/server/healthconnect/testing/fixtures/SQLiteDatabaseFixture.java",
+    ],
+    path: "unittests/src",
+}
+
+// Robolectric test target for testing health connect library
+// Ideally this would be in the unittests module, but this generates an AndroidTest.xml
+// which conflicts with the existing AndroidText.xml used for mainline tests in that module.
+// So following advice from the android testing team I have moved it up one level.
+android_robolectric_test {
+    name: "HealthFitnessRoboUnitTests",
+    // This line absolutely has to be here.
+    // If it is not set, then for some classes (eg RecordTypeIdentifier) the system version is
+    // used rather than our framework code. The system version has the parent class
+    // RecordTypeIdentifier, but the @hide has taken effect on RecordType, and you get a symbol
+    // not found.
+    sdk_version: "module_current",
+    srcs: [
+        "unittests/src/**/*.java",
+        // At the moment depending directly on some CTS targets gives dexcache==null errors when
+        // mocking, so I am depending on a limited subset.
+        "cts/phr/src/android/healthconnect/cts/phr/utils/FhirResourceBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/AllergyBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/ConditionBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/EncountersBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/ImmunizationBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/MedicationsBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/ObservationBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/PatientBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/PractitionerBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/ProcedureBuilder.java",
+        "cts/phr/src/android/healthconnect/cts/phr/utils/PhrDataFactory.java",
+        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/AssumptionCheckerRule.java",
+        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/DataFactory.java",
+        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/HealthConnectReceiver.java",
+        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/TestOutcomeReceiver.java",
+    ],
+    exclude_srcs: [
+        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
+        ":robo-tests-sources-exclude",
+    ],
+    static_libs: [
+        // This is required to get mocking of final classes
+        "inline-mockito-robolectric-prebuilt",
+        "//packages/modules/HealthFitness/framework:framework-healthfitness.impl",
+        "service-healthfitness.impl",
+        "androidx.test.core",
+        "androidx.test.ext.junit",
+        "TestParameterInjector",
+        // Beware of adding cts-healthconnect-utils or cts-healthconnect-phr-lib here.
+        // These can add issues with mocking, a strange to diagnose dexcache==null issue.
+        "flag-junit",
+        "framework-annotations-lib",
+        "healthfitness-aconfig-flags-lib",
+        // This is needed give us AppOpsManagerLocal
+        "services.core",
+        "platform-parametric-runner-lib",
+    ],
+    java_resources: [
+        ":generate-fhir-spec-r4-binarypb",
+    ],
+    java_resource_dirs: ["config"],
+    libs: [
+    ],
+    instrumentation_for: "HealthConnectFakeTestApp",
+}
+
+// This is a test that runs on device with exactly the same tests as the robolectric test.
+// It is useful for a fair speed comparison
+android_test {
+    name: "HealthFitnessOnDeviceUnitTests",
+    min_sdk_version: "34",
+    sdk_version: "module_current",
+    manifest: "unittests/AndroidManifest.xml",
+    test_config: "AndroidTest_testOnDevice.xml",
+    srcs: [
+        "unittests/src/**/*.java",
+    ],
+    exclude_srcs: [
+        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
+        ":robo-tests-sources-exclude",
+    ],
+    defaults: [
+        "mts-target-sdk-version-current",
+        "modules-utils-testable-device-config-defaults",
+    ],
+    // This needs to be added to the unit tests as this build change is guarded by a build system
+    // flag (soong_config_bool_variable "phr_fhir_validation"), which is part of the PHR FHIR
+    // structural validation feature.
+    java_resources: [
+        ":generate-fhir-spec-r4-binarypb",
+    ],
+    static_libs: [
+        "TestParameterInjector",
+        "service-healthfitness.impl",
+        "framework-healthfitness.impl",
+        "healthfitness-aconfig-flags-lib",
+        "healthfitness-aconfig-flags-helper",
+        "flag-junit",
+        "androidx.test.runner",
+        "mockito-target-extended-minus-junit4",
+        "truth",
+        "services.core",
+        "androidx.test.ext.truth",
+        "cts-healthconnect-utils",
+        "cts-healthconnect-phr-lib",
+        "platform-parametric-runner-lib",
+        "framework-annotations-lib",
+    ],
+    jni_libs: [
+        // Required for ExtendedMockito
+        "libdexmakerjvmtiagent",
+        "libstaticjvmtiagent",
+    ],
+    libs: [
+        "android.test.base.stubs.system",
+        "android.test.mock.stubs.system",
+        "android.test.runner.stubs.system",
+        "framework-sdkextensions.stubs.module_lib",
+        "framework-configinfrastructure.stubs.module_lib",
+    ],
+    // Test coverage system runs on different devices. Need to
+    // compile for all architecture.
+    compile_multilib: "both",
+}

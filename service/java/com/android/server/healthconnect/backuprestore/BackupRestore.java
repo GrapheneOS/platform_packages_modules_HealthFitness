@@ -209,6 +209,7 @@ public final class BackupRestore {
 
     private volatile UserHandle mCurrentForegroundUser;
     private final HealthConnectThreadScheduler mThreadScheduler;
+    private final BackupRestoreJobScheduler mJobScheduler;
 
     @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public BackupRestore(
@@ -223,6 +224,35 @@ public final class BackupRestore {
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             HealthConnectThreadScheduler threadScheduler,
             File environmentDataDirectory) {
+        this(
+                appInfoHelper,
+                firstGrantTimeManager,
+                migrationStateManager,
+                preferenceHelper,
+                transactionManager,
+                fitnessRecordReadHelper,
+                context,
+                deviceInfoHelper,
+                healthDataCategoryPriorityHelper,
+                threadScheduler,
+                environmentDataDirectory,
+                new BackupRestoreJobScheduler());
+    }
+
+    @VisibleForTesting
+    BackupRestore(
+            AppInfoHelper appInfoHelper,
+            FirstGrantTimeManager firstGrantTimeManager,
+            MigrationStateManager migrationStateManager,
+            PreferenceHelper preferenceHelper,
+            TransactionManager transactionManager,
+            FitnessRecordReadHelper fitnessRecordReadHelper,
+            Context context,
+            DeviceInfoHelper deviceInfoHelper,
+            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
+            HealthConnectThreadScheduler threadScheduler,
+            File environmentDataDirectory,
+            BackupRestoreJobScheduler jobScheduler) {
         mFirstGrantTimeManager = firstGrantTimeManager;
         mMigrationStateManager = migrationStateManager;
         mContext = context;
@@ -238,6 +268,7 @@ public final class BackupRestore {
         mTransactionManager = transactionManager;
         mThreadScheduler = threadScheduler;
         mEnvironmentDataDirectory = environmentDataDirectory;
+        mJobScheduler = jobScheduler;
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
@@ -579,7 +610,7 @@ public final class BackupRestore {
 
     /** Cancel all the jobs and sets the cancelled time. */
     public void cancelAllJobs() {
-        BackupRestoreJobService.cancelAllJobs(mContext);
+        mJobScheduler.cancelAllJobs(mContext);
         setJobCancelledTimeIfExists(DATA_DOWNLOAD_TIMEOUT_KEY, DATA_DOWNLOAD_TIMEOUT_CANCELLED_KEY);
         setJobCancelledTimeIfExists(DATA_STAGING_TIMEOUT_KEY, DATA_STAGING_TIMEOUT_CANCELLED_KEY);
         setJobCancelledTimeIfExists(DATA_MERGING_TIMEOUT_KEY, DATA_MERGING_TIMEOUT_CANCELLED_KEY);
@@ -841,7 +872,7 @@ public final class BackupRestore {
         Slog.i(
                 TAG,
                 "Scheduling download state timeout job with period: " + timeoutMillis + " millis");
-        BackupRestoreJobService.schedule(mContext, jobInfoBuilder.build(), this);
+        mJobScheduler.schedule(mContext, jobInfoBuilder.build(), this);
 
         // Set the start time
         mPreferenceHelper.insertOrReplacePreference(
@@ -895,7 +926,7 @@ public final class BackupRestore {
                         .setMinimumLatency(timeoutMillis)
                         .setOverrideDeadline(timeoutMillis + MINIMUM_LATENCY_WINDOW_MILLIS);
         Slog.i(TAG, "Scheduling staging timeout job with period: " + timeoutMillis + " millis");
-        BackupRestoreJobService.schedule(mContext, jobInfoBuilder.build(), this);
+        mJobScheduler.schedule(mContext, jobInfoBuilder.build(), this);
 
         // Set the start time
         mPreferenceHelper.insertOrReplacePreference(
@@ -948,7 +979,7 @@ public final class BackupRestore {
                         .setMinimumLatency(timeoutMillis)
                         .setOverrideDeadline(timeoutMillis + MINIMUM_LATENCY_WINDOW_MILLIS);
         Slog.i(TAG, "Scheduling merging timeout job with period: " + timeoutMillis + " millis");
-        BackupRestoreJobService.schedule(mContext, jobInfoBuilder.build(), this);
+        mJobScheduler.schedule(mContext, jobInfoBuilder.build(), this);
 
         // Set the start time
         mPreferenceHelper.insertOrReplacePreference(
@@ -999,7 +1030,7 @@ public final class BackupRestore {
                         .setMinimumLatency(timeoutMillis)
                         .setOverrideDeadline(timeoutMillis + MINIMUM_LATENCY_WINDOW_MILLIS);
         Slog.i(TAG, "Scheduling retry merging job with period: " + timeoutMillis + " millis");
-        BackupRestoreJobService.schedule(mContext, jobInfoBuilder.build(), this);
+        mJobScheduler.schedule(mContext, jobInfoBuilder.build(), this);
 
         // Set the start time
         mPreferenceHelper.insertOrReplacePreference(
@@ -1098,6 +1129,36 @@ public final class BackupRestore {
         }
     }
 
+    /** Inner class to separate out the scheduling layer to make it more testable. */
+    static class BackupRestoreJobScheduler {
+        void schedule(Context context, JobInfo jobInfo, BackupRestore backupRestore) {
+            BackupRestoreJobService.setCurrentBackupRestore(backupRestore);
+            final long token = Binder.clearCallingIdentity();
+            try {
+                int result =
+                        requireNonNull(context.getSystemService(JobScheduler.class))
+                                .forNamespace(BackupRestoreJobService.BACKUP_RESTORE_JOBS_NAMESPACE)
+                                .schedule(jobInfo);
+
+                if (result != JobScheduler.RESULT_SUCCESS) {
+                    Slog.e(
+                            TAG,
+                            "Failed to schedule: "
+                                    + jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY));
+                }
+            } finally {
+                Binder.restoreCallingIdentity(token);
+            }
+        }
+
+        /** Cancels all jobs for our namespace. */
+        void cancelAllJobs(Context context) {
+            requireNonNull(context.getSystemService(JobScheduler.class))
+                    .forNamespace(BackupRestoreJobService.BACKUP_RESTORE_JOBS_NAMESPACE)
+                    .cancelAll();
+        }
+    }
+
     /** Schedules the jobs for {@link BackupRestore} */
     public static final class BackupRestoreJobService extends JobService {
         public static final String BACKUP_RESTORE_JOBS_NAMESPACE = "BACKUP_RESTORE_JOBS_NAMESPACE";
@@ -1106,7 +1167,18 @@ public final class BackupRestore {
         private static final int BACKUP_RESTORE_JOB_ID = 1000;
 
         @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-        static volatile BackupRestore sBackupRestore;
+        private static volatile BackupRestore sBackupRestore;
+
+        /**
+         * Set the current backup restore.
+         *
+         * <p>Used for detecting user changes.
+         *
+         * @param backupRestore the current {@link BackupRestore}
+         */
+        public static void setCurrentBackupRestore(BackupRestore backupRestore) {
+            sBackupRestore = backupRestore;
+        }
 
         @Override
         public boolean onStartJob(JobParameters params) {
@@ -1136,33 +1208,6 @@ public final class BackupRestore {
         @Override
         public boolean onStopJob(JobParameters params) {
             return false;
-        }
-
-        static void schedule(Context context, JobInfo jobInfo, BackupRestore backupRestore) {
-            sBackupRestore = backupRestore;
-            final long token = Binder.clearCallingIdentity();
-            try {
-                int result =
-                        requireNonNull(context.getSystemService(JobScheduler.class))
-                                .forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE)
-                                .schedule(jobInfo);
-
-                if (result != JobScheduler.RESULT_SUCCESS) {
-                    Slog.e(
-                            TAG,
-                            "Failed to schedule: "
-                                    + jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY));
-                }
-            } finally {
-                Binder.restoreCallingIdentity(token);
-            }
-        }
-
-        /** Cancels all jobs for our namespace. */
-        public static void cancelAllJobs(Context context) {
-            requireNonNull(context.getSystemService(JobScheduler.class))
-                    .forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE)
-                    .cancelAll();
         }
     }
 }

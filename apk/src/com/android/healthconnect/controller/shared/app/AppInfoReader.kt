@@ -30,13 +30,13 @@ class AppInfoReader
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
-    private val applicationsInfoUseCase: IGetContributorAppInfoUseCase
+    private val applicationsInfoUseCase: IGetContributorAppInfoUseCase,
 ) {
 
     private var cache: HashMap<String, AppMetadata> = HashMap()
     private val packageManager = context.packageManager
 
-    suspend fun getAppMetadata(packageName: String): AppMetadata {
+    suspend fun getAppMetadata(packageName: String, isSystem: Boolean = false): AppMetadata {
         if (cache.containsKey(packageName)) {
             return cache[packageName]!!
         }
@@ -45,10 +45,9 @@ constructor(
                 AppMetadata(
                     packageName = packageName,
                     appName =
-                        packageManager
-                            .getApplicationLabel(getPackageInfo(packageName))
-                            .toString(),
-                    icon = packageManager.getApplicationIcon(packageName)
+                        packageManager.getApplicationLabel(getPackageInfo(packageName)).toString(),
+                    icon = packageManager.getApplicationIcon(packageName),
+                    isSystem = isSystem,
                 )
             cache[packageName] = app
             return app

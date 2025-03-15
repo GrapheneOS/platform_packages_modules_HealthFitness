@@ -17,10 +17,8 @@ package com.android.server.healthconnect.backuprestore;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
 
-import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.database.sqlite.SQLiteException;
@@ -83,7 +81,6 @@ public final class CloudBackupManager {
                         transactionManager,
                         fitnessRecordReadHelper,
                         appInfoHelper,
-                        deviceInfoHelper,
                         healthConnectMappings,
                         internalHealthConnectMappings,
                         changeLogsHelper,

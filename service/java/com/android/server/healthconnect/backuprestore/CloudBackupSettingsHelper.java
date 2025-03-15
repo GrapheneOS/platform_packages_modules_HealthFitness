@@ -93,29 +93,35 @@ public final class CloudBackupSettingsHelper {
         restoreAppInfo(newUserSettings.getAppInfoMap());
         mergePriorityLists(newUserSettings.getPriorityListMap());
         AutoDeleteFrequencyProto newAutoDeleteFrequency = newUserSettings.getAutoDeleteFrequency();
-        if (newAutoDeleteFrequency != AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED) {
+        if (newAutoDeleteFrequency != AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED
+                && newAutoDeleteFrequency != AutoDeleteFrequencyProto.UNRECOGNIZED) {
             mPreferenceHelper.insertOrReplacePreference(
                     AUTO_DELETE_PREF_KEY, newAutoDeleteFrequency.name());
         }
         EnergyUnitProto newEnergyUnit = newUserSettings.getEnergyUnitSetting();
-        if (newEnergyUnit != EnergyUnitProto.ENERGY_UNIT_UNSPECIFIED) {
+        if (newEnergyUnit != EnergyUnitProto.ENERGY_UNIT_UNSPECIFIED
+                && newEnergyUnit != EnergyUnitProto.UNRECOGNIZED) {
             mPreferenceHelper.insertOrReplacePreference(ENERGY_UNIT_PREF_KEY, newEnergyUnit.name());
         }
         TemperatureUnitProto newTemperatureUnit = newUserSettings.getTemperatureUnitSetting();
-        if (newTemperatureUnit != TemperatureUnitProto.TEMPERATURE_UNIT_UNSPECIFIED) {
+        if (newTemperatureUnit != TemperatureUnitProto.TEMPERATURE_UNIT_UNSPECIFIED
+                && newTemperatureUnit != TemperatureUnitProto.UNRECOGNIZED) {
             mPreferenceHelper.insertOrReplacePreference(
                     TEMPERATURE_UNIT_PREF_KEY, newTemperatureUnit.name());
         }
         HeightUnitProto newHeightUnit = newUserSettings.getHeightUnitSetting();
-        if (newHeightUnit != HeightUnitProto.HEIGHT_UNIT_UNSPECIFIED) {
+        if (newHeightUnit != HeightUnitProto.HEIGHT_UNIT_UNSPECIFIED
+                && newHeightUnit != HeightUnitProto.UNRECOGNIZED) {
             mPreferenceHelper.insertOrReplacePreference(HEIGHT_UNIT_PREF_KEY, newHeightUnit.name());
         }
         WeightUnitProto newWeightUnit = newUserSettings.getWeightUnitSetting();
-        if (newWeightUnit != WeightUnitProto.WEIGHT_UNIT_UNSPECIFIED) {
+        if (newWeightUnit != WeightUnitProto.WEIGHT_UNIT_UNSPECIFIED
+                && newWeightUnit != WeightUnitProto.UNRECOGNIZED) {
             mPreferenceHelper.insertOrReplacePreference(WEIGHT_UNIT_PREF_KEY, newWeightUnit.name());
         }
         DistanceUnitProto newDistanceUnit = newUserSettings.getDistanceUnitSetting();
-        if (newDistanceUnit != DistanceUnitProto.DISTANCE_UNIT_UNSPECIFIED) {
+        if (newDistanceUnit != DistanceUnitProto.DISTANCE_UNIT_UNSPECIFIED
+                && newDistanceUnit != DistanceUnitProto.UNRECOGNIZED) {
             mPreferenceHelper.insertOrReplacePreference(
                     DISTANCE_UNIT_PREF_KEY, newDistanceUnit.name());
         }

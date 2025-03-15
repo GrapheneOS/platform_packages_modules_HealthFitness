@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Přesunout na konec"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Tlačítko k přetáhnutí a zařazení aplikace <xliff:g id="SELECTED_APP">%s</xliff:g> do priority"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Tlačítko k odstranění aplikace <xliff:g id="SELECTED_APP">%s</xliff:g> z priority"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Tlačítko ke změně pořadí nebo odstranění aplikace <xliff:g id="SELECTED_APP">%s</xliff:g> ze seznamu zdrojů aplikací"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Dvojitým klepnutím a přetažením změníte pořadí"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> v seznamu: <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fitness, wellness"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"oprávnění"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, zdravotní údaje, zdravotní kategorie, přístup k datům, aktivita, tělesné míry, sledování cyklu, výživa, spánek, vitals"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Přidat aplikaci"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Upravit zdroje aplikací"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Výchozí nastavení zařízení"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Přesunout nahoru"</string>
+    <string name="move_down" msgid="4404970288236170693">"Přesunout dolů"</string>
+    <string name="remove" msgid="1340423400489007362">"Odstranit"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Data aplikace"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Tady se budou zobrazovat data z aplikace <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Tady se budou zobrazovat data z aplikací s přístupem na platformu Health Connect"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Trvale smazat vybrané záznamy aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> za <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Trvale smazat tento záznam aplikace <xliff:g id="APP_NAME">%s</xliff:g>?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Trvale smazat data (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) aplikace <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Zobrazit systémové aplikace"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Skrýt systémové aplikace"</string>
     <string name="on" msgid="8266542510798355807">"Zapnuto"</string>
     <string name="off" msgid="6996623844428550649">"Vypnuto"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Poslední přístup: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

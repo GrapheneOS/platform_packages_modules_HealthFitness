@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -27,7 +27,8 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.testapps.toolbox.Constants.HealthDataCategory
-import com.android.healthconnect.testapps.toolbox.read.components.DataTypeList
+import com.android.healthconnect.testapps.toolbox.read.components.DataTypeListScreen
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,12 +39,20 @@ class DataTypeListTest {
 
     @get:Rule val composeTestRule = createComposeRule()
 
+    @Before
+    fun setUp(){
+        composeTestRule.setContent {
+            DataTypeListScreen(
+                onNavigateToDataTypeDetailsScreen = {}
+            )
+        }
+    }
+
     @Test
     fun allCategoriesDisplayed(){
         val context: Context = ApplicationProvider.getApplicationContext()
         val categoryNodes = composeTestRule.onAllNodesWithTag("category")
 
-        composeTestRule.setContent { DataTypeList() }
 
         categoryNodes
             .filterToOne(hasText(context.getString(R.string.activity_category)))
@@ -77,49 +86,42 @@ class DataTypeListTest {
 
     @Test
     fun allDataTypesDisplayed_activity(){
-        composeTestRule.setContent { DataTypeList() }
 
         assertDataTypesDisplayed(HealthDataCategory.ACTIVITY)
     }
 
     @Test
     fun allDataTypesDisplayed_bodyMeasurements(){
-        composeTestRule.setContent { DataTypeList() }
 
         assertDataTypesDisplayed(HealthDataCategory.BODY_MEASUREMENTS)
     }
 
     @Test
     fun allDataTypesDisplayed_sleep(){
-        composeTestRule.setContent { DataTypeList() }
 
         assertDataTypesDisplayed(HealthDataCategory.SLEEP)
     }
 
     @Test
     fun allDataTypesDisplayed_vitals(){
-        composeTestRule.setContent { DataTypeList() }
 
         assertDataTypesDisplayed(HealthDataCategory.VITALS)
     }
 
     @Test
     fun allDataTypesDisplayed_cycleTracking(){
-        composeTestRule.setContent { DataTypeList() }
 
         assertDataTypesDisplayed(HealthDataCategory.CYCLE_TRACKING)
     }
 
     @Test
     fun allDataTypesDisplayed_nutrition(){
-        composeTestRule.setContent { DataTypeList() }
 
         assertDataTypesDisplayed(HealthDataCategory.NUTRITION)
     }
 
     @Test
     fun allDataTypesDisplayed_wellness(){
-        composeTestRule.setContent { DataTypeList() }
 
         assertDataTypesDisplayed(HealthDataCategory.WELLNESS)
     }

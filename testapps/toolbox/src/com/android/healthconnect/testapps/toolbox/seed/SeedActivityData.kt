@@ -1,17 +1,17 @@
-/**
- * Copyright (C) 2024 The Android Open Source Project
+/*
+ * Copyright (C) 2025 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.android.healthconnect.testapps.toolbox.seed
 
@@ -27,6 +27,7 @@ import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.ElevationGainedRecord
 import android.health.connect.datatypes.ExerciseCompletionGoal
 import android.health.connect.datatypes.ExerciseLap
+import android.health.connect.datatypes.ExercisePerformanceGoal
 import android.health.connect.datatypes.ExerciseSegment
 import android.health.connect.datatypes.ExerciseSegmentType
 import android.health.connect.datatypes.ExerciseSessionRecord
@@ -36,6 +37,9 @@ import android.health.connect.datatypes.PlannedExerciseBlock
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.PlannedExerciseStep
 import android.health.connect.datatypes.PlannedExerciseStep.EXERCISE_CATEGORY_ACTIVE
+import android.health.connect.datatypes.PlannedExerciseStep.EXERCISE_CATEGORY_COOLDOWN
+import android.health.connect.datatypes.PlannedExerciseStep.EXERCISE_CATEGORY_REST
+import android.health.connect.datatypes.PlannedExerciseStep.EXERCISE_CATEGORY_WARMUP
 import android.health.connect.datatypes.PowerRecord
 import android.health.connect.datatypes.PowerRecord.PowerRecordSample
 import android.health.connect.datatypes.SpeedRecord
@@ -61,12 +65,13 @@ import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData.Co
 import com.android.healthconnect.testapps.toolbox.data.ExerciseRoutesTestData.Companion.routeDataMap
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getMetaData
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.insertRecords
+import kotlinx.coroutines.runBlocking
 import java.time.Duration.ofDays
 import java.time.Duration.ofMinutes
+import java.time.Duration.ofSeconds
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
-import kotlinx.coroutines.runBlocking
 
 class SeedActivityData(private val context: Context, private val manager: HealthConnectManager) {
 
@@ -379,7 +384,8 @@ class SeedActivityData(private val context: Context, private val manager: Health
         val records =
             (1L..3).map { timeOffSet ->
                 val plannedExerciseBlocks = ArrayList<PlannedExerciseBlock>()
-                repeat(10) { plannedExerciseBlocks.add(getValidPlannedExerciseBlockData()) }
+                plannedExerciseBlocks.add(getValidPlannedExerciseBlockData())
+                plannedExerciseBlocks.add(getCardioPlannedExerciseBlockData())
                 getPlannedExerciseSessionRecord(
                     plannedExerciseBlocks,
                     start.plus(ofMinutes(timeOffSet)),
@@ -907,12 +913,89 @@ class SeedActivityData(private val context: Context, private val manager: Health
                 time.plusSeconds(30),
             )
             .setBlocks(plannedExerciseBlocks)
+            .setExerciseType(ExerciseSessionType.EXERCISE_SESSION_TYPE_WEIGHTLIFTING)
+            .setNotes("Gym training notes")
             .build()
     }
 
     private fun getValidPlannedExerciseBlockData(): PlannedExerciseBlock {
+        val warmupSet =
+            PlannedExerciseStep.Builder(
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_WEIGHTLIFTING,
+                    EXERCISE_CATEGORY_WARMUP,
+                    ExerciseCompletionGoal.RepetitionsGoal(Random.nextInt(10, 20)),
+                )
+                .build()
+        val activeSet =
+            PlannedExerciseStep.Builder(
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_WEIGHTLIFTING,
+                    EXERCISE_CATEGORY_ACTIVE,
+                    ExerciseCompletionGoal.RepetitionsGoal(Random.nextInt(20, 30)),
+                )
+                .build()
+        val cooldownSet =
+            PlannedExerciseStep.Builder(
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_WEIGHTLIFTING,
+                    EXERCISE_CATEGORY_COOLDOWN,
+                    ExerciseCompletionGoal.RepetitionsGoal(Random.nextInt(20, 30)),
+                )
+                .build()
+        val rest =
+            PlannedExerciseStep.Builder(
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_STRETCHING,
+                    EXERCISE_CATEGORY_REST,
+                    ExerciseCompletionGoal.DurationGoal(ofSeconds(30)),
+                )
+                .build()
         return PlannedExerciseBlock.Builder(Random.nextInt(1, 5))
-            .addStep(getValidPlannedExerciseStepData())
+            .addStep(warmupSet)
+            .addStep(activeSet)
+            .addStep(cooldownSet)
+            .addStep(rest)
+            .build()
+    }
+
+    private fun getCardioPlannedExerciseBlockData(): PlannedExerciseBlock {
+        val warmupSet =
+            PlannedExerciseStep.Builder(
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING_TREADMILL,
+                    EXERCISE_CATEGORY_WARMUP,
+                    ExerciseCompletionGoal.DurationGoal(ofMinutes(5)),
+                )
+                .addPerformanceGoal(
+                    ExercisePerformanceGoal.SpeedGoal(
+                        Velocity.fromMetersPerSecond(100.0),
+                        Velocity.fromMetersPerSecond(200.0),
+                    )
+                )
+                .build()
+        val activeSet =
+            PlannedExerciseStep.Builder(
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING_TREADMILL,
+                    EXERCISE_CATEGORY_WARMUP,
+                    ExerciseCompletionGoal.DurationGoal(ofMinutes(45)),
+                )
+                .addPerformanceGoal(ExercisePerformanceGoal.HeartRateGoal(90, 110))
+                .build()
+        val cooldownSet =
+            PlannedExerciseStep.Builder(
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING_TREADMILL,
+                    EXERCISE_CATEGORY_WARMUP,
+                    ExerciseCompletionGoal.DurationGoal(ofMinutes(10)),
+                )
+                .build()
+        val rest =
+            PlannedExerciseStep.Builder(
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_STRETCHING,
+                    EXERCISE_CATEGORY_REST,
+                    ExerciseCompletionGoal.DurationGoal(ofSeconds(180)),
+                )
+                .build()
+        return PlannedExerciseBlock.Builder(Random.nextInt(1, 5))
+            .addStep(warmupSet)
+            .addStep(activeSet)
+            .addStep(cooldownSet)
+            .addStep(rest)
             .build()
     }
 

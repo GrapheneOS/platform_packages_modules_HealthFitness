@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"移到底部"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"㩒呢個制就可以喺優先清單度拖動同重新排「<xliff:g id="SELECTED_APP">%s</xliff:g>」"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"㩒呢個制就可以喺優先清單度移除「<xliff:g id="SELECTED_APP">%s</xliff:g>」"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"㩒一下呢個掣就可以重新排序，或者喺應用程式來源清單度移除「<xliff:g id="SELECTED_APP">%s</xliff:g>」"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"㩒兩下然後拖動就可以重新排序"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="SELECTED_APP">%2$s</xliff:g>清單嘅<xliff:g id="POSITION">%1$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"健身, 健康"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"權限"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, 健康資料, 健康類型, 資料存取權, 活動, 身體測量數據, 經期追蹤, 營養, 睡眠, 健康數據"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"新增應用程式"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"編輯應用程式來源清單"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"裝置預設設定"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"向上移"</string>
+    <string name="move_down" msgid="4404970288236170693">"向下移"</string>
+    <string name="remove" msgid="1340423400489007362">"移除"</string>
     <string name="app_data_title" msgid="6499967982291000837">"應用程式資料"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」的資料將在這裡顯示"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"這裡會顯示可存取「健康資料同步」的應用程式的資料"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>的所選「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"要永久刪除此「<xliff:g id="APP_NAME">%s</xliff:g>」項目嗎？"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"要永久刪除「<xliff:g id="APP_NAME">%2$s</xliff:g>」的<xliff:g id="DATA_TYPE">%1$s</xliff:g>資料嗎？"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"顯示系統"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"隱藏系統"</string>
     <string name="on" msgid="8266542510798355807">"開啟"</string>
     <string name="off" msgid="6996623844428550649">"關閉"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"上次存取時間：<xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

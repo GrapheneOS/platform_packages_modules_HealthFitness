@@ -16,7 +16,6 @@
 
 package com.android.healthconnect.testapps.toolbox.read.components
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,7 +35,10 @@ import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
 
 
 @Composable
-fun DataTypeList(modifier: Modifier = Modifier){
+fun DataTypeListScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToDataTypeDetailsScreen: (HealthPermissionType) -> Unit
+){
 
     val categories = HealthDataCategory.entries
     val categoriesAndDataTypes = mutableListOf<Any>()
@@ -59,6 +61,10 @@ fun DataTypeList(modifier: Modifier = Modifier){
                         modifier = Modifier
                             .padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
                             .testTag("dataType")
+                            .clickable {
+                                onNavigateToDataTypeDetailsScreen(categoryAndDataType)
+                            }
+                            .fillMaxWidth()
                     )
                 }
                 is HealthDataCategory -> {

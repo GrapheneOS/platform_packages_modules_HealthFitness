@@ -23,27 +23,29 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.health.connect.HealthConnectManager;
+import android.content.pm.PackageManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
+import com.android.server.healthconnect.testing.HealthPermissionsMocker;
 import com.android.server.healthconnect.testing.TestUtils;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
@@ -55,6 +57,8 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,13 +73,8 @@ public class HealthDataCategoryPriorityHelperTest {
     private static final String APP_PACKAGE_NAME_3 = "android.healthconnect.mocked.app3";
     private static final String APP_PACKAGE_NAME_4 = "android.healthconnect.mocked.app4";
 
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
-
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(HealthConnectManager.class)
-                    .build();
 
     @Mock private PackageInfoUtils mPackageInfoUtils;
     @Mock private PreferenceHelper mPreferenceHelper;
@@ -84,6 +83,7 @@ public class HealthDataCategoryPriorityHelperTest {
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
+    @Mock private PackageManager mPackageManager;
 
     private long mAppPackageId;
     private long mAppPackageId2;
@@ -96,7 +96,11 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @Before
     public void setUp() throws Exception {
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        Context context = spy(InstrumentationRegistry.getInstrumentation().getContext());
+        Context applicationContext = spy(ApplicationProvider.getApplicationContext());
+        doReturn(mPackageManager).when(applicationContext).getPackageManager();
+        doReturn(applicationContext).when(context).getApplicationContext();
+        HealthPermissionsMocker.mockPackageManagerPermissions(mPackageManager);
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
@@ -443,7 +447,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED,
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of(packageInfo1, packageInfo2));
 
@@ -504,7 +507,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED,
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of(packageInfo1, packageInfo2));
 
@@ -570,7 +572,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED,
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of(packageInfo1, packageInfo2));
 
@@ -645,7 +646,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED,
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of(packageInfo1, packageInfo2));
 
@@ -717,7 +717,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED,
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of(packageInfo1, packageInfo2));
 
@@ -777,7 +776,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED,
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of(packageInfo1, packageInfo2));
 
@@ -855,7 +853,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED,
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of(packageInfo1, packageInfo2));
 
@@ -921,7 +918,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED,
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of(packageInfo1, packageInfo2));
         // Inactive apps {
@@ -1196,7 +1192,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED,
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         when(mPackageInfoUtils.getPackageInfoWithPermissionsAsUser(
                         eq(APP_PACKAGE_NAME), any(), any()))
                 .thenReturn(packageInfo1);
@@ -1241,7 +1236,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     HealthPermissions.READ_HEART_RATE,
                     HealthPermissions.WRITE_OVULATION_TEST
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         packageInfo.requestedPermissionsFlags =
                 new int[] {0, PackageInfo.REQUESTED_PERMISSION_GRANTED, 0, 0};
 
@@ -1259,7 +1253,6 @@ public class HealthDataCategoryPriorityHelperTest {
                     HealthPermissions.READ_HEART_RATE,
                     HealthPermissions.WRITE_OVULATION_TEST
                 };
-        when(HealthConnectManager.isHealthPermission(any(), any())).thenReturn(true);
         packageInfo.requestedPermissionsFlags = new int[] {0, 0, 0, 0};
         when(mPackageInfoUtils.getPackageInfoWithPermissionsAsUser(any(), any(), any()))
                 .thenReturn(packageInfo);

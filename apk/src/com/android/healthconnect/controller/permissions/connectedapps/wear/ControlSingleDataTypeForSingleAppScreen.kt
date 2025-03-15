@@ -29,13 +29,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material3.RadioButton
-import androidx.wear.compose.material3.Text
+import androidx.compose.ui.unit.sp
+import androidx.wear.compose.material.Text
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
+import com.android.permissioncontroller.wear.permission.components.material2.ToggleChip
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
+import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionToggleControlType
 
 /** Wear Settings Permissions Screen to allow/disallow a single data type permission for an app. */
 @Composable
@@ -61,7 +64,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
     val backgroundReadStatus by viewModel.appToBackgroundReadStatus.collectAsState()
     val isBackgroundPermissionRequested = appMetadata!! in backgroundReadStatus
 
-    ScrollableScreen(asScalingList = true, showTimeText = false, title = appMetadata!!.appName) {
+    ScrollableScreen(asScalingList = true, showTimeText = true, title = appMetadata!!.appName) {
         // Data type text.
         item {
             Row(
@@ -74,40 +77,47 @@ fun ControlSingleDataTypeForSingleAppScreen(
 
         // "Allow" radio button.
         item {
-            RadioButton(
+            ToggleChip(
+                checked = allowed,
+                onCheckedChanged = { checked ->
+                    if (checked) {
+                        viewModel.updatePermission(healthPermission, appMetadata!!, grant = true)
+                        allowed = true
+                    }
+                },
+                label = stringResource(R.string.request_permissions_allow),
+                toggleControl = WearPermissionToggleControlType.Radio,
                 modifier = Modifier.fillMaxWidth(),
                 enabled = true,
-                selected = allowed,
-                onSelect = {
-                    viewModel.updatePermission(healthPermission, appMetadata!!, grant = true)
-                    allowed = true
-                },
-                label = { Text(stringResource(R.string.request_permissions_allow)) },
             )
         }
 
         // "Don't allow" radio button.
         item {
-            RadioButton(
+            ToggleChip(
+                checked = !allowed,
+                onCheckedChanged = { checked ->
+                    if (checked) {
+                        viewModel.updatePermission(healthPermission, appMetadata!!, grant = false)
+                        allowed = false
+                    }
+                },
+                label = stringResource(R.string.request_permissions_dont_allow),
+                toggleControl = WearPermissionToggleControlType.Radio,
                 modifier = Modifier.fillMaxWidth(),
                 enabled = true,
-                selected = !allowed,
-                onSelect = {
-                    viewModel.updatePermission(healthPermission, appMetadata!!, grant = false)
-                    allowed = false
-                },
-                label = { Text(stringResource(R.string.request_permissions_dont_allow)) },
             )
         }
 
         // Button to allow/disallow background permission.
-        item {
-            WearPermissionButton(
-                label = stringResource(R.string.additional_access_label),
-                labelMaxLines = 3,
-                onClick = { onAdditionalPermissionClick(packageName) },
-                enabled = isBackgroundPermissionRequested,
-            )
+        if (isBackgroundPermissionRequested) {
+            item {
+                WearPermissionButton(
+                    label = stringResource(R.string.additional_access_label),
+                    labelMaxLines = 3,
+                    onClick = { onAdditionalPermissionClick(packageName) },
+                )
+            }
         }
 
         // Allow mode text.
@@ -118,8 +128,14 @@ fun ControlSingleDataTypeForSingleAppScreen(
                 } else {
                     R.string.current_allow_mode_while_in_use
                 }
-            Row(horizontalArrangement = Arrangement.Start) {
-                Text(stringResource(resourceId, appMetadata!!.appName))
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.fillMaxWidth().padding(start = 12.dp),
+            ) {
+                Text(
+                    text = stringResource(resourceId, appMetadata!!.appName),
+                    style = TextStyle(fontSize = 10.sp),
+                )
             }
         }
     }

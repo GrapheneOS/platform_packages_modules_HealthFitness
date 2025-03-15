@@ -120,7 +120,13 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
 
     private fun createRemoveAllAppsAccessDialog(apps: List<ConnectedAppMetadata>) {
-        val body = layoutInflater.inflate(R.layout.dialog_message_with_checkbox, null)
+        val body =
+            layoutInflater.inflate(
+                if (SettingsThemeHelper.isExpressiveTheme(requireContext()))
+                    R.layout.dialog_message_with_checkbox_expressive
+                else R.layout.dialog_message_with_checkbox_legacy,
+                null,
+            )
         body.findViewById<TextView>(R.id.dialog_message).apply {
             text = getString(R.string.permissions_disconnect_all_dialog_message)
         }

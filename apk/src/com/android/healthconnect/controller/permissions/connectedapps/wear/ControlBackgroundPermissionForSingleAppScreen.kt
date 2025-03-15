@@ -53,17 +53,23 @@ fun ControlBackgroundReadForSingleAppScreen(
                     .lowercaseLabel
             )
         }
-
-    ScrollableScreen(
-        asScalingList = true,
-        showTimeText = false,
-        title = stringResource(R.string.allow_all_the_time_prompt, appName),
-        subtitle =
+    val anyDataTypesAllowed = !allowedDataTypesStrings.isNullOrEmpty()
+    val subtitle =
+        if (anyDataTypesAllowed) {
             stringResource(
                 R.string.current_access,
                 appName,
                 ListFormatter.getInstance().format(allowedDataTypesStrings),
-            ),
+            )
+        } else {
+            stringResource(R.string.additional_access_background_footer)
+        }
+
+    ScrollableScreen(
+        asScalingList = true,
+        showTimeText = true,
+        title = stringResource(R.string.allow_all_the_time_prompt, appName),
+        subtitle = subtitle,
     ) {
         // Allow all the time button.
         item {
@@ -78,6 +84,7 @@ fun ControlBackgroundReadForSingleAppScreen(
                     )
                     onBackClick()
                 },
+                enabled = anyDataTypesAllowed,
             )
         }
 
@@ -94,6 +101,7 @@ fun ControlBackgroundReadForSingleAppScreen(
                     )
                     onBackClick()
                 },
+                enabled = anyDataTypesAllowed,
             )
         }
 

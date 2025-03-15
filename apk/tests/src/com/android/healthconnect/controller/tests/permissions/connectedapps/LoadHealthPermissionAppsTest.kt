@@ -89,7 +89,7 @@ class LoadHealthPermissionAppsTest {
     fun appsWithHealthPermissions_correctlyCategorisedAsAllowedOrDenied() = runTest {
         // appsWithHealthPermissions
         whenever(healthPermissionReader.getAppsWithHealthPermissions())
-            .thenReturn(listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2))
+            .thenReturn(mapOf(TEST_APP_PACKAGE_NAME to false, TEST_APP_PACKAGE_NAME_2 to true))
         loadGrantedHealthPermissionsUseCase.updateData(
             TEST_APP_PACKAGE_NAME,
             listOf("PERM_1", "PERM_2"),
@@ -111,7 +111,8 @@ class LoadHealthPermissionAppsTest {
 
         val connectedAppsList = loadHealthPermissionApps.invoke()
         val testAppMetadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME)
-        val testApp2Metadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME_2)
+        val testApp2Metadata =
+            appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME_2, isSystem = true)
         assertThat(connectedAppsList)
             .containsExactlyElementsIn(
                 listOf(
@@ -133,7 +134,7 @@ class LoadHealthPermissionAppsTest {
     fun appsWithData_butNoHealthPermissions_correctlyCategorisedAsInactive() = runTest {
         // appsWithHealthPermissions
         whenever(healthPermissionReader.getAppsWithHealthPermissions())
-            .thenReturn(listOf(TEST_APP_PACKAGE_NAME))
+            .thenReturn(mapOf(TEST_APP_PACKAGE_NAME to false))
         loadGrantedHealthPermissionsUseCase.updateData(
             TEST_APP_PACKAGE_NAME,
             listOf("PERM_1", "PERM_2"),
@@ -177,7 +178,7 @@ class LoadHealthPermissionAppsTest {
         runTest {
             // appsWithHealthPermissions
             whenever(healthPermissionReader.getAppsWithHealthPermissions())
-                .thenReturn(listOf(TEST_APP_PACKAGE_NAME))
+                .thenReturn(mapOf(TEST_APP_PACKAGE_NAME to false))
             loadGrantedHealthPermissionsUseCase.updateData(TEST_APP_PACKAGE_NAME, listOf())
             val testAppMetadata = appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME)
             val oldTestAppMetadata =
@@ -219,7 +220,12 @@ class LoadHealthPermissionAppsTest {
     fun appsWithOldHealthPermissions_andNewPermissions_correctlyCategorisedAsAllowed() = runTest {
         // appsWithHealthPermissions
         whenever(healthPermissionReader.getAppsWithHealthPermissions())
-            .thenReturn(listOf(TEST_APP_PACKAGE_NAME, OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME))
+            .thenReturn(
+                mapOf(
+                    TEST_APP_PACKAGE_NAME to false,
+                    OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME to false,
+                )
+            )
         loadGrantedHealthPermissionsUseCase.updateData(TEST_APP_PACKAGE_NAME, listOf("PERM_1"))
         loadGrantedHealthPermissionsUseCase.updateData(
             OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME,
@@ -265,7 +271,11 @@ class LoadHealthPermissionAppsTest {
         // appsWithHealthPermissions
         whenever(healthPermissionReader.getAppsWithHealthPermissions())
             .thenReturn(
-                listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2, TEST_APP_PACKAGE_NAME_3)
+                mapOf(
+                    TEST_APP_PACKAGE_NAME to false,
+                    TEST_APP_PACKAGE_NAME_2 to false,
+                    TEST_APP_PACKAGE_NAME_3 to false,
+                )
             )
         loadGrantedHealthPermissionsUseCase.updateData(
             TEST_APP_PACKAGE_NAME,

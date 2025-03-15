@@ -36,6 +36,7 @@ android_library {
     static_libs: [
         "kotlin-stdlib",
         "kotlinx-coroutines-android",
+        "kotlinx_serialization_core",
         "androidx.documentfile_documentfile",
         "androidx.navigation_navigation-common-ktx",
         "androidx.navigation_navigation-fragment-ktx",
@@ -57,6 +58,9 @@ android_library {
         "androidx.compose.ui_ui-tooling",
     ],
     kotlincflags: ["-Xjvm-default=all"],
+    kotlin_plugins: [
+        "kotlin-serialize-compiler-plugin",
+    ],
 }
 
 android_app {

@@ -55,6 +55,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -64,14 +67,14 @@ import java.util.List;
 @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
 public class DatabaseStatsCollectorTest {
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final TemporaryFolder mTemporaryFolder = new TemporaryFolder();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final TemporaryFolder mTemporaryFolder = new TemporaryFolder();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private static final String PACKAGE_NAME = "com.my.package";
     private static final Instant INSTANT_NOW = Instant.now();
+
+    @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
 
     private long mPackageAppInfoId;
 
@@ -86,7 +89,7 @@ public class DatabaseStatsCollectorTest {
         FakeTimeSource mFakeTimeSource = new FakeTimeSource(INSTANT_NOW);
         mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
-                        .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
                         .setTimeSource(mFakeTimeSource)

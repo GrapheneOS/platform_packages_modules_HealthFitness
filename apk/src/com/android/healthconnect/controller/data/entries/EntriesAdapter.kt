@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModel
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.recyclerview.DeletionViewBinder
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
-import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 
 /**
@@ -30,8 +29,8 @@ import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
  * 2. adding/ removing select all option in top of the list
  * 3. showing / hiding aggregation.
  */
-class EntriesAdapter(
-    private val itemClassToItemViewTypeMap: Map<Class<*>, Int>,
+open class EntriesAdapter(
+    itemClassToItemViewTypeMap: Map<Class<*>, Int>,
     private val itemViewTypeToViewBinderMap: Map<Int, ViewBinder<*, out View>>,
     private val viewModel: ViewModel,
 ) : RecyclerViewAdapter(itemClassToItemViewTypeMap, itemViewTypeToViewBinderMap) {
@@ -42,15 +41,14 @@ class EntriesAdapter(
     private var deleteMap: Map<String, DataType> = emptyMap()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
         val viewBinder: ViewBinder<Any, View> =
             checkNotNull(itemViewTypeToViewBinderMap[getItemViewType(position)])
                 as ViewBinder<Any, View>
 
-        val item = getItem(position)
+        val item: FormattedEntry = getItem(position)
 
-        if (viewBinder is SimpleViewBinder) {
-            viewBinder.bind(holder.itemView, item, position)
-        } else if (item is FormattedEntry.SelectAllHeader) {
+        if (item is FormattedEntry.SelectAllHeader) {
             (viewBinder as DeletionViewBinder).bind(
                 holder.itemView,
                 item,
@@ -60,7 +58,7 @@ class EntriesAdapter(
             )
         } else if (viewBinder is DeletionViewBinder && viewModel is EntriesViewModel) {
             this.deleteMap = viewModel.mapOfEntriesToBeDeleted.value.orEmpty()
-            isChecked = (item as FormattedEntry).uuid in deleteMap
+            isChecked = item.uuid in deleteMap
             viewBinder.bind(holder.itemView, item, position, isDeletionState, isChecked)
         }
     }
@@ -111,6 +109,14 @@ class EntriesAdapter(
             entriesList.removeAt(0)
             updateData(entriesList)
         }
+    }
+
+    override fun getItem(position: Int): FormattedEntry {
+        val item = super.getItem(position)
+        if (item !is FormattedEntry) {
+            throw IllegalStateException("Entries adapter can only render FormattedEntry!")
+        }
+        return item
     }
 
     class Builder {

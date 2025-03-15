@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"ຍ້າຍໄປລຸ່ມສຸດ"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"ປຸ່ມສຳລັບລາກ ແລະ ຈັດຮຽງ <xliff:g id="SELECTED_APP">%s</xliff:g> ໃໝ່ໃນລາຍຊື່ສຳຄັນ"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"ປຸ່ມສຳລັບລຶບ <xliff:g id="SELECTED_APP">%s</xliff:g> ອອກຈາກລາຍຊື່ສຳຄັນ"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"ປຸ່ມເພື່ອຍ້າຍ ຫຼື ລຶບ <xliff:g id="SELECTED_APP">%s</xliff:g> ອອກຈາກລາຍຊື່ແຫຼ່ງທີ່ມາແອັບ"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"ແຕະສອງເທື່ອແລ້ວລາກເພື່ອຈັດຮຽງຄືນໃໝ່"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> ໃນລາຍຊື່ <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"ການອອກກຳລັງກາຍ, ສຸຂະພາບ"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"ການອະນຸຍາດ"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"Health Connect, ຂໍ້ມູນສຸຂະພາບ, ໝວດໝູ່ສຸຂະພາບ, ສິດເຂົ້າເຖິງຂໍ້ມູນ, ການເຄື່ອນໄຫວ, ການວັດແທກຮ່າງກາຍ, ການຕິດຕາມຮອບວຽນ, ໂພຊະນາການ, ການນອນ, ສັນຍານຊີບ"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"ເພີ່ມແອັບ"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"ແກ້ໄຂແຫຼ່ງທີ່ມາຂອງແອັບ"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ຄ່າເລີ່ມຕົ້ນອຸປະກອນ"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"ຍ້າຍຂຶ້ນ"</string>
+    <string name="move_down" msgid="4404970288236170693">"ຍ້າຍລົງ"</string>
+    <string name="remove" msgid="1340423400489007362">"ລຶບອອກ"</string>
     <string name="app_data_title" msgid="6499967982291000837">"ຂໍ້ມູນແອັບ"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"ຂໍ້ມູນຈາກ <xliff:g id="APP_NAME">%1$s</xliff:g> ຈະສະແດງຢູ່ບ່ອນນີ້"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"ຂໍ້ມູນຈາກແອັບທີ່ມີສິດເຂົ້າເຖິງ Health Connect ຈະສະແດງຢູ່ບ່ອນນີ້"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"ລຶບຂໍ້ມູນ <xliff:g id="APP_NAME">%1$s</xliff:g> ທີ່ເລືອກສຳລັບ <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g> ອອກຢ່າງຖາວອນບໍ?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"ລຶບຂໍ້ມູນ <xliff:g id="APP_NAME">%s</xliff:g> ນີ້ອອກຢ່າງຖາວອນບໍ?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"ລຶບຂໍ້ມູນ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ສຳລັບ <xliff:g id="APP_NAME">%2$s</xliff:g> ບໍ?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"ສະແດງລະບົບ"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"ເຊື່ອງລະບົບ"</string>
     <string name="on" msgid="8266542510798355807">"ເປີດ"</string>
     <string name="off" msgid="6996623844428550649">"ປິດ"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"ເຂົ້າເຖິງເມື່ອ <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

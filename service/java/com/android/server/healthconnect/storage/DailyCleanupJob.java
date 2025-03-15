@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage;
 
 import android.util.Slog;
 
+import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
@@ -26,7 +27,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsReques
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
-import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.PreferencesManager;
 
@@ -46,7 +46,7 @@ public class DailyCleanupJob {
     private final PreferencesManager mPreferencesManager;
     private final AppInfoHelper mAppInfoHelper;
     private final TransactionManager mTransactionManager;
-    private final AccessLogsHelper mAccessLogsHelper;
+    private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private final ActivityDateHelper mActivityDateHelper;
 
     public DailyCleanupJob(
@@ -54,13 +54,13 @@ public class DailyCleanupJob {
             PreferencesManager preferencesManager,
             AppInfoHelper appInfoHelper,
             TransactionManager transactionManager,
-            AccessLogsHelper accessLogsHelper,
+            FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
             ActivityDateHelper activityDateHelper) {
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mPreferencesManager = preferencesManager;
         mAppInfoHelper = appInfoHelper;
         mTransactionManager = transactionManager;
-        mAccessLogsHelper = accessLogsHelper;
+        mFitnessRecordDeleteHelper = fitnessRecordDeleteHelper;
         mActivityDateHelper = activityDateHelper;
     }
 
@@ -99,10 +99,7 @@ public class DailyCleanupJob {
                                 deleteTableRequests.add(request);
                             });
             try {
-                mTransactionManager.deleteAllRecords(
-                        new DeleteTransactionRequest(deleteTableRequests),
-                        /* shouldRecordDeleteAccessLogs= */ false,
-                        mAccessLogsHelper);
+                mFitnessRecordDeleteHelper.deleteRecordsUnrestricted(deleteTableRequests);
             } catch (Exception exception) {
                 Slog.e(TAG, "Auto delete for records failed", exception);
                 // Don't rethrow as that will crash system_server

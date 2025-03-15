@@ -126,7 +126,6 @@ public class BackupRestoreTest {
     @Rule(order = 2)
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(BackupRestore.BackupRestoreJobService.class)
                     .mockStatic(SQLiteDatabase.class)
                     .spyStatic(GrantTimeXmlHelper.class)
                     .setStrictness(Strictness.LENIENT)
@@ -142,6 +141,7 @@ public class BackupRestoreTest {
     @Mock private MigrationStateManager mMockMigrationStateManager;
     @Mock private Context mContext;
     @Mock private JobScheduler mJobScheduler;
+    @Mock private BackupRestore.BackupRestoreJobScheduler mBackupRestoreJobScheduler;
     @Captor ArgumentCaptor<JobInfo> mJobInfoArgumentCaptor;
     private BackupRestore mBackupRestore;
     private final PreferenceHelper mFakePreferenceHelper = new FakePreferenceHelper();
@@ -182,7 +182,8 @@ public class BackupRestoreTest {
                         healthConnectInjector.getDeviceInfoHelper(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
                         healthConnectInjector.getThreadScheduler(),
-                        healthConnectInjector.getEnvironmentDataDirectory());
+                        healthConnectInjector.getEnvironmentDataDirectory(),
+                        mBackupRestoreJobScheduler);
     }
 
     @After
@@ -251,12 +252,9 @@ public class BackupRestoreTest {
 
         mBackupRestore.updateDataDownloadState(testDownloadStateSet);
 
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
 
         assertThat(mFakePreferenceHelper.getPreference(DATA_DOWNLOAD_STATE_KEY))
                 .isEqualTo(String.valueOf(testDownloadStateSet));
@@ -272,12 +270,9 @@ public class BackupRestoreTest {
                 DATA_DOWNLOAD_STATE_KEY, String.valueOf(testDownloadStateSet));
 
         mBackupRestore.updateDataDownloadState(testDownloadStateSet);
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         assertThat(mFakePreferenceHelper.getPreference(DATA_DOWNLOAD_STATE_KEY))
                 .isEqualTo(String.valueOf(testDownloadStateSet));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
@@ -292,12 +287,9 @@ public class BackupRestoreTest {
 
         // forcing the state because we want to this state to set even when it's already set.
         mBackupRestore.setInternalRestoreState(INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING, true);
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         assertThat(mFakePreferenceHelper.getPreference(DATA_RESTORE_STATE_KEY))
                 .isEqualTo(String.valueOf(INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
@@ -312,12 +304,9 @@ public class BackupRestoreTest {
 
         // forcing the state because we want to this state to set even when it's already set.
         mBackupRestore.setInternalRestoreState(INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS, true);
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         assertThat(mFakePreferenceHelper.getPreference(DATA_RESTORE_STATE_KEY))
                 .isEqualTo(String.valueOf(INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
@@ -332,12 +321,9 @@ public class BackupRestoreTest {
 
         // forcing the state because we want to this state to set even when it's already set.
         mBackupRestore.setInternalRestoreState(INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS, true);
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         assertThat(mFakePreferenceHelper.getPreference(DATA_RESTORE_STATE_KEY))
                 .isEqualTo(String.valueOf(INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
@@ -352,12 +338,9 @@ public class BackupRestoreTest {
                 DATA_DOWNLOAD_STATE_KEY, String.valueOf(testDownloadStateSet));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_DOWNLOAD_TIMEOUT_KEY);
@@ -370,12 +353,9 @@ public class BackupRestoreTest {
                 DATA_DOWNLOAD_STATE_KEY, String.valueOf(testDownloadStateSet));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_DOWNLOAD_TIMEOUT_KEY);
@@ -387,12 +367,9 @@ public class BackupRestoreTest {
                 DATA_DOWNLOAD_STATE_KEY, String.valueOf(DATA_DOWNLOAD_STARTED));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(DATA_DOWNLOAD_TIMEOUT_INTERVAL_MILLIS);
@@ -413,12 +390,9 @@ public class BackupRestoreTest {
                         now.minusMillis(DATA_DOWNLOAD_TIMEOUT_INTERVAL_MILLIS).toEpochMilli()));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(0);
@@ -433,12 +407,9 @@ public class BackupRestoreTest {
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_STAGING_TIMEOUT_KEY);
@@ -450,12 +421,9 @@ public class BackupRestoreTest {
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_STAGING_TIMEOUT_KEY);
@@ -467,12 +435,9 @@ public class BackupRestoreTest {
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_WAITING_FOR_STAGING));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(DATA_STAGING_TIMEOUT_INTERVAL_MILLIS);
@@ -493,12 +458,9 @@ public class BackupRestoreTest {
                         now.minusMillis(DATA_STAGING_TIMEOUT_INTERVAL_MILLIS).toEpochMilli()));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)));
+        verify(mBackupRestoreJobScheduler)
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(0);
@@ -513,13 +475,9 @@ public class BackupRestoreTest {
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)),
-                atLeastOnce());
+        verify(mBackupRestoreJobScheduler, atLeastOnce())
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
 
         JobInfo jobInfo = findMergeTimeoutJob(mJobInfoArgumentCaptor.getAllValues());
         assertWithMessage("Merging timeout job not found").that(jobInfo).isNotNull();
@@ -550,13 +508,9 @@ public class BackupRestoreTest {
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_MERGING_IN_PROGRESS));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)),
-                atLeastOnce());
+        verify(mBackupRestoreJobScheduler, atLeastOnce())
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
 
         JobInfo jobInfo = findMergeTimeoutJob(mJobInfoArgumentCaptor.getAllValues());
         assertWithMessage("Merging timeout job not found").that(jobInfo).isNotNull();
@@ -576,13 +530,9 @@ public class BackupRestoreTest {
                         now.minusMillis(DATA_MERGING_TIMEOUT_INTERVAL_MILLIS).toEpochMilli()));
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)),
-                atLeastOnce());
+        verify(mBackupRestoreJobScheduler, atLeastOnce())
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
 
         JobInfo jobInfo = findMergeTimeoutJob(mJobInfoArgumentCaptor.getAllValues());
         assertWithMessage("Merging timeout job not found").that(jobInfo).isNotNull();
@@ -598,13 +548,9 @@ public class BackupRestoreTest {
         when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)),
-                timeout(2000));
+        verify(mBackupRestoreJobScheduler, timeout(2000))
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_MERGING_RETRY_KEY);
@@ -619,13 +565,9 @@ public class BackupRestoreTest {
         when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)),
-                timeout(2000));
+        verify(mBackupRestoreJobScheduler, timeout(2000))
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_MERGING_RETRY_KEY);
@@ -639,13 +581,9 @@ public class BackupRestoreTest {
         when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)),
-                timeout(2000));
+        verify(mBackupRestoreJobScheduler, timeout(2000))
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(DATA_MERGING_RETRY_DELAY_MILLIS);
@@ -668,13 +606,9 @@ public class BackupRestoreTest {
         when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
 
         mBackupRestore.scheduleAllJobs();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)),
-                timeout(2000));
+        verify(mBackupRestoreJobScheduler, timeout(2000))
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
 
         assertThat(jobInfo.getMinLatencyMillis()).isEqualTo(0);
@@ -686,8 +620,7 @@ public class BackupRestoreTest {
     @Test
     public void testCancelAllJobs_cancelsAllJobs() {
         mBackupRestore.cancelAllJobs();
-        ExtendedMockito.verify(
-                () -> BackupRestore.BackupRestoreJobService.cancelAllJobs(eq(mServiceContext)));
+        verify(mBackupRestoreJobScheduler).cancelAllJobs(eq(mServiceContext));
     }
 
     @Test
@@ -871,13 +804,9 @@ public class BackupRestoreTest {
         when(mMockMigrationStateManager.isMigrationInProgress()).thenReturn(true);
 
         mBackupRestore.merge();
-        ExtendedMockito.verify(
-                () ->
-                        BackupRestore.BackupRestoreJobService.schedule(
-                                eq(mServiceContext),
-                                mJobInfoArgumentCaptor.capture(),
-                                eq(mBackupRestore)),
-                timeout(2000));
+        verify(mBackupRestoreJobScheduler, timeout(2000))
+                .schedule(
+                        eq(mServiceContext), mJobInfoArgumentCaptor.capture(), eq(mBackupRestore));
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
         assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
                 .isEqualTo(DATA_MERGING_RETRY_KEY);

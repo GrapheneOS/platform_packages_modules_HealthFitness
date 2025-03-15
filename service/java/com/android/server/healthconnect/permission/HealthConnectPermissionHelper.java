@@ -32,6 +32,7 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Binder;
+import android.os.Build;
 import android.os.UserHandle;
 import android.util.ArrayMap;
 import android.util.ArraySet;
@@ -46,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A handler for HealthConnect permission-related logic.
@@ -108,7 +110,7 @@ public final class HealthConnectPermissionHelper {
         enforceValidHealthPermission(permissionName);
         UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
         enforceValidPackage(packageName, checkedUser);
-        enforceSupportPermissionsUsageIntent(packageName, checkedUser);
+        enforceSupportPermissionsUsageIntent(packageName, checkedUser, permissionName);
         final long token = Binder.clearCallingIdentity();
         try {
             mPackageManager.grantRuntimePermission(packageName, permissionName, checkedUser);
@@ -122,8 +124,11 @@ public final class HealthConnectPermissionHelper {
             // If is split permission, automatically grant BODY_SENSORS or BACKGROUND.
             if ((permissionName.equals(READ_HEART_RATE)
                             || permissionName.equals(READ_HEALTH_DATA_IN_BACKGROUND))
-                    && Flags.replaceBodySensorPermissionEnabled()
-                    && isPackageRequestingSplitPermission(packageName, user)) {
+                    && isAppRequestingPermissionWithOutdatedTargetSdk(
+                            packageName,
+                            user,
+                            toLegacyPermission(permissionName),
+                            Build.VERSION_CODES.BAKLAVA)) {
                 grantRuntimePermissionAndUpdateFlags(
                         packageName,
                         user,
@@ -174,8 +179,11 @@ public final class HealthConnectPermissionHelper {
             // If is from split permission, automatically revoke BODY_SENSORS or BACKGROUND.
             if ((permissionName.equals(READ_HEART_RATE)
                             || permissionName.equals(READ_HEALTH_DATA_IN_BACKGROUND))
-                    && Flags.replaceBodySensorPermissionEnabled()
-                    && isPackageRequestingSplitPermission(packageName, user)) {
+                    && isAppRequestingPermissionWithOutdatedTargetSdk(
+                            packageName,
+                            user,
+                            toLegacyPermission(permissionName),
+                            Build.VERSION_CODES.BAKLAVA)) {
                 revokeRuntimePermissionAndUpdateFlags(
                         packageName,
                         user,
@@ -288,6 +296,59 @@ public final class HealthConnectPermissionHelper {
         return startDateAccess.get();
     }
 
+    /**
+     * Returns whether the given package is explicitly requesting health permissions (i.e. not as a
+     * result of a split permission platform migration).
+     */
+    private boolean isPackageExplicitlyRequestingHealthPermission(
+            String packageName, UserHandle userHandle) {
+        PackageInfo packageInfo;
+        try {
+            packageInfo =
+                    PackageInfoUtils.getPackageInfoUnchecked(
+                            packageName,
+                            userHandle,
+                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS),
+                            mContext);
+        } catch (IllegalArgumentException e) {
+            // If the package can't be found, be conservative and assume they
+            // are requesting a health permission.
+            return true;
+        }
+        Set<String> requestedPermissions = new ArraySet<>(packageInfo.requestedPermissions);
+
+        Set<String> healthPermissions = HealthConnectManager.getHealthPermissions(mContext);
+        List<String> requestedHealthPermissions =
+                requestedPermissions.stream()
+                        .filter(
+                                requestedPermission ->
+                                        healthPermissions.contains(requestedPermission))
+                        .collect(Collectors.toList());
+        if (requestedHealthPermissions.isEmpty()) {
+            return false;
+        }
+
+        // Check the permission flags to see if these permissions are requested
+        // as a result of a split-permission due to a platform upgrade.
+        Map<String, Integer> permissionFlags;
+        try {
+            permissionFlags =
+                    getHealthPermissionsFlags(packageName, userHandle, requestedHealthPermissions);
+        } catch (IllegalArgumentException e) {
+            // If the package can't be found, assume it's asking for the health
+            // permissions explicitly.
+            return true;
+        }
+
+        // Permissions that aren't from split permission are explicitly
+        // requested by the app.
+        return requestedHealthPermissions.stream()
+                .anyMatch(
+                        requestedPermission ->
+                                !isFromSplitPermission(
+                                        permissionFlags.getOrDefault(requestedPermission, 0)));
+    }
+
     /** Returns true if we should enforce permission usage intent for this package. */
     public boolean shouldEnforcePermissionUsageIntent(String packageName, UserHandle userHandle) {
         // When flag is disabled, always enforce permission usage intent.
@@ -300,9 +361,33 @@ public final class HealthConnectPermissionHelper {
             return false;
         }
 
+        // We only need to enforce the rationale intent if the app is explicitly
+        // requesting at least one health permission. If the app isn't
+        // requesting any health permissions, or is only requesting them as a
+        // result of a split permission platform migration, then we don't need
+        // to enforce the rationale intent.
+        return isPackageExplicitlyRequestingHealthPermission(packageName, userHandle);
+    }
+
+    /**
+     * Returns true if we should enforce permission usage intent for the given package to be granted
+     * the given permission.
+     */
+    private boolean shouldEnforcePermissionUsageIntent(
+            String packageName, UserHandle userHandle, String permissionName) {
+        // When flag is disabled, always enforce permission usage intent.
+        if (!Flags.replaceBodySensorPermissionEnabled()) {
+            return true;
+        }
+
+        // The rationale intent is not currently required on Wear devices.
+        if (mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
+            return false;
+        }
+
         // When flag is enabled, and is requesting split permission, do not enforce
         // permission usage intent on Phone.
-        return !isPackageRequestingSplitPermission(packageName, userHandle);
+        return !isRequestingSplitPermission(packageName, userHandle, permissionName);
     }
 
     /**
@@ -313,7 +398,18 @@ public final class HealthConnectPermissionHelper {
         return (permissionFlag & FLAG_PERMISSION_REVOKE_WHEN_REQUESTED) != 0;
     }
 
-    private boolean isPackageRequestingSplitPermission(String packageName, UserHandle userHandle) {
+    /**
+     * Returns true if the app is requesting the given permission as a result of a split-permission
+     * platform migration.
+     */
+    private boolean isRequestingSplitPermission(
+            String packageName, UserHandle userHandle, String permissionName) {
+        // BODY_SENSORS split permission.
+        if (!permissionName.equals(HealthPermissions.READ_HEART_RATE)
+                && !permissionName.equals(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)) {
+            return false;
+        }
+
         PackageInfo packageInfo;
         try {
             packageInfo =
@@ -327,44 +423,15 @@ public final class HealthConnectPermissionHelper {
             // permission.
             return false;
         }
-        Set<String> requestedPermissions = new ArraySet<>(packageInfo.requestedPermissions);
 
-        // An app is considered to be requesting split permission only if the request contains the
-        // upgraded READ_HEART_RATE permission (and no other non-background health permissions).
-        // This covers only the case where the platform is underneath an app that has no prior
-        // HealthConnect integration.
-        // Note: Technically if an app only requested BODY_SENSORS_BACKGROUND, then
-        // it would be upgraded to the READ_HEALTH_DATA_IN_BACKGROUND permission. However, this
-        // permission isn't valuable by itself so un-categorize as split permission in that case
-        // still feels reasonable.
-        if (!requestedPermissions.contains(HealthPermissions.READ_HEART_RATE)) {
-            return false;
-        }
-
-        // If the request contains any other health permissions besides READ_HEART_RATE,
-        // and READ_HEALTH_DATA_IN_BACKGROUND, not considered as containing split permission.
-        Set<String> healthPermissions = HealthConnectManager.getHealthPermissions(mContext);
-        if (requestedPermissions.stream()
-                .filter(requestedPermission -> healthPermissions.contains(requestedPermission))
-                .anyMatch(
-                        requestedPermission ->
-                                !requestedPermission.equals(HealthPermissions.READ_HEART_RATE)
-                                        && !requestedPermission.equals(
-                                                HealthPermissions
-                                                        .READ_HEALTH_DATA_IN_BACKGROUND))) {
+        // BODY_SENSORS permission split only applies to apps targeting SDK < B.
+        if (packageInfo.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.BAKLAVA) {
             return false;
         }
 
         // Check the permission flags to see if these permissions are requested
         // as a result of a split-permission due to a platform upgrade.
-        boolean requestContainsReadHealthDataInBackground =
-                requestedPermissions.contains(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND);
-        List<String> permissionsToCheck =
-                requestContainsReadHealthDataInBackground
-                        ? List.of(
-                                HealthPermissions.READ_HEART_RATE,
-                                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
-                        : List.of(HealthPermissions.READ_HEART_RATE);
+        List<String> permissionsToCheck = List.of(permissionName);
         Map<String, Integer> permissionFlags;
         try {
             permissionFlags =
@@ -375,21 +442,45 @@ public final class HealthConnectPermissionHelper {
             return false;
         }
 
-        // If the request contains READ_HEALTH_DATA_IN_BACKGROUND, check that it's
-        // from a split-permission.
-        if (requestContainsReadHealthDataInBackground) {
-            int readHealthDataInBackgroundPermissionFlag =
-                    permissionFlags.getOrDefault(
-                            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND, 0);
-            if (!isFromSplitPermission(readHealthDataInBackgroundPermissionFlag)) {
-                return false;
-            }
+        // Check if given permission is from a split-permission.
+        int permissionFlag = permissionFlags.getOrDefault(permissionName, 0);
+        return isFromSplitPermission(permissionFlag);
+    }
+
+    /** Returns if the app is targeting SDK 35 and requesting the given permission. */
+    private boolean isAppRequestingPermissionWithOutdatedTargetSdk(
+            String packageName, UserHandle userHandle, String permission, int buildVersion) {
+        if (!Flags.replaceBodySensorPermissionEnabled()) {
+            return false;
         }
 
-        // Check if READ_HEART_RATE is from a split-permission.
-        int readHeartRatePermissionFlag =
-                permissionFlags.getOrDefault(HealthPermissions.READ_HEART_RATE, 0);
-        return isFromSplitPermission(readHeartRatePermissionFlag);
+        // Only applies if current build is the same or newer than build version.
+        if (Build.VERSION.SDK_INT < buildVersion) {
+            return false;
+        }
+
+        PackageInfo packageInfo;
+        try {
+            packageInfo =
+                    PackageInfoUtils.getPackageInfoUnchecked(
+                            packageName,
+                            userHandle,
+                            PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS),
+                            mContext);
+        } catch (IllegalArgumentException e) {
+            // If the package can't be found, default to consider as not containing split
+            // permission.
+            return false;
+        }
+
+        // If the app is targeting the given build version or newer, then they
+        // are not using an outdated target SDK.
+        if (packageInfo.applicationInfo.targetSdkVersion >= buildVersion) {
+            return false;
+        }
+
+        Set<String> requestedPermissions = new ArraySet<>(packageInfo.requestedPermissions);
+        return requestedPermissions.contains(permission);
     }
 
     private void throwExceptionIncorrectPermissionState() {
@@ -463,9 +554,12 @@ public final class HealthConnectPermissionHelper {
             removeFromPriorityListIfRequired(packageName, perm, user);
         }
         boolean revoked = !grantedHealthPermissions.isEmpty();
-        // If from split permission, automatically deny BODY_SENSORS and BACKGROUND.
-        if (Flags.replaceBodySensorPermissionEnabled()
-                && isPackageRequestingSplitPermission(packageName, user)) {
+        // If for legacy app, automatically deny BODY_SENSORS and BACKGROUND.
+        if (isAppRequestingPermissionWithOutdatedTargetSdk(
+                packageName,
+                user,
+                android.Manifest.permission.BODY_SENSORS,
+                Build.VERSION_CODES.BAKLAVA)) {
             revoked |=
                     revokeRuntimePermissionAndUpdateFlags(
                             packageName,
@@ -473,6 +567,12 @@ public final class HealthConnectPermissionHelper {
                             android.Manifest.permission.BODY_SENSORS,
                             PackageManager.FLAG_PERMISSION_USER_SET,
                             reason);
+        }
+        if (isAppRequestingPermissionWithOutdatedTargetSdk(
+                packageName,
+                user,
+                android.Manifest.permission.BODY_SENSORS_BACKGROUND,
+                Build.VERSION_CODES.BAKLAVA)) {
             revoked |=
                     revokeRuntimePermissionAndUpdateFlags(
                             packageName,
@@ -506,8 +606,9 @@ public final class HealthConnectPermissionHelper {
                 HealthPermissions.MANAGE_HEALTH_PERMISSIONS, message);
     }
 
-    private void enforceSupportPermissionsUsageIntent(String packageName, UserHandle userHandle) {
-        if (!shouldEnforcePermissionUsageIntent(packageName, userHandle)) {
+    private void enforceSupportPermissionsUsageIntent(
+            String packageName, UserHandle userHandle, String permission) {
+        if (!shouldEnforcePermissionUsageIntent(packageName, userHandle, permission)) {
             return;
         }
 

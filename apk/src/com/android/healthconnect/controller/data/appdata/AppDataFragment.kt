@@ -138,13 +138,13 @@ open class AppDataFragment : Hilt_AppDataFragment() {
 
         if (
             requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
-                requireArguments().getString(EXTRA_PACKAGE_NAME) != null
+            requireArguments().getString(EXTRA_PACKAGE_NAME) != null
         ) {
             packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         }
         if (
             requireArguments().containsKey(Constants.EXTRA_APP_NAME) &&
-                requireArguments().getString(Constants.EXTRA_APP_NAME) != null
+            requireArguments().getString(Constants.EXTRA_APP_NAME) != null
         ) {
             appName = requireArguments().getString(Constants.EXTRA_APP_NAME)!!
         }
@@ -163,8 +163,9 @@ open class AppDataFragment : Hilt_AppDataFragment() {
 
         viewModel.appInfo.observe(viewLifecycleOwner) { appMetadata ->
             addIntroOrAppHeaderPreference(preferenceScreen, requireContext(), appMetadata)
-            footerPreference.title =
-                getString(R.string.app_data_no_data_footer, appMetadata.appName)
+            val footerString = getString(R.string.app_data_no_data_footer, appMetadata.appName)
+            footerPreference.title = footerString
+            zeroStatePreference.summary = footerString
         }
 
         viewModel.fitnessAndMedicalData.observe(viewLifecycleOwner) { state ->
@@ -188,7 +189,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
         }
 
         deletionViewModel.appPermissionTypesReloadNeeded.observe(viewLifecycleOwner) {
-            isReloadNeeded ->
+                isReloadNeeded ->
             if (isReloadNeeded) {
                 viewModel.setDeletionScreenStateValue(VIEW)
                 viewModel.loadAppData(packageName)
@@ -254,11 +255,12 @@ open class AppDataFragment : Hilt_AppDataFragment() {
         if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
             zeroStatePreference.isVisible = true
             noDataPreference.isVisible = false
+            footerPreference.isVisible = false
         } else {
             zeroStatePreference.isVisible = false
             noDataPreference.isVisible = true
+            footerPreference.isVisible = true
         }
-        footerPreference.isVisible = true
         updateMenu(screenState = VIEW, hasData = false)
         setupSelectAllPreference(screenState = VIEW)
     }
@@ -352,7 +354,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
         selectAllCheckboxPreference.isVisible = screenState == DELETE
         if (screenState == DELETE) {
             viewModel.allPermissionTypesSelected.observe(viewLifecycleOwner) {
-                allPermissionTypesSelected ->
+                    allPermissionTypesSelected ->
                 selectAllCheckboxPreference.removeOnPreferenceClickListener()
                 selectAllCheckboxPreference.setIsChecked(allPermissionTypesSelected)
                 selectAllCheckboxPreference.setOnPreferenceClickListenerWithCheckbox(

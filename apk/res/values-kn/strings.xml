@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"ಕೆಳಕ್ಕೆ ಸರಿಸಿ"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"ಆದ್ಯತೆಯ ಪಟ್ಟಿಯಲ್ಲಿ <xliff:g id="SELECTED_APP">%s</xliff:g> ಅನ್ನು ಡ್ರ್ಯಾಗ್ ಮಾಡಲು ಮತ್ತು ರೀಆರ್ಡರ್ ಮಾಡುವುದಕ್ಕಾಗಿ ಬಟನ್"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"ಆದ್ಯತೆಯ ಪಟ್ಟಿಯಿಂದ <xliff:g id="SELECTED_APP">%s</xliff:g> ಅನ್ನು ತೆಗೆದುಹಾಕಲು ಇರುವ ಬಟನ್"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"ಆ್ಯಪ್ ಸೋರ್ಸ್‌ಗಳ ಪಟ್ಟಿಯಿಂದ <xliff:g id="SELECTED_APP">%s</xliff:g> ಅನ್ನು ಮರುಕ್ರಮಗೊಳಿಸಲು ಅಥವಾ ತೆಗೆದುಹಾಕಲು ಇರುವ ಬಟನ್"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"ಮರುಕ್ರಮಗೊಳಿಸಲು ಡಬಲ್ ಟ್ಯಾಪ್ ಮಾಡಿ ಹಾಗೂ ಡ್ರ್ಯಾಗ್ ಮಾಡಿ"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="SELECTED_APP">%2$s</xliff:g> ಪಟ್ಟಿಯಲ್ಲಿ <xliff:g id="POSITION">%1$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"ಫಿಟ್‌ನೆಸ್, ಯೋಗಕ್ಷೇಮ"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"ಅನುಮತಿಗಳು"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, ಆರೋಗ್ಯದ ಡೇಟಾ, ಆರೋಗ್ಯದ ವರ್ಗಗಳು, ಡೇಟಾ ಆ್ಯಕ್ಸೆಸ್, ಚಟುವಟಿಕೆ, ದೇಹದ ಅಳತೆಗಳು, ಸೈಕಲ್ ಟ್ರ್ಯಾಕಿಂಗ್, ಪೌಷ್ಟಿಕತೆ, ನಿದ್ರೆ, ಆರೋಗ್ಯ ಮಾಪನಗಳು"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"ಆ್ಯಪ್ ಒಂದನ್ನು ಸೇರಿಸಿ"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"ಆ್ಯಪ್ ಮೂಲಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಿ"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ಸಾಧನದ ಡೀಫಾಲ್ಟ್"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"ಮೇಲಕ್ಕೆ ಮೂವ್ ಮಾಡಿ"</string>
+    <string name="move_down" msgid="4404970288236170693">"ಕೆಳಗೆ ಮೂವ್ ಮಾಡಿ"</string>
+    <string name="remove" msgid="1340423400489007362">"ತೆಗೆದುಹಾಕಿ"</string>
     <string name="app_data_title" msgid="6499967982291000837">"ಆ್ಯಪ್ ಡೇಟಾ"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"<xliff:g id="APP_NAME">%1$s</xliff:g> ನಲ್ಲಿನ ಡೇಟಾವನ್ನು ಇಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Health Connect ಗೆ ಆ್ಯಕ್ಸೆಸ್ ಹೊಂದಿರುವ ಆ್ಯಪ್‌ಗಳ ಡೇಟಾವನ್ನು ಇಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ"</string>

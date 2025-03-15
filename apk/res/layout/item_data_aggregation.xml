@@ -16,15 +16,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
     android:orientation="vertical"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    android:paddingVertical="@dimen/spacing_normal">
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
     <TextView
         android:id="@+id/item_data_aggregation"
         android:textAppearance="?attr/textAppearanceHeadline3"
+        android:paddingTop="@dimen/spacing_normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -32,6 +31,7 @@
         android:id="@+id/item_data_origin_apps"
         android:textAppearance="?attr/textAppearanceSummary"
         android:layout_width="match_parent"
+        android:paddingBottom="@dimen/spacing_normal"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

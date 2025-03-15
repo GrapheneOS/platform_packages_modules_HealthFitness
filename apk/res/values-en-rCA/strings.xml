@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Move to bottom"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Button to drag and reorder <xliff:g id="SELECTED_APP">%s</xliff:g> in the priority list"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Button to remove <xliff:g id="SELECTED_APP">%s</xliff:g> from the priority list"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Button to reorder or remove <xliff:g id="SELECTED_APP">%s</xliff:g> from the app sources list"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Double tap and drag to reorder"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> in the list <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fitness, wellness"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"permissions"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, health data, health categories, data access, activity, body measurements, cycle tracking, nutrition, sleep, vitals"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Add an app"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Edit app sources"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Device default"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Move up"</string>
+    <string name="move_down" msgid="4404970288236170693">"Move down"</string>
+    <string name="remove" msgid="1340423400489007362">"Remove"</string>
     <string name="app_data_title" msgid="6499967982291000837">"App data"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Data from <xliff:g id="APP_NAME">%1$s</xliff:g> will show here"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Data from apps with access to Health Connect will show here"</string>

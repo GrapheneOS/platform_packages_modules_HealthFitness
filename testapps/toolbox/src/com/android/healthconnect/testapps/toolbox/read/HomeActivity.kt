@@ -20,12 +20,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.android.healthconnect.testapps.toolbox.read.components.DataTypeList
+import androidx.navigation.compose.rememberNavController
+import com.android.healthconnect.testapps.toolbox.read.navigation.ToolboxNavigation
 import com.android.healthconnect.testapps.toolbox.read.theme.HealthFitnessGradleProjectTheme
 
 class HomeActivity : ComponentActivity() {
@@ -34,7 +34,13 @@ class HomeActivity : ComponentActivity() {
         setContent {
             HealthFitnessGradleProjectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    DataTypeList(modifier = Modifier.padding(innerPadding))
+
+                    val navController = rememberNavController()
+
+                    ToolboxNavigation(
+                        navController = navController,
+                        scaffoldPadding = innerPadding
+                    )
                 }
             }
         }
@@ -44,9 +50,9 @@ class HomeActivity : ComponentActivity() {
 
 @Preview(showBackground = true, apiLevel = 34)
 @Composable
-fun DataTypePreview() {
+fun HomeActivityPreview() {
     HealthFitnessGradleProjectTheme {
-        DataTypeList()
+
     }
 }
 

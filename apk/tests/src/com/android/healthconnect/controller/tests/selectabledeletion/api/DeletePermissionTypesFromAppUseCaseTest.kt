@@ -35,7 +35,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyZeroInteractions
+import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.mock
 
@@ -75,8 +75,8 @@ class DeletePermissionTypesFromAppUseCaseTest {
 
         advanceUntilIdle()
 
-        verifyZeroInteractions(deleteFitnessPermissionTypesFromAppUseCase)
-        verifyZeroInteractions(deleteMedicalPermissionTypesFromAppUseCase)
+        verifyNoMoreInteractions(deleteFitnessPermissionTypesFromAppUseCase)
+        verifyNoMoreInteractions(deleteMedicalPermissionTypesFromAppUseCase)
     }
 
     @Test
@@ -86,7 +86,7 @@ class DeletePermissionTypesFromAppUseCaseTest {
         advanceUntilIdle()
 
         verify(deleteFitnessPermissionTypesFromAppUseCase).invoke("package.name", permissions)
-        verifyZeroInteractions(deleteMedicalPermissionTypesFromAppUseCase)
+        verifyNoMoreInteractions(deleteMedicalPermissionTypesFromAppUseCase)
     }
 
     @Test
@@ -114,7 +114,7 @@ class DeletePermissionTypesFromAppUseCaseTest {
         val expectedDeletionType = setOf(MedicalPermissionType.VACCINES)
         verify(deleteMedicalPermissionTypesFromAppUseCase)
             .invoke("package.name", expectedDeletionType)
-        verifyZeroInteractions(deleteFitnessPermissionTypesFromAppUseCase)
+        verifyNoMoreInteractions(deleteFitnessPermissionTypesFromAppUseCase)
     }
 
     @Test
@@ -138,6 +138,6 @@ class DeletePermissionTypesFromAppUseCaseTest {
                 removePermissions = false,
             )
             advanceUntilIdle()
-            verifyZeroInteractions(revokeAllHealthPermissionsUseCase)
+            verifyNoMoreInteractions(revokeAllHealthPermissionsUseCase)
         }
 }

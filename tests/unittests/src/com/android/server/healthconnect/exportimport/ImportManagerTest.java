@@ -38,7 +38,6 @@ import static org.mockito.Mockito.verify;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
@@ -50,9 +49,7 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -85,7 +82,9 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -111,16 +110,8 @@ public class ImportManagerTest {
 
     private static final int TEST_COMPRESSED_FILE_SIZE = 1042;
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(HealthConnectManager.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
-
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
 
     private ImportManager mImportManagerSpy;
@@ -189,7 +180,7 @@ public class ImportManagerTest {
                         mNotificationSender,
                         mEnvironmentDataDirectory.getRoot(),
                         mExportImportLogger);
-        mImportManagerSpy = ExtendedMockito.spy(importManager);
+        mImportManagerSpy = Mockito.spy(importManager);
         doReturn(TEST_COMPRESSED_FILE_SIZE)
                 .when(mImportManagerSpy)
                 .getFileSizeInKb(any(ContentResolver.class), any(Uri.class));

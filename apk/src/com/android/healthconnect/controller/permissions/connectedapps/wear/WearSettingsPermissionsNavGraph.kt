@@ -62,6 +62,7 @@ fun WearSettingsPermissionsNavGraph(showRecentAccess: Boolean = false) {
         ) { backStackEntry ->
             val permissionStr = backStackEntry.arguments?.getString("permissionStr") ?: ""
             val dataTypeStr = backStackEntry.arguments?.getString("dataTypeStr") ?: ""
+            viewModel.updateShowSystem(false)
             PerDataTypeScreen(
                 viewModel,
                 permissionStr,
@@ -77,6 +78,7 @@ fun WearSettingsPermissionsNavGraph(showRecentAccess: Boolean = false) {
                         "${PermissionManagerScreen.RemoveAll.name}/$permissionStr/$dataTypeStr"
                     )
                 },
+                onShowSystemClick = { show -> run { viewModel.updateShowSystem(show) } },
             )
         }
 

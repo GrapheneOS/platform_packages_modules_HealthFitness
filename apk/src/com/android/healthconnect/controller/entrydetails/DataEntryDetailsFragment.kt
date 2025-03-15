@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.EntriesAdapter
 import com.android.healthconnect.controller.data.entries.EntriesViewModel
 import com.android.healthconnect.controller.data.entries.ExerciseSessionItemViewBinder
+import com.android.healthconnect.controller.data.entries.ExpressiveEntriesAdapter
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExercisePerformanceGoalEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExerciseSessionEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
@@ -56,6 +57,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.setupSharedMenu
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -148,34 +150,12 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
         detailsAdapter =
-            EntriesAdapter.Builder()
-                .setViewBinder(SleepSessionEntry::class.java, sleepSessionViewBinder)
-                .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
-                .setViewBinder(SeriesDataEntry::class.java, heartRateItemViewBinder)
-                .setViewBinder(FormattedSessionDetail::class.java, sessionDetailViewBinder)
-                .setViewBinder(SessionHeader::class.java, sessionHeaderViewBinder)
-                .setViewBinder(ReverseSessionDetail::class.java, reverseSessionDetailViewBinder)
-                .setViewBinder(FormattedSectionTitle::class.java, formattedSectionTitleViewBinder)
-                .setViewBinder(
-                    FormattedSectionContent::class.java,
-                    formattedSectionContentViewBinder,
-                )
-                .setViewBinder(
-                    PlannedExerciseSessionEntry::class.java,
-                    plannedExerciseSessionViewBinder,
-                )
-                .setViewBinder(
-                    PlannedExerciseBlockEntry::class.java,
-                    plannedExerciseBlockViewBinder,
-                )
-                .setViewBinder(PlannedExerciseStepEntry::class.java, plannedExerciseStepViewBinder)
-                .setViewBinder(
-                    ExercisePerformanceGoalEntry::class.java,
-                    exercisePerformanceGoalViewBinder,
-                )
-                .setViewBinder(ItemDataEntrySeparator::class.java, itemDataEntrySeparatorViewBinder)
-                .setViewModel(entriesViewModel)
-                .build()
+            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+                getExpressiveEntriesAdapter()
+            } else {
+                getEntriesAdapter()
+            }
+
         recyclerView =
             view.findViewById<RecyclerView?>(R.id.data_entries_list).apply {
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -190,6 +170,56 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.sessionData.observe(viewLifecycleOwner) { state -> updateUI(state) }
+    }
+
+    private fun getExpressiveEntriesAdapter(): ExpressiveEntriesAdapter {
+        return ExpressiveEntriesAdapter.Builder()
+            .setViewBinder(SleepSessionEntry::class.java, sleepSessionViewBinder)
+            .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
+            .setViewBinder(SeriesDataEntry::class.java, heartRateItemViewBinder)
+            .setViewBinder(FormattedSessionDetail::class.java, sessionDetailViewBinder)
+            .setViewBinder(SessionHeader::class.java, sessionHeaderViewBinder)
+            .setViewBinder(ReverseSessionDetail::class.java, reverseSessionDetailViewBinder)
+            .setViewBinder(FormattedSectionTitle::class.java, formattedSectionTitleViewBinder)
+            .setViewBinder(FormattedSectionContent::class.java, formattedSectionContentViewBinder)
+            .setViewBinder(
+                PlannedExerciseSessionEntry::class.java,
+                plannedExerciseSessionViewBinder,
+            )
+            .setViewBinder(PlannedExerciseBlockEntry::class.java, plannedExerciseBlockViewBinder)
+            .setViewBinder(PlannedExerciseStepEntry::class.java, plannedExerciseStepViewBinder)
+            .setViewBinder(
+                ExercisePerformanceGoalEntry::class.java,
+                exercisePerformanceGoalViewBinder,
+            )
+            .setViewBinder(ItemDataEntrySeparator::class.java, itemDataEntrySeparatorViewBinder)
+            .setViewModel(entriesViewModel)
+            .build(requireContext())
+    }
+
+    private fun getEntriesAdapter(): EntriesAdapter {
+        return EntriesAdapter.Builder()
+            .setViewBinder(SleepSessionEntry::class.java, sleepSessionViewBinder)
+            .setViewBinder(ExerciseSessionEntry::class.java, exerciseSessionItemViewBinder)
+            .setViewBinder(SeriesDataEntry::class.java, heartRateItemViewBinder)
+            .setViewBinder(FormattedSessionDetail::class.java, sessionDetailViewBinder)
+            .setViewBinder(SessionHeader::class.java, sessionHeaderViewBinder)
+            .setViewBinder(ReverseSessionDetail::class.java, reverseSessionDetailViewBinder)
+            .setViewBinder(FormattedSectionTitle::class.java, formattedSectionTitleViewBinder)
+            .setViewBinder(FormattedSectionContent::class.java, formattedSectionContentViewBinder)
+            .setViewBinder(
+                PlannedExerciseSessionEntry::class.java,
+                plannedExerciseSessionViewBinder,
+            )
+            .setViewBinder(PlannedExerciseBlockEntry::class.java, plannedExerciseBlockViewBinder)
+            .setViewBinder(PlannedExerciseStepEntry::class.java, plannedExerciseStepViewBinder)
+            .setViewBinder(
+                ExercisePerformanceGoalEntry::class.java,
+                exercisePerformanceGoalViewBinder,
+            )
+            .setViewBinder(ItemDataEntrySeparator::class.java, itemDataEntrySeparatorViewBinder)
+            .setViewModel(entriesViewModel)
+            .build()
     }
 
     private fun updateUI(state: DateEntryFragmentState) {

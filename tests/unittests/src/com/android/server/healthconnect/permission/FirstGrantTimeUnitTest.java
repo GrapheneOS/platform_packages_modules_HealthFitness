@@ -32,7 +32,6 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 import android.os.Process;
 import android.os.UserHandle;
@@ -41,12 +40,11 @@ import android.util.Pair;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.testing.HealthPermissionsMocker;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -56,26 +54,21 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 // TODO(b/261432978): add test for sharedUser backup
 @RunWith(AndroidJUnit4.class)
 public class FirstGrantTimeUnitTest {
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(HealthConnectManager.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private static final String SELF_PACKAGE_NAME = "com.android.healthconnect.unittests";
     private static final UserHandle CURRENT_USER = Process.myUserHandle();
@@ -130,12 +123,7 @@ public class FirstGrantTimeUnitTest {
         when(mPackageManager.getPackageInfo(eq(SELF_PACKAGE_NAME), any())).thenReturn(packageInfo);
         when(mPackageManager.getInstalledPackages(any())).thenReturn(List.of(packageInfo));
 
-        ExtendedMockito.when(
-                        HealthConnectManager.isHealthPermission(
-                                mContext, HealthPermissions.WRITE_STEPS))
-                .thenReturn(true);
-        ExtendedMockito.when(HealthConnectManager.getHealthPermissions(mContext))
-                .thenReturn(Set.of(HealthPermissions.WRITE_STEPS));
+        HealthPermissionsMocker.mockPackageManagerPermissions(mPackageManager);
 
         mFirstGrantTimeManager =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)

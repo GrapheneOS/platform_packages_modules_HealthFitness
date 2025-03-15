@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Zhvendos në fund"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Butoni për të zvarritur dhe rirenditur <xliff:g id="SELECTED_APP">%s</xliff:g> në listën e përparësive"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Butoni për të hequr \"<xliff:g id="SELECTED_APP">%s</xliff:g>\" nga lista e përparësisë"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Butoni për të rirenditur ose hequr \"<xliff:g id="SELECTED_APP">%s</xliff:g>\" nga lista e burimeve të aplikacioneve"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Trokit dy herë dhe zvarrit për të ndryshuar renditjen"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> në listën \"<xliff:g id="SELECTED_APP">%2$s</xliff:g>\""</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fitnesi, mirëqenia"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"lejet"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, të dhënat e shëndetit, kategoritë e shëndetit, qasja te të dhënat, aktiviteti, matjet e trupit, monitorimi i ciklit menstrual, të ushqyerit, gjumi, të dhënat jetësore"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Shto një aplikacion"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Modifiko burimet e aplikacioneve"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Parazgjedhja e pajisjes"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Zhvendos lart"</string>
+    <string name="move_down" msgid="4404970288236170693">"Zhvendos poshtë"</string>
+    <string name="remove" msgid="1340423400489007362">"Hiq"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Të dhënat e aplikacionit"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Të dhënat nga <xliff:g id="APP_NAME">%1$s</xliff:g> do të shfaqen këtu"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Të dhënat nga aplikacionet që kanë qasje te Health Connect do të shfaqen këtu"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Të fshihen përgjithmonë hyrjet e zgjedhura të <xliff:g id="APP_NAME">%1$s</xliff:g> për muajin <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Të fshihet përgjithmonë kjo hyrje e <xliff:g id="APP_NAME">%s</xliff:g>?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Të fshihen përgjithmonë të dhënat për <xliff:g id="DATA_TYPE">%1$s</xliff:g> për <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Shfaq sistemin"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Fshih sistemin"</string>
     <string name="on" msgid="8266542510798355807">"Aktiv"</string>
     <string name="off" msgid="6996623844428550649">"Joaktiv"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Qasja e fundit në <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

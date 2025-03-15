@@ -30,32 +30,9 @@ protected constructor(
     private val itemViewTypeToViewBinderMap: Map<Int, ViewBinder<*, out View>>,
 ) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
-    class Builder {
-        companion object {
-            // Base item view type to use when setting a view binder for objects of a specific class
-            private const val BASE_ITEM_VIEW_TYPE = 100
-        }
-
-        private var nextItemType = BASE_ITEM_VIEW_TYPE
-        private val itemClassToItemViewTypeMap: MutableMap<Class<*>, Int> = mutableMapOf()
-        private val itemViewTypeToViewBinderMap: MutableMap<Int, ViewBinder<*, out View>> =
-            mutableMapOf()
-
-        fun <T> setViewBinder(clazz: Class<T>, viewBinder: ViewBinder<T, out View>): Builder {
-            itemClassToItemViewTypeMap[clazz] = nextItemType
-            itemViewTypeToViewBinderMap[nextItemType] = viewBinder
-            nextItemType++
-            return this
-        }
-
-        fun build() = RecyclerViewAdapter(itemClassToItemViewTypeMap, itemViewTypeToViewBinderMap)
-    }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
     private var data: MutableList<Any> = mutableListOf()
 
-    fun updateData(entries: List<Any>) {
+    open fun updateData(entries: List<Any>) {
         this.data = entries.toMutableList()
         notifyDataSetChanged()
     }
@@ -78,7 +55,7 @@ protected constructor(
         }
     }
 
-    protected fun getItem(position: Int): Any {
+    open fun getItem(position: Int): Any {
         return data[position]
     }
 
@@ -89,6 +66,29 @@ protected constructor(
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+    class Builder {
+        companion object {
+            // Base item view type to use when setting a view binder for objects of a specific class
+            private const val BASE_ITEM_VIEW_TYPE = 100
+        }
+
+        private var nextItemType = BASE_ITEM_VIEW_TYPE
+        private val itemClassToItemViewTypeMap: MutableMap<Class<*>, Int> = mutableMapOf()
+        private val itemViewTypeToViewBinderMap: MutableMap<Int, ViewBinder<*, out View>> =
+            mutableMapOf()
+
+        fun <T> setViewBinder(clazz: Class<T>, viewBinder: ViewBinder<T, out View>): Builder {
+            itemClassToItemViewTypeMap[clazz] = nextItemType
+            itemViewTypeToViewBinderMap[nextItemType] = viewBinder
+            nextItemType++
+            return this
+        }
+
+        fun build() = RecyclerViewAdapter(itemClassToItemViewTypeMap, itemViewTypeToViewBinderMap)
     }
 
     companion object {

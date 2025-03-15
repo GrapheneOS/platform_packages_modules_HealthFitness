@@ -32,6 +32,7 @@ import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationSender;
 import com.android.server.healthconnect.exportimport.ExportManager;
+import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.ExportImportLogger;
@@ -113,6 +114,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final MigrationCleaner mMigrationCleaner;
     private final TimeSource mTimeSource;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
+    private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private final MedicalDataSourceHelper mMedicalDataSourceHelper;
     private final MedicalResourceHelper mMedicalResourceHelper;
     private final MigrationBroadcastScheduler mMigrationBroadcastScheduler;
@@ -334,8 +336,17 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
                                 mAccessLogsHelper,
-                                mReadAccessLogsHelper)
+                                mReadAccessLogsHelper,
+                                mInternalHealthConnectMappings)
                         : builder.mFitnessRecordReadHelper;
+        mFitnessRecordDeleteHelper =
+                builder.mFitnessRecordDeleteHelper == null
+                        ? new FitnessRecordDeleteHelper(
+                                mTransactionManager,
+                                mAppInfoHelper,
+                                mAccessLogsHelper,
+                                mInternalHealthConnectMappings)
+                        : builder.mFitnessRecordDeleteHelper;
         mMedicalDataSourceHelper =
                 builder.mMedicalDataSourceHelper == null
                         ? new MedicalDataSourceHelper(
@@ -501,6 +512,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
+    public FitnessRecordDeleteHelper getFitnessRecordDeleteHelper() {
+        return mFitnessRecordDeleteHelper;
+    }
+
+    @Override
     public MedicalDataSourceHelper getMedicalDataSourceHelper() {
         return mMedicalDataSourceHelper;
     }
@@ -552,7 +568,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 getPreferencesManager(),
                 getAppInfoHelper(),
                 getTransactionManager(),
-                getAccessLogsHelper(),
+                getFitnessRecordDeleteHelper(),
                 getActivityDateHelper());
     }
 
@@ -665,6 +681,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private MigrationCleaner mMigrationCleaner;
         @Nullable private TimeSource mTimeSource;
         @Nullable private FitnessRecordReadHelper mFitnessRecordReadHelper;
+        @Nullable private FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
         @Nullable private MedicalDataSourceHelper mMedicalDataSourceHelper;
         @Nullable private MedicalResourceHelper mMedicalResourceHelper;
         @Nullable private MigrationBroadcastScheduler mMigrationBroadcastScheduler;
@@ -856,6 +873,14 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 FitnessRecordReadHelper fitnessRecordReadHelper) {
             Objects.requireNonNull(fitnessRecordReadHelper);
             mFitnessRecordReadHelper = fitnessRecordReadHelper;
+            return this;
+        }
+
+        /** Set fake or custom {@link FitnessRecordDeleteHelper} */
+        public Builder setFitnessRecordDeleteHelper(
+                FitnessRecordDeleteHelper fitnessRecordDeleteHelper) {
+            Objects.requireNonNull(fitnessRecordDeleteHelper);
+            mFitnessRecordDeleteHelper = fitnessRecordDeleteHelper;
             return this;
         }
 

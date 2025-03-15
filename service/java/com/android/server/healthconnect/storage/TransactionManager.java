@@ -17,14 +17,8 @@
 package com.android.server.healthconnect.storage;
 
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
-import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
-import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 
 import static com.android.internal.util.Preconditions.checkArgument;
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
-
-import static java.util.Objects.requireNonNull;
 
 import android.annotation.Nullable;
 import android.content.ContentValues;
@@ -35,15 +29,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.health.connect.Constants;
 import android.health.connect.HealthConnectException;
-import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Slog;
 
-import com.android.healthfitness.flags.Flags;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
-import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
@@ -51,9 +39,7 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TableColumnPair;
 
 import java.io.File;
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * A class to handle all the DB transaction request from the clients. {@link TransactionManager}
@@ -308,115 +294,6 @@ public final class TransactionManager {
             deleteChildTableRequest(request, rowId, db);
             insertChildTableRequest(request, rowId, db);
         }
-    }
-
-    /**
-     * Deletes all the {@link RecordInternal} in {@code request} into the HealthConnect database.
-     */
-    // NOTE: Please don't add logic to explicitly delete child table entries here as they should
-    // be deleted via cascade.
-    public int deleteAllRecords(
-            DeleteTransactionRequest request,
-            // TODO(b/382009199): Move this to the request.
-            boolean shouldRecordDeleteAccessLogs,
-            AccessLogsHelper accessLogsHelper)
-            throws SQLiteException {
-        long currentTime = Instant.now().toEpochMilli();
-        ChangeLogsHelper.ChangeLogs deletionChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_DELETE, currentTime);
-        ChangeLogsHelper.ChangeLogs modificationChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_UPSERT, currentTime);
-
-        return runAsTransaction(
-                db -> {
-                    int numberOfRecordsDeleted = 0;
-                    for (DeleteTableRequest deleteTableRequest : request.getDeleteTableRequests()) {
-                        final RecordHelper<?> recordHelper =
-                                mInternalHealthConnectMappings.getRecordHelper(
-                                        deleteTableRequest.getRecordType());
-                        int innerRequestRecordsDeleted;
-                        if (deleteTableRequest.requiresRead()) {
-                            /*
-                            Delete request needs UUID before the entry can be
-                            deleted, fetch and set it in {@code request}
-                            */
-                            try (Cursor cursor =
-                                    db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
-                                int numberOfUuidsToDelete = 0;
-                                while (cursor.moveToNext()) {
-                                    String packageColumnName =
-                                            requireNonNull(
-                                                    deleteTableRequest.getPackageColumnName());
-                                    String idColumnName =
-                                            requireNonNull(deleteTableRequest.getIdColumnName());
-                                    numberOfUuidsToDelete++;
-                                    long appInfoId =
-                                            StorageUtils.getCursorLong(cursor, packageColumnName);
-                                    if (deleteTableRequest.requiresPackageCheck()) {
-                                        request.enforcePackageCheck(
-                                                StorageUtils.getCursorUUID(cursor, idColumnName),
-                                                appInfoId);
-                                    }
-                                    UUID deletedRecordUuid =
-                                            StorageUtils.getCursorUUID(cursor, idColumnName);
-                                    deletionChangelogs.addUUID(
-                                            deleteTableRequest.getRecordType(),
-                                            appInfoId,
-                                            deletedRecordUuid);
-
-                                    // Add changelogs for affected records, e.g. a training plan
-                                    // being deleted will create changelogs for affected exercise
-                                    // sessions.
-                                    for (ReadTableRequest additionalChangelogUuidRequest :
-                                            recordHelper
-                                                    .getReadRequestsForRecordsModifiedByDeletion(
-                                                            deletedRecordUuid)) {
-                                        Cursor cursorAdditionalUuids =
-                                                read(additionalChangelogUuidRequest);
-                                        while (cursorAdditionalUuids.moveToNext()) {
-                                            modificationChangelogs.addUUID(
-                                                    requireNonNull(
-                                                                    additionalChangelogUuidRequest
-                                                                            .getRecordHelper())
-                                                            .getRecordIdentifier(),
-                                                    StorageUtils.getCursorLong(
-                                                            cursorAdditionalUuids,
-                                                            APP_INFO_ID_COLUMN_NAME),
-                                                    StorageUtils.getCursorUUID(
-                                                            cursorAdditionalUuids,
-                                                            UUID_COLUMN_NAME));
-                                        }
-                                        cursorAdditionalUuids.close();
-                                    }
-                                }
-                                innerRequestRecordsDeleted = numberOfUuidsToDelete;
-                            }
-                        } else {
-                            List<String> ids = deleteTableRequest.getIds();
-                            if (ids == null) {
-                                throw new IllegalStateException(
-                                        "Called with no required reads and no list of ids set");
-                            }
-                            innerRequestRecordsDeleted = ids.size();
-                        }
-                        numberOfRecordsDeleted += innerRequestRecordsDeleted;
-                        db.execSQL(deleteTableRequest.getDeleteCommand());
-                    }
-
-                    for (UpsertTableRequest insertRequestsForChangeLog :
-                            deletionChangelogs.getUpsertTableRequests()) {
-                        insert(db, insertRequestsForChangeLog);
-                    }
-                    for (UpsertTableRequest modificationChangelog :
-                            modificationChangelogs.getUpsertTableRequests()) {
-                        insert(db, modificationChangelog);
-                    }
-                    if (Flags.addMissingAccessLogs() && shouldRecordDeleteAccessLogs) {
-                        accessLogsHelper.recordDeleteAccessLog(
-                                db, request.getPackageName(), request.getRecordTypeIds());
-                    }
-                    return numberOfRecordsDeleted;
-                });
     }
 
     /** Deletes all data for the list of requests into the database in a single transaction. */
