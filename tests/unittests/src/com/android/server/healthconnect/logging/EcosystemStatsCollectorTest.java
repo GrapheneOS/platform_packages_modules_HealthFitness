@@ -50,7 +50,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -69,11 +70,9 @@ public class EcosystemStatsCollectorTest {
     private static final String TEST_APP_PACKAGE_WRITER_TWO = "test.app.package.writer.two";
     private static final String TEST_APP_PACKAGE_WRITER_THREE = "test.app.package.writer.three";
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final TemporaryFolder mTemporaryFolder = new TemporaryFolder();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final TemporaryFolder mTemporaryFolder = new TemporaryFolder();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private ReadAccessLogsHelper mReadAccessLogsHelper;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
@@ -81,8 +80,6 @@ public class EcosystemStatsCollectorTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)

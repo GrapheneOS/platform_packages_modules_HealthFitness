@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Przenieś na koniec"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Przycisk do przesuwania i zmiany kolejności aplikacji <xliff:g id="SELECTED_APP">%s</xliff:g> na liście priorytetów"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Przycisk usuwania aplikacji <xliff:g id="SELECTED_APP">%s</xliff:g> z listy priorytetów"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Przycisk do zmiany kolejności lub usunięcia aplikacji <xliff:g id="SELECTED_APP">%s</xliff:g> z listy źródeł aplikacji"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Aby zmienić kolejność, kliknij dwukrotnie i przeciągnij"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> na liście aplikacji <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fitness, samopoczucie"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"uprawnienia"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, dane dotyczące zdrowia, kategorie zdrowotne, dostęp do danych, aktywność, pomiary ciała, trasa rowerowa, odżywianie, sen, parametry życiowe"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Dodaj aplikację"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Edytuj źródła aplikacji"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Ustawienie domyślne urządzenia"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Przenieś w górę"</string>
+    <string name="move_down" msgid="4404970288236170693">"Przenieś w dół"</string>
+    <string name="remove" msgid="1340423400489007362">"Usuń"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Dane aplikacji"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Tutaj pojawią się dane z aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Tutaj pojawią się dane z aplikacji z dostępem do Health Connect"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Trwale usunąć wybrane wpisy z aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> dotyczące tego miesiąca: <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Trwale usunąć ten wpis z aplikacji <xliff:g id="APP_NAME">%s</xliff:g>?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Trwale usunąć te dane (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) w przypadku aplikacji <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Pokaż systemowe"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Ukryj systemowe"</string>
     <string name="on" msgid="8266542510798355807">"Włączony"</string>
     <string name="off" msgid="6996623844428550649">"Wyłączony"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Ostatni dostęp: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

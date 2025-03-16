@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.logging.DisconnectAppDialogElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -121,7 +122,13 @@ class DisconnectHealthPermissionsDialogFragment() :
         hasMedicalPermissions =
             appPermissionViewModel.medicalPermissions.value.orEmpty().isNotEmpty()
 
-        val body = layoutInflater.inflate(R.layout.dialog_message_with_checkbox, null)
+        val body =
+            layoutInflater.inflate(
+                if (SettingsThemeHelper.isExpressiveTheme(requireContext()))
+                    R.layout.dialog_message_with_checkbox_expressive
+                else R.layout.dialog_message_with_checkbox_legacy,
+                null,
+            )
         body.findViewById<TextView>(R.id.dialog_message).apply { text = buildMessage() }
 
         body.findViewById<TextView>(R.id.dialog_title).apply { text = buildTitle() }

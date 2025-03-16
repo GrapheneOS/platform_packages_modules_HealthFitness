@@ -199,6 +199,7 @@ android_library {
         "androidx.compose.runtime_runtime-livedata",
         "androidx.compose.ui_ui",
         "androidx.hilt_hilt-navigation-compose",
+        "androidx.wear.compose_compose-material",
         "androidx.wear.compose_compose-material3",
         "androidx.navigation_navigation-compose",
         "androidx.navigation_navigation-runtime-ktx",

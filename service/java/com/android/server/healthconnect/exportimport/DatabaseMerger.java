@@ -73,7 +73,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -423,8 +422,7 @@ public final class DatabaseMerger {
                             stagedTransactionManager,
                             stagedPackageNamesByAppIds,
                             requireNonNull(recordTypeClass),
-                            currentToken,
-                            recordHelper);
+                            currentToken);
             List<RecordInternal<?>> records = recordsToMergeAndToken.first;
             PageTokenWrapper token = recordsToMergeAndToken.second;
             if (records.isEmpty()) {
@@ -502,30 +500,16 @@ public final class DatabaseMerger {
             TransactionManager stagedTransactionManager,
             Map<Long, String> stagedPackageNamesByAppIds,
             Class<? extends Record> recordTypeClass,
-            PageTokenWrapper requestToken,
-            RecordHelper<?> recordHelper) {
+            PageTokenWrapper requestToken) {
         ReadRecordsRequestUsingFilters<?> readRecordsRequest =
                 new ReadRecordsRequestUsingFilters.Builder<>(recordTypeClass)
                         .setPageSize(DEFAULT_PAGE_SIZE)
                         .setPageToken(requestToken.encode())
                         .build();
 
-        Set<String> grantedExtraReadPermissions =
-                Set.copyOf(recordHelper.getExtraReadPermissions());
-
-        // Working with startDateAccess of -1 as we don't want to have time based filtering in the
-        // query.
-        return mFitnessRecordReadHelper.readRecords(
+        return mFitnessRecordReadHelper.readRecordsUnrestricted(
                 stagedTransactionManager,
-                /* callingPackageName */ "",
                 readRecordsRequest.toReadRecordsRequestParcel(),
-                // Avoid time based filtering.
-                /* startDateAccessMillis= */ DEFAULT_LONG,
-                /* enforceSelfRead= */ false,
-                grantedExtraReadPermissions,
-                // Make sure foreground only types get included in the response.
-                /* isInForeground= */ true,
-                /* shouldRecordAccessLog= */ false,
                 stagedPackageNamesByAppIds);
     }
 

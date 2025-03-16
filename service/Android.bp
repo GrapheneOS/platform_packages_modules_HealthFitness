@@ -65,6 +65,8 @@ java_sdk_library {
         "//packages/modules/HealthFitness/tests:__subpackages__",
     ],
     impl_library_visibility: [
+        // Top level directory for bivalent tests
+        "//packages/modules/HealthFitness/tests",
         "//packages/modules/HealthFitness/tests/unittests",
         "//packages/modules/HealthFitness/tests/integrationtests",
     ],

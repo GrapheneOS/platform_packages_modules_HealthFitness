@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package healthconnect.logging;
+package com.android.server.healthconnect.logging;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_DATA_BACKUP_INVOKED__BACKUP_TYPE__DATA_BACKUP_TYPE_INCREMENTAL;
@@ -32,8 +32,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import android.health.HealthFitnessStatsLog;
-
-import com.android.server.healthconnect.logging.BackupRestoreLogger;
 
 import org.junit.Before;
 import org.junit.Rule;

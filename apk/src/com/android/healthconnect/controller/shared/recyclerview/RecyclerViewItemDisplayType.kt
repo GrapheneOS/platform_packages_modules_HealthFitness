@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.request;
+package com.android.healthconnect.controller.shared.recyclerview
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-@RunWith(AndroidJUnit4.class)
-public class FitnessRecordReadHelperTest {
-
-    @Before
-    public void setup() {}
-
-    @Test
-    public void placeholder() {
-        // TODO(b/399574628): Move relevant tests from TransactionManagerTest here.
-    }
+enum class RecyclerViewItemDisplayType {
+    HEADER_ITEM,
+    STANDALONE_ITEM,
+    GROUP_ITEM,
+    SPACE,
+    UNKNOWN,
 }

@@ -18,11 +18,8 @@ package com.android.server.healthconnect.backuprestore;
 
 import static android.health.connect.datatypes.units.Temperature.fromCelsius;
 
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
-
 import static java.util.stream.Collectors.toSet;
 
-import android.annotation.FlaggedApi;
 import android.annotation.SuppressLint;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.units.Energy;

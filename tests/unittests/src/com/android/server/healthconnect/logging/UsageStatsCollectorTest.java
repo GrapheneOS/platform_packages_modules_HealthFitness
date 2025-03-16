@@ -40,7 +40,6 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -48,8 +47,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -59,31 +56,25 @@ import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourc
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.utils.PreferencesManager;
+import com.android.server.healthconnect.testing.HealthPermissionsMocker;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class UsageStatsCollectorTest {
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(HealthConnectManager.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private MedicalResourceHelper mMedicalResourceHelper;
     @Mock private MedicalDataSourceHelper mMedicalDataSourceHelper;
@@ -105,28 +96,11 @@ public class UsageStatsCollectorTest {
             "not.holding.permission.app";
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         Context context = spy(ApplicationProvider.getApplicationContext());
         UserHandle userHandle = ApplicationProvider.getApplicationContext().getUser();
-        HealthConnectInjector healthConnectInjector =
-                HealthConnectInjectorImpl.newBuilderForTest(context)
-                        .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
-                        .setPreferencesManager(mPreferencesManager)
-                        .setPreferenceHelper(mPreferenceHelper)
-                        .setAccessLogsHelper(mAccessLogsHelper)
-                        .setMedicalDataSourceHelper(mMedicalDataSourceHelper)
-                        .setMedicalResourceHelper(mMedicalResourceHelper)
-                        .build();
         doReturn(context).when(context).createContextAsUser(eq(userHandle), anyInt());
-        mUsageStatsCollector =
-                healthConnectInjector.getUsageStatsCollector(
-                        HealthConnectContext.create(
-                                context,
-                                userHandle,
-                                /* databaseDirName= */ null,
-                                healthConnectInjector.getEnvironmentDataDirectory()));
-
         doReturn(mPackageManager).when(context).getPackageManager();
         doReturn(
                         List.of(
@@ -136,8 +110,7 @@ public class UsageStatsCollectorTest {
                                 mPackageInfoPhrConnectedApp))
                 .when(mPackageManager)
                 .getInstalledPackages(any());
-        ExtendedMockito.doReturn(Set.of(READ_STEPS, WRITE_STEPS, READ_MEDICAL_DATA_CONDITIONS))
-                .when(() -> HealthConnectManager.getHealthPermissions(any()));
+        HealthPermissionsMocker.mockPackageManagerPermissions(mPackageManager);
 
         mPackageInfoConnectedApp.requestedPermissions = new String[] {READ_STEPS, WRITE_STEPS};
         mPackageInfoConnectedApp.requestedPermissionsFlags =
@@ -166,6 +139,23 @@ public class UsageStatsCollectorTest {
                     PackageInfo.REQUESTED_PERMISSION_GRANTED
                 };
         mPackageInfoPhrConnectedApp.packageName = PHR_CONNECTED_APP_PACKAGE_NAME;
+
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(context)
+                        .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                        .setPreferencesManager(mPreferencesManager)
+                        .setPreferenceHelper(mPreferenceHelper)
+                        .setAccessLogsHelper(mAccessLogsHelper)
+                        .setMedicalDataSourceHelper(mMedicalDataSourceHelper)
+                        .setMedicalResourceHelper(mMedicalResourceHelper)
+                        .build();
+        mUsageStatsCollector =
+                healthConnectInjector.getUsageStatsCollector(
+                        HealthConnectContext.create(
+                                context,
+                                userHandle,
+                                /* databaseDirName= */ null,
+                                healthConnectInjector.getEnvironmentDataDirectory()));
     }
 
     @Test

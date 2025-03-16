@@ -48,7 +48,8 @@ java_test_host {
         "cts",
         "general-tests",
         "mts-healthfitness",
-        "mcts-healthfitness",
+        // TODO(b/358006651): Re-enable once the test is fixed.
+        // "mcts-healthfitness",
     ],
     libs: [
         "compatibility-host-util",
@@ -61,6 +62,7 @@ java_test_host {
         "androidx.annotation_annotation",
         "flag-junit-host",
         "healthfitness-exported-aconfig-flags-lib-host",
+        "platformprotos",
     ],
     java_resource_dirs: ["host/res"],
     device_common_data: [

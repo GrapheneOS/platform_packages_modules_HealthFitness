@@ -61,7 +61,7 @@ import static java.util.stream.Collectors.toSet;
 
 import android.Manifest;
 import android.annotation.Nullable;
-import android.annotation.TargetApi;
+import android.annotation.RequiresApi;
 import android.content.AttributionSource;
 import android.content.Context;
 import android.content.Intent;
@@ -182,6 +182,7 @@ import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.exportimport.ImportManager;
+import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.ExportImportLogger;
@@ -217,7 +218,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
-import com.android.server.healthconnect.storage.request.DeleteTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
@@ -231,6 +231,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.ref.WeakReference;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -288,9 +289,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final ExportImportSettingsStorage mExportImportSettingsStorage;
     private final PreferenceHelper mPreferenceHelper;
-    private FitnessRecordReadHelper mFitnessRecordReadHelper;
-    private MedicalResourceHelper mMedicalResourceHelper;
-    private MedicalDataSourceHelper mMedicalDataSourceHelper;
+    private final FitnessRecordReadHelper mFitnessRecordReadHelper;
+    private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
+    private final MedicalResourceHelper mMedicalResourceHelper;
+    private final MedicalDataSourceHelper mMedicalDataSourceHelper;
     private final ExportManager mExportManager;
     private final AccessLogsHelper mAccessLogsHelper;
     private final ActivityDateHelper mActivityDateHelper;
@@ -304,8 +306,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final PreferencesManager mPreferencesManager;
     private final ReadAccessLogsHelper mReadAccessLogsHelper;
     private final RateLimiter mRateLimiter;
-    // This will be null if the phr_fhir_structural_validation flag is false.
+    // Used if PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE is false.
     @Nullable private FhirResourceValidator mFhirResourceValidator;
+    // Used if PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE is true.
+    WeakReference<FhirResourceValidator> mFhirResourceValidatorWeakReference =
+            new WeakReference<>(null);
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final HealthFitnessStatsLog mStatsLog;
 
@@ -323,6 +328,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MigrationUiStateManager migrationUiStateManager,
             MigrationCleaner migrationCleaner,
             FitnessRecordReadHelper fitnessRecordReadHelper,
+            FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
             MedicalResourceHelper medicalResourceHelper,
             MedicalDataSourceHelper medicalDataSourceHelper,
             ExportManager exportManager,
@@ -367,6 +373,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         migrationCleaner.attachTo(migrationStateManager);
 
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
+        mFitnessRecordDeleteHelper = fitnessRecordDeleteHelper;
         mMedicalResourceHelper = medicalResourceHelper;
         mMedicalDataSourceHelper = medicalDataSourceHelper;
 
@@ -818,11 +825,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         mTransactionManager,
                                         callingPackageName,
                                         request,
-                                        startDateAccessEpochMilli,
-                                        enforceSelfRead,
                                         grantedExtraReadPermissions,
+                                        startDateAccessEpochMilli,
                                         isInForeground,
                                         shouldRecordAccessLog,
+                                        enforceSelfRead,
                                         /* packageNamesByAppIds= */ null);
                         List<RecordInternal<?>> records = readRecordsResponse.first;
                         long pageToken = readRecordsResponse.second.encode();
@@ -1060,11 +1067,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
 
+                    tryAcquireApiCallQuota(
+                            uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
+
                     ChangeLogsRequestHelper.TokenRequest changeLogsTokenRequest =
                             mChangeLogsRequestHelper.getRequest(
                                     callerPackageName, request.getToken());
-                    tryAcquireApiCallQuota(
-                            uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
                     if (changeLogsTokenRequest.getRecordTypes().isEmpty()) {
                         throw new IllegalArgumentException(
                                 "Requested record types must not be empty.");
@@ -1103,11 +1111,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     mTransactionManager,
                                     callerPackageName,
                                     recordTypeToInsertedUuids,
-                                    startDateAccessEpochMilli,
                                     grantedExtraReadPermissions,
+                                    startDateAccessEpochMilli,
                                     isInForeground,
-                                    /* shouldRecordAccessLog= */ true,
-                                    isReadingSelfData);
+                                    /* shouldRecordAccessLog= */ !isReadingSelfData);
                     List<DeletedLog> deletedLogs =
                             ChangeLogsHelper.getDeletedLogs(changeLogsResponse.getChangeLogsMap());
 
@@ -1179,15 +1186,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 recordTypeIdsToDelete, attributionSource);
                     }
 
-                    deleteUsingFiltersInternal(
-                            attributionSource,
-                            request,
-                            callback,
-                            logger,
-                            recordTypeIdsToDelete,
-                            /* shouldRecordDeleteAccessLogs= */ !holdsDataManagementPermission,
-                            uid,
-                            pid);
+                    int numberOfRecordsDeleted =
+                            mFitnessRecordDeleteHelper.deleteRecords(
+                                    Objects.requireNonNull(attributionSource.getPackageName()),
+                                    request,
+                                    holdsDataManagementPermission,
+                                    /* shouldRecordAccessLog= */ !holdsDataManagementPermission);
+                    tryAndReturnResult(callback, logger);
+                    mThreadScheduler.scheduleInternalTask(
+                            () -> postDeleteTasks(recordTypeIdsToDelete));
+                    logger.setNumberOfRecords(numberOfRecordsDeleted)
+                            .setDataTypesFromRecordTypes(recordTypeIdsToDelete);
                 },
                 logger,
                 wrappedCallback,
@@ -1235,47 +1244,22 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     .getRecordIdToExternalRecordClassMap()
                                                     .keySet());
 
-                    deleteUsingFiltersInternal(
-                            attributionSource,
-                            request,
-                            callback,
-                            logger,
-                            recordTypeIdsToDelete,
-                            /* shouldRecordDeleteAccessLogs= */ !holdsDataManagementPermission,
-                            uid,
-                            pid);
+                    int numberOfRecordsDeleted =
+                            mFitnessRecordDeleteHelper.deleteRecords(
+                                    attributionSource.getPackageName(),
+                                    request,
+                                    /* holdsDataManagementPermission= */ true,
+                                    /* shouldRecordAccessLog= */ false);
+                    tryAndReturnResult(callback, logger);
+                    mThreadScheduler.scheduleInternalTask(
+                            () -> postDeleteTasks(recordTypeIdsToDelete));
+                    logger.setNumberOfRecords(numberOfRecordsDeleted)
+                            .setDataTypesFromRecordTypes(recordTypeIdsToDelete);
                 },
                 logger,
                 errorCallback,
                 uid,
                 /* isController= */ holdsDataManagementPermission);
-    }
-
-    private void deleteUsingFiltersInternal(
-            AttributionSource attributionSource,
-            DeleteUsingFiltersRequestParcel request,
-            IEmptyResponseCallback callback,
-            HealthConnectServiceLogger.Builder logger,
-            List<Integer> recordTypeIdsToDelete,
-            boolean shouldRecordDeleteAccessLogs,
-            int uid,
-            int pid) {
-        if (request.usesIdFilters() && request.usesNonIdFilters()) {
-            throw new IllegalArgumentException(
-                    "Requests with both id and non-id filters are not" + " supported");
-        }
-        DeleteTransactionRequest deleteTransactionRequest =
-                new DeleteTransactionRequest(
-                                attributionSource.getPackageName(), request, mAppInfoHelper)
-                        .setHasManageHealthDataPermission(hasDataManagementPermission(uid, pid));
-        int numberOfRecordsDeleted =
-                mTransactionManager.deleteAllRecords(
-                        deleteTransactionRequest, shouldRecordDeleteAccessLogs, mAccessLogsHelper);
-        tryAndReturnResult(callback, logger);
-        mThreadScheduler.scheduleInternalTask(() -> postDeleteTasks(recordTypeIdsToDelete));
-
-        logger.setNumberOfRecords(numberOfRecordsDeleted)
-                .setDataTypesFromRecordTypes(recordTypeIdsToDelete);
     }
 
     /** API to get Priority for {@code dataCategory} */
@@ -2694,18 +2678,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     mMedicalDataPermissionEnforcer.enforceWriteMedicalDataPermission(
                             attributionSource);
 
-                    // Initialise validator when upsertMedicalResources is called for the
-                    // first time to avoid unnecessary initialisation when PHR apis are not used.
-                    if (Flags.phrFhirStructuralValidation() && mFhirResourceValidator == null) {
-                        mFhirResourceValidator = new FhirResourceValidator();
-                    }
-
                     List<UpsertMedicalResourceInternalRequest> validatedMedicalResourcesToUpsert =
                             new ArrayList<>();
+                    FhirResourceValidator fhirResourceValidator =
+                            Flags.phrFhirStructuralValidation()
+                                    ? getOrCreateFhirResourceValidator()
+                                    : null;
                     for (UpsertMedicalResourceRequest upsertMedicalResourceRequest : requests) {
                         MedicalResourceValidator validator =
                                 new MedicalResourceValidator(
-                                        upsertMedicalResourceRequest, mFhirResourceValidator);
+                                        upsertMedicalResourceRequest, fhirResourceValidator);
                         validatedMedicalResourcesToUpsert.add(
                                 validator.validateAndCreateInternalRequest());
                     }
@@ -2736,6 +2718,28 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 errorCallback,
                 uid,
                 /* isController= */ holdsDataManagementPermission);
+    }
+
+    /** Creates a FhirResourceValidator if it does not exist and returns it. */
+    private FhirResourceValidator getOrCreateFhirResourceValidator() {
+        // If the flag FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE is enabled, we use a
+        // WeakReference so that the FhirResourceValidator can be shared between API
+        // calls but garbage collected when not in use, due to its size.
+        if (Flags.phrFhirResourceValidatorUseWeakReference()) {
+            FhirResourceValidator fhirResourceValidator = mFhirResourceValidatorWeakReference.get();
+            if (fhirResourceValidator == null) {
+                fhirResourceValidator = new FhirResourceValidator();
+                mFhirResourceValidatorWeakReference = new WeakReference<>(fhirResourceValidator);
+            }
+            return fhirResourceValidator;
+        } else {
+            if (mFhirResourceValidator == null) {
+                // The FhirResourceValidator is initialised here if null, to avoid
+                // unnecessary initialisation when PHR APIs are not used.
+                mFhirResourceValidator = new FhirResourceValidator();
+            }
+            return mFhirResourceValidator;
+        }
     }
 
     @Override
@@ -3267,7 +3271,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.BAKLAVA)
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     public void getChangesForBackup(
             @Nullable String changeToken, IGetChangesForBackupResponseCallback callback) {
         final int uid = Binder.getCallingUid();
@@ -3302,7 +3306,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.BAKLAVA)
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     public void getSettingsForBackup(IGetSettingsForBackupResponseCallback callback) {
         checkParamsNonNull(callback);
         final int uid = Binder.getCallingUid();
@@ -3335,7 +3339,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.BAKLAVA)
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     public void restoreSettings(BackupSettings backupSettings, IEmptyResponseCallback callback) {
         checkParamsNonNull(backupSettings);
         checkParamsNonNull(callback);
@@ -3372,7 +3376,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.BAKLAVA)
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     public void canRestore(int dataVersion, ICanRestoreResponseCallback callback) {
         checkParamsNonNull(dataVersion);
         final int uid = Binder.getCallingUid();
@@ -3403,7 +3407,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.BAKLAVA)
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     public void restoreChanges(
             List<RestoreChange> changes, byte[] appInfoMap, IEmptyResponseCallback callback) {
         checkParamsNonNull(changes);

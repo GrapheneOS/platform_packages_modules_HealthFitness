@@ -26,7 +26,7 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
-import org.mockito.kotlin.verifyZeroInteractions
+import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 
 class GetHealthPermissionsFlagsUseCaseTest {
@@ -59,7 +59,7 @@ class GetHealthPermissionsFlagsUseCaseTest {
 
         val result = useCase.invoke("TEST_APP", listOf())
 
-        verifyZeroInteractions(healthPermissionManager)
+        verifyNoMoreInteractions(healthPermissionManager)
         assertThat(result).isEmpty()
     }
 

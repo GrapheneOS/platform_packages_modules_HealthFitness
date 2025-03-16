@@ -23,6 +23,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTOR
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
+import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -31,8 +32,11 @@ import static org.junit.Assert.assertThrows;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.backuprestore.GetChangesForBackupResponse;
+import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -85,6 +89,9 @@ public class CloudBackupManagerTest {
     private static final long TEST_START_TIME_IN_MILLIS = 2000;
     private static final long TEST_END_TIME_IN_MILLIS = 3000;
     private static final int TEST_STEP_COUNT = 1345;
+    private static final int TEST_TIME_IN_MILLIS = 1234;
+    private static final double TEST_SYSTOLIC = 60.2;
+    private static final double TEST_DIASTOLIC = 92.6;
 
     @Rule(order = 1)
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
@@ -263,5 +270,96 @@ public class CloudBackupManagerTest {
     public void getSettingsForBackup_returnsProtoVersion() {
         var response = mCloudBackupManager.getSettingsForBackup();
         assertThat(response.getVersion()).isEqualTo(PROTO_VERSION);
+    }
+
+    @Test
+    public void insertRecordsDuringBackup_insertedRecordsReturnedInIncrementalBackup() {
+        // Full data has to be done with two pages.
+        List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE + 1);
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+        // First full data backup call
+        GetChangesForBackupResponse firstResponse = mCloudBackupManager.getChangesForBackup(null);
+        // Insert one more record during the backup
+        var bloodPressureRecord =
+                createBloodPressureRecord(TEST_TIME_IN_MILLIS, TEST_SYSTOLIC, TEST_DIASTOLIC);
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, bloodPressureRecord);
+        // Second full data backup call
+        GetChangesForBackupResponse secondResponse =
+                mCloudBackupManager.getChangesForBackup(firstResponse.getNextChangeToken());
+
+        // Incremental backup call
+        GetChangesForBackupResponse thirdResponse =
+                mCloudBackupManager.getChangesForBackup(secondResponse.getNextChangeToken());
+
+        // Inserted record should be returned in the second response.
+        assertThat(secondResponse.getChanges().size()).isEqualTo(2);
+        assertThat(thirdResponse.getChanges().size()).isEqualTo(1);
+        assertThat(thirdResponse.getChanges().get(0).getRecordId())
+                .isEqualTo(bloodPressureRecord.getUuid().toString());
+    }
+
+    @Test
+    public void updatesRecordsDuringBackup_updatedRecordsReturnedInIncrementalBackup() {
+        // Full data has to be done with two pages.
+        List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE + 1);
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+        // First full data backup call
+        GetChangesForBackupResponse firstResponse = mCloudBackupManager.getChangesForBackup(null);
+        // Modifies one record during the backup
+        var modifiedRecord = ((StepsRecordInternal) records.get(DEFAULT_PAGE_SIZE)).setCount(2);
+        mTransactionTestUtils.updateRecords(TEST_PACKAGE_NAME, modifiedRecord);
+        // Second full data backup call
+        GetChangesForBackupResponse secondResponse =
+                mCloudBackupManager.getChangesForBackup(firstResponse.getNextChangeToken());
+
+        // Incremental backup call
+        GetChangesForBackupResponse thirdResponse =
+                mCloudBackupManager.getChangesForBackup(secondResponse.getNextChangeToken());
+
+        // Modified record should be returned in the second and the third response.
+        assertThat(secondResponse.getChanges().size()).isEqualTo(1);
+        assertThat(thirdResponse.getChanges().size()).isEqualTo(1);
+        assertThat(thirdResponse.getChanges().get(0)).isEqualTo(secondResponse.getChanges().get(0));
+    }
+
+    @Test
+    public void deletesRecordsDuringBackup_deletedRecordsReturnedInIncrementalBackup() {
+        // Full data has to be done with two pages.
+        List<RecordInternal<?>> records = createStepRecords(DEFAULT_PAGE_SIZE + 2);
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, records);
+        // First full data backup call
+        GetChangesForBackupResponse firstResponse = mCloudBackupManager.getChangesForBackup(null);
+        // Delete one record during the backup
+        mTransactionTestUtils.deleteRecords(
+                TEST_PACKAGE_NAME,
+                RecordIdFilter.fromId(
+                        StepsRecord.class, records.get(DEFAULT_PAGE_SIZE).getUuid().toString()));
+
+        // Second full data backup call
+        GetChangesForBackupResponse secondResponse =
+                mCloudBackupManager.getChangesForBackup(firstResponse.getNextChangeToken());
+
+        // Incremental backup call
+        GetChangesForBackupResponse thirdResponse =
+                mCloudBackupManager.getChangesForBackup(secondResponse.getNextChangeToken());
+
+        // Modified record should be returned in the second and the third response.
+        assertThat(secondResponse.getChanges().size()).isEqualTo(1);
+        assertThat(thirdResponse.getChanges().size()).isEqualTo(1);
+        assertThat(thirdResponse.getChanges().get(0).isDeletion()).isTrue();
+    }
+
+    private List<RecordInternal<?>> createStepRecords(int recordSize) {
+        List<RecordInternal<?>> records = new ArrayList<>();
+        for (int recordNumber = 0; recordNumber < recordSize; recordNumber++) {
+            records.add(
+                    createStepsRecord(
+                            // Add offsets to start time and end time for distinguishing different
+                            // records.
+                            TEST_START_TIME_IN_MILLIS + recordNumber,
+                            TEST_END_TIME_IN_MILLIS + recordNumber,
+                            TEST_STEP_COUNT));
+        }
+        return records;
     }
 }

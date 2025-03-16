@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Mou al final"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Botó per arrossegar i reordenar <xliff:g id="SELECTED_APP">%s</xliff:g> a la llista prioritària"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Botó per suprimir <xliff:g id="SELECTED_APP">%s</xliff:g> de la llista prioritària"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Botó per reordenar o suprimir <xliff:g id="SELECTED_APP">%s</xliff:g> de la llista de fonts d\'aplicacions"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Fes doble toc i arrossega per reordenar"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> a la llista de <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fitnes, benestar"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"permisos"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"salut connectada, dades de salut, categories de salut, accés a les dades, activitat, mesures corporals, seguiment del cicle, nutrició, son, constants vitals"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Afegeix una aplicació"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Edita les fonts d\'aplicacions"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Opció predeterminada del dispositiu"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Mou cap amunt"</string>
+    <string name="move_down" msgid="4404970288236170693">"Mou cap avall"</string>
+    <string name="remove" msgid="1340423400489007362">"Suprimeix"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Dades de l\'aplicació"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Les dades de <xliff:g id="APP_NAME">%1$s</xliff:g> es mostraran aquí"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Les dades de les aplicacions amb accés a Salut connectada es mostraran aquí"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Vols suprimir permanentment les entrades seleccionades de <xliff:g id="APP_NAME">%1$s</xliff:g> de <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Vols suprimir permanentment aquesta entrada de l\'aplicació <xliff:g id="APP_NAME">%s</xliff:g>?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vols suprimir permanentment les dades de <xliff:g id="DATA_TYPE">%1$s</xliff:g> de <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Mostra el sistema"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Amaga el sistema"</string>
     <string name="on" msgid="8266542510798355807">"Activat"</string>
     <string name="off" msgid="6996623844428550649">"Desactivat"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"S\'hi ha accedit a les <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -28,7 +28,7 @@ class WarningPreference @JvmOverloads constructor(context: Context, attrs: Attri
     private lateinit var title: String
 
     init {
-        layoutResource = R.layout.widget_warning_preference
+        layoutResource = R.layout.widget_warning_preference_legacy
         isSelectable = false
         // TODO (b/342159144) add logging
     }

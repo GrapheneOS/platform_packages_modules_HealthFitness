@@ -33,6 +33,9 @@ import static java.time.Duration.ofMinutes;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.RecordIdFilter;
+import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
+import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
@@ -43,6 +46,7 @@ import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.util.ArrayMap;
 
+import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
@@ -70,11 +74,13 @@ public final class TransactionTestUtils {
     private static final String TEST_PACKAGE_NAME = "package.name";
     private final TransactionManager mTransactionManager;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
+    private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private final HealthConnectInjector mHealthConnectInjector;
 
     public TransactionTestUtils(HealthConnectInjector injector) {
         mTransactionManager = injector.getTransactionManager();
         mFitnessRecordReadHelper = injector.getFitnessRecordReadHelper();
+        mFitnessRecordDeleteHelper = injector.getFitnessRecordDeleteHelper();
         mHealthConnectInjector = injector;
     }
 
@@ -137,6 +143,22 @@ public final class TransactionTestUtils {
                 .execute();
     }
 
+    /** Deletes records with the given IDs from storage. */
+    public void deleteRecords(String packageName, RecordIdFilter... recordIdFilters) {
+        deleteRecords(packageName, List.of(recordIdFilters));
+    }
+
+    private void deleteRecords(String packageName, List<RecordIdFilter> recordIdFilters) {
+        DeleteUsingFiltersRequestParcel parcel =
+                new DeleteUsingFiltersRequestParcel(
+                        new RecordIdFiltersParcel(recordIdFilters), packageName);
+        mFitnessRecordDeleteHelper.deleteRecords(
+                packageName,
+                parcel,
+                /* holdsDataManagementPermission= */ false,
+                /* shouldRecordAccessLog= */ false);
+    }
+
     /** Read records with the given IDs from storage. */
     public List<RecordInternal<?>> readRecordsByIds(Map<Integer, List<UUID>> recordTypeToUuids) {
         return readRecordsByIds(TEST_PACKAGE_NAME, recordTypeToUuids);
@@ -145,28 +167,22 @@ public final class TransactionTestUtils {
     /** Read records with the given IDs from storage, as the given package name. */
     public List<RecordInternal<?>> readRecordsByIds(
             String packageName, Map<Integer, List<UUID>> recordTypeToUuids) {
-        return readRecordsByIds(
-                packageName,
-                recordTypeToUuids,
-                /* shouldRecordAccessLog */ false,
-                /* isReadingSelfData= */ false);
+        return readRecordsByIds(packageName, recordTypeToUuids, /* shouldRecordAccessLog */ false);
     }
 
     /** Read records with the given IDs from storage, as the given package name. */
     public List<RecordInternal<?>> readRecordsByIds(
             String packageName,
             Map<Integer, List<UUID>> recordTypeToUuids,
-            boolean shouldRecordAccessLogs,
-            boolean isReadingSelfData) {
+            boolean shouldRecordAccessLogs) {
         return mFitnessRecordReadHelper.readRecords(
                 mTransactionManager,
                 packageName,
                 recordTypeToUuids,
-                /* startDateAccessMillis= */ 0,
-                NO_EXTRA_PERMS,
+                /* startDateAccessMillis= */ NO_EXTRA_PERMS,
+                0,
                 /* isInForeground= */ true,
-                shouldRecordAccessLogs,
-                isReadingSelfData);
+                shouldRecordAccessLogs);
     }
 
     public static RecordInternal<StepsRecord> createStepsRecord(

@@ -108,8 +108,10 @@ constructor(
     /**
      * Returns a list of app packageNames that have declared at least one health permission
      * (additional or data type).
+     *
+     * @return a map of apps to a boolean representing whether this app is a system app
      */
-    fun getAppsWithHealthPermissions(): List<String> {
+    fun getAppsWithHealthPermissions(): Map<String, Boolean> {
         if (
             context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
                 Flags.replaceBodySensorPermissionEnabled()
@@ -126,9 +128,10 @@ constructor(
             if (Flags.replaceBodySensorPermissionEnabled()) {
                 healthApps.addAll(getPackagesRequestingSplitBodySensorPermissions())
             }
-            healthApps.distinct()
+            // TODO: b/397634304 - Support show/hide system button on Phone.
+            healthApps.distinct().associateWith { false }
         } catch (e: Exception) {
-            emptyList()
+            emptyMap()
         }
     }
 
@@ -139,16 +142,16 @@ constructor(
      * one health permissions. This function does not rely on health rationale intent filter. The
      * processing time of this function will be longer than the intent filter approach.
      *
-     * @return a list of app package names that have requested at least one health permission and
-     *   that are not system apps
+     * @return a map from app package names that have requested at least one health permission to a
+     *   boolean representing they are system apps
      */
-    private fun getPackagesRequestingSystemHealthPermissions(): List<String> {
+    private fun getPackagesRequestingSystemHealthPermissions(): Map<String, Boolean> {
         val packages =
             context.packageManager.getInstalledPackagesAsUser(
                 PackageManager.GET_PERMISSIONS,
                 Process.myUserHandle().getIdentifier(),
             )
-        val healthApps = mutableListOf<String>()
+        val healthApps = mutableMapOf<String, Boolean>()
         val systemHealthPermissions = getSystemHealthPermissions()
 
         for (info in packages) {
@@ -178,16 +181,14 @@ constructor(
                     packageName,
                     requestedSystemHealthPermissions.values.toList(),
                 )
-            if (
+            val isNotSystemApp =
                 requestedSystemHealthPermissions.any { (index, permissionName) ->
                     isUserSensitive(
                         allPermFlags[permissionName],
                         info.requestedPermissionsFlags?.getOrNull(index),
                     )
                 }
-            ) {
-                healthApps.add(packageName)
-            }
+            healthApps.put(packageName, !isNotSystemApp)
         }
         return healthApps
     }

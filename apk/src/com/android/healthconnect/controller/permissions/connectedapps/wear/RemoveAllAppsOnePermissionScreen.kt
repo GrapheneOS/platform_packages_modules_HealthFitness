@@ -27,8 +27,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.wear.compose.material3.Button
-import androidx.wear.compose.material3.Icon
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.ButtonDefaults
+import androidx.wear.compose.material.Icon
+import androidx.wear.compose.material.MaterialTheme
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
@@ -44,9 +46,12 @@ fun RemoveAllAppsOnePermissionScreen(
 ) {
 
     val healthPermission = fromPermissionString(permissionStr)
+    val primaryColor = MaterialTheme.colors.primary
+    val transparentPrimary = primaryColor.copy(alpha = 0.1f)
+
     ScrollableScreen(
         asScalingList = true,
-        showTimeText = false,
+        showTimeText = true,
         title = stringResource(R.string.remove_one_permission_for_all, dataTypeStr),
     ) {
         item {
@@ -56,7 +61,10 @@ fun RemoveAllAppsOnePermissionScreen(
             ) {
                 // Not revoke permissions, get back to per data type screen.
                 // TODO: b/373692569 - Use AlertDialog.Confirm and Dismiss Buttons.
-                Button(onClick = { onBackClick() }) {
+                Button(
+                    onClick = { onBackClick() },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = transparentPrimary),
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_cross),
                         contentDescription = stringResource(R.string.icon_content_cross_mark),

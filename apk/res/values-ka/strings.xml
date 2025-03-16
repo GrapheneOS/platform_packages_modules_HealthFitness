@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"ბოლოში ჩამოტანა"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"<xliff:g id="SELECTED_APP">%s</xliff:g>-ის პრიორიტეტის სიაში ჩავლების და გადაწყობის ღილაკი"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"ღილაკი <xliff:g id="SELECTED_APP">%s</xliff:g>-ის ამოსაშლელად პრიორიტეტების სიიდან"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"ღილაკი <xliff:g id="SELECTED_APP">%s</xliff:g>-ის აპის წყაროების სიიდან გადასაწყობად ან ამოსაშლელად"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"გადასაწყობად ორმაგად შეეხეთ და ჩაავლეთ"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="SELECTED_APP">%2$s</xliff:g>-ის სიაში პოზიცია: <xliff:g id="POSITION">%1$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"ფიტნესი, ველნესი"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"ნებართვები"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"ჯანმრთელობის დაკავშირება, ჯანმრთელობის მონაცემები, ჯანმრთელობის კატეგორიები, მონაცემების წვდომა, აქტივობა, სხეულის გაზომვები, ციკლის თვალყურის დევნება, კვება, ძილი, სასიცოცხლო მნიშვნელობები"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"დაამატეთ აპი"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"აპების წყაროების რედაქტირება"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"მოწყობილობის ნაგულისხმევი"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"ზემოთ გადატანა"</string>
+    <string name="move_down" msgid="4404970288236170693">"ქვემოთ გადატანა"</string>
+    <string name="remove" msgid="1340423400489007362">"ამოშლა"</string>
     <string name="app_data_title" msgid="6499967982291000837">"აპის მონაცემები"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"მონაცემები <xliff:g id="APP_NAME">%1$s</xliff:g>-იდან აქ გამოჩნდება"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"მონაცემები იმ აპებიდან, რომლებსაც Health Connect-ზე აქვს წვდომა, აქ გამოჩნდება"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"გსურთ <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>-ისთვის <xliff:g id="APP_NAME">%1$s</xliff:g>-ის არჩეული შენატანების სამუდამოდ წაშლა?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"გსურთ ამ <xliff:g id="APP_NAME">%s</xliff:g>-ის შენატანის სამუდამოდ წაშლა?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"გსურთ <xliff:g id="DATA_TYPE">%1$s</xliff:g> მონაცემების სამუდამოდ წაშლა <xliff:g id="APP_NAME">%2$s</xliff:g>-ისთვის?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"სისტემის ჩვენება"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"სისტემის დამალვა"</string>
     <string name="on" msgid="8266542510798355807">"ჩართული"</string>
     <string name="off" msgid="6996623844428550649">"გამორთული"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"წვდომა განხორციელდა: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -54,7 +54,7 @@ import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.times
-import org.mockito.kotlin.verifyZeroInteractions
+import org.mockito.kotlin.verifyNoMoreInteractions
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -112,7 +112,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
         val result = loadLastDateWithPriorityDataUseCase.invoke(FitnessPermissionType.STEPS)
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data).isNull()
-        verifyZeroInteractions(healthConnectManager)
+        verifyNoMoreInteractions(healthConnectManager)
     }
 
     @Test
@@ -466,7 +466,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
         loadPriorityListUseCase.setFailure("Exception")
         val result = loadLastDateWithPriorityDataUseCase.invoke(FitnessPermissionType.STEPS)
 
-        verifyZeroInteractions(healthConnectManager)
+        verifyNoMoreInteractions(healthConnectManager)
         Mockito.verify(healthConnectManager, times(0)).readRecords<StepsRecord>(any(), any(), any())
         assertThat(result is UseCaseResults.Failed).isTrue()
         assertThat((result as UseCaseResults.Failed).exception.message).isEqualTo("Exception")

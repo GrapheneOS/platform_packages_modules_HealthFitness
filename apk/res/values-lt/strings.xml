@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Perkelti į apačią"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Mygtukas, kuriuo galima nuvilkti ir pakeisti „<xliff:g id="SELECTED_APP">%s</xliff:g>“ tvarką prioritetų sąraše"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Mygtukas, pašalinantis „<xliff:g id="SELECTED_APP">%s</xliff:g>“ iš prioritetų sąrašo"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Mygtukas, kuriuo galima pertvarkyti arba pašalinti „<xliff:g id="SELECTED_APP">%s</xliff:g>“ iš programų šaltinių sąrašo"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Dukart palieskite ir vilkite, kad pertvarkytumėte"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> sąraše „<xliff:g id="SELECTED_APP">%2$s</xliff:g>“"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"mankšta, sveikatingumas"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"leidimai"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, sveikatos duomenys, sveikatos duomenų kategorijos, prieiga prie duomenų, veikla, kūno matavimai, ciklo stebėjimas, mityba, miegas, gyvybinių funkcijų rodikliai"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Programos pridėjimas"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Redaguoti programų šaltinius"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Numatytasis įrenginio nustatymas"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Perkelti aukštyn"</string>
+    <string name="move_down" msgid="4404970288236170693">"Perkelti žemyn"</string>
+    <string name="remove" msgid="1340423400489007362">"Pašalinti"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Programos duomenys"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Duomenys iš programos „<xliff:g id="APP_NAME">%1$s</xliff:g>“ bus rodomi čia"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Čia bus rodomi programų, turinčių prieigą prie „Health Connect“, duomenys"</string>

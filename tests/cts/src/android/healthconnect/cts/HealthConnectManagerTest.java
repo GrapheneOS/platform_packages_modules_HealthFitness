@@ -32,7 +32,6 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
-import static android.healthconnect.cts.utils.DataFactory.getRecordsAndIdentifiers;
 import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.cts.utils.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.cts.utils.TestUtils.finishMigrationWithShellPermissionIdentity;
@@ -178,10 +177,11 @@ public class HealthConnectManagerTest {
 
     @Test
     public void testRecordIdentifiers() {
-        for (TestUtils.RecordAndIdentifier recordAndIdentifier : getRecordsAndIdentifiers()) {
-            assertThat(recordAndIdentifier.getRecordClass().getRecordType())
-                    .isEqualTo(recordAndIdentifier.getId());
-        }
+        assertThat(DataFactory.getStepsRecord().getRecordType()).isEqualTo(RECORD_TYPE_STEPS);
+        assertThat(DataFactory.getHeartRateRecord().getRecordType())
+                .isEqualTo(RECORD_TYPE_HEART_RATE);
+        assertThat(DataFactory.getBasalMetabolicRateRecord().getRecordType())
+                .isEqualTo(RECORD_TYPE_BASAL_METABOLIC_RATE);
     }
 
     @Test

@@ -23,7 +23,6 @@ import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.exportimport.ExportFrequencyRadioGroupPreference.Companion.EXPORT_FREQUENCY_RADIO_GROUP_PREFERENCE
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.ExportSettings
 import com.android.healthconnect.controller.exportimport.api.ExportSettingsViewModel
@@ -31,13 +30,18 @@ import com.android.healthconnect.controller.exportimport.api.ExportStatusViewMod
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
 import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
+import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.shared.preference.RadioButtonPreferenceCategory
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.TimeSource
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ScheduledExportElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.toInstant
+import com.android.settingslib.widget.SelectorWithWidgetPreference
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -51,12 +55,14 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
         const val SCHEDULED_EXPORT_CONTROL_PREFERENCE_KEY = "scheduled_export_control_preference"
         const val CHOOSE_FREQUENCY_PREFERENCE_KEY = "choose_frequency"
         const val EXPORT_STATUS_PREFERENCE_ORDER = 1
+        const val EXPORT_FREQ_KEY = "EXPORT_FREQUENCY_GROUP"
     }
 
     init {
         this.setPageName(PageName.EXPORT_SETTINGS_PAGE)
     }
 
+    @Inject lateinit var logger: HealthConnectLogger
     @Inject lateinit var timeSource: TimeSource
     private val exportSettingsViewModel: ExportSettingsViewModel by viewModels()
     private val exportStatusViewModel: ExportStatusViewModel by viewModels()
@@ -116,19 +122,7 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
                             ?.setVisible(false)
                     }
                     exportSettingsViewModel.updatePreviousExportFrequency(exportSettings.frequency)
-                    if (
-                        chooseFrequencyPreferenceGroup.findPreference<Preference>(
-                            EXPORT_FREQUENCY_RADIO_GROUP_PREFERENCE
-                        ) == null
-                    ) {
-                        val exportFrequencyPreference =
-                            ExportFrequencyRadioGroupPreference(
-                                requireContext(),
-                                exportSettings.frequency,
-                                exportSettingsViewModel::updateExportFrequency,
-                            )
-                        chooseFrequencyPreferenceGroup.addPreference(exportFrequencyPreference)
-                    }
+                    setupRadioButtons(exportSettings.frequency)
                 }
                 is ExportSettings.LoadingFailed ->
                     Toast.makeText(requireActivity(), R.string.default_error, Toast.LENGTH_LONG)
@@ -149,9 +143,66 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
                 exportSettingsViewModel.updateExportFrequency(
                     ExportFrequency.EXPORT_FREQUENCY_NEVER
                 )
+                preferenceScreen.removePreferenceRecursively(EXPORT_FREQ_KEY)
             }
         }
     }
+
+    private fun setupRadioButtons(exportFrequency: ExportFrequency) {
+        if (preferenceScreen.findPreference<Preference>(EXPORT_FREQ_KEY) != null) {
+            preferenceScreen.removePreferenceRecursively(EXPORT_FREQ_KEY)
+        }
+
+        if (exportFrequency == ExportFrequency.EXPORT_FREQUENCY_NEVER) {
+            return
+        }
+
+        val options =
+            listOf(
+                RadioButtonPreferenceCategory.RadioButtonOption(
+                    key = ExportFrequency.EXPORT_FREQUENCY_DAILY.name,
+                    title = getString(R.string.frequency_daily),
+                    element = ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_DAILY,
+                    listener = getRadioButtonListener(ExportFrequency.EXPORT_FREQUENCY_DAILY),
+                ),
+                RadioButtonPreferenceCategory.RadioButtonOption(
+                    key = ExportFrequency.EXPORT_FREQUENCY_WEEKLY.name,
+                    title = getString(R.string.frequency_weekly),
+                    element = ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_WEEKLY,
+                    listener = getRadioButtonListener(ExportFrequency.EXPORT_FREQUENCY_WEEKLY),
+                ),
+                RadioButtonPreferenceCategory.RadioButtonOption(
+                    key = ExportFrequency.EXPORT_FREQUENCY_MONTHLY.name,
+                    title = getString(R.string.frequency_monthly),
+                    element = ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_MONTHLY,
+                    listener = getRadioButtonListener(ExportFrequency.EXPORT_FREQUENCY_MONTHLY),
+                ),
+            )
+
+        val currentSelectedKey =
+            if (exportFrequency == ExportFrequency.EXPORT_FREQUENCY_NEVER) {
+                ExportFrequency.EXPORT_FREQUENCY_DAILY.name
+            } else {
+                exportFrequency.name
+            }
+
+        val exportFrequencyPreference =
+            RadioButtonPreferenceCategory(
+                context = requireContext(),
+                childFragmentManager = childFragmentManager,
+                options = options,
+                logger = logger,
+                preferenceKey = EXPORT_FREQ_KEY,
+                currentSelectedKey = currentSelectedKey,
+            )
+        exportFrequencyPreference.order = 3
+        preferenceScreen.addPreference(exportFrequencyPreference)
+    }
+
+    private fun getRadioButtonListener(exportFrequency: ExportFrequency) =
+        SelectorWithWidgetPreference.OnClickListener {
+            exportSettingsViewModel.updateExportFrequency(exportFrequency)
+        }
 
     private fun maybeShowNextExportStatus(scheduledExportUiState: ScheduledExportUiState) {
         val lastSuccessfulExportTime = scheduledExportUiState.lastSuccessfulExportTime
@@ -174,11 +225,29 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
         }
         val nextExportLocation = getNextExportLocationString(scheduledExportUiState)
         preferenceScreen.addPreference(
-            ExportStatusPreference(requireContext(), nextExportText, nextExportLocation).also {
-                it.order = EXPORT_STATUS_PREFERENCE_ORDER
-                it.isSelectable = false
-            }
+            getExportStatusPreference(nextExportText, nextExportLocation)
         )
+    }
+
+    private fun getExportStatusPreference(
+        nextExportText: String,
+        nextExportLocation: String?,
+    ): HealthPreference {
+        val preference =
+            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+                HealthPreference(requireContext()).also {
+                    it.title = nextExportText
+                    it.summary = nextExportLocation
+                }
+            } else {
+                ExportStatusPreference(requireContext(), nextExportText, nextExportLocation).also {
+                    it.isSelectable = false
+                }
+            }
+
+        preference.order = EXPORT_STATUS_PREFERENCE_ORDER
+        preference.key = ExportStatusPreference.EXPORT_STATUS_PREFERENCE
+        return preference
     }
 
     private fun getNextExportLocationString(

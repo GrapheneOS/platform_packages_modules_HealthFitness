@@ -65,6 +65,7 @@ class WearGrantPermissionsActivity : Hilt_WearGrantPermissionsActivity() {
 
         // This flag ensures a non system app cannot show an overlay on Health Connect. b/313425281
         window.addSystemFlags(SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS)
+        overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
 
         // Load permissions for this package.
         val packageName = getPackageNameExtra()

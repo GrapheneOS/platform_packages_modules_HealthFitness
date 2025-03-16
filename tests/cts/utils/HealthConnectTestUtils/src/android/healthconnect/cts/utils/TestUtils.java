@@ -1203,24 +1203,6 @@ public final class TestUtils {
         }
     }
 
-    public static final class RecordAndIdentifier {
-        private final int mId;
-        private final Record mRecordClass;
-
-        public RecordAndIdentifier(int id, Record recordClass) {
-            this.mId = id;
-            this.mRecordClass = recordClass;
-        }
-
-        public int getId() {
-            return mId;
-        }
-
-        public Record getRecordClass() {
-            return mRecordClass;
-        }
-    }
-
     public static class RecordTypeInfoTestResponse {
         private final int mRecordTypePermission;
         private final ArrayList<String> mContributingPackages;

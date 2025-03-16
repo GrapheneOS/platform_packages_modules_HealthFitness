@@ -1,0 +1,5 @@
+android_app {
+    // A Fake app to use in "instrument_for" in bivalent robolectric tests.
+    name: "HealthConnectFakeTestApp",
+    sdk_version: "module_current",
+}

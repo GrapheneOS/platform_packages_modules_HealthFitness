@@ -1665,7 +1665,7 @@
     <string name="request_permissions_while_using_the_app" description="Label for button to deny an app from reading health data in background.">While using the app</string>
     <string name="request_permissions_deny_all" description="Label for button to deny an app to have all the requested permissions for the user's data [CHAR_LIMIT=20]">Deny all</string>
     <string name="wear_allow_app_access_fitness_and_wellness_data" description="Title shown for allowing fitness permissions.">Allow <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> to access fitness and wellness data?</string>
-    <string name="wear_request_multiple_data_type_permissions" description="Subtitle shown for allowing multiple fitness permissions. "><xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> is requesting access to <xliff:g id="data_types" example="Heart rate, Skin temp">%2$s</xliff:g>.\n\nChoose to allow all or control them individually.</string>
+    <string name="wear_request_multiple_data_type_permissions" description="Subtitle shown for allowing multiple fitness permissions. "><xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> is requesting access to <xliff:g id="data_types" example="heart rate, skin temp">%2$s</xliff:g>.\n\nChoose to allow all or control them individually.</string>
     <string name="wear_request_single_data_type_permission" description="Title shown for allowing single fitness permission. ">Allow <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> to access <xliff:g id="data_type" example="Heart rate">%2$s</xliff:g>?</string>
     <!-- endregion -->
 

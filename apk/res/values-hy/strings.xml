@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Տեղափոխել վերջ"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Առաջնահերթությունների ցուցակում <xliff:g id="SELECTED_APP">%s</xliff:g> հավելվածները քաշելու և վերադասավորելու կոճակ"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"<xliff:g id="SELECTED_APP">%s</xliff:g>-ն առաջնահերթության ցանկից հեռացնելու կոճակ"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Կոճակ՝ վերադասավորելու կամ հեռացնելու համար՝ <xliff:g id="SELECTED_APP">%s</xliff:g> հավելվածների աղբյուրների ցանկում"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Կրկնակի հպեք և քաշեք՝ վերադասավորելու համար"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> ցանկում <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"ֆիթնես, առողջություն"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"թույլտվություններ"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, առողջության մասին տվյալներ, առողջության կատեգորիաներ, տվյալների հասանելիություն, գործողություններ, մարմնի պարամետրեր, ցիկլի հետագծում, սնունդ, քուն, կենսական ցուցանիշներ"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Ավելացնել հավելված"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Հավելվածների աղբյուրների փոփոխում"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Կանխադրված տարբերակ"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Տեղափոխել վերև"</string>
+    <string name="move_down" msgid="4404970288236170693">"Տեղափոխել ներքև"</string>
+    <string name="remove" msgid="1340423400489007362">"Հեռացնել"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Հավելվածի տվյալներ"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Այստեղ կցուցադրվեն տվյալներ <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածից"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Health Connect-ի հասանելիություն ունեցող հավելվածների տվյալները կցուցադրվեն այստեղ"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Ընդմիշտ ջնջե՞լ <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածում <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>ի ընտրված գրառումները"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Ընդմիշտ ջնջե՞լ <xliff:g id="APP_NAME">%s</xliff:g> հավելվածում կատարած այս գրառումը"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Ընդմիշտ ջնջե՞լ ընտրված տվյալները (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) <xliff:g id="APP_NAME">%2$s</xliff:g> հավելվածի համար"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Ցույց տալ համակարգային գործընթացները"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Թաքցնել համակարգային գործընթացները"</string>
     <string name="on" msgid="8266542510798355807">"Միացված է"</string>
     <string name="off" msgid="6996623844428550649">"Անջատված է"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Բացվել է <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

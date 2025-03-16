@@ -24,6 +24,7 @@ import static com.android.server.healthconnect.testing.storage.TransactionTestUt
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
@@ -44,7 +45,6 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -65,7 +65,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,17 +82,9 @@ public class BackupRestoreWithoutMocksTest {
     private static final Instant INSTANT_NOW_PLUS_TEN_SEC = INSTANT_NOW.plusSeconds(10);
     private static final Instant INSTANT_NOW_PLUS_TWENTY_SEC = INSTANT_NOW.plusSeconds(20);
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(BackupRestore.BackupRestoreJobService.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
-
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
@@ -134,7 +127,9 @@ public class BackupRestoreWithoutMocksTest {
                         healthConnectInjector.getDeviceInfoHelper(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
                         healthConnectInjector.getThreadScheduler(),
-                        healthConnectInjector.getEnvironmentDataDirectory());
+                        healthConnectInjector.getEnvironmentDataDirectory(),
+                        // Don't actually schedule jobs
+                        mock(BackupRestore.BackupRestoreJobScheduler.class));
 
         mPhrTestUtils = new PhrTestUtils(healthConnectInjector);
     }

@@ -23,7 +23,6 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED;
 
-import static com.android.dx.mockito.inline.extended.ExtendedMockito.verify;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_JOB_NAME_KEY;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_USER_ID;
 import static com.android.server.healthconnect.migration.MigrationConstants.CURRENT_STATE_START_TIME_KEY;
@@ -43,7 +42,8 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import android.app.job.JobInfo;
@@ -55,7 +55,6 @@ import android.os.UserHandle;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectDailyService;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
@@ -65,6 +64,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.util.List;
@@ -73,11 +74,7 @@ import java.util.Objects;
 @RunWith(AndroidJUnit4.class)
 public class MigrationStateChangeJobTest {
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(HealthConnectDailyService.class)
-                    .build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock MigrationStateManager mMigrationStateManager;
     @Mock PreferenceHelper mPreferenceHelper;
@@ -136,7 +133,7 @@ public class MigrationStateChangeJobTest {
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_ALLOWED);
         MigrationStateChangeJob.executeMigrationPauseJob(
                 mContext, mPreferenceHelper, mMigrationStateManager);
-        verifyZeroInteractions(mPreferenceHelper);
+        verifyNoMoreInteractions(mPreferenceHelper);
         verifyNoStateChange();
     }
 
@@ -247,7 +244,7 @@ public class MigrationStateChangeJobTest {
         when(mMigrationStateManager.getMigrationState()).thenReturn(MIGRATION_STATE_COMPLETE);
         MigrationStateChangeJob.executeMigrationCompletionJob(
                 mContext, mPreferenceHelper, mMigrationStateManager);
-        verifyZeroInteractions(mPreferenceHelper);
+        verifyNoMoreInteractions(mPreferenceHelper);
         verifyNoStateChange();
     }
 
@@ -352,17 +349,12 @@ public class MigrationStateChangeJobTest {
         long jobRunInterval =
                 MigrationConstants.MIGRATION_COMPLETION_JOB_RUN_INTERVAL_DAYS.toMillis();
         MigrationStateChangeJob.scheduleMigrationCompletionJob(mContext, DEFAULT_USER_HANDLE);
-        verify(
-                () ->
-                        HealthConnectDailyService.schedule(
-                                any(JobScheduler.class),
-                                any(UserHandle.class),
-                                argThat(
-                                        job ->
-                                                hasExpectedParameters(
-                                                        job,
-                                                        MIGRATION_COMPLETE_JOB_NAME,
-                                                        jobRunInterval))));
+        verify(mJobScheduler)
+                .schedule(
+                        argThat(
+                                job ->
+                                        hasExpectedParameters(
+                                                job, MIGRATION_COMPLETE_JOB_NAME, jobRunInterval)));
     }
 
     @Test
@@ -371,17 +363,12 @@ public class MigrationStateChangeJobTest {
         MigrationStateChangeJob.scheduleMigrationPauseJob(mContext, DEFAULT_USER_HANDLE);
         when(mContext.getSystemService(eq(JobScheduler.class))).thenReturn(mJobScheduler);
 
-        verify(
-                () ->
-                        HealthConnectDailyService.schedule(
-                                any(JobScheduler.class),
-                                any(UserHandle.class),
-                                argThat(
-                                        job ->
-                                                hasExpectedParameters(
-                                                        job,
-                                                        MIGRATION_PAUSE_JOB_NAME,
-                                                        jobRunInterval))));
+        verify(mJobScheduler)
+                .schedule(
+                        argThat(
+                                job ->
+                                        hasExpectedParameters(
+                                                job, MIGRATION_PAUSE_JOB_NAME, jobRunInterval)));
     }
 
     @Test

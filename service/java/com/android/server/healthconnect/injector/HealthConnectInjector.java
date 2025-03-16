@@ -26,6 +26,7 @@ import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.exportimport.ExportManager;
+import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.ExportImportLogger;
@@ -178,6 +179,12 @@ public abstract class HealthConnectInjector {
      * Injector.
      */
     public abstract FitnessRecordReadHelper getFitnessRecordReadHelper();
+
+    /**
+     * Getter for {@link FitnessRecordDeleteHelper} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract FitnessRecordDeleteHelper getFitnessRecordDeleteHelper();
 
     /**
      * Getter for {@link MedicalResourceHelper} instance initialised by the Health Connect Injector.

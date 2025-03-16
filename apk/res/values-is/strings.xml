@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Færa neðst"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Hnappur til að draga og endurraða <xliff:g id="SELECTED_APP">%s</xliff:g> á forgangslista"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Hnappur til að fjarlægja <xliff:g id="SELECTED_APP">%s</xliff:g> af forgangslista"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Hnappur til að endurraða eða fjarlægja <xliff:g id="SELECTED_APP">%s</xliff:g> af listanum yfir upprunaforrit"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Ýttu tvisvar og dragðu til að endurraða"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> á listanum <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"hreysti, vellíðan"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"heimildir"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"heilsutenging, heilsugögn, heilsuflokkar, aðgangur að gögnum, hreyfing, líkamsmælingar, skráning tíðahrings, næring, svefn, lífsmörk"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Bæta við forriti"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Bæta við eða fjarlægja forrit sem veita upplýsingar"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Sjálfgefin stilling tækis"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Færa upp"</string>
+    <string name="move_down" msgid="4404970288236170693">"Færa niður"</string>
+    <string name="remove" msgid="1340423400489007362">"Fjarlægja"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Forritsgögn"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Gögn úr <xliff:g id="APP_NAME">%1$s</xliff:g> birtast hér"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Gögn úr forritum með aðgang að Heilsutengingu birtast hér"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Eyða völdum <xliff:g id="APP_NAME">%1$s</xliff:g>-færslum frá <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g> fyrir fullt og allt?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Eyða þessari <xliff:g id="APP_NAME">%s</xliff:g>-færslu fyrir fullt og allt?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Loka fyrir aðgang <xliff:g id="APP_NAME">%2$s</xliff:g> að <xliff:g id="DATA_TYPE">%1$s</xliff:g>-gögnum varanlega?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Sýna kerfi"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Fela kerfi"</string>
     <string name="on" msgid="8266542510798355807">"Kveikt"</string>
     <string name="off" msgid="6996623844428550649">"Slökkt"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Opnað kl. <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

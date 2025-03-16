@@ -59,6 +59,7 @@ import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.healthconnect.controller.utils.toInstant
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
 import javax.inject.Inject
@@ -260,33 +261,11 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
         adapter =
-            EntriesAdapter.Builder()
-                .setViewBinder(FormattedEntry.SelectAllHeader::class.java, selectAllViewBinder)
-                .setViewBinder(FormattedEntry.FormattedDataEntry::class.java, entryViewBinder)
-                .setViewBinder(
-                    FormattedEntry.FormattedMedicalDataEntry::class.java,
-                    medicalEntryViewBinder,
-                )
-                .setViewBinder(FormattedEntry.SleepSessionEntry::class.java, sleepSessionViewBinder)
-                .setViewBinder(
-                    FormattedEntry.ExerciseSessionEntry::class.java,
-                    exerciseSessionItemViewBinder,
-                )
-                .setViewBinder(FormattedEntry.SeriesDataEntry::class.java, seriesDataItemViewBinder)
-                .setViewBinder(
-                    FormattedEntry.FormattedAggregation::class.java,
-                    aggregationViewBinder,
-                )
-                .setViewBinder(
-                    FormattedEntry.EntryDateSectionHeader::class.java,
-                    sectionTitleViewBinder,
-                )
-                .setViewBinder(
-                    FormattedEntry.PlannedExerciseSessionEntry::class.java,
-                    plannedExerciseSessionItemViewBinder,
-                )
-                .setViewModel(entriesViewModel)
-                .build()
+            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+                getExpressiveEntriesAdapter()
+            } else {
+                getEntriesAdapter()
+            }
         entriesRecyclerView =
             view.findViewById<RecyclerView?>(R.id.data_entries_list).also {
                 it.adapter = adapter
@@ -294,6 +273,60 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
             }
 
         return view
+    }
+
+    private fun getEntriesAdapter(): EntriesAdapter {
+        return EntriesAdapter.Builder()
+            .setViewBinder(FormattedEntry.SelectAllHeader::class.java, selectAllViewBinder)
+            .setViewBinder(FormattedEntry.FormattedDataEntry::class.java, entryViewBinder)
+            .setViewBinder(
+                FormattedEntry.FormattedMedicalDataEntry::class.java,
+                medicalEntryViewBinder,
+            )
+            .setViewBinder(FormattedEntry.SleepSessionEntry::class.java, sleepSessionViewBinder)
+            .setViewBinder(
+                FormattedEntry.ExerciseSessionEntry::class.java,
+                exerciseSessionItemViewBinder,
+            )
+            .setViewBinder(FormattedEntry.SeriesDataEntry::class.java, seriesDataItemViewBinder)
+            .setViewBinder(FormattedEntry.FormattedAggregation::class.java, aggregationViewBinder)
+            .setViewBinder(
+                FormattedEntry.EntryDateSectionHeader::class.java,
+                sectionTitleViewBinder,
+            )
+            .setViewBinder(
+                FormattedEntry.PlannedExerciseSessionEntry::class.java,
+                plannedExerciseSessionItemViewBinder,
+            )
+            .setViewModel(entriesViewModel)
+            .build()
+    }
+
+    private fun getExpressiveEntriesAdapter(): ExpressiveEntriesAdapter {
+        return ExpressiveEntriesAdapter.Builder()
+            .setViewBinder(FormattedEntry.SelectAllHeader::class.java, selectAllViewBinder)
+            .setViewBinder(FormattedEntry.FormattedDataEntry::class.java, entryViewBinder)
+            .setViewBinder(
+                FormattedEntry.FormattedMedicalDataEntry::class.java,
+                medicalEntryViewBinder,
+            )
+            .setViewBinder(FormattedEntry.SleepSessionEntry::class.java, sleepSessionViewBinder)
+            .setViewBinder(
+                FormattedEntry.ExerciseSessionEntry::class.java,
+                exerciseSessionItemViewBinder,
+            )
+            .setViewBinder(FormattedEntry.SeriesDataEntry::class.java, seriesDataItemViewBinder)
+            .setViewBinder(FormattedEntry.FormattedAggregation::class.java, aggregationViewBinder)
+            .setViewBinder(
+                FormattedEntry.EntryDateSectionHeader::class.java,
+                sectionTitleViewBinder,
+            )
+            .setViewBinder(
+                FormattedEntry.PlannedExerciseSessionEntry::class.java,
+                plannedExerciseSessionItemViewBinder,
+            )
+            .setViewModel(entriesViewModel)
+            .build(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

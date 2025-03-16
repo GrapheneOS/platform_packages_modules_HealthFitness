@@ -30,7 +30,6 @@ import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import android.provider.DocumentsContract
-import android.view.View
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onIdle
@@ -44,7 +43,6 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasType
 import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -60,9 +58,13 @@ import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.service.HealthDataExportManagerModule
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
+import com.android.healthconnect.controller.tests.utils.checkBoxOf
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataExportManager
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.toggleAnimation
+import com.android.healthconnect.controller.tests.utils.withTitleAndSummary
+import com.android.healthconnect.controller.tests.utils.withTitleNoSummary
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.ExportDestinationElement
@@ -73,13 +75,12 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
@@ -145,6 +146,7 @@ class ExportDestinationFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
         Intents.init()
+        toggleAnimation(false)
     }
 
     @After
@@ -152,13 +154,13 @@ class ExportDestinationFragmentTest {
         Intents.release()
         reset(healthConnectLogger)
         fakeHealthDataExportManager.reset()
+        toggleAnimation(true)
     }
 
     @Test
-    fun exportDestinationFragment_isDisplayedCorrectly() {
+    fun isDisplayedCorrectly() {
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(withId(R.id.export_destination_header_upload_icon)).check(matches(isDisplayed()))
         onView(withText("Choose where to save scheduled export")).check(matches(isDisplayed()))
 
         onView(withText("Back")).check(matches(isDisplayed()))
@@ -166,10 +168,10 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_impressionsLogged() {
+    fun impressionsLogged() {
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger, atLeast(1)).logPageImpression()
         verify(healthConnectLogger)
             .logImpression(ExportDestinationElement.EXPORT_DESTINATION_BACK_BUTTON)
         verify(healthConnectLogger)
@@ -177,15 +179,15 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_clicksBackButton_navigatesBackToFrequencyFragment() {
+    fun clicksBackButton_navigatesBackToFrequencyFragment() {
         launchFragment<ExportDestinationFragment>(Bundle()) {
             navHostController.setGraph(R.navigation.export_nav_graph)
             navHostController.setCurrentDestination(R.id.exportDestinationFragment)
             Navigation.setViewNavController(this.requireView(), navHostController)
         }
 
-        onView(withId(R.id.export_import_cancel_button)).check(matches(isClickable()))
-        onView(withId(R.id.export_import_cancel_button)).perform(click())
+        onView(withId(R.id.secondary_button)).check(matches(isClickable()))
+        onView(withId(R.id.secondary_button)).perform(click())
 
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.exportFrequencyFragment)
         verify(healthConnectLogger)
@@ -193,14 +195,14 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_nextButton_notEnabled() {
+    fun nextButton_notEnabled() {
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(withId(R.id.export_import_next_button)).check(matches(isNotEnabled()))
+        onView(withId(R.id.primary_button_full)).check(matches(isNotEnabled()))
     }
 
     @Test
-    fun exportDestinationFragment_showsDocumentProviders() {
+    fun showsDocumentProviders() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -221,30 +223,24 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
+        onView(
+                withTitleAndSummary(
+                    TEST_DOCUMENT_PROVIDER_1_TITLE,
+                    TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY,
+                )
+            )
             .check(matches(isDisplayed()))
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY), isDisplayed())
-                    )
+        onView(
+                withTitleAndSummary(
+                    TEST_DOCUMENT_PROVIDER_2_TITLE,
+                    TEST_DOCUMENT_PROVIDER_2_ROOT_SUMMARY,
                 )
             )
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_2_TITLE))
             .check(matches(isDisplayed()))
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_2_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withText(TEST_DOCUMENT_PROVIDER_2_ROOT_SUMMARY), isDisplayed())
-                    )
-                )
-            )
     }
 
     @Test
-    fun exportDestinationFragment_showsDocumentProviders_notChecked() {
+    fun showsDocumentProviders_notChecked() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -265,26 +261,12 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withId(R.id.item_document_provider_radio_button), isNotChecked())
-                    )
-                )
-            )
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_2_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withId(R.id.item_document_provider_radio_button), isNotChecked())
-                    )
-                )
-            )
+        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isNotChecked()))
+        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isNotChecked()))
     }
 
     @Test
-    fun exportDestinationFragment_documentProviderClicked_documentProviderIsChecked() {
+    fun documentProviderClicked_documentProviderIsChecked() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -305,20 +287,13 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withId(R.id.item_document_provider_radio_button), isChecked())
-                    )
-                )
-            )
+        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isChecked()))
     }
 
     @Test
-    fun exportDestinationFragment_secondDocumentProviderClicked_otherDocumentProviderIsNotChecked() {
+    fun secondDocumentProviderClicked_otherDocumentProviderIsNotChecked() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -339,29 +314,15 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withId(R.id.item_document_provider_radio_button), isNotChecked())
-                    )
-                )
-            )
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_2_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withId(R.id.item_document_provider_radio_button), isChecked())
-                    )
-                )
-            )
+        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isNotChecked()))
+        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isChecked()))
     }
 
     @Test
-    fun exportDestinationFragment_switchBackToPreviousSelectedDocumentProvider_previousSelectedAccountIsChecked() {
+    fun switchBackToPreviousSelectedDocumentProvider_previousSelectedAccountIsChecked() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -390,31 +351,23 @@ class ExportDestinationFragmentTest {
         launchFragment<ExportDestinationFragment>(Bundle())
 
         // Selects the second account for provider 1.
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
             .perform(click())
         onView(withText("Done")).inRoot(isDialog()).perform(click())
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY), isDisplayed())
-                    )
+        onView(
+                withTitleAndSummary(
+                    TEST_DOCUMENT_PROVIDER_1_TITLE,
+                    TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
                 )
             )
+            .check(matches(isDisplayed()))
         // Selects the provider 2.
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_2_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withId(R.id.item_document_provider_radio_button), isChecked())
-                    )
-                )
-            )
+        onView(withText(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
+        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isChecked()))
         // Switches back to provider 1.
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
@@ -422,7 +375,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_documentProviderClicked_nextButtonIsEnabled() {
+    fun documentProviderClicked_nextButtonIsEnabled() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -443,13 +396,13 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
-        onView(withId(R.id.export_import_next_button)).check(matches(isEnabled()))
+        onView(withId(R.id.primary_button_full)).check(matches(isEnabled()))
     }
 
     @Test
-    fun exportDestinationFragment_nextButtonClicked_startsDocumentsUi() {
+    fun nextButtonClicked_startsDocumentsUi() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -470,8 +423,8 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.export_import_next_button)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withId(R.id.primary_button_full)).perform(click())
 
         intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
         intended(hasType("application/zip"))
@@ -482,7 +435,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_chooseFile_updatesUri() {
+    fun chooseFile_updatesUri() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -510,15 +463,15 @@ class ExportDestinationFragmentTest {
                 )
             )
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.export_import_next_button)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withId(R.id.primary_button_full)).perform(click())
 
         assertThat(fakeHealthDataExportManager.getExportUri())
             .isEqualTo(TEST_DOCUMENT_PROVIDER_1_ROOT_1_DOCUMENT_URI)
     }
 
     @Test
-    fun exportDestinationFragment_chooseExternalStorageFile_doesNotUpdateUri() {
+    fun chooseExternalStorageFile_doesNotUpdateUri() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -534,14 +487,14 @@ class ExportDestinationFragmentTest {
         intending(hasAction(Intent.ACTION_CREATE_DOCUMENT))
             .respondWith(ActivityResult(RESULT_OK, Intent().setData(EXTERNAL_STORAGE_DOCUMENT_URI)))
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.export_import_next_button)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withId(R.id.primary_button_full)).perform(click())
 
         assertThat(fakeHealthDataExportManager.getExportUri()).isNull()
     }
 
     @Test
-    fun exportDestinationFragment_chooseDownloadsFile_doesNotUpdateUri() {
+    fun chooseDownloadsFile_doesNotUpdateUri() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -557,14 +510,14 @@ class ExportDestinationFragmentTest {
         intending(hasAction(Intent.ACTION_CREATE_DOCUMENT))
             .respondWith(ActivityResult(RESULT_OK, Intent().setData(DOWNLOADS_DOCUMENT_URI)))
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.export_import_next_button)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withId(R.id.primary_button_full)).perform(click())
 
         assertThat(fakeHealthDataExportManager.getExportUri()).isNull()
     }
 
     @Test
-    fun exportDestinationFragment_multipleAccounts_doesNotShowSummary() {
+    fun multipleAccounts_doesNotShowSummary() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -592,18 +545,11 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withId(R.id.item_document_provider_summary), not(isDisplayed()))
-                    )
-                )
-            )
+        onView(withTitleNoSummary(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun exportDestinationFragment_multipleAccountsClicked_showsAccountPicker() {
+    fun multipleAccountsClicked_showsAccountPicker() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -631,7 +577,7 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
         onView(withText("Choose an account")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY))
@@ -645,7 +591,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_multipleAccountsClickedAndAccountChosen_updatesSummary() {
+    fun multipleAccountsClickedAndAccountChosen_updatesSummary() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -673,24 +619,23 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
             .perform(click())
         onView(withText("Done")).inRoot(isDialog()).perform(click())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY), isDisplayed())
-                    )
+        onView(
+                withTitleAndSummary(
+                    TEST_DOCUMENT_PROVIDER_1_TITLE,
+                    TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
                 )
             )
+            .check(matches(isDisplayed()))
     }
 
     @Test
-    fun exportDestinationFragment_multipleAccountsClickedAndAccountChosen_nextButtonClicked_startsDocumentsUi() {
+    fun multipleAccountsClickedAndAccountChosen_nextButtonClicked_startsDocumentsUi() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -718,7 +663,7 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
             .perform(click())
@@ -732,15 +677,15 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_noProviders_nextButtonNotEnabled() {
+    fun noProviders_nextButtonNotEnabled() {
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(withId(R.id.export_import_next_button)).check(matches(isNotEnabled()))
+        onView(withId(R.id.primary_button_full)).check(matches(isNotEnabled()))
     }
 
     @Test
-    fun exportDestinationFragment_noProvidersAndPlayStoreNotAvailable_showsNoAppsText() {
+    fun noProvidersAndPlayStoreNotAvailable_showsNoAppsText() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
@@ -750,18 +695,18 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_noProvidersAndPlayStoreNotAvailable_doesNotShowPlayStoreButton() {
+    fun noProvidersAndPlayStoreNotAvailable_doesNotShowPlayStoreButton() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(withText(R.string.export_import_go_to_play_store_text))
+        onView(withId(com.android.settingslib.widget.preference.footer.R.id.settingslib_learn_more))
             .check(matches(not(isDisplayed())))
     }
 
     @Test
-    fun exportDestinationFragment_noProvidersAndPlayStoreAvailable_showsNoAppsText() {
+    fun noProvidersAndPlayStoreAvailable_showsNoAppsText() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
@@ -771,7 +716,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_noProvidersAndPlayStoreAvailable_showsPlayStoreButton() {
+    fun noProvidersAndPlayStoreAvailable_showsPlayStoreButton() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
@@ -781,7 +726,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_noProvidersAndPlayStoreAvailable_goToPlayStoreClicked_launchesPlayStore() {
+    fun noProvidersAndPlayStoreAvailable_goToPlayStoreClicked_launchesPlayStore() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
@@ -791,13 +736,13 @@ class ExportDestinationFragmentTest {
             Navigation.setViewNavController(this.requireView(), navHostController)
         }
 
-        onView(withId(R.id.export_import_go_to_play_store)).perform(click())
+        onView(withText(R.string.export_import_go_to_play_store_text)).perform(click())
 
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.play_store_activity)
     }
 
     @Test
-    fun exportDestinationFragment_singleProvider_hasRadioButtonChecked() {
+    fun singleProvider_hasRadioButtonChecked() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -812,12 +757,12 @@ class ExportDestinationFragmentTest {
 
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(withId(R.id.item_document_provider_radio_button)).check(matches(isDisplayed()))
-        onView(withId(R.id.item_document_provider_radio_button)).check(matches(isChecked()))
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isDisplayed()))
+        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isChecked()))
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderSingleAccount_showsAccountSummary() {
+    fun singleProviderSingleAccount_showsAccountSummary() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -835,7 +780,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderSingleAccount_showsAccountSummary_nextButtonClicked_startsDocumentsUi() {
+    fun singleProviderSingleAccount_showsAccountSummary_nextButtonClicked_startsDocumentsUi() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -858,7 +803,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderMultipleAccounts_showsTapToSelectAccount() {
+    fun singleProviderMultipleAccounts_showsTapToSelectAccount() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -883,7 +828,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderMultipleAccountsClicked_showsAccountPicker() {
+    fun singleProviderMultipleAccountsClicked_showsAccountPicker() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -904,7 +849,7 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
         onView(withText("Choose an account")).inRoot(isDialog()).check(matches(isDisplayed()))
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY))
@@ -918,7 +863,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderMultipleAccountsClickedAndAccountChosen_updatesSummary() {
+    fun singleProviderMultipleAccountsClickedAndAccountChosen_updatesSummary() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -939,24 +884,23 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
             .perform(click())
         onView(withText("Done")).inRoot(isDialog()).perform(click())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY), isDisplayed())
-                    )
+        onView(
+                withTitleAndSummary(
+                    TEST_DOCUMENT_PROVIDER_1_TITLE,
+                    TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
                 )
             )
+            .check(matches(isDisplayed()))
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderMultipleAccountsClickedAndAccountChosen_nextButtonClicked_startsDocumentsUi() {
+    fun singleProviderMultipleAccountsClickedAndAccountChosen_nextButtonClicked_startsDocumentsUi() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -977,7 +921,7 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
             .perform(click())
@@ -991,7 +935,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderAndPlayStoreNotAvailable_showsInstallAppsText() {
+    fun singleProviderAndPlayStoreNotAvailable_showsInstallAppsText() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
 
         val documentProviders =
@@ -1011,7 +955,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderAndPlayStoreNotAvailable_doesNotShowPlayStoreButton() {
+    fun singleProviderAndPlayStoreNotAvailable_doesNotShowPlayStoreButton() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
 
         val documentProviders =
@@ -1027,12 +971,12 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(withText(R.string.export_import_go_to_play_store_text))
+        onView(withId(com.android.settingslib.widget.preference.footer.R.id.settingslib_learn_more))
             .check(matches(not(isDisplayed())))
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderAndPlayStoreAvailable_showsInstallAppsText() {
+    fun singleProviderAndPlayStoreAvailable_showsInstallAppsText() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
         val documentProviders =
@@ -1052,7 +996,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderAndPlayStoreAvailable_showsPlayStoreButton() {
+    fun singleProviderAndPlayStoreAvailable_showsPlayStoreButton() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
         val documentProviders =
@@ -1072,7 +1016,7 @@ class ExportDestinationFragmentTest {
     }
 
     @Test
-    fun exportDestinationFragment_singleProviderAndPlayStoreAvailable_goToPlayStoreClicked_launchesPlayStore() {
+    fun singleProviderAndPlayStoreAvailable_goToPlayStoreClicked_launchesPlayStore() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
         val documentProviders =
@@ -1092,13 +1036,13 @@ class ExportDestinationFragmentTest {
             Navigation.setViewNavController(this.requireView(), navHostController)
         }
 
-        onView(withId(R.id.export_import_go_to_play_store)).perform(click())
+        onView(withText(R.string.export_import_go_to_play_store_text)).perform(click())
 
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.play_store_activity)
     }
 
     @Test
-    fun exportDestinationFragment_orientationChanged_keepsSelection() {
+    fun orientationChanged_keepsSelection() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -1126,7 +1070,7 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         val scenario = launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
             .perform(click())
@@ -1135,26 +1079,18 @@ class ExportDestinationFragmentTest {
         scenario.recreate()
         onIdle()
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withId(R.id.item_document_provider_radio_button), isChecked())
-                    )
+        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isChecked()))
+        onView(
+                withTitleAndSummary(
+                    TEST_DOCUMENT_PROVIDER_1_TITLE,
+                    TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
                 )
             )
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY), isDisplayed())
-                    )
-                )
-            )
+            .check(matches(isDisplayed()))
     }
 
     @Test
-    fun exportDestinationFragment_orientationChanged_nextButtonClicked_startsDocumentsUi() {
+    fun orientationChanged_nextButtonClicked_startsDocumentsUi() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -1182,7 +1118,7 @@ class ExportDestinationFragmentTest {
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         val scenario = launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
             .perform(click())
@@ -1202,7 +1138,7 @@ class ExportDestinationFragmentTest {
     @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
     @DisableFlags(Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
     // TODO(b/393617190) Remove test when export_import_nice_to_have is enabled and removed
-    fun exportDestinationFragment_nextExportSequentialNumberPresent_showsDefaultNameWithNumber() {
+    fun nextExportSequentialNumberPresent_showsDefaultNameWithNumber() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -1223,15 +1159,15 @@ class ExportDestinationFragmentTest {
         )
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.export_import_next_button)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withId(R.id.primary_button_full)).perform(click())
 
         intended(hasExtra(Intent.EXTRA_TITLE, "Health Connect (42).zip"))
     }
 
     @Test
     @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW, Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
-    fun exportDestinationFragment_showsFileNameWithManufacturerAndModel() {
+    fun showsFileNameWithManufacturerAndModel() {
         val documentProviders =
             listOf(
                 ExportImportDocumentProvider(
@@ -1252,16 +1188,12 @@ class ExportDestinationFragmentTest {
         )
         launchFragment<ExportDestinationFragment>(Bundle())
 
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.export_import_next_button)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withId(R.id.primary_button_full)).perform(click())
 
         val brand: String = Build.BRAND
         val model: String = Build.MODEL
 
-        intended(hasExtra(Intent.EXTRA_TITLE, "$brand $model Health Connect (42).zip"
-        ))
+        intended(hasExtra(Intent.EXTRA_TITLE, "$brand $model Health Connect (42).zip"))
     }
-
-    private fun documentProviderWithTitle(title: String): Matcher<View>? =
-        allOf(withId(R.id.item_document_provider), hasDescendant(withText(title)))
 }

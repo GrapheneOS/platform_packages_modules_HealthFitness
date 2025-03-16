@@ -24,7 +24,6 @@ import android.health.connect.exportimport.ExportImportDocumentProvider
 import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
-import android.view.View
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onIdle
@@ -38,7 +37,6 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasType
 import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -70,8 +68,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import java.io.File
-import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.startsWith
 import org.junit.After
@@ -1010,31 +1006,23 @@ class ImportSourceLocationFragmentTest {
         launchFragment<ExportDestinationFragment>(Bundle())
 
         // Selects the second account for provider 1.
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
             .perform(click())
         onView(withText("Done")).inRoot(isDialog()).perform(click())
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY), isDisplayed())
-                    )
+        onView(
+                withTitleAndSummary(
+                    TEST_DOCUMENT_PROVIDER_1_TITLE,
+                    TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
                 )
             )
+            .check(matches(isDisplayed()))
         // Selects the provider 2.
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_2_TITLE))
-            .check(
-                matches(
-                    hasDescendant(
-                        allOf(withId(R.id.item_document_provider_radio_button), isChecked())
-                    )
-                )
-            )
+        onView(withText(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
+        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isChecked()))
         // Switches back to provider 1.
-        onView(documentProviderWithTitle(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
         onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
             .inRoot(isDialog())
@@ -1132,7 +1120,4 @@ class ImportSourceLocationFragmentTest {
         intended(hasType("application/zip"))
         intended(hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI))
     }
-
-    private fun documentProviderWithTitle(title: String): Matcher<View>? =
-        allOf(withId(R.id.item_document_provider), hasDescendant(withText(title)))
 }

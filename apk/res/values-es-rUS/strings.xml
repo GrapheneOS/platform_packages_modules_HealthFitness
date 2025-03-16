@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Mover al final"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Botón para arrastrar y reorganizar <xliff:g id="SELECTED_APP">%s</xliff:g> en la lista de prioridades"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Botón para quitar <xliff:g id="SELECTED_APP">%s</xliff:g> de la lista de prioridades"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Botón para reordenar o quitar <xliff:g id="SELECTED_APP">%s</xliff:g> de la lista de fuentes de apps"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Presiona dos veces y arrastra para reorganizar"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> en la lista <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"entrenamiento, bienestar"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"permisos"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, datos de salud, categorías de salud, acceso a los datos, actividad, medidas corporales, seguimiento de ciclos, nutrición, sueño, datos vitales"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Agrega una app"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Editar fuentes de app"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Opción predeterminada del dispositivo"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Mover hacia arriba"</string>
+    <string name="move_down" msgid="4404970288236170693">"Mover hacia abajo"</string>
+    <string name="remove" msgid="1340423400489007362">"Quitar"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Datos de la app"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Aquí se mostrarán datos de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Aquí se mostrará la información de apps con acceso a Health Connect"</string>

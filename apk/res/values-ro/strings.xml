@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Mută la sfârșit"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Buton pentru tragerea și reordonarea <xliff:g id="SELECTED_APP">%s</xliff:g> în lista prioritară"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Buton pentru eliminarea <xliff:g id="SELECTED_APP">%s</xliff:g> din lista prioritară"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Buton pentru a reordona sau a elimina <xliff:g id="SELECTED_APP">%s</xliff:g> din lista de surse de aplicații"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Atinge de două ori și trage pentru a reordona"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> în lista <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fitness, wellness"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"permisiuni"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, informații de sănătate, categorii de sănătate, acces la date, activitate, măsurători corporale, urmărirea ciclului menstrual, nutriție, somn, semne vitale"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Adaugă o aplicație"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Editează sursele de aplicații"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Prestabilită pentru dispozitiv"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Mută în sus"</string>
+    <string name="move_down" msgid="4404970288236170693">"Mută în jos"</string>
+    <string name="remove" msgid="1340423400489007362">"Elimină"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Datele aplicației"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Datele din <xliff:g id="APP_NAME">%1$s</xliff:g> vor apărea aici"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Datele din aplicațiile cu acces la Health Connect se vor afișa aici"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Ștergi definitiv <xliff:g id="APP_NAME">%1$s</xliff:g> intrări selectate pentru <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Ștergi definitiv intrarea din <xliff:g id="APP_NAME">%s</xliff:g>?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Ștergi definitiv datele despre <xliff:g id="DATA_TYPE">%1$s</xliff:g> pentru <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Afișează aplicațiile de sistem"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Ascunde aplicațiile de sistem"</string>
     <string name="on" msgid="8266542510798355807">"Activat"</string>
     <string name="off" msgid="6996623844428550649">"Dezactivat"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Data ultimei accesări: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

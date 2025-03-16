@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"దిగువకు తరలించండి"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"ముఖ్యమైన లిస్ట్‌లో <xliff:g id="SELECTED_APP">%s</xliff:g>‌ను లాగి, ఆర్డర్‌ను మార్చడానికి బటన్"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"ముఖ్యమైన లిస్ట్ నుండి <xliff:g id="SELECTED_APP">%s</xliff:g>‌ను తీసివేయడానికి బటన్"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"యాప్ సోర్స్‌ల లిస్ట్ నుండి <xliff:g id="SELECTED_APP">%s</xliff:g> ఆర్డర్ మార్చడానికి లేదా తీసివేయడానికి బటన్"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"రీ ఆర్డర్‌లో ఉంచడానికి, డబుల్ ట్యాప్ చేసి, లాగండి."</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"లిస్ట్‌లో <xliff:g id="SELECTED_APP">%2$s</xliff:g> <xliff:g id="POSITION">%1$s</xliff:g>‌వ స్థానంలో ఉంది"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"ఫిట్‌నెస్, సంరక్షణ"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"అనుమతులు"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"Health Connect, ఆరోగ్యం డేటా, ఆరోగ్యం కేటగిరీలు, డేటా యాక్సెస్, యాక్టివిటీ, శారీరక సమాచారం, సైకిల్ ట్రాకింగ్, న్యూట్రిషన్, స్లీప్, కీలక ఆరోగ్య కొలమానాలు"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"యాప్‌ను జోడించండి"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"యాప్ సోర్స్‌లను ఎడిట్ చేయండి"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"పరికరంలో ఆటోమేటిక్‌గా సెట్ చేయబడి ఉన్న యాప్"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"పైకి జరపండి"</string>
+    <string name="move_down" msgid="4404970288236170693">"కిందికి జరపండి"</string>
+    <string name="remove" msgid="1340423400489007362">"తీసివేయండి"</string>
     <string name="app_data_title" msgid="6499967982291000837">"యాప్ డేటా"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"<xliff:g id="APP_NAME">%1$s</xliff:g> నుండి డేటా ఇక్కడ చూపబడుతుంది"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Health Connectకు యాక్సెస్ ఉన్న యాప్‌ల డేటా ఇక్కడ చూపబడుతుంది"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>లో పొందిన ఎంపిక చేసిన <xliff:g id="APP_NAME">%1$s</xliff:g> ఎంట్రీలను శాశ్వతంగా తొలగించాలా?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"ఈ <xliff:g id="APP_NAME">%s</xliff:g> ఎంట్రీని శాశ్వతంగా తొలగించాలా?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g>‌కు సంబంధించిన <xliff:g id="DATA_TYPE">%1$s</xliff:g> డేటాను శాశ్వతంగా తొలగించాలా?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"సిస్టమ్ ప్రాసెస్‌లను చూపించండి"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"సిస్టమ్‌ను దాచండి"</string>
     <string name="on" msgid="8266542510798355807">"ఆన్‌లో ఉంది"</string>
     <string name="off" msgid="6996623844428550649">"ఆఫ్‌లో ఉంది"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>‌కు యాక్సెస్ చేశారు"</string>

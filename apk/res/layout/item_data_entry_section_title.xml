@@ -23,8 +23,7 @@
     android:background="?android:attr/selectableItemBackground"
     android:baselineAligned="false"
     android:paddingTop="@dimen/spacing_large"
-    android:paddingBottom="@dimen/spacing_small"
-    android:gravity="center_vertical">
+    android:paddingBottom="@dimen/spacing_small">
 
     <TextView
         android:id="@android:id/title"

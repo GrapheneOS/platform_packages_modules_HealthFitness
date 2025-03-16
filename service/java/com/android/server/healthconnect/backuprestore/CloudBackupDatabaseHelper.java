@@ -15,18 +15,15 @@
  */
 package com.android.server.healthconnect.backuprestore;
 
-import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.PageTokenWrapper.EMPTY_PAGE_TOKEN;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
 import static com.android.server.healthconnect.exportimport.DatabaseMerger.RECORD_TYPE_MIGRATION_ORDERING_OVERRIDES;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
-import android.annotation.FlaggedApi;
 import android.annotation.Nullable;
 import android.database.Cursor;
 import android.health.connect.PageTokenWrapper;
@@ -51,7 +48,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BackupChangeTokenHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
@@ -64,7 +60,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -76,7 +71,6 @@ public class CloudBackupDatabaseHelper {
     private final AppInfoHelper mAppInfoHelper;
     private final TransactionManager mTransactionManager;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
-    private final DeviceInfoHelper mDeviceInfoHelper;
     private final HealthConnectMappings mHealthConnectMappings;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
     private final ChangeLogsHelper mChangeLogsHelper;
@@ -91,7 +85,6 @@ public class CloudBackupDatabaseHelper {
             TransactionManager transactionManager,
             FitnessRecordReadHelper fitnessRecordReadHelper,
             AppInfoHelper appInfoHelper,
-            DeviceInfoHelper deviceInfoHelper,
             HealthConnectMappings healthConnectMappings,
             InternalHealthConnectMappings internalHealthConnectMappings,
             ChangeLogsHelper changeLogsHelper,
@@ -101,7 +94,6 @@ public class CloudBackupDatabaseHelper {
         mTransactionManager = transactionManager;
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mAppInfoHelper = appInfoHelper;
-        mDeviceInfoHelper = deviceInfoHelper;
         mHealthConnectMappings = healthConnectMappings;
         mInternalHealthConnectMappings = internalHealthConnectMappings;
         mChangeLogsHelper = changeLogsHelper;
@@ -192,20 +184,9 @@ public class CloudBackupDatabaseHelper {
                                 .setPageToken(nextDataTablePageToken)
                                 .build();
                 Pair<List<RecordInternal<?>>, PageTokenWrapper> readResult =
-                        mFitnessRecordReadHelper.readRecords(
+                        mFitnessRecordReadHelper.readRecordsUnrestricted(
                                 mTransactionManager,
-                                // Keep as empty to avoid package name filters.
-                                /* callingPackageName= */ "",
                                 readRecordsRequest.toReadRecordsRequestParcel(),
-                                // Avoid start date access based filters.
-                                /* startDateAccessMillis= */ DEFAULT_LONG,
-                                // Avoid package name filters.
-                                /* enforceSelfRead= */ false,
-                                grantedExtraReadPermissions,
-                                // Only used when querying the API call quota. Cloud backup &
-                                // restore APIs enforce no quota limits so this value is irrelevant.
-                                /* isInForeground= */ true,
-                                /* shouldRecordAccessLog= */ false,
                                 /* packageNamesByAppIds= */ null);
                 backupChanges.addAll(convertRecordsToBackupChange(readResult.first));
                 nextDataTablePageToken = readResult.second.encode();
@@ -271,22 +252,9 @@ public class CloudBackupDatabaseHelper {
                 ChangeLogsHelper.getRecordTypeToInsertedUuids(
                         changeLogsResponse.getChangeLogsMap());
 
-        Set<String> grantedExtraReadPermissions =
-                recordTypeToInsertedUuids.keySet().stream()
-                        .map(mInternalHealthConnectMappings::getRecordHelper)
-                        .flatMap(recordHelper -> recordHelper.getExtraReadPermissions().stream())
-                        .collect(Collectors.toSet());
-
         List<RecordInternal<?>> internalRecords =
-                mFitnessRecordReadHelper.readRecords(
-                        mTransactionManager,
-                        /* callingPackageName= */ "",
-                        recordTypeToInsertedUuids,
-                        DEFAULT_LONG,
-                        grantedExtraReadPermissions,
-                        /* isInForeground= */ true,
-                        /* shouldRecordAccessLog= */ false,
-                        /* isReadingSelfData= */ false);
+                mFitnessRecordReadHelper.readRecordsUnrestricted(
+                        mTransactionManager, recordTypeToInsertedUuids);
 
         // Read the exercise sessions that refer to any training plans included in the changes and
         // append them to the list of changes. This is to always have exercise sessions restore
@@ -301,15 +269,9 @@ public class CloudBackupDatabaseHelper {
             }
         }
         List<RecordInternal<?>> exerciseSessions =
-                mFitnessRecordReadHelper.readRecords(
+                mFitnessRecordReadHelper.readRecordsUnrestricted(
                         mTransactionManager,
-                        /* callingPackageName= */ "",
-                        Map.of(RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION, sessionIds),
-                        DEFAULT_LONG,
-                        grantedExtraReadPermissions,
-                        /* isInForeground= */ true,
-                        /* shouldRecordAccessLog= */ false,
-                        /* isReadingSelfData= */ false);
+                        Map.of(RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION, sessionIds));
         internalRecords.addAll(exerciseSessions);
 
         List<BackupChange> backupChanges =

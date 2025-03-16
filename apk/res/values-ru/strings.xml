@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Переместить в конец"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Кнопка для перетаскивания приложения \"<xliff:g id="SELECTED_APP">%s</xliff:g>\" в списке приоритетов"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Кнопка – убрать приложение \"<xliff:g id="SELECTED_APP">%s</xliff:g>\" из приоритетных"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Кнопка для изменения позиции приложения \"<xliff:g id="SELECTED_APP">%s</xliff:g>\" в списке источников данных или его удаления из этого списка"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Нажмите дважды и перетащите, чтобы упорядочить"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"Приложение \"<xliff:g id="SELECTED_APP">%2$s</xliff:g>\" в списке под номером <xliff:g id="POSITION">%1$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"физическая активность, здоровый образ жизни"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"разрешения"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"здоровье и спорт, данные о здоровье, категории данных о здоровье, доступ к данным, активность, физические параметры, отслеживание цикла, питание, сон, жизненные показатели"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Добавить приложение"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Изменить список приложений"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Приложение по умолчанию"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Переместить вверх"</string>
+    <string name="move_down" msgid="4404970288236170693">"Переместить вниз"</string>
+    <string name="remove" msgid="1340423400489007362">"Удалить"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Данные приложения"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Здесь показываются данные из приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\"."</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Здесь будут появляться данные из приложений, у которых есть доступ к приложению \"Здоровье и спорт\"."</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Навсегда удалить выбранные записи приложения <xliff:g id="APP_NAME">%1$s</xliff:g> за <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Навсегда удалить эту запись приложения <xliff:g id="APP_NAME">%s</xliff:g>?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Навсегда удалить данные (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) приложения <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Показать системные приложения"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Скрыть системные приложения"</string>
     <string name="on" msgid="8266542510798355807">"Включено"</string>
     <string name="off" msgid="6996623844428550649">"Отключено"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Последний доступ в <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

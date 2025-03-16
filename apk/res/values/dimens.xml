@@ -41,6 +41,7 @@
 
     <dimen name="filter_corner_radius">8dp</dimen>
     <dimen name="button_corner_radius">50dp</dimen>
+    <dimen name="warning_expressive_corner_radius">28dp</dimen>
 
     <dimen name="timeline_divider_height">26dp</dimen>
     <dimen name="timeline_divider_margin_start">26dp</dimen>

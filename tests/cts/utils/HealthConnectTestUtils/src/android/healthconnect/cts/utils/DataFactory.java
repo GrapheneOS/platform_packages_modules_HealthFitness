@@ -17,9 +17,6 @@
 package android.healthconnect.cts.utils;
 
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_ACTIVELY_RECORDED;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -50,7 +47,6 @@ import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Power;
-import android.healthconnect.cts.utils.TestUtils.RecordAndIdentifier;
 
 import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
@@ -615,14 +611,6 @@ public final class DataFactory {
                 .addRecordType(HeartRateRecord.class)
                 .addRecordType(BasalMetabolicRateRecord.class)
                 .addRecordType(ExerciseSessionRecord.class);
-    }
-
-    public static List<RecordAndIdentifier> getRecordsAndIdentifiers() {
-        return Arrays.asList(
-                new RecordAndIdentifier(RECORD_TYPE_STEPS, getStepsRecord()),
-                new RecordAndIdentifier(RECORD_TYPE_HEART_RATE, getHeartRateRecord()),
-                new RecordAndIdentifier(
-                        RECORD_TYPE_BASAL_METABOLIC_RATE, getBasalMetabolicRateRecord()));
     }
 
     public static BasalMetabolicRateRecord getBasalMetabolicRateRecord() {

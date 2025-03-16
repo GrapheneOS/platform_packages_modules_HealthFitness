@@ -23,6 +23,8 @@ import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMAT
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -154,5 +156,28 @@ public final class RecordProtoConverterTest {
         var recordInternal = mConverter.toRecordInternal(recordProto);
 
         assertThat(mConverter.toRecordProto(recordInternal)).isEqualTo(recordProto);
+    }
+
+    @Test
+    public void noSubRecordType_throwsIllegalArgumentException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> mConverter.toRecordInternal(Record.getDefaultInstance()));
+    }
+
+    @Test
+    public void instantRecordWithNoRecordType_throwsIllegalArgumentException() {
+        var invalidInstantRecord = InstantRecord.getDefaultInstance();
+        var recordProto = Record.newBuilder().setInstantRecord(invalidInstantRecord).build();
+        assertThrows(
+                IllegalArgumentException.class, () -> mConverter.toRecordInternal(recordProto));
+    }
+
+    @Test
+    public void intervalRecordWithNoRecordType_throwsIllegalArgumentException() {
+        var invalidIntervalRecord = IntervalRecord.getDefaultInstance();
+        var recordProto = Record.newBuilder().setIntervalRecord(invalidIntervalRecord).build();
+        assertThrows(
+                IllegalArgumentException.class, () -> mConverter.toRecordInternal(recordProto));
     }
 }

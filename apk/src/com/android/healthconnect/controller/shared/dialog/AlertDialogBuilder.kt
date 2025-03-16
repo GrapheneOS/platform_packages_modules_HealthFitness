@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.EntryPointAccessors
 
 /** {@link AlertDialog.Builder} wrapper for applying theming attributes. */
@@ -42,27 +43,30 @@ class AlertDialogBuilder(private val context: Context, private val containerLogN
 
     private var alertDialogBuilder: AlertDialog.Builder
     private var customTitleLayout: View =
-        LayoutInflater.from(context).inflate(R.layout.dialog_title, null)
+        inflateLayout(R.layout.dialog_title_expressive, R.layout.dialog_title_legacy)
     private var customMessageLayout: View =
-        LayoutInflater.from(context).inflate(R.layout.dialog_message, null)
+        inflateLayout(R.layout.dialog_message_expressive, R.layout.dialog_message_legacy)
     private var customDialogLayout: View =
-        LayoutInflater.from(context).inflate(R.layout.dialog_custom_layout, null)
+        inflateLayout(R.layout.dialog_expressive_layout, R.layout.dialog_legacy_layout)
+
     private var logger: HealthConnectLogger
 
     constructor(
         fragment: Fragment,
-        containerLogName: ElementName
+        containerLogName: ElementName,
     ) : this(fragment.requireContext(), containerLogName)
 
     constructor(
         activity: FragmentActivity,
-        containerLogName: ElementName
+        containerLogName: ElementName,
     ) : this(activity as Context, containerLogName)
 
     private var iconView: ImageView? = null
 
-    private var positiveButtonKey: ElementName = UnknownGenericElement.UNKNOWN_DIALOG_POSITIVE_BUTTON
-    private var negativeButtonKey: ElementName = UnknownGenericElement.UNKNOWN_DIALOG_NEGATIVE_BUTTON
+    private var positiveButtonKey: ElementName =
+        UnknownGenericElement.UNKNOWN_DIALOG_POSITIVE_BUTTON
+    private var negativeButtonKey: ElementName =
+        UnknownGenericElement.UNKNOWN_DIALOG_NEGATIVE_BUTTON
     private var loggingAction = {}
 
     private var hasPositiveButton = false
@@ -71,7 +75,9 @@ class AlertDialogBuilder(private val context: Context, private val containerLogN
     init {
         val hiltEntryPoint =
             EntryPointAccessors.fromApplication(
-                this.context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+                this.context.applicationContext,
+                HealthConnectLoggerEntryPoint::class.java,
+            )
         logger = hiltEntryPoint.logger()
 
         alertDialogBuilder = AlertDialog.Builder(context)
@@ -197,7 +203,7 @@ class AlertDialogBuilder(private val context: Context, private val containerLogN
     fun setNegativeButton(
         @StringRes textId: Int,
         buttonId: ElementName,
-        onClickListener: DialogInterface.OnClickListener? = null
+        onClickListener: DialogInterface.OnClickListener? = null,
     ): AlertDialogBuilder {
         hasNegativeButton = true
         negativeButtonKey = buttonId
@@ -221,7 +227,7 @@ class AlertDialogBuilder(private val context: Context, private val containerLogN
     fun setNeutralButton(
         @StringRes textId: Int,
         buttonId: ElementName,
-        onClickListener: DialogInterface.OnClickListener? = null
+        onClickListener: DialogInterface.OnClickListener? = null,
     ): AlertDialogBuilder {
         hasNegativeButton = true
         negativeButtonKey = buttonId
@@ -239,7 +245,7 @@ class AlertDialogBuilder(private val context: Context, private val containerLogN
     fun setPositiveButton(
         @StringRes textId: Int,
         buttonId: ElementName,
-        onClickListener: DialogInterface.OnClickListener? = null
+        onClickListener: DialogInterface.OnClickListener? = null,
     ): AlertDialogBuilder {
         hasPositiveButton = true
         positiveButtonKey = buttonId
@@ -310,5 +316,14 @@ class AlertDialogBuilder(private val context: Context, private val containerLogN
         } finally {
             typedArray.recycle()
         }
+    }
+
+    private fun inflateLayout(expressiveLayout: Int, legacyLayout: Int): View {
+        return LayoutInflater.from(context)
+            .inflate(
+                if (SettingsThemeHelper.isExpressiveTheme(context)) expressiveLayout
+                else legacyLayout,
+                null,
+            )
     }
 }

@@ -25,9 +25,7 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.exportimport.ScheduledExportFragment
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
@@ -35,6 +33,7 @@ import com.android.healthconnect.controller.service.HealthDataExportManagerModul
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
+import com.android.healthconnect.controller.tests.utils.checkBoxOf
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataExportManager
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -53,6 +52,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
@@ -96,7 +96,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_isDisplayedCorrectly() {
+    fun isDisplayedCorrectly() {
         val scheduledExportStatus =
             ScheduledExportStatus.Builder()
                 .setLastSuccessfulExportTime(TEST_LAST_SUCCESSFUL_TIME)
@@ -125,7 +125,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_impressionsLogged() {
+    fun impressionsLogged() {
         val scheduledExportStatus =
             ScheduledExportStatus.Builder()
                 .setLastSuccessfulExportTime(TEST_LAST_SUCCESSFUL_TIME)
@@ -137,7 +137,7 @@ class ScheduledExportFragmentTest {
         launchFragment<ScheduledExportFragment>(Bundle())
 
         onView(withText("Use scheduled export")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger, atLeast(1)).logPageImpression()
         verify(healthConnectLogger)
             .logImpression(ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_DAILY)
         verify(healthConnectLogger)
@@ -147,7 +147,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_whenOnlyAppNameIsAvailable_showsAppName() {
+    fun whenOnlyAppNameIsAvailable_showsAppName() {
         val scheduledExportStatus =
             ScheduledExportStatus.Builder()
                 .setLastSuccessfulExportTime(TEST_LAST_SUCCESSFUL_TIME)
@@ -163,7 +163,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_whenOnlyFileNameIsAvailable_showsFileName() {
+    fun whenOnlyFileNameIsAvailable_showsFileName() {
         val scheduledExportStatus =
             ScheduledExportStatus.Builder()
                 .setLastSuccessfulExportTime(TEST_LAST_SUCCESSFUL_TIME)
@@ -179,7 +179,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_whenLastSuccessfulExportDateIsNull_showsNextExportText() {
+    fun whenLastSuccessfulExportDateIsNull_showsNextExportText() {
         val scheduledExportStatus =
             ScheduledExportStatus.Builder()
                 .setLastSuccessfulExportTime(null)
@@ -194,7 +194,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_whenScheduledTimeIsInFuture_showsNextExportStatus() {
+    fun whenScheduledTimeIsInFuture_showsNextExportStatus() {
         val scheduledExportStatus =
             ScheduledExportStatus.Builder()
                 .setLastSuccessfulExportTime(NOW)
@@ -209,7 +209,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_dailyExport_checkedButtonMatchesExportFrequency() {
+    fun dailyExport_checkedButtonMatchesExportFrequency() {
         fakeHealthDataExportManager.configureScheduledExport(
             ScheduledExportSettings.Builder()
                 .setPeriodInDays(ExportFrequency.EXPORT_FREQUENCY_DAILY.periodInDays)
@@ -217,11 +217,11 @@ class ScheduledExportFragmentTest {
         )
         launchFragment<ScheduledExportFragment>(Bundle())
 
-        onView(withId(R.id.radio_button_daily)).check(matches(isChecked()))
+        onView(checkBoxOf("Daily")).check(matches(isChecked()))
     }
 
     @Test
-    fun scheduledExportFragment_weeklyExport_checkedButtonMatchesExportFrequency() {
+    fun weeklyExport_checkedButtonMatchesExportFrequency() {
         fakeHealthDataExportManager.configureScheduledExport(
             ScheduledExportSettings.Builder()
                 .setPeriodInDays(ExportFrequency.EXPORT_FREQUENCY_WEEKLY.periodInDays)
@@ -229,11 +229,11 @@ class ScheduledExportFragmentTest {
         )
         launchFragment<ScheduledExportFragment>(Bundle())
 
-        onView(withId(R.id.radio_button_weekly)).check(matches(isChecked()))
+        onView(checkBoxOf("Weekly")).check(matches(isChecked()))
     }
 
     @Test
-    fun scheduledExportFragment_monthlyExport_checkedButtonMatchesExportFrequency() {
+    fun monthlyExport_checkedButtonMatchesExportFrequency() {
         fakeHealthDataExportManager.configureScheduledExport(
             ScheduledExportSettings.Builder()
                 .setPeriodInDays(ExportFrequency.EXPORT_FREQUENCY_MONTHLY.periodInDays)
@@ -241,11 +241,11 @@ class ScheduledExportFragmentTest {
         )
         launchFragment<ScheduledExportFragment>(Bundle())
 
-        onView(withId(R.id.radio_button_monthly)).check(matches(isChecked()))
+        onView(checkBoxOf("Monthly")).check(matches(isChecked()))
     }
 
     @Test
-    fun scheduledExportFragment_turnsOffControl_offIsDisplayed() = runTest {
+    fun turnsOffControl_offIsDisplayed() = runTest {
         launchFragment<ScheduledExportFragment>(Bundle())
 
         onView(withText("Use scheduled export")).perform(click())
@@ -256,7 +256,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_turnsOffControl_exportFrequencySectionDoesNotExist() {
+    fun turnsOffControl_exportFrequencySectionDoesNotExist() {
         launchFragment<ScheduledExportFragment>(Bundle())
 
         onView(withText("Use scheduled export")).perform(click())
@@ -269,7 +269,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_turnsOffControl_doesNotShowExportStatus() {
+    fun turnsOffControl_doesNotShowExportStatus() {
         val scheduledExportStatus =
             ScheduledExportStatus.Builder()
                 .setLastSuccessfulExportTime(TEST_LAST_SUCCESSFUL_TIME)
@@ -286,7 +286,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_turnsOffControlAndOnAgain_exportFrequencyNotChanged() = runTest {
+    fun turnsOffControlAndOnAgain_exportFrequencyNotChanged() = runTest {
         fakeHealthDataExportManager.configureScheduledExport(
             ScheduledExportSettings.Builder()
                 .setPeriodInDays(ExportFrequency.EXPORT_FREQUENCY_WEEKLY.periodInDays)
@@ -305,7 +305,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun scheduledExportFragment_selectsAnotherFrequency_updatesExportFrequency() = runTest {
+    fun selectsAnotherFrequency_updatesExportFrequency() = runTest {
         fakeHealthDataExportManager.configureScheduledExport(
             ScheduledExportSettings.Builder()
                 .setPeriodInDays(ExportFrequency.EXPORT_FREQUENCY_DAILY.periodInDays)
@@ -314,8 +314,8 @@ class ScheduledExportFragmentTest {
 
         launchFragment<ScheduledExportFragment>(Bundle())
 
-        onView(withId(R.id.radio_button_daily)).check(matches(isChecked()))
-        onView(withId(R.id.radio_button_monthly)).perform(click())
+        onView(checkBoxOf("Daily")).check(matches(isChecked()))
+        onView(withText("Monthly")).perform(click())
         advanceUntilIdle()
         assertThat(fakeHealthDataExportManager.getScheduledExportPeriodInDays())
             .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_MONTHLY.periodInDays)

@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.backuprestore;
 
-import static android.health.connect.Constants.DEFAULT_LONG;
-
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.AUTO_DELETE_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.DISTANCE_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.ENERGY_UNIT_PREF_KEY;
@@ -374,6 +372,40 @@ public class CloudRestoreManagerTest {
     }
 
     @Test
+    public void restoreNotSupportedSettings_keepsOriginalSettings() {
+        setupInitialSettings();
+
+        int invalidEnumValue = 999;
+
+        Settings settings =
+                Settings.newBuilder()
+                        .setEnergyUnitSettingValue(invalidEnumValue)
+                        .setTemperatureUnitSettingValue(invalidEnumValue)
+                        .setHeightUnitSettingValue(invalidEnumValue)
+                        .setWeightUnitSettingValue(invalidEnumValue)
+                        .setDistanceUnitSettingValue(invalidEnumValue)
+                        .setAutoDeleteFrequencyValue(invalidEnumValue)
+                        .build();
+
+        BackupSettings backupSettings = new BackupSettings(settings.toByteArray());
+        mCloudRestoreManager.restoreSettings(backupSettings);
+
+        // stay the same as initial settings
+        assertThat(mPreferenceHelper.getPreference(TEMPERATURE_UNIT_PREF_KEY))
+                .isEqualTo(Settings.TemperatureUnitProto.CELSIUS.toString());
+        assertThat(mPreferenceHelper.getPreference(ENERGY_UNIT_PREF_KEY))
+                .isEqualTo(Settings.EnergyUnitProto.CALORIE.toString());
+        assertThat(mPreferenceHelper.getPreference(WEIGHT_UNIT_PREF_KEY))
+                .isEqualTo(Settings.WeightUnitProto.POUND.toString());
+        assertThat(mPreferenceHelper.getPreference(HEIGHT_UNIT_PREF_KEY))
+                .isEqualTo(Settings.HeightUnitProto.CENTIMETERS.toString());
+        assertThat(mPreferenceHelper.getPreference(DISTANCE_UNIT_PREF_KEY))
+                .isEqualTo(Settings.DistanceUnitProto.KILOMETERS.toString());
+        assertThat(mPreferenceHelper.getPreference(AUTO_DELETE_PREF_KEY))
+                .isEqualTo(Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_NEVER.toString());
+    }
+
+    @Test
     public void restoreInvalidChanges_skipsInvalidChange() {
         RestoreChange restoreChange = new RestoreChange(new byte[] {45, 36});
         // test that no exceptions are thrown
@@ -480,21 +512,11 @@ public class CloudRestoreManagerTest {
     @NotNull
     private RecordInternal<?> readExerciseSession(String sessionId) {
         List<RecordInternal<?>> records =
-                mFitnessRecordReadHelper.readRecords(
+                mFitnessRecordReadHelper.readRecordsUnrestricted(
                         mTransactionManager,
-                        /* callingPackageName= */ "",
                         ImmutableMap.of(
                                 RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION,
-                                List.of(UUID.fromString(sessionId))),
-                        DEFAULT_LONG,
-                        Set.copyOf(
-                                mMappings
-                                        .getRecordHelper(
-                                                RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION)
-                                        .getExtraReadPermissions()),
-                        /* isInForeground= */ true,
-                        /* shouldRecordAccessLog= */ false,
-                        /* isReadingSelfData= */ false);
+                                List.of(UUID.fromString(sessionId))));
         assertThat(records.size()).isEqualTo(1);
         return records.get(0);
     }

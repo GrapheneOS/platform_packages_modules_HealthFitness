@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.formatDateTimeForTimePeriod
 import com.android.healthconnect.controller.utils.logging.DeletionDialogConfirmationElement
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -44,7 +45,13 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
     private val PAGE_SIZE = 1000
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view: View = layoutInflater.inflate(R.layout.dialog_custom_layout, null)
+        val view: View =
+            layoutInflater.inflate(
+                if (SettingsThemeHelper.isExpressiveTheme(requireContext()))
+                    R.layout.dialog_expressive_layout
+                else R.layout.dialog_legacy_layout,
+                null,
+            )
         val title: TextView = view.findViewById(R.id.dialog_title)
         val message: TextView = view.findViewById(R.id.dialog_custom_message)
         val icon: ImageView = view.findViewById(R.id.dialog_icon)

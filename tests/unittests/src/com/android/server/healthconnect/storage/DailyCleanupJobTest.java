@@ -21,7 +21,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,6 +33,7 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.exportimport.ExportManager;
+import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
@@ -82,6 +82,7 @@ public class DailyCleanupJobTest {
 
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private TransactionManager mTransactionManager;
+    @Mock private FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     @Mock private ExportManager mExportManager;
 
     @Mock private AppInfoHelper mAppInfoHelper;
@@ -107,6 +108,7 @@ public class DailyCleanupJobTest {
                         .setPreferenceHelper(mPreferenceHelper)
                         .setExportManager(mExportManager)
                         .setTransactionManager(mTransactionManager)
+                        .setFitnessRecordDeleteHelper(mFitnessRecordDeleteHelper)
                         .setMigrationUiStateManager(mMigrationUiStateManager)
                         .setAppInfoHelper(mAppInfoHelper)
                         .setActivityDateHelper(mActivityDateHelper)
@@ -138,15 +140,9 @@ public class DailyCleanupJobTest {
 
         verify(mTransactionManager, Mockito.times(2))
                 .deleteAll(Mockito.argThat(this::checkTableNames_getPreferenceReturnNonNull));
-        verify(mTransactionManager)
-                .deleteAllRecords(
-                        Mockito.argThat(
-                                request ->
-                                        checkTableNames_getPreferenceReturnNonNull(
-                                                request.getDeleteTableRequests())),
-                        Mockito.booleanThat(
-                                shouldRecordDeleteAccessLog -> !shouldRecordDeleteAccessLog),
-                        any());
+        verify(mFitnessRecordDeleteHelper)
+                .deleteRecordsUnrestricted(
+                        Mockito.argThat(this::checkTableNames_getPreferenceReturnNonNull));
         verify(mAppInfoHelper).syncAppInfoRecordTypesUsed();
         verify(mHealthDataCategoryPriorityHelper).reSyncHealthDataPriorityTable();
         verify(mActivityDateHelper, times(1)).reSyncForAllRecords();

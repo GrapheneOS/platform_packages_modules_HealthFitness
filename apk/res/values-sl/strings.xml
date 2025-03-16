@@ -22,7 +22,7 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Dovoljenja in podatki"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Upravljajte podatke o zdravju in telesni pripravljenosti v napravi ter nadzirajte, katere aplikacije lahko dostopajo do njih"</string>
     <string name="data_title" msgid="4456619761533380816">"Podatki in dostop"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"Prebrskajte zdravstvene evidence"</string>
+    <string name="browse_medical_data" msgid="6963802956096683273">"Brskanje po zdravstvenih evidencah"</string>
     <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Ogled zdravstvenih evidenc in seznama aplikacij, ki lahko dostopajo do njih"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Vse kategorije"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Pokaži vse kategorije"</string>
@@ -1012,11 +1012,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Premik na dno"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Gumb za prerazporeditev aplikacije <xliff:g id="SELECTED_APP">%s</xliff:g> na prednostnem seznamu z vlečenjem"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Gumb za odstranitev aplikacije <xliff:g id="SELECTED_APP">%s</xliff:g> s prednostnega seznama"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Gumb za prerazporeditev ali odstranitev aplikacije <xliff:g id="SELECTED_APP">%s</xliff:g> s seznama virov aplikacij"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Dvakrat se dotaknite in povlecite za prerazporeditev"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g>. mesto na seznamu – <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"telesna pripravljenost, dobro počutje"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"dovoljenja"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, podatki o zdravju, kategorije zdravja, dostop do podatkov, dejavnost, telesne meritve, spremljanje cikla, prehrana, spanje, spanec, osnovni podatki"</string>
@@ -1110,12 +1108,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"Dodajanje aplikacije"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Urejanje virov aplikacij"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Privzeta aplikacija v napravi"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"Premakni navzgor"</string>
+    <string name="move_down" msgid="4404970288236170693">"Premakni navzdol"</string>
+    <string name="remove" msgid="1340423400489007362">"Odstrani"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Podatki aplikacije"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Podatki iz aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> bodo prikazani tukaj"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Podatki iz aplikacij z dostopom do storitve Health Connect bodo prikazani tukaj"</string>
@@ -1170,10 +1165,8 @@
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"Ali želite trajno izbrisati izbrane vnose aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> za mesec <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>?"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"Ali želite trajno izbrisati ta vnos aplikacije <xliff:g id="APP_NAME">%s</xliff:g>?"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Ali želite trajno izbrisati podatke vrste »<xliff:g id="DATA_TYPE">%1$s</xliff:g>« za aplikacijo <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
-    <!-- no translation found for menu_show_system (5608880605989914394) -->
-    <skip />
-    <!-- no translation found for menu_hide_system (9218325603953186714) -->
-    <skip />
+    <string name="menu_show_system" msgid="5608880605989914394">"Prikaži sistemske procese"</string>
+    <string name="menu_hide_system" msgid="9218325603953186714">"Skrij sistemske procese"</string>
     <string name="on" msgid="8266542510798355807">"Vklopljeno"</string>
     <string name="off" msgid="6996623844428550649">"Izklopljeno"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Zadnji dostop: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

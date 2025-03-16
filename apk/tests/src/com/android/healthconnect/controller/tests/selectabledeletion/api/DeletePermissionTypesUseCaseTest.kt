@@ -35,7 +35,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyZeroInteractions
+import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.MockitoAnnotations
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -69,8 +69,8 @@ class DeletePermissionTypesUseCaseTest {
         useCase.invoke(DeleteHealthPermissionTypes(setOf(), 0))
         advanceUntilIdle()
 
-        verifyZeroInteractions(deleteFitnessPermissionTypesUseCase)
-        verifyZeroInteractions(deleteMedicalPermissionTypesUseCase)
+        verifyNoMoreInteractions(deleteFitnessPermissionTypesUseCase)
+        verifyNoMoreInteractions(deleteMedicalPermissionTypesUseCase)
     }
 
     @Test
@@ -81,7 +81,7 @@ class DeletePermissionTypesUseCaseTest {
         val expectedDeletionType =
             DeleteHealthPermissionTypes(setOf(FitnessPermissionType.DISTANCE), 1)
         verify(deleteFitnessPermissionTypesUseCase).invoke(expectedDeletionType)
-        verifyZeroInteractions(deleteMedicalPermissionTypesUseCase)
+        verifyNoMoreInteractions(deleteMedicalPermissionTypesUseCase)
     }
 
     @Test
@@ -111,6 +111,6 @@ class DeletePermissionTypesUseCaseTest {
         val expectedDeletionType =
             DeleteHealthPermissionTypes(setOf(MedicalPermissionType.VACCINES), 3)
         verify(deleteMedicalPermissionTypesUseCase).invoke(expectedDeletionType)
-        verifyZeroInteractions(deleteFitnessPermissionTypesUseCase)
+        verifyNoMoreInteractions(deleteFitnessPermissionTypesUseCase)
     }
 }

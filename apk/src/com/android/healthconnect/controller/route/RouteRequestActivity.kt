@@ -48,6 +48,7 @@ import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.boldAppName
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.RouteRequestElement
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
@@ -78,7 +79,7 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
     private var migrationRestoreState = MigrationUiState.UNKNOWN
     private var sessionWithAttribution: SessionWithAttribution? = null
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // This flag ensures a non system app cannot show an overlay on Health Connect. b/313425281
         window.addSystemFlags(
@@ -171,7 +172,13 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
                 )
             else session.title
 
-        val view = layoutInflater.inflate(R.layout.route_request_dialog, null)
+        val view =
+            layoutInflater.inflate(
+                if (SettingsThemeHelper.isExpressiveTheme(applicationContext))
+                    R.layout.route_request_dialog_expressive
+                else R.layout.route_request_dialog_legacy,
+                null,
+            )
         val text = applicationContext.getString(R.string.request_route_header_title, requester)
         val title = boldAppName(requester, text)
 

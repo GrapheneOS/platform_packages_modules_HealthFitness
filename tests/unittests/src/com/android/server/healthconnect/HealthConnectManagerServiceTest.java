@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect;
 
+import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.BACKUP_RESTORE_JOBS_NAMESPACE;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -38,11 +40,9 @@ import android.permission.PermissionManager;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.SystemService;
 import com.android.server.appop.AppOpsManagerLocal;
-import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.migration.MigrationStateChangeJob;
 import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
@@ -65,10 +65,9 @@ public class HealthConnectManagerServiceTest {
             "HEALTH_CONNECT_IMPORT_EXPORT_JOBS";
     private static final String ANDROID_SERVER_PACKAGE_NAME = "com.android.server";
 
-    @Rule(order = 1)
+    @Rule
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(BackupRestore.BackupRestoreJobService.class)
                     .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
                     .setStrictness(Strictness.LENIENT)
                     .build();
@@ -76,6 +75,7 @@ public class HealthConnectManagerServiceTest {
     @Mock Context mContext;
     @Mock private SystemService.TargetUser mMockTargetUser;
     @Mock private JobScheduler mJobScheduler;
+    @Mock private JobScheduler mBackupRestoreJobScheduler;
     @Mock private UserManager mUserManager;
     @Mock private PackageManager mPackageManager;
     @Mock private PermissionManager mPermissionManager;
@@ -91,6 +91,8 @@ public class HealthConnectManagerServiceTest {
                 .thenReturn(mJobScheduler);
         when(mJobScheduler.forNamespace(HEALTH_CONNECT_IMPORT_EXPORT_JOBS_NAMESPACE))
                 .thenReturn(mJobScheduler);
+        when(mJobScheduler.forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE))
+                .thenReturn(mBackupRestoreJobScheduler);
         PermissionGroupInfo permissionGroupInfo = new PermissionGroupInfo();
         permissionGroupInfo.packageName = "test";
         PackageInfo mockPackageInfo = new PackageInfo();
@@ -150,7 +152,6 @@ public class HealthConnectManagerServiceTest {
         mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
         verify(mJobScheduler, times(1)).cancelAll();
         verify(mJobScheduler, timeout(5000).times(1)).schedule(any());
-        ExtendedMockito.verify(
-                () -> BackupRestore.BackupRestoreJobService.cancelAllJobs(eq(mContext)));
+        verify(mBackupRestoreJobScheduler, times(1)).cancelAll();
     }
 }

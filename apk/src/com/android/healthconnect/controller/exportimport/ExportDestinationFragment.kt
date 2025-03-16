@@ -21,25 +21,24 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
-import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.exportimport.DocumentProviderGroupHelper.Companion.FOOTER_PREF
+import com.android.healthconnect.controller.exportimport.DocumentProviderGroupHelper.Companion.RADIO_GROUP_PREF
+import com.android.healthconnect.controller.exportimport.api.DocumentProviderInfo
+import com.android.healthconnect.controller.exportimport.api.DocumentProviderRoot
 import com.android.healthconnect.controller.exportimport.api.DocumentProviders
 import com.android.healthconnect.controller.exportimport.api.ExportSettingsViewModel
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
 import com.android.healthconnect.controller.exportimport.api.isLocalFile
+import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.logging.ExportDestinationElement
@@ -47,13 +46,11 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthfitness.flags.Flags.exportImportFastFollow
 import com.android.healthfitness.flags.Flags.exportImportNiceToHave
-
-import com.android.settingslib.widget.LinkTextView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /** Export destination fragment for Health Connect. */
-@AndroidEntryPoint(Fragment::class)
+@AndroidEntryPoint(HealthSetupFragment::class)
 class ExportDestinationFragment : Hilt_ExportDestinationFragment() {
     private val contract = ActivityResultContracts.StartActivityForResult()
     private val saveResultLauncher: ActivityResultLauncher<Intent> =
@@ -65,115 +62,106 @@ class ExportDestinationFragment : Hilt_ExportDestinationFragment() {
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
     @Inject lateinit var logger: HealthConnectLogger
     @Inject lateinit var timeSource: TimeSource
+    private lateinit var nextButton: Button
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        logger.setPageId(PageName.EXPORT_DESTINATION_PAGE)
-        val view = inflater.inflate(R.layout.export_destination_screen, container, false)
-        val titleView = view.findViewById<View>(R.id.export_destination_title)
-        val footerView = view.findViewById<View>(R.id.export_import_footer)
-        val footerIconView = view.findViewById<View>(R.id.export_import_footer_icon)
-        val footerTextView = view.findViewById<TextView>(R.id.export_import_footer_text)
-        val playStoreView = view.findViewById<LinkTextView>(R.id.export_import_go_to_play_store)
-        val backButton = view.findViewById<Button>(R.id.export_import_cancel_button)
-        val nextButton = view.findViewById<Button>(R.id.export_import_next_button)
+    init {
+        this.setPageName(PageName.EXPORT_DESTINATION_PAGE)
+    }
 
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.export_destination_screen, rootKey)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        nextButton = getPrimaryButtonFull()
+        val backButton: Button = getSecondaryButton()
+
+        nextButton.text = getString(R.string.export_next_button)
+        backButton.text = getString(R.string.export_back_button)
         logger.logImpression(ExportDestinationElement.EXPORT_DESTINATION_BACK_BUTTON)
         logger.logImpression(ExportDestinationElement.EXPORT_DESTINATION_NEXT_BUTTON)
 
-        // Make sure the focus is set to the title rather than on the next button from the previous
-        // screen.
-        titleView.requestFocus()
-
-        backButton?.text = getString(R.string.export_back_button)
-        backButton?.setOnClickListener {
+        backButton.setOnClickListener {
             logger.logInteraction(ExportDestinationElement.EXPORT_DESTINATION_BACK_BUTTON)
             findNavController()
                 .navigate(R.id.action_exportDestinationFragment_to_exportFrequencyFragment)
         }
 
-        nextButton.text = getString(R.string.export_next_button)
-        nextButton.setEnabled(false)
+        val documentHelper =
+            DocumentProviderGroupHelper(
+                requireContext(),
+                preferenceScreen = preferenceScreen,
+                logger = logger,
+                childFragmentManager = childFragmentManager,
+                isPlayStoreAvailable = deviceInfoUtils.isPlayStoreAvailable(requireContext()),
+                ::onSelectionChanged,
+            )
 
-        if (deviceInfoUtils.isPlayStoreAvailable(requireContext())) {
-            playStoreView?.setVisibility(VISIBLE)
-            playStoreView?.setOnClickListener {
-                findNavController().navigate(R.id.action_exportDestinationFragment_to_playStore)
-            }
-        }
-
-        val documentProvidersViewBinder = DocumentProvidersViewBinder()
-        val documentProvidersList = view.findViewById<ViewGroup>(R.id.export_document_providers)
         viewModel.documentProviders.observe(viewLifecycleOwner) { providers ->
-            documentProvidersList.removeAllViews()
+            preferenceScreen.removePreferenceRecursively(RADIO_GROUP_PREF)
+            preferenceScreen.removePreferenceRecursively(FOOTER_PREF)
             nextButton.setOnClickListener {}
-            nextButton.setEnabled(false)
-
-            footerView.setVisibility(GONE)
+            nextButton.isEnabled = false
 
             when (providers) {
                 is DocumentProviders.Loading -> {
                     // Do nothing
                 }
+
                 is DocumentProviders.LoadingFailed -> {
                     Toast.makeText(activity, R.string.default_error, Toast.LENGTH_LONG).show()
                 }
+
                 is DocumentProviders.WithData -> {
-                    documentProvidersViewBinder.bindDocumentProvidersView(
-                        providers.providers,
-                        viewModel.selectedDocumentProvider.value,
-                        viewModel.selectedDocumentProviderRoot.value,
-                        viewModel.selectedRootsForDocumentProviders,
-                        documentProvidersList,
-                        inflater,
-                    ) { provider, root ->
-                        viewModel.updateSelectedDocumentProvider(provider, root)
-                        nextButton.setOnClickListener {
-                            logger.logInteraction(
-                                ExportDestinationElement.EXPORT_DESTINATION_NEXT_BUTTON
-                            )
-                            saveResultLauncher.launch(
-                                Intent(Intent.ACTION_CREATE_DOCUMENT)
-                                    .addFlags(
-                                        Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or
-                                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                                    )
-                                    .setType("application/zip")
-                                    .addCategory(Intent.CATEGORY_OPENABLE)
-                                    .putExtra(DocumentsContract.EXTRA_INITIAL_URI, root.uri)
-                                    .putExtra(Intent.EXTRA_TITLE, getDefaultFileName())
-                            )
-                        }
-                        nextButton.setEnabled(true)
-                    }
+                    val radioGroup =
+                        documentHelper.setupRadioButtons(
+                            documentProviders = providers.providers,
+                            selectedDocumentProvider = viewModel.selectedDocumentProvider.value,
+                            selectedDocumentProviderRoot =
+                                viewModel.selectedDocumentProviderRoot.value,
+                            selectedRootsForDocumentProviders =
+                                viewModel.selectedRootsForDocumentProviders,
+                        )
 
-                    if (providers.providers.size > 1) {
-                        footerView.setVisibility(GONE)
-                    } else {
-                        footerView.setVisibility(VISIBLE)
+                    preferenceScreen.addPreference(radioGroup)
 
-                        if (providers.providers.isEmpty()) {
-                            footerIconView.setVisibility(GONE)
-                            footerTextView.setText(R.string.export_import_no_apps_text)
-                        } else {
-                            footerIconView.setVisibility(VISIBLE)
-                            footerTextView.setText(R.string.export_import_install_apps_text)
-                        }
+                    documentHelper.setupFooter(providers.providers) {
+                        findNavController()
+                            .navigate(R.id.action_exportDestinationFragment_to_playStore)
                     }
                 }
             }
         }
 
-        return view
+        viewModel.selectedDocumentProvider.observe(viewLifecycleOwner) { documentProvider ->
+            documentProvider?.let { provider -> documentHelper.updateSelectedOption(provider) }
+        }
+    }
+
+    private fun onSelectionChanged(provider: DocumentProviderInfo, root: DocumentProviderRoot) {
+        viewModel.updateSelectedDocumentProvider(provider, root)
+        nextButton.setOnClickListener {
+            logger.logInteraction(ExportDestinationElement.EXPORT_DESTINATION_NEXT_BUTTON)
+            saveResultLauncher.launch(
+                Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .addFlags(
+                        Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    )
+                    .setType("application/zip")
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+                    .putExtra(DocumentsContract.EXTRA_INITIAL_URI, root.uri)
+                    .putExtra(Intent.EXTRA_TITLE, getDefaultFileName())
+            )
+        }
+        nextButton.isEnabled = true
     }
 
     override fun onResume() {
         super.onResume()
         exportStatusViewModel.loadScheduledExportStatus()
-        logger.logPageImpression()
     }
 
     private fun onSave(result: ActivityResult) {
@@ -193,12 +181,13 @@ class ExportDestinationFragment : Hilt_ExportDestinationFragment() {
         val sequentialNumber = exportStatusViewModel.storedNextExportSequentialNumber.value
         var fileName: String = getString(R.string.export_default_file_name)
         if (exportImportFastFollow() && sequentialNumber !== null && sequentialNumber != 0) {
-            fileName = getString(
-                R.string.export_default_file_name_with_sequence,
-                sequentialNumber.toString(),
-            )
+            fileName =
+                getString(
+                    R.string.export_default_file_name_with_sequence,
+                    sequentialNumber.toString(),
+                )
         }
-        if (exportImportNiceToHave()){
+        if (exportImportNiceToHave()) {
             fileName = Build.BRAND + " " + Build.MODEL + " " + fileName
         }
         return fileName + ".zip"
