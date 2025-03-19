@@ -17,12 +17,16 @@ package com.android.healthconnect.testapps.toolbox.utils
 
 import android.content.Context
 import android.content.Intent
+import android.health.connect.AggregateRecordsRequest
+import android.health.connect.AggregateRecordsResponse
 import android.health.connect.HealthConnectManager
 import android.health.connect.InsertRecordsResponse
 import android.health.connect.ReadRecordsRequest
 import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
+import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.TimeRangeFilter
+import android.health.connect.datatypes.AggregationType
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.Metadata
@@ -33,10 +37,10 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.testapps.toolbox.R
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.Serializable
 import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
-import kotlinx.coroutines.suspendCancellableCoroutine
 
 class GeneralUtils {
 
@@ -134,6 +138,38 @@ class GeneralUtils {
                     .records
             Log.d("READ_RECORDS", "Read ${records.size} records")
             return records
+        }
+
+        suspend fun <T> aggregate(
+            manager: HealthConnectManager,
+            timeRangeFilter: TimeInstantRangeFilter,
+            metrics: Set<AggregationType<T>>
+        ): AggregateRecordsResponse<T> {
+            val request =
+                AggregateRecordsRequest.Builder<T>(timeRangeFilter)
+
+            for(metric in metrics){
+                request.addAggregationType(metric)
+            }
+
+            return suspendCancellableCoroutine { continuation ->
+                manager.aggregate(request.build(), Runnable::run, continuation.asOutcomeReceiver())
+            }
+        }
+
+        suspend fun deleteRecords(
+            manager: HealthConnectManager,
+            recordType: Class<out Record>,
+            timeRangeFilter: TimeInstantRangeFilter
+        ){
+            suspendCancellableCoroutine<Void> { continuation ->
+                manager.deleteRecords(
+                    recordType,
+                    timeRangeFilter,
+                    Runnable::run,
+                    continuation.asOutcomeReceiver()
+                )
+            }
         }
 
         inline fun <reified T> Context.requireSystemService(): T =
