@@ -34,6 +34,8 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
@@ -67,7 +69,6 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.tracker.TrackerManager;
 import com.android.server.healthconnect.utils.TimeSource;
 
 import java.io.File;
@@ -224,6 +225,11 @@ public abstract class HealthConnectInjector {
      * Injector.
      */
     public abstract MedicalDataSourceHelper getMedicalDataSourceHelper();
+
+    /**
+     * Getter for {@link DeviceRecordHelper} instance initialised by the Health Connect Injector.
+     */
+    public abstract DeviceRecordHelper getDeviceRecordHelper();
 
     /** Getter for {@link TimeSource} instance initialised by the Health Connect Injector. */
     public abstract TimeSource getTimeSource();

@@ -100,12 +100,14 @@ public class FitnessRecordUpsertHelper {
      * @param recordInternals The list of records to be inserted.
      * @param extraPermsStateMap A map of extra permissions and their grant state. An empty map
      *     means all permissions are granted.
+     * @param shouldGenerateAccessLogs Whether access logs should be generated or not.
      * @return List of UUIDs of the inserted records.
      */
     public List<String> insertRecords(
             String callingPackageName,
             List<? extends RecordInternal<?>> recordInternals,
-            ArrayMap<String, Boolean> extraPermsStateMap) {
+            ArrayMap<String, Boolean> extraPermsStateMap,
+            boolean shouldGenerateAccessLogs) {
         for (RecordInternal<?> recordInternal : recordInternals) {
             // Override each record package to the given package i.e. the API caller package.
             StorageUtils.addPackageNameTo(recordInternal, callingPackageName);
@@ -118,7 +120,7 @@ public class FitnessRecordUpsertHelper {
                         callingPackageName,
                         recordInternals,
                         /* isInsertRequest= */ true,
-                        /* shouldGenerateAccessLog= */ true,
+                        shouldGenerateAccessLogs,
                         /* shouldGenerateChangeLog= */ true,
                         /* shouldPreferNewRecord= */ true,
                         /* updateLastModifiedTime= */ true,
