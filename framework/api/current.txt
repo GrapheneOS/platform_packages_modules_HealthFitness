@@ -170,6 +170,7 @@ package android.health.connect {
     field @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final String READ_MEDICAL_DATA_VITAL_SIGNS = "android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS";
     field public static final String READ_MENSTRUATION = "android.permission.health.READ_MENSTRUATION";
     field @FlaggedApi("com.android.healthfitness.flags.mindfulness") public static final String READ_MINDFULNESS = "android.permission.health.READ_MINDFULNESS";
+    field @FlaggedApi("com.android.healthfitness.flags.smoking") public static final String READ_NICOTINE_INTAKE = "android.permission.health.READ_NICOTINE_INTAKE";
     field public static final String READ_NUTRITION = "android.permission.health.READ_NUTRITION";
     field public static final String READ_OVULATION_TEST = "android.permission.health.READ_OVULATION_TEST";
     field public static final String READ_OXYGEN_SATURATION = "android.permission.health.READ_OXYGEN_SATURATION";
@@ -212,6 +213,7 @@ package android.health.connect {
     field @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final String WRITE_MEDICAL_DATA = "android.permission.health.WRITE_MEDICAL_DATA";
     field public static final String WRITE_MENSTRUATION = "android.permission.health.WRITE_MENSTRUATION";
     field @FlaggedApi("com.android.healthfitness.flags.mindfulness") public static final String WRITE_MINDFULNESS = "android.permission.health.WRITE_MINDFULNESS";
+    field @FlaggedApi("com.android.healthfitness.flags.smoking") public static final String WRITE_NICOTINE_INTAKE = "android.permission.health.WRITE_NICOTINE_INTAKE";
     field public static final String WRITE_NUTRITION = "android.permission.health.WRITE_NUTRITION";
     field public static final String WRITE_OVULATION_TEST = "android.permission.health.WRITE_OVULATION_TEST";
     field public static final String WRITE_OXYGEN_SATURATION = "android.permission.health.WRITE_OXYGEN_SATURATION";
@@ -1351,6 +1353,22 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.MindfulnessSessionRecord.Builder setNotes(@Nullable CharSequence);
     method @NonNull public android.health.connect.datatypes.MindfulnessSessionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
     method @NonNull public android.health.connect.datatypes.MindfulnessSessionRecord.Builder setTitle(@Nullable CharSequence);
+  }
+
+  @FlaggedApi("com.android.healthfitness.flags.smoking") public final class NicotineIntakeRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @Nullable public android.health.connect.datatypes.units.Mass getNicotineIntake();
+    method public int getNicotineIntakeType();
+    method public int getQuantity();
+    field public static final int NICOTINE_INTAKE_TYPE_CIGARETTE = 1; // 0x1
+    field public static final int NICOTINE_INTAKE_TYPE_VAPE = 0; // 0x0
+  }
+
+  public static final class NicotineIntakeRecord.Builder {
+    ctor public NicotineIntakeRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int, int);
+    method @NonNull public android.health.connect.datatypes.NicotineIntakeRecord build();
+    method @NonNull public android.health.connect.datatypes.NicotineIntakeRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
+    method @NonNull public android.health.connect.datatypes.NicotineIntakeRecord.Builder setNicotineIntake(@Nullable android.health.connect.datatypes.units.Mass);
+    method @NonNull public android.health.connect.datatypes.NicotineIntakeRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class NutritionRecord extends android.health.connect.datatypes.IntervalRecord {

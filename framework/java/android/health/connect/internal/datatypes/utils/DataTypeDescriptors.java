@@ -39,6 +39,7 @@ import static android.health.connect.HealthPermissions.READ_INTERMENSTRUAL_BLEED
 import static android.health.connect.HealthPermissions.READ_LEAN_BODY_MASS;
 import static android.health.connect.HealthPermissions.READ_MENSTRUATION;
 import static android.health.connect.HealthPermissions.READ_MINDFULNESS;
+import static android.health.connect.HealthPermissions.READ_NICOTINE_INTAKE;
 import static android.health.connect.HealthPermissions.READ_NUTRITION;
 import static android.health.connect.HealthPermissions.READ_OVULATION_TEST;
 import static android.health.connect.HealthPermissions.READ_OXYGEN_SATURATION;
@@ -78,6 +79,7 @@ import static android.health.connect.HealthPermissions.WRITE_INTERMENSTRUAL_BLEE
 import static android.health.connect.HealthPermissions.WRITE_LEAN_BODY_MASS;
 import static android.health.connect.HealthPermissions.WRITE_MENSTRUATION;
 import static android.health.connect.HealthPermissions.WRITE_MINDFULNESS;
+import static android.health.connect.HealthPermissions.WRITE_NICOTINE_INTAKE;
 import static android.health.connect.HealthPermissions.WRITE_NUTRITION;
 import static android.health.connect.HealthPermissions.WRITE_OVULATION_TEST;
 import static android.health.connect.HealthPermissions.WRITE_OXYGEN_SATURATION;
@@ -119,6 +121,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MINDFULNESS_SESSION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OVULATION_TEST;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION;
@@ -166,6 +169,7 @@ import android.health.connect.datatypes.LeanBodyMassRecord;
 import android.health.connect.datatypes.MenstruationFlowRecord;
 import android.health.connect.datatypes.MenstruationPeriodRecord;
 import android.health.connect.datatypes.MindfulnessSessionRecord;
+import android.health.connect.datatypes.NicotineIntakeRecord;
 import android.health.connect.datatypes.NutritionRecord;
 import android.health.connect.datatypes.OvulationTestRecord;
 import android.health.connect.datatypes.OxygenSaturationRecord;
@@ -208,6 +212,7 @@ import android.health.connect.internal.datatypes.LeanBodyMassRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationFlowRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationPeriodRecordInternal;
 import android.health.connect.internal.datatypes.MindfulnessSessionRecordInternal;
+import android.health.connect.internal.datatypes.NicotineIntakeRecordInternal;
 import android.health.connect.internal.datatypes.NutritionRecordInternal;
 import android.health.connect.internal.datatypes.OvulationTestRecordInternal;
 import android.health.connect.internal.datatypes.OxygenSaturationRecordInternal;
@@ -353,6 +358,18 @@ public class DataTypeDescriptors {
                                 .setRecordClass(CervicalMucusRecord.class)
                                 .setRecordInternalClass(CervicalMucusRecordInternal.class)
                                 .build(),
+                        Flags.smoking() && AconfigFlagHelper.isNicotineIntakeEnabled()
+                                ? DataTypeDescriptor.builder()
+                                        .setRecordTypeIdentifier(RECORD_TYPE_NICOTINE_INTAKE)
+                                        .setPermissionCategory(
+                                                HealthPermissionCategory.NICOTINE_INTAKE)
+                                        .setDataCategory(HealthDataCategory.WELLNESS)
+                                        .setReadPermission(READ_NICOTINE_INTAKE)
+                                        .setWritePermission(WRITE_NICOTINE_INTAKE)
+                                        .setRecordClass(NicotineIntakeRecord.class)
+                                        .setRecordInternalClass(NicotineIntakeRecordInternal.class)
+                                        .build()
+                                : null,
                         DataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_CYCLING_PEDALING_CADENCE)
                                 .setPermissionCategory(HealthPermissionCategory.EXERCISE)
