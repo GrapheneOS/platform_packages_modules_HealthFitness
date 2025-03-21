@@ -25,13 +25,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.android.healthconnect.testapps.toolbox.read.components.states.ErrorMessage
+import com.android.healthconnect.testapps.toolbox.read.components.states.LoadingBar
 import com.android.healthconnect.testapps.toolbox.read.navigation.Screen
 import com.android.healthconnect.testapps.toolbox.viewmodels.DataState
 import com.android.healthconnect.testapps.toolbox.viewmodels.LoadEntriesViewModel
-import com.android.healthconnect.testapps.toolbox.R
 import com.android.healthconnect.testapps.toolbox.read.controller.LoadEntriesInput
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -67,9 +69,9 @@ fun DataTypeDetailsScreen(modifier: Modifier = Modifier,
         // Body
         val entriesState = viewModel.entriesState.collectAsState().value
         return when(entriesState){
-            is DataState.Loading -> LoadingComponent()
+            is DataState.Loading -> LoadingBar()
             is DataState.Success -> RecordList(entriesState.records)
-            is DataState.Error -> ErrorComponent(entriesState.exception)
+            is DataState.Error -> ErrorMessage(entriesState.exception)
         }
     }
 }
@@ -78,27 +80,7 @@ fun DataTypeDetailsScreen(modifier: Modifier = Modifier,
 fun RecordList(
     records: List<Record>
 ){
+    Column(modifier = Modifier.testTag("recordList")) {
 
-
-}
-
-@Composable
-fun LoadingComponent(){
-    Text(
-        text = stringResource(id = R.string.loading_data)
-    )
-}
-
-@Composable
-fun ErrorComponent(e: Exception){
-    Column {
-        Text(
-            text = stringResource(id = R.string.error),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            text = e.localizedMessage!!,
-            modifier = Modifier.padding(start = 16.dp)
-        )
     }
 }
