@@ -41,6 +41,7 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Length;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
 import android.platform.test.annotations.AppModeFull;
 
@@ -73,7 +74,7 @@ public class DistanceRecordTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Before
@@ -94,7 +95,7 @@ public class DistanceRecordTest {
 
     @BeforeClass
     public static void setup() throws InterruptedException {
-        if (!TestUtils.isHealthConnectFullySupported()) {
+        if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
             return;
         }
         TestUtils.verifyDeleteRecords(

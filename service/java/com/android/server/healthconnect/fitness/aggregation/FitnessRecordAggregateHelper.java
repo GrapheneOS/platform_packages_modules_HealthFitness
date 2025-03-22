@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.request;
+package com.android.server.healthconnect.fitness.aggregation;
 
 import android.database.Cursor;
 import android.health.connect.AggregateRecordsResponse;
@@ -37,9 +37,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHe
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,97 +46,107 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Refines aggregate request from what the client sent to a format that makes the most sense for the
+ * Aggregate FitnessRecords from the database based on the given request, using the
  * TransactionManager.
+ *
+ * <p>FitnessRecord refers to any of the record types defined in {@link
+ * android.health.connect.datatypes.RecordTypeIdentifier};
  *
  * @hide
  */
-public final class AggregateTransactionRequest {
-    private final String mCallingPackageName;
-    private final List<AggregateTableRequest> mAggregateTableRequests;
-    private final Period mPeriod;
-    private final Duration mDuration;
-    private final TimeRangeFilter mTimeRangeFilter;
-    private final AggregationTypeIdMapper mAggregationTypeIdMapper;
+public final class FitnessRecordAggregateHelper {
     private final TransactionManager mTransactionManager;
+    private final AppInfoHelper mAppInfoHelper;
+    private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private final AccessLogsHelper mAccessLogsHelper;
     private final ReadAccessLogsHelper mReadAccessLogsHelper;
-    private final Set<Integer> mRecordTypeIds = new HashSet<>();
-    private final boolean mShouldRecordAccessLog;
-    private final long mRequestTime;
+    private final InternalHealthConnectMappings mInternalHealthConnectMappings;
+    private final AggregationTypeIdMapper mAggregationTypeIdMapper;
 
-    public AggregateTransactionRequest(
-            String callingPackageName,
-            AggregateDataRequestParcel request,
+    public FitnessRecordAggregateHelper(
             TransactionManager transactionManager,
             AppInfoHelper appInfoHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             AccessLogsHelper accessLogsHelper,
             ReadAccessLogsHelper readAccessLogsHelper,
-            InternalHealthConnectMappings internalHealthConnectMappings,
-            long startDateAccess,
-            boolean shouldRecordAccessLog) {
-        mCallingPackageName = callingPackageName;
-        mAggregateTableRequests = new ArrayList<>(request.getAggregateIds().length);
+            InternalHealthConnectMappings internalHealthConnectMappings) {
         mTransactionManager = transactionManager;
+        mAppInfoHelper = appInfoHelper;
+        mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mAccessLogsHelper = accessLogsHelper;
         mReadAccessLogsHelper = readAccessLogsHelper;
-        mPeriod = request.getPeriod();
-        mDuration = request.getDuration();
-        mTimeRangeFilter = request.getTimeRangeFilter();
-        mShouldRecordAccessLog = shouldRecordAccessLog;
-
+        mInternalHealthConnectMappings = internalHealthConnectMappings;
         mAggregationTypeIdMapper = AggregationTypeIdMapper.getInstance();
+    }
+
+    /**
+     * Aggregate and return results for the given request.
+     *
+     * @param callingPackageName The package name making the request.
+     * @param request The aggregation request.
+     * @param startDateAccess The start time since when the caller is allowed to read data.
+     * @param shouldRecordAccessLog Whether access logs should be recorded.
+     * @return The response containing the aggregations result.
+     */
+    public AggregateDataResponseParcel aggregateRecords(
+            String callingPackageName,
+            AggregateDataRequestParcel request,
+            long startDateAccess,
+            boolean shouldRecordAccessLog) {
+        // Common request time for all access logs.
+        long requestTime = Instant.now().toEpochMilli();
+
+        List<AggregateRecordRequest> mAggregateRecordRequests =
+                new ArrayList<>(request.getAggregateIds().length);
+        Set<Integer> recordTypeIds = new HashSet<>();
         for (int id : request.getAggregateIds()) {
             AggregationType<?> aggregationType = mAggregationTypeIdMapper.getAggregationTypeFor(id);
             int recordTypeId = aggregationType.getApplicableRecordTypeId();
-            mRecordTypeIds.add(recordTypeId);
+            recordTypeIds.add(recordTypeId);
             RecordHelper<?> recordHelper =
-                    internalHealthConnectMappings.getRecordHelper(recordTypeId);
-            AggregateTableRequest aggregateTableRequest =
-                    recordHelper.getAggregateTableRequest(
+                    mInternalHealthConnectMappings.getRecordHelper(recordTypeId);
+            AggregateRecordRequest aggregateRecordRequest =
+                    recordHelper.getAggregateRecordRequest(
                             aggregationType,
                             callingPackageName,
                             request.getPackageFilters(),
-                            healthDataCategoryPriorityHelper,
-                            internalHealthConnectMappings,
-                            appInfoHelper,
-                            transactionManager,
+                            mHealthDataCategoryPriorityHelper,
+                            mInternalHealthConnectMappings,
+                            mAppInfoHelper,
+                            mTransactionManager,
                             request.getStartTime(),
                             request.getEndTime(),
                             startDateAccess,
                             request.useLocalTimeFilter());
 
-            if (mDuration != null || mPeriod != null) {
-                aggregateTableRequest.setGroupBy(
+            if (request.getDuration() != null || request.getPeriod() != null) {
+                aggregateRecordRequest.setGroupBy(
                         recordHelper.getDurationGroupByColumnName(),
-                        mPeriod,
-                        mDuration,
-                        mTimeRangeFilter);
+                        request.getPeriod(),
+                        request.getDuration(),
+                        request.getTimeRangeFilter());
             }
-            mAggregateTableRequests.add(aggregateTableRequest);
+            mAggregateRecordRequests.add(aggregateRecordRequest);
         }
 
-        mRequestTime = Instant.now().toEpochMilli();
-    }
-
-    /**
-     * @return Compute and return aggregations
-     */
-    public AggregateDataResponseParcel getAggregateDataResponseParcel() {
         Map<AggregationType<?>, List<AggregateResult<?>>> results = new ArrayMap<>();
-        for (AggregateTableRequest aggregateTableRequest : mAggregateTableRequests) {
-            populateWithAggregation(aggregateTableRequest);
+        for (AggregateRecordRequest aggregateRecordRequest : mAggregateRecordRequests) {
+            populateRequestWithResults(
+                    callingPackageName,
+                    aggregateRecordRequest,
+                    recordTypeIds,
+                    request.getTimeRangeFilter(),
+                    shouldRecordAccessLog,
+                    requestTime);
             results.put(
-                    aggregateTableRequest.getAggregationType(),
-                    aggregateTableRequest.getAggregateResults());
+                    aggregateRecordRequest.getAggregationType(),
+                    aggregateRecordRequest.getAggregateResults());
         }
 
-        // Convert DB friendly results to aggregateRecordsResponses
         int responseSize =
-                mAggregateTableRequests.isEmpty()
+                mAggregateRecordRequests.isEmpty()
                         ? 0
-                        : mAggregateTableRequests.get(0).getAggregateResults().size();
+                        : mAggregateRecordRequests.get(0).getAggregateResults().size();
         List<AggregateRecordsResponse<?>> aggregateRecordsResponses = new ArrayList<>(responseSize);
         for (int i = 0; i < responseSize; i++) {
             Map<Integer, AggregateResult<?>> aggregateResultMap = new ArrayMap<>();
@@ -150,50 +158,57 @@ public final class AggregateTransactionRequest {
             aggregateRecordsResponses.add(new AggregateRecordsResponse<>(aggregateResultMap));
         }
 
-        // Create and return parcel
         AggregateDataResponseParcel aggregateDataResponseParcel =
                 new AggregateDataResponseParcel(aggregateRecordsResponses);
-        if (mPeriod != null) {
-            aggregateDataResponseParcel.setPeriod(mPeriod, mTimeRangeFilter);
-        } else if (mDuration != null) {
-            aggregateDataResponseParcel.setDuration(mDuration, mTimeRangeFilter);
+        if (request.getPeriod() != null) {
+            aggregateDataResponseParcel.setPeriod(
+                    request.getPeriod(), request.getTimeRangeFilter());
+        } else if (request.getDuration() != null) {
+            aggregateDataResponseParcel.setDuration(
+                    request.getDuration(), request.getTimeRangeFilter());
         }
 
         return aggregateDataResponseParcel;
     }
 
-    // Compute aggregations and record read access log
-    private void populateWithAggregation(AggregateTableRequest aggregateTableRequest) {
+    // Computes aggregations and record read access log
+    private void populateRequestWithResults(
+            String callingPackageName,
+            AggregateRecordRequest aggregateRecordRequest,
+            Set<Integer> recordTypeIds,
+            TimeRangeFilter timeRangeFilter,
+            boolean shouldRecordAccessLog,
+            long requestTime) {
         mTransactionManager.runWithoutTransaction(
                 db -> {
                     try (Cursor cursor =
                                     db.rawQuery(
-                                            aggregateTableRequest.getAggregationCommand(), null);
+                                            aggregateRecordRequest.getAggregationCommand(), null);
                             Cursor metaDataCursor =
                                     db.rawQuery(
-                                            aggregateTableRequest
+                                            aggregateRecordRequest
                                                     .getCommandToFetchAggregateMetadata(),
                                             null)) {
                         // processResultsAndReturnContributingPackages stores the aggregation result
                         // in the aggregateTableRequest.
                         List<String> contributingPackages =
-                                aggregateTableRequest.processResultsAndReturnContributingPackages(
+                                aggregateRecordRequest.processResultsAndReturnContributingPackages(
                                         cursor, metaDataCursor);
                         if (AconfigFlagHelper.isEcosystemMetricsEnabled()
-                                && mShouldRecordAccessLog) {
+                                && shouldRecordAccessLog) {
                             mReadAccessLogsHelper.recordAccessLogForAggregationReads(
                                     db,
-                                    mCallingPackageName,
-                                    /* readTimeStamp= */ mRequestTime,
-                                    aggregateTableRequest.getRecordTypeId(),
+                                    callingPackageName,
+                                    /* readTimeStamp= */ requestTime,
+                                    aggregateRecordRequest.getRecordTypeId(),
                                     /* endTimeStamp= */ TimeRangeFilterHelper
-                                            .getFilterEndTimeMillis(mTimeRangeFilter),
+                                            .getFilterEndTimeMillis(timeRangeFilter),
                                     contributingPackages);
                         }
                     }
-                    if (Flags.addMissingAccessLogs() && mShouldRecordAccessLog) {
+                    if (Flags.addMissingAccessLogs() && shouldRecordAccessLog) {
                         mAccessLogsHelper.recordReadAccessLog(
-                                db, mCallingPackageName, mRecordTypeIds);
+                                db, callingPackageName, recordTypeIds);
                     }
                 });
     }

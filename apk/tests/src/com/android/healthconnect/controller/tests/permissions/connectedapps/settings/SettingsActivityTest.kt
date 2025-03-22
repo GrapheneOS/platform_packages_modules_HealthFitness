@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps.set
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.EXTRA_PACKAGE_NAME
+import android.os.Build
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
@@ -27,6 +28,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
@@ -171,8 +173,9 @@ class SettingsActivityTest {
         }
     }
 
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    fun settingsActivity_navigatesToManagePermissionsFragment_ifNoPackageName() {
+    fun settingsActivity_navigatesToManagePermissionsFragment_ifNoPackageName_healthConnectBrand() {
         val intent = Intent(context, SettingsActivity::class.java)
 
         launch<SettingsActivity>(intent).use { scenario ->
@@ -180,6 +183,21 @@ class SettingsActivityTest {
                     withText(
                         "Apps with this permission can read and write your" +
                             " health and fitness data."
+                    )
+                )
+                .check(matches(isDisplayed()))
+        }
+    }
+
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @Test
+    fun settingsActivity_navigatesToManagePermissionsFragment_ifNoPackageName_healthFitnessBrand() {
+        val intent = Intent(context, SettingsActivity::class.java)
+
+        launch<SettingsActivity>(intent).use { _ ->
+            onView(
+                    withText(
+                        "Apps with this permission can read and write your health, fitness and wellness data. This includes data tracked from your devices and data stored in Health Connect"
                     )
                 )
                 .check(matches(isDisplayed()))

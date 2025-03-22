@@ -19,6 +19,8 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"স্বাস্থ্য সম্পৰ্কীয় ডেটালৈ এপৰ এক্সেছ পৰিচালনা কৰক"</string>
+    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"অনুমতি আৰু ডেটা"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"আপোনাৰ ডিভাইচত স্বাস্থ্য আৰু ফিটনেছ সম্পৰ্কীয় ডেটা পৰিচালনা কৰক আৰু সেয়া কোনবোৰ এপে এক্সেছ কৰিব পাৰে সেয়া নিয়ন্ত্ৰণ কৰক"</string>
     <string name="data_title" msgid="4456619761533380816">"ডেটা আৰু এক্সেছ"</string>

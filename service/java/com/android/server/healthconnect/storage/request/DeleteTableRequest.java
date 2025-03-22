@@ -52,19 +52,14 @@ public class DeleteTableRequest {
     @Nullable private List<Long> mPackageFilters;
     private long mStartTime = DEFAULT_LONG;
     private long mEndTime = DEFAULT_LONG;
-    private boolean mRequiresUuId;
     @Nullable private List<String> mIds;
-    private boolean mEnforcePackageCheck;
     private final WhereClauses mExtraWhereClauses = new WhereClauses(AND);
 
     public DeleteTableRequest(String tableName, @RecordTypeIdentifier.RecordType int recordType) {
-        Objects.requireNonNull(tableName);
-
         mTableName = tableName;
         mRecordType = recordType;
     }
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public DeleteTableRequest(String tableName) {
         Objects.requireNonNull(tableName);
 
@@ -77,46 +72,20 @@ public class DeleteTableRequest {
         return mPackageColumnName;
     }
 
-    public boolean requiresPackageCheck() {
-        return mEnforcePackageCheck;
-    }
-
-    public DeleteTableRequest setEnforcePackageCheck(
-            String packageColumnName, String uuidColumnName) {
-        mEnforcePackageCheck = true;
-        mPackageColumnName = packageColumnName;
-        mIdColumnName = uuidColumnName;
+    public DeleteTableRequest setIdColumnName(String idColumnName) {
+        mIdColumnName = idColumnName;
         return this;
     }
 
     public DeleteTableRequest setIds(String idColumnName, List<String> ids) {
-        Objects.requireNonNull(ids);
-        Objects.requireNonNull(idColumnName);
-
         mIds = ids.stream().map(StorageUtils::getNormalisedString).toList();
         mIdColumnName = idColumnName;
         return this;
     }
 
     public DeleteTableRequest setId(String idColumnName, String id) {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(idColumnName);
-
         mIds = Collections.singletonList(StorageUtils.getNormalisedString(id));
         mIdColumnName = idColumnName;
-        return this;
-    }
-
-    public boolean requiresRead() {
-        return mRequiresUuId || mEnforcePackageCheck;
-    }
-
-    public DeleteTableRequest setRequiresUuId(String idColumnName) {
-        Objects.requireNonNull(idColumnName);
-
-        mRequiresUuId = true;
-        mIdColumnName = idColumnName;
-
         return this;
     }
 
@@ -138,11 +107,15 @@ public class DeleteTableRequest {
         return mTableName;
     }
 
+    public DeleteTableRequest setPackageColumnName(String packageColumnName) {
+        mPackageColumnName = packageColumnName;
+        return this;
+    }
+
     public DeleteTableRequest setPackageFilter(
             String packageColumnName, List<Long> packageFilters) {
         mPackageFilters = packageFilters;
         mPackageColumnName = packageColumnName;
-
         return this;
     }
 
@@ -166,7 +139,7 @@ public class DeleteTableRequest {
                 + getWhereCommand();
     }
 
-    public String getWhereCommand() {
+    private String getWhereCommand() {
         WhereClauses whereClauses = new WhereClauses(AND);
         whereClauses.addNestedWhereClauses(mExtraWhereClauses);
         whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);

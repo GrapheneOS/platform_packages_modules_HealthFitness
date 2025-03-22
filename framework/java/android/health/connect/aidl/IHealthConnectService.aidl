@@ -165,16 +165,6 @@ interface IHealthConnectService {
         in IEmptyResponseCallback callback);
 
     /**
-     * @param attributionSource attribution source for the data.
-     * @param request Delete request using the mentioned filters
-     * @param callback Callback to receive result of performing this operation
-     */
-    void deleteUsingFiltersForSelf(
-        in AttributionSource attributionSource,
-        in DeleteUsingFiltersRequestParcel request,
-        in IEmptyResponseCallback callback);
-
-    /**
      * @param permissionCategory PermissionCategory corresponding to which priority is requested
      * @param callback Callback to receive result of performing this operation
      */
@@ -577,5 +567,5 @@ interface IHealthConnectService {
      * @param changes Changes to be restored.
      * @param callback Callback to receive result of performing this operation.
      */
-     void restoreChanges(in List<RestoreChange> changes, in byte[] appInfoMap, in IEmptyResponseCallback callback);
+     void restoreChanges(in List<RestoreChange> changes, in IEmptyResponseCallback callback);
 }

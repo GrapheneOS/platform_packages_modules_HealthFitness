@@ -334,7 +334,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
     }
 
     private fun setupSpinnerPreference() {
-        spinnerPreference = SettingsSpinnerPreference(context)
+        spinnerPreference = SettingsSpinnerPreference(requireContext())
         spinnerPreference.setAdapter(
             SettingsSpinnerAdapter<String>(context).also { it.addAll(dataSourcesCategoriesStrings) }
         )

@@ -27,12 +27,11 @@ import static org.junit.Assume.assumeTrue;
 import android.content.Context;
 import android.health.connect.HealthPermissions;
 import android.health.connect.HealthServicesInitializer;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.compatibility.common.util.FeatureUtil;
-import com.android.healthfitness.flags.Flags;
 
 import org.junit.Test;
 
@@ -44,7 +43,7 @@ public class HealthServicesInitializerTest {
      */
     @Test
     public void testRegisterServiceThrowsException() {
-        assumeTrue(TestUtils.isHealthConnectFullySupported());
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
         assertThrows(
                 IllegalStateException.class, HealthServicesInitializer::registerServiceWrappers);
     }
@@ -55,7 +54,7 @@ public class HealthServicesInitializerTest {
      */
     @Test
     public void testHealthServiceRegisteredUnsupportedHardwareReturnsNull() {
-        assumeFalse(TestUtils.isHealthConnectFullySupported());
+        assumeFalse(DeviceSupportUtils.isHealthConnectFullySupported());
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Object service = context.getSystemService(Context.HEALTHCONNECT_SERVICE);
         assertThat(service).isNull();
@@ -67,7 +66,7 @@ public class HealthServicesInitializerTest {
      */
     @Test
     public void testHealthServiceRegisteredNonWatchSupportedHardwareReturnsNonNull() {
-        assumeTrue(TestUtils.isHealthConnectFullySupported());
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
         assumeFalse(FeatureUtil.isWatch());
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Object service = context.getSystemService(Context.HEALTHCONNECT_SERVICE);
@@ -81,7 +80,7 @@ public class HealthServicesInitializerTest {
      */
     @Test
     public void testHealthServiceRegisteredWatchUnsupportedPackageReturnsNull() {
-        assumeTrue(TestUtils.isHealthConnectFullySupported());
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
         assumeTrue(FeatureUtil.isWatch());
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Object service = context.getSystemService(Context.HEALTHCONNECT_SERVICE);
@@ -95,7 +94,7 @@ public class HealthServicesInitializerTest {
     @Test
     public void testHealthServiceRegisteredWatchPackageWithPermissionReturnsNonNull()
             throws Exception {
-        assumeTrue(TestUtils.isHealthConnectFullySupported());
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
         assumeTrue(FeatureUtil.isWatch());
         runWithShellPermissionIdentity(
                 () -> {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.request;
+package com.android.server.healthconnect.fitness.aggregation;
 
 import static android.health.connect.datatypes.AggregationType.AVG;
 import static android.health.connect.datatypes.AggregationType.COUNT;
@@ -58,7 +58,7 @@ import java.util.Map;
  *
  * @hide
  */
-public class AggregateTableRequest {
+public class AggregateRecordRequest {
     private static final String TAG = "HealthConnectAggregate";
     private static final String GROUP_BY_COLUMN_NAME = "category";
 
@@ -93,7 +93,7 @@ public class AggregateTableRequest {
     private List<Long> mTimeSplits;
 
     @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    public AggregateTableRequest(
+    public AggregateRecordRequest(
             AggregateParams params,
             AggregationType<?> aggregationType,
             RecordHelper<?> recordHelper,
@@ -208,7 +208,7 @@ public class AggregateTableRequest {
     }
 
     /** Sets time filter for table request. */
-    public AggregateTableRequest setTimeFilter(long startTime, long endTime) {
+    public AggregateRecordRequest setTimeFilter(long startTime, long endTime) {
         // Return if the params will result in no impact on the query
         if (startTime < 0 || endTime < startTime) {
             return this;

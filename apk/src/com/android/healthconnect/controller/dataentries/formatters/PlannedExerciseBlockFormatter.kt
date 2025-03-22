@@ -42,25 +42,39 @@ constructor(
     }
 
     private fun formatBlockTitle(block: PlannedExerciseBlock): String {
-        return context.getString(
-            R.string.planned_exercise_block_title,
-            block.description ?: context.getString(R.string.unknown_type),
+        return if (block.description != null) {
+            context.getString(
+                R.string.planned_exercise_block_title,
+                block.description,
+                MessageFormat.format(
+                    context.getString(R.string.planned_exercise_block_repetitions),
+                    mapOf("count" to block.repetitions),
+                ),
+            )
+        } else {
             MessageFormat.format(
                 context.getString(R.string.planned_exercise_block_repetitions),
                 mapOf("count" to block.repetitions),
-            ),
-        )
+            )
+        }
     }
 
     private fun formatBlockTitleA11y(block: PlannedExerciseBlock): String {
-        return context.getString(
-            R.string.planned_exercise_block_a11y_title,
-            block.description ?: context.getString(R.string.unknown_type),
+        return if (block.description != null) {
+            context.getString(
+                R.string.planned_exercise_block_a11y_title,
+                block.description,
+                MessageFormat.format(
+                    context.getString(R.string.planned_exercise_block_repetitions),
+                    mapOf("count" to block.repetitions),
+                ),
+            )
+        } else {
             MessageFormat.format(
                 context.getString(R.string.planned_exercise_block_repetitions),
                 mapOf("count" to block.repetitions),
-            ),
-        )
+            )
+        }
     }
 
     fun formatBlockDetails(

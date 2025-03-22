@@ -209,10 +209,7 @@ public class FitnessRecordReadHelperTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ADD_MISSING_ACCESS_LOGS)
-    public void readRecordsByIdRequest_accessLogEnabled_NoAccessLog() {
-        // TODO(b/366149374): Fix the read by uuid case and add a test case for access log present.
-        // Read by id requests are always reading self data. Clients are not allowed to read other
-        // apps' data by client id
+    public void readRecordsByIdRequest_accessLogged() {
         ReadRecordsRequestUsingIds<BloodPressureRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(BloodPressureRecord.class)
                         .addClientRecordId("id")
@@ -229,7 +226,11 @@ public class FitnessRecordReadHelperTest {
                 /* packageNamesByAppIds= */ null);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
-        assertThat(result).isEmpty();
+        assertThat(result).hasSize(1);
+        AccessLog log = result.get(0);
+        assertThat(log.getPackageName()).isEqualTo(TEST_PACKAGE_NAME);
+        assertThat(log.getRecordTypes()).containsExactly(BloodPressureRecord.class);
+        assertThat(log.getOperationType()).isEqualTo(OPERATION_TYPE_READ);
     }
 
     @Test
@@ -298,7 +299,7 @@ public class FitnessRecordReadHelperTest {
 
     @Test
     @EnableFlags(Flags.FLAG_ADD_MISSING_ACCESS_LOGS)
-    public void readRecordsByFilterRequest_shouldNotRecordAccessLogs_accessLogNotRecorded() {
+    public void readRecordsByFilterRequest_filterForSelf_accessLogRecorded() {
         ReadRecordsRequestUsingFilters<StepsRecord> request =
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                         .addDataOrigins(getDataOrigin(TEST_PACKAGE_NAME))
@@ -316,7 +317,11 @@ public class FitnessRecordReadHelperTest {
                 /* packageNamesByAppIds= */ null);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
-        assertThat(result).isEmpty();
+        assertThat(result).hasSize(1);
+        AccessLog log = result.get(0);
+        assertThat(log.getPackageName()).isEqualTo(TEST_PACKAGE_NAME);
+        assertThat(log.getRecordTypes()).containsExactly(StepsRecord.class);
+        assertThat(log.getOperationType()).isEqualTo(OPERATION_TYPE_READ);
     }
 
     @Test

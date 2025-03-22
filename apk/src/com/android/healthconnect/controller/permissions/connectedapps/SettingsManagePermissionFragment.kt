@@ -101,7 +101,7 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
         addIntroOrPermissionHeaderPreference(
             preferenceScreen,
             requireContext(),
-            getString(R.string.app_label),
+            getString(R.string.settings_manage_permission),
             AttributeResolver.getDrawable(requireContext(), R.attr.healthConnectIcon),
             getString(R.string.health_permission_header_description),
         )

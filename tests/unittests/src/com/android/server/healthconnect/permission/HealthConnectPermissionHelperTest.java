@@ -186,13 +186,39 @@ public class HealthConnectPermissionHelperTest {
     @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void shouldEnforcePermissionUsageIntent_hrFromSplitPermission_shouldNotEnforce()
             throws PackageManager.NameNotFoundException {
-        PackageInfo mockPackageInfo = new PackageInfo();
-        mockPackageInfo.requestedPermissions = new String[] {HealthPermissions.READ_HEART_RATE};
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        /* targetSdkVersion= */ 34,
+                        /* requestedPermissions= */ new String[] {
+                            HealthPermissions.READ_HEART_RATE
+                        });
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
         when(mPackageManager.getPermissionFlags(
                         HealthPermissions.READ_HEART_RATE, TEST_PACKAGE_NAME, CURRENT_USER))
                 .thenReturn(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED);
+
+        assertFalse(
+                mPermissionHelper.shouldEnforcePermissionUsageIntent(
+                        TEST_PACKAGE_NAME, CURRENT_USER));
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
+    public void
+            shouldEnforcePermissionUsageIntent_hrFromSplitPermission_targetSdk22_shouldNotEnforce()
+                    throws PackageManager.NameNotFoundException {
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        /* targetSdkVersion= */ 22,
+                        /* requestedPermissions= */ new String[] {
+                            HealthPermissions.READ_HEART_RATE
+                        });
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_HEART_RATE, TEST_PACKAGE_NAME, CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_REVIEW_REQUIRED);
 
         assertFalse(
                 mPermissionHelper.shouldEnforcePermissionUsageIntent(
@@ -230,12 +256,13 @@ public class HealthConnectPermissionHelperTest {
     @EnableFlags({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void shouldEnforcePermissionUsageIntent_multipleSplitPermissions_shouldNotEnforce()
             throws PackageManager.NameNotFoundException {
-        PackageInfo mockPackageInfo = new PackageInfo();
-        mockPackageInfo.requestedPermissions =
-                new String[] {
-                    HealthPermissions.READ_HEART_RATE,
-                    HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND
-                };
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        /* targetSdkVersion= */ 34,
+                        /* requestedPermissions= */ new String[] {
+                            HealthPermissions.READ_HEART_RATE,
+                            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND
+                        });
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
         when(mPackageManager.getPermissionFlags(

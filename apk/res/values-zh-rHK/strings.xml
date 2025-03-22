@@ -19,6 +19,8 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"管理應用程式的健康資料存取權"</string>
+    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"權限及資料"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"管理裝置上的健康和健身資料，並控制哪些應用程式可存取這些資料"</string>
     <string name="data_title" msgid="4456619761533380816">"資料和存取權"</string>

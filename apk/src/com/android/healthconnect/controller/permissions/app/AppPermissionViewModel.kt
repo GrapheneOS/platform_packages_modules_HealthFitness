@@ -14,9 +14,7 @@
 package com.android.healthconnect.controller.permissions.app
 
 import android.content.Context
-import android.content.pm.PackageManager
-import android.health.connect.HealthPermissions.READ_EXERCISE
-import android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES
+import android.health.connect.HealthPermissions
 import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -44,6 +42,7 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthfitness.flags.Flags
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -69,6 +68,7 @@ constructor(
     private val loadGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
     private val loadExerciseRoutePermissionUseCase: ILoadExerciseRoutePermissionUseCase,
     private val healthPermissionReader: HealthPermissionReader,
+    private val deviceInfoUtils: DeviceInfoUtils,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -116,6 +116,7 @@ constructor(
     private var _additionalPermissions = MutableLiveData<List<AdditionalPermission>>(emptyList())
     val additionalPermissions: LiveData<List<AdditionalPermission>>
         get() = _additionalPermissions
+
     private var _grantedAdditionalPermissions =
         MutableLiveData<Set<AdditionalPermission>>(emptySet())
     @VisibleForTesting
@@ -268,6 +269,19 @@ constructor(
     private fun loadAllPermissions(packageName: String) {
         viewModelScope.launch {
             healthPermissionsList = loadAppPermissionsStatusUseCase.invoke(packageName)
+            // On Wear, there are only a subset of permissions supported.
+            if (Flags.replaceBodySensorPermissionEnabled() && deviceInfoUtils.isOnWatch(context)) {
+                val allowedPermissionsToRequest: Set<String> =
+                    healthPermissionReader.getSystemHealthPermissions().toMutableSet().also {
+                        it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
+                    }
+                healthPermissionsList =
+                    healthPermissionsList.filter {
+                        val healthPermissionStr: String = it.healthPermission.toString()
+                        allowedPermissionsToRequest.contains(healthPermissionStr)
+                    }
+            }
+
             _fitnessPermissions.postValue(
                 healthPermissionsList
                     .map { it.healthPermission }
@@ -312,8 +326,22 @@ constructor(
         // Only reload the status the first time this method is called
         if (shouldLoadGrantedPermissions) {
             viewModelScope.launch {
-                val grantedPermissions =
+                var grantedPermissions =
                     loadAppPermissionsStatusUseCase.invoke(packageName).filter { it.isGranted }
+                if (
+                    Flags.replaceBodySensorPermissionEnabled() && deviceInfoUtils.isOnWatch(context)
+                ) {
+                    val allowedPermissionsToRequest: Set<String> =
+                        healthPermissionReader.getSystemHealthPermissions().toMutableSet().also {
+                            it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
+                        }
+                    grantedPermissions =
+                        grantedPermissions.filter {
+                            val healthPermissionStr: String = it.healthPermission.toString()
+                            allowedPermissionsToRequest.contains(healthPermissionStr)
+                        }
+                }
+
                 healthPermissionsList = grantedPermissions
 
                 // Only show app permissions that are granted
@@ -381,12 +409,12 @@ constructor(
     fun updateAdditionalPermission(
         packageName: String,
         additionalPermission: AdditionalPermission,
-        grant: Boolean
-    ) : Boolean {
+        grant: Boolean,
+    ): Boolean {
         try {
             val grantedPermissions = _grantedAdditionalPermissions.value.orEmpty().toMutableSet()
             if (grant) {
-                grantPermissionsStatusUseCase.invoke(packageName,additionalPermission.toString())
+                grantPermissionsStatusUseCase.invoke(packageName, additionalPermission.toString())
                 grantedPermissions.add(additionalPermission)
             } else {
                 revokePermissionsStatusUseCase.invoke(packageName, additionalPermission.toString())
@@ -515,7 +543,7 @@ constructor(
         packageName: String,
         fitnessPermission: FitnessPermission,
     ): Boolean {
-        if (fitnessPermission.toString() != READ_EXERCISE) {
+        if (fitnessPermission.toString() != HealthPermissions.READ_EXERCISE) {
             return false
         }
 
@@ -555,11 +583,11 @@ constructor(
     }
 
     fun disableExerciseRoutePermission(packageName: String) {
-        revokeFitnessPermission(fromPermissionString(READ_EXERCISE), packageName)
+        revokeFitnessPermission(fromPermissionString(HealthPermissions.READ_EXERCISE), packageName)
         // the revokePermission call will automatically revoke all additional permissions
         // including Exercise Routes if the READ_EXERCISE permission is the last READ permission
         if (isExerciseRoutePermissionAlwaysAllow(packageName)) {
-            revokePermissionsStatusUseCase(packageName, READ_EXERCISE_ROUTES)
+            revokePermissionsStatusUseCase(packageName, HealthPermissions.READ_EXERCISE_ROUTES)
         }
     }
 
@@ -684,13 +712,9 @@ constructor(
         }
     }
 
-    /**
-     * Returns True if the packageName meets the required conditions to use
-     * health permissions.
-     */
+    /** Returns True if the packageName meets the required conditions to use health permissions. */
     fun isPackageSupported(packageName: String): Boolean {
-        if (context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
-                Flags.replaceBodySensorPermissionEnabled()) {
+        if (deviceInfoUtils.isOnWatch(context) && Flags.replaceBodySensorPermissionEnabled()) {
             return true
         }
 

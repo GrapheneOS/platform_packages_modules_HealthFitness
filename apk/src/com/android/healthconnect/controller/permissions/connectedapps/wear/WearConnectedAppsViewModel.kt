@@ -293,31 +293,52 @@ constructor(
                         }
                     }
             }
+        // If there are no more permissions allowed for this app, revoke background permission.
+        if (
+            appToAllowedDataTypes.value[appMetadata].isNullOrEmpty() &&
+                appToBackgroundReadStatus.value[appMetadata] == true
+        ) {
+            Log.w(
+                TAG,
+                "All read permissions revoked, revoking background " +
+                    "permission for: ${appMetadata.packageName}. ",
+            )
+            updatePermission(READ_HEALTH_DATA_IN_BACKGROUND, appMetadata, false)
+        }
     }
 
-    /** Removes all apps from accessing a specific fitness permission. */
+    /** Removes all non-system apps from accessing a specific fitness permission. */
     fun removeFitnessPermissionForAllApps(permission: HealthPermission) {
         val permissionStr = permission.toString()
 
         // Update data type to allowed/denied apps map.
-        val deniedAppsMap = dataTypeToDeniedApps.value.toMutableMap()
-        dataTypeToAllowedApps.value[permission]?.forEach { appMetadata ->
-            revokeHealthPermissionUseCase.invoke(appMetadata.packageName, permissionStr)
-            deniedAppsMap.getOrPut(permission) { mutableListOf() }.add(appMetadata)
+        val allowedAppsList = dataTypeToAllowedApps.value[permission]
+        if (allowedAppsList == null) return
+        val newlyDeniedApps = mutableListOf<AppMetadata>()
+        allowedAppsList.forEach { appMetadata ->
+            if (!appMetadata.isSystem) {
+                revokeHealthPermissionUseCase.invoke(appMetadata.packageName, permissionStr)
+                newlyDeniedApps.add(appMetadata)
+            }
         }
-        dataTypeToAllowedApps.value = dataTypeToAllowedApps.value - permission
+
+        allowedAppsList.removeAll(newlyDeniedApps)
+        if (allowedAppsList.isEmpty()) {
+            dataTypeToAllowedApps.value = dataTypeToAllowedApps.value - permission
+        }
+        val deniedAppsMap = dataTypeToDeniedApps.value.toMutableMap()
+        deniedAppsMap.getOrPut(permission) { mutableListOf() }.addAll(newlyDeniedApps)
         dataTypeToDeniedApps.value = deniedAppsMap
 
         // Update app to allowed data types map.
-        appToAllowedDataTypes.value =
-            appToAllowedDataTypes.value.toMutableMap().also { map ->
-                map.keys.forEach { appMetadata ->
-                    map[appMetadata]?.remove(permission)
-                    if (map[appMetadata]?.isEmpty() == true) {
-                        map.remove(appMetadata)
-                    }
-                }
+        val appToAllowedDataTypesMutable = appToAllowedDataTypes.value.toMutableMap()
+        appToAllowedDataTypesMutable.entries.forEach {
+            if (newlyDeniedApps.contains(it.key)) {
+                it.value.remove(permission)
             }
+        }
+        appToAllowedDataTypesMutable.entries.removeIf { it.value.isEmpty() }
+        appToAllowedDataTypes.value = appToAllowedDataTypesMutable
     }
 
     fun getAppMetadataByPackageName(packageName: String): MutableStateFlow<AppMetadata?> =

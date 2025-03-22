@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.tests.permissions.request
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.health.connect.HealthPermissions.READ_EXERCISE
 import android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES
@@ -53,6 +54,7 @@ import com.android.healthconnect.controller.permissions.request.MedicalScreenSta
 import com.android.healthconnect.controller.permissions.request.PermissionsActivityState
 import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
 import com.android.healthconnect.controller.service.HealthPermissionManagerModule
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
@@ -65,6 +67,7 @@ import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -97,7 +100,9 @@ class RequestPermissionViewModelTest {
 
     @BindValue val permissionManager: HealthPermissionManager = FakeHealthPermissionManager()
 
+    @Inject @ApplicationContext lateinit var context: Context
     @Inject lateinit var appInfoReader: AppInfoReader
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
     @Inject lateinit var grantHealthPermissionUseCase: GrantHealthPermissionUseCase
     @Inject lateinit var revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase
     @Inject lateinit var getGrantHealthPermissionUseCase: GetGrantedHealthPermissionsUseCase
@@ -115,7 +120,9 @@ class RequestPermissionViewModelTest {
         Dispatchers.setMain(testDispatcher)
         viewModel =
             RequestPermissionViewModel(
+                context,
                 appInfoReader,
+                healthPermissionReader,
                 grantHealthPermissionUseCase,
                 revokeHealthPermissionUseCase,
                 getGrantHealthPermissionUseCase,

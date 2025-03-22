@@ -19,6 +19,8 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Dáta o zdraví"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"Správa prístupu aplikácie k údajom o zdraví"</string>
+    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Povolenia a údaje"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Spravujte údaje o zdraví a kondícii vo svojom zariadení a ovládajte, ktoré aplikácie k nim majú mať prístup"</string>
     <string name="data_title" msgid="4456619761533380816">"Údaje a prístup"</string>
@@ -468,7 +470,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Pri exporte dňa <xliff:g id="DATE">%1$s</xliff:g> sa vyskytol problém Nastavte nový naplánovaný export a skúste to znova."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Nasledujúci export: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Ďalší export sa začne čoskoro"</string>
-    <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Záloha a obnovenie"</string>
+    <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Záloha a obnova"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Posledný export: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Posledný export: teraz"</string>
     <string name="last_export_time_minutes_ago" msgid="5279296486877765961">"{count,plural, =1{Posledný export: pred 1 minútou}few{Posledný export: pred # minútami}many{Posledný export: pred # minúty}other{Posledný export: pred # minútami}}"</string>

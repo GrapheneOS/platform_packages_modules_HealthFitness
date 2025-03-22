@@ -32,6 +32,7 @@ import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.cts.utils.DataFactory.getEmptyMetadata
+import android.healthconnect.cts.utils.DeviceSupportUtils
 import android.healthconnect.cts.utils.PermissionHelper.getDeclaredHealthPermissions
 import android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission
 import android.healthconnect.cts.utils.PermissionHelper.runWithRevokedPermission
@@ -66,7 +67,7 @@ class ExerciseRouteRequestTest : HealthConnectBaseTest() {
         @JvmStatic
         @AfterClass
         fun tearDown() {
-            if (!TestUtils.isHealthConnectFullySupported()) {
+            if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
                 return
             }
             TestUtils.verifyDeleteRecords(

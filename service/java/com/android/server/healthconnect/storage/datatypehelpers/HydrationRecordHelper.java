@@ -30,7 +30,7 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
-import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.Collections;
 import java.util.List;

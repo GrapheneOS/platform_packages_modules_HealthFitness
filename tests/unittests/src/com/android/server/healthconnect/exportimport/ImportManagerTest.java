@@ -173,6 +173,7 @@ public class ImportManagerTest {
                         mContext,
                         mExportImportSettingsStorage,
                         mTransactionManager,
+                        healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         mDeviceInfoHelper,
                         mPriorityHelper,

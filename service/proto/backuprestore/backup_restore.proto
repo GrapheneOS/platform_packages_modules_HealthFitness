@@ -63,11 +63,6 @@ message Settings {
   }
 }
 
-message AppInfoMap {
-  // Key is package name
-  map<string, Settings.AppInfo> app_info = 1;
-}
-
 message BackupData {
   Record record = 1;
 }

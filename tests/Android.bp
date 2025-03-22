@@ -1,3 +1,7 @@
+package {
+    default_team: "trendy_team_android_health",
+}
+
 // A group of files known not to work with deviceless (aka bivalent aka robolectric) tests
 // Please avoid adding new tests to the filegroup, we are trying to reduce it to empty.
 filegroup {
@@ -5,19 +9,15 @@ filegroup {
     srcs: [
         // Not sure, it is getting an index out of bounds for shared memory
         "unittests/src/android/health/connect/MigrationEntityParcelTest.java",
-        // PackageManager getPermissionsInfo (needs HealthPermissionsMocker?)
+        // This test could be made to work by mocking out the package manager.
+        // However, at the moment it is working more as an integration test on the real platform.
+        // It is safer leaving the test as is.
         "unittests/src/android/health/connect/HealthPermissionsTest.java",
-        // Uses CTS TestUtils
-        "unittests/src/android/healthconnect/aidl/ReadMedicalResourcesRequestParcelTest.java",
         // Needs parcel native code
         "unittests/src/android/healthconnect/internal/datatypes/SleepStageInternalTest.java",
         "unittests/src/android/healthconnect/internal/datatypes/SleepSessionInternalTest.java",
         // Still uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/HealthConnectManagerServiceTest.java",
-        // - SystemUtil.eventually from cts
-        "unittests/src/com/android/server/healthconnect/HealthConnectServiceImplTest.java",
-        // TestUtils.waitForTaskToFinishSuccessfully is timing out
-        "unittests/src/com/android/server/healthconnect/HealthConnectThreadSchedulerTest.java",
         // Uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreTest.java",
         // Uses CTS TestUtils
@@ -30,33 +30,20 @@ filegroup {
         // Uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/exportimport/ExportManagerTest.java",
         // Doesn't work because tries to read resources from the Health Connect APK.
-        // POssibly this can be fixed by changing "Instrumentation for" or something like that
+        // Possibly this can be fixed by changing "Instrumentation for" or something like that
         "unittests/src/com/android/server/healthconnect/exportimport/ExportImportNotificationFactoryTest.java",
         // Requires TestUtils for waitForAllTasksToCOmplete()
         "unittests/src/com/android/server/healthconnect/exportimport/ImportManagerTest.java",
         // Not passing because the SQLite library we have doesn't support dbstat
         "unittests/src/com/android/server/healthconnect/logging/DatabaseStatsCollectorTest.java",
-        // Fails due to Mockito issue
-        // Mockito cannot mock this class: class android.content.pm.PackageManager.
-        "unittests/src/com/android/server/healthconnect/logging/UsageStatsCollectorTest.java",
-        // Uses ExtendedMockito
-        "unittests/src/com/android/server/healthconnect/migration/MigrationStateChangeJobTest.java",
         // Uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/migration/MigrationStateManagerTest.java",
         // Fails due to resources not included
         "unittests/src/com/android/server/healthconnect/migration/notification/MigrationNotificationFactoryTest.java",
-        // getPermissionInfo failing HealthPermissionsMocker)
-        "unittests/src/com/android/server/healthconnect/permission/FirstGrantTimeUnitTest.java",
-        // Doesn't work: invalid health permissions
+        // Doesn't work because does complicated things with Health Connect permissions on previous
+        // SDK versions for some tests.
+        // These are not represented well by Robolectric
         "unittests/src/com/android/server/healthconnect/permission/HealthConnectPermissionHelperTest.java",
-        // Doesn't work: getOPackageUid failing
-        "unittests/src/com/android/server/healthconnect/permission/PermissionPackageChangesOrchestratorTest.java",
-        // Doesn't work because threadScheduler is null (so can't read member)
-        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/HealthDataCategoryPriorityHelperTest.java",
-        // Need PhrHelperTestUtils, which has CTS dependencies that don't work
-        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/MedicalDataSourceHelperTest.java",
-        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/MedicalResourceHelperTest.java",
-        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/MedicalResourceIndicesHelperTest.java",
         // ExtendedMockito cannot be used in Robolectric tests so these fixtures aren't used.
         "unittests/src/com/android/server/healthconnect/testing/fixtures/EnvironmentFixture.java",
         "unittests/src/com/android/server/healthconnect/testing/fixtures/SQLiteDatabaseFixture.java",
@@ -93,6 +80,7 @@ android_robolectric_test {
         "cts/phr/src/android/healthconnect/cts/phr/utils/PhrDataFactory.java",
         "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/AssumptionCheckerRule.java",
         "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/DataFactory.java",
+        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/DeviceSupportUtils.java",
         "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/HealthConnectReceiver.java",
         "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/TestOutcomeReceiver.java",
     ],

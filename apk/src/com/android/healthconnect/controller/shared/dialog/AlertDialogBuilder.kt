@@ -47,7 +47,7 @@ class AlertDialogBuilder(private val context: Context, private val containerLogN
     private var customMessageLayout: View =
         inflateLayout(R.layout.dialog_message_expressive, R.layout.dialog_message_legacy)
     private var customDialogLayout: View =
-        inflateLayout(R.layout.dialog_expressive_layout, R.layout.dialog_legacy_layout)
+        inflateLayout(R.layout.dialog_layout_expressive, R.layout.dialog_layout_legacy)
 
     private var logger: HealthConnectLogger
 

@@ -29,9 +29,9 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.util.Pair;
 
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
+import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.request.AggregateParams;
-import com.android.server.healthconnect.storage.request.AggregateTableRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,7 +94,7 @@ public final class BasalMetabolicRateRecordHelper
 
     @Override
     public double[] deriveAggregate(
-            Cursor cursor, AggregateTableRequest request, TransactionManager transactionManager) {
+            Cursor cursor, AggregateRecordRequest request, TransactionManager transactionManager) {
         DeriveBasalCaloriesBurnedHelper deriveBasalCaloriesBurnedHelper =
                 new DeriveBasalCaloriesBurnedHelper(
                         cursor,

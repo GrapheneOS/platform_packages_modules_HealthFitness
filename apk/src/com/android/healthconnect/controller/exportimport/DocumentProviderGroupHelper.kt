@@ -77,7 +77,9 @@ class DocumentProviderGroupHelper(
                     selectedDocumentProviderRoot,
                 )
 
-            if (documentProviders.size == 1) {
+            // Only automatically select option if it's the only document provider with the only
+            // root
+            if (documentProviders.size == 1 && documentProvider.roots.size == 1) {
                 currentlySelectedKey = key
                 updateSelection(documentProviderInfo = documentProvider.info)
                 onSelectionChanged(documentProvider.info, documentProvider.roots[0])

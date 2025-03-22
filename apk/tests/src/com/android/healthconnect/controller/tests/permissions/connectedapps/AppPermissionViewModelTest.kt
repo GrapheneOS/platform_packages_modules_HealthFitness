@@ -19,7 +19,6 @@ import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import com.android.compatibility.common.util.FeatureUtil
 import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
@@ -45,11 +44,11 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadExerciseRoute
+import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -58,8 +57,6 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assume.assumeFalse
-import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
@@ -93,6 +90,7 @@ class AppPermissionViewModelTest {
     private val revokePermissionStatusUseCase: RevokeHealthPermissionUseCase = mock()
     private val grantPermissionsUseCase: GrantHealthPermissionUseCase = mock()
     private val loadExerciseRoutePermissionUseCase = FakeLoadExerciseRoute()
+    private val deviceInfoUtils: DeviceInfoUtils = mock()
 
     private lateinit var loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase
     private lateinit var appPermissionViewModel: AppPermissionViewModel
@@ -101,6 +99,10 @@ class AppPermissionViewModelTest {
         FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.READ)
     private val readNutritionPermission =
         FitnessPermission(FitnessPermissionType.NUTRITION, PermissionsAccessType.READ)
+    private val readHeartRatePermission =
+        FitnessPermission(FitnessPermissionType.HEART_RATE, PermissionsAccessType.READ)
+    private val readSkinTemperaturePermission =
+        FitnessPermission(FitnessPermissionType.SKIN_TEMPERATURE, PermissionsAccessType.READ)
     private val readExerciseRoutesPermission = AdditionalPermission.READ_EXERCISE_ROUTES
     private val readHistoryDataPermission = AdditionalPermission.READ_HEALTH_DATA_HISTORY
     private val readDataInBackgroundPermission = AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND
@@ -120,6 +122,10 @@ class AppPermissionViewModelTest {
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
         whenever(healthPermissionReader.getValidHealthPermissions(any())).thenCallRealMethod()
+        whenever(healthPermissionReader.getSystemHealthPermissions())
+            .thenReturn(
+                listOf(readHeartRatePermission.toString(), readSkinTemperaturePermission.toString())
+            )
         whenever(healthPermissionReader.maybeFilterOutAdditionalIfNotValid(any()))
             .thenCallRealMethod()
         loadAppPermissionsStatusUseCase =
@@ -141,6 +147,7 @@ class AppPermissionViewModelTest {
                 getGrantedHealthPermissionsUseCase,
                 loadExerciseRoutePermissionUseCase,
                 healthPermissionReader,
+                deviceInfoUtils,
                 Dispatchers.Main,
             )
     }
@@ -352,8 +359,93 @@ class AppPermissionViewModelTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
+    fun whenPackageSupported_wearOnlyReturnsSystemPermissions_loadAllPermissions() = runTest {
+        whenever(deviceInfoUtils.isOnWatch(any())).thenReturn(true)
+        whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
+        whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
+            .thenReturn(
+                listOf(
+                    readHeartRatePermission.toString(),
+                    readSkinTemperaturePermission.toString(),
+                    readNutritionPermission.toString(),
+                    writeSleepPermission.toString(),
+                    writeDistancePermission.toString(),
+                    readDataInBackgroundPermission.toString(),
+                    readHistoryDataPermission.toString(),
+                    readAllergies.toString(),
+                )
+            )
+        getGrantedHealthPermissionsUseCase.updateData(
+            TEST_APP_PACKAGE_NAME,
+            listOf(readHeartRatePermission.toString(), readDataInBackgroundPermission.toString()),
+        )
+
+        val fitnessPermissionsObserver = TestObserver<List<FitnessPermission>>()
+        val grantedFitnessPermissionsObserver = TestObserver<Set<FitnessPermission>>()
+        appPermissionViewModel.fitnessPermissions.observeForever(fitnessPermissionsObserver)
+        appPermissionViewModel.grantedFitnessPermissions.observeForever(
+            grantedFitnessPermissionsObserver
+        )
+        val medicalPermissionsObserver = TestObserver<List<MedicalPermission>>()
+        val grantedMedicalPermissionsObserver = TestObserver<Set<MedicalPermission>>()
+        appPermissionViewModel.medicalPermissions.observeForever(medicalPermissionsObserver)
+        appPermissionViewModel.grantedMedicalPermissions.observeForever(
+            grantedMedicalPermissionsObserver
+        )
+        val grantedAdditionalPermissionsObserver = TestObserver<Set<AdditionalPermission>>()
+        appPermissionViewModel.grantedAdditionalPermissions.observeForever(
+            grantedAdditionalPermissionsObserver
+        )
+
+        val atLeastOneFitnessPermissionGrantedObserver = TestObserver<Boolean>()
+        val atLeastOneMedicalPermissionGrantedObserver = TestObserver<Boolean>()
+        val atLeastOneHealthPermissionGrantedObserver = TestObserver<Boolean>()
+        appPermissionViewModel.atLeastOneFitnessPermissionGranted.observeForever(
+            atLeastOneFitnessPermissionGrantedObserver
+        )
+        appPermissionViewModel.atLeastOneMedicalPermissionGranted.observeForever(
+            atLeastOneMedicalPermissionGrantedObserver
+        )
+        appPermissionViewModel.atLeastOneHealthPermissionGranted.observeForever(
+            atLeastOneHealthPermissionGrantedObserver
+        )
+
+        appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
+        advanceUntilIdle()
+
+        val fitnessPermissionsResult = fitnessPermissionsObserver.getLastValue()
+        val grantedFitnessPermissionsResult = grantedFitnessPermissionsObserver.getLastValue()
+        val medicalPermissionsResult = medicalPermissionsObserver.getLastValue()
+        val grantedMedicalPermissionsResult = grantedMedicalPermissionsObserver.getLastValue()
+        val grantedAdditionalPermissionsResult = grantedAdditionalPermissionsObserver.getLastValue()
+
+        val atLeastOneFitnessPermissionGrantedResult =
+            atLeastOneFitnessPermissionGrantedObserver.getLastValue()
+        val atLeastOneMedicalPermissionGrantedResult =
+            atLeastOneMedicalPermissionGrantedObserver.getLastValue()
+        val atLeastOneHealthPermissionGrantedResult =
+            atLeastOneHealthPermissionGrantedObserver.getLastValue()
+
+        assertThat(fitnessPermissionsResult)
+            .containsExactlyElementsIn(
+                listOf(readHeartRatePermission, readSkinTemperaturePermission)
+            )
+        assertThat(grantedFitnessPermissionsResult)
+            .containsExactlyElementsIn(setOf(readHeartRatePermission))
+        assertThat(grantedAdditionalPermissionsResult)
+            .containsExactlyElementsIn(setOf(readDataInBackgroundPermission))
+        assertThat(medicalPermissionsResult).containsExactlyElementsIn(listOf<MedicalPermission>())
+        assertThat(grantedMedicalPermissionsResult)
+            .containsExactlyElementsIn(setOf<MedicalPermission>())
+
+        assertThat(atLeastOneFitnessPermissionGrantedResult).isTrue()
+        assertThat(atLeastOneMedicalPermissionGrantedResult).isFalse()
+        assertThat(atLeastOneHealthPermissionGrantedResult).isTrue()
+    }
+
+    @Test
     fun whenPackageNotSupported_fitnessOnly_loadOnlyGrantedPermissions() = runTest {
-        assumeFalse(FeatureUtil.isWatch());
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
             .thenReturn(
@@ -399,7 +491,6 @@ class AppPermissionViewModelTest {
 
     @Test
     fun whenPackageNotSupported_medicalOnly_loadOnlyGrantedPermissions() = runTest {
-        assumeFalse(FeatureUtil.isWatch());
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
             .thenReturn(listOf(writeMedicalData.toString(), readImmunization.toString()))
@@ -437,7 +528,6 @@ class AppPermissionViewModelTest {
 
     @Test
     fun whenPackageNotSupported_fitnessAndMedical_loadOnlyGrantedPermissions() = runTest {
-        assumeFalse(FeatureUtil.isWatch());
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
             .thenReturn(
@@ -482,6 +572,70 @@ class AppPermissionViewModelTest {
         assertThat(grantedMedicalPermissionsResult)
             .containsExactlyElementsIn(setOf(writeMedicalData))
     }
+
+    @Test
+    fun whenPackageNotSupported_wearReturnsOnlySystemPermissions_loadOnlyGrantedPermissions() =
+        runTest {
+            whenever(deviceInfoUtils.isOnWatch(any())).thenReturn(true)
+            whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
+            whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
+                .thenReturn(
+                    listOf(
+                        readHeartRatePermission.toString(),
+                        readNutritionPermission.toString(),
+                        readImmunization.toString(),
+                        writeSleepPermission.toString(),
+                        writeDistancePermission.toString(),
+                        writeMedicalData.toString(),
+                        readDataInBackgroundPermission.toString(),
+                    )
+                )
+            getGrantedHealthPermissionsUseCase.updateData(
+                TEST_APP_PACKAGE_NAME,
+                listOf(
+                    readHeartRatePermission.toString(),
+                    writeDistancePermission.toString(),
+                    readImmunization.toString(),
+                    readDataInBackgroundPermission.toString(),
+                ),
+            )
+            val fitnessPermissionsObserver = TestObserver<List<FitnessPermission>>()
+            val grantedFitnessPermissionsObserver = TestObserver<Set<FitnessPermission>>()
+            val medicalPermissionsObserver = TestObserver<List<MedicalPermission>>()
+            val grantedMedicalPermissionsObserver = TestObserver<Set<MedicalPermission>>()
+            appPermissionViewModel.fitnessPermissions.observeForever(fitnessPermissionsObserver)
+            appPermissionViewModel.grantedFitnessPermissions.observeForever(
+                grantedFitnessPermissionsObserver
+            )
+            appPermissionViewModel.medicalPermissions.observeForever(medicalPermissionsObserver)
+            appPermissionViewModel.grantedMedicalPermissions.observeForever(
+                grantedMedicalPermissionsObserver
+            )
+            val grantedAdditionalPermissionsObserver = TestObserver<Set<AdditionalPermission>>()
+            appPermissionViewModel.grantedAdditionalPermissions.observeForever(
+                grantedAdditionalPermissionsObserver
+            )
+
+            appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
+            advanceUntilIdle()
+
+            val fitnessPermissionResult = fitnessPermissionsObserver.getLastValue()
+            val grantedFitnessPermissionsResult = grantedFitnessPermissionsObserver.getLastValue()
+            val medicalPermissionResult = medicalPermissionsObserver.getLastValue()
+            val grantedMedicalPermissionsResult = grantedMedicalPermissionsObserver.getLastValue()
+            val grantedAdditionalPermissionsResult =
+                grantedAdditionalPermissionsObserver.getLastValue()
+            assertThat(fitnessPermissionResult)
+                .containsExactlyElementsIn(listOf(readHeartRatePermission))
+            assertThat(grantedFitnessPermissionsResult)
+                .containsExactlyElementsIn(setOf(readHeartRatePermission))
+            assertThat(grantedAdditionalPermissionsResult)
+                .containsExactlyElementsIn(listOf(readDataInBackgroundPermission))
+            assertThat(medicalPermissionResult)
+                .containsExactlyElementsIn(listOf<MedicalPermission>())
+            assertThat(grantedMedicalPermissionsResult)
+                .containsExactlyElementsIn(setOf<MedicalPermission>())
+        }
 
     @Test
     fun updateFitnessPermissions_grant_whenSuccessful_returnsTrue() = runTest {
@@ -2282,7 +2436,6 @@ class AppPermissionViewModelTest {
     @Test
     fun shouldNavigateToFragment_whenPackageNotSupported_andNoPermissionsGranted_returnsFalse() =
         runTest {
-            assumeFalse(FeatureUtil.isWatch());
             whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
             whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
                 .thenReturn(
@@ -2307,7 +2460,6 @@ class AppPermissionViewModelTest {
 
     @Test
     fun isPackageSupported_callsCorrectMethod() {
-        assumeFalse(FeatureUtil.isWatch());
         whenever(healthPermissionReader.isBodySensorSplitPermissionApp(TEST_APP_PACKAGE_NAME))
             .thenReturn(false)
 
@@ -2319,7 +2471,7 @@ class AppPermissionViewModelTest {
     @Test
     @DisableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
     fun isPackageSupported_watch_flagDisabled_callsCorrectMethod() {
-        assumeTrue(FeatureUtil.isWatch());
+        whenever(deviceInfoUtils.isOnWatch(any())).thenReturn(true)
 
         appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)
 
@@ -2329,7 +2481,7 @@ class AppPermissionViewModelTest {
     @Test
     @EnableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
     fun isPackageSupported_watch_flagEnabled_packageSupported() {
-        assumeTrue(FeatureUtil.isWatch());
+        whenever(deviceInfoUtils.isOnWatch(any())).thenReturn(true)
 
         assertThat(appPermissionViewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).isTrue()
         verify(healthPermissionReader, never()).isRationaleIntentDeclared(any())
@@ -2338,7 +2490,6 @@ class AppPermissionViewModelTest {
     @Test
     @EnableFlags(Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED)
     fun isPackageSupported_notWatch_flagEnabled_splitPermissionApp_packageSupported() {
-        assumeFalse(FeatureUtil.isWatch());
         whenever(healthPermissionReader.isBodySensorSplitPermissionApp(TEST_APP_PACKAGE_NAME))
             .thenReturn(true)
 

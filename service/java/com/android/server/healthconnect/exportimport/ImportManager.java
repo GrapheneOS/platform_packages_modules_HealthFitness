@@ -43,6 +43,7 @@ import android.util.Slog;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
+import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
@@ -86,6 +87,7 @@ public class ImportManager {
             Context context,
             ExportImportSettingsStorage exportImportSettingsStorage,
             TransactionManager transactionManager,
+            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper,
             DeviceInfoHelper deviceInfoHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
@@ -100,6 +102,7 @@ public class ImportManager {
                         deviceInfoHelper,
                         healthDataCategoryPriorityHelper,
                         transactionManager,
+                        fitnessRecordUpsertHelper,
                         fitnessRecordReadHelper);
         mTransactionManager = transactionManager;
         mExportImportSettingsStorage = exportImportSettingsStorage;

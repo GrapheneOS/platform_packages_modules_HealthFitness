@@ -14,6 +14,6 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-
+<!-- The package name should match the unit tests package for consistency for tests -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.server.bluetooth" />
+    package="com.android.healthconnect.unittests" />

@@ -16,13 +16,13 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
 
-import static com.android.server.healthconnect.storage.request.AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_DOUBLE;
-import static com.android.server.healthconnect.storage.request.AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_LONG;
+import static com.android.server.healthconnect.fitness.aggregation.AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_DOUBLE;
+import static com.android.server.healthconnect.fitness.aggregation.AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_LONG;
 
 import android.database.Cursor;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.request.AggregateParams.PriorityAggregationExtraParams.ValueColumnType;
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams.PriorityAggregationExtraParams.ValueColumnType;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 /**

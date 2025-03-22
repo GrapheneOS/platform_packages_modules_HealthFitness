@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -166,17 +167,23 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
                             !recentAppsList[index + 1].isToday)
                 val newPreference =
                     RecentAccessPreference(requireContext(), recentApp, timeSource, true).also {
-                        if (!recentApp.isInactive) {
-                            // Do not set click listeners for inactive apps
-                            it.setOnPreferenceClickListener {
+                        it.setOnPreferenceClickListener {
+                            if (recentApp.isInactive) {
+                                Toast.makeText(
+                                        requireContext(),
+                                        getString(R.string.recent_access_inactive_app),
+                                        Toast.LENGTH_LONG,
+                                    )
+                                    .show()
+                            } else {
                                 if (
                                     findNavController().currentDestination?.id ==
                                         R.id.recentAccessFragment
                                 ) {
                                     navigateToAppInfoScreen(recentApp)
                                 }
-                                true
                             }
+                            true
                         }
                     }
 

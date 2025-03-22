@@ -119,7 +119,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 request,
-                /* holdsDataManagementPermission */ false,
+                /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
         List<UUID> uuidList = mTransactionTestUtils.getAllDeletedUuids();
         assertThat(uuidList).hasSize(1);
@@ -242,7 +242,7 @@ public class FitnessRecordDeleteHelperTest {
                                 recordHelper.getMainTableName(),
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS)
                         .setPackageFilter(RecordHelper.APP_INFO_ID_COLUMN_NAME, List.of())
-                        .setRequiresUuId(RecordHelper.UUID_COLUMN_NAME);
+                        .setIdColumnName(RecordHelper.UUID_COLUMN_NAME);
         mFitnessRecordDeleteHelper.deleteRecordsUnrestricted(List.of(deleteTableRequest));
 
         records =
@@ -264,7 +264,7 @@ public class FitnessRecordDeleteHelperTest {
                                 recordHelper.getMainTableName(),
                                 RecordTypeIdentifier.RECORD_TYPE_STEPS)
                         .setPackageFilter(RecordHelper.APP_INFO_ID_COLUMN_NAME, List.of())
-                        .setRequiresUuId(RecordHelper.UUID_COLUMN_NAME);
+                        .setIdColumnName(RecordHelper.UUID_COLUMN_NAME);
         mFitnessRecordDeleteHelper.deleteRecordsUnrestricted(List.of(deleteTableRequest));
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);

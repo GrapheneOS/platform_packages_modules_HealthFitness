@@ -22,6 +22,7 @@ import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
 
+import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.Nullable;
@@ -87,39 +88,36 @@ public final class FitnessRecordDeleteHelper {
      *
      * @param callingPackageName The package name trying to delete the records.
      * @param request The request that specifies what to delete.
-     * @param holdsDataManagementPermission Whether the caller holds data management permission
+     * @param enforceSelfDelete Whether the caller should only be able to delete their own data.
      * @param shouldRecordAccessLog Whether access logs should be recorded for this call
      * @return number of records deleted.
      */
     public int deleteRecords(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
-            boolean holdsDataManagementPermission,
+            boolean enforceSelfDelete,
             boolean shouldRecordAccessLog) {
         if (request.usesIdFilters() && request.usesNonIdFilters()) {
             throw new IllegalArgumentException(
                     "Requests with both id and non-id filters are not" + " supported");
         }
 
+        if (enforceSelfDelete) {
+            request.setPackageNameFilters(singletonList(callingPackageName));
+        }
+
         if (request.usesIdFilters()) {
             return deleteByIdFilter(
-                    callingPackageName,
-                    request,
-                    holdsDataManagementPermission,
-                    shouldRecordAccessLog);
+                    callingPackageName, request, enforceSelfDelete, shouldRecordAccessLog);
         } else {
-            return deleteByNonIdFilter(
-                    callingPackageName,
-                    request,
-                    holdsDataManagementPermission,
-                    shouldRecordAccessLog);
+            return deleteByNonIdFilter(callingPackageName, request, shouldRecordAccessLog);
         }
     }
 
     private int deleteByIdFilter(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
-            boolean holdsDataManagementPermission,
+            boolean enforceSelfDelete,
             boolean shouldRecordAccessLog) {
         List<DeleteTableRequest> deleteTableRequests =
                 new ArrayList<>(request.getRecordTypeFilters().size());
@@ -152,14 +150,13 @@ public final class FitnessRecordDeleteHelper {
                 callingPackageName,
                 deleteTableRequests,
                 recordTypeIds,
-                holdsDataManagementPermission,
-                shouldRecordAccessLog);
+                shouldRecordAccessLog,
+                enforceSelfDelete);
     }
 
     private int deleteByNonIdFilter(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
-            boolean holdsDataManagementPermission,
             boolean shouldRecordAccessLog) {
         List<DeleteTableRequest> deleteTableRequests =
                 new ArrayList<>(request.getRecordTypeFilters().size());
@@ -178,7 +175,6 @@ public final class FitnessRecordDeleteHelper {
                 (recordType) -> {
                     RecordHelper<?> recordHelper =
                             mInternalHealthConnectMappings.getRecordHelper(recordType);
-                    Objects.requireNonNull(recordHelper);
 
                     deleteTableRequests.add(
                             recordHelper.getDeleteTableRequest(
@@ -194,20 +190,21 @@ public final class FitnessRecordDeleteHelper {
                 callingPackageName,
                 deleteTableRequests,
                 recordTypeIds,
-                holdsDataManagementPermission,
-                shouldRecordAccessLog);
+                shouldRecordAccessLog,
+                // Always send false here, since we set the package filters in the request itself.
+                /* enforceSelfDelete= */ false);
     }
 
     private int delete(
             @Nullable String callingPackageName,
             List<DeleteTableRequest> deleteTableRequests,
             @Nullable Set<Integer> recordTypeIds,
-            boolean holdsDataManagementPermission,
-            boolean shouldRecordAccessLog) {
+            boolean shouldRecordAccessLog,
+            boolean enforceSelfDelete) {
         if (shouldRecordAccessLog) {
             Objects.requireNonNull(recordTypeIds);
         }
-        if (!holdsDataManagementPermission || shouldRecordAccessLog) {
+        if (shouldRecordAccessLog || enforceSelfDelete) {
             Objects.requireNonNull(callingPackageName);
         }
 
@@ -224,72 +221,58 @@ public final class FitnessRecordDeleteHelper {
                         final RecordHelper<?> recordHelper =
                                 mInternalHealthConnectMappings.getRecordHelper(
                                         deleteTableRequest.getRecordType());
-                        int innerRequestRecordsDeleted;
-                        if (deleteTableRequest.requiresRead()) {
-                            try (Cursor cursor =
-                                    db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
-                                int numberOfUuidsToDelete = 0;
-                                while (cursor.moveToNext()) {
-                                    String packageColumnName =
-                                            requireNonNull(
-                                                    deleteTableRequest.getPackageColumnName());
-                                    String idColumnName =
-                                            requireNonNull(deleteTableRequest.getIdColumnName());
-                                    numberOfUuidsToDelete++;
-                                    long readDataAppInfoId =
-                                            StorageUtils.getCursorLong(cursor, packageColumnName);
-                                    if (deleteTableRequest.requiresPackageCheck()) {
-                                        enforcePackageCheck(
-                                                StorageUtils.getCursorUUID(cursor, idColumnName),
-                                                readDataAppInfoId,
-                                                Objects.requireNonNull(callingPackageName),
-                                                holdsDataManagementPermission);
-                                    }
-                                    UUID deletedRecordUuid =
-                                            StorageUtils.getCursorUUID(cursor, idColumnName);
-                                    deletionChangelogs.addUUID(
-                                            deleteTableRequest.getRecordType(),
-                                            readDataAppInfoId,
-                                            deletedRecordUuid);
 
-                                    // Add changelogs for affected records, e.g. a training plan
-                                    // being deleted will create changelogs for affected exercise
-                                    // sessions.
-                                    for (ReadTableRequest additionalChangelogUuidRequest :
-                                            recordHelper
-                                                    .getReadRequestsForRecordsModifiedByDeletion(
-                                                            deletedRecordUuid)) {
-                                        Cursor cursorAdditionalUuids =
-                                                mTransactionManager.read(
-                                                        additionalChangelogUuidRequest);
-                                        while (cursorAdditionalUuids.moveToNext()) {
-                                            modificationChangelogs.addUUID(
-                                                    requireNonNull(
-                                                                    additionalChangelogUuidRequest
-                                                                            .getRecordHelper())
-                                                            .getRecordIdentifier(),
-                                                    StorageUtils.getCursorLong(
-                                                            cursorAdditionalUuids,
-                                                            APP_INFO_ID_COLUMN_NAME),
-                                                    StorageUtils.getCursorUUID(
-                                                            cursorAdditionalUuids,
-                                                            UUID_COLUMN_NAME));
-                                        }
-                                        cursorAdditionalUuids.close();
-                                    }
+                        // We first always read the records for:
+                        // (1) generating changelogs
+                        // (2) logging number of records deleted
+                        try (Cursor cursor =
+                                db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
+                            while (cursor.moveToNext()) {
+                                String packageColumnName =
+                                        requireNonNull(deleteTableRequest.getPackageColumnName());
+                                String idColumnName =
+                                        requireNonNull(deleteTableRequest.getIdColumnName());
+                                numberOfRecordsDeleted++;
+                                long readDataAppInfoId =
+                                        StorageUtils.getCursorLong(cursor, packageColumnName);
+                                if (enforceSelfDelete) {
+                                    enforcePackageCheck(
+                                            StorageUtils.getCursorUUID(cursor, idColumnName),
+                                            readDataAppInfoId,
+                                            Objects.requireNonNull(callingPackageName));
                                 }
-                                innerRequestRecordsDeleted = numberOfUuidsToDelete;
+                                UUID deletedRecordUuid =
+                                        StorageUtils.getCursorUUID(cursor, idColumnName);
+                                deletionChangelogs.addUUID(
+                                        deleteTableRequest.getRecordType(),
+                                        readDataAppInfoId,
+                                        deletedRecordUuid);
+
+                                // Add changelogs for affected records, e.g. a training plan
+                                // being deleted will create changelogs for affected exercise
+                                // sessions.
+                                for (ReadTableRequest additionalChangelogUuidRequest :
+                                        recordHelper.getReadRequestsForRecordsModifiedByDeletion(
+                                                deletedRecordUuid)) {
+                                    Cursor cursorAdditionalUuids =
+                                            mTransactionManager.read(
+                                                    additionalChangelogUuidRequest);
+                                    while (cursorAdditionalUuids.moveToNext()) {
+                                        modificationChangelogs.addUUID(
+                                                requireNonNull(
+                                                                additionalChangelogUuidRequest
+                                                                        .getRecordHelper())
+                                                        .getRecordIdentifier(),
+                                                StorageUtils.getCursorLong(
+                                                        cursorAdditionalUuids,
+                                                        APP_INFO_ID_COLUMN_NAME),
+                                                StorageUtils.getCursorUUID(
+                                                        cursorAdditionalUuids, UUID_COLUMN_NAME));
+                                    }
+                                    cursorAdditionalUuids.close();
+                                }
                             }
-                        } else {
-                            // TODO(b/401504096) Seems to be an unused code path, cleanup.
-                            List<String> ids = deleteTableRequest.getIds();
-                            if (ids == null) {
-                                throw new IllegalStateException(
-                                        "Called with no required reads and no list of ids set");
-                            }
-                            innerRequestRecordsDeleted = ids.size();
                         }
-                        numberOfRecordsDeleted += innerRequestRecordsDeleted;
                         db.execSQL(deleteTableRequest.getDeleteCommand());
                     }
 
@@ -318,23 +301,14 @@ public final class FitnessRecordDeleteHelper {
      */
     public void deleteRecordsUnrestricted(List<DeleteTableRequest> deleteTableRequests) {
         delete(
-                null,
+                /* callingPackageName= */ null,
                 deleteTableRequests,
-                null,
-                /* holdsDataManagementPermission= */ true,
-                /* shouldRecordAccessLog= */ false);
+                /* recordTypeIds= */ null,
+                /* shouldRecordAccessLog= */ false,
+                /* enforceSelfDelete= */ false);
     }
 
-    private void enforcePackageCheck(
-            UUID uuid,
-            long readDataAppInfoId,
-            String callingPackageName,
-            boolean holdsDataManagementPermission) {
-        if (holdsDataManagementPermission) {
-            // Skip this check if the caller has data management permission
-            return;
-        }
-
+    private void enforcePackageCheck(UUID uuid, long readDataAppInfoId, String callingPackageName) {
         long callingAppInfoId = mAppInfoHelper.getAppInfoId(callingPackageName);
         if (callingAppInfoId != readDataAppInfoId) {
             throw new IllegalArgumentException(callingAppInfoId + " is not the owner for " + uuid);

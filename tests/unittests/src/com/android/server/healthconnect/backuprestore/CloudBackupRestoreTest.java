@@ -40,8 +40,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
-import com.android.server.healthconnect.proto.backuprestore.AppInfoMap;
-import com.android.server.healthconnect.proto.backuprestore.Settings;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
@@ -129,6 +127,7 @@ public final class CloudBackupRestoreTest {
         mCloudRestoreManager =
                 new CloudRestoreManager(
                         mTransactionManager,
+                        healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         healthConnectInjector.getInternalHealthConnectMappings(),
                         mDeviceInfoHelper,
@@ -149,13 +148,7 @@ public final class CloudBackupRestoreTest {
         assertThat(backupChanges).hasSize(1);
         mDatabaseHelpers.clearAllData(mTransactionManager);
         mCloudRestoreManager.restoreChanges(
-                backupChanges.stream().map(change -> new RestoreChange(change.getData())).toList(),
-                AppInfoMap.newBuilder()
-                        .putAppInfo(
-                                TEST_PACKAGE_NAME,
-                                Settings.AppInfo.newBuilder().setAppName("appName").build())
-                        .build()
-                        .toByteArray());
+                backupChanges.stream().map(change -> new RestoreChange(change.getData())).toList());
 
         List<RecordInternal<?>> records =
                 mTransactionTestUtils.readRecordsByIds(

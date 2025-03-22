@@ -41,6 +41,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.IntervalRecord;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
@@ -89,7 +90,7 @@ abstract class BaseDurationAggregationTest<RecordType extends IntervalRecord, Re
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     abstract ResultType getExpectedValueFromDuration(Duration duration);

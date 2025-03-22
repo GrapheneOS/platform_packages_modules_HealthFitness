@@ -23,6 +23,7 @@ import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IDLE
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_IN_PROGRESS;
 import static android.health.connect.HealthConnectDataState.MIGRATION_STATE_MODULE_UPGRADE_REQUIRED;
 
+import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_JOB_NAME_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.CURRENT_STATE_START_TIME_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.HAVE_RESET_MIGRATION_STATE_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.IDLE_TIMEOUT_REACHED_KEY;
@@ -30,6 +31,7 @@ import static com.android.server.healthconnect.migration.MigrationConstants.IN_P
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STARTS_COUNT_KEY;
+import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STATE_CHANGE_NAMESPACE;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_STATE_PREFERENCE_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIN_DATA_MIGRATION_SDK_EXTENSION_VERSION_KEY;
 import static com.android.server.healthconnect.migration.MigrationConstants.PREMATURE_MIGRATION_TIMEOUT_DATE;
@@ -38,6 +40,8 @@ import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK
 import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK_CONFIGURED_PACKAGE;
 import static com.android.server.healthconnect.migration.MigrationTestUtils.MOCK_UNCONFIGURED_PACKAGE_ONE;
 import static com.android.server.healthconnect.migration.MigrationTestUtils.PERMISSIONS_TO_CHECK;
+
+import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -56,6 +60,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.InstallSourceInfo;
 import android.content.pm.PackageInfo;
@@ -66,6 +73,7 @@ import android.content.pm.SigningInfo;
 import android.content.res.Resources;
 import android.health.connect.HealthConnectDataState;
 import android.os.Build;
+import android.os.PersistableBundle;
 import android.os.UserHandle;
 import android.os.ext.SdkExtensions;
 
@@ -90,6 +98,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.quality.Strictness;
 
@@ -103,10 +112,11 @@ import java.util.concurrent.TimeoutException;
 @RunWith(AndroidJUnit4.class)
 public class MigrationStateManagerTest {
 
+    private static final int JOB_ID = 123456;
+
     @Rule
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(MigrationStateChangeJob.class)
                     .mockStatic(HexEncoding.class)
                     .setStrictness(Strictness.LENIENT)
                     .build();
@@ -118,6 +128,7 @@ public class MigrationStateManagerTest {
     @Mock private PackageInfo mPackageInfo;
     @Mock private SigningInfo mSigningInfo;
     @Mock private MockListener mMockListener;
+    @Mock private JobScheduler mJobScheduler;
     private MigrationStateManager mMigrationStateManager;
     private HealthConnectThreadScheduler mThreadScheduler;
 
@@ -126,6 +137,9 @@ public class MigrationStateManagerTest {
     @Before
     public void setUp() {
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
+        when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
+        when(mJobScheduler.forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE))
+                .thenReturn(mJobScheduler);
         when(mContext.getResources()).thenReturn(mResources);
         when(mContext.getUser()).thenReturn(DEFAULT_USER_HANDLE);
         when(mResources.getIdentifier(anyString(), anyString(), anyString())).thenReturn(1);
@@ -159,7 +173,9 @@ public class MigrationStateManagerTest {
         setMigrationState(MIGRATION_STATE_IDLE);
         // Configure migration aware package available
         configureMigrationAwarePackage();
+
         mMigrationStateManager.onPackageInstalledOrChanged(mContext, MOCK_CONFIGURED_PACKAGE);
+
         verifyStateChange(MIGRATION_STATE_ALLOWED);
         verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
@@ -175,7 +191,9 @@ public class MigrationStateManagerTest {
         setMigrationState(MIGRATION_STATE_IDLE);
         // configure migration unaware package available
         configureMigrationUnAwarePackage();
+
         mMigrationStateManager.onPackageInstalledOrChanged(mContext, MOCK_CONFIGURED_PACKAGE);
+
         verifyStateChange(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
@@ -300,7 +318,9 @@ public class MigrationStateManagerTest {
     public void testOnPackageRemoved_fromIdleState_migrationAwarePackage() {
         configureMigrationAwarePackage();
         setMigrationState(MIGRATION_STATE_IDLE);
+
         mMigrationStateManager.onPackageRemoved(mContext, MOCK_CONFIGURED_PACKAGE);
+
         verifyStateChange(MIGRATION_STATE_COMPLETE);
         verifyCancelAllJobs();
         verifyNoJobScheduled();
@@ -314,7 +334,9 @@ public class MigrationStateManagerTest {
     public void testOnPackageRemoved_fromAppUpgradeRequiredState_migrationAwarePackage() {
         configureMigrationAwarePackage();
         setMigrationState(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
+
         mMigrationStateManager.onPackageRemoved(mContext, MOCK_CONFIGURED_PACKAGE);
+
         verifyStateChange(MIGRATION_STATE_COMPLETE);
         verifyCancelAllJobs();
         verifyNoJobScheduled();
@@ -380,12 +402,10 @@ public class MigrationStateManagerTest {
         setMigrationState(MIGRATION_STATE_IDLE);
         // Configure migration aware package available
         configureMigrationAwarePackage();
-        ExtendedMockito.doReturn(true)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockPendingJob(MIGRATION_COMPLETE_JOB_NAME);
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyStateChange(MIGRATION_STATE_ALLOWED);
         verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
@@ -399,12 +419,10 @@ public class MigrationStateManagerTest {
         setMigrationState(MIGRATION_STATE_IDLE);
         // Configure migration unaware package available
         configureMigrationUnAwarePackage();
-        ExtendedMockito.doReturn(true)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockPendingJob(MIGRATION_COMPLETE_JOB_NAME);
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyStateChange(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
@@ -418,12 +436,10 @@ public class MigrationStateManagerTest {
         // Configure migration unaware package available
         configureMigrationUnAwarePackage();
         configureStubMigratorPackage();
-        ExtendedMockito.doReturn(true)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockPendingJob(MIGRATION_COMPLETE_JOB_NAME);
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyNoStateChange();
     }
 
@@ -535,12 +551,10 @@ public class MigrationStateManagerTest {
             testReconcilePackageChangesWithStates_fromAppUpgradeRequiredState_migratorPackage() {
         setMigrationState(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
         configureMigrationAwarePackage();
-        ExtendedMockito.doReturn(true)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockPendingJob(MIGRATION_COMPLETE_JOB_NAME);
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyStateChange(MIGRATION_STATE_ALLOWED);
         verifyCancelAllJobs();
         verifyScheduleMigrationCompletionJob();
@@ -608,9 +622,11 @@ public class MigrationStateManagerTest {
         setMigrationState(MIGRATION_STATE_IN_PROGRESS);
         when(mPreferenceHelper.getPreference(eq(MIGRATION_STARTS_COUNT_KEY)))
                 .thenReturn(String.valueOf(MigrationConstants.MAX_START_MIGRATION_CALLS));
+
         mMigrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_ALLOWED);
+
         verifyStateChange(MIGRATION_STATE_COMPLETE);
-        ExtendedMockito.verify(() -> MigrationStateChangeJob.cancelAllJobs(eq(mContext)));
+        verifyCancelAllJobs();
     }
 
     @Test
@@ -688,12 +704,10 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromIdleState_shouldReschedule() {
         setMigrationState(MIGRATION_STATE_IDLE);
-        ExtendedMockito.doReturn(false)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockNoPendingJobs();
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyScheduleMigrationCompletionJob();
     }
 
@@ -704,12 +718,10 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromIdleState_shouldNotReschedule() {
         setMigrationState(MIGRATION_STATE_IDLE);
-        ExtendedMockito.doReturn(true)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockPendingJob(MIGRATION_COMPLETE_JOB_NAME);
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyNoJobScheduled();
     }
 
@@ -719,12 +731,10 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromAppUpgradeRequiredState_shouldReschedule() {
         setMigrationState(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
-        ExtendedMockito.doReturn(false)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockNoPendingJobs();
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyScheduleMigrationCompletionJob();
     }
 
@@ -735,12 +745,10 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromAppUpgradeRequiredState_shouldNotReschedule() {
         setMigrationState(MIGRATION_STATE_APP_UPGRADE_REQUIRED);
-        ExtendedMockito.doReturn(true)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockPendingJob(MIGRATION_COMPLETE_JOB_NAME);
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyNoJobScheduled();
     }
 
@@ -750,12 +758,10 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromAllowedState_shouldReschedule() {
         setMigrationState(MIGRATION_STATE_ALLOWED);
-        ExtendedMockito.doReturn(false)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockNoPendingJobs();
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyScheduleMigrationCompletionJob();
     }
 
@@ -766,12 +772,10 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromAllowedState_shouldNotReschedule() {
         setMigrationState(MIGRATION_STATE_ALLOWED);
-        ExtendedMockito.doReturn(true)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_COMPLETE_JOB_NAME)));
+        mockPendingJob(MIGRATION_COMPLETE_JOB_NAME);
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyNoJobScheduled();
     }
 
@@ -779,12 +783,10 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromInProgressState_shouldReschedule() {
         setMigrationState(MIGRATION_STATE_IN_PROGRESS);
-        ExtendedMockito.doReturn(false)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_PAUSE_JOB_NAME)));
+        mockNoPendingJobs();
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyScheduleMigrationPauseJob();
     }
 
@@ -794,12 +796,10 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromInProgressState_shouldNotReschedule() {
         setMigrationState(MIGRATION_STATE_IN_PROGRESS);
-        ExtendedMockito.doReturn(true)
-                .when(
-                        () ->
-                                MigrationStateChangeJob.existsAStateChangeJob(
-                                        eq(mContext), eq(MIGRATION_PAUSE_JOB_NAME)));
+        mockPendingJob(MIGRATION_PAUSE_JOB_NAME);
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyNoJobScheduled();
     }
 
@@ -810,7 +810,9 @@ public class MigrationStateManagerTest {
     @Test
     public void testReconcileStateChangeJob_fromCompleteState() {
         setMigrationState(MIGRATION_STATE_COMPLETE);
+
         mMigrationStateManager.switchToSetupForUser(mContext);
+
         verifyNoJobScheduled();
         verifyCancelAllJobs();
     }
@@ -989,39 +991,32 @@ public class MigrationStateManagerTest {
     }
 
     private void verifyCancelAllJobs() {
-        ExtendedMockito.verify(
-                () -> MigrationStateChangeJob.cancelAllJobs(eq(mContext)), atLeastOnce());
+        verify(mJobScheduler, atLeastOnce()).cancelAll();
     }
 
     private void verifyScheduleMigrationCompletionJob() {
-        ExtendedMockito.verify(
-                () ->
-                        MigrationStateChangeJob.scheduleMigrationCompletionJob(
-                                eq(mContext), any(UserHandle.class)));
+        ArgumentCaptor<JobInfo> captor = ArgumentCaptor.forClass(JobInfo.class);
+        verify(mJobScheduler, atLeastOnce()).schedule(captor.capture());
+        JobInfo jobInfo = captor.getValue();
+        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
+                .isEqualTo(MIGRATION_COMPLETE_JOB_NAME);
     }
 
     private void verifyScheduleMigrationPauseJob() {
-        ExtendedMockito.verify(
-                () ->
-                        MigrationStateChangeJob.scheduleMigrationPauseJob(
-                                eq(mContext), any(UserHandle.class)));
+        ArgumentCaptor<JobInfo> captor = ArgumentCaptor.forClass(JobInfo.class);
+        verify(mJobScheduler, atLeastOnce()).schedule(captor.capture());
+        JobInfo jobInfo = captor.getValue();
+        assertThat(jobInfo.getExtras().getString(EXTRA_JOB_NAME_KEY))
+                .isEqualTo(MIGRATION_PAUSE_JOB_NAME);
     }
 
     private void verifyNoJobScheduled() {
-        ExtendedMockito.verify(
-                () ->
-                        MigrationStateChangeJob.scheduleMigrationPauseJob(
-                                eq(mContext), any(UserHandle.class)),
-                never());
-        ExtendedMockito.verify(
-                () ->
-                        MigrationStateChangeJob.scheduleMigrationCompletionJob(
-                                eq(mContext), any(UserHandle.class)),
-                never());
+        verify(mJobScheduler, never()).schedule(any(JobInfo.class));
     }
 
     private void verifyNoJobCancelled() {
-        ExtendedMockito.verify(() -> MigrationStateChangeJob.cancelAllJobs(eq(mContext)), never());
+        verify(mJobScheduler, never()).cancel(anyInt());
+        verify(mJobScheduler, never()).cancelAll();
     }
 
     private ArrayList<PackageInfo> createPackageInfoArray(String... packageNames) {
@@ -1061,5 +1056,22 @@ public class MigrationStateManagerTest {
         when(mPreferenceHelper.getPreference(eq(MIGRATION_STATE_PREFERENCE_KEY)))
                 .thenReturn(Integer.toString(MIGRATION_STATE_COMPLETE));
         mMigrationStateManager.validateSetMinSdkVersion();
+    }
+
+    private void mockPendingJob(String jobName) {
+        PersistableBundle jobExtras = new PersistableBundle();
+        jobExtras.putString(EXTRA_JOB_NAME_KEY, jobName);
+        JobInfo job =
+                new JobInfo.Builder(
+                                JOB_ID,
+                                new ComponentName(mContext, MigrationStateManagerTest.class))
+                        .setExtras(jobExtras)
+                        .build();
+        List<JobInfo> jobList = List.of(job);
+        when(mJobScheduler.getAllPendingJobs()).thenReturn(jobList);
+    }
+
+    private void mockNoPendingJobs() {
+        when(mJobScheduler.getAllPendingJobs()).thenReturn(List.of());
     }
 }

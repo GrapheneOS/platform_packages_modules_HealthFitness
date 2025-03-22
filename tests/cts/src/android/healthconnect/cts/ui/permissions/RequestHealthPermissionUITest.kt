@@ -28,6 +28,8 @@ import android.healthconnect.cts.lib.UiTestUtils.revokePermissionViaPackageManag
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.lib.UiTestUtils.waitForObjectNotFound
 import android.healthconnect.cts.ui.HealthConnectBaseTest
+import android.os.Build
+import androidx.test.filters.SdkSuppress
 import androidx.test.uiautomator.By
 import com.google.common.truth.Truth
 import java.time.Duration.ofSeconds
@@ -36,8 +38,9 @@ import org.junit.Test
 
 class RequestHealthPermissionUITest : HealthConnectBaseTest() {
 
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    fun showsAppName_showsRequestedPermissions() {
+    fun showsAppName_showsRequestedPermissions_healthConnectBrand() {
         revokePermissionViaPackageManager(
             context,
             TEST_APP_PACKAGE_NAME,
@@ -53,6 +56,29 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
             permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_BODY_FAT),
         ) {
             findText("Allow Health Connect cts test app to access Health Connect?")
+            scrollDownToAndFindText("Height")
+            scrollDownToAndFindText("Body fat")
+        }
+    }
+
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @Test
+    fun showsAppName_showsRequestedPermissions_healthFitnessBrand() {
+        revokePermissionViaPackageManager(
+            context,
+            TEST_APP_PACKAGE_NAME,
+            HealthPermissions.READ_HEIGHT,
+        )
+        revokePermissionViaPackageManager(
+            context,
+            TEST_APP_PACKAGE_NAME,
+            HealthPermissions.WRITE_BODY_FAT,
+        )
+        context.launchRequestPermissionActivity(
+            packageName = TEST_APP_PACKAGE_NAME,
+            permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_BODY_FAT),
+        ) {
+            findText("Allow Health Connect cts test app to access your fitness and wellness data?")
             scrollDownToAndFindText("Height")
             scrollDownToAndFindText("Body fat")
         }

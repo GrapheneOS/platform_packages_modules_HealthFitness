@@ -20,7 +20,7 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.healthconnect.cts.utils.AssumptionCheckerRule
-import android.healthconnect.cts.utils.TestUtils
+import android.healthconnect.cts.utils.DeviceSupportUtils
 import android.server.wm.WindowManagerStateHelper
 import android.util.Log
 import androidx.test.core.app.ApplicationProvider
@@ -37,7 +37,7 @@ open class HealthConnectBaseTest {
     @get:Rule
     var mSupportedHardwareRule =
         AssumptionCheckerRule(
-            { TestUtils.isHealthConnectFullySupported() },
+            { DeviceSupportUtils.isHealthConnectFullySupported() },
             "Tests should run on supported hardware only.",
         )
 

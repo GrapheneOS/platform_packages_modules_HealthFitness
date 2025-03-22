@@ -19,6 +19,7 @@ import android.health.connect.HealthPermissions.READ_SLEEP
 import android.health.connect.HealthPermissions.READ_STEPS
 import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_HEART_RATE
+import android.os.Build
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +34,7 @@ import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -121,8 +123,9 @@ class FitnessPermissionsFragmentTest {
         toggleAnimation(true)
     }
 
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    fun fitnessReadAndWrite_noMedical_noHistory_displaysCategories() {
+    fun fitnessReadAndWrite_noMedical_noHistory_displaysCategories_healthConnectBrand() {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
                 FitnessScreenState.ShowFitnessReadWrite(
@@ -138,6 +141,66 @@ class FitnessPermissionsFragmentTest {
         onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
             .check(matches(isDisplayed()))
         onView(withText("Choose data you want this app to read or write to Health Connect"))
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "If you give read access, the app can read new data and data from the past 30 days"
+                )
+            )
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                )
+            )
+            .check(matches(isDisplayed()))
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read")).check(matches(isDisplayed()))
+
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
+                )
+            )
+        Espresso.onIdle()
+        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(matches(isDisplayed()))
+
+        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.REQUEST_PERMISSIONS_PAGE)
+        verify(healthConnectLogger).logPageImpression()
+        verify(healthConnectLogger, times(4)).logImpression(PermissionsElement.PERMISSION_SWITCH)
+        verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+    }
+
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @Test
+    fun fitnessReadAndWrite_noMedical_noHistory_displaysCategories_healthFitnessBrand() {
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessReadWrite(
+                    historyGranted = false,
+                    hasMedical = false,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = fitnessReadWritePermissions,
+                )
+            )
+        }
+        launchFragment<FitnessPermissionsFragment>(bundleOf())
+
+        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                )
+            )
             .check(matches(isDisplayed()))
         onView(
                 withText(
@@ -195,8 +258,9 @@ class FitnessPermissionsFragmentTest {
         onView(withText("Allow $TEST_APP_NAME to access Health Connect?")).check(doesNotExist())
     }
 
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    fun whenNoMedical_headerDisplaysCorrectTitle() {
+    fun whenNoMedical_headerDisplaysCorrectTitle_healthConnectBrand() {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
                 FitnessScreenState.ShowFitnessReadWrite(
@@ -209,10 +273,30 @@ class FitnessPermissionsFragmentTest {
         }
         launchFragment<FitnessPermissionsFragment>(bundleOf())
 
-        onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
+        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
             .check(doesNotExist())
         onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
             .check(matches(isDisplayed()))
+    }
+
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @Test
+    fun whenNoMedical_headerDisplaysCorrectTitle_healthFitnessBrand() {
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessReadWrite(
+                    historyGranted = true,
+                    hasMedical = false,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = fitnessReadWritePermissions,
+                )
+            )
+        }
+        launchFragment<FitnessPermissionsFragment>(bundleOf())
+
+        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
+            .check(matches(isDisplayed()))
+        onView(withText("Allow $TEST_APP_NAME to access Health Connect?")).check(doesNotExist())
     }
 
     @Test
@@ -263,8 +347,9 @@ class FitnessPermissionsFragmentTest {
             .check(matches(isDisplayed()))
     }
 
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    fun whenOnlyReadPermissionsRequested_headerDisplaysCorrectText() {
+    fun whenOnlyReadPermissionsRequested_headerDisplaysCorrectText_healthConnectBrand() {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
                 FitnessScreenState.ShowFitnessRead(
@@ -287,8 +372,38 @@ class FitnessPermissionsFragmentTest {
             .check(matches(isDisplayed()))
     }
 
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
-    fun whenOnlyWritePermissionsRequested_headerDisplaysCorrectText() {
+    fun whenOnlyReadPermissionsRequested_headerDisplaysCorrectText_healthFitnessBrand() {
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessRead(
+                    historyGranted = false,
+                    hasMedical = true,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = fitnessReadPermissions,
+                )
+            )
+        }
+        launchFragment<FitnessPermissionsFragment>(bundleOf())
+
+        onView(
+                withText(
+                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                )
+            )
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "If you give read access, the app can read new data and data from the past 30 days"
+                )
+            )
+            .check(matches(isDisplayed()))
+    }
+
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    @Test
+    fun whenOnlyWritePermissionsRequested_headerDisplaysCorrectText_healthConnectBrand() {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
                 FitnessScreenState.ShowFitnessWrite(
@@ -312,8 +427,39 @@ class FitnessPermissionsFragmentTest {
             .check(doesNotExist())
     }
 
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test
-    fun whenReadAndWritePermissionsRequested_headerDisplaysCorrectText() {
+    fun whenOnlyWritePermissionsRequested_headerDisplaysCorrectText_healthFitnessBrand() {
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessWrite(
+                    hasMedical = true,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = fitnessWritePermissions,
+                )
+            )
+        }
+        launchFragment<FitnessPermissionsFragment>(bundleOf())
+
+        onView(
+                withText(
+                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                )
+            )
+            .check(matches(isDisplayed()))
+        onView(withText("If you give read access, the app can read new and past data"))
+            .check(doesNotExist())
+        onView(
+                withText(
+                    "If you give read access, the app can read new data and data from the past 30 days"
+                )
+            )
+            .check(doesNotExist())
+    }
+
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    @Test
+    fun whenReadAndWritePermissionsRequested_headerDisplaysCorrectText_healthConnectBrand() {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
                 FitnessScreenState.ShowFitnessReadWrite(
@@ -329,6 +475,43 @@ class FitnessPermissionsFragmentTest {
         onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
             .check(matches(isDisplayed()))
         onView(withText("Choose data you want this app to read or write to Health Connect"))
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "If you give read access, the app can read new data and data from the past 30 days"
+                )
+            )
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                )
+            )
+            .check(matches(isDisplayed()))
+    }
+
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @Test
+    fun whenReadAndWritePermissionsRequested_headerDisplaysCorrectText_healthFitnessBrand() {
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessReadWrite(
+                    historyGranted = false,
+                    hasMedical = false,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = fitnessReadWritePermissions,
+                )
+            )
+        }
+        launchFragment<FitnessPermissionsFragment>(bundleOf())
+
+        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                )
+            )
             .check(matches(isDisplayed()))
         onView(
                 withText(
@@ -450,6 +633,12 @@ class FitnessPermissionsFragmentTest {
         }
         val activityScenario = launchFragment<FitnessPermissionsFragment>(bundleOf())
 
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Allow all"))
+                )
+            )
         var allowAllPreference: HealthMainSwitchPreference? = null
         activityScenario.onActivity { activity: TestActivity ->
             val fragment =
@@ -483,6 +672,12 @@ class FitnessPermissionsFragmentTest {
         }
         val activityScenario = launchFragment<FitnessPermissionsFragment>(bundleOf())
 
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(
+                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                    hasDescendant(withText("Allow all"))
+                )
+            )
         var allowAllPreference: HealthMainSwitchPreference? = null
         activityScenario.onActivity { activity: TestActivity ->
             val fragment =

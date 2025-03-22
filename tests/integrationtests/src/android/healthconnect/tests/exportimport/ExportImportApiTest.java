@@ -46,6 +46,7 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
 import android.net.Uri;
 import android.os.Environment;
@@ -96,7 +97,7 @@ public class ExportImportApiTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Rule

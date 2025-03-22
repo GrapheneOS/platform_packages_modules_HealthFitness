@@ -182,31 +182,49 @@ public final class AppInfoHelper extends DatabaseHelper {
     }
 
     /**
-     * Inserts or replaces (based on the passed param onlyUpdate) the application info of the
-     * specified {@code packageName} with the specified {@code name} and {@code icon}, only if the
-     * corresponding application is not currently installed.
+     * Replaces the application info of the specified {@code packageName} with the specified {@code
+     * name} and {@code icon}, only if the corresponding application is not currently installed.
      *
-     * <p>If onlyUpdate is true then only replace the exiting AppInfo; no new insertion. If
-     * onlyUpdate is false then only insert a new AppInfo entry; no replacement.
+     * <p>Only replaces the exiting AppInfo; no new insertion.
      */
-    public void addOrUpdateAppInfoIfNotInstalled(
-            String packageName,
-            @Nullable String name,
-            @Nullable byte[] maybeIcon,
-            boolean onlyUpdate) {
-        if (!isAppInstalled(packageName)) {
-            byte[] icon = maybeIcon == null ? getIconFromPackageName(packageName) : maybeIcon;
-            // using pre-existing value of recordTypesUsed.
-            var appInfo = getAppInfoMap().get(packageName);
-            var recordTypesUsed = appInfo == null ? null : appInfo.getRecordTypesUsed();
-            AppInfoInternal appInfoInternal =
+    public void updateAppInfoIfNotInstalled(
+            String packageName, @Nullable String name, @Nullable byte[] maybeIcon) {
+        if (isAppInstalled(packageName)) {
+            return;
+        }
+
+        byte[] icon = maybeIcon == null ? getIconFromPackageName(packageName) : maybeIcon;
+        var appInfo = getAppInfoMap().get(packageName);
+        // using pre-existing value of recordTypesUsed.
+        var recordTypesUsed = appInfo == null ? null : appInfo.getRecordTypesUsed();
+        AppInfoInternal appInfoInternal =
+                new AppInfoInternal(
+                        getAppInfoId(packageName),
+                        packageName,
+                        name,
+                        decodeBitmap(icon),
+                        recordTypesUsed);
+        updateIfPresent(packageName, appInfoInternal);
+    }
+
+    /**
+     * Inserts the application info of the specified {@code packageName} if it is missing, or
+     * updates it with the specified {@code name}, only if the corresponding application is not
+     * currently installed.
+     */
+    public void restoreAppInfo(String packageName, @Nullable String name) {
+        var currentAppInfo = getAppInfoMap().get(packageName);
+        if (currentAppInfo == null) {
+            addAppInfoIfNoAppInfoEntryExists(packageName, name);
+        } else if (!isAppInstalled(packageName)) {
+            AppInfoInternal updatedAppInfo =
                     new AppInfoInternal(
-                            DEFAULT_LONG, packageName, name, decodeBitmap(icon), recordTypesUsed);
-            if (onlyUpdate) {
-                updateIfPresent(packageName, appInfoInternal);
-            } else {
-                insertIfNotPresent(packageName, appInfoInternal);
-            }
+                            currentAppInfo.getId(),
+                            currentAppInfo.getPackageName(),
+                            name,
+                            currentAppInfo.getIcon(),
+                            currentAppInfo.getRecordTypesUsed());
+            updateIfPresent(packageName, updatedAppInfo);
         }
     }
 
@@ -214,15 +232,11 @@ public final class AppInfoHelper extends DatabaseHelper {
      * Inserts the application info of the specified {@code packageName} with the specified {@code
      * name} and {@code icon}, only if no AppInfo entry already exists.
      */
-    public void addOrUpdateAppInfoIfNoAppInfoEntryExists(
-            String packageName, @Nullable String name) {
+    public void addAppInfoIfNoAppInfoEntryExists(String packageName, @Nullable String name) {
         if (!containsAppInfo(packageName)) {
             byte[] icon = getIconFromPackageName(packageName);
-            var appInfo = getAppInfoMap().get(packageName);
-            var recordTypesUsed = appInfo == null ? null : appInfo.getRecordTypesUsed();
             AppInfoInternal appInfoInternal =
-                    new AppInfoInternal(
-                            DEFAULT_LONG, packageName, name, decodeBitmap(icon), recordTypesUsed);
+                    new AppInfoInternal(DEFAULT_LONG, packageName, name, decodeBitmap(icon), null);
             insertIfNotPresent(packageName, appInfoInternal);
         }
     }

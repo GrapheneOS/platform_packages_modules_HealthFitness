@@ -38,6 +38,7 @@ public class ExportImportNotificationSender {
     private static final String CHANNEL_ID = "healthconnect-channel";
     private static final String CHANNEL_GROUP_ID = "healthconnect-channel-group";
     private static final String CHANNEL_NAME_RESOURCE = "app_label";
+    private static final String CHANNEL_GROUP_NAME_RESOURCE = "app_label";
 
     /** Create an instance of HealthConnectNotificationSender, setup for export-import. */
     public static HealthConnectNotificationSender createSender(Context context) {
@@ -46,6 +47,7 @@ public class ExportImportNotificationSender {
                 .setNotificationFactory(new ExportImportNotificationFactory(context, CHANNEL_ID))
                 .setChannelGroupId(CHANNEL_GROUP_ID)
                 .setChannelNameResource(CHANNEL_NAME_RESOURCE)
+                .setChannelGroupNameResource(CHANNEL_GROUP_NAME_RESOURCE)
                 .setChannelId(CHANNEL_ID)
                 .setFixedNotificationId(FIXED_NOTIFICATION_ID)
                 .setNotificationTag(NOTIFICATION_TAG)

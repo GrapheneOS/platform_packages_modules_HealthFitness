@@ -149,54 +149,57 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
     }
 
     private fun setupRadioButtons(exportFrequency: ExportFrequency) {
-        if (preferenceScreen.findPreference<Preference>(EXPORT_FREQ_KEY) != null) {
-            preferenceScreen.removePreferenceRecursively(EXPORT_FREQ_KEY)
-        }
-
         if (exportFrequency == ExportFrequency.EXPORT_FREQUENCY_NEVER) {
+            preferenceScreen.removePreferenceRecursively(EXPORT_FREQ_KEY)
             return
         }
 
-        val options =
-            listOf(
-                RadioButtonPreferenceCategory.RadioButtonOption(
-                    key = ExportFrequency.EXPORT_FREQUENCY_DAILY.name,
-                    title = getString(R.string.frequency_daily),
-                    element = ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_DAILY,
-                    listener = getRadioButtonListener(ExportFrequency.EXPORT_FREQUENCY_DAILY),
-                ),
-                RadioButtonPreferenceCategory.RadioButtonOption(
-                    key = ExportFrequency.EXPORT_FREQUENCY_WEEKLY.name,
-                    title = getString(R.string.frequency_weekly),
-                    element = ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_WEEKLY,
-                    listener = getRadioButtonListener(ExportFrequency.EXPORT_FREQUENCY_WEEKLY),
-                ),
-                RadioButtonPreferenceCategory.RadioButtonOption(
-                    key = ExportFrequency.EXPORT_FREQUENCY_MONTHLY.name,
-                    title = getString(R.string.frequency_monthly),
-                    element = ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_MONTHLY,
-                    listener = getRadioButtonListener(ExportFrequency.EXPORT_FREQUENCY_MONTHLY),
-                ),
-            )
+        if (preferenceScreen.findPreference<Preference>(EXPORT_FREQ_KEY) == null) {
+            val options =
+                listOf(
+                    RadioButtonPreferenceCategory.RadioButtonOption(
+                        key = ExportFrequency.EXPORT_FREQUENCY_DAILY.name,
+                        title = getString(R.string.frequency_daily),
+                        element = ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_DAILY,
+                        listener = getRadioButtonListener(ExportFrequency.EXPORT_FREQUENCY_DAILY),
+                    ),
+                    RadioButtonPreferenceCategory.RadioButtonOption(
+                        key = ExportFrequency.EXPORT_FREQUENCY_WEEKLY.name,
+                        title = getString(R.string.frequency_weekly),
+                        element = ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_WEEKLY,
+                        listener = getRadioButtonListener(ExportFrequency.EXPORT_FREQUENCY_WEEKLY),
+                    ),
+                    RadioButtonPreferenceCategory.RadioButtonOption(
+                        key = ExportFrequency.EXPORT_FREQUENCY_MONTHLY.name,
+                        title = getString(R.string.frequency_monthly),
+                        element = ScheduledExportElement.EXPORT_SETTINGS_FREQUENCY_MONTHLY,
+                        listener = getRadioButtonListener(ExportFrequency.EXPORT_FREQUENCY_MONTHLY),
+                    ),
+                )
 
-        val currentSelectedKey =
-            if (exportFrequency == ExportFrequency.EXPORT_FREQUENCY_NEVER) {
-                ExportFrequency.EXPORT_FREQUENCY_DAILY.name
-            } else {
-                exportFrequency.name
-            }
+            val currentSelectedKey =
+                if (exportFrequency == ExportFrequency.EXPORT_FREQUENCY_NEVER) {
+                    ExportFrequency.EXPORT_FREQUENCY_DAILY.name
+                } else {
+                    exportFrequency.name
+                }
 
-        val exportFrequencyPreference =
-            RadioButtonPreferenceCategory(
-                context = requireContext(),
-                childFragmentManager = childFragmentManager,
-                options = options,
-                logger = logger,
-                preferenceKey = EXPORT_FREQ_KEY,
-                currentSelectedKey = currentSelectedKey,
-            )
-        exportFrequencyPreference.order = 3
-        preferenceScreen.addPreference(exportFrequencyPreference)
+            val exportFrequencyPreference =
+                RadioButtonPreferenceCategory(
+                    context = requireContext(),
+                    childFragmentManager = childFragmentManager,
+                    options = options,
+                    logger = logger,
+                    preferenceKey = EXPORT_FREQ_KEY,
+                    currentSelectedKey = currentSelectedKey,
+                )
+            exportFrequencyPreference.order = 3
+            preferenceScreen.addPreference(exportFrequencyPreference)
+        } else {
+            val exportFrequencyPreference =
+                preferenceScreen.findPreference<RadioButtonPreferenceCategory>(EXPORT_FREQ_KEY)
+            exportFrequencyPreference?.updateSelectedOption(exportFrequency.name)
+        }
     }
 
     private fun getRadioButtonListener(exportFrequency: ExportFrequency) =

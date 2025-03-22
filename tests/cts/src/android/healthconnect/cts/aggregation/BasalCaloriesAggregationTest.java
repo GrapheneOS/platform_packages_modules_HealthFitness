@@ -43,7 +43,7 @@ import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.units.Energy;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -63,7 +63,7 @@ public class BasalCaloriesAggregationTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Before

@@ -66,6 +66,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.exportimport.DatabaseMerger;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
+import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
@@ -218,6 +219,7 @@ public final class BackupRestore {
             MigrationStateManager migrationStateManager,
             PreferenceHelper preferenceHelper,
             TransactionManager transactionManager,
+            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper,
             Context context,
             DeviceInfoHelper deviceInfoHelper,
@@ -230,6 +232,7 @@ public final class BackupRestore {
                 migrationStateManager,
                 preferenceHelper,
                 transactionManager,
+                fitnessRecordUpsertHelper,
                 fitnessRecordReadHelper,
                 context,
                 deviceInfoHelper,
@@ -246,6 +249,7 @@ public final class BackupRestore {
             MigrationStateManager migrationStateManager,
             PreferenceHelper preferenceHelper,
             TransactionManager transactionManager,
+            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper,
             Context context,
             DeviceInfoHelper deviceInfoHelper,
@@ -263,6 +267,7 @@ public final class BackupRestore {
                         deviceInfoHelper,
                         healthDataCategoryPriorityHelper,
                         transactionManager,
+                        fitnessRecordUpsertHelper,
                         fitnessRecordReadHelper);
         mPreferenceHelper = preferenceHelper;
         mTransactionManager = transactionManager;

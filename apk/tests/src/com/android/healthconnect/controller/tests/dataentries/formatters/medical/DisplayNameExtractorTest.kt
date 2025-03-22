@@ -47,7 +47,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "UnknownResource"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     // AllergyIntolerance tests
@@ -57,7 +57,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "AllergyIntolerance"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -67,7 +67,7 @@ class DisplayNameExtractorTest {
             "resourceType": "AllergyIntolerance",
             "code": {}
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -99,7 +99,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "Condition"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -109,7 +109,7 @@ class DisplayNameExtractorTest {
             "resourceType": "Condition",
             "code": {}
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -156,7 +156,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "Procedure"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -166,7 +166,7 @@ class DisplayNameExtractorTest {
             "resourceType": "Procedure",
             "code": {}
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -213,7 +213,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "Encounter"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -224,7 +224,7 @@ class DisplayNameExtractorTest {
             "class": {},
             "serviceType": {}
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -266,7 +266,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "Immunization"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -276,7 +276,7 @@ class DisplayNameExtractorTest {
             "resourceType": "Immunization",
             "vaccineCode": {}
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -338,7 +338,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "Location"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -348,7 +348,7 @@ class DisplayNameExtractorTest {
             "resourceType": "Location",
             "alias": []
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -378,7 +378,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "MedicationRequest"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -388,7 +388,7 @@ class DisplayNameExtractorTest {
             "resourceType": "MedicationRequest",
             "medicationCodeableConcept": {}
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -435,7 +435,7 @@ class DisplayNameExtractorTest {
                 "reference": "medication-1"
             }
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     // Medication tests
@@ -445,7 +445,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "Medication"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -455,7 +455,7 @@ class DisplayNameExtractorTest {
             "resourceType": "Medication",
             "code": {}
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -487,7 +487,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "Observation"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -497,7 +497,7 @@ class DisplayNameExtractorTest {
             "resourceType": "Observation",
             "code": {}
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -531,7 +531,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "Patient"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -541,7 +541,7 @@ class DisplayNameExtractorTest {
             "resourceType": "Patient",
             "name": []
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -577,7 +577,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "Practitioner"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -587,7 +587,7 @@ class DisplayNameExtractorTest {
             "resourceType": "Practitioner",
             "name": []
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test
@@ -624,7 +624,7 @@ class DisplayNameExtractorTest {
             """{
             "resourceType": "PractitionerRole"
         }"""
-        assertEquals("Unknown Resource", displayNameExtractor.getDisplayName(json))
+        assertEquals("(No title)", displayNameExtractor.getDisplayName(json))
     }
 
     @Test

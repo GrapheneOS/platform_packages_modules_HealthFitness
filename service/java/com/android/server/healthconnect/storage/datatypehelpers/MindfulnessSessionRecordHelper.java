@@ -32,7 +32,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.MindfulnessSessionRecordInternal;
 import android.util.Pair;
 
-import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.List;
 

@@ -25,6 +25,7 @@ import android.content.Context;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.migration.MigrationException;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestOutcomeReceiver;
 import android.healthconnect.cts.utils.TestUtils;
 import android.os.Build;
@@ -50,7 +51,7 @@ public class ShowMigrationInfoIntentAbsentTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Before

@@ -37,13 +37,18 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import android.content.AttributionSource;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.health.connect.internal.datatypes.ExerciseRouteInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.os.Build;
@@ -96,6 +101,7 @@ public class DataPermissionEnforcerTest {
 
         when(mContext.getUser()).thenReturn(UserHandle.CURRENT);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
+        when(mContext.createContextAsUser(any(), anyInt())).thenReturn(mContext);
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(getInstrumentation().getContext())
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
@@ -185,6 +191,14 @@ public class DataPermissionEnforcerTest {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         READ_HEART_RATE, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
+        try {
+            when(mPackageManager.getPackageInfo(eq(mAttributionSource.getPackageName()), any()))
+                    .thenReturn(
+                            buildPackageInfo(
+                                    mAttributionSource.getPackageName(), /* targetSdk= */ 34));
+        } catch (NameNotFoundException e) {
+            fail("PackageManager.getPackageInfo threw NameNotFoundException: " + e.getMessage());
+        }
         when(mPackageManager.getPermissionFlags(
                         eq(READ_HEART_RATE), eq(mAttributionSource.getPackageName()), any()))
                 .thenReturn(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED);
@@ -396,11 +410,20 @@ public class DataPermissionEnforcerTest {
         assertThat(permissionState).containsExactlyEntriesIn(expected);
     }
 
-    private AttributionSource buildAttributionSource() {
+    private static AttributionSource buildAttributionSource() {
         int uid = 123;
         return new AttributionSource.Builder(uid)
                 .setPackageName("package")
                 .setAttributionTag("tag")
                 .build();
+    }
+
+    private static PackageInfo buildPackageInfo(String packageName, int targetSdk) {
+        PackageInfo info = new PackageInfo();
+        ApplicationInfo aInfo = new ApplicationInfo();
+        aInfo.targetSdkVersion = targetSdk;
+        info.applicationInfo = aInfo;
+        info.packageName = info.applicationInfo.packageName = packageName;
+        return info;
     }
 }

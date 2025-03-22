@@ -41,8 +41,7 @@ public class GetChangesForBackupResponseTest {
                                 new BackupChange("uid123", false, new byte[] {1, 2, 3}),
                                 new BackupChange("uid234", false, new byte[] {2, 3, 4}),
                                 new BackupChange("uid345", false, new byte[] {3, 4, 5})),
-                        "changeToken",
-                        new byte[] {12, 34, 56});
+                        "changeToken");
 
         Parcel parcel = Parcel.obtain();
         original.writeToParcel(parcel, 0);
@@ -58,7 +57,6 @@ public class GetChangesForBackupResponseTest {
                         new BackupChange("uid345", false, new byte[] {3, 4, 5}))
                 .inOrder();
         assertThat(restoredParcel.getNextChangeToken()).isEqualTo("changeToken");
-        assertThat(restoredParcel.getAppInfoMap()).isEqualTo(new byte[] {12, 34, 56});
         parcel.recycle();
     }
 }

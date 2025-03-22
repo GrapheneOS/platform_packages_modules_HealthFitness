@@ -32,7 +32,6 @@ import androidx.activity.viewModels
 import androidx.compose.ui.platform.ComposeView
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
-import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthfitness.flags.Flags
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -46,7 +45,6 @@ class WearGrantPermissionsActivity : Hilt_WearGrantPermissionsActivity() {
     }
 
     private val requestPermissionsViewModel: RequestPermissionViewModel by viewModels()
-    @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,27 +68,21 @@ class WearGrantPermissionsActivity : Hilt_WearGrantPermissionsActivity() {
         // Load permissions for this package.
         val packageName = getPackageNameExtra()
         val rawPermissionStrings = getPermissionStrings()
-        // Only allow requests for system health permissions and background permission.
-        val allowedPermissionsToRequest =
-            healthPermissionReader.getSystemHealthPermissions().toMutableList().also {
-                it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
-            }
-        val allowedRequestedPermissions =
-            rawPermissionStrings.intersect(allowedPermissionsToRequest.toSet()).toTypedArray()
+        requestPermissionsViewModel.init(packageName, rawPermissionStrings)
 
+        val grantableHealthPermissions =
+            requestPermissionsViewModel.grantableHealthPermissionsList.value
         // Dismiss this request if there are no valid permissions requested.
-        if (allowedRequestedPermissions.isEmpty()) {
+        if (grantableHealthPermissions.isNullOrEmpty()) {
             finish()
             return
         }
-
-        requestPermissionsViewModel.init(packageName, allowedRequestedPermissions)
 
         // Dismiss this request if any permission is USER_FIXED.
         if (
             requestPermissionsViewModel.isAnyPermissionUserFixed(
                 packageName,
-                allowedRequestedPermissions,
+                grantableHealthPermissions.map { it.toString() }.toTypedArray(),
             )
         ) {
             handlePermissionResults()

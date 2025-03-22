@@ -41,7 +41,7 @@
             android:maxLines="4"
             android:singleLine="false"
             android:textAlignment="?attr/alertDialogTitleTextAlignment"
-            style="?attr/textAppearanceSubheader4" />
+            style="?attr/textAppearanceExpressiveDialogTitle" />
 
         <TextView
             android:id="@+id/dialog_custom_message"
@@ -51,12 +51,12 @@
             android:layout_marginTop="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_xlarge"
             android:textDirection="locale"
-            style="?attr/textAppearanceSubheader5" />
+            style="?attr/textAppearanceExpressiveDialogMessage" />
 
         <CheckBox
             android:id="@+id/dialog_checkbox"
             android:visibility="gone"
-            style="?attr/textAppearanceSubheader5"
+            style="?attr/textAppearanceExpressiveDialogTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_xlarge"

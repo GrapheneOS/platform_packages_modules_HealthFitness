@@ -19,6 +19,8 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"एपलाई स्वास्थ्यसम्बन्धी जानकारी प्रयोग गर्न दिने कि नदिने भन्ने कुरा व्यवस्थापन गर्नुहोस्"</string>
+    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"अनुमति तथा डेटा"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"आफ्नो डिभाइसमा भएका स्वास्थ्य र तन्दुरुस्तीसम्बन्धी जानकारी व्यवस्थापन गर्नुहोस् र ती जानकारी कुन कुन एपलाई प्रयोग गर्न दिने भन्ने कुरा नियन्त्रण गर्नुहोस्"</string>
     <string name="data_title" msgid="4456619761533380816">"डेटा र एक्सेस"</string>
@@ -1012,11 +1014,9 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"सारेर पुछारमा लैजानुहोस्"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"प्राथमिकता सूचीमा <xliff:g id="SELECTED_APP">%s</xliff:g> ड्र्याग गर्ने र यसको क्रम मिलाउने बटन"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"प्राथमिकता सूचीबाट <xliff:g id="SELECTED_APP">%s</xliff:g> हटाउने बटन"</string>
-    <!-- no translation found for see_actions_button_content_description (2004104767369363475) -->
-    <skip />
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"<xliff:g id="SELECTED_APP">%s</xliff:g> लाई एपका स्रोतहरूको सूचीबाट हटाउने वा क्रम बदल्ने बटन"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"फेरि क्रमबद्ध गर्न डबल ट्याप गरी ड्र्याग गर्नुहोस्"</string>
-    <!-- no translation found for priority_list_item_content_description (8792727829749801217) -->
-    <skip />
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="SELECTED_APP">%2$s</xliff:g> सूचीको <xliff:g id="POSITION">%1$s</xliff:g> औँ स्थानमा छ"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"फिटनेस, तन्दुरुस्ती"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"अनुमतिहरू"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"health connect, स्वास्थ्यसम्बन्धी डेटा, स्वास्थ्यका कोटी, डेटा प्रयोग गर्ने अनुमति, गतिविधि, शारीरिक नाप, महिनावारीको रेकर्ड राख्ने सुविधा, पोषण, निद्रा, स्वास्थ्यसम्बन्धी आधारभूत विवरण"</string>
@@ -1110,12 +1110,9 @@
     <string name="data_sources_add_app" msgid="319926596123692514">"कुनै एप हाल्नुहोस्"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"एपका स्रोत सम्पादन गर्नुहोस्"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"डिफल्ट डिभाइस"</string>
-    <!-- no translation found for move_up (9136155291380319606) -->
-    <skip />
-    <!-- no translation found for move_down (4404970288236170693) -->
-    <skip />
-    <!-- no translation found for remove (1340423400489007362) -->
-    <skip />
+    <string name="move_up" msgid="9136155291380319606">"माथि सार्नुहोस्"</string>
+    <string name="move_down" msgid="4404970288236170693">"तल सार्नुहोस्"</string>
+    <string name="remove" msgid="1340423400489007362">"हटाउनुहोस्"</string>
     <string name="app_data_title" msgid="6499967982291000837">"एपसम्बन्धी डेटा"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"<xliff:g id="APP_NAME">%1$s</xliff:g> मा भएको डेटा यहाँ देखिने छ"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Health Connect एक्सेस गर्न सक्ने एपहरूमा भएको डेटा यहाँ देखिने छ"</string>

@@ -46,6 +46,7 @@ import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -61,8 +62,8 @@ import com.android.server.healthconnect.testing.HealthPermissionsMocker;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -71,6 +72,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+@RunWith(AndroidJUnit4.class)
 public class UsageStatsCollectorTest {
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
@@ -97,10 +99,10 @@ public class UsageStatsCollectorTest {
 
     @Before
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
         Context context = spy(ApplicationProvider.getApplicationContext());
         UserHandle userHandle = ApplicationProvider.getApplicationContext().getUser();
         doReturn(context).when(context).createContextAsUser(eq(userHandle), anyInt());
+        doReturn(context).when(context).getApplicationContext();
         doReturn(mPackageManager).when(context).getPackageManager();
         doReturn(
                         List.of(
