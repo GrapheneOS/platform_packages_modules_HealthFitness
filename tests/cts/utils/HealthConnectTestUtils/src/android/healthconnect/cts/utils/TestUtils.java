@@ -1012,18 +1012,6 @@ public final class TestUtils {
         receiver.verifyNoExceptionOrThrow(3);
     }
 
-    public static boolean isHealthConnectFullySupported() {
-        return isHealthConnectFullySupported(ApplicationProvider.getApplicationContext());
-    }
-
-    public static boolean isHealthConnectFullySupported(Context context) {
-        PackageManager pm = context.getPackageManager();
-        return (!pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)
-                && !pm.hasSystemFeature(PackageManager.FEATURE_WATCH)
-                && !pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
-                && !pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE));
-    }
-
     public static boolean areHealthPermissionsSupported() {
         return areHealthPermissionsSupported(ApplicationProvider.getApplicationContext());
     }
@@ -1034,7 +1022,7 @@ public final class TestUtils {
         boolean isWatchEnabled =
                 pm.hasSystemFeature(PackageManager.FEATURE_WATCH)
                         && Flags.replaceBodySensorPermissionEnabled();
-        return isHealthConnectFullySupported(context) || isWatchEnabled;
+        return DeviceSupportUtils.isHealthConnectFullySupported(context) || isWatchEnabled;
     }
 
     /** Gets the priority list after getting the MANAGE_HEALTH_DATA permission. */

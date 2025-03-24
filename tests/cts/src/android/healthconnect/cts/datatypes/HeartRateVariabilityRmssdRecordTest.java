@@ -37,6 +37,7 @@ import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
 import android.platform.test.annotations.AppModeFull;
 
@@ -66,7 +67,7 @@ public class HeartRateVariabilityRmssdRecordTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @After

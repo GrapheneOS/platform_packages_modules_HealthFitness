@@ -19,6 +19,8 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"স্বাস্থ্য সম্পর্কিত ডেটাতে অ্যাপের অ্যাক্সেস ম্যানেজ করুন"</string>
+    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"অনুমতি ও ডেটা"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"আপনার ডিভাইসে স্বাস্থ্য ও ফিটনেস সংক্রান্ত ডেটা ম্যানেজ করুন ও কোন কোন অ্যাপ এই ডেটা অ্যাক্সেস করতে পারবে তা নিয়ন্ত্রণ করুন"</string>
     <string name="data_title" msgid="4456619761533380816">"ডেটা ও অ্যাক্সেস"</string>

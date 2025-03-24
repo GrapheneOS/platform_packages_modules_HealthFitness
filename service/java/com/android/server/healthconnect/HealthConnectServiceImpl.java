@@ -184,6 +184,8 @@ import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.exportimport.ImportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
+import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
@@ -197,6 +199,7 @@ import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.MedicalDataPermissionEnforcer;
+import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
 import com.android.server.healthconnect.phr.validations.FhirResourceValidator;
@@ -217,9 +220,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityH
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
-import com.android.server.healthconnect.storage.request.AggregateTransactionRequest;
 import com.android.server.healthconnect.storage.request.UpsertMedicalResourceInternalRequest;
-import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.PreferencesManager;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -289,8 +290,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final ExportImportSettingsStorage mExportImportSettingsStorage;
     private final PreferenceHelper mPreferenceHelper;
+    private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
+    private final FitnessRecordAggregateHelper mFitnessRecordAggregateHelper;
     private final MedicalResourceHelper mMedicalResourceHelper;
     private final MedicalDataSourceHelper mMedicalDataSourceHelper;
     private final ExportManager mExportManager;
@@ -327,8 +330,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MigrationStateManager migrationStateManager,
             MigrationUiStateManager migrationUiStateManager,
             MigrationCleaner migrationCleaner,
+            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper,
             FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
+            FitnessRecordAggregateHelper fitnessRecordAggregateHelper,
             MedicalResourceHelper medicalResourceHelper,
             MedicalDataSourceHelper medicalDataSourceHelper,
             ExportManager exportManager,
@@ -372,8 +377,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mMigrationUiStateManager.attachTo(migrationStateManager);
         migrationCleaner.attachTo(migrationStateManager);
 
+        mFitnessRecordUpsertHelper = fitnessRecordUpsertHelper;
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mFitnessRecordDeleteHelper = fitnessRecordDeleteHelper;
+        mFitnessRecordAggregateHelper = fitnessRecordAggregateHelper;
         mMedicalResourceHelper = medicalResourceHelper;
         mMedicalDataSourceHelper = medicalDataSourceHelper;
 
@@ -409,6 +416,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mContext,
                         mExportImportSettingsStorage,
                         mTransactionManager,
+                        mFitnessRecordUpsertHelper,
                         mFitnessRecordReadHelper,
                         mDeviceInfoHelper,
                         mHealthDataCategoryPriorityHelper,
@@ -418,7 +426,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         exportImportLogger);
 
         mCloudBackupManager =
-                isCloudBackupRestoreEnabled()
+                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
+                Flags.cloudBackupAndRestore() && isCloudBackupRestoreEnabled()
                         ? new CloudBackupManager(
                                 mTransactionManager,
                                 mFitnessRecordReadHelper,
@@ -434,9 +443,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 backupRestoreLogger)
                         : null;
         mCloudRestoreManager =
-                isCloudBackupRestoreEnabled()
+                // TODO(b/400105647): Remove duplicate flag check once excess code size is resolved.
+                Flags.cloudBackupAndRestore() && isCloudBackupRestoreEnabled()
                         ? new CloudRestoreManager(
                                 mTransactionManager,
+                                mFitnessRecordUpsertHelper,
                                 mFitnessRecordReadHelper,
                                 mInternalHealthConnectMappings,
                                 mDeviceInfoHelper,
@@ -571,18 +582,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             recordsParcel.getRecordsChunkSize());
                     mDataPermissionEnforcer.enforceRecordsWritePermissions(
                             recordInternals, attributionSource);
-                    UpsertTransactionRequest insertRequest =
-                            UpsertTransactionRequest.createForInsert(
+                    List<String> uuids =
+                            mFitnessRecordUpsertHelper.insertRecords(
                                     Objects.requireNonNull(attributionSource.getPackageName()),
                                     recordInternals,
-                                    mTransactionManager,
-                                    mInternalHealthConnectMappings,
-                                    mDeviceInfoHelper,
-                                    mAppInfoHelper,
-                                    mAccessLogsHelper,
                                     mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
                                             recordInternals, attributionSource));
-                    List<String> uuids = insertRequest.execute();
                     tryAndReturnResult(callback, uuids, logger);
 
                     mThreadScheduler.scheduleInternalTask(
@@ -695,18 +700,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     boolean shouldRecordAccessLog = !holdsDataManagementPermission;
                     callback.onResult(
-                            new AggregateTransactionRequest(
-                                            attributionSource.getPackageName(),
-                                            request,
-                                            mTransactionManager,
-                                            mAppInfoHelper,
-                                            mHealthDataCategoryPriorityHelper,
-                                            mAccessLogsHelper,
-                                            mReadAccessLogsHelper,
-                                            mInternalHealthConnectMappings,
-                                            startDateAccess,
-                                            shouldRecordAccessLog)
-                                    .getAggregateDataResponseParcel());
+                            mFitnessRecordAggregateHelper.aggregateRecords(
+                                    attributionSource.getPackageName(),
+                                    request,
+                                    startDateAccess,
+                                    shouldRecordAccessLog));
                     logger.setDataTypesFromRecordTypes(recordTypesToTest)
                             .setHealthDataServiceApiStatusSuccess();
                 },
@@ -819,7 +817,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             }
                         }
 
-                        boolean shouldRecordAccessLog = !holdsDataManagementPermission;
+                        boolean shouldRecordAccessLog =
+                                !holdsDataManagementPermission && !enforceSelfRead;
                         Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecordsResponse =
                                 mFitnessRecordReadHelper.readRecords(
                                         mTransactionManager,
@@ -944,18 +943,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             recordsParcel.getRecordsChunkSize());
                     mDataPermissionEnforcer.enforceRecordsWritePermissions(
                             recordInternals, attributionSource);
-                    UpsertTransactionRequest updateRequest =
-                            UpsertTransactionRequest.createForUpdate(
-                                    Objects.requireNonNull(attributionSource.getPackageName()),
-                                    recordInternals,
-                                    mTransactionManager,
-                                    mInternalHealthConnectMappings,
-                                    mDeviceInfoHelper,
-                                    mAppInfoHelper,
-                                    mAccessLogsHelper,
-                                    mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
-                                            recordInternals, attributionSource));
-                    updateRequest.execute();
+                    mFitnessRecordUpsertHelper.updateRecords(
+                            Objects.requireNonNull(attributionSource.getPackageName()),
+                            recordInternals,
+                            mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
+                                    recordInternals, attributionSource));
                     tryAndReturnResult(callback, logger);
                     logRecordTypeSpecificUpsertMetrics(
                             recordInternals, attributionSource.getPackageName());
@@ -1077,6 +1069,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         throw new IllegalArgumentException(
                                 "Requested record types must not be empty.");
                     }
+                    // This API doesn't support reading own data without read permissions.
                     mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
                             changeLogsTokenRequest.getRecordTypes(), attributionSource);
                     long startDateAccessEpochMilli = DEFAULT_LONG;
@@ -1102,10 +1095,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             mDataPermissionEnforcer.collectGrantedExtraReadPermissions(
                                     recordTypeToInsertedUuids.keySet(), attributionSource);
 
-                    boolean isReadingSelfData =
-                            changeLogsTokenRequest
-                                    .getPackageNamesToFilter()
-                                    .equals(singletonList(callerPackageName));
                     List<RecordInternal<?>> recordInternals =
                             mFitnessRecordReadHelper.readRecords(
                                     mTransactionManager,
@@ -1114,7 +1103,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     grantedExtraReadPermissions,
                                     startDateAccessEpochMilli,
                                     isInForeground,
-                                    /* shouldRecordAccessLog= */ !isReadingSelfData);
+                                    /* shouldRecordAccessLog= */ true);
                     List<DeletedLog> deletedLogs =
                             ChangeLogsHelper.getDeletedLogs(changeLogsResponse.getChangeLogsMap());
 
@@ -1134,90 +1123,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 /* isController= */ false);
     }
 
-    /**
-     * API to delete records based on {@code request}
-     *
-     * <p>NOTE: Though internally we only need a single API to handle deletes as SDK code transform
-     * all its delete requests to {@link DeleteUsingFiltersRequestParcel}, we have this separation
-     * to make sure no non-controller APIs can use {@link
-     * HealthConnectServiceImpl#deleteUsingFilters} API
-     */
-    @Override
-    public void deleteUsingFiltersForSelf(
-            AttributionSource attributionSource,
-            DeleteUsingFiltersRequestParcel request,
-            IEmptyResponseCallback callback) {
-        checkParamsNonNull(attributionSource, request, callback);
-        ErrorCallback wrappedCallback = callback::onError;
-
-        final int uid = Binder.getCallingUid();
-        final int pid = Binder.getCallingPid();
-        final UserHandle userHandle = Binder.getCallingUserHandle();
-        final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final HealthConnectServiceLogger.Builder logger =
-                new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, DELETE_DATA)
-                        .setHealthFitnessStatsLog(mStatsLog)
-                        .setPackageName(attributionSource.getPackageName());
-
-        scheduleLoggingHealthDataApiErrors(
-                () -> {
-                    enforceIsForegroundUser(userHandle);
-                    verifyPackageNameFromUid(uid, attributionSource);
-                    throwExceptionIfDataSyncInProgress();
-                    List<Integer> recordTypeIdsToDelete =
-                            (!request.getRecordTypeFilters().isEmpty())
-                                    ? request.getRecordTypeFilters()
-                                    : new ArrayList<>(
-                                            mHealthConnectMappings
-                                                    .getRecordIdToExternalRecordClassMap()
-                                                    .keySet());
-                    // Requests from non controller apps are not allowed to use non-id
-                    // filters
-                    request.setPackageNameFilters(
-                            singletonList(attributionSource.getPackageName()));
-
-                    if (!holdsDataManagementPermission) {
-                        tryAcquireApiCallQuota(
-                                uid,
-                                QuotaCategory.QUOTA_CATEGORY_WRITE,
-                                mAppOpsManagerLocal.isUidInForeground(uid),
-                                logger);
-                        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
-                                recordTypeIdsToDelete, attributionSource);
-                    }
-
-                    int numberOfRecordsDeleted =
-                            mFitnessRecordDeleteHelper.deleteRecords(
-                                    Objects.requireNonNull(attributionSource.getPackageName()),
-                                    request,
-                                    holdsDataManagementPermission,
-                                    /* shouldRecordAccessLog= */ !holdsDataManagementPermission);
-                    tryAndReturnResult(callback, logger);
-                    mThreadScheduler.scheduleInternalTask(
-                            () -> postDeleteTasks(recordTypeIdsToDelete));
-                    logger.setNumberOfRecords(numberOfRecordsDeleted)
-                            .setDataTypesFromRecordTypes(recordTypeIdsToDelete);
-                },
-                logger,
-                wrappedCallback,
-                uid,
-                /* isController= */ holdsDataManagementPermission);
-    }
-
-    /**
-     * API to delete records based on {@code request}
-     *
-     * <p>NOTE: Though internally we only need a single API to handle deletes as SDK code transform
-     * all its delete requests to {@link DeleteUsingFiltersRequestParcel}, we have this separation
-     * to make sure no non-controller APIs can use this API
-     */
+    /** API to delete records based on {@code request}. */
     @Override
     public void deleteUsingFilters(
             AttributionSource attributionSource,
             DeleteUsingFiltersRequestParcel request,
             IEmptyResponseCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
-
         ErrorCallback errorCallback = callback::onError;
 
         final int uid = Binder.getCallingUid();
@@ -1235,7 +1147,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     enforceIsForegroundUser(requestContext.getCallingUser());
                     verifyPackageNameFromUid(uid, attributionSource);
                     throwExceptionIfDataSyncInProgress();
-                    mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                     List<Integer> recordTypeIdsToDelete =
                             (!request.getRecordTypeFilters().isEmpty())
                                     ? request.getRecordTypeFilters()
@@ -1244,12 +1155,22 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     .getRecordIdToExternalRecordClassMap()
                                                     .keySet());
 
+                    if (!holdsDataManagementPermission) {
+                        tryAcquireApiCallQuota(
+                                uid,
+                                QuotaCategory.QUOTA_CATEGORY_WRITE,
+                                mAppOpsManagerLocal.isUidInForeground(uid),
+                                logger);
+                        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+                                recordTypeIdsToDelete, attributionSource);
+                    }
+
                     int numberOfRecordsDeleted =
                             mFitnessRecordDeleteHelper.deleteRecords(
-                                    attributionSource.getPackageName(),
+                                    Objects.requireNonNull(attributionSource.getPackageName()),
                                     request,
-                                    /* holdsDataManagementPermission= */ true,
-                                    /* shouldRecordAccessLog= */ false);
+                                    /* enforceSelfDelete= */ !holdsDataManagementPermission,
+                                    /* shouldRecordAccessLog= */ !holdsDataManagementPermission);
                     tryAndReturnResult(callback, logger);
                     mThreadScheduler.scheduleInternalTask(
                             () -> postDeleteTasks(recordTypeIdsToDelete));
@@ -3281,7 +3202,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        if (mCloudBackupManager == null || !isCloudBackupRestoreEnabled()) {
+                        // TODO(b/400105647): Remove duplicate flag check once excess code size is
+                        // resolved.
+                        if (mCloudBackupManager == null
+                                || !Flags.cloudBackupAndRestore()
+                                || !isCloudBackupRestoreEnabled()) {
                             throw new UnsupportedOperationException(
                                     "getChangesForBackup is not supported.");
                         }
@@ -3316,7 +3241,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        if (mCloudBackupManager == null || !isCloudBackupRestoreEnabled()) {
+                        // TODO(b/400105647): Remove duplicate flag check once excess code size is
+                        // resolved.
+                        if (mCloudBackupManager == null
+                                || !Flags.cloudBackupAndRestore()
+                                || !isCloudBackupRestoreEnabled()) {
                             throw new UnsupportedOperationException(
                                     "getSettingsForBackup is not supported.");
                         }
@@ -3350,7 +3279,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
+                        // TODO(b/400105647): Remove duplicate flag check once excess code size is
+                        // resolved.
+                        if (mCloudRestoreManager == null
+                                || !Flags.cloudBackupAndRestore()
+                                || !isCloudBackupRestoreEnabled()) {
                             throw new UnsupportedOperationException(
                                     "restoreSettings is not supported.");
                         }
@@ -3386,7 +3319,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
+                        // TODO(b/400105647): Remove duplicate flag check once excess code size is
+                        // resolved.
+                        if (mCloudRestoreManager == null
+                                || !Flags.cloudBackupAndRestore()
+                                || !isCloudBackupRestoreEnabled()) {
                             throw new UnsupportedOperationException("canRestore is not supported.");
                         }
                         enforceIsForegroundUser(userHandle);
@@ -3408,8 +3345,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     @Override
     @RequiresApi(Build.VERSION_CODES.BAKLAVA)
-    public void restoreChanges(
-            List<RestoreChange> changes, byte[] appInfoMap, IEmptyResponseCallback callback) {
+    public void restoreChanges(List<RestoreChange> changes, IEmptyResponseCallback callback) {
         checkParamsNonNull(changes);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
@@ -3418,7 +3354,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mThreadScheduler.scheduleControllerTask(
                 () -> {
                     try {
-                        if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
+                        // TODO(b/400105647): Remove duplicate flag check once excess code size is
+                        // resolved.
+                        if (mCloudRestoreManager == null
+                                || !Flags.cloudBackupAndRestore()
+                                || !isCloudBackupRestoreEnabled()) {
                             throw new UnsupportedOperationException(
                                     "restoreChanges is not supported.");
                         }
@@ -3428,7 +3368,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 pid,
                                 uid,
                                 "Caller does not have permission to call" + " restoreChanges.");
-                        mCloudRestoreManager.restoreChanges(changes, appInfoMap);
+                        mCloudRestoreManager.restoreChanges(changes);
                         callback.onResult();
                     } catch (UnsupportedOperationException e) {
                         tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
@@ -3746,7 +3686,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int permissionFlags =
                 mContext.getPackageManager()
                         .getPermissionFlags(READ_HEALTH_DATA_IN_BACKGROUND, packageName, user);
-        return HealthConnectPermissionHelper.isFromSplitPermission(permissionFlags);
+
+        int targetSdk;
+        try {
+            targetSdk =
+                    PackageInfoUtils.getPackageInfoUnchecked(
+                                    packageName,
+                                    user,
+                                    PackageManager.PackageInfoFlags.of(0),
+                                    mContext)
+                            .applicationInfo
+                            .targetSdkVersion;
+        } catch (Exception e) {
+            // Cannot find the package, default false.
+            return false;
+        }
+
+        return HealthConnectPermissionHelper.isFromSplitPermission(permissionFlags, targetSdk);
     }
 
     private static void tryAndReturnResult(

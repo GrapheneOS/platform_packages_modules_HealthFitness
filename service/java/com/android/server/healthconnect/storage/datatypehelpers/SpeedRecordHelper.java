@@ -36,7 +36,7 @@ import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.ArrayList;

@@ -34,7 +34,7 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.PermissionMigrationPayload;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.tests.IntegrationTestUtils;
 
 import androidx.test.InstrumentationRegistry;
@@ -63,7 +63,7 @@ public class HealthConnectPermissionsMigrationTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Before

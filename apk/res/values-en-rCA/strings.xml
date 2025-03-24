@@ -19,6 +19,7 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"Manage app access to health data"</string>
+    <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"Updates and alerts"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Permissions and data"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Manage the health and fitness data on your device, and control which apps can access it"</string>
     <string name="data_title" msgid="4456619761533380816">"Data and access"</string>

@@ -41,6 +41,7 @@ import com.android.healthconnect.controller.utils.logging.AdditionalAccessElemen
 import com.android.healthconnect.controller.utils.logging.AdditionalAccessElement.EXERCISE_ROUTES_DIALOG_CONTAINER
 import com.android.healthconnect.controller.utils.logging.AdditionalAccessElement.EXERCISE_ROUTES_DIALOG_DENY_BUTTON
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -81,7 +82,13 @@ class ExerciseRoutesPermissionDialogFragment : Hilt_ExerciseRoutesPermissionDial
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = layoutInflater.inflate(R.layout.dialog_exercise_routes_permission, null)
+        val view =
+            layoutInflater.inflate(
+                if (SettingsThemeHelper.isExpressiveTheme(requireContext()))
+                    R.layout.dialog_exercise_routes_permission_expressive
+                else R.layout.dialog_exercise_routes_permission_legacy,
+                null,
+            )
 
         val packageNameExtra = requireArguments().getString(EXTRA_PACKAGE_NAME)
         if (packageNameExtra.isNullOrEmpty()) {
@@ -108,7 +115,7 @@ class ExerciseRoutesPermissionDialogFragment : Hilt_ExerciseRoutesPermissionDial
     }
 
     private fun setupAppIcon(view: View) {
-        appIcon = view.findViewById(R.id.dialog_icon)
+        appIcon = view.findViewById(R.id.dialog_icon) ?: return
         permissionsViewModel.appInfo.observe(this) { app -> appIcon.setImageDrawable(app.icon) }
     }
 

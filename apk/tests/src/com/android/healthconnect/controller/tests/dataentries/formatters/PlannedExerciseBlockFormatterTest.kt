@@ -142,7 +142,7 @@ class PlannedExerciseBlockFormatterTest {
     }
 
     @Test
-    fun formatBlock_nullFields() = runBlocking {
+    fun formatBlock_nullDescription_omitsDescriptionEntirely() = runBlocking {
         unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
         val exerciseBlock =
             getPlannedExerciseBlock(
@@ -169,8 +169,8 @@ class PlannedExerciseBlockFormatterTest {
             .isEqualTo(
                 PlannedExerciseBlockEntry(
                     block = exerciseBlock,
-                    title = "Unknown type: 1 time",
-                    titleA11y = "Unknown type 1 time",
+                    title = "1 time",
+                    titleA11y = "1 time",
                 )
             )
     }

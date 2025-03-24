@@ -31,7 +31,7 @@ import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.exportimport.ExportImportDocumentProvider;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.tests.documentprovider.utils.DocumentProviderIntent;
 import android.healthconnect.tests.documentprovider.utils.DocumentProviderRoot;
 import android.net.Uri;
@@ -91,7 +91,7 @@ public final class QueryDocumentProvidersTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @After

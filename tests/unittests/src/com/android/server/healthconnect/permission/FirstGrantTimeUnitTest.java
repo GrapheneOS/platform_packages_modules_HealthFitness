@@ -53,7 +53,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -92,8 +91,6 @@ public class FirstGrantTimeUnitTest {
 
     @Before
     public void setUp() throws PackageManager.NameNotFoundException {
-        MockitoAnnotations.initMocks(this);
-
         when(mMigrationStateManager.isMigrationInProgress()).thenReturn(false);
         when(mTracker.supportsPermissionUsageIntent(anyString(), any())).thenReturn(true);
 

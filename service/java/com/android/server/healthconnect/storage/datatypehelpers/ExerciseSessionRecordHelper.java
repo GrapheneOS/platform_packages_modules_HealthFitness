@@ -58,9 +58,9 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger.Operations;
-import com.android.server.healthconnect.storage.request.AggregateParams;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -105,7 +105,6 @@ public final class ExerciseSessionRecordHelper
     public ExerciseSessionRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION);
     }
-
 
     /** Returns the table name to be created corresponding to this helper */
     @Override

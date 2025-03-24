@@ -145,8 +145,7 @@ public class CloudBackupSettingsHelperTest {
 
     @Test
     public void appInfoPresent_setsAppInfoCorrectly() {
-        mAppInfoHelper.addOrUpdateAppInfoIfNoAppInfoEntryExists(
-                TEST_NEW_PACKAGE_NAME, TEST_APP_NAME);
+        mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(TEST_NEW_PACKAGE_NAME, TEST_APP_NAME);
 
         Settings userSettings = mCloudBackupSettingsHelper.collectUserSettings();
 

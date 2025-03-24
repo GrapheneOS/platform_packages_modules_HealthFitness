@@ -403,7 +403,7 @@ public class MigrationStateChangeJobTest {
         when(mJobInfo.getId()).thenReturn(MIN_JOB_ID);
         when(mJobScheduler.getAllPendingJobs()).thenReturn(List.of(mJobInfo));
         MigrationStateChangeJob.cancelAllJobs(mContext);
-        verify(mJobScheduler).cancel(eq(MIN_JOB_ID));
+        verify(mJobScheduler).cancelAll();
     }
 
     private void configureExistsAMigrationPauseJob() {

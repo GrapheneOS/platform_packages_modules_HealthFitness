@@ -21,6 +21,7 @@ import android.icu.text.MessageFormat
 import android.os.Bundle
 import android.provider.Settings.ACTION_SECURITY_SETTINGS
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -691,31 +692,34 @@ class HomeFragment : Hilt_HomeFragment() {
     }
 
     private fun getRecentAccessPreference(recentApp: RecentAccessEntry): HealthPreference {
-        return if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
-            HealthPreference(requireContext()).also { newPreference ->
-                newPreference.logName = RecentAccessElement.RECENT_ACCESS_ENTRY_BUTTON
-                newPreference.title = recentApp.metadata.appName
-                newPreference.icon = recentApp.metadata.icon
-                newPreference.summary =
-                    formatRecentAccessTime(recentApp.instantTime, timeSource, requireContext())
-                if (!recentApp.isInactive) {
-                    newPreference.setOnPreferenceClickListener {
-                        navigateToAppInfoScreen(recentApp)
-                        true
-                    }
+        val preference =
+            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+                HealthPreference(requireContext()).also { newPreference ->
+                    newPreference.logName = RecentAccessElement.RECENT_ACCESS_ENTRY_BUTTON
+                    newPreference.title = recentApp.metadata.appName
+                    newPreference.icon = recentApp.metadata.icon
+                    newPreference.summary =
+                        formatRecentAccessTime(recentApp.instantTime, timeSource, requireContext())
                 }
+            } else {
+                RecentAccessPreference(requireContext(), recentApp, timeSource, false)
             }
-        } else {
-            RecentAccessPreference(requireContext(), recentApp, timeSource, false).also {
-                newPreference ->
-                if (!recentApp.isInactive) {
-                    newPreference.setOnPreferenceClickListener {
-                        navigateToAppInfoScreen(recentApp)
-                        true
-                    }
-                }
+
+        preference.setOnPreferenceClickListener {
+            if (recentApp.isInactive) {
+                Toast.makeText(
+                        requireContext(),
+                        getString(R.string.recent_access_inactive_app),
+                        Toast.LENGTH_LONG,
+                    )
+                    .show()
+            } else {
+                navigateToAppInfoScreen(recentApp)
             }
+            true
         }
+
+        return preference
     }
 
     private fun navigateToAppInfoScreen(recentApp: RecentAccessEntry) {

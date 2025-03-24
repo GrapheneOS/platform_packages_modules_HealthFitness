@@ -38,7 +38,7 @@ import android.util.Pair;
 import androidx.annotation.Nullable;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.Arrays;
 import java.util.Collections;

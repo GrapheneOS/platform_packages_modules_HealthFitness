@@ -19,6 +19,8 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Salud conectada"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"Gestiona el acceso de las aplicaciones a tus datos de salud"</string>
+    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Permisos y datos"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Gestiona los datos de salud y actividad física en tu dispositivo y controla qué aplicaciones pueden acceder a ellos"</string>
     <string name="data_title" msgid="4456619761533380816">"Datos y acceso"</string>

@@ -179,9 +179,8 @@ public final class MigrationStateChangeJob {
     }
 
     public static void cancelAllJobs(Context context) {
-        JobScheduler jobScheduler =
-                Objects.requireNonNull(context.getSystemService(JobScheduler.class))
-                        .forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE);
-        jobScheduler.getAllPendingJobs().forEach(jobInfo -> jobScheduler.cancel(jobInfo.getId()));
+        Objects.requireNonNull(context.getSystemService(JobScheduler.class))
+                .forNamespace(MIGRATION_STATE_CHANGE_NAMESPACE)
+                .cancelAll();
     }
 }

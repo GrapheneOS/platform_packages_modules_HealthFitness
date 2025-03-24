@@ -19,6 +19,8 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"ကျန်းမာရေးဒေတာအတွက် အက်ပ်သုံးခွင့်ကို စီမံနိုင်သည်"</string>
+    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"ခွင့်ပြုချက်များနှင့် ဒေတာ"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို သင့်စက်တွင် စီမံပြီး ၎င်းအားသုံးနိုင်သည့် အက်ပ်များကို သတ်မှတ်နိုင်သည်"</string>
     <string name="data_title" msgid="4456619761533380816">"ဒေတာနှင့် သုံးခွင့်"</string>

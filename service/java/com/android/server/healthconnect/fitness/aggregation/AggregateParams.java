@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.request;
+package com.android.server.healthconnect.fitness.aggregation;
 
 import android.annotation.IntDef;
 
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Collection of parameters of {@link AggregateTableRequest}.
+ * Collection of parameters of {@link AggregateRecordRequest}.
  *
  * @hide
  */

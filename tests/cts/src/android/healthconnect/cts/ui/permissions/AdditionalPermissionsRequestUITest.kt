@@ -33,6 +33,8 @@ import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.lib.UiTestUtils.skipOnboardingIfAppears
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.cts.utils.ProxyActivity
+import android.os.Build
+import androidx.test.filters.SdkSuppress
 import com.android.compatibility.common.util.SystemUtil
 import com.android.compatibility.common.util.UiAutomatorUtils2.getUiDevice
 import com.google.common.truth.Truth
@@ -165,8 +167,9 @@ class AdditionalPermissionsRequestUITest : HealthConnectBaseTest() {
         )
     }
 
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    fun requestCombinedPermissions_showsDataTypeAndAdditionalPermissions() {
+    fun requestCombinedPermissions_showsDataTypeAndAdditionalPermissions_heathConnectBrand() {
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         val permissions =
@@ -181,6 +184,39 @@ class AdditionalPermissionsRequestUITest : HealthConnectBaseTest() {
             permissions = permissions,
         ) {
             findText("Allow Health Connect cts test app to access Health Connect?")
+            scrollDownToAndFindText("Height")
+            findTextAndClick("Height")
+            clickOnTextAndWaitForNewWindow("Allow")
+
+            findText("Allow additional access for Health Connect cts test app?")
+            scrollDownToAndFindText("Access past data")
+            findTextAndClick("Access past data")
+            clickOnTextAndWaitForNewWindow("Allow")
+
+            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEIGHT)
+            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEALTH_DATA_HISTORY)
+            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEALTH_DATA_IN_BACKGROUND)
+        }
+    }
+
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @Test
+    fun requestCombinedPermissions_showsDataTypeAndAdditionalPermissions_healthFitnessBrand() {
+        revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
+        revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+        val permissions =
+            listOf(
+                READ_HEIGHT,
+                WRITE_BODY_FAT,
+                READ_HEALTH_DATA_HISTORY,
+                READ_HEALTH_DATA_IN_BACKGROUND,
+            )
+        context.launchRequestPermissionActivity(
+            packageName = TEST_APP_PACKAGE_NAME,
+            permissions = permissions,
+        ) {
+            findText("Allow Health Connect cts test app to access your fitness and wellness data?")
             scrollDownToAndFindText("Height")
             findTextAndClick("Height")
             clickOnTextAndWaitForNewWindow("Allow")

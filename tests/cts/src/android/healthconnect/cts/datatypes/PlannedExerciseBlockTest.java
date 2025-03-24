@@ -24,7 +24,7 @@ import android.health.connect.datatypes.PlannedExerciseBlock;
 import android.health.connect.datatypes.PlannedExerciseStep;
 import android.health.connect.datatypes.units.Length;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -41,7 +41,7 @@ public class PlannedExerciseBlockTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Test

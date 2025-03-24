@@ -28,7 +28,7 @@ import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;

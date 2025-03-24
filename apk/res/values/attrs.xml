@@ -142,8 +142,9 @@
     <attr name="textAppearanceSubheader" format="reference"/>
     <attr name="textAppearanceSubheader2" format="reference"/>
     <attr name="textAppearanceSubheader3" format="reference"/>
-    <attr name="textAppearanceSubheader4" format="reference"/>
-    <attr name="textAppearanceSubheader5" format="reference"/>
+    <attr name="textAppearanceExpressiveDialogTitle" format="reference"/>
+    <attr name="textAppearanceExpressiveDialogMessage" format="reference"/>
+    <attr name="textAppearanceExpressiveRadioButton" format="reference"/>
     <attr name="textAppearanceRouteRequest" format="reference"/>
     <attr name="textAppearancePreferenceCategory" format="reference"/>
     <attr name="textAppearanceErrorMessage" format="reference"/>

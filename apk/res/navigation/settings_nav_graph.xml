@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/settingsManagePermissionFragment"
         android:name="com.android.healthconnect.controller.permissions.connectedapps.SettingsManagePermissionFragment"
-        android:label="@string/app_label">
+        android:label="@string/settings_manage_permission">
         <action
             android:id="@+id/action_settingsManagePermission_to_settingsCombinedPermissions"
             app:destination="@id/settingsCombinedPermissionsFragment" />
@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/settingsCombinedPermissionsFragment"
         android:name="com.android.healthconnect.controller.permissions.app.SettingsCombinedPermissionsFragment"
-        android:label="@string/app_label">
+        android:label="@string/settings_combined_permissions">
         <argument
             android:name="android.intent.extra.PACKAGE_NAME"
             app:argType="string" />
@@ -72,7 +72,7 @@
     <fragment
         android:id="@+id/settingsFitnessAppFragment"
         android:name="com.android.healthconnect.controller.permissions.app.SettingsFitnessAppFragment"
-        android:label="@string/app_label">
+        android:label="@string/settings_fitness_permissions">
         <argument
             android:name="android.intent.extra.PACKAGE_NAME"
             app:argType="string" />
@@ -83,7 +83,7 @@
     <fragment
         android:id="@+id/settingsMedicalAppFragment"
         android:name="com.android.healthconnect.controller.permissions.app.SettingsMedicalAppFragment"
-        android:label="@string/app_label">
+        android:label="@string/settings_medical_permissions">
         <argument
             android:name="android.intent.extra.PACKAGE_NAME"
             app:argType="string" />

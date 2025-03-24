@@ -48,6 +48,7 @@ import android.util.ArrayMap;
 
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
+import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -56,7 +57,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import com.google.common.collect.ImmutableList;
@@ -73,12 +73,14 @@ public final class TransactionTestUtils {
     private static final Set<String> NO_EXTRA_PERMS = Set.of();
     private static final String TEST_PACKAGE_NAME = "package.name";
     private final TransactionManager mTransactionManager;
+    private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private final HealthConnectInjector mHealthConnectInjector;
 
     public TransactionTestUtils(HealthConnectInjector injector) {
         mTransactionManager = injector.getTransactionManager();
+        mFitnessRecordUpsertHelper = injector.getFitnessRecordUpsertHelper();
         mFitnessRecordReadHelper = injector.getFitnessRecordReadHelper();
         mFitnessRecordDeleteHelper = injector.getFitnessRecordDeleteHelper();
         mHealthConnectInjector = injector;
@@ -112,16 +114,8 @@ public final class TransactionTestUtils {
 
     /** Inserts records attributed to the given package. */
     public List<String> insertRecords(String packageName, List<RecordInternal<?>> records) {
-        return UpsertTransactionRequest.createForInsert(
-                        packageName,
-                        records,
-                        mTransactionManager,
-                        mHealthConnectInjector.getInternalHealthConnectMappings(),
-                        mHealthConnectInjector.getDeviceInfoHelper(),
-                        mHealthConnectInjector.getAppInfoHelper(),
-                        mHealthConnectInjector.getAccessLogsHelper(),
-                        /* extraPermsStateMap= */ new ArrayMap<>())
-                .execute();
+        return mFitnessRecordUpsertHelper.insertRecords(
+                packageName, records, /* extraPermsStateMap= */ new ArrayMap<>());
     }
 
     /** Inserts records attributed to the given package. */
@@ -131,16 +125,8 @@ public final class TransactionTestUtils {
 
     /** Inserts records attributed to the given package. */
     public void updateRecords(String packageName, List<RecordInternal<?>> records) {
-        UpsertTransactionRequest.createForUpdate(
-                        packageName,
-                        records,
-                        mTransactionManager,
-                        mHealthConnectInjector.getInternalHealthConnectMappings(),
-                        mHealthConnectInjector.getDeviceInfoHelper(),
-                        mHealthConnectInjector.getAppInfoHelper(),
-                        mHealthConnectInjector.getAccessLogsHelper(),
-                        /* extraPermsStateMap= */ new ArrayMap<>())
-                .execute();
+        mFitnessRecordUpsertHelper.updateRecords(
+                packageName, records, /* extraPermsStateMap= */ new ArrayMap<>());
     }
 
     /** Deletes records with the given IDs from storage. */

@@ -102,6 +102,7 @@ import static org.mockito.Mockito.when;
 import android.app.ActivityManager;
 import android.content.AttributionSource;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionGroupInfo;
@@ -140,6 +141,7 @@ import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
@@ -169,7 +171,6 @@ import com.android.server.healthconnect.permission.HealthConnectPermissionHelper
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
-import com.android.server.healthconnect.proto.backuprestore.AppInfoMap;
 import com.android.server.healthconnect.proto.backuprestore.Settings;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
@@ -348,7 +349,7 @@ public class HealthConnectServiceImplTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    android.healthconnect.cts.utils.TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Before
@@ -371,6 +372,9 @@ public class HealthConnectServiceImplTest {
         mAttributionSource = mContext.getAttributionSource();
         mTestPackageName = mAttributionSource.getPackageName();
         setUpAllMedicalPermissionChecksHardDenied();
+        when(mPackageManager.getPackageInfo(eq(mAttributionSource.getPackageName()), any()))
+                .thenReturn(
+                        buildPackageInfo(mAttributionSource.getPackageName(), /* targetSdk= */ 34));
 
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mServiceContext)
@@ -407,8 +411,10 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getMigrationStateManager(),
                         healthConnectInjector.getMigrationUiStateManager(),
                         healthConnectInjector.getMigrationCleaner(),
+                        healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
+                        healthConnectInjector.getFitnessRecordAggregateHelper(),
                         healthConnectInjector.getMedicalResourceHelper(),
                         healthConnectInjector.getMedicalDataSourceHelper(),
                         healthConnectInjector.getExportManager(),
@@ -480,19 +486,25 @@ public class HealthConnectServiceImplTest {
     @Test
     public void testStageRemoteData_withNotReadMode_onlyValidFilesStaged() throws Exception {
         File dataDir = mContext.getDataDir();
-        File testRestoreFile1 = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
-        File testRestoreFile2 = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+        File writeOnlyFile = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
+        File readOnlyFile = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
 
-        assertThat(testRestoreFile1.exists()).isTrue();
-        assertThat(testRestoreFile2.exists()).isTrue();
+        assertThat(writeOnlyFile.exists()).isTrue();
+        assertThat(readOnlyFile.exists()).isTrue();
+
+        ParcelFileDescriptor writeOnlyFd =
+                ParcelFileDescriptor.open(writeOnlyFile, ParcelFileDescriptor.MODE_WRITE_ONLY);
+        // The MODE_WRITE_ONLY is enough to cause an error when running on device.
+        // But when running under Robolectric this does not error for
+        // ShadowParcelFileDescriptor.
+        // So close the file descriptor as well to force an error in both cases.
+        writeOnlyFd.close();
 
         Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+        pfdsByFileName.put(writeOnlyFile.getName(), writeOnlyFd);
         pfdsByFileName.put(
-                testRestoreFile1.getName(),
-                ParcelFileDescriptor.open(testRestoreFile1, ParcelFileDescriptor.MODE_WRITE_ONLY));
-        pfdsByFileName.put(
-                testRestoreFile2.getName(),
-                ParcelFileDescriptor.open(testRestoreFile2, ParcelFileDescriptor.MODE_READ_ONLY));
+                readOnlyFile.getName(),
+                ParcelFileDescriptor.open(readOnlyFile, ParcelFileDescriptor.MODE_READ_ONLY));
 
         final IDataStagingFinishedCallback callback = mock(IDataStagingFinishedCallback.class);
         mHealthConnectService.stageAllHealthConnectRemoteData(
@@ -501,7 +513,7 @@ public class HealthConnectServiceImplTest {
         verify(callback, timeout(5000).times(1)).onError(any());
         var stagedFileNames = mBackupRestore.getStagedRemoteFileNames(mUserHandle);
         assertThat(stagedFileNames.size()).isEqualTo(1);
-        assertThat(stagedFileNames.contains(testRestoreFile2.getName())).isTrue();
+        assertThat(stagedFileNames.contains(readOnlyFile.getName())).isTrue();
     }
 
     // Imitates the state when we are not actively staging but the disk reflects that.
@@ -2880,13 +2892,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
     public void restoreChanges_flagDisabled_unsupportedOperation() throws RemoteException {
         IEmptyResponseCallback callback = mock(IEmptyResponseCallback.class);
-        AppInfoMap appInfoMap =
-                AppInfoMap.newBuilder()
-                        .putAppInfo(
-                                "random.package.name",
-                                Settings.AppInfo.newBuilder().setAppName("app name 1").build())
-                        .build();
-        mHealthConnectService.restoreChanges(List.of(), appInfoMap.toByteArray(), callback);
+        mHealthConnectService.restoreChanges(List.of(), callback);
 
         verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
@@ -3107,5 +3113,14 @@ public class HealthConnectServiceImplTest {
      */
     private static void awaitAllExecutorsIdle() throws InterruptedException {
         Thread.sleep(500);
+    }
+
+    private static PackageInfo buildPackageInfo(String packageName, int targetSdk) {
+        PackageInfo info = new PackageInfo();
+        ApplicationInfo aInfo = new ApplicationInfo();
+        aInfo.targetSdkVersion = targetSdk;
+        info.applicationInfo = aInfo;
+        info.packageName = info.applicationInfo.packageName = packageName;
+        return info;
     }
 }

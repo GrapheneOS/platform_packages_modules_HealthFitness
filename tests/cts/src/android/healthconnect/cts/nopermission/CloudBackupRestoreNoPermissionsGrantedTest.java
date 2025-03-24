@@ -31,6 +31,7 @@ import android.health.connect.backuprestore.BackupSettings;
 import android.health.connect.backuprestore.GetChangesForBackupResponse;
 import android.health.connect.backuprestore.GetSettingsForBackupResponse;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
 import android.os.Build;
@@ -65,7 +66,7 @@ public class CloudBackupRestoreNoPermissionsGrantedTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     private HealthConnectManager mManager;
@@ -113,8 +114,7 @@ public class CloudBackupRestoreNoPermissionsGrantedTest {
     @Test
     public void restoreChanges_noPermission_securityException() throws InterruptedException {
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
-        mManager.restoreChanges(
-                List.of(), new byte[0], Executors.newSingleThreadExecutor(), receiver);
+        mManager.restoreChanges(List.of(), Executors.newSingleThreadExecutor(), receiver);
 
         HealthConnectException e = receiver.assertAndGetException();
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);

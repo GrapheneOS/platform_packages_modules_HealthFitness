@@ -96,18 +96,25 @@
         <item name="android:letterSpacing">0.02</item>
     </style>
 
-    <style name="TextAppearance.HealthConnect.Subheader4" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
+    <style name="TextAppearance.HealthConnect.Expressive.DialogTitle" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
         <item name="android:textFontWeight">500</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lineHeight">24sp</item>
         <item name="android:textColor">@color/settingslib_materialColorOnSurface</item>
     </style>
 
-    <style name="TextAppearance.HealthConnect.Subheader5" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
+    <style name="TextAppearance.HealthConnect.Expressive.DialogMessage" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
         <item name="android:textFontWeight">500</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lineHeight">24sp</item>
         <item name="android:textColor">@color/settingslib_materialColorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.HealthConnect.Expressive.RadioButton" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
+        <item name="android:textFontWeight">450</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineHeight">24sp</item>
+        <item name="android:textColor">@color/settingslib_materialColorOnSurface</item>
     </style>
 
     <style name="TextAppearance.HealthConnect.RouteRequest" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">

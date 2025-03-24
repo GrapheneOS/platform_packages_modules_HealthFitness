@@ -116,6 +116,7 @@ fun ControlSingleDataTypeForSingleAppScreen(
                     label = stringResource(R.string.additional_access_label),
                     labelMaxLines = 3,
                     onClick = { onAdditionalPermissionClick(packageName) },
+                    modifier = Modifier.padding(top = 8.dp),
                 )
             }
         }
@@ -130,11 +131,11 @@ fun ControlSingleDataTypeForSingleAppScreen(
                 }
             Row(
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.fillMaxWidth().padding(start = 12.dp),
+                modifier = Modifier.fillMaxWidth().padding(start = 12.dp, top = 8.dp),
             ) {
                 Text(
                     text = stringResource(resourceId, appMetadata!!.appName),
-                    style = TextStyle(fontSize = 10.sp),
+                    style = TextStyle(fontSize = 12.sp),
                 )
             }
         }

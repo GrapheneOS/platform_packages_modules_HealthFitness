@@ -36,6 +36,7 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.lib.RecordFactory;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
@@ -60,7 +61,7 @@ abstract class BaseNoPermissionsDeclaredTest<T extends Record> {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     private static final ZonedDateTime YESTERDAY_11AM =

@@ -17,7 +17,6 @@
 package com.android.server.healthconnect.permission;
 
 import static android.Manifest.permission.INTERACT_ACROSS_USERS_FULL;
-import static android.content.pm.PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
@@ -312,7 +311,7 @@ public final class HealthConnectPermissionHelper {
                             mContext);
         } catch (IllegalArgumentException e) {
             // If the package can't be found, be conservative and assume they
-            // are requesting a health permission.
+            // are explicitly requesting a health permission.
             return true;
         }
         Set<String> requestedPermissions = new ArraySet<>(packageInfo.requestedPermissions);
@@ -328,6 +327,10 @@ public final class HealthConnectPermissionHelper {
             return false;
         }
 
+        if (!canPotentiallyBeSplitPermissions(requestedHealthPermissions)
+                || packageInfo.applicationInfo == null) {
+            return true;
+        }
         // Check the permission flags to see if these permissions are requested
         // as a result of a split-permission due to a platform upgrade.
         Map<String, Integer> permissionFlags;
@@ -342,11 +345,13 @@ public final class HealthConnectPermissionHelper {
 
         // Permissions that aren't from split permission are explicitly
         // requested by the app.
+        int targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
         return requestedHealthPermissions.stream()
                 .anyMatch(
                         requestedPermission ->
                                 !isFromSplitPermission(
-                                        permissionFlags.getOrDefault(requestedPermission, 0)));
+                                        permissionFlags.getOrDefault(requestedPermission, 0),
+                                        targetSdkVersion));
     }
 
     /** Returns true if we should enforce permission usage intent for this package. */
@@ -394,8 +399,17 @@ public final class HealthConnectPermissionHelper {
      * Returns true if {@code permissionFlag} indicates the permission is implicit from permission
      * split.
      */
-    public static boolean isFromSplitPermission(int permissionFlag) {
-        return (permissionFlag & FLAG_PERMISSION_REVOKE_WHEN_REQUESTED) != 0;
+    public static boolean isFromSplitPermission(int permissionFlag, int targetSdk) {
+        return (targetSdk >= Build.VERSION_CODES.M)
+                ? (permissionFlag & PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED) != 0
+                : (permissionFlag & PackageManager.FLAG_PERMISSION_REVIEW_REQUIRED) != 0;
+    }
+
+    private static boolean canPotentiallyBeSplitPermissions(List<String> permissions) {
+        return (permissions.size() == 1 && permissions.contains(HealthPermissions.READ_HEART_RATE))
+                || (permissions.size() == 2
+                        && permissions.contains(HealthPermissions.READ_HEART_RATE)
+                        && permissions.contains(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND));
     }
 
     /**
@@ -425,7 +439,8 @@ public final class HealthConnectPermissionHelper {
         }
 
         // BODY_SENSORS permission split only applies to apps targeting SDK < B.
-        if (packageInfo.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.BAKLAVA) {
+        int targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
+        if (targetSdkVersion >= Build.VERSION_CODES.BAKLAVA) {
             return false;
         }
 
@@ -444,7 +459,7 @@ public final class HealthConnectPermissionHelper {
 
         // Check if given permission is from a split-permission.
         int permissionFlag = permissionFlags.getOrDefault(permissionName, 0);
-        return isFromSplitPermission(permissionFlag);
+        return isFromSplitPermission(permissionFlag, targetSdkVersion);
     }
 
     /** Returns if the app is targeting SDK 35 and requesting the given permission. */

@@ -74,6 +74,8 @@ public class AppInfoHelperTest {
         when(mContext.createContextAsUser(any(), anyInt())).thenReturn(mContext);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
 
+        when(mPackageManager.getDefaultActivityIcon()).thenReturn(mDrawable);
+
         when(mDrawable.getIntrinsicHeight()).thenReturn(200);
         when(mDrawable.getIntrinsicWidth()).thenReturn(200);
 
@@ -82,6 +84,7 @@ public class AppInfoHelperTest {
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
+                        .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
@@ -94,42 +97,73 @@ public class AppInfoHelperTest {
     }
 
     @Test
-    public void testAddOrUpdateAppInfoIfNotInstalled_withoutIcon_getIconFromPackageName()
+    public void testUpdateAppInfoIfNotInstalled_withoutIcon_getIconFromPackageName()
             throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled();
-        when(mPackageManager.getApplicationIcon(TEST_PACKAGE_NAME)).thenReturn(mDrawable);
+        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
 
-        mAppInfoHelper.addOrUpdateAppInfoIfNotInstalled(
-                TEST_PACKAGE_NAME, TEST_APP_NAME, null, /* onlyReplace= */ false);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
 
         verify(mPackageManager).getApplicationIcon(TEST_PACKAGE_NAME);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName())
+                .isEqualTo(TEST_APP_NAME);
     }
 
     @Test
-    public void testAddOrUpdateAppInfoIfNotInstalled_withoutIcon_getDefaultIconIfPackageIsNotFound()
+    public void testUpdateAppInfoIfNotInstalled_withoutIcon_getDefaultIconIfPackageIsNotFound()
             throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled();
-        when(mPackageManager.getApplicationIcon(TEST_PACKAGE_NAME))
-                .thenThrow(new PackageManager.NameNotFoundException());
-        when(mPackageManager.getDefaultActivityIcon()).thenReturn(mDrawable);
+        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
 
-        mAppInfoHelper.addOrUpdateAppInfoIfNotInstalled(
-                TEST_PACKAGE_NAME, TEST_APP_NAME, null, /* onlyReplace= */ false);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
 
         verify(mPackageManager).getDefaultActivityIcon();
+        assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName())
+                .isEqualTo(TEST_APP_NAME);
     }
 
     @Test
-    public void testAddOrUpdateAppInfoIfNotInstalled_appInstalled_noChangeMade()
+    public void testUpdateAppInfoIfNotInstalled_appInstalled_noChangeMade()
             throws PackageManager.NameNotFoundException {
         setAppAsInstalled();
-        when(mPackageManager.getApplicationIcon(TEST_PACKAGE_NAME)).thenReturn(mDrawable);
+        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
 
-        mAppInfoHelper.addOrUpdateAppInfoIfNotInstalled(
-                TEST_PACKAGE_NAME, TEST_APP_NAME, null, /* onlyReplace= */ false);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
 
         verify(mPackageManager, times(1)).getApplicationInfo(eq(TEST_PACKAGE_NAME), any());
         verify(mPackageManager, times(0)).getApplicationIcon(TEST_PACKAGE_NAME);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName()).isNull();
+    }
+
+    @Test
+    public void testRestoreAppInfo_appNotInstalled_updatesName()
+            throws PackageManager.NameNotFoundException {
+        setAppAsNotInstalled();
+        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+
+        mAppInfoHelper.restoreAppInfo(TEST_PACKAGE_NAME, TEST_APP_NAME);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName())
+                .isEqualTo(TEST_APP_NAME);
+    }
+
+    @Test
+    public void testRestoreAppInfo_appNotInstalled_noPreviousEntry_addsEntry()
+            throws PackageManager.NameNotFoundException {
+        setAppAsNotInstalled();
+
+        mAppInfoHelper.restoreAppInfo(TEST_PACKAGE_NAME, TEST_APP_NAME);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName())
+                .isEqualTo(TEST_APP_NAME);
+    }
+
+    @Test
+    public void testRestoreAppInfo_appInstalled_noChangeMade()
+            throws PackageManager.NameNotFoundException {
+        setAppAsInstalled();
+        mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
+
+        mAppInfoHelper.restoreAppInfo(TEST_PACKAGE_NAME, TEST_APP_NAME);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName()).isNull();
     }
 
     @Test
@@ -137,11 +171,10 @@ public class AppInfoHelperTest {
             testAddAppInfoIfNoRecordExists_appNotInstalledNoRecordExists_successfullyAddsRecord()
                     throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled();
-        when(mPackageManager.getApplicationIcon(TEST_PACKAGE_NAME)).thenReturn(mDrawable);
 
         assertThat(doesRecordExistForPackage()).isFalse();
 
-        mAppInfoHelper.addOrUpdateAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME, TEST_APP_NAME);
+        mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME, TEST_APP_NAME);
 
         assertThat(doesRecordExistForPackage()).isTrue();
     }
@@ -150,12 +183,11 @@ public class AppInfoHelperTest {
     public void testAddAppInfoIfNoRecordExists_appInstalledNoRecordExists_noNewRecordAdded()
             throws PackageManager.NameNotFoundException {
         setAppAsInstalled();
-        when(mPackageManager.getApplicationIcon(TEST_PACKAGE_NAME)).thenReturn(mDrawable);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
 
         assertThat(doesRecordExistForPackage()).isTrue();
 
-        mAppInfoHelper.addOrUpdateAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME, TEST_APP_NAME);
+        mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME, TEST_APP_NAME);
 
         verify(mPackageManager, times(0)).getApplicationInfo(eq(TEST_PACKAGE_NAME), any());
         verify(mPackageManager, times(0)).getApplicationIcon(TEST_PACKAGE_NAME);
@@ -163,6 +195,8 @@ public class AppInfoHelperTest {
 
     private void setAppAsNotInstalled() throws PackageManager.NameNotFoundException {
         when(mPackageManager.getApplicationInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenThrow(new PackageManager.NameNotFoundException());
+        when(mPackageManager.getApplicationIcon(TEST_PACKAGE_NAME))
                 .thenThrow(new PackageManager.NameNotFoundException());
     }
 
@@ -173,6 +207,7 @@ public class AppInfoHelperTest {
 
         when(mPackageManager.getApplicationInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenReturn(expectedAppInfo);
+        when(mPackageManager.getApplicationIcon(TEST_PACKAGE_NAME)).thenReturn(mDrawable);
     }
 
     private boolean doesRecordExistForPackage() {

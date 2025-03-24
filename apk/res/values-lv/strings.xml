@@ -19,6 +19,8 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"Pārvaldiet lietotņu piekļuvi veselības datiem."</string>
+    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Atļaujas un dati"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Pārvaldiet ierīcē saglabātos veselības un fitnesa datus un kontrolējiet, kuras lietotnes tiem var piekļūt."</string>
     <string name="data_title" msgid="4456619761533380816">"Dati un piekļuve"</string>
@@ -635,7 +637,7 @@
     <string name="floors_climbed" msgid="7483572478744998930">"{count,plural, =1{1 stāvs}zero{# stāvu}one{# stāvs}other{# stāvi}}"</string>
     <string name="elevation_meters" msgid="5099783382361572761">"{count,plural, =1{1 m}zero{# m}one{# m}other{# m}}"</string>
     <string name="elevation_meters_long" msgid="3163136353148567981">"{count,plural, =1{1 metrs}zero{# metru}one{# metrs}other{# metri}}"</string>
-    <string name="cycling_rpm" msgid="2271215098150068276">"{count,plural, =1{1 elpas v./min}zero{# elpas v./min}one{# elpas v./min}other{# elpas v./min}}"</string>
+    <string name="cycling_rpm" msgid="2271215098150068276">"{count,plural, =1{1 rpm}zero{# rpm}one{# rpm}other{# rpm}}"</string>
     <string name="cycling_rpm_long" msgid="4914848042733587007">"{count,plural, =1{1 apgrieziens minūtē}zero{# apgriezienu minūtē}one{# apgrieziens minūtē}other{# apgriezieni minūtē}}"</string>
     <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"<xliff:g id="MIN">%1$s</xliff:g>–<xliff:g id="MAX">%2$s</xliff:g>"</string>
     <string name="sexual_activity_protected" msgid="4259473257597274326">"Aizsargāts"</string>
@@ -897,7 +899,7 @@
     <string name="meal_name" msgid="6060648788040408308">"Nosaukums"</string>
     <string name="gram_short_format" msgid="2355009811799735134">"{count,plural, =1{1 g}zero{# g}one{# g}other{# g}}"</string>
     <string name="gram_long_format" msgid="6160392101513066663">"{count,plural, =1{1 grams}zero{# gramu}one{# grams}other{# grami}}"</string>
-    <string name="respiratory_rate_value" msgid="4546418213418344364">"{count,plural, =1{1 elpas v./min}zero{# elpas v./min}one{# elpas v./min}other{# elpas v./min}}"</string>
+    <string name="respiratory_rate_value" msgid="4546418213418344364">"{count,plural, =1{1 rpm}zero{# rpm}one{# rpm}other{# rpm}}"</string>
     <string name="respiratory_rate_value_long" msgid="3822748008700697049">"{count,plural, =1{1 elpas vilciens minūtē}zero{# elpas vilcienu minūtē}one{# elpas vilciens minūtē}other{# elpas vilcieni minūtē}}"</string>
     <string name="kilograms_short_label" msgid="9098342853218050689">"{count,plural, =1{1 kg}zero{# kg}one{# kg}other{# kg}}"</string>
     <string name="pounds_short_label" msgid="6256277330455003180">"{count,plural, =1{1 mārc.}zero{# mārc.}one{# mārc.}other{# mārc.}}"</string>

@@ -51,7 +51,7 @@ import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.health.connect.datatypes.units.Energy;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -78,7 +78,7 @@ public final class TotalCaloriesAggregationTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Before

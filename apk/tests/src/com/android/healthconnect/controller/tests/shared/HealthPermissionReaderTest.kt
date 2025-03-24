@@ -2,6 +2,8 @@ package com.android.healthconnect.controller.tests.shared
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED
+import android.content.pm.PackageManager.FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED
 import android.health.connect.HealthPermissions
 import android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS
 import android.health.connect.HealthPermissions.READ_PLANNED_EXERCISE
@@ -9,6 +11,7 @@ import android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE
 import android.health.connect.HealthPermissions.WRITE_PLANNED_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE
 import android.os.Build
+import android.os.Process
 import android.permission.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
@@ -284,6 +287,49 @@ class HealthPermissionReaderTest {
                 MANAGE_HEALTH_PERMISSIONS,
             )
         }
+
+    // Still need the SDK version check here because @RequiresFlagsEnabled
+    // won't work on older platforms where the flags aren't defined (b/383440585).
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @RequiresFlagsEnabled(
+        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+        Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED,
+    )
+    fun getAppsWithHealthPermissions_handHeldDevices_returnWithIsSystemApp() = runTest {
+        assumeFalse(context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH))
+        clearFlag(
+            BODY_SENSORS_TEST_APP_PACKAGE_NAME,
+            HealthPermissions.READ_HEART_RATE,
+            FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED,
+        )
+        clearFlag(
+            BODY_SENSORS_TEST_APP_PACKAGE_NAME,
+            HealthPermissions.READ_HEART_RATE,
+            FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED,
+        )
+        clearFlag(
+            BODY_SENSORS_TEST_APP_PACKAGE_NAME,
+            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+            FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED,
+        )
+        clearFlag(
+            BODY_SENSORS_TEST_APP_PACKAGE_NAME,
+            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+            FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED,
+        )
+
+        runWithShellPermissionIdentity(
+            {
+                val appsWithHealthPermissions = permissionReader.getAppsWithHealthPermissions()
+                assertThat(appsWithHealthPermissions)
+                    .containsEntry(BODY_SENSORS_TEST_APP_PACKAGE_NAME, true)
+                assertThat(appsWithHealthPermissions).containsEntry(TEST_APP_PACKAGE_NAME, false)
+                assertThat(appsWithHealthPermissions).containsEntry(TEST_APP_PACKAGE_NAME_2, false)
+            },
+            MANAGE_HEALTH_PERMISSIONS,
+        )
+    }
 
     @Test
     fun getAppsWithHealthPermissions_returnsDistinctApps() = runTest {
@@ -659,5 +705,17 @@ class HealthPermissionReaderTest {
 
     private fun String.toHealthPermission(): HealthPermission {
         return HealthPermission.fromPermissionString(this)
+    }
+
+    private fun clearFlag(app: String, permission: String, flag: Int) {
+        runWithShellPermissionIdentity {
+            context.packageManager.updatePermissionFlags(
+                permission,
+                app,
+                flag,
+                0,
+                Process.myUserHandle(),
+            )
+        }
     }
 }

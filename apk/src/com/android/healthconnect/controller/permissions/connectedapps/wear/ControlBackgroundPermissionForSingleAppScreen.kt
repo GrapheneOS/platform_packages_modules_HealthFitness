@@ -18,11 +18,14 @@
 package com.android.healthconnect.controller.permissions.connectedapps.wear
 
 import android.icu.text.ListFormatter
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -111,6 +114,7 @@ fun ControlBackgroundReadForSingleAppScreen(
                 label = stringResource(R.string.manage_fitness_and_wellness_permissions),
                 labelMaxLines = 3,
                 onClick = { onAppInfoPermissionClick() },
+                modifier = Modifier.padding(top = 8.dp),
             )
         }
     }

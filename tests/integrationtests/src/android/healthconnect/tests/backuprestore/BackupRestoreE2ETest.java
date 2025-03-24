@@ -53,6 +53,7 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Energy;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.cts.utils.DataFactory;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
 import android.os.ParcelFileDescriptor;
 import android.os.UserHandle;
@@ -126,7 +127,7 @@ public class BackupRestoreE2ETest {
 
     @Before
     public void setUp() throws Exception {
-        if (!TestUtils.isHealthConnectFullySupported()) {
+        if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
             return;
         }
         mBackupRestoreApkPackageName = getBackupRestoreApkPackageName();
@@ -156,7 +157,7 @@ public class BackupRestoreE2ETest {
     @RequiresFlagsDisabled(Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_D2D)
     public void testBackupThenRestore_over5000MedicalResources_expectDataIsRestoredCorrectly()
             throws Exception {
-        if (!TestUtils.isHealthConnectFullySupported()) {
+        if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
             return;
         }
 
@@ -196,7 +197,7 @@ public class BackupRestoreE2ETest {
     @Test
     public void testBackupThenRestore_over2000Records_expectDataIsRestoredCorrectly()
             throws Exception {
-        if (!TestUtils.isHealthConnectFullySupported()) {
+        if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
             return;
         }
         int numOfRecords = 2050;
@@ -221,7 +222,7 @@ public class BackupRestoreE2ETest {
     @Test
     public void testBackupThenRestore_trainingPlans_expectDataIsRestoredCorrectly()
             throws Exception {
-        if (!TestUtils.isHealthConnectFullySupported()) {
+        if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
             return;
         }
         DataOrigin dataOrigin = DataFactory.getDataOrigin(mContext.getPackageName());

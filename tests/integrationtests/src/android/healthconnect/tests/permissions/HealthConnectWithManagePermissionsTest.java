@@ -40,6 +40,7 @@ import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
 import android.healthconnect.tests.IntegrationTestUtils;
 import android.os.Build;
@@ -763,7 +764,7 @@ public class HealthConnectWithManagePermissionsTest {
 
     @Test
     public void testPermissionApis_migrationInProgress_apisBlocked() throws Exception {
-        assumeTrue(TestUtils.isHealthConnectFullySupported());
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
         runWithShellPermissionIdentity(
                 IntegrationTestUtils::startMigration,
                 Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA);

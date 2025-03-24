@@ -26,6 +26,7 @@ import android.healthconnect.cts.lib.UiTestUtils.verifyTextNotFound
 import android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION
 import android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest
 import android.healthconnect.cts.utils.DataFactory.getEmptyMetadata
+import android.healthconnect.cts.utils.DeviceSupportUtils
 import android.healthconnect.cts.utils.TestUtils
 import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
@@ -54,7 +55,7 @@ class HomeFragmentTest : HealthConnectBaseTest() {
         @JvmStatic
         @BeforeClass
         fun setup() {
-            if (!TestUtils.isHealthConnectFullySupported()) {
+            if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
                 return
             }
 
@@ -70,7 +71,7 @@ class HomeFragmentTest : HealthConnectBaseTest() {
         @JvmStatic
         @AfterClass
         fun teardown() {
-            if (!TestUtils.isHealthConnectFullySupported()) {
+            if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
                 return
             }
             TestUtils.deleteAllStagedRemoteData()

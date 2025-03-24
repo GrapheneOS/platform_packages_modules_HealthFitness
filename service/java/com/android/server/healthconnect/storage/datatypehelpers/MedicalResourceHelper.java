@@ -66,11 +66,11 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.TransactionManager.RunnableWithReturn;
-import com.android.server.healthconnect.storage.request.AggregateTableRequest;
 import com.android.server.healthconnect.storage.request.CreateIndexRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
@@ -727,7 +727,7 @@ public final class MedicalResourceHelper {
      * MedicalResourceHelper#getMedicalResourceTypeToDataSourceIdsMap}.
      *
      * <p>"GROUP BY" is not supported in {@link ReadTableRequest} and should be achieved via {@link
-     * AggregateTableRequest}. But the {@link AggregateTableRequest} is too complicated for our
+     * AggregateRecordRequest}. But the {@link AggregateRecordRequest} is too complicated for our
      * simple use case here (requiring {@link RecordHelper}). Thus we just build and return raw SQL
      * query which appends the "GROUP BY" clause directly.
      */

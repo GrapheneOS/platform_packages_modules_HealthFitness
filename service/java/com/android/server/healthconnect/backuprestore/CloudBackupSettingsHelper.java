@@ -74,8 +74,8 @@ public final class CloudBackupSettingsHelper {
     public Settings collectUserSettings() {
         Settings.Builder builder =
                 Settings.newBuilder()
-                        .putAllPriorityList(getPriorityList())
                         .putAllAppInfo(getAppInfo())
+                        .putAllPriorityList(getPriorityList())
                         .setAutoDeleteFrequency(getAutoDeleteSetting())
                         .setEnergyUnitSetting(getEnergyPreference())
                         .setTemperatureUnitSetting(getTemperaturePreference())
@@ -135,7 +135,7 @@ public final class CloudBackupSettingsHelper {
             String packageName = appInfoEntry.getKey();
             AppInfo appInfo = appInfoEntry.getValue();
             String appName = appInfo.hasAppName() ? appInfo.getAppName() : null;
-            mAppInfoHelper.addOrUpdateAppInfoIfNoAppInfoEntryExists(packageName, appName);
+            mAppInfoHelper.restoreAppInfo(packageName, appName);
         }
     }
 

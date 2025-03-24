@@ -112,44 +112,108 @@ constructor(
      * @return a map of apps to a boolean representing whether this app is a system app
      */
     fun getAppsWithHealthPermissions(): Map<String, Boolean> {
-        if (
+        return if (
             context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
                 Flags.replaceBodySensorPermissionEnabled()
         ) {
-            // On Wear, do not depend on intent filter, instead, query apps by requested permissions
-            // and filter out system apps.
-            return getPackagesRequestingSystemHealthPermissions()
+            // On Wear, do not depend on intent filter, instead, query apps by requested
+            // permissions.
+            getPackagesRequestingSystemHealthPermissions()
+        } else {
+            // On handheld devices, require intent filter or split permission.
+            getPackagesRequestingHealthPermissions()
         }
-        return try {
-            val healthApps = mutableListOf<String>()
-            healthApps.addAll(
-                appsWithDeclaredIntent().filter { getValidHealthPermissions(it).isNotEmpty() }
+    }
+
+    /**
+     * Identifies apps that have health permissions requested.
+     *
+     * This function queries all apps and search for non-system apps that have requested at least
+     * one health permissions. This function relies on either health rationale intent filter or
+     * split permission.
+     *
+     * @return a map from app package names that have requested at least one health permission to a
+     *   boolean representing they are system apps
+     */
+    private fun getPackagesRequestingHealthPermissions(): Map<String, Boolean> {
+        val packages =
+            context.packageManager.getInstalledPackagesAsUser(
+                PackageManager.GET_PERMISSIONS,
+                Process.myUserHandle().identifier,
             )
-            if (Flags.replaceBodySensorPermissionEnabled()) {
-                healthApps.addAll(getPackagesRequestingSplitBodySensorPermissions())
-            }
-            // TODO: b/397634304 - Support show/hide system button on Phone.
-            healthApps.distinct().associateWith { false }
-        } catch (e: Exception) {
-            emptyMap()
+        // TODO: b/402532889 - Retrieve intent filter from packageInfo
+        val appsWithHealthIntent = appsWithDeclaredIntent()
+        val healthPermissions = getHealthPermissions()
+        val healthApps = mutableMapOf<String, Boolean>()
+
+        for (info in packages) {
+            val packageName = info.packageName
+            val hasIntentFilter = appsWithHealthIntent.contains(packageName)
+            val requestedPermissions =
+                info.requestedPermissions?.filter { it in healthPermissions } ?: continue
+            if (requestedPermissions.isEmpty()) continue
+
+            // Select the permissions we will later check flags for.
+            val permissionsToCheckFlags =
+                when {
+                    hasIntentFilter -> filterInvalidAdditionalPermissions(requestedPermissions)
+                    Flags.replaceBodySensorPermissionEnabled() &&
+                        requestedPermissions.size == 1 &&
+                        requestedPermissions.contains(HealthPermissions.READ_HEART_RATE) ->
+                        requestedPermissions
+                    Flags.replaceBodySensorPermissionEnabled() &&
+                        requestedPermissions.size == 2 &&
+                        requestedPermissions.contains(HealthPermissions.READ_HEART_RATE) &&
+                        requestedPermissions.contains(
+                            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND
+                        ) -> requestedPermissions
+                    else -> continue
+                }
+            if (permissionsToCheckFlags.isEmpty()) continue
+
+            val permissionToFlags =
+                getHealthPermissionsFlagsUseCase(packageName, permissionsToCheckFlags)
+
+            // Check if split permission has right flags.
+            if (
+                !hasIntentFilter &&
+                    permissionsToCheckFlags.any {
+                        permissionToFlags[it]?.and(
+                            PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED
+                        ) == 0
+                    }
+            )
+                continue
+
+            // Check if this app is a system app.
+            val isSystem =
+                permissionsToCheckFlags.all { permission ->
+                    val index = info.requestedPermissions!!.indexOf(permission)
+                    !isUserSensitive(
+                        permissionToFlags[permission],
+                        info.requestedPermissionsFlags?.getOrNull(index),
+                    )
+                }
+            healthApps[packageName] = isSystem
         }
+
+        return healthApps
     }
 
     /**
      * Identifies apps that have system health permissions requested.
      *
      * This function queries all apps and search for non-system apps that have requested at least
-     * one health permissions. This function does not rely on health rationale intent filter. The
-     * processing time of this function will be longer than the intent filter approach.
+     * one health permissions. This function does not rely on health rationale intent filter.
      *
-     * @return a map from app package names that have requested at least one health permission to a
-     *   boolean representing they are system apps
+     * @return a map from app package names that have requested at least one system health
+     *   permission to a boolean representing they are system apps
      */
     private fun getPackagesRequestingSystemHealthPermissions(): Map<String, Boolean> {
         val packages =
             context.packageManager.getInstalledPackagesAsUser(
                 PackageManager.GET_PERMISSIONS,
-                Process.myUserHandle().getIdentifier(),
+                Process.myUserHandle().identifier,
             )
         val healthApps = mutableMapOf<String, Boolean>()
         val systemHealthPermissions = getSystemHealthPermissions()
@@ -173,8 +237,7 @@ constructor(
                 continue
             }
 
-            // Only display non-system apps who are considered user-sensitive for health permission
-            // group. Use permission flags to determine whether an app is user-sensitive.
+            // Use permission flags to determine whether an app is user-sensitive.
             // This is a HealthConnect service call to get permission flags.
             val allPermFlags =
                 getHealthPermissionsFlagsUseCase(
@@ -194,168 +257,47 @@ constructor(
     }
 
     /**
-     * Identifies apps that are requesting health permissions as a result of a split-permission
-     * upgrade from their use of the legacy body sensors permission.
-     *
-     * This function queries all apps and search for non-system apps that have requested at least
-     * one health permissions. This function does not rely on health rationale intent filter. The
-     * processing time of this function will be longer than the intent filter approach.
-     *
-     * @return a list of apps that use health permissions as a results of a split-permission upgrade
-     *   from the legacy body sensors permission.
-     */
-    private fun getPackagesRequestingSplitBodySensorPermissions(): List<String> {
-        val packages =
-            context.packageManager.getInstalledPackagesAsUser(
-                PackageManager.GET_PERMISSIONS,
-                Process.myUserHandle().getIdentifier(),
-            )
-        val healthPermissions = getHealthPermissions()
-        val healthApps = mutableListOf<String>()
-
-        for (info in packages) {
-            val splitPermissionAppClassification =
-                getSplitPermissionAppClassification(info, healthPermissions)
-            if (
-                splitPermissionAppClassification ==
-                    SplitPermissionAppClassification.NOT_SPLIT_PERMISSION_APP
-            ) {
-                continue
-            }
-            // TODO: b/379937107 - For now, filter out the system apps.
-            if (
-                splitPermissionAppClassification ==
-                    SplitPermissionAppClassification.SPLIT_PERMISSION_SYSTEM_APP
-            ) {
-                continue
-            }
-
-            healthApps.add(info.packageName)
-        }
-        return healthApps
-    }
-
-    /**
      * Returns whether the app is considered a "split-permission" app (i.e. an app that is only
      * using health permissions as a result of a split-permission auto-migration of the legacy
      * body-sensor permission).
      */
     public fun isBodySensorSplitPermissionApp(packageName: String): Boolean {
-        if (!Flags.replaceBodySensorPermissionEnabled()) {
-            return false
-        }
-
-        try {
-            val appInfo =
+        if (!Flags.replaceBodySensorPermissionEnabled()) return false
+        return try {
+            val packageInfo =
                 context.packageManager.getPackageInfo(
                     packageName,
-                    PackageInfoFlags.of(PACKAGE_INFO_PERMISSIONS_FLAG),
+                    PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong()),
                 )
+            val requestedPermissions = packageInfo.requestedPermissions?.toList() ?: return false
             val healthPermissions = getHealthPermissions()
-            val splitPermissionAppClassification =
-                getSplitPermissionAppClassification(appInfo, healthPermissions)
-            return splitPermissionAppClassification !=
-                SplitPermissionAppClassification.NOT_SPLIT_PERMISSION_APP
+            val filteredPermissions = requestedPermissions.filter { it in healthPermissions }
+
+            if (filteredPermissions.isEmpty()) {
+                return false
+            }
+
+            val canPotentiallyBeSplitPermissions =
+                when (filteredPermissions.size) {
+                    1 -> filteredPermissions.contains(HealthPermissions.READ_HEART_RATE)
+                    2 ->
+                        filteredPermissions.contains(HealthPermissions.READ_HEART_RATE) &&
+                            filteredPermissions.contains(
+                                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND
+                            )
+                    else -> false
+                }
+
+            if (!canPotentiallyBeSplitPermissions) {
+                return false
+            }
+
+            getHealthPermissionsFlagsUseCase(packageName, filteredPermissions).values.all { flags ->
+                flags?.and(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED) ==
+                    PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED
+            }
         } catch (e: NameNotFoundException) {
-            return false
-        }
-    }
-
-    enum class SplitPermissionAppClassification {
-        NOT_SPLIT_PERMISSION_APP,
-        SPLIT_PERMISSION_SYSTEM_APP,
-        SPLIT_PERMISSION_NON_SYSTEM_APP,
-    }
-
-    /** Returns the split-permission classification of the app. */
-    private fun getSplitPermissionAppClassification(
-        info: PackageInfo,
-        healthPermissions: List<String>,
-    ): SplitPermissionAppClassification {
-        val packageName = info.packageName
-        val requestedPermissions =
-            info.requestedPermissions
-                ?: return SplitPermissionAppClassification.NOT_SPLIT_PERMISSION_APP
-        val requestedHealthPermissions = requestedPermissions.filter { it in healthPermissions }
-
-        val indexOfReadHr = requestedPermissions.indexOf(HealthPermissions.READ_HEART_RATE)
-        // Split permission only applies to READ_HEART_RATE.
-        if (indexOfReadHr < 0) {
-            return SplitPermissionAppClassification.NOT_SPLIT_PERMISSION_APP
-        }
-
-        // If there are other health permissions (other than READ_HEALTH_DATA_IN_BACKGROUND)
-        // don't consider this a pure split-permission request.
-        if (requestedHealthPermissions.size > 2) {
-            return SplitPermissionAppClassification.NOT_SPLIT_PERMISSION_APP
-        }
-
-        val indexOfReadBackground =
-            requestedPermissions.indexOf(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
-        val declaresBackgroundPermission = indexOfReadBackground >= 0
-        // If there are two health permissions declared, make sure the other is
-        // READ_HEALTH_DATA_IN_BACKGROUND.
-        if (requestedHealthPermissions.size == 2 && !declaresBackgroundPermission) {
-            return SplitPermissionAppClassification.NOT_SPLIT_PERMISSION_APP
-        }
-
-        val permissionsToCheck =
-            if (declaresBackgroundPermission) {
-                listOf(
-                    HealthPermissions.READ_HEART_RATE,
-                    HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
-                )
-            } else {
-                listOf(HealthPermissions.READ_HEART_RATE)
-            }
-
-        // Check the READ_HEART_RATE permission flag to see if it's a split-permission.
-        val permissionToFlags = getHealthPermissionsFlagsUseCase(packageName, permissionsToCheck)
-
-        if (declaresBackgroundPermission) {
-            // READ_HEALTH_DATA_IN_BACKGROUND is not due to split-permission.
-            if (
-                permissionToFlags.get(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)?.let { flags
-                    ->
-                    (flags and PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED) == 0
-                } ?: true
-            ) {
-                return SplitPermissionAppClassification.NOT_SPLIT_PERMISSION_APP
-            }
-        }
-
-        // READ_HEART_RATE is not due to split-permission.
-        if (
-            permissionToFlags.get(HealthPermissions.READ_HEART_RATE)?.let { flags ->
-                (flags and PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED) == 0
-            } ?: true
-        ) {
-            return SplitPermissionAppClassification.NOT_SPLIT_PERMISSION_APP
-        }
-
-        // Filter out system apps.
-        val backgroundPermissionUserSensitive =
-            if (declaresBackgroundPermission) {
-                isUserSensitive(
-                    permissionToFlags[HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND],
-                    info.requestedPermissionsFlags?.getOrNull(indexOfReadBackground),
-                )
-            } else {
-                false
-            }
-
-        val heartRatePermissionUserSensitive =
-            isUserSensitive(
-                permissionToFlags[HealthPermissions.READ_HEART_RATE],
-                info.requestedPermissionsFlags?.getOrNull(indexOfReadHr),
-            )
-        val isSystemApp = !heartRatePermissionUserSensitive && !backgroundPermissionUserSensitive
-
-        // Made it through the gauntlet! This is a split-permission app.
-        return if (isSystemApp) {
-            SplitPermissionAppClassification.SPLIT_PERMISSION_SYSTEM_APP
-        } else {
-            SplitPermissionAppClassification.SPLIT_PERMISSION_NON_SYSTEM_APP
+            false
         }
     }
 
@@ -421,17 +363,24 @@ constructor(
      */
     fun getValidHealthPermissions(packageName: String): List<HealthPermission> {
         return try {
-            val permissions = getDeclaredHealthPermissions(packageName)
-            val declaredPermissions =
-                permissions.mapNotNull { permission -> parsePermission(permission) }
-            if (isPersonalHealthRecordEnabled()) {
-                maybeFilterOutAdditionalIfNotValid(declaredPermissions)
-            } else {
-                declaredPermissions
-            }
+            filterInvalidAdditionalPermissions(getDeclaredHealthPermissions(packageName))
+                .mapNotNull { permission -> parsePermission(permission) }
         } catch (e: NameNotFoundException) {
             emptyList()
         }
+    }
+
+    private fun filterInvalidAdditionalPermissions(
+        declaredPermissions: List<String>
+    ): List<String> {
+        val unfilteredPermissions = declaredPermissions.mapNotNull { parsePermission(it) }
+        val filteredPermissions =
+            if (isPersonalHealthRecordEnabled()) {
+                maybeFilterOutAdditionalIfNotValid(unfilteredPermissions)
+            } else {
+                unfilteredPermissions
+            }
+        return filteredPermissions.map { it.toString() }
     }
 
     /**

@@ -47,21 +47,20 @@ import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
 import android.healthconnect.cts.phr.utils.PhrDataFactory;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.net.Uri;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
-import android.util.Slog;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.modules.utils.testing.ExtendedMockitoRule.MockStatic;
 import com.android.modules.utils.testing.ExtendedMockitoRule.MockStaticClasses;
+import com.android.server.healthconnect.exportimport.ExportManager.ErrorReporter;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.logging.ExportImportLogger;
@@ -104,16 +103,14 @@ public class ExportManagerTest {
 
     @Rule(order = 2)
     public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+            new ExtendedMockitoRule.Builder(this).setStrictness(Strictness.LENIENT).build();
 
     @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
 
     @Rule
-    public AssumptionCheckerRule mSupportedHardwareRule =
+    public final AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     private Context mContext;
@@ -129,6 +126,7 @@ public class ExportManagerTest {
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private ExportImportLogger mExportImportLogger;
+    @Mock private ErrorReporter mErrorReporter;
 
     @Before
     public void setUp() throws Exception {
@@ -156,7 +154,8 @@ public class ExportManagerTest {
                         transactionManager,
                         healthConnectInjector.getExportImportNotificationSender(),
                         healthConnectInjector.getEnvironmentDataDirectory(),
-                        mExportImportLogger);
+                        mExportImportLogger,
+                        mErrorReporter);
 
         mPhrTestUtils = new PhrTestUtils(healthConnectInjector);
 
@@ -350,7 +349,7 @@ public class ExportManagerTest {
     }
 
     @Test
-    @MockStaticClasses({@MockStatic(Files.class), @MockStatic(Slog.class)})
+    @MockStaticClasses({@MockStatic(Files.class)})
     public void runExport_localExportFails_logsWithGenericError() throws IOException {
         when(Files.copy((Path) any(), any(), any())).thenThrow(new IOException("Copy failed"));
 
@@ -364,18 +363,12 @@ public class ExportManagerTest {
                         eq(/* timeToError= */ 0),
                         /* originalFileSizeKb= */ anyInt(),
                         /* compressedFileSizeKb= */ anyInt());
-        ExtendedMockito.verify(
-                () ->
-                        Slog.e(
-                                eq("HealthConnectExportImport"),
-                                eq("Failed to create local file for export"),
-                                any()),
-                times(1));
+        verify(mErrorReporter, times(1)).failed(eq(ErrorReporter.LOCAL_FILE), any(), anyInt());
     }
 
     @Test
     // Compressor is mocked so no zip file will be exported.
-    @MockStaticClasses({@MockStatic(Compressor.class), @MockStatic(Slog.class)})
+    @MockStaticClasses({@MockStatic(Compressor.class)})
     public void runExport_noCompressedFile_logsWithGenericError() {
         assertThat(mExportManager.runExport(mContext.getUser())).isFalse();
         // Time not recorded due to fake clock.
@@ -386,9 +379,7 @@ public class ExportManagerTest {
                         eq(/* timeToError= */ 0),
                         /* originalFileSizeKb= */ anyInt(),
                         /* compressedFileSizeKb= */ anyInt());
-        ExtendedMockito.verify(
-                () -> Slog.e(eq("HealthConnectExportImport"), eq("Failed to export to URI"), any()),
-                times(1));
+        verify(mErrorReporter, times(1)).failed(eq(ErrorReporter.URI_EXPORT), any(), anyInt());
     }
 
     @Test
@@ -423,7 +414,6 @@ public class ExportManagerTest {
     }
 
     @Test
-    @MockStatic(Slog.class)
     public void destinationUriDoesNotExist_exportFailsWithLostFileAccessError() {
         // Inserting multiple rows to vary the size for testing of size logging
         mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
@@ -449,13 +439,8 @@ public class ExportManagerTest {
                         eq(/* timeToError= */ 0),
                         /* originalFileSizeKb= */ anyInt(),
                         /* compressedFileSizeKb= */ anyInt());
-        ExtendedMockito.verify(
-                () ->
-                        Slog.e(
-                                eq("HealthConnectExportImport"),
-                                eq("Lost access to export location"),
-                                any()),
-                times(1));
+        verify(mErrorReporter, times(1))
+                .failed(eq(ErrorReporter.LOST_EXPORT_LOCATION_ACCESS), any(), anyInt());
     }
 
     @Test

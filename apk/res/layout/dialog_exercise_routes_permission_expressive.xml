@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2025 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/exercise_routes_permission_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="start"
+        android:paddingHorizontal="@dimen/spacing_large"
+        android:paddingVertical="@dimen/spacing_large">
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="4"
+            android:paddingBottom="@dimen/spacing_small"
+            android:singleLine="false"
+            android:text="@string/route_permissions_label"
+            android:textAppearance="?attr/textAppearanceExpressiveDialogTitle" />
+
+        <TextView
+            android:id="@+id/dialog_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/spacing_normal"
+            android:textAppearance="?attr/textAppearanceExpressiveDialogMessage" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_route_permission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radio_button_always_allow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/button_size"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="0dp"
+                android:text="@string/route_permissions_always_allow"
+                android:textAppearance="?attr/textAppearanceExpressiveRadioButton"  />
+
+            <RadioButton
+                android:id="@+id/radio_button_ask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/button_size"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="0dp"
+                android:text="@string/route_permissions_ask"
+                android:textAppearance="?attr/textAppearanceExpressiveRadioButton"  />
+
+            <RadioButton
+                android:id="@+id/radio_button_revoke"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/button_size"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="0dp"
+                android:text="@string/route_permissions_deny"
+                android:textAppearance="?attr/textAppearanceExpressiveRadioButton" />
+
+        </RadioGroup>
+    </LinearLayout>
+
+</ScrollView>

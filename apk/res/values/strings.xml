@@ -17,6 +17,7 @@
     <string name="app_label" description="Label shown on the system app launcher. Note: Health Connect is the brand. [CHAR_LIMIT=40]">Health&#160;Connect</string>
     <!-- Title shown for Health Connect [CHAR LIMIT=50] -->
     <string name="health_connect_summary" description="Health connect summary, which describes what user can do when they click Health Connect">Manage app access to health data</string>
+    <string name="health_connect_notification_channel_name" description="The main notification channel label shown in settings.">Updates and alerts</string>
     <!-- region Home screen -->
     <string name="permissions_and_data_header" description="Header for section listing actions for showing connected apps permissions and data screens [CHAR LIMIT=NONE] ">Permissions and data</string>
     <string name="home_subtitle" description="Description on the home screen of the app. [CHAR_LIMIT=NONE]">Manage the health and fitness data on your device, and control which apps can access it</string>
@@ -44,6 +45,11 @@
     <!--  endregion -->
 
     <!-- region Manage data -->
+    <string name="settings_manage_permission" description="Label for manage permissions in Settings. [CHAR_LIMIT=40]">Health&#160;Connect</string>
+    <string name="settings_combined_permissions" description="Label for view detailed fitness and medical permissions in Settings. [CHAR_LIMIT=40]">Health&#160;Connect</string>
+    <string name="settings_fitness_permissions" description="Label for view detailed fitness permissions in Settings. [CHAR_LIMIT=40]">Health&#160;Connect</string>
+    <string name="settings_medical_permissions" description="Label for view detailed medical permissions in Settings. [CHAR_LIMIT=40]">Health&#160;Connect</string>
+
     <string name="backup_title" description="Label for a button that takes the user to backup settings. [CHAR_LIMIT=40]">Backup</string>
     <string name="data_sources_and_priority_title" description="Label for a button that takes the user to app priority settings. [CHAR_LIMIT=40]">Data sources and priority</string>
     <string name="set_units_title" description="Label for a button that takes the user to unit settings. [CHAR_LIMIT=40]">Set units</string>
@@ -70,6 +76,7 @@
     <string name="recent_access_empty_state_description" description="Description of section shown when no apps have recently accessed health data [CHAR_LIMIT=NONE]">Apps which have recently accessed your data will automatically show here</string>
     <string name="recent_access_view_all_button" description="Label on a button leading to another screen showing all the writes and reads performed by connected apps in the last 24 hours. [CHAR LIMIT=50]">View all</string>
     <string name="recent_access_error" description="Text indicating to the user that there was an error while loading recent access [CHAR_LIMIT=NONE]">Could not load recent access</string>
+    <string name="recent_access_inactive_app" description="Text indicating that the app the user tried to click on is no longer available[CHAR_LIMIT=NONE]">This app is no longer available</string>
     <!--endregion-->
 
     <!--region Data categories  -->
@@ -505,16 +512,18 @@
     <string name="request_permissions_allow" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow</string>
     <string name="request_permissions_allow_all" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow all</string>
     <string name="request_permissions_dont_allow" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Don\'t allow</string>
-    <string name="request_permissions_data_access_type_read_write" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read or write to Health&#160;Connect</string>
-    <string name="request_permissions_data_access_type_read" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read from Health&#160;Connect</string>
-    <string name="request_permissions_data_access_type_write" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to write to Health&#160;Connect</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read or write to Health&#160;Connect</string>
+    <string name="request_fitness_permissions_data_access_type_read" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read from Health&#160;Connect</string>
+    <string name="request_fitness_permissions_data_access_type_write" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to write to Health&#160;Connect</string>
+    <string name="request_medical_permissions_data_access_type_read_write" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read or write to Health&#160;Connect</string>
+    <string name="request_medical_permissions_data_access_type_read" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read from Health&#160;Connect</string>
     <!--endregion-->
 
 
     <!-- region Fitness permission request -->
     <string name="request_permissions_header_time_frame_desc" description="Text describing the time frame of data which an app will be able to access. [CHAR_LIMIT=NONE]">If you give read access, the app can read new data and data from the past 30 days</string>
     <string name="request_permissions_header_time_frame_history_desc" description="Text describing the time frame of data which an app with history read permission will be able to access. [CHAR_LIMIT=NONE]">If you give read access, the app can read new and past data</string>
-    <string name="request_permissions_header_title" description="Title for screen to give permissions to an app to read or write users data. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">Allow <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> to access Health&#160;Connect?</string>
+    <string name="request_fitness_permissions_header_title" description="Title for screen to give permissions to an app to read or write users data. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">Allow <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> to access Health&#160;Connect?</string>
     <string name="request_permissions_with_medical_header_title" description="Title for screen to give permissions to an app which also has medical permissions to read or write users fitness data. Note: Health Connect is the brand. [CHAR_LIMIT=NONE]">Allow <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> to access fitness and wellness data?</string>
     <string name="request_permissions_rationale" description="Text informing the user that data they share with an app is covered by that app's data privacy policy. Has a link to the app's privacy policy. [CHAR_LIMIT=NONE]">You can learn how <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> handles your data in their <xliff:g example="privacy policy" id="privacy_policy_link">%2$s</xliff:g></string>
     <string name="request_permissions_privacy_policy" description="Link text that open's a third party app's data privacy policy [CHAR_LIMIT=NONE]">privacy policy</string>
@@ -575,7 +584,7 @@
     <string name="navigation_selected_day" description="Content description for button that contains selected day. [CHAR_LIMIT=NONE]">Selected day</string>
     <string name="navigation_previous_day" description="Content description for button that changes the current data view to the previous day [CHAR_LIMIT=NONE]">Previous day</string>
     <string name="default_error" description="Label shown when a user initiated action fails (e.g. deleting data) [CHAR_LIMIT=NONE]">Something went wrong. Please try again.</string>
-    <string name="unkwown_resource" description="Label shown when a medical data cannot be identified [CHAR_LIMIT=NONE]">Unknown Resource</string>
+    <string name="unkwown_resource" description="Label shown when a medical data cannot be identified [CHAR_LIMIT=NONE]">(No title)</string>
 
     <!-- endregion -->
 

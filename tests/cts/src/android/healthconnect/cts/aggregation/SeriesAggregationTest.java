@@ -56,7 +56,7 @@ import android.health.connect.datatypes.SpeedRecord;
 import android.health.connect.datatypes.units.Power;
 import android.health.connect.datatypes.units.Velocity;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -78,7 +78,7 @@ public class SeriesAggregationTest {
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Before

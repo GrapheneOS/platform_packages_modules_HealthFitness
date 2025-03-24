@@ -48,8 +48,8 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
         val view: View =
             layoutInflater.inflate(
                 if (SettingsThemeHelper.isExpressiveTheme(requireContext()))
-                    R.layout.dialog_expressive_layout
-                else R.layout.dialog_legacy_layout,
+                    R.layout.dialog_layout_expressive
+                else R.layout.dialog_layout_legacy,
                 null,
             )
         val title: TextView = view.findViewById(R.id.dialog_title)

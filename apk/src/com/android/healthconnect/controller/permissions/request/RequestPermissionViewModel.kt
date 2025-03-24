@@ -18,6 +18,7 @@
 
 package com.android.healthconnect.controller.permissions.request
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.health.connect.HealthPermissions
 import android.util.Log
@@ -45,9 +46,12 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Fi
 import com.android.healthconnect.controller.permissions.data.HealthPermission.MedicalPermission
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionState
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthfitness.flags.Flags
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -57,7 +61,9 @@ import kotlinx.coroutines.launch
 class RequestPermissionViewModel
 @Inject
 constructor(
+    @ApplicationContext private val context: Context,
     private val appInfoReader: AppInfoReader,
+    private val healthPermissionReader: HealthPermissionReader,
     private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
     private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase,
     private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
@@ -91,6 +97,8 @@ constructor(
 
     /** List of grantable [HealthPermissions]s */
     private val _healthPermissionsList = MutableLiveData<List<HealthPermission>>()
+    val grantableHealthPermissionsList: LiveData<List<HealthPermission>>
+        get() = _healthPermissionsList
 
     /** Screen states */
     private val _medicalScreenState =
@@ -421,7 +429,23 @@ constructor(
 
         historyAccessGranted =
             grantedPermissions.any { permission -> isHistoryReadPermission(permission) }
-        val validPermissions = loadDeclaredHealthPermissionUseCase.invoke(packageName)
+        var validPermissions = loadDeclaredHealthPermissionUseCase.invoke(packageName)
+        // On Wear, only the system permissions are considered valid to be requested.
+        // TODO: b/404305506 - Consider moving this filter upstream into HealthPermissionReader.
+        if (
+            context.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
+                Flags.replaceBodySensorPermissionEnabled()
+        ) {
+            var allowedPermissionsToRequest =
+                healthPermissionReader.getSystemHealthPermissions().toMutableList().also {
+                    it.add(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND)
+                }.toSet()
+
+            validPermissions =
+                validPermissions.filter { permission ->
+                    allowedPermissionsToRequest.contains(permission)
+                }
+        }
         anyMedicalPermissionsDeclared = validPermissions.any { isMedicalPermission(it) }
 
         val filteredPermissions =

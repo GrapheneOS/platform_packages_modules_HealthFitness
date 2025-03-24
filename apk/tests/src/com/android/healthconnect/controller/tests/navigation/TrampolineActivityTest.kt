@@ -28,8 +28,7 @@ import android.health.connect.HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS
 import android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_DATA
 import android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS
 import android.health.connect.HealthDataCategory
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
+import android.os.Build
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
@@ -42,9 +41,9 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.autodelete.AutoDeleteRange.*
 import com.android.healthconnect.controller.data.alldata.AllDataViewModel
 import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
@@ -52,18 +51,21 @@ import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiSt
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
 import com.android.healthconnect.controller.home.HomeViewModel
 import com.android.healthconnect.controller.migration.MigrationViewModel
-import com.android.healthconnect.controller.migration.MigrationViewModel.MigrationFragmentState.*
+import com.android.healthconnect.controller.migration.MigrationViewModel.MigrationFragmentState.WithData
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiError
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
 import com.android.healthconnect.controller.navigation.TrampolineActivity
+import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
+import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel
+import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -74,7 +76,6 @@ import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
-import com.android.healthfitness.flags.Flags
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -85,8 +86,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito
-import org.mockito.Mockito.*
+import org.mockito.Mockito.anyString
+import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
@@ -103,11 +104,15 @@ class TrampolineActivityTest {
 
     @BindValue
     val appPermissionViewModel: AppPermissionViewModel = mock(AppPermissionViewModel::class.java)
-    @BindValue val allDataViewModel: AllDataViewModel = Mockito.mock(AllDataViewModel::class.java)
+    @BindValue
+    val connectedAppsViewModel: ConnectedAppsViewModel = mock(ConnectedAppsViewModel::class.java)
+    @BindValue
+    val additionalAccessViewModel: AdditionalAccessViewModel =
+        mock(AdditionalAccessViewModel::class.java)
+    @BindValue val allDataViewModel: AllDataViewModel = mock(AllDataViewModel::class.java)
     @BindValue val homeViewModel: HomeViewModel = mock(HomeViewModel::class.java)
     @BindValue
-    val recentAccessViewModel: RecentAccessViewModel =
-        Mockito.mock(RecentAccessViewModel::class.java)
+    val recentAccessViewModel: RecentAccessViewModel = mock(RecentAccessViewModel::class.java)
     private val context = InstrumentationRegistry.getInstrumentation().context
 
     @Before
@@ -184,6 +189,24 @@ class TrampolineActivityTest {
         whenever(appPermissionViewModel.lastReadPermissionDisconnected).then {
             MutableLiveData(false)
         }
+        whenever(connectedAppsViewModel.connectedApps).then {
+            MutableLiveData(
+                listOf(
+                    ConnectedAppMetadata(
+                        TEST_APP,
+                        ConnectedAppStatus.ALLOWED,
+                        AppPermissionsType.FITNESS_PERMISSIONS_ONLY,
+                        accessDate,
+                    )
+                )
+            )
+        }
+        whenever(connectedAppsViewModel.disconnectAllState).then {
+            MutableLiveData(ConnectedAppsViewModel.DisconnectAllState.NotStarted)
+        }
+        whenever(additionalAccessViewModel.additionalAccessState).then {
+            MutableLiveData(AdditionalAccessViewModel.State())
+        }
         whenever(allDataViewModel.allData).then {
             MutableLiveData<AllDataViewModel.AllDataState>(
                 AllDataViewModel.AllDataState.WithData(
@@ -220,28 +243,29 @@ class TrampolineActivityTest {
     fun startingActivity_healthConnectNotAvailable_finishesActivity() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(false)
 
-        val scenario = launchActivityForResult<TrampolineActivity>(createStartIntent())
-
-        onIdle()
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        launchActivityForResult<TrampolineActivity>(createStartIntent()).use { scenario ->
+            onIdle()
+            assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        }
     }
 
     @Test
     fun startingActivity_noAction_finishesActivity() {
-        val scenario = launchActivityForResult<TrampolineActivity>(createStartIntent("no_action"))
-
-        onIdle()
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        launchActivityForResult<TrampolineActivity>(createStartIntent("no_action")).use { scenario
+            ->
+            onIdle()
+            assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        }
     }
 
     @Test
     fun homeSettingsAction_onboardingNotDone_redirectsToOnboarding() {
         showOnboarding(context, true)
 
-        launchActivityForResult<TrampolineActivity>(createStartIntent())
-
-        onIdle()
-        onView(withId(R.id.onboarding)).check(matches(isDisplayed()))
+        launchActivityForResult<TrampolineActivity>(createStartIntent()).use {
+            onIdle()
+            onView(withId(R.id.onboarding)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -249,42 +273,64 @@ class TrampolineActivityTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
 
         launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_HEALTH_HOME_SETTINGS))
-
-        onIdle()
-        // TODO (b/390212615) update once we can use settings flag
-        if (SettingsThemeHelper.isExpressiveTheme(context)) {
-            onView(withText("No recent access")).perform(scrollTo()).check(matches(isDisplayed()))
-        } else {
-            onView(withText("No apps recently accessed Health\u00A0Connect"))
-                .perform(scrollTo())
-                .check(matches(isDisplayed()))
-        }
-        onView(withText("Permissions and data")).check(matches(isDisplayed()))
+            .use {
+                onIdle()
+                // TODO (b/390212615) update once we can use settings flag
+                if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                    onView(withText("No recent access"))
+                        .perform(scrollTo())
+                        .check(matches(isDisplayed()))
+                } else {
+                    onView(withText("No apps recently accessed Health\u00A0Connect"))
+                        .perform(scrollTo())
+                        .check(matches(isDisplayed()))
+                }
+                onView(withText("Permissions and data")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
     fun manageHealthDataIntent_launchesDataManagementActivity_newIA() {
         // setup data management screen.
         launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_MANAGE_HEALTH_DATA))
-
-        onIdle()
-        onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("Steps")).check(matches(isDisplayed()))
+            .use {
+                onIdle()
+                onView(withText("Activity")).check(matches(isDisplayed()))
+                onView(withText("Steps")).check(matches(isDisplayed()))
+            }
     }
 
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    fun manageHealthPermissions_launchesSettingsActivity() {
+    fun manageHealthPermissions_launchesSettingsActivity_healthConnectBrand() {
         launchActivityForResult<TrampolineActivity>(
-            createStartIntent(ACTION_MANAGE_HEALTH_PERMISSIONS)
-        )
-
-        onView(
-                withText(
-                    "Apps with this permission can read and write your" +
-                        " health and fitness data."
-                )
+                createStartIntent(ACTION_MANAGE_HEALTH_PERMISSIONS)
             )
-            .check(matches(isDisplayed()))
+            .use {
+                onView(
+                        withText(
+                            "Apps with this permission can read and write your" +
+                                " health and fitness data."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+            }
+    }
+
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @Test
+    fun manageHealthPermissions_launchesSettingsActivity_healthFitnessBrand() {
+        launchActivityForResult<TrampolineActivity>(
+                createStartIntent(ACTION_MANAGE_HEALTH_PERMISSIONS)
+            )
+            .use {
+                onView(
+                        withText(
+                            "Apps with this permission can read and write your health, fitness and wellness data. This includes data tracked from your devices and data stored in Health Connect"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -294,10 +340,10 @@ class TrampolineActivityTest {
         whenever(appPermissionViewModel.showDisableExerciseRouteEvent)
             .thenReturn(MediatorLiveData(AppPermissionViewModel.DisableExerciseRouteDialogEvent()))
 
-        launchActivityForResult<TrampolineActivity>(intent)
-
-        onIdle()
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+        launchActivityForResult<TrampolineActivity>(intent).use {
+            onIdle()
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+        }
     }
 
     private fun createStartIntent(action: String = ACTION_HEALTH_HOME_SETTINGS): Intent {

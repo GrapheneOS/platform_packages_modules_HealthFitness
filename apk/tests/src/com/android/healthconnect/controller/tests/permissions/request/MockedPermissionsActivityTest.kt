@@ -34,6 +34,7 @@ import android.health.connect.HealthPermissions.READ_STEPS
 import android.health.connect.HealthPermissions.WRITE_DISTANCE
 import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA
+import android.os.Build
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
@@ -53,6 +54,7 @@ import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
@@ -377,8 +379,9 @@ class MockedPermissionsActivityTest {
         onView(withText("All health records")).check(matches(isDisplayed()))
     }
 
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Test
-    fun showFitnessPermissionRequest() {
+    fun showFitnessPermissionRequest_healthConnectBrand() {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
         }
@@ -406,6 +409,62 @@ class MockedPermissionsActivityTest {
         onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
             .check(matches(isDisplayed()))
         onView(withText("Choose data you want this app to read or write to Health Connect"))
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "If you give read access, the app can read new data and data from the past 30 days"
+                )
+            )
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                )
+            )
+            .check(matches(isDisplayed()))
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
+        onView(withText("Allow all")).check(matches(isDisplayed()))
+        onView(withId(androidx.preference.R.id.recycler_view))
+            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+        onView(withText("Steps")).check(matches(isDisplayed()))
+        onView(withText("Distance")).check(matches(isDisplayed()))
+    }
+
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @Test
+    fun showFitnessPermissionRequest_healthFitnessBrand() {
+        whenever(viewModel.permissionsActivityState).then {
+            MutableLiveData(PermissionsActivityState.ShowFitness)
+        }
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessReadWrite(
+                    appMetadata = appMetadata,
+                    fitnessPermissions =
+                        listOf(READ_STEPS, WRITE_DISTANCE).map {
+                            fromPermissionString(it) as HealthPermission.FitnessPermission
+                        },
+                    hasMedical = false,
+                    historyGranted = false,
+                )
+            )
+        }
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(FitnessPermission.fromPermissionString(READ_STEPS)))
+        }
+        whenever(viewModel.allFitnessPermissionsGranted).then { MutableLiveData(false) }
+        val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
+        val startActivityIntent = getPermissionScreenIntent(permissions)
+
+        launchActivityForResult<PermissionsActivity>(startActivityIntent)
+        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
+            .check(matches(isDisplayed()))
+        onView(
+                withText(
+                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                )
+            )
             .check(matches(isDisplayed()))
         onView(
                 withText(

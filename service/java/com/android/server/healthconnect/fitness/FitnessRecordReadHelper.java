@@ -127,16 +127,13 @@ public class FitnessRecordReadHelper {
                             callingPackageName,
                             Set.of(recordTypeId),
                             singletonList(readTableRequest),
-                            // TODO(b/366149374): Access logs are not logged for read by id request.
-                            /* shouldRecordAccessLog= */ false),
+                            shouldRecordAccessLog),
                     PageTokenWrapper.EMPTY_PAGE_TOKEN);
         }
 
         PageTokenWrapper pageToken =
                 PageTokenWrapper.from(request.getPageToken(), request.isAscending());
         int pageSize = request.getPageSize();
-        boolean isReadingSelfData =
-                request.getPackageFilters().equals(singletonList(callingPackageName));
 
         Pair<List<RecordInternal<?>>, PageTokenWrapper> readResult;
         try (Cursor cursor = transactionManager.read(readTableRequest)) {
@@ -157,7 +154,7 @@ public class FitnessRecordReadHelper {
                 callingPackageName,
                 Set.of(recordTypeId),
                 readResult.first,
-                shouldRecordAccessLog && !isReadingSelfData);
+                shouldRecordAccessLog);
 
         return readResult;
     }

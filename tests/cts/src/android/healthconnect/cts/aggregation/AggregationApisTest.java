@@ -70,7 +70,7 @@ import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.cts.utils.DeviceSupportUtils;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -83,6 +83,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
@@ -93,14 +94,12 @@ public class AggregationApisTest {
 
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private final String mPackageName = mContext.getPackageName();
-    private final ZoneOffset mCurrentZone =
-            ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
     private final TestAppProxy mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
-                    TestUtils::isHealthConnectFullySupported,
+                    DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
     @Before
@@ -206,18 +205,22 @@ public class AggregationApisTest {
         assertEnergyWithTolerance(responses.get(1).get(ACTIVE_CALORIES_TOTAL), 140.0);
         assertThat(responses.get(1).getStartTime()).isEqualTo(time);
         assertThat(responses.get(1).getEndTime()).isEqualTo(time.plus(2, HOURS));
-        assertThat(responses.get(1).getZoneOffset(ACTIVE_CALORIES_TOTAL)).isEqualTo(mCurrentZone);
+        assertThat(responses.get(1).getZoneOffset(ACTIVE_CALORIES_TOTAL))
+                .isEqualTo(ZoneId.systemDefault().getRules().getOffset(time));
         // hour 2-4, active energy = 210 / 3 + 15
         assertEnergyWithTolerance(responses.get(2).get(ACTIVE_CALORIES_TOTAL), 85.0);
         assertThat(responses.get(2).getStartTime()).isEqualTo(time.plus(2, HOURS));
         assertThat(responses.get(2).getEndTime()).isEqualTo(time.plus(4, HOURS));
-        assertThat(responses.get(2).getZoneOffset(ACTIVE_CALORIES_TOTAL)).isEqualTo(mCurrentZone);
+        assertThat(responses.get(2).getZoneOffset(ACTIVE_CALORIES_TOTAL))
+                .isEqualTo(ZoneId.systemDefault().getRules().getOffset(time));
     }
 
     @Test
     public void groupByDurationWithLocalFilter_distanceTotal() throws Exception {
         Instant time = Instant.now().minus(1, DAYS).truncatedTo(DAYS);
-        ZoneOffset dataZone = ZoneOffset.ofHours(3);
+        // Avoid the period where DTS transitions occur, as that may result in the local time
+        // filter being bound by a non-existent local time, which is hard to account for.
+        ZoneOffset dataZone = ZoneOffset.ofHours(4);
         LocalDateTime localTime = time.atOffset(dataZone).toLocalDateTime();
         insertRecords(
                 List.of(
@@ -239,9 +242,9 @@ public class AggregationApisTest {
         assertThat(responses.get(0).get(DISTANCE_TOTAL)).isNull();
         // using current time zone because there's no data in the bucket and default zone is used
         assertThat(responses.get(0).getStartTime())
-                .isEqualTo(localTime.minusMinutes(40).atOffset(mCurrentZone).toInstant());
+                .isEqualTo(localTime.minusMinutes(40).atZone(ZoneId.systemDefault()).toInstant());
         assertThat(responses.get(0).getEndTime())
-                .isEqualTo(localTime.minusMinutes(10).atOffset(mCurrentZone).toInstant());
+                .isEqualTo(localTime.minusMinutes(10).atZone(ZoneId.systemDefault()).toInstant());
         assertThat(responses.get(0).getZoneOffset(DISTANCE_TOTAL)).isNull();
         // (min -10) - (min 20), distance = 210 / 21 * 20
         assertLengthWithTolerance(responses.get(1).get(DISTANCE_TOTAL), 200.0);

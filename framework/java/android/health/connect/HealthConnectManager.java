@@ -129,6 +129,7 @@ import android.os.UserHandle;
 import android.util.Log;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.internal.annotations.VisibleForTesting;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -357,8 +358,7 @@ public class HealthConnectManager {
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private static volatile Set<String> sHealthPermissions;
+    @Nullable private static volatile Set<String> sHealthPermissions;
 
     private final Context mContext;
     private final IHealthConnectService mService;
@@ -844,7 +844,7 @@ public class HealthConnectManager {
         }
 
         try {
-            mService.deleteUsingFiltersForSelf(
+            mService.deleteUsingFilters(
                     mContext.getAttributionSource(),
                     new DeleteUsingFiltersRequestParcel(
                             new RecordIdFiltersParcel(recordIds), mContext.getPackageName()),
@@ -885,7 +885,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
 
         try {
-            mService.deleteUsingFiltersForSelf(
+            mService.deleteUsingFilters(
                     mContext.getAttributionSource(),
                     new DeleteUsingFiltersRequestParcel(
                             new DeleteUsingFiltersRequest.Builder()
@@ -2082,8 +2082,9 @@ public class HealthConnectManager {
                             PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
         } catch (PackageManager.NameNotFoundException ex) {
             Log.e(TAG, "Health permission group or HC package not found", ex);
-            sHealthPermissions = Collections.emptySet();
-            return sHealthPermissions;
+            Set<String> result = Collections.emptySet();
+            sHealthPermissions = result;
+            return result;
         }
 
         Set<String> permissions = new HashSet<>();
@@ -2092,8 +2093,22 @@ public class HealthConnectManager {
                 permissions.add(perm.name);
             }
         }
-        sHealthPermissions = Collections.unmodifiableSet(permissions);
-        return sHealthPermissions;
+        Set<String> result = Collections.unmodifiableSet(permissions);
+        sHealthPermissions = result;
+        return result;
+    }
+
+    /**
+     * Allow tests to reset the cached Set of Health Connect permissions.
+     *
+     * @hide
+     */
+    @VisibleForTesting
+    public static void resetHealthPermissionsCache() {
+        // This method should only be used for testing. Having a global static cache of Health
+        // Connect permissions is good for efficiency but can play havoc with test isolation.
+        // Allow tests which modify the package manager to clear the cache.
+        sHealthPermissions = null;
     }
 
     @NonNull
@@ -3019,7 +3034,6 @@ public class HealthConnectManager {
      * thrown. The caller can retry once {@link #canRestore} returns true.
      *
      * @param restoreChanges The changes to be restored back to Health Connect.
-     * @param appInfoMap The app info map to be restored back to Health Connect.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive the result of performing this operation.
      * @hide
@@ -3029,7 +3043,6 @@ public class HealthConnectManager {
     @RequiresPermission(RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS)
     public void restoreChanges(
             @NonNull List<RestoreChange> restoreChanges,
-            @NonNull byte[] appInfoMap,
             @NonNull Executor executor,
             @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
         Objects.requireNonNull(restoreChanges);
@@ -3038,7 +3051,6 @@ public class HealthConnectManager {
         try {
             mService.restoreChanges(
                     restoreChanges,
-                    appInfoMap,
                     new IEmptyResponseCallback.Stub() {
                         @Override
                         public void onResult() {

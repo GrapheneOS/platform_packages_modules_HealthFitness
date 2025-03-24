@@ -30,7 +30,7 @@ import android.health.connect.internal.datatypes.ActiveCaloriesBurnedRecordInter
 import android.util.Pair;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.time.ZoneOffset;
 import java.util.ArrayList;

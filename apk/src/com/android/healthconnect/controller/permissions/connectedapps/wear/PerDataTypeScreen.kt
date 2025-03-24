@@ -18,7 +18,6 @@
 package com.android.healthconnect.controller.permissions.connectedapps.wear
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -60,30 +59,96 @@ fun PerDataTypeScreen(
 ) {
     // TODO: b/401597500 - The HealthPermission should be passed into these composables.
     val healthPermission = fromPermissionString(permissionStr)
-    val lowercaseDataTypeStr =
-        stringResource(
-            FitnessPermissionStrings.fromPermissionType(
-                    (healthPermission as HealthPermission.FitnessPermission).fitnessPermissionType
-                )
-                .lowercaseLabel
-        )
+    val dataTypeToAllowedApps by viewModel.dataTypeToAllowedApps.collectAsState()
+    val dataTypeToDeniedApps by viewModel.dataTypeToDeniedApps.collectAsState()
+    val dataTypeToAppToLastAccessTime by viewModel.dataTypeToAppToLastAccessTime.collectAsState()
     val showSystem by viewModel.showSystemFlow.collectAsState()
 
     ScrollableScreen(asScalingList = true, showTimeText = true, title = dataTypeStr) {
+
         // Allowed apps.
-        item {
-            AllowedAppsList(
-                viewModel,
-                healthPermission,
-                dataTypeStr,
-                showRecentAccess,
-                onAppChipClick,
-                onRemoveAllAppAccessButtonClick,
-            )
+        var allowedApps = dataTypeToAllowedApps[healthPermission]
+        var usedApps =
+            dataTypeToAppToLastAccessTime.find { it.permission == healthPermission }?.appAccesses
+        if (!showSystem) {
+            allowedApps = allowedApps?.filter { !it.isSystem }?.toMutableList()
+            usedApps = usedApps?.filter { !it.app.isSystem }?.toMutableList()
+        }
+
+        if (allowedApps?.isNotEmpty() == true) {
+            allowedApps.sortBy { it.appName }
+            val nApps = allowedApps.size
+            item {
+                // Allowed text.
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(start = 12.dp, bottom = 6.dp),
+                    horizontalArrangement = Arrangement.Start,
+                ) {
+                    Text(stringResource(R.string.allowed))
+                }
+            }
+
+            // A chip for each allowed app for this data type.
+            items(allowedApps.size) { index ->
+                val app = allowedApps[index]
+                WearPermissionButton(
+                    label = app.appName,
+                    labelMaxLines = 3,
+                    secondaryLabel =
+                        if (showRecentAccess) {
+                            val lastAccessTime = usedApps?.find { it.app == app }?.lastAccessTime
+                            lastAccessTime?.let {
+                                stringResource(R.string.accessed, formatTime(it))
+                            }
+                        } else {
+                            null
+                        },
+                    onClick = {
+                        onAppChipClick(healthPermission.toString(), dataTypeStr, app.packageName)
+                    },
+                    iconBuilder = app.icon?.let { WearPermissionIconBuilder.builder(it) },
+                )
+            }
+
+            // Don't show the remove all button if all of the system apps are shown since
+            // the user should revoke each of these manually if desired.
+            // TODO: b/404899205 - Re-enable once system app classification is fixed.
+            val shouldShowRemoveAllButton = false
+            if (!showSystem && shouldShowRemoveAllButton) {
+                // Remove access for all apps button.
+                item {
+                    WearPermissionButton(
+                        label = stringResource(R.string.disconnect_all_apps),
+                        labelMaxLines = 3,
+                        onClick = {
+                            onRemoveAllAppAccessButtonClick(
+                                healthPermission.toString(),
+                                dataTypeStr,
+                            )
+                        },
+                        iconBuilder =
+                            WearPermissionIconBuilder.builder(
+                                    R.drawable.ic_remove_access_for_all_apps
+                                )
+                                .tint(Color(0xFFEC928E)),
+                        modifier =
+                            Modifier.padding(start = 2.dp, end = 2.dp, top = 2.dp, bottom = 8.dp),
+                        style = WearPermissionButtonStyle.Warning,
+                    )
+                }
+            }
         }
 
         // Notes on what this permission is about.
         item {
+            val lowercaseDataTypeStr =
+                stringResource(
+                    FitnessPermissionStrings.fromPermissionType(
+                            (healthPermission as HealthPermission.FitnessPermission)
+                                .fitnessPermissionType
+                        )
+                        .lowercaseLabel
+                )
             Row(
                 horizontalArrangement = Arrangement.Start,
                 modifier = Modifier.padding(start = 12.dp, bottom = 8.dp),
@@ -96,14 +161,44 @@ fun PerDataTypeScreen(
         }
 
         // Not allowed apps.
-        item {
-            DeniedAppsList(
-                viewModel,
-                healthPermission,
-                dataTypeStr,
-                showRecentAccess,
-                onAppChipClick,
-            )
+        var deniedApps = dataTypeToDeniedApps[healthPermission]
+        if (!showSystem) {
+            deniedApps = deniedApps?.filter { !it.isSystem }?.toMutableList()
+        }
+        if (deniedApps?.isNotEmpty() == true) {
+            deniedApps.sortBy { it.appName }
+            val nApps = deniedApps.size
+            item {
+                // Not allowed text.
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(start = 12.dp, bottom = 6.dp),
+                    horizontalArrangement = Arrangement.Start,
+                ) {
+                    Text(stringResource(R.string.not_allowed))
+                }
+            }
+
+            // A chip for each denied app for this data type.
+            items(deniedApps.size) { index ->
+                val app = deniedApps[index]
+                WearPermissionButton(
+                    label = app.appName,
+                    labelMaxLines = 3,
+                    secondaryLabel =
+                        if (showRecentAccess) {
+                            val lastAccessTime = usedApps?.find { it.app == app }?.lastAccessTime
+                            lastAccessTime?.let {
+                                stringResource(R.string.accessed, formatTime(it))
+                            }
+                        } else {
+                            null
+                        },
+                    onClick = {
+                        onAppChipClick(healthPermission.toString(), dataTypeStr, app.packageName)
+                    },
+                    iconBuilder = app.icon?.let { WearPermissionIconBuilder.builder(it) },
+                )
+            }
         }
 
         // Show system apps button.
@@ -123,132 +218,7 @@ fun PerDataTypeScreen(
     }
 }
 
-@Composable
-fun AllowedAppsList(
-    viewModel: WearConnectedAppsViewModel,
-    healthPermission: HealthPermission,
-    dataTypeStr: String,
-    showRecentAccess: Boolean,
-    onAppChipClick: (String, String, String) -> Unit,
-    onRemoveAllAppAccessButtonClick: (String, String) -> Unit,
-) {
-    val dataTypeToAllowedApps by viewModel.dataTypeToAllowedApps.collectAsState()
-    val showSystem by viewModel.showSystemFlow.collectAsState()
-    val dataTypeToAppToLastAccessTime by viewModel.dataTypeToAppToLastAccessTime.collectAsState()
-    var allowedApps = dataTypeToAllowedApps[healthPermission]
-    var usedApps =
-        dataTypeToAppToLastAccessTime.find { it.permission == healthPermission }?.appAccesses
-    if (!showSystem) {
-        allowedApps = allowedApps?.filter { !it.isSystem }?.toMutableList()
-        usedApps = usedApps?.filter { !it.app.isSystem }?.toMutableList()
-    }
-
-    if (allowedApps?.isNotEmpty() == true) {
-        val nApps = allowedApps.size
-        Column {
-            // Allowed text.
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(start = 12.dp, bottom = 6.dp),
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                Text(stringResource(R.string.allowed))
-            }
-
-            // A chip for each allowed app for this data type.
-            allowedApps.forEach { app ->
-                WearPermissionButton(
-                    label = app.appName,
-                    labelMaxLines = 3,
-                    secondaryLabel =
-                        if (showRecentAccess) {
-                            val lastAccessTime = usedApps?.find { it.app == app }?.lastAccessTime
-                            lastAccessTime?.let {
-                                stringResource(R.string.accessed, formatTime(it))
-                            }
-                        } else {
-                            null
-                        },
-                    onClick = {
-                        onAppChipClick(healthPermission.toString(), dataTypeStr, app.packageName)
-                    },
-                    iconBuilder = app.icon?.let { WearPermissionIconBuilder.builder(it) },
-                    modifier = Modifier.padding(2.dp),
-                )
-            }
-
-            // Remove access for all apps button.
-            WearPermissionButton(
-                label = stringResource(R.string.disconnect_all_apps),
-                labelMaxLines = 3,
-                onClick = {
-                    onRemoveAllAppAccessButtonClick(healthPermission.toString(), dataTypeStr)
-                },
-                iconBuilder =
-                    WearPermissionIconBuilder.builder(R.drawable.ic_remove_access_for_all_apps)
-                        .tint(Color(0xFFEC928E)),
-                modifier = Modifier.padding(start = 2.dp, end = 2.dp, top = 14.dp, bottom = 8.dp),
-                style = WearPermissionButtonStyle.Warning,
-            )
-        }
-    }
-}
-
 private fun formatTime(instant: Instant): String {
     val localTime: LocalTime = instant.atZone(ZoneId.systemDefault()).toLocalTime()
     return localTime.format(DateTimeFormatter.ofPattern("HH:mm"))
-}
-
-@Composable
-fun DeniedAppsList(
-    viewModel: WearConnectedAppsViewModel,
-    healthPermission: HealthPermission,
-    dataTypeStr: String,
-    showRecentAccess: Boolean,
-    onAppChipClick: (String, String, String) -> Unit,
-) {
-    val dataTypeToDeniedApps by viewModel.dataTypeToDeniedApps.collectAsState()
-    val showSystem by viewModel.showSystemFlow.collectAsState()
-    val dataTypeToAppToLastAccessTime by viewModel.dataTypeToAppToLastAccessTime.collectAsState()
-    var deniedApps = dataTypeToDeniedApps[healthPermission]
-    var usedApps =
-        dataTypeToAppToLastAccessTime.find { it.permission == healthPermission }?.appAccesses
-    if (!showSystem) {
-        deniedApps = deniedApps?.filter { !it.isSystem }?.toMutableList()
-        usedApps = usedApps?.filter { !it.app.isSystem }?.toMutableList()
-    }
-
-    if (deniedApps?.isNotEmpty() == true) {
-        val nApps = deniedApps.size
-        Column {
-            // Not allowed text.
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(start = 12.dp, bottom = 6.dp),
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                Text(stringResource(R.string.not_allowed))
-            }
-
-            // A chip for each denied app for this data type.
-            deniedApps.forEach { app ->
-                WearPermissionButton(
-                    label = app.appName,
-                    labelMaxLines = 3,
-                    secondaryLabel =
-                        if (showRecentAccess) {
-                            val lastAccessTime = usedApps?.find { it.app == app }?.lastAccessTime
-                            lastAccessTime?.let {
-                                stringResource(R.string.accessed, formatTime(it))
-                            }
-                        } else {
-                            null
-                        },
-                    onClick = {
-                        onAppChipClick(healthPermission.toString(), dataTypeStr, app.packageName)
-                    },
-                    iconBuilder = app.icon?.let { WearPermissionIconBuilder.builder(it) },
-                    modifier = Modifier.padding(2.dp),
-                )
-            }
-        }
-    }
 }

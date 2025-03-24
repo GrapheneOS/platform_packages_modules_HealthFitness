@@ -41,7 +41,6 @@ import android.util.Pair;
 import android.util.Slog;
 
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
-import com.android.server.healthconnect.proto.backuprestore.AppInfoMap;
 import com.android.server.healthconnect.proto.backuprestore.BackupData;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
@@ -219,7 +218,7 @@ public class CloudBackupDatabaseHelper {
                         nextDataTablePageToken,
                         changeLogsTablePageToken);
         return new GetChangesForBackupResponse(
-                PROTO_VERSION, backupChanges, backupChangeTokenRowId, serializeAppInfo());
+                PROTO_VERSION, backupChanges, backupChangeTokenRowId);
     }
 
     private String getChangeLogsPageToken() {
@@ -289,7 +288,7 @@ public class CloudBackupDatabaseHelper {
                         EMPTY_PAGE_TOKEN.encode(),
                         changeLogsResponse.getNextPageToken());
         return new GetChangesForBackupResponse(
-                PROTO_VERSION, backupChanges, backupChangeTokenRowId, serializeAppInfo());
+                PROTO_VERSION, backupChanges, backupChangeTokenRowId);
     }
 
     private List<BackupChange> convertRecordsToBackupChange(List<RecordInternal<?>> records) {
@@ -323,13 +322,6 @@ public class CloudBackupDatabaseHelper {
     private byte[] serializeRecordInternal(RecordInternal<?> recordInternal) {
         return BackupData.newBuilder()
                 .setRecord(mRecordProtoConverter.toRecordProto(recordInternal))
-                .build()
-                .toByteArray();
-    }
-
-    private byte[] serializeAppInfo() {
-        return AppInfoMap.newBuilder()
-                .putAllAppInfo(mSettingsHelper.getAppInfo())
                 .build()
                 .toByteArray();
     }

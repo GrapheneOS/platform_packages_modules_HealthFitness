@@ -51,6 +51,7 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
+import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
@@ -65,7 +66,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceI
 import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
-import com.android.server.healthconnect.storage.request.UpsertTransactionRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
@@ -86,12 +86,12 @@ public final class DatabaseMerger {
     private static final String TAG = "HealthConnectDatabaseMerger";
 
     private final TransactionManager mTransactionManager;
+    private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final HealthConnectMappings mHealthConnectMappings;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
-    private final DeviceInfoHelper mDeviceInfoHelper;
 
     /*
      * Record types in this list will always be migrated such that the ordering here is respected.
@@ -117,14 +117,15 @@ public final class DatabaseMerger {
             DeviceInfoHelper deviceInfoHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             TransactionManager transactionManager,
+            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper) {
         mTransactionManager = transactionManager;
+        mFitnessRecordUpsertHelper = fitnessRecordUpsertHelper;
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mAppInfoHelper = appInfoHelper;
         mHealthConnectMappings = HealthConnectMappings.getInstance();
         mInternalHealthConnectMappings = InternalHealthConnectMappings.getInstance();
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
-        mDeviceInfoHelper = deviceInfoHelper;
     }
 
     /** Merge data */
@@ -147,7 +148,7 @@ public final class DatabaseMerger {
                 // If this package is not installed on the target device and is not present in the
                 // health db, then fill the health db with the info from source db. According to the
                 // security review b/341253579, we should not parse the imported icon.
-                mAppInfoHelper.addOrUpdateAppInfoIfNoAppInfoEntryExists(packageName, appName);
+                mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(packageName, appName);
             }
         }
 
@@ -441,17 +442,6 @@ public final class DatabaseMerger {
                             record.setCompletedExerciseSessionId(null);
                         });
             }
-            // Using null package name for making insertion for two reasons:
-            // 1. we don't want to update the logs for this package.
-            // 2. we don't want to update the package name in the records as they already have the
-            //    correct package name.
-            UpsertTransactionRequest upsertTransactionRequest =
-                    UpsertTransactionRequest.createForRestore(
-                            records,
-                            mTransactionManager,
-                            mInternalHealthConnectMappings,
-                            mDeviceInfoHelper,
-                            mAppInfoHelper);
 
             // Both methods use ON CONFLICT IGNORE strategy, which means that if the source data
             // being inserted into target db already exists, the source data will be ignored. We
@@ -463,10 +453,12 @@ public final class DatabaseMerger {
                     && mTransactionManager.checkTableExists(ChangeLogsRequestHelper.TABLE_NAME)
                     && mTransactionManager.queryNumEntries(ChangeLogsRequestHelper.TABLE_NAME)
                             != 0) {
-                upsertTransactionRequest.execute();
+                mFitnessRecordUpsertHelper.insertRecordsUnrestricted(
+                        records, /* shouldGenerateChangeLog= */ true);
+
             } else {
-                mTransactionManager.insertOrIgnoreAllOnConflict(
-                        upsertTransactionRequest.getUpsertRequests());
+                mFitnessRecordUpsertHelper.insertRecordsUnrestricted(
+                        records, /* shouldGenerateChangeLog= */ false);
             }
             currentToken = token;
         } while (!currentToken.isEmpty());

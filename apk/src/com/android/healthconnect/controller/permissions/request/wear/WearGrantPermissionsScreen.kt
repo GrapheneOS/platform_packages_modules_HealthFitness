@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -109,6 +110,7 @@ fun GrantMultipleFitnessPermissions(
         materialUIVersion = materialUIVersion,
         asScalingList = true,
         showTimeText = false,
+        image = R.drawable.ic_health_connect,
         title = res.getString(R.string.wear_allow_app_access_fitness_and_wellness_data, appName),
         subtitle =
             res.getString(
@@ -129,7 +131,10 @@ fun GrantMultipleFitnessPermissions(
                         .uppercaseLabel
                 )
             val isChecked = checkedStates[index]
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+            ) {
                 SwitchButton(
                     label = {
                         Text(
@@ -148,6 +153,7 @@ fun GrantMultipleFitnessPermissions(
                         )
                     },
                     enabled = true,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
@@ -168,7 +174,7 @@ fun GrantMultipleFitnessPermissions(
                     }
                     onButtonClicked()
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 labelMaxLines = Integer.MAX_VALUE,
                 materialUIVersion = materialUIVersion,
             )
@@ -234,6 +240,8 @@ fun GrantSingleFitnessPermission(
     ScrollableScreen(
         materialUIVersion = materialUIVersion,
         showTimeText = false,
+        asScalingList = true,
+        image = R.drawable.ic_health_connect,
         title =
             res.getString(
                 R.string.wear_request_single_data_type_permission,
@@ -294,6 +302,8 @@ fun GrantReadBackgroundHealthPermission(
     ScrollableScreen(
         materialUIVersion = materialUIVersion,
         showTimeText = false,
+        asScalingList = true,
+        image = R.drawable.ic_health_connect,
         title = res.getString(R.string.wear_allow_app_access_fitness_and_wellness_data, appName),
     ) {
         // Allow all the time button.

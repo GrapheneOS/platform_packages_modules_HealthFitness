@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.request;
+package com.android.server.healthconnect.fitness.aggregation;
 
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
@@ -75,7 +75,7 @@ import java.time.Instant;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-public class AggregateTransactionRequestTest {
+public class FitnessRecordAggregateHelperTest {
 
     private static final String TEST_PACKAGE_NAME = "package.name";
 
@@ -84,6 +84,7 @@ public class AggregateTransactionRequestTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private TransactionManager mTransactionManager;
+    private FitnessRecordAggregateHelper mFitnessRecordAggregateHelper;
     private AppInfoHelper mAppInfoHelper;
     private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private AccessLogsHelper mAccessLogsHelper;
@@ -105,6 +106,7 @@ public class AggregateTransactionRequestTest {
                         .build();
 
         mTransactionManager = healthConnectInjector.getTransactionManager();
+        mFitnessRecordAggregateHelper = healthConnectInjector.getFitnessRecordAggregateHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mHealthDataCategoryPriorityHelper =
                 healthConnectInjector.getHealthDataCategoryPriorityHelper();
@@ -129,19 +131,11 @@ public class AggregateTransactionRequestTest {
                 new AggregateRecordsRequest.Builder<Long>(timeRangeFilter)
                         .addAggregationType(HeartRateRecord.BPM_AVG)
                         .build();
-        AggregateTransactionRequest aggregateTransactionRequest =
-                new AggregateTransactionRequest(
-                        TEST_PACKAGE_NAME,
-                        new AggregateDataRequestParcel(aggregateRecordsRequest),
-                        mTransactionManager,
-                        mAppInfoHelper,
-                        mHealthDataCategoryPriorityHelper,
-                        mAccessLogsHelper,
-                        mReadAccessLogsHelper,
-                        mInternalHealthConnectMappings,
-                        /* startDateAccess= */ 0,
-                        /* shouldRecordAccessLog= */ true);
-        aggregateTransactionRequest.getAggregateDataResponseParcel();
+        mFitnessRecordAggregateHelper.aggregateRecords(
+                TEST_PACKAGE_NAME,
+                new AggregateDataRequestParcel(aggregateRecordsRequest),
+                /* startDateAccess= */ 0,
+                /* shouldRecordAccessLog= */ true);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         AccessLog log = result.get(0);
@@ -181,19 +175,11 @@ public class AggregateTransactionRequestTest {
                 new AggregateRecordsRequest.Builder<Long>(timeRangeFilter)
                         .addAggregationType(StepsRecord.STEPS_COUNT_TOTAL)
                         .build();
-        AggregateTransactionRequest aggregateTransactionRequest =
-                new AggregateTransactionRequest(
-                        readerPackage,
-                        new AggregateDataRequestParcel(aggregateRecordsRequest),
-                        mTransactionManager,
-                        mAppInfoHelper,
-                        mHealthDataCategoryPriorityHelper,
-                        mAccessLogsHelper,
-                        mReadAccessLogsHelper,
-                        mInternalHealthConnectMappings,
-                        /* startDateAccess= */ 0,
-                        /* shouldRecordAccessLog= */ true);
-        aggregateTransactionRequest.getAggregateDataResponseParcel();
+        mFitnessRecordAggregateHelper.aggregateRecords(
+                readerPackage,
+                new AggregateDataRequestParcel(aggregateRecordsRequest),
+                /* startDateAccess= */ 0,
+                /* shouldRecordAccessLog= */ true);
 
         List<ReadAccessLogsHelper.ReadAccessLog> result =
                 mReadAccessLogsHelper.queryReadAccessLogs(0).getReadAccessLogs();
@@ -229,19 +215,12 @@ public class AggregateTransactionRequestTest {
                 new AggregateRecordsRequest.Builder<Long>(timeRangeFilter)
                         .addAggregationType(StepsRecord.STEPS_COUNT_TOTAL)
                         .build();
-        AggregateTransactionRequest aggregateTransactionRequest =
-                new AggregateTransactionRequest(
-                        readerPackage,
-                        new AggregateDataRequestParcel(aggregateRecordsRequest),
-                        mTransactionManager,
-                        mAppInfoHelper,
-                        mHealthDataCategoryPriorityHelper,
-                        mAccessLogsHelper,
-                        mReadAccessLogsHelper,
-                        mInternalHealthConnectMappings,
-                        /* startDateAccess= */ 0,
-                        /* shouldRecordAccessLog= */ false);
-        aggregateTransactionRequest.getAggregateDataResponseParcel();
+
+        mFitnessRecordAggregateHelper.aggregateRecords(
+                readerPackage,
+                new AggregateDataRequestParcel(aggregateRecordsRequest),
+                /* startDateAccess= */ 0,
+                /* shouldRecordAccessLog= */ false);
 
         verify(mReadAccessLogsHelper, times(0))
                 .recordAccessLogForNonAggregationReads(any(), any(), anyLong(), any());
@@ -268,19 +247,11 @@ public class AggregateTransactionRequestTest {
                 new AggregateRecordsRequest.Builder<Long>(timeRangeFilter)
                         .addAggregationType(StepsRecord.STEPS_COUNT_TOTAL)
                         .build();
-        AggregateTransactionRequest aggregateTransactionRequest =
-                new AggregateTransactionRequest(
-                        readerPackage,
-                        new AggregateDataRequestParcel(aggregateRecordsRequest),
-                        mTransactionManager,
-                        mAppInfoHelper,
-                        mHealthDataCategoryPriorityHelper,
-                        mAccessLogsHelper,
-                        mReadAccessLogsHelper,
-                        mInternalHealthConnectMappings,
-                        /* startDateAccess= */ 0,
-                        /* shouldRecordAccessLog= */ true);
-        aggregateTransactionRequest.getAggregateDataResponseParcel();
+        mFitnessRecordAggregateHelper.aggregateRecords(
+                readerPackage,
+                new AggregateDataRequestParcel(aggregateRecordsRequest),
+                /* startDateAccess= */ 0,
+                /* shouldRecordAccessLog= */ true);
 
         verify(mReadAccessLogsHelper, times(0))
                 .recordAccessLogForNonAggregationReads(any(), any(), anyLong(), any());

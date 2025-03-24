@@ -23,6 +23,7 @@ import static java.util.stream.Collectors.toSet;
 
 import android.content.AttributionSource;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.UserHandle;
@@ -243,7 +244,22 @@ public class DataPermissionEnforcer {
             int permissionFlags =
                     mContext.getPackageManager()
                             .getPermissionFlags(permissionName, packageName, user);
-            if (HealthConnectPermissionHelper.isFromSplitPermission(permissionFlags)) {
+            int targetSdk;
+            try {
+                targetSdk =
+                        PackageInfoUtils.getPackageInfoUnchecked(
+                                        packageName,
+                                        user,
+                                        PackageManager.PackageInfoFlags.of(0),
+                                        mContext)
+                                .applicationInfo
+                                .targetSdkVersion;
+            } catch (Exception e) {
+                throw new SecurityException(
+                        "Caller package is not found. Unable to determine permission state.");
+            }
+
+            if (HealthConnectPermissionHelper.isFromSplitPermission(permissionFlags, targetSdk)) {
                 throw new SecurityException(
                         "Caller is requesting HealthConnect API access from "
                                 + "an implicitly granted split permission: "

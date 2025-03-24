@@ -108,8 +108,9 @@
             <item type="style" name="TextAppearance.HealthConnect.Subheader"/>
             <item type="style" name="TextAppearance.HealthConnect.Subheader2"/>
             <item type="style" name="TextAppearance.HealthConnect.Subheader3"/>
-            <item type="style" name="TextAppearance.HealthConnect.Subheader4"/>
-            <item type="style" name="TextAppearance.HealthConnect.Subheader5"/>
+            <item type="style" name="TextAppearance.HealthConnect.Expressive.DialogTitle"/>
+            <item type="style" name="TextAppearance.HealthConnect.Expressive.DialogMessage"/>
+            <item type="style" name="TextAppearance.HealthConnect.Expressive.RadioButton"/>
             <item type="style" name="TextAppearance.HealthConnect.RouteRequest"/>
             <item type="style" name="TextAppearance.HealthConnect.CategoryTitle"/>
             <item type="style" name="TextAppearance.HealthConnect.ErrorMessage"/>

@@ -64,7 +64,7 @@ android_test {
         "flag-junit",
     ],
     min_sdk_version: "34",
-    sdk_version: "module_current",
+    sdk_version: "test_current",
     data: [
         ":HealthFitnessCtsTestApp",
         ":HealthFitnessCtsTestApp2",

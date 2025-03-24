@@ -74,7 +74,7 @@ public class HealthConnectThreadSchedulerTest {
     }
 
     @Test
-    public void testHealthConnectSchedulerScheduleInternal() throws Exception {
+    public void testSchedulerScheduleInternal() throws Exception {
         mHealthConnectThreadScheduler.scheduleInternalTask(() -> {});
         TestUtils.waitForTaskToFinishSuccessfully(
                 () -> {
@@ -83,6 +83,10 @@ public class HealthConnectThreadSchedulerTest {
                         throw new RuntimeException();
                     }
                 });
+    }
+
+    @Test
+    public void testScheduleControllerTask() throws Exception {
         mHealthConnectThreadScheduler.scheduleControllerTask(() -> {});
         TestUtils.waitForTaskToFinishSuccessfully(
                 () -> {
@@ -91,7 +95,13 @@ public class HealthConnectThreadSchedulerTest {
                         throw new RuntimeException();
                     }
                 });
-        mHealthConnectThreadScheduler.schedule(mContext, () -> {}, Process.myUid(), false);
+    }
+
+    @Test
+    public void testScheduleBackgroundTask() throws Exception {
+        mockCurrentProcessImportance(ActivityManager.RunningAppProcessInfo.IMPORTANCE_CACHED);
+
+        mHealthConnectThreadScheduler.schedule(mMockContext, () -> {}, Process.myUid(), false);
         TestUtils.waitForTaskToFinishSuccessfully(
                 () -> {
                     if (mBackgroundTaskScheduler.getCompletedTaskCount()
@@ -99,14 +109,11 @@ public class HealthConnectThreadSchedulerTest {
                         throw new RuntimeException();
                     }
                 });
+    }
 
-        when(mMockContext.getSystemService(ActivityManager.class)).thenReturn(mActivityManager);
-        ActivityManager.RunningAppProcessInfo runningAppProcessInfo =
-                new ActivityManager.RunningAppProcessInfo();
-        runningAppProcessInfo.uid = Process.myUid();
-        runningAppProcessInfo.importance =
-                ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
-        when(mActivityManager.getRunningAppProcesses()).thenReturn(List.of(runningAppProcessInfo));
+    @Test
+    public void testScheduleForegroundTask() throws Exception {
+        mockCurrentProcessImportance(ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND);
 
         mHealthConnectThreadScheduler.schedule(mMockContext, () -> {}, Process.myUid(), false);
         TestUtils.waitForTaskToFinishSuccessfully(
@@ -176,5 +183,14 @@ public class HealthConnectThreadSchedulerTest {
         Future<String> name =
                 mBackgroundTaskScheduler.submit(() -> Thread.currentThread().getName());
         assertThat(name.get()).isEqualTo("hc-bg-0");
+    }
+
+    private void mockCurrentProcessImportance(int importance) {
+        when(mMockContext.getSystemService(ActivityManager.class)).thenReturn(mActivityManager);
+        ActivityManager.RunningAppProcessInfo runningAppProcessInfo =
+                new ActivityManager.RunningAppProcessInfo();
+        runningAppProcessInfo.uid = Process.myUid();
+        runningAppProcessInfo.importance = importance;
+        when(mActivityManager.getRunningAppProcesses()).thenReturn(List.of(runningAppProcessInfo));
     }
 }

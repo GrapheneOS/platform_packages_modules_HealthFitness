@@ -27,7 +27,7 @@ import android.database.Cursor;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.server.healthconnect.storage.request.AggregateParams;
+import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import org.junit.Before;
 import org.junit.Test;

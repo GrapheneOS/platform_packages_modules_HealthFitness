@@ -24,10 +24,15 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PermissionGroupInfo;
+import android.content.pm.PermissionInfo;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 
-import androidx.test.platform.app.InstrumentationRegistry;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Helper class for tests which use mock package managers to get health connect permissions handled
@@ -51,28 +56,66 @@ public class HealthPermissionsMocker {
      */
     public static void mockPackageManagerPermissions(PackageManager mockPackageManager)
             throws PackageManager.NameNotFoundException {
+        // For on device tests we can get permissions from the real package manager.
+        // But for Robolectric tests this will not be set up. So we need to have the values hard
+        // coded.
         // See implementation for HealthConnectManager.getHealthPermissions()
         // Here we are setting up fake package and permission information for the health connect
         // module as this is the source of truth for the health connect permissions.
-        PackageManager realPackageManager =
-                InstrumentationRegistry.getInstrumentation().getContext().getPackageManager();
-        String healthControllerPackageName =
-                realPackageManager.getPermissionInfo(HealthPermissions.READ_STEPS, /* flags= */ 0)
-                        .packageName;
-        PackageInfo packageInfo =
-                realPackageManager.getPackageInfo(
-                        healthControllerPackageName,
-                        PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
+        String modulePackageName = "android.health.connect";
 
+        // Use deprecated constructor as we are simulating construction by the System.
+        PermissionGroupInfo permissionGroupInfo = new PermissionGroupInfo();
+        permissionGroupInfo.packageName = modulePackageName;
         when(mockPackageManager.getPermissionGroupInfo(
                         eq(android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP),
                         anyInt()))
-                .thenReturn(
-                        realPackageManager.getPermissionGroupInfo(
-                                android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP,
-                                0));
+                .thenReturn(permissionGroupInfo);
 
-        when(mockPackageManager.getPackageInfo(eq(healthControllerPackageName), any()))
-                .thenReturn(packageInfo);
+        PackageInfo modulePackageInfo = new PackageInfo();
+        modulePackageInfo.packageName = modulePackageName;
+
+        // See implementation for HealthConnectManager.isValidHealthPermission()
+        List<String> allPermissions = getAllHealthPermissionsByReflection();
+        PermissionInfo[] allModulePermissions = new PermissionInfo[allPermissions.size()];
+        int index = 0;
+        for (String perm : allPermissions) {
+            // Use deprecated constructor as we are simulating construction by the system
+            PermissionInfo permissionInfo = new PermissionInfo();
+            permissionInfo.packageName = modulePackageName;
+            permissionInfo.name = perm;
+            permissionInfo.group = android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP;
+
+            when(mockPackageManager.getPermissionInfo(eq(perm), anyInt()))
+                    .thenReturn(permissionInfo);
+            allModulePermissions[index++] = permissionInfo;
+        }
+        modulePackageInfo.permissions = allModulePermissions;
+
+        when(mockPackageManager.getPackageInfo(eq(modulePackageName), any()))
+                .thenReturn(modulePackageInfo);
+        // This is necessary in case the cache was earlier initialized when this was not mocked.
+        HealthConnectManager.resetHealthPermissionsCache();
+    }
+
+    private static List<String> getAllHealthPermissionsByReflection() {
+        ArrayList<String> result = new ArrayList<>();
+        for (Field field : HealthPermissions.class.getFields()) {
+            int modifiers = field.getModifiers();
+            if (Modifier.isPublic(modifiers)
+                    && Modifier.isStatic(modifiers)
+                    // We don't check for final here, because under robolectric they aren't final
+                    && field.getType() == String.class) {
+                try {
+                    String value = (String) field.get(null);
+                    if (value.startsWith("android.permission.")) {
+                        result.add(value);
+                    }
+                } catch (IllegalAccessException e) {
+                    // skip any errors
+                }
+            }
+        }
+        return result;
     }
 }

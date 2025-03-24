@@ -82,6 +82,7 @@ public class ExportManager {
     private final HealthConnectNotificationSender mNotificationSender;
     private final File mEnvironmentDataDirectory;
     private final ExportImportLogger mExportImportLogger;
+    private final ErrorReporter mErrorReporter;
 
     // Tables to drop instead of tables to keep to avoid risk of bugs if new data types are added.
     /**
@@ -107,6 +108,27 @@ public class ExportManager {
             HealthConnectNotificationSender notificationSender,
             File environmentDataDirectory,
             ExportImportLogger exportImportLogger) {
+        this(
+                context,
+                clock,
+                exportImportSettingsStorage,
+                transactionManager,
+                notificationSender,
+                environmentDataDirectory,
+                exportImportLogger,
+                new ErrorReporter());
+    }
+
+    @VisibleForTesting
+    ExportManager(
+            Context context,
+            Clock clock,
+            ExportImportSettingsStorage exportImportSettingsStorage,
+            TransactionManager transactionManager,
+            HealthConnectNotificationSender notificationSender,
+            File environmentDataDirectory,
+            ExportImportLogger exportImportLogger,
+            ErrorReporter errorReporter) {
         mContext = context;
         mClock = clock;
         mExportImportSettingsStorage = exportImportSettingsStorage;
@@ -114,6 +136,7 @@ public class ExportManager {
         mNotificationSender = notificationSender;
         mEnvironmentDataDirectory = environmentDataDirectory;
         mExportImportLogger = exportImportLogger;
+        mErrorReporter = errorReporter;
     }
 
     /**
@@ -136,8 +159,7 @@ public class ExportManager {
             try {
                 exportLocally(localExportDbFile);
             } catch (Exception e) {
-                Slog.e(TAG, "Failed to create local file for export", e);
-                Slog.d(TAG, "original file size: " + intSizeInKb(localExportDbFile));
+                mErrorReporter.failed(ErrorReporter.LOCAL_FILE, e, intSizeInKb(localExportDbFile));
                 recordError(
                         DATA_EXPORT_ERROR_UNKNOWN,
                         startTimeMillis,
@@ -152,8 +174,8 @@ public class ExportManager {
             try {
                 deleteLogTablesContent(dbContext);
             } catch (Exception e) {
-                Slog.e(TAG, "Failed to clear log tables in preparation for export", e);
-                Slog.d(TAG, "Original file size: " + intSizeInKb(localExportDbFile));
+                mErrorReporter.failed(
+                        ErrorReporter.CLEAR_LOG_TABLES, e, intSizeInKb(localExportDbFile));
                 recordError(
                         DATA_EXPORT_ERROR_CLEARING_LOG_TABLES,
                         startTimeMillis,
@@ -170,8 +192,8 @@ public class ExportManager {
                 try {
                     deletePhrTablesContent(dbContext);
                 } catch (Exception e) {
-                    Slog.e(TAG, "Failed to clear phr tables in preparation for export", e);
-                    Slog.d(TAG, "Original file size: " + intSizeInKb(localExportDbFile));
+                    mErrorReporter.failed(
+                            ErrorReporter.CLEAR_PHR_TABLES, e, intSizeInKb(localExportDbFile));
                     recordError(
                             DATA_EXPORT_ERROR_CLEARING_PHR_TABLES,
                             startTimeMillis,
@@ -188,8 +210,7 @@ public class ExportManager {
                 Compressor.compress(
                         localExportDbFile, LOCAL_EXPORT_DATABASE_FILE_NAME, localExportZipFile);
             } catch (Exception e) {
-                Slog.e(TAG, "Failed to compress local file for export", e);
-                Slog.d(TAG, "Original file size: " + intSizeInKb(localExportDbFile));
+                mErrorReporter.failed(ErrorReporter.COMPRESSION, e, intSizeInKb(localExportDbFile));
                 recordError(
                         DATA_EXPORT_ERROR_UNKNOWN,
                         startTimeMillis,
@@ -205,8 +226,10 @@ public class ExportManager {
             try {
                 exportToUri(dbContext, localExportZipFile, destinationUri);
             } catch (FileNotFoundException e) {
-                Slog.e(TAG, "Lost access to export location", e);
-                Slog.d(TAG, "Original file size: " + intSizeInKb(localExportDbFile));
+                mErrorReporter.failed(
+                        ErrorReporter.LOST_EXPORT_LOCATION_ACCESS,
+                        e,
+                        intSizeInKb(localExportDbFile));
                 recordError(
                         DATA_EXPORT_LOST_FILE_ACCESS,
                         startTimeMillis,
@@ -216,8 +239,7 @@ public class ExportManager {
                         userHandle, NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_GENERIC_ERROR);
                 return false;
             } catch (Exception e) {
-                Slog.e(TAG, "Failed to export to URI", e);
-                Slog.d(TAG, "Original file size: " + intSizeInKb(localExportDbFile));
+                mErrorReporter.failed(ErrorReporter.URI_EXPORT, e, intSizeInKb(localExportDbFile));
                 recordError(
                         DATA_EXPORT_ERROR_UNKNOWN,
                         startTimeMillis,
@@ -376,6 +398,38 @@ public class ExportManager {
     private void sendNotificationIfEnabled(UserHandle userHandle, int notificationType) {
         if (exportImportFastFollow()) {
             mNotificationSender.sendNotificationAsUser(notificationType, userHandle);
+        }
+    }
+
+    /** Helper class to report errors with exporting. */
+    static class ErrorReporter {
+        static final int LOCAL_FILE = 1;
+        static final int URI_EXPORT = 2;
+        static final int LOST_EXPORT_LOCATION_ACCESS = 3;
+        static final int COMPRESSION = 4;
+        static final int CLEAR_PHR_TABLES = 5;
+        static final int CLEAR_LOG_TABLES = 6;
+
+        /**
+         * Report there was a problem with export.
+         *
+         * @param stage the stage of the failure
+         * @param cause the exception that caused the failure
+         * @param originalFileSize the size of the existing file
+         */
+        public void failed(int stage, Exception cause, int originalFileSize) {
+            switch (stage) {
+                case LOCAL_FILE -> Slog.e(TAG, "Failed to create local file for export", cause);
+                case URI_EXPORT -> Slog.e(TAG, "Failed to export to URI", cause);
+                case LOST_EXPORT_LOCATION_ACCESS ->
+                        Slog.e(TAG, "Lost access to export location", cause);
+                case COMPRESSION -> Slog.e(TAG, "Failed to compress local file for export", cause);
+                case CLEAR_PHR_TABLES ->
+                        Slog.e(TAG, "Failed to clear phr tables in preparation for export", cause);
+                case CLEAR_LOG_TABLES ->
+                        Slog.e(TAG, "Failed to clear log tables in preparation for export", cause);
+            }
+            Slog.d(TAG, "Original file size: " + originalFileSize);
         }
     }
 }

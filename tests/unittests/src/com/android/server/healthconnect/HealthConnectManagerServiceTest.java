@@ -74,7 +74,10 @@ public class HealthConnectManagerServiceTest {
 
     @Mock Context mContext;
     @Mock private SystemService.TargetUser mMockTargetUser;
-    @Mock private JobScheduler mJobScheduler;
+    @Mock private JobScheduler mMainJobScheduler;
+    @Mock private JobScheduler mDailyJobScheduler;
+    @Mock private JobScheduler mImportExportJobScheduler;
+    @Mock private JobScheduler mMigrationJobScheduler;
     @Mock private JobScheduler mBackupRestoreJobScheduler;
     @Mock private UserManager mUserManager;
     @Mock private PackageManager mPackageManager;
@@ -85,13 +88,13 @@ public class HealthConnectManagerServiceTest {
     @Before
     public void setUp() throws PackageManager.NameNotFoundException {
         HealthConnectInjector.resetInstanceForTest();
-        when(mJobScheduler.forNamespace(HEALTH_CONNECT_DAILY_JOB_NAMESPACE))
-                .thenReturn(mJobScheduler);
-        when(mJobScheduler.forNamespace(MigrationStateChangeJob.class.toString()))
-                .thenReturn(mJobScheduler);
-        when(mJobScheduler.forNamespace(HEALTH_CONNECT_IMPORT_EXPORT_JOBS_NAMESPACE))
-                .thenReturn(mJobScheduler);
-        when(mJobScheduler.forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE))
+        when(mMainJobScheduler.forNamespace(HEALTH_CONNECT_DAILY_JOB_NAMESPACE))
+                .thenReturn(mDailyJobScheduler);
+        when(mMainJobScheduler.forNamespace(MigrationStateChangeJob.class.toString()))
+                .thenReturn(mMigrationJobScheduler);
+        when(mMainJobScheduler.forNamespace(HEALTH_CONNECT_IMPORT_EXPORT_JOBS_NAMESPACE))
+                .thenReturn(mImportExportJobScheduler);
+        when(mMainJobScheduler.forNamespace(BACKUP_RESTORE_JOBS_NAMESPACE))
                 .thenReturn(mBackupRestoreJobScheduler);
         PermissionGroupInfo permissionGroupInfo = new PermissionGroupInfo();
         permissionGroupInfo.packageName = "test";
@@ -107,7 +110,7 @@ public class HealthConnectManagerServiceTest {
                         anyString(),
                         eq(PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS))))
                 .thenThrow(new PackageManager.NameNotFoundException());
-        when(mContext.getSystemService(JobScheduler.class)).thenReturn(mJobScheduler);
+        when(mContext.getSystemService(JobScheduler.class)).thenReturn(mMainJobScheduler);
         when(mContext.getSystemService(UserManager.class)).thenReturn(mUserManager);
         when(mContext.getSystemService(PackageManager.class)).thenReturn(mPackageManager);
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
@@ -143,15 +146,16 @@ public class HealthConnectManagerServiceTest {
     public void testUserSwitch_userLocked() {
         when(mUserManager.isUserUnlocked(any())).thenReturn(false);
         mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
-        verify(mJobScheduler, times(1)).cancelAll();
+        verify(mDailyJobScheduler, times(1)).cancelAll();
+        verify(mMigrationJobScheduler, times(1)).cancelAll();
     }
 
     @Test
     public void testUserSwitch_userUnlocked() {
         when(mUserManager.isUserUnlocked(any())).thenReturn(true);
         mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
-        verify(mJobScheduler, times(1)).cancelAll();
-        verify(mJobScheduler, timeout(5000).times(1)).schedule(any());
+        verify(mDailyJobScheduler, times(1)).cancelAll();
+        verify(mDailyJobScheduler, timeout(5000).times(1)).schedule(any());
         verify(mBackupRestoreJobScheduler, times(1)).cancelAll();
     }
 }

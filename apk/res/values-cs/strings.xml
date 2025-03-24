@@ -19,6 +19,8 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"Správa přístupu aplikací ke zdravotním údajům"</string>
+    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
+    <skip />
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Oprávnění a data"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Spravujte údaje o zdraví a kondici na zařízení a určete, které aplikace k nim mají přístup"</string>
     <string name="data_title" msgid="4456619761533380816">"Data a přístup"</string>
@@ -325,9 +327,9 @@
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Alergie"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"alergie"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Čtení alergií"</string>
-    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Podmínky"</string>
-    <string name="conditions_lowercase_label" msgid="2678248918552246997">"podmínky"</string>
-    <string name="conditions_content_description" msgid="3230552343616193829">"Podmínky čtení"</string>
+    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Potíže"</string>
+    <string name="conditions_lowercase_label" msgid="2678248918552246997">"potíže"</string>
+    <string name="conditions_content_description" msgid="3230552343616193829">"Čtení potíží"</string>
     <string name="vaccines_uppercase_label" msgid="1101176371071123187">"Vakcíny"</string>
     <string name="vaccines_lowercase_label" msgid="4991324441768127447">"vakcíny"</string>
     <string name="vaccines_content_description" msgid="7152741514791951684">"Čtení vakcín"</string>
@@ -1012,7 +1014,7 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Přesunout na konec"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Tlačítko k přetáhnutí a zařazení aplikace <xliff:g id="SELECTED_APP">%s</xliff:g> do priority"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Tlačítko k odstranění aplikace <xliff:g id="SELECTED_APP">%s</xliff:g> z priority"</string>
-    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Tlačítko ke změně pořadí nebo odstranění aplikace <xliff:g id="SELECTED_APP">%s</xliff:g> ze seznamu zdrojů aplikací"</string>
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Tlačítko ke změně pořadí nebo odstranění aplikace <xliff:g id="SELECTED_APP">%s</xliff:g> ze seznamu zdrojových aplikací"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Dvojitým klepnutím a přetažením změníte pořadí"</string>
     <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> v seznamu: <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fitness, wellness"</string>
@@ -1100,13 +1102,13 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Než budete pokračovat v obnovování dat, aktualizujte systém telefonu."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Aktualizovat"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Celková data"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Zdroje aplikací"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Přidejte na seznam zdroje aplikací, abyste zjistili, jak se mohou měnit celková data. Když aplikaci odstraníte ze seznamu, přestane přispívat k celkovým údajům, ale nadále bude mít oprávnění k zápisu."</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Zdrojové aplikace"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Přidejte na seznam zdrojové aplikace, abyste zjistili, jak se mohou měnit celková data. Když aplikaci odstraníte ze seznamu, přestane přispívat k celkovým údajům, ale nadále bude mít oprávnění k zápisu."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Žádné aplikace"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Jakmile aplikacím udělíte oprávnění k zápisu dat z kategorie <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, zdroje se zobrazí tady."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Jak fungují zdroje a určování priorit"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Přidat aplikaci"</string>
-    <string name="edit_data_sources" msgid="79641360876849547">"Upravit zdroje aplikací"</string>
+    <string name="edit_data_sources" msgid="79641360876849547">"Upravit zdrojové aplikace"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Výchozí nastavení zařízení"</string>
     <string name="move_up" msgid="9136155291380319606">"Přesunout nahoru"</string>
     <string name="move_down" msgid="4404970288236170693">"Přesunout dolů"</string>
