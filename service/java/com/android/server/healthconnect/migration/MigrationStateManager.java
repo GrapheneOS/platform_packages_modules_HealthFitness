@@ -449,9 +449,9 @@ public final class MigrationStateManager {
     }
 
     /**
-     * Checks if the original {@link MIGRATION_STATE_ALLOWED} timeout period has passed. We do not
-     * want to reset the ALLOWED_STATE timeout everytime state changes to this state, hence
-     * persisting the original timeout time.
+     * Checks if the original {@link HealthConnectDataState#MIGRATION_STATE_ALLOWED} timeout period
+     * has passed. We do not want to reset the ALLOWED_STATE timeout everytime state changes to this
+     * state, hence persisting the original timeout time.
      */
     boolean hasAllowedStateTimedOut() {
         String allowedStateTimeout = getAllowedStateTimeout();
@@ -550,7 +550,7 @@ public final class MigrationStateManager {
 
     /**
      * Checks if the version set by the migrator apk is the current module version and send a {@link
-     * HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY intent. If not, re-sync the state
+     * HealthConnectManager#ACTION_HEALTH_CONNECT_MIGRATION_READY intent. If not, re-sync the state
      * update job.}
      */
     @GuardedBy("mLock")
@@ -587,8 +587,9 @@ public final class MigrationStateManager {
     }
 
     /**
-     * Tracks the number of times migration is started from {@link MIGRATION_STATE_ALLOWED}. If more
-     * than 3 times, the migration is marked as complete
+     * Tracks the number of times migration is started from {@link
+     * HealthConnectDataState#MIGRATION_STATE_ALLOWED}. If more than 3 times, the migration is
+     * marked as complete
      */
     @GuardedBy("mLock")
     private void updateMigrationStartsCount() {
