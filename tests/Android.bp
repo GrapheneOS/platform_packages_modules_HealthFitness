@@ -34,8 +34,6 @@ filegroup {
         "unittests/src/com/android/server/healthconnect/exportimport/ExportImportNotificationFactoryTest.java",
         // Requires TestUtils for waitForAllTasksToCOmplete()
         "unittests/src/com/android/server/healthconnect/exportimport/ImportManagerTest.java",
-        // Not passing because the SQLite library we have doesn't support dbstat
-        "unittests/src/com/android/server/healthconnect/logging/DatabaseStatsCollectorTest.java",
         // Uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/migration/MigrationStateManagerTest.java",
         // Fails due to resources not included
