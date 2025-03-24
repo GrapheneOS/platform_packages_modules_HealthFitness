@@ -57,9 +57,6 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
-import com.android.modules.utils.testing.ExtendedMockitoRule.MockStatic;
-import com.android.modules.utils.testing.ExtendedMockitoRule.MockStaticClasses;
 import com.android.server.healthconnect.exportimport.ExportManager.ErrorReporter;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -72,6 +69,7 @@ import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 import com.android.server.healthconnect.testing.storage.PhrTestUtils;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
+import com.android.server.healthconnect.utils.FilesUtil;
 
 import org.junit.After;
 import org.junit.Before;
@@ -80,15 +78,18 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
 public class ExportManagerTest {
@@ -97,13 +98,8 @@ public class ExportManagerTest {
     private static final String REMOTE_EXPORT_ZIP_FILE_NAME = "remote_file.zip";
     private static final String REMOTE_EXPORT_DATABASE_FILE_NAME = "remote_file.db";
 
-    @Rule(order = 1)
-    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule(order = 2)
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this).setStrictness(Strictness.LENIENT).build();
-
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
 
     @Rule
@@ -351,21 +347,38 @@ public class ExportManagerTest {
     }
 
     @Test
-    @MockStaticClasses({@MockStatic(Files.class)})
     public void runExport_localExportFails_logsWithGenericError() throws IOException {
-        when(Files.copy((Path) any(), any(), any())).thenThrow(new IOException("Copy failed"));
+        // Make a read only file in a read only directory. As this cannot be deleted the export is
+        // blocked.
+        File exportDir =
+                FilesUtil.getDataSystemCeHCDirectoryForUser(
+                        mHealthConnectInjector.getEnvironmentDataDirectory(),
+                        mContext.getUser().getIdentifier());
+        exportDir.mkdirs();
+        Set<PosixFilePermission> oldPerms = Files.getPosixFilePermissions(exportDir.toPath());
+        File blockingFile = new File(exportDir, LOCAL_EXPORT_DATABASE_FILE_NAME);
+        blockingFile.createNewFile();
+        try {
+            // Make the export dir read only so it can't be replaced.
+            Files.setPosixFilePermissions(
+                    blockingFile.toPath(), PosixFilePermissions.fromString("r--------"));
+            Files.setPosixFilePermissions(
+                    exportDir.toPath(), PosixFilePermissions.fromString("r--------"));
 
-        assertThat(mExportManager.runExport(mContext.getUser())).isFalse();
+            assertThat(mExportManager.runExport(mContext.getUser())).isFalse();
 
-        // Time not recorded due to fake clock.
-        assertErrorStatusStored(DATA_EXPORT_ERROR_UNKNOWN, mTimeStamp);
-        verify(mExportImportLogger, times(1))
-                .logExportStatus(
-                        eq(ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN),
-                        eq(/* timeToError= */ 0),
-                        /* originalFileSizeKb= */ anyInt(),
-                        /* compressedFileSizeKb= */ anyInt());
-        verify(mErrorReporter, times(1)).failed(eq(ErrorReporter.LOCAL_FILE), any(), anyInt());
+            // Time not recorded due to fake clock.
+            assertErrorStatusStored(DATA_EXPORT_ERROR_UNKNOWN, mTimeStamp);
+            verify(mExportImportLogger, times(1))
+                    .logExportStatus(
+                            eq(ScheduledExportStatus.DATA_EXPORT_ERROR_UNKNOWN),
+                            eq(/* timeToError= */ 0),
+                            /* originalFileSizeKb= */ anyInt(),
+                            /* compressedFileSizeKb= */ anyInt());
+            verify(mErrorReporter, times(1)).failed(eq(ErrorReporter.LOCAL_FILE), any(), anyInt());
+        } finally {
+            Files.setPosixFilePermissions(exportDir.toPath(), oldPerms);
+        }
     }
 
     @Test

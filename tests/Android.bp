@@ -27,7 +27,7 @@ filegroup {
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupRestoreTest.java",
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupSettingsHelperTest.java",
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudRestoreManagerTest.java",
-        // Uses ExtendedMockito
+        // Fails due to resources not included for strings for notifications
         "unittests/src/com/android/server/healthconnect/exportimport/ExportManagerTest.java",
         // Doesn't work because tries to read resources from the Health Connect APK.
         // Possibly this can be fixed by changing "Instrumentation for" or something like that
