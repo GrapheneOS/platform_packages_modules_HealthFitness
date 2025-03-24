@@ -34,8 +34,6 @@ filegroup {
         "unittests/src/com/android/server/healthconnect/exportimport/ExportImportNotificationFactoryTest.java",
         // Requires TestUtils for waitForAllTasksToCOmplete()
         "unittests/src/com/android/server/healthconnect/exportimport/ImportManagerTest.java",
-        // Uses ExtendedMockito
-        "unittests/src/com/android/server/healthconnect/migration/MigrationStateManagerTest.java",
         // Fails due to resources not included
         "unittests/src/com/android/server/healthconnect/migration/notification/MigrationNotificationFactoryTest.java",
         // Doesn't work because does complicated things with Health Connect permissions on previous
@@ -108,6 +106,8 @@ android_robolectric_test {
     ],
     java_resource_dirs: ["config"],
     libs: [
+        // Needed for android.os.ext.SdkExtensions in some tests
+        "framework-sdkextensions.stubs.module_lib",
     ],
     instrumentation_for: "HealthConnectFakeTestApp",
 }

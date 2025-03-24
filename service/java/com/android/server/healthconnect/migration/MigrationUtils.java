@@ -122,7 +122,7 @@ public class MigrationUtils {
 
     /** Computes the SHA256 digest of the input data. */
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    public static String computeSha256DigestBytes(byte[] data) {
+    public String computeSha256DigestBytes(byte[] data) {
         MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance("SHA256");

@@ -86,17 +86,20 @@ public final class MigrationStateManager {
     private final Object mLock = new Object();
     private final MigrationBroadcastScheduler mMigrationBroadcastScheduler;
     private final HealthConnectThreadScheduler mThreadScheduler;
+    private final MigrationUtils mMigrationUtils;
     private UserHandle mUserHandle;
 
     public MigrationStateManager(
             UserHandle userHandle,
             PreferenceHelper preferenceHelper,
             MigrationBroadcastScheduler migrationBroadcastScheduler,
-            HealthConnectThreadScheduler threadScheduler) {
+            HealthConnectThreadScheduler threadScheduler,
+            MigrationUtils migrationUtils) {
         mUserHandle = userHandle;
         mPreferenceHelper = preferenceHelper;
         mMigrationBroadcastScheduler = migrationBroadcastScheduler;
         mThreadScheduler = threadScheduler;
+        mMigrationUtils = migrationUtils;
     }
 
     /** Re-initialize this class instance with the new user */
@@ -695,8 +698,7 @@ public final class MigrationStateManager {
         return !allComponents.isEmpty();
     }
 
-    private static boolean hasMigratorPackageKnownSignerSignature(
-            Context context, String packageName) {
+    private boolean hasMigratorPackageKnownSignerSignature(Context context, String packageName) {
         List<String> stringSignatures;
         try {
             stringSignatures =
@@ -732,9 +734,9 @@ public final class MigrationStateManager {
                                 .getIdentifier(HC_RELEASE_CERT_CONFIG_NAME, null, null));
     }
 
-    private static List<String> getPackageSignatures(PackageInfo packageInfo) {
+    private List<String> getPackageSignatures(PackageInfo packageInfo) {
         return Arrays.stream(packageInfo.signingInfo.getApkContentsSigners())
-                .map(signature -> MigrationUtils.computeSha256DigestBytes(signature.toByteArray()))
+                .map(signature -> mMigrationUtils.computeSha256DigestBytes(signature.toByteArray()))
                 .filter(signature -> signature != null)
                 .toList();
     }

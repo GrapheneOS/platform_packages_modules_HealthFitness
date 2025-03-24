@@ -43,6 +43,7 @@ import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
 import com.android.server.healthconnect.migration.MigrationCleaner;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
+import com.android.server.healthconnect.migration.MigrationUtils;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.migration.notification.MigrationNotificationSender;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
@@ -241,13 +242,16 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mMigrationBroadcastScheduler == null
                         ? new MigrationBroadcastScheduler(userHandle)
                         : builder.mMigrationBroadcastScheduler;
+        MigrationUtils migrationUtils =
+                builder.mMigrationUtils == null ? new MigrationUtils() : builder.mMigrationUtils;
         mMigrationStateManager =
                 builder.mMigrationStateManager == null
                         ? new MigrationStateManager(
                                 userHandle,
                                 mPreferenceHelper,
                                 mMigrationBroadcastScheduler,
-                                mThreadScheduler)
+                                mThreadScheduler,
+                                migrationUtils)
                         : builder.mMigrationStateManager;
         mDeviceInfoHelper =
                 builder.mDeviceInfoHelper == null
@@ -732,6 +736,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private HealthConnectThreadScheduler mThreadScheduler;
         @Nullable private HealthFitnessStatsLog mStatsLog;
         @Nullable private TrackerManager mTrackerManager;
+        @Nullable private MigrationUtils mMigrationUtils;
 
         private Builder(Context context) {
             mContext = context;
@@ -1027,6 +1032,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         /** Set fake or custom {@link TrackerManager}. */
         public Builder setTrackerManager(TrackerManager trackerManager) {
             mTrackerManager = Objects.requireNonNull(trackerManager);
+            return this;
+        }
+
+        /** Set a fake or custom {@link MigrationUtils}. */
+        public Builder setMigrationUtils(MigrationUtils migrationUtils) {
+            mMigrationUtils = migrationUtils;
             return this;
         }
 
