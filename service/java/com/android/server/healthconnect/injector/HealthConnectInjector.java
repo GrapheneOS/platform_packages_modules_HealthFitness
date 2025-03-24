@@ -39,7 +39,9 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
+import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
+import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
@@ -154,6 +156,12 @@ public abstract class HealthConnectInjector {
      * Getter for {@link FirstGrantTimeManager} instance initialised by the Health Connect Injector.
      */
     public abstract FirstGrantTimeManager getFirstGrantTimeManager();
+
+    /**
+     * Getter for {@link FirstGrantTimeDatastore} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract FirstGrantTimeDatastore getFirstGrantTimeDatastore();
 
     /**
      * Getter for {@link HealthPermissionIntentAppsTracker} instance initialised by the Health
@@ -301,6 +309,11 @@ public abstract class HealthConnectInjector {
 
     /** Getter for {@link TrackerManager} instance initialised by the Health Connect Injector. */
     public abstract TrackerManager getTrackerManager();
+
+    /**
+     * Getter for {@link GrantTimeXmlHelper} instance initialised by the Health Connect Injector.
+     */
+    public abstract GrantTimeXmlHelper getGrantTimeXmlHelper();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {
