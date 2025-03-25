@@ -46,7 +46,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -80,8 +79,6 @@ import android.os.ext.SdkExtensions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -91,8 +88,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.testing.TestUtils;
 
-import libcore.util.HexEncoding;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -100,7 +95,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -114,12 +110,7 @@ public class MigrationStateManagerTest {
 
     private static final int JOB_ID = 123456;
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .mockStatic(HexEncoding.class)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private Context mContext;
     @Mock private PackageManager mPackageManager;
@@ -129,6 +120,7 @@ public class MigrationStateManagerTest {
     @Mock private SigningInfo mSigningInfo;
     @Mock private MockListener mMockListener;
     @Mock private JobScheduler mJobScheduler;
+    @Mock private MigrationUtils mMigrationUtils;
     private MigrationStateManager mMigrationStateManager;
     private HealthConnectThreadScheduler mThreadScheduler;
 
@@ -152,6 +144,7 @@ public class MigrationStateManagerTest {
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
+                        .setMigrationUtils(mMigrationUtils)
                         .build();
         mMigrationStateManager = healthConnectInjector.getMigrationStateManager();
         mMigrationStateManager.addStateChangedListener(mMockListener::onMigrationStateChanged);
@@ -938,8 +931,8 @@ public class MigrationStateManagerTest {
         when(mSigningInfo.getApkContentsSigners())
                 .thenReturn(
                         new Signature[] {new Signature(getCorrectKnownSignerCertificates()[0])});
-        ExtendedMockito.doReturn(getCorrectKnownSignerCertificates()[0])
-                .when(() -> HexEncoding.encodeToString(any(), anyBoolean()));
+        when(mMigrationUtils.computeSha256DigestBytes(any()))
+                .thenReturn(getCorrectKnownSignerCertificates()[0]);
         when(mPackageManager.getInstalledPackages(PackageManager.GET_SIGNING_CERTIFICATES))
                 .thenReturn(createPackageInfoArray(MOCK_CONFIGURED_PACKAGE));
 
