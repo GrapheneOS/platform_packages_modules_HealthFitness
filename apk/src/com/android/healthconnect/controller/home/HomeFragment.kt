@@ -48,6 +48,7 @@ import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_
 import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL
 import com.android.healthconnect.controller.shared.Constants.MIGRATION_NOT_COMPLETE_DIALOG_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
@@ -69,6 +70,7 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.RecentAccessElement
 import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
 import com.android.healthconnect.controller.utils.pref
+import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled
 import com.android.healthfitness.flags.Flags.onboarding
 import com.android.healthfitness.flags.Flags.personalHealthRecordLockScreenBanner
@@ -110,6 +112,7 @@ class HomeFragment : Hilt_HomeFragment() {
 
     @Inject lateinit var timeSource: TimeSource
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private val recentAccessViewModel: RecentAccessViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
@@ -714,7 +717,7 @@ class HomeFragment : Hilt_HomeFragment() {
                     )
                     .show()
             } else {
-                navigateToAppInfoScreen(recentApp)
+                navigateToAppInfoOrOnboarding(recentApp)
             }
             true
         }
@@ -722,7 +725,7 @@ class HomeFragment : Hilt_HomeFragment() {
         return preference
     }
 
-    private fun navigateToAppInfoScreen(recentApp: RecentAccessEntry) {
+    private fun navigateToAppInfoOrOnboarding(recentApp: RecentAccessEntry) {
         val appPermissionsType = recentApp.appPermissionsType
         val navigationId =
             when (appPermissionsType) {
@@ -733,6 +736,10 @@ class HomeFragment : Hilt_HomeFragment() {
                 AppPermissionsType.COMBINED_PERMISSIONS ->
                     R.id.action_homeFragment_to_combinedPermissionsFragment
             }
+
+        if (recentApp.shouldLaunchAppOnboardingIfAvailable && tryLaunchAppOnboardingActivity(healthPermissionReader, recentApp.metadata.packageName)) {
+            return
+        }
         findNavController()
             .navigate(
                 navigationId,

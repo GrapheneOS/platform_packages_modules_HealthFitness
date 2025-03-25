@@ -100,6 +100,9 @@ constructor(
 
         val filteredClusters = mutableListOf<RecentAccessEntry>()
         clusters.forEach {
+            if (connectedApps.filter { it.status == ConnectedAppStatus.DENIED }.map { it.appMetadata.packageName}.contains(it.metadata.packageName)) {
+                it.shouldLaunchAppOnboardingIfAvailable = true
+            }
             if (inactiveApps.contains(it.metadata.packageName)) {
                 it.isInactive = true
             }
@@ -201,6 +204,7 @@ constructor(
                             healthPermissionsReader.getAppPermissionsType(
                                 packageName = accessLog.packageName
                             ),
+                        shouldLaunchAppOnboardingIfAvailable = false
                     ),
             )
 

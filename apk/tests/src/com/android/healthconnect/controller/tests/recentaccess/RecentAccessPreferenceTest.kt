@@ -84,6 +84,7 @@ class RecentAccessPreferenceTest {
                 isInactive = false,
                 dataTypesWritten = mutableSetOf(),
                 dataTypesRead = mutableSetOf(),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
         val recentAccessPreference =
             RecentAccessPreference(
@@ -108,6 +109,7 @@ class RecentAccessPreferenceTest {
                 isInactive = false,
                 dataTypesWritten = mutableSetOf(),
                 dataTypesRead = mutableSetOf(),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
         val recentAccessPreference =
             RecentAccessPreference(
@@ -132,6 +134,7 @@ class RecentAccessPreferenceTest {
                 isInactive = false,
                 dataTypesWritten = mutableSetOf(),
                 dataTypesRead = mutableSetOf(),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
 
         val withWriteEntry =
@@ -142,6 +145,7 @@ class RecentAccessPreferenceTest {
                 isInactive = false,
                 dataTypesWritten = mutableSetOf(HealthDataCategory.ACTIVITY.uppercaseTitle()),
                 dataTypesRead = mutableSetOf(),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
         val recentAccessPreference =
             RecentAccessPreference(
@@ -179,6 +183,7 @@ class RecentAccessPreferenceTest {
                 isInactive = false,
                 dataTypesWritten = mutableSetOf(),
                 dataTypesRead = mutableSetOf(),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
 
         val withWriteEntry =
@@ -189,6 +194,7 @@ class RecentAccessPreferenceTest {
                 isInactive = false,
                 dataTypesWritten = mutableSetOf(HealthDataCategory.ACTIVITY.uppercaseTitle()),
                 dataTypesRead = mutableSetOf(),
+                shouldLaunchAppOnboardingIfAvailable = false,
             )
 
         val recentAccessPreference =
@@ -302,6 +308,7 @@ class RecentAccessPreferenceTest {
                 instantTime = Instant.parse("2022-10-20T18:40:13.00Z"),
                 isToday = true,
                 isInactive = false,
+                shouldLaunchAppOnboardingIfAvailable = false,
                 dataTypesWritten =
                     mutableSetOf(
                         HealthDataCategory.ACTIVITY.uppercaseTitle(),
@@ -320,6 +327,7 @@ class RecentAccessPreferenceTest {
                 instantTime = Instant.parse("2022-10-20T18:40:13.00Z"),
                 isToday = true,
                 isInactive = false,
+                shouldLaunchAppOnboardingIfAvailable = false,
                 dataTypesWritten =
                     mutableSetOf(
                         HealthDataCategory.ACTIVITY.uppercaseTitle(),
