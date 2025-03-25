@@ -21,7 +21,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -83,7 +82,7 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
     private val deletionViewModel: DeletionViewModel by activityViewModels()
     private lateinit var dateNavigationView: DateNavigationView
     private lateinit var entriesRecyclerView: RecyclerView
-    private lateinit var noDataView: TextView
+    private lateinit var noDataView: View
     private lateinit var loadingView: View
     private lateinit var errorView: View
     private lateinit var adapter: EntriesAdapter
@@ -257,11 +256,17 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
         if (permissionType is MedicalPermissionType) {
             dateNavigationView.isVisible = false
         }
-        noDataView = view.findViewById(R.id.no_data_view)
+        val isExpressiveThemeEnabled = SettingsThemeHelper.isExpressiveTheme(requireContext())
+        noDataView =
+            if (isExpressiveThemeEnabled) {
+                view.findViewById(R.id.zerostate_view)
+            } else {
+                view.findViewById(R.id.no_data_view)
+            }
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
         adapter =
-            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            if (isExpressiveThemeEnabled) {
                 getExpressiveEntriesAdapter()
             } else {
                 getEntriesAdapter()
