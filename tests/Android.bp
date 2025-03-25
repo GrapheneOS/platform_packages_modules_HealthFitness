@@ -24,6 +24,7 @@ filegroup {
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreWithoutMocksTest.java",
         // These fail because the Robolectric mocks for package manager return null rather
         // than application icon or throw exception for getApplicationIcon() when not set.
+        // Should be fixed when android gets latest robolectric update.
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupRestoreTest.java",
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupSettingsHelperTest.java",
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudRestoreManagerTest.java",
@@ -32,7 +33,8 @@ filegroup {
         // Doesn't work because tries to read resources from the Health Connect APK.
         // Possibly this can be fixed by changing "Instrumentation for" or something like that
         "unittests/src/com/android/server/healthconnect/exportimport/ExportImportNotificationFactoryTest.java",
-        // Requires TestUtils for waitForAllTasksToCOmplete()
+        // Failing because of getIntrinicWidth, Robolectric application icon.
+        // Should be fixed when android gets latest robolectric update.
         "unittests/src/com/android/server/healthconnect/exportimport/ImportManagerTest.java",
         // Fails due to resources not included
         "unittests/src/com/android/server/healthconnect/migration/notification/MigrationNotificationFactoryTest.java",
