@@ -29,7 +29,7 @@ import android.database.Cursor;
 import android.health.connect.datatypes.ActivityIntensityRecord;
 import android.health.connect.datatypes.AggregationType;
 
-import com.android.server.healthconnect.storage.datatypehelpers.ActivityIntensityRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
 
 import java.util.concurrent.TimeUnit;
 

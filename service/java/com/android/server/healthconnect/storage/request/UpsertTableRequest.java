@@ -27,7 +27,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.ArrayMap;
 import android.util.Pair;
 
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TableColumnPair;
 import com.android.server.healthconnect.storage.utils.WhereClauses;

@@ -32,7 +32,7 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 
 import java.util.Collections;
