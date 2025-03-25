@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
+package com.android.server.healthconnect.fitness.aggregation;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.isNullValue;
@@ -40,7 +40,7 @@ import java.util.UUID;
  *
  * @hide
  */
-public class SessionDurationAggregationData extends AggregationRecordData {
+class SessionDurationAggregationData extends AggregationRecordData {
     private static final String TAG = "HealthSessionPriorityAggregation";
     private final String mExcludeIntervalStartTimeColumn;
     private final String mExcludeIntervalEndTimeColumn;
@@ -49,7 +49,7 @@ public class SessionDurationAggregationData extends AggregationRecordData {
     List<Long> mExcludeEnds;
 
     @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    public SessionDurationAggregationData(
+    SessionDurationAggregationData(
             String excludeIntervalStartTimeColumn, String excludeIntervalEndTimeColumn) {
         mExcludeIntervalStartTimeColumn = excludeIntervalStartTimeColumn;
         mExcludeIntervalEndTimeColumn = excludeIntervalEndTimeColumn;
