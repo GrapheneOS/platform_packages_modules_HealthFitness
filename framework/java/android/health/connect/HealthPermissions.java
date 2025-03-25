@@ -58,6 +58,7 @@ import static android.health.connect.HealthPermissionCategory.WHEELCHAIR_PUSHES;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
+import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
@@ -124,9 +125,8 @@ public final class HealthPermissions {
      * by the system to launch onboarding activities.
      *
      * <p>Protection level: signature.
-     *
-     * @hide
      */
+    @FlaggedApi(FLAG_LAUNCH_ONBOARDING_ACTIVITY)
     public static final String START_ONBOARDING = "android.permission.health.START_ONBOARDING";
 
     /**
