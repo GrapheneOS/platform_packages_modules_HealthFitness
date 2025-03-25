@@ -25,16 +25,14 @@ filegroup {
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupRestoreTest.java",
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupSettingsHelperTest.java",
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudRestoreManagerTest.java",
-        // Fails due to resources not included for strings for notifications
+        // Fails due to attempts to reference an inaccessible file don't fail with Robolectric.
         "unittests/src/com/android/server/healthconnect/exportimport/ExportManagerTest.java",
-        // Doesn't work because tries to read resources from the Health Connect APK.
-        // Possibly this can be fixed by changing "Instrumentation for" or something like that
-        "unittests/src/com/android/server/healthconnect/exportimport/ExportImportNotificationFactoryTest.java",
         // Failing because of getIntrinicWidth, Robolectric application icon.
         // Should be fixed when android gets latest robolectric update.
         "unittests/src/com/android/server/healthconnect/exportimport/ImportManagerTest.java",
-        // Fails due to resources not included
-        "unittests/src/com/android/server/healthconnect/migration/notification/MigrationNotificationFactoryTest.java",
+        // Explicit tests that needed resources are present in the controller APK.
+        // Not expected to be bivalent.
+        "unittests/src/com/android/server/healthconnect/migration/notification/HealthConnectResourcesContextTest.java",
         // Doesn't work because does complicated things with Health Connect permissions on previous
         // SDK versions for some tests.
         // These are not represented well by Robolectric

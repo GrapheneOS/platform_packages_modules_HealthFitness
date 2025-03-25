@@ -42,6 +42,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Icon;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
@@ -61,6 +63,7 @@ import com.android.server.healthconnect.exportimport.ExportManager.ErrorReporter
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.logging.ExportImportLogger;
+import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
@@ -97,6 +100,8 @@ public class ExportManagerTest {
     private static final String REMOTE_EXPORT_DATABASE_DIR_NAME = "remote";
     private static final String REMOTE_EXPORT_ZIP_FILE_NAME = "remote_file.zip";
     private static final String REMOTE_EXPORT_DATABASE_FILE_NAME = "remote_file.db";
+    private static final Bitmap BITMAP = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+    private static final Icon APP_ICON = Icon.createWithBitmap(BITMAP);
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -123,9 +128,20 @@ public class ExportManagerTest {
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private ExportImportLogger mExportImportLogger;
     @Mock private ErrorReporter mErrorReporter;
+    @Mock private HealthConnectResourcesContext mResourcesContext;
 
     @Before
     public void setUp() throws Exception {
+        // Return the requested name as the string resource
+        when(mResourcesContext.getStringByName(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(mResourcesContext.getStringByNameWithArgs(any(), any()))
+                .thenAnswer(
+                        invocation -> invocation.getArgument(0) + "," + invocation.getArgument(1));
+        when(mResourcesContext.getIconByDrawableName(
+                        ExportImportNotificationFactory.APP_ICON_DRAWABLE_NAME))
+                .thenReturn(APP_ICON);
+
         mContext = ApplicationProvider.getApplicationContext();
         mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
@@ -133,6 +149,7 @@ public class ExportManagerTest {
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
+                        .setHealthConnectResourcesContext(mResourcesContext)
                         .build();
 
         mExportImportSettingsStorage = mHealthConnectInjector.getExportImportSettingsStorage();

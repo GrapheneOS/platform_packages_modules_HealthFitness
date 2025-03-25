@@ -53,9 +53,10 @@ public final class MigrationNotificationSender {
     private final Context mContext;
     private final MigrationNotificationFactory mNotificationFactory;
 
-    public MigrationNotificationSender(Context context) {
+    public MigrationNotificationSender(
+            Context context, HealthConnectResourcesContext resourcesContext) {
         mContext = context;
-        mNotificationFactory = new MigrationNotificationFactory(mContext);
+        mNotificationFactory = new MigrationNotificationFactory(mContext, resourcesContext);
     }
 
     /** Sends a notification to the current user based on the notification type. */

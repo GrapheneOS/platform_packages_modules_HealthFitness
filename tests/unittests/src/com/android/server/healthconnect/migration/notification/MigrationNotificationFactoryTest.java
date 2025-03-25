@@ -18,42 +18,62 @@ package com.android.server.healthconnect.migration.notification;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
 public class MigrationNotificationFactoryTest {
 
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Mock private Context mContext;
+    @Mock private HealthConnectResourcesContext mResourcesContext;
 
     @Before
-    public void setUp() {
-        mContext = InstrumentationRegistry.getInstrumentation().getContext();
-    }
+    public void setUp() {}
 
     @Test
-    public void testAllNotificationStringsExist() {
-        MigrationNotificationFactory factory = new MigrationNotificationFactory(mContext);
+    public void testAllNotificationStringsFetchFromResources() {
+        // Mock String resource loading by just returning the name as the resource.
+        when(mResourcesContext.getStringByName(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        MigrationNotificationFactory factory =
+                new MigrationNotificationFactory(mContext, mResourcesContext);
         String[] expected = MigrationNotificationFactory.getNotificationStringResources();
+
         for (String s : expected) {
             String fetched = factory.getStringResource(s);
             String failMessage = "String resource with name " + s + " cannot be found.";
-            assertWithMessage(failMessage).that(fetched).isNotNull();
+            assertWithMessage(failMessage).that(fetched).isEqualTo(s);
         }
     }
 
     @Test
-    public void testAppIconDrawableExists() {
-        MigrationNotificationFactory factory = new MigrationNotificationFactory(mContext);
+    public void testAppIconDrawableFetchesFromResources() {
+        Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        Icon icon = Icon.createWithBitmap(bitmap);
+        when(mResourcesContext.getIconByDrawableName(
+                        eq(MigrationNotificationFactory.APP_ICON_DRAWABLE_NAME)))
+                .thenReturn(icon);
+        MigrationNotificationFactory factory =
+                new MigrationNotificationFactory(mContext, mResourcesContext);
+
         Icon fetched = factory.getAppIcon();
+
         String failMessage =
                 "Drawable resource with name "
                         + MigrationNotificationFactory.APP_ICON_DRAWABLE_NAME

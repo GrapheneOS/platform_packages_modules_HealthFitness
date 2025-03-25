@@ -45,6 +45,7 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.MigrationUtils;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
+import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.migration.notification.MigrationNotificationSender;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
@@ -166,6 +167,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         userHandle,
                         /* databaseDirName= */ null,
                         mEnvironmentDataDirectory);
+        HealthConnectResourcesContext resourcesContext =
+                builder.mResourcesContext == null
+                        ? new HealthConnectResourcesContext(context)
+                        : builder.mResourcesContext;
 
         mDatabaseHelpers = new DatabaseHelpers();
         mInternalHealthConnectMappings = InternalHealthConnectMappings.getInstance();
@@ -181,7 +186,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mMigrationEntityHelper;
         mExportImportNotificationSender =
                 builder.mExportImportNotificationSender == null
-                        ? ExportImportNotificationSender.createSender(context)
+                        ? ExportImportNotificationSender.createSender(context, resourcesContext)
                         : builder.mExportImportNotificationSender;
 
         mTransactionManager =
@@ -394,7 +399,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 context,
                                 userHandle,
                                 mMigrationStateManager,
-                                new MigrationNotificationSender(context))
+                                new MigrationNotificationSender(context, resourcesContext))
                         : builder.mMigrationUiStateManager;
         mBackupRestore =
                 new BackupRestore(
@@ -737,6 +742,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private HealthFitnessStatsLog mStatsLog;
         @Nullable private TrackerManager mTrackerManager;
         @Nullable private MigrationUtils mMigrationUtils;
+        @Nullable private HealthConnectResourcesContext mResourcesContext;
 
         private Builder(Context context) {
             mContext = context;
@@ -1038,6 +1044,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         /** Set a fake or custom {@link MigrationUtils}. */
         public Builder setMigrationUtils(MigrationUtils migrationUtils) {
             mMigrationUtils = migrationUtils;
+            return this;
+        }
+
+        /** Set fake or custom {@link TrackerManager}. */
+        public Builder setHealthConnectResourcesContext(
+                HealthConnectResourcesContext resourcesContext) {
+            mResourcesContext = Objects.requireNonNull(resourcesContext);
             return this;
         }
 
