@@ -86,6 +86,9 @@ android_robolectric_test {
         "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
         ":robo-tests-sources-exclude",
     ],
+    test_suites: [
+        "general-tests",
+    ],
     static_libs: [
         // This is required to get mocking of final classes
         "inline-mockito-robolectric-prebuilt",
