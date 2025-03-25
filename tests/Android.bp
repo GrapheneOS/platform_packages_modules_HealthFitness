@@ -7,8 +7,6 @@ package {
 filegroup {
     name: "robo-tests-sources-exclude",
     srcs: [
-        // Not sure, it is getting an index out of bounds for shared memory
-        "unittests/src/android/health/connect/MigrationEntityParcelTest.java",
         // This test could be made to work by mocking out the package manager.
         // However, at the moment it is working more as an integration test on the real platform.
         // It is safer leaving the test as is.

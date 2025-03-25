@@ -57,13 +57,13 @@ public final class ParcelUtils {
         return in;
     }
 
-    public static SharedMemory getSharedMemoryForParcel(Parcel dataParcel, int dataParcelSize) {
+    public static SharedMemory getSharedMemoryForParcel(Parcel dataParcel) {
         try {
-            SharedMemory sharedMemory =
-                    SharedMemory.create("RecordsParcelSharedMemory", dataParcelSize);
-            ByteBuffer buffer = sharedMemory.mapReadWrite();
             byte[] data = dataParcel.marshall();
-            buffer.put(data, 0, dataParcelSize);
+            SharedMemory sharedMemory =
+                    SharedMemory.create("RecordsParcelSharedMemory", data.length);
+            ByteBuffer buffer = sharedMemory.mapReadWrite();
+            buffer.put(data, 0, data.length);
             return sharedMemory;
         } catch (ErrnoException e) {
             throw new RuntimeException(e);
@@ -80,9 +80,18 @@ public final class ParcelUtils {
         try {
             parcelRunnable.writeToParcel(dataParcel);
             final int dataParcelSize = dataParcel.dataSize();
+            // Strictly speaking the if statement below is incorrect. An OEM is free to change the
+            // implementation of Parcel.marshall() so the length of the resulting data is
+            // significantly longer than dataSize(). If they did this, AND
+            // dataSize() < IPC_PARCEL_LIMIT (which is the recommended max size / 2) AND
+            // the marshalled length was greater than the maximum IPC size we could get a crash.
+            // In practice, I think the chance of any OEM changing the marshall() code to have
+            // such a big disparity is 0. for the default implementation the are guaranteed to be
+            // equal, and it is such a core part of Android I think most people won't touch it.
+            // And doing the check like this saves two unmarshall call which saves CPU and RAM. So
+            // the code is being left as it is.
             if (dataParcelSize > IPC_PARCEL_LIMIT) {
-                try (SharedMemory sharedMemory =
-                        ParcelUtils.getSharedMemoryForParcel(dataParcel, dataParcelSize)) {
+                try (SharedMemory sharedMemory = ParcelUtils.getSharedMemoryForParcel(dataParcel)) {
                     dest.writeInt(USING_SHARED_MEMORY);
                     sharedMemory.writeToParcel(dest, flags);
                 }
