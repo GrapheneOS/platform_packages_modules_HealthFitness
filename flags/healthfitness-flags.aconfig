@@ -259,39 +259,6 @@ flag {
 }
 
 flag {
-    name: "d2d_file_deletion_bug_fix"
-    namespace: "health_fitness_aconfig"
-    description: "Fixes bugs that prevents file deletion during d2d."
-    bug: "301926710"
-    is_fixed_read_only: true
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
-    is_exported: true
-}
-
-flag {
-    name: "permission_tracker_fix_mapping_init"
-    namespace: "health_fitness_aconfig"
-    description: "Fixes a bug when setting up intent tracker for a new user."
-    bug: "301926710"
-    is_fixed_read_only: true
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
-    is_exported: true
-}
-
-flag {
-    name: "dependency_injection"
-    namespace: "health_fitness_aconfig"
-    description: "Enables dependency injection."
-    bug: "341654919"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "new_information_architecture"
     namespace: "health_fitness_aconfig"
     description: "Enables new information architecture."
@@ -400,15 +367,6 @@ flag {
     namespace: "health_fitness_aconfig"
     description: "Enables DB modification to allow collection of ecosystem metrics."
     bug: "369507783"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "permission_metrics"
-    namespace: "health_fitness_aconfig"
-    description: "Enables collection of permission metrics."
-    bug: "372464298"
     is_fixed_read_only: true
     is_exported: true
 }

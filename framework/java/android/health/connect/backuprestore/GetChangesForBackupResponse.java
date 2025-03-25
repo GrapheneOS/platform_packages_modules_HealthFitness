@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Response of the data to be backed up from the Health Connect service to the Health Connect backup
- * agent.
+ * Response for a {@link android.health.connect.HealthConnectManager#getChangesForBackup} call,
+ * which contains a paginated list of data to be backed up.
  *
  * @hide
  */
@@ -37,8 +37,8 @@ import java.util.Objects;
 @SystemApi
 public final class GetChangesForBackupResponse implements Parcelable {
 
-    // Proto version
-    private final int mVersion;
+    // The version that the data is serialized with.
+    private final int mCurrentVersion;
 
     @NonNull private final List<BackupChange> mChanges;
 
@@ -46,20 +46,22 @@ public final class GetChangesForBackupResponse implements Parcelable {
     @NonNull private final String mNextChangeToken;
 
     /**
-     * @param version The version of the data contained in the response, with which the data is
-     *     serialized.
+     * @param currentVersion The version of the data contained in the response, with which the data
+     *     is serialized.
      * @param changes The changes to be backed up.
-     * @param nextChangeToken The changeToken to be used for the next call to resume the backup.
+     * @param nextChangeToken The change token to be used for the next call to resume the backup.
      */
     public GetChangesForBackupResponse(
-            int version, @NonNull List<BackupChange> changes, @NonNull String nextChangeToken) {
-        mVersion = version;
+            int currentVersion,
+            @NonNull List<BackupChange> changes,
+            @NonNull String nextChangeToken) {
+        mCurrentVersion = currentVersion;
         mChanges = changes;
         mNextChangeToken = nextChangeToken;
     }
 
     private GetChangesForBackupResponse(Parcel in) {
-        mVersion = in.readInt();
+        mCurrentVersion = in.readInt();
         mChanges = in.createTypedArrayList(BackupChange.CREATOR);
         mNextChangeToken = in.readString();
     }
@@ -68,14 +70,14 @@ public final class GetChangesForBackupResponse implements Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof GetChangesForBackupResponse that)) return false;
-        return mVersion == that.mVersion
+        return mCurrentVersion == that.mCurrentVersion
                 && mChanges.equals(that.mChanges)
                 && mNextChangeToken.equals(that.mNextChangeToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mVersion, mChanges, mNextChangeToken);
+        return Objects.hash(mCurrentVersion, mChanges, mNextChangeToken);
     }
 
     @NonNull
@@ -92,18 +94,29 @@ public final class GetChangesForBackupResponse implements Parcelable {
                 }
             };
 
-    /** Returns the version of the data, with which the data is serialized. */
-    public int getVersion() {
-        return mVersion;
+    /**
+     * The returned value should be passed to the {@link
+     * android.health.connect.HealthConnectManager#canRestore} call during restore.
+     *
+     * @return the version of the data, with which the data is serialized.
+     */
+    public int getCurrentVersion() {
+        return mCurrentVersion;
     }
 
-    /** Returns the changes to be backed up. */
+    /**
+     * @return the changes to be backed up.
+     */
     @NonNull
     public List<BackupChange> getChanges() {
         return mChanges;
     }
 
-    /** Returns the changeToken to be used for the next call to resume the backup. */
+    /**
+     * Represents the pagination token to retrieve the next page of results.
+     *
+     * @return the change token to be used for the next call to resume the backup.
+     */
     @NonNull
     public String getNextChangeToken() {
         return mNextChangeToken;
@@ -116,7 +129,7 @@ public final class GetChangesForBackupResponse implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(mVersion);
+        dest.writeInt(mCurrentVersion);
         dest.writeTypedList(mChanges);
         dest.writeString(mNextChangeToken);
     }

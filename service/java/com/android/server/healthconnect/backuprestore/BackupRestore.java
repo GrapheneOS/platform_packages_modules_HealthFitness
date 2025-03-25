@@ -463,9 +463,7 @@ public final class BackupRestore {
                     }
                 });
 
-        if (Flags.d2dFileDeletionBugFix()) {
-            deleteBackupFiles(backupDataDir);
-        }
+        deleteBackupFiles(backupDataDir);
     }
 
     /** Get the file names of all the files that are transported during backup / restore. */
@@ -1100,10 +1098,8 @@ public final class BackupRestore {
         mFirstGrantTimeManager.applyAndStageGrantTimeStateForUser(
                 mCurrentForegroundUser, userGrantTimeState);
 
-        if (Flags.d2dFileDeletionBugFix()) {
-            Slog.i(TAG, "Deleting staged grant times after merging.");
-            restoredGrantTimeFile.delete();
-        }
+        Slog.i(TAG, "Deleting staged grant times after merging.");
+        restoredGrantTimeFile.delete();
     }
 
     private void mergeDatabase(HealthConnectContext dbContext) {

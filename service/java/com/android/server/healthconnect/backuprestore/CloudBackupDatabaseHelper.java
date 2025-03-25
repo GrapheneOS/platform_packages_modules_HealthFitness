@@ -299,10 +299,8 @@ public class CloudBackupDatabaseHelper {
                                 throw new IllegalStateException(
                                         "Record does not have a UUID, this should not happen");
                             }
-                            return new BackupChange(
-                                    record.getUuid().toString(),
-                                    /* isDeletion= */ false,
-                                    serializeRecordInternal(record));
+                            return BackupChange.ofUpsertion(
+                                    record.getUuid().toString(), serializeRecordInternal(record));
                         })
                 .toList();
     }
@@ -310,12 +308,7 @@ public class CloudBackupDatabaseHelper {
     private List<BackupChange> convertDeletedLogsToBackupChange(
             List<ChangeLogsResponse.DeletedLog> deletedLogs) {
         return deletedLogs.stream()
-                .map(
-                        deletedLog ->
-                                new BackupChange(
-                                        deletedLog.getDeletedRecordId(),
-                                        /* isDeletion= */ true,
-                                        null))
+                .map(deletedLog -> BackupChange.ofDeletion(deletedLog.getDeletedRecordId()))
                 .toList();
     }
 

@@ -20,7 +20,9 @@ import static android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTING
 import static android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS;
 import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
+import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.permission.flags.Flags.FLAG_HEALTH_CONNECT_BACKUP_RESTORE_PERMISSION_ENABLED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
@@ -31,10 +33,13 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.GetChangesForBackupResponse;
-import android.health.connect.backuprestore.GetSettingsForBackupResponse;
+import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
+import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DataFactory;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
@@ -64,7 +69,7 @@ import java.util.List;
     FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
     FLAG_HEALTH_CONNECT_BACKUP_RESTORE_PERMISSION_ENABLED
 })
-public class HealthConnectBackupRestoreTests {
+public class HealthConnectCloudBackupRestoreTests {
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
@@ -88,18 +93,18 @@ public class HealthConnectBackupRestoreTests {
     }
 
     @Test
-    public void getSettingsForBackup_success() throws InterruptedException {
-        GetSettingsForBackupResponse response =
+    public void getLatestMetadataForBackup_success() throws InterruptedException {
+        GetLatestMetadataForBackupResponse response =
                 callAndGetResponseWithShellPermissionIdentity(
-                        mManager::getSettingsForBackup, BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS);
+                        mManager::getLatestMetadataForBackup,
+                        BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS);
 
-        assertThat(response.getSettings()).isNotNull();
+        assertThat(response.getMetadata()).isNotNull();
     }
 
     @Test
     public void getChangesForBackup_success() throws InterruptedException {
-        List<android.health.connect.datatypes.Record> testRecords = DataFactory.getTestRecords();
-        List<Record> insertedRecords = insertRecords(testRecords);
+        List<Record> insertedRecords = insertRecords(DataFactory.getTestRecords());
         GetChangesForBackupResponse response =
                 callAndGetResponseWithShellPermissionIdentity(
                         (executor, receiver) ->
@@ -120,14 +125,46 @@ public class HealthConnectBackupRestoreTests {
     }
 
     @Test
-    public void restoreSettings_success() throws InterruptedException {
-        // TODO: b/392853668 - add assertions once the test plan is in place.
+    public void restoreLatestMetadata_success() throws InterruptedException {
+        // No exception is thrown.
         Void unused =
                 callAndGetResponseWithShellPermissionIdentity(
                         HealthConnectException.class,
                         (executor, receiver) ->
-                                mManager.restoreSettings(
-                                        new BackupSettings(new byte[0]), executor, receiver),
+                                mManager.restoreLatestMetadata(
+                                        new BackupMetadata(new byte[0]), executor, receiver),
                         RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS);
+    }
+
+    @Test
+    public void restoreChanges_success() throws InterruptedException {
+        // Insert a record.
+        List<Record> insertedRecords = insertRecords(DataFactory.getStepsRecord(10));
+        // Get valid changes and app info map.
+        GetChangesForBackupResponse response =
+                callAndGetResponseWithShellPermissionIdentity(
+                        (executor, receiver) ->
+                                mManager.getChangesForBackup(null, executor, receiver),
+                        BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS);
+        // Delete the backed up records in DB and verify no records left.
+        deleteRecords(insertedRecords);
+
+        List<RestoreChange> changes =
+                response.getChanges().stream()
+                        .filter(backupChange -> backupChange.getData() != null)
+                        .map(backupChange -> new RestoreChange(backupChange.getData()))
+                        .toList();
+        // Call restoreChanges and no exception is thrown.
+        Void unused =
+                callAndGetResponseWithShellPermissionIdentity(
+                        HealthConnectException.class,
+                        (executor, receiver) ->
+                                mManager.restoreChanges(changes, executor, receiver),
+                        RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS);
+
+        var records =
+                readRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
+        assertThat(records).isEqualTo(insertedRecords);
     }
 }

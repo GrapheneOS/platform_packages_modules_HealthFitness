@@ -43,7 +43,7 @@ import static org.junit.Assert.assertThrows;
 
 import android.content.Context;
 import android.health.connect.HealthDataCategory;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
@@ -206,7 +206,7 @@ public class CloudRestoreManagerTest {
                 new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);
         setupInitialSettings();
         Settings settingsToRestore = createSettingsToRestore(false);
-        mCloudRestoreManager.restoreSettings(new BackupSettings(settingsToRestore.toByteArray()));
+        mCloudRestoreManager.restoreSettings(new BackupMetadata(settingsToRestore.toByteArray()));
 
         Settings currentSettings = cloudBackupSettingsHelper.collectUserSettings();
         mDatabaseHelpers.clearAllData(mTransactionManager);
@@ -230,7 +230,7 @@ public class CloudRestoreManagerTest {
                 ENERGY_UNIT_PREF_KEY, Settings.EnergyUnitProto.CALORIE.toString());
         setupInitialSettings();
         Settings settingsToRestore = createSettingsToRestore(true);
-        mCloudRestoreManager.restoreSettings(new BackupSettings(settingsToRestore.toByteArray()));
+        mCloudRestoreManager.restoreSettings(new BackupMetadata(settingsToRestore.toByteArray()));
 
         Settings currentSettings = cloudBackupSettingsHelper.collectUserSettings();
         mDatabaseHelpers.clearAllData(mTransactionManager);
@@ -345,7 +345,7 @@ public class CloudRestoreManagerTest {
 
     @Test
     public void restoreInvalidSettings_throwsException() {
-        BackupSettings backupSettings = new BackupSettings(new byte[] {45, 36});
+        BackupMetadata backupSettings = new BackupMetadata(new byte[] {45, 36});
         assertThrows(
                 IllegalArgumentException.class,
                 () -> mCloudRestoreManager.restoreSettings(backupSettings));
@@ -367,7 +367,7 @@ public class CloudRestoreManagerTest {
                         .setAutoDeleteFrequencyValue(invalidEnumValue)
                         .build();
 
-        BackupSettings backupSettings = new BackupSettings(settings.toByteArray());
+        BackupMetadata backupSettings = new BackupMetadata(settings.toByteArray());
         mCloudRestoreManager.restoreSettings(backupSettings);
 
         // stay the same as initial settings

@@ -27,7 +27,6 @@ import android.os.UserManager;
 import android.util.ArraySet;
 import android.util.Log;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.GuardedBy;
 
 import java.util.HashMap;
@@ -59,16 +58,11 @@ public class HealthPermissionIntentAppsTracker {
         synchronized (mLock) {
             mUserToHealthPackageNamesMap = new HashMap<>();
         }
-        if (!Flags.permissionTrackerFixMappingInit()) {
-            initPerUserMapping(context);
-        }
     }
 
     /** Setup the for the new user. */
     public void setupForUser(UserHandle userHandle) {
-        if (Flags.permissionTrackerFixMappingInit()) {
-            initPackageSetForUser(userHandle);
-        }
+        initPackageSetForUser(userHandle);
     }
 
     /**
@@ -81,16 +75,7 @@ public class HealthPermissionIntentAppsTracker {
     boolean supportsPermissionUsageIntent(String packageName, UserHandle userHandle) {
         synchronized (mLock) {
             if (!mUserToHealthPackageNamesMap.containsKey(userHandle)) {
-                if (Flags.permissionTrackerFixMappingInit()) {
-                    mUserToHealthPackageNamesMap.put(userHandle, new ArraySet<>());
-                } else {
-                    Log.w(
-                            TAG,
-                            "Requested user handle: "
-                                    + userHandle.toString()
-                                    + " is not present in the state.");
-                    return false;
-                }
+                mUserToHealthPackageNamesMap.put(userHandle, new ArraySet<>());
             }
 
             if (mUserToHealthPackageNamesMap.get(userHandle).contains(packageName)) {
@@ -126,40 +111,6 @@ public class HealthPermissionIntentAppsTracker {
                 return true;
             }
         }
-    }
-
-    /**
-     * Updates package state if needed, returns whether activity for {@link
-     * android.content.Intent#ACTION_VIEW_PERMISSION_USAGE} with {@link
-     * HealthConnectManager#CATEGORY_HEALTH_PERMISSIONS} support has been disabled/removed.
-     */
-    boolean updateStateAndGetIfIntentWasRemoved(String packageNameToUpdate, UserHandle userHandle) {
-        synchronized (mLock) {
-            if (!mUserToHealthPackageNamesMap.containsKey(userHandle)) {
-                mUserToHealthPackageNamesMap.put(userHandle, new ArraySet<>());
-            }
-        }
-
-        Intent permissionPackageUsageIntent = getHealthPermissionsUsageIntent();
-        permissionPackageUsageIntent.setPackage(packageNameToUpdate);
-        boolean removedIntent = false;
-        if (!mPackageManager
-                .queryIntentActivitiesAsUser(
-                        permissionPackageUsageIntent,
-                        PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL),
-                        userHandle)
-                .isEmpty()) {
-            synchronized (mLock) {
-                mUserToHealthPackageNamesMap.get(userHandle).add(packageNameToUpdate);
-            }
-        } else {
-            synchronized (mLock) {
-                removedIntent =
-                        mUserToHealthPackageNamesMap.get(userHandle).remove(packageNameToUpdate);
-            }
-        }
-        logStateIfDebugMode(userHandle);
-        return removedIntent;
     }
 
     private static Intent getHealthPermissionsUsageIntent() {

@@ -269,7 +269,7 @@ public class CloudBackupManagerTest {
     @Test
     public void getSettingsForBackup_returnsProtoVersion() {
         var response = mCloudBackupManager.getSettingsForBackup();
-        assertThat(response.getVersion()).isEqualTo(PROTO_VERSION);
+        assertThat(response.getCurrentVersion()).isEqualTo(PROTO_VERSION);
     }
 
     @Test
@@ -294,7 +294,7 @@ public class CloudBackupManagerTest {
         // Inserted record should be returned in the second response.
         assertThat(secondResponse.getChanges().size()).isEqualTo(2);
         assertThat(thirdResponse.getChanges().size()).isEqualTo(1);
-        assertThat(thirdResponse.getChanges().get(0).getRecordId())
+        assertThat(thirdResponse.getChanges().get(0).getChangeId())
                 .isEqualTo(bloodPressureRecord.getUuid().toString());
     }
 

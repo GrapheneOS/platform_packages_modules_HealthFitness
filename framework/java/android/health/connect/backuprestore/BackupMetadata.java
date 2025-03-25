@@ -27,31 +27,31 @@ import android.os.Parcelable;
 import java.util.Arrays;
 
 /**
- * User settings to be backed up or restored.
+ * Metadata to be backed up or restored.
  *
  * @hide
  */
 @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
 @SystemApi
-public final class BackupSettings implements Parcelable {
+public final class BackupMetadata implements Parcelable {
 
     @NonNull private final byte[] mData;
 
     /**
-     * @param data The user settings to be backed up.
+     * @param data The metadata to be backed up.
      */
-    public BackupSettings(@NonNull byte[] data) {
+    public BackupMetadata(@NonNull byte[] data) {
         mData = data;
     }
 
-    private BackupSettings(Parcel in) {
+    private BackupMetadata(Parcel in) {
         mData = in.readBlob();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BackupSettings that)) return false;
+        if (!(o instanceof BackupMetadata that)) return false;
         return Arrays.equals(mData, that.mData);
     }
 
@@ -61,20 +61,20 @@ public final class BackupSettings implements Parcelable {
     }
 
     @NonNull
-    public static final Creator<BackupSettings> CREATOR =
-            new Creator<BackupSettings>() {
+    public static final Creator<BackupMetadata> CREATOR =
+            new Creator<BackupMetadata>() {
                 @Override
-                public BackupSettings createFromParcel(Parcel in) {
-                    return new BackupSettings(in);
+                public BackupMetadata createFromParcel(Parcel in) {
+                    return new BackupMetadata(in);
                 }
 
                 @Override
-                public BackupSettings[] newArray(int size) {
-                    return new BackupSettings[size];
+                public BackupMetadata[] newArray(int size) {
+                    return new BackupMetadata[size];
                 }
             };
 
-    /** Returns the settings to be backed up or restored. */
+    /** Returns the metadata to be backed up or restored. */
     @NonNull
     public byte[] getData() {
         return mData;

@@ -43,6 +43,14 @@
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatinis ištrynimas, duomenų šaltiniai, atsarginė kopija ir atkūrimas"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Daugiau elementų"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Mažiau elementų"</string>
+    <!-- no translation found for settings_manage_permission (3805037674102124581) -->
+    <skip />
+    <!-- no translation found for settings_combined_permissions (3660209476196545539) -->
+    <skip />
+    <!-- no translation found for settings_fitness_permissions (8133228907519227359) -->
+    <skip />
+    <!-- no translation found for settings_medical_permissions (4621535972501674863) -->
+    <skip />
     <string name="backup_title" msgid="211503191266235085">"Atsarginė kopija"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Duomenų šaltiniai ir prioritetas"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Žr. vienetus"</string>
@@ -64,6 +72,8 @@
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Čia bus automatiškai rodomos programos, kurios neseniai pasiekė jūsų duomenis"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"Žr. viską"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"Nepavyko įkelti naujausios prieigos"</string>
+    <!-- no translation found for recent_access_inactive_app (8754221676902025802) -->
+    <skip />
     <string name="activity_category_uppercase" msgid="136628843341377088">"Veikla"</string>
     <string name="activity_category_lowercase" msgid="3007220578865400601">"veikla"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"Kūno matavimai"</string>
@@ -369,12 +379,20 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"Leisti"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Leisti viską"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Neleisti"</string>
-    <string name="request_permissions_data_access_type_read_write" msgid="3179244850699732544">"Pasirinkite duomenis, kuriuos ši programa galės skaityti ar rašyti naudojant „Health Connect“"</string>
-    <string name="request_permissions_data_access_type_read" msgid="6005792244220381045">"Pasirinkite duomenis, kuriuos ši programa galės skaityti iš „Health Connect“"</string>
-    <string name="request_permissions_data_access_type_write" msgid="6369810467678676337">"Pasirinkite duomenis, kuriuos ši programa galės rašyti naudojant „Health Connect“"</string>
+    <!-- no translation found for request_fitness_permissions_data_access_type_read_write (4803850894991591079) -->
+    <skip />
+    <!-- no translation found for request_fitness_permissions_data_access_type_read (1936040466183377312) -->
+    <skip />
+    <!-- no translation found for request_fitness_permissions_data_access_type_write (953067161810334338) -->
+    <skip />
+    <!-- no translation found for request_medical_permissions_data_access_type_read_write (3777178665662806833) -->
+    <skip />
+    <!-- no translation found for request_medical_permissions_data_access_type_read (2155961852937520094) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Suteikus skaitymo prieigą, programa galės skaityti naujus ir pastarųjų trisdešimt dienų duomenis"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Suteikus skaitymo prieigą, programa galės skaityti naujus ir ankstesnius duomenis"</string>
-    <string name="request_permissions_header_title" msgid="4264236128614363479">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti „Health Connect“?"</string>
+    <!-- no translation found for request_fitness_permissions_header_title (5330395074131008360) -->
+    <skip />
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti mankštos ir sveikatingumo duomenis?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Kaip „<xliff:g id="APP_NAME">%1$s</xliff:g>“ tvarko jūsų duomenis, sužinosite <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privatumo politika"</string>
@@ -412,7 +430,8 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"Pasirinkta diena"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"Ankstesnė diena"</string>
     <string name="default_error" msgid="7966868260616403475">"Kažkas ne taip. Bandykite dar kartą."</string>
-    <string name="unkwown_resource" msgid="7932225227431922125">"Nežinomas šaltinis"</string>
+    <!-- no translation found for unkwown_resource (5414479649607888981) -->
+    <skip />
     <string name="raw_fhir_title" msgid="1295744907036066319">"Pirminiai duomenys"</string>
     <string name="raw_fhir_open_bracket" msgid="7974657451368655325">"<xliff:g id="PREFIX">%1$s</xliff:g>Atidarantis laužtinis skliaustas."</string>
     <string name="raw_fhir_closed_bracket" msgid="9084379463440675078">"<xliff:g id="PREFIX">%1$s</xliff:g>Uždarantis laužtinis skliaustas."</string>

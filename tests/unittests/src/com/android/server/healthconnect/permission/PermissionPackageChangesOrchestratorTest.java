@@ -176,8 +176,6 @@ public class PermissionPackageChangesOrchestratorTest {
     private void setIntentIsPresent(boolean isIntentPresent) {
         when(mTracker.updateAndGetSupportsPackageUsageIntent(SELF_PACKAGE_NAME, CURRENT_USER))
                 .thenReturn(isIntentPresent);
-        when(mTracker.updateStateAndGetIfIntentWasRemoved(SELF_PACKAGE_NAME, CURRENT_USER))
-                .thenReturn(!isIntentPresent);
     }
 
     private void setShouldEnforcePermissionUsageIntent(boolean shouldEnforce) {

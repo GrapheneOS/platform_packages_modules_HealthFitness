@@ -56,8 +56,8 @@ package android.health.connect {
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void getContributorApplicationsInfo(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.ApplicationInfoResponse,android.health.connect.HealthConnectException>);
     method @RequiresPermission(anyOf={android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION, android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA}) public void getHealthConnectDataState(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.HealthConnectDataState,android.health.connect.HealthConnectException>);
     method @NonNull public static java.util.Set<java.lang.String> getHealthPermissions(@NonNull android.content.Context);
+    method @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") @RequiresPermission(android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS) public void getLatestMetadataForBackup(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.backuprestore.GetLatestMetadataForBackupResponse,android.health.connect.HealthConnectException>);
     method @IntRange(from=0, to=7300) @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public int getRecordRetentionPeriodInDays();
-    method @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") @RequiresPermission(android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS) public void getSettingsForBackup(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.backuprestore.GetSettingsForBackupResponse,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA) public void insertMinDataMigrationSdkExtensionVersion(int, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.migration.MigrationException>);
     method public static boolean isHealthPermission(@NonNull android.content.Context, @NonNull String);
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryAccessLogs(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.accesslog.AccessLog>,android.health.connect.HealthConnectException>);
@@ -65,7 +65,7 @@ package android.health.connect {
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryAllMedicalResourceTypeInfos(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.MedicalResourceTypeInfo>,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryAllRecordTypesInfo(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.Map<java.lang.Class<? extends android.health.connect.datatypes.Record>,android.health.connect.RecordTypeInfoResponse>,android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") @RequiresPermission(android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS) public void restoreChanges(@NonNull java.util.List<android.health.connect.backuprestore.RestoreChange>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
-    method @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") @RequiresPermission(android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS) public void restoreSettings(@NonNull android.health.connect.backuprestore.BackupSettings, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
+    method @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") @RequiresPermission(android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS) public void restoreLatestMetadata(@NonNull android.health.connect.backuprestore.BackupMetadata, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void setRecordRetentionPeriodInDays(@IntRange(from=0, to=7300) int, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.Manifest.permission.STAGE_HEALTH_CONNECT_REMOTE_DATA) public void stageAllHealthConnectRemoteData(@NonNull java.util.Map<java.lang.String,android.os.ParcelFileDescriptor>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.restore.StageRemoteDataException>) throws java.lang.NullPointerException;
     method @RequiresPermission(android.Manifest.permission.MIGRATE_HEALTH_CONNECT_DATA) public void startMigration(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.migration.MigrationException>);
@@ -192,40 +192,41 @@ package android.health.connect.accesslog {
 package android.health.connect.backuprestore {
 
   @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") public final class BackupChange implements android.os.Parcelable {
-    ctor public BackupChange(@NonNull String, boolean, @Nullable byte[]);
     method public int describeContents();
+    method @NonNull public String getChangeId();
     method @Nullable public byte[] getData();
-    method @NonNull public String getRecordId();
     method public boolean isDeletion();
+    method @NonNull public static android.health.connect.backuprestore.BackupChange ofDeletion(@NonNull String);
+    method @NonNull public static android.health.connect.backuprestore.BackupChange ofUpsertion(@NonNull String, @NonNull byte[]);
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.backuprestore.BackupChange> CREATOR;
   }
 
-  @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") public final class BackupSettings implements android.os.Parcelable {
-    ctor public BackupSettings(@NonNull byte[]);
+  @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") public final class BackupMetadata implements android.os.Parcelable {
+    ctor public BackupMetadata(@NonNull byte[]);
     method public int describeContents();
     method @NonNull public byte[] getData();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
-    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.backuprestore.BackupSettings> CREATOR;
+    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.backuprestore.BackupMetadata> CREATOR;
   }
 
   @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") public final class GetChangesForBackupResponse implements android.os.Parcelable {
     ctor public GetChangesForBackupResponse(int, @NonNull java.util.List<android.health.connect.backuprestore.BackupChange>, @NonNull String);
     method public int describeContents();
     method @NonNull public java.util.List<android.health.connect.backuprestore.BackupChange> getChanges();
+    method public int getCurrentVersion();
     method @NonNull public String getNextChangeToken();
-    method public int getVersion();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.backuprestore.GetChangesForBackupResponse> CREATOR;
   }
 
-  @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") public final class GetSettingsForBackupResponse implements android.os.Parcelable {
-    ctor public GetSettingsForBackupResponse(int, @NonNull android.health.connect.backuprestore.BackupSettings);
+  @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") public final class GetLatestMetadataForBackupResponse implements android.os.Parcelable {
+    ctor public GetLatestMetadataForBackupResponse(int, @NonNull android.health.connect.backuprestore.BackupMetadata);
     method public int describeContents();
-    method @NonNull public android.health.connect.backuprestore.BackupSettings getSettings();
-    method @NonNull public int getVersion();
+    method @NonNull public int getCurrentVersion();
+    method @NonNull public android.health.connect.backuprestore.BackupMetadata getMetadata();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
-    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.backuprestore.GetSettingsForBackupResponse> CREATOR;
+    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.backuprestore.GetLatestMetadataForBackupResponse> CREATOR;
   }
 
   @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") public final class RestoreChange implements android.os.Parcelable {

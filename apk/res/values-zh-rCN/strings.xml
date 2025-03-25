@@ -43,6 +43,14 @@
     <string name="manage_data_summary" msgid="8537870912521944449">"自动删除、数据源、备份和恢复"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"更多项目"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"更少项目"</string>
+    <!-- no translation found for settings_manage_permission (3805037674102124581) -->
+    <skip />
+    <!-- no translation found for settings_combined_permissions (3660209476196545539) -->
+    <skip />
+    <!-- no translation found for settings_fitness_permissions (8133228907519227359) -->
+    <skip />
+    <!-- no translation found for settings_medical_permissions (4621535972501674863) -->
+    <skip />
     <string name="backup_title" msgid="211503191266235085">"备份"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"数据源和优先级"</string>
     <string name="set_units_title" msgid="2657822539603758029">"设置单位"</string>
@@ -64,6 +72,8 @@
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"近期访问过您数据的应用会自动显示在此处"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"查看全部"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"无法加载最近的访问记录"</string>
+    <!-- no translation found for recent_access_inactive_app (8754221676902025802) -->
+    <skip />
     <string name="activity_category_uppercase" msgid="136628843341377088">"活动"</string>
     <string name="activity_category_lowercase" msgid="3007220578865400601">"活动"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"身体测量数据"</string>
@@ -369,12 +379,20 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"允许"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"全部允许"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"不允许"</string>
-    <string name="request_permissions_data_access_type_read_write" msgid="3179244850699732544">"选择您要允许此应用从“健康数据共享”读取或向其中写入的数据"</string>
-    <string name="request_permissions_data_access_type_read" msgid="6005792244220381045">"选择您希望允许此应用从“健康数据共享”读取的数据"</string>
-    <string name="request_permissions_data_access_type_write" msgid="6369810467678676337">"选择您希望允许此应用写入到“健康数据共享”的数据"</string>
+    <!-- no translation found for request_fitness_permissions_data_access_type_read_write (4803850894991591079) -->
+    <skip />
+    <!-- no translation found for request_fitness_permissions_data_access_type_read (1936040466183377312) -->
+    <skip />
+    <!-- no translation found for request_fitness_permissions_data_access_type_write (953067161810334338) -->
+    <skip />
+    <!-- no translation found for request_medical_permissions_data_access_type_read_write (3777178665662806833) -->
+    <skip />
+    <!-- no translation found for request_medical_permissions_data_access_type_read (2155961852937520094) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果您授予读取权限，该应用可以读取新数据和过去 30 天的数据"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果您授予读取权限，该应用可以读取新数据和过往数据"</string>
-    <string name="request_permissions_header_title" msgid="4264236128614363479">"要允许<xliff:g id="APP_NAME">%1$s</xliff:g>访问健康数据共享吗？"</string>
+    <!-- no translation found for request_fitness_permissions_header_title (5330395074131008360) -->
+    <skip />
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"要允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问健身与健康数据吗？"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"您可以参阅“<xliff:g id="APP_NAME">%1$s</xliff:g>”的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，了解该应用如何处理您的数据"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"隐私权政策"</string>
@@ -412,7 +430,8 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"选定的日期"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"前一天"</string>
     <string name="default_error" msgid="7966868260616403475">"出了点问题。请重试。"</string>
-    <string name="unkwown_resource" msgid="7932225227431922125">"未知资源"</string>
+    <!-- no translation found for unkwown_resource (5414479649607888981) -->
+    <skip />
     <string name="raw_fhir_title" msgid="1295744907036066319">"源数据"</string>
     <string name="raw_fhir_open_bracket" msgid="7974657451368655325">"<xliff:g id="PREFIX">%1$s</xliff:g>左花括号。"</string>
     <string name="raw_fhir_closed_bracket" msgid="9084379463440675078">"<xliff:g id="PREFIX">%1$s</xliff:g>右花括号。"</string>
@@ -425,12 +444,12 @@
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"不允许访问"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"需要更新"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"设置和帮助"</string>
-    <string name="disconnect_all_apps" msgid="748945115977534726">"撤销所有应用的访问权限"</string>
+    <string name="disconnect_all_apps" msgid="748945115977534726">"撤消所有应用的访问权限"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"允许读取"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"允许写入"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"未允许任何应用"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"未拒绝任何应用"</string>
-    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"要撤销所有应用的访问权限吗？"</string>
+    <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"要撤消所有应用的访问权限吗？"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"您的应用都将无法访问“健康数据共享”中的数据，也不能向其中添加新数据。这不会删除任何现有数据。\n\n这也不会影响此应用可能拥有的其他权限，例如位置信息、相机或麦克风权限。"</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"全部撤销"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"管理应用"</string>

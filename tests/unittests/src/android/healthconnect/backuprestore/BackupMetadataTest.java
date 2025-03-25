@@ -18,8 +18,7 @@ package android.healthconnect.backuprestore;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.health.connect.backuprestore.BackupSettings;
-import android.health.connect.backuprestore.GetSettingsForBackupResponse;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -28,22 +27,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class GetSettingsForBackupResponseTest {
+public class BackupMetadataTest {
 
     @Test
-    public void getSettingsForBackupResponseParcel_propertiesAreIdentical() {
-        GetSettingsForBackupResponse original =
-                new GetSettingsForBackupResponse(123, new BackupSettings(new byte[] {1, 2, 3}));
+    public void backupMetadataParcel_propertiesAreIdentical() {
+        BackupMetadata original = new BackupMetadata(new byte[] {1, 2, 3});
 
         Parcel parcel = Parcel.obtain();
         original.writeToParcel(parcel, 0);
         parcel.setDataPosition(0);
-        GetSettingsForBackupResponse restoredParcel =
-                GetSettingsForBackupResponse.CREATOR.createFromParcel(parcel);
+        BackupMetadata restoredParcel = BackupMetadata.CREATOR.createFromParcel(parcel);
 
-        assertThat(restoredParcel.getVersion()).isEqualTo(123);
-        assertThat(restoredParcel.getSettings())
-                .isEqualTo(new BackupSettings(new byte[] {1, 2, 3}));
+        assertThat(restoredParcel.getData()).isEqualTo(new byte[] {1, 2, 3});
         parcel.recycle();
     }
 }

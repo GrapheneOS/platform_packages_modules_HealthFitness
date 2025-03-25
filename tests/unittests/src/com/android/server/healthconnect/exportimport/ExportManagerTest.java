@@ -69,7 +69,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
-import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 import com.android.server.healthconnect.testing.storage.PhrTestUtils;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
@@ -114,6 +113,7 @@ public class ExportManagerTest {
                     "Tests should run on supported hardware only.");
 
     private Context mContext;
+    private HealthConnectInjector mHealthConnectInjector;
     private TransactionTestUtils mTransactionTestUtils;
     private ExportManager mExportManager;
     private HealthConnectContext mExportedDbContext;
@@ -131,33 +131,18 @@ public class ExportManagerTest {
     @Before
     public void setUp() throws Exception {
         mContext = ApplicationProvider.getApplicationContext();
-        HealthConnectInjector healthConnectInjector =
+        mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setPreferenceHelper(new FakePreferenceHelper())
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();
-        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+
+        mExportImportSettingsStorage = mHealthConnectInjector.getExportImportSettingsStorage();
+        mTransactionTestUtils = new TransactionTestUtils(mHealthConnectInjector);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
-        TransactionManager transactionManager = healthConnectInjector.getTransactionManager();
-
-        mTimeStamp = Instant.parse("2024-06-04T16:39:12Z");
-        Clock fakeClock = Clock.fixed(mTimeStamp, ZoneId.of("UTC"));
-
-        mExportImportSettingsStorage = healthConnectInjector.getExportImportSettingsStorage();
-        mExportManager =
-                new ExportManager(
-                        mContext,
-                        fakeClock,
-                        mExportImportSettingsStorage,
-                        transactionManager,
-                        healthConnectInjector.getExportImportNotificationSender(),
-                        healthConnectInjector.getEnvironmentDataDirectory(),
-                        mExportImportLogger,
-                        mErrorReporter);
-
-        mPhrTestUtils = new PhrTestUtils(healthConnectInjector);
+        mPhrTestUtils = new PhrTestUtils(mHealthConnectInjector);
 
         mExportedDbContext =
                 HealthConnectContext.create(
@@ -166,6 +151,23 @@ public class ExportManagerTest {
                         REMOTE_EXPORT_DATABASE_DIR_NAME,
                         mEnvironmentDataDirectory.getRoot());
         configureExportUri();
+        initialiseExportManager(new Compressor());
+    }
+
+    private void initialiseExportManager(Compressor compressor) {
+        mTimeStamp = Instant.parse("2024-06-04T16:39:12Z");
+        Clock fakeClock = Clock.fixed(mTimeStamp, ZoneId.of("UTC"));
+        mExportManager =
+                new ExportManager(
+                        mContext,
+                        fakeClock,
+                        mExportImportSettingsStorage,
+                        mHealthConnectInjector.getTransactionManager(),
+                        mHealthConnectInjector.getExportImportNotificationSender(),
+                        mHealthConnectInjector.getEnvironmentDataDirectory(),
+                        mExportImportLogger,
+                        mErrorReporter,
+                        compressor);
     }
 
     @After
@@ -367,10 +369,13 @@ public class ExportManagerTest {
     }
 
     @Test
-    // Compressor is mocked so no zip file will be exported.
-    @MockStaticClasses({@MockStatic(Compressor.class)})
     public void runExport_noCompressedFile_logsWithGenericError() {
-        assertThat(mExportManager.runExport(mContext.getUser())).isFalse();
+        // Compressor is mocked so no zip file will be exported.
+        initialiseExportManager(mock(Compressor.class));
+
+        boolean success = mExportManager.runExport(mContext.getUser());
+
+        assertThat(success).isFalse();
         // Time not recorded due to fake clock.
         assertErrorStatusStored(DATA_EXPORT_ERROR_UNKNOWN, mTimeStamp);
         verify(mExportImportLogger, times(1))
@@ -616,10 +621,12 @@ public class ExportManagerTest {
     }
 
     private void decompressExportedZip() throws IOException {
-        Compressor.decompress(
-                Uri.fromFile(mExportedDbContext.getDatabasePath(REMOTE_EXPORT_ZIP_FILE_NAME)),
-                LOCAL_EXPORT_DATABASE_FILE_NAME,
-                mExportedDbContext.getDatabasePath(REMOTE_EXPORT_DATABASE_FILE_NAME),
-                mContext);
+        new Compressor()
+                .decompress(
+                        Uri.fromFile(
+                                mExportedDbContext.getDatabasePath(REMOTE_EXPORT_ZIP_FILE_NAME)),
+                        LOCAL_EXPORT_DATABASE_FILE_NAME,
+                        mExportedDbContext.getDatabasePath(REMOTE_EXPORT_DATABASE_FILE_NAME),
+                        mContext);
     }
 }

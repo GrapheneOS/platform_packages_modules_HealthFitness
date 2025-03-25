@@ -35,7 +35,7 @@ class Compressor {
     private static final String TAG = "HealthConnectCompressor";
 
     /** Compresses the source file */
-    static void compress(File source, String entryName, File zip) throws IOException {
+    void compress(File source, String entryName, File zip) throws IOException {
         try {
             zip.mkdirs();
             zip.delete();
@@ -60,7 +60,7 @@ class Compressor {
     }
 
     /** Decompresses the zip file */
-    static void decompress(Uri zip, String entryName, File destination, Context userContext)
+    void decompress(Uri zip, String entryName, File destination, Context userContext)
             throws IOException {
         try {
             destination.mkdirs();

@@ -38,9 +38,9 @@ public class GetChangesForBackupResponseTest {
                 new GetChangesForBackupResponse(
                         123,
                         List.of(
-                                new BackupChange("uid123", false, new byte[] {1, 2, 3}),
-                                new BackupChange("uid234", false, new byte[] {2, 3, 4}),
-                                new BackupChange("uid345", false, new byte[] {3, 4, 5})),
+                                BackupChange.ofUpsertion("uid123", new byte[] {1, 2, 3}),
+                                BackupChange.ofUpsertion("uid234", new byte[] {2, 3, 4}),
+                                BackupChange.ofUpsertion("uid345", new byte[] {3, 4, 5})),
                         "changeToken");
 
         Parcel parcel = Parcel.obtain();
@@ -49,12 +49,12 @@ public class GetChangesForBackupResponseTest {
         GetChangesForBackupResponse restoredParcel =
                 GetChangesForBackupResponse.CREATOR.createFromParcel(parcel);
 
-        assertThat(restoredParcel.getVersion()).isEqualTo(123);
+        assertThat(restoredParcel.getCurrentVersion()).isEqualTo(123);
         assertThat(restoredParcel.getChanges())
                 .containsExactly(
-                        new BackupChange("uid123", false, new byte[] {1, 2, 3}),
-                        new BackupChange("uid234", false, new byte[] {2, 3, 4}),
-                        new BackupChange("uid345", false, new byte[] {3, 4, 5}))
+                        BackupChange.ofUpsertion("uid123", new byte[] {1, 2, 3}),
+                        BackupChange.ofUpsertion("uid234", new byte[] {2, 3, 4}),
+                        BackupChange.ofUpsertion("uid345", new byte[] {3, 4, 5}))
                 .inOrder();
         assertThat(restoredParcel.getNextChangeToken()).isEqualTo("changeToken");
         parcel.recycle();

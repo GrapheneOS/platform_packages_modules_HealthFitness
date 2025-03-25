@@ -23,7 +23,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.UserHandle;
 import android.util.Slog;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.utils.FilesUtil;
 
 import java.io.File;
@@ -84,17 +83,13 @@ public final class HealthConnectContext extends ContextWrapper {
 
     @Override
     public boolean deleteDatabase(String name) {
-        if (Flags.d2dFileDeletionBugFix()) {
-            try {
-                File f = getDatabasePath(name);
-                return SQLiteDatabase.deleteDatabase(f);
-            } catch (Exception e) {
-                Slog.e(TAG, "Failed to delete database = " + getDatabasePath(name));
-            }
-            return false;
-        } else {
-            return super.deleteDatabase(name);
+        try {
+            File f = getDatabasePath(name);
+            return SQLiteDatabase.deleteDatabase(f);
+        } catch (Exception e) {
+            Slog.e(TAG, "Failed to delete database = " + getDatabasePath(name));
         }
+        return false;
     }
 
     /** Returns the file of the staged database with the given name */

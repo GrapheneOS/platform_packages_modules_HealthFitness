@@ -182,7 +182,7 @@ public class CloudBackupDatabaseHelperTest {
 
         GetChangesForBackupResponse response =
                 mCloudBackupDatabaseHelper.getChangesAndTokenFromDataTables();
-        assertThat(response.getVersion()).isEqualTo(PROTO_VERSION);
+        assertThat(response.getCurrentVersion()).isEqualTo(PROTO_VERSION);
 
         List<BackupChange> changes = response.getChanges();
         assertThat(changes.size()).isEqualTo(2);
@@ -191,7 +191,7 @@ public class CloudBackupDatabaseHelperTest {
         StepsRecordInternal stepsRecord =
                 (StepsRecordInternal) parseRecordInternal(stepsRecordBackupChange);
         String uuid = stepsRecord.getUuid() != null ? stepsRecord.getUuid().toString() : null;
-        assertThat(stepsRecordBackupChange.getRecordId()).isEqualTo(uuid);
+        assertThat(stepsRecordBackupChange.getChangeId()).isEqualTo(uuid);
         assertThat(stepsRecord.getCount()).isEqualTo(TEST_STEP_COUNT);
         assertThat(stepsRecord.getStartTimeInMillis()).isEqualTo(TEST_START_TIME_IN_MILLIS);
         assertThat(stepsRecord.getEndTimeInMillis()).isEqualTo(TEST_END_TIME_IN_MILLIS);
@@ -446,7 +446,7 @@ public class CloudBackupDatabaseHelperTest {
                 mCloudBackupDatabaseHelper.getIncrementalChanges(
                         backupChangeToken.getChangeLogsRequestToken());
 
-        assertThat(secondResponse.getVersion()).isEqualTo(PROTO_VERSION);
+        assertThat(secondResponse.getCurrentVersion()).isEqualTo(PROTO_VERSION);
         assertThat(secondResponse.getChanges().size()).isEqualTo(1);
         BackupChange bloodPressureBackupChange = secondResponse.getChanges().get(0);
         BloodPressureRecordInternal bloodPressureRecord =
@@ -496,7 +496,7 @@ public class CloudBackupDatabaseHelperTest {
         UUID bloodPressureRecordUuid = bloodPressureRecordInternal.getUuid();
         assertThat(bloodPressureRecordUuid).isNotNull();
         assertThat(deletedBloodPressureBackupChange.isDeletion()).isTrue();
-        assertThat(deletedBloodPressureBackupChange.getRecordId())
+        assertThat(deletedBloodPressureBackupChange.getChangeId())
                 .isEqualTo(bloodPressureRecordUuid.toString());
         assertThat(deletedBloodPressureBackupChange.getData()).isNull();
     }

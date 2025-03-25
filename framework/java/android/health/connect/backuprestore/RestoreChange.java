@@ -28,7 +28,7 @@ import android.os.Parcelable;
 import java.util.Arrays;
 
 /**
- * Represents a data record change to be restored into Health Connect.
+ * Represents a data point to be restored into Health Connect.
  *
  * @hide
  */
@@ -36,12 +36,13 @@ import java.util.Arrays;
 @SystemApi
 public final class RestoreChange implements Parcelable {
 
-    // The data is returned as bytes rather than records to keep the data opaque from the client.
+    // The data is a byte array to keep itself opaque from the client.
     // As long as the client doesn't parse the data, it doesn't know what type of data this is.
     @NonNull private final byte[] mData;
 
     /**
-     * @param data The data representing the change, serialized as bytes.
+     * @param data The data represents a data point to be restored back to Health Connect,
+     *     serialized as bytes.
      */
     public RestoreChange(@NonNull byte[] data) {
         mData = data;
@@ -75,7 +76,9 @@ public final class RestoreChange implements Parcelable {
                 }
             };
 
-    /** Returns the data representing the change, serialized as bytes. */
+    /**
+     * @return the data to be restored back to Health Connect, serialized as bytes.
+     */
     @Nullable
     public byte[] getData() {
         return mData;

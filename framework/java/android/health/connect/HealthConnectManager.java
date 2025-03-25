@@ -69,8 +69,8 @@ import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
+import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
-import android.health.connect.aidl.IGetSettingsForBackupResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
@@ -90,9 +90,9 @@ import android.health.connect.aidl.RecordTypeInfoResponseParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.UpdatePriorityRequestParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.GetChangesForBackupResponse;
-import android.health.connect.backuprestore.GetSettingsForBackupResponse;
+import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
@@ -2827,18 +2827,22 @@ public class HealthConnectManager {
     /**
      * Returns a list of changes to be backed up based on a given change token.
      *
-     * <p>The change token returned by the previous call should be passed in to resume the upload. A
-     * null or empty change token means the caller is starting a fresh backup which starts from
-     * backing up all data of the Health Connect data tables. After backing up all data tables, the
-     * API switches to incremental backups using change logs.
+     * <p>The change token returned by the previous call should be passed in to resume the upload.
+     * The caller should always store the previous change token returned in {@link
+     * GetChangesForBackupResponse} and pass it into the next {@code getChangesForBackup} call.
      *
-     * <p>If the changeToken is not found, it means that HealthConnect can no longer resume the
-     * backup from this point, and will respond with a {@link
-     * HealthConnectException#ERROR_INVALID_ARGUMENT}. The caller should restart the backup in this
-     * case.
+     * <p>A null change token means the caller is starting a fresh backup which starts from backing
+     * up all data of the Health Connect data tables. After backing up all data tables, the API
+     * switches to incremental backups using change logs.
+     *
+     * <p>If the change token is not found, it means that HealthConnect can no longer resume the
+     * backup, and will respond with a {@link HealthConnectException#ERROR_INVALID_ARGUMENT}. In
+     * this case the caller should restart the backup by calling {@code getChangesForBackup} with a
+     * null change token.
      *
      * <p>If no changes are returned by the API, this means that the client has synced all changes
-     * as of now.
+     * as of now. The caller should keep the change token returned in {@link
+     * GetChangesForBackupResponse} to later resume the backup from this point.
      *
      * <p>The number of changes returned by this API is not guaranteed. The number will depend on
      * the factors below:
@@ -2886,17 +2890,16 @@ public class HealthConnectManager {
     }
 
     /**
-     * Returns all user settings to be backed up bundled as a single byte array.
+     * Returns all metadata to be backed up bundled as a single byte array.
      *
-     * <p>This method returns a {@link BackupSettings} object containing the user's Health Connect
-     * settings that should be backed up. This includes preferences like the auto-delete
-     * configurations and other unit preferences. The returned settings represent a snapshot of the
-     * user's preferences at the time of the call.
+     * <p>This method returns a {@link BackupMetadata} object containing the user's Health Connect
+     * metadata that should be backed up. The returned response is the latest snapshot of the Health
+     * Connect metadata at the time of the call.
      *
-     * <p>This method should be called at each backup cycle to capture the latest user settings. A
-     * backup cycle is the process by which user data and settings on a device are periodically
-     * saved to the cloud. This ensures that the most up-to-date preferences are preserved in the
-     * backup.
+     * <p>The caller should call this method at the end of each backup cycle to capture the latest
+     * metadata, after calling {@link #getChangesForBackup} to fetch record changes. A backup cycle
+     * is the process by which user data and metadata on a device are periodically saved to the
+     * cloud. This ensures that the most up-to-date metadata snapshot are preserved in the backup.
      *
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive the result of performing this operation.
@@ -2905,18 +2908,18 @@ public class HealthConnectManager {
     @SystemApi
     @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
     @RequiresPermission(BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS)
-    public void getSettingsForBackup(
+    public void getLatestMetadataForBackup(
             @NonNull Executor executor,
             @NonNull
-                    OutcomeReceiver<GetSettingsForBackupResponse, HealthConnectException>
+                    OutcomeReceiver<GetLatestMetadataForBackupResponse, HealthConnectException>
                             callback) {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.getSettingsForBackup(
-                    new IGetSettingsForBackupResponseCallback.Stub() {
+            mService.getLatestMetadataForBackup(
+                    new IGetLatestMetadataForBackupResponseCallback.Stub() {
                         @Override
-                        public void onResult(GetSettingsForBackupResponse response) {
+                        public void onResult(GetLatestMetadataForBackupResponse response) {
                             returnResult(executor, response, callback);
                         }
 
@@ -2931,17 +2934,20 @@ public class HealthConnectManager {
     }
 
     /**
-     * Restores Health Connect settings from a backup.
+     * Restores the Health Connect metadata from a latest backup.
      *
-     * <p>This method restores user settings previously backed up using {@link
-     * #getSettingsForBackup}. The provided {@code backupSettings} object should contain the
-     * settings to be restored.
+     * <p>This method restores metadata previously backed up using {@link
+     * #getLatestMetadataForBackup}. The provided {@code backupMetadata} object should contain the
+     * metadata to be restored.
      *
      * <p>The callback will receive a {@link HealthConnectException} with {@code
-     * HealthConnectException#ERROR_INVALID_ARGUMENT} if the provided {@code backupSettings} can not
-     * be parsed into valid settings. The caller can retry once {@link #canRestore} returns true.
+     * HealthConnectException#ERROR_INVALID_ARGUMENT} if the provided {@code backupMetadata} can not
+     * be parsed into valid metadata. The caller can retry with the same metadata once {@link
+     * #canRestore} returns true. Other exceptions should not be retried.
      *
-     * @param backupSettings The settings to be restored.
+     * <p>The caller should call this method before calling {@link #restoreChanges}.
+     *
+     * @param backupMetadata The metadata to be restored.
      * @param executor Executor on which to invoke the callback.
      * @param callback Callback to receive the result of performing this operation.
      * @hide
@@ -2949,16 +2955,16 @@ public class HealthConnectManager {
     @SystemApi
     @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
     @RequiresPermission(RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS)
-    public void restoreSettings(
-            @NonNull BackupSettings backupSettings,
+    public void restoreLatestMetadata(
+            @NonNull BackupMetadata backupMetadata,
             @NonNull Executor executor,
             @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
-        Objects.requireNonNull(backupSettings);
+        Objects.requireNonNull(backupMetadata);
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.restoreSettings(
-                    backupSettings,
+            mService.restoreLatestMetadata(
+                    backupMetadata,
                     new IEmptyResponseCallback.Stub() {
                         @Override
                         public void onResult() {
@@ -2981,9 +2987,9 @@ public class HealthConnectManager {
      * <p>If the data version is not yet supported by the Health Connect module, because the backup
      * was done on a newer version of Health Connect, this method will return false.
      *
-     * <p>The caller should call this API before calling {@link #restoreSettings} or {@link
+     * <p>The caller should call this API before calling {@link #restoreLatestMetadata} or {@link
      * #restoreChanges}. If this method returns true, then the caller can continue with sending
-     * either settings or data to Health Connect for restore.
+     * either metadata or data to Health Connect for restore.
      *
      * @param dataVersion The version of the data to be restored.
      * @param executor Executor on which to invoke the callback.
@@ -3026,12 +3032,14 @@ public class HealthConnectManager {
      * If a change is restored multiple times, the consecutive restores will be ignored by the
      * Health Connect module.
      *
-     * <p>The caller should send the changes and the app info map by the order it received from
-     * {@link #getChangesForBackup}.
+     * <p>The caller should call {@link #restoreLatestMetadata} with the latest metadata it received
+     * before calling this method. The caller should also send the changes in the order they were
+     * received.
      *
      * <p>If any {@link RestoreChange} is not yet supported by the Health Connect module or can not
      * be parsed into valid record, {@link HealthConnectException#ERROR_INVALID_ARGUMENT} will be
-     * thrown. The caller can retry once {@link #canRestore} returns true.
+     * thrown. The caller can retry with the same changes once {@link #canRestore} returns true.
+     * Other exceptions should not be retried.
      *
      * @param restoreChanges The changes to be restored back to Health Connect.
      * @param executor Executor on which to invoke the callback.
