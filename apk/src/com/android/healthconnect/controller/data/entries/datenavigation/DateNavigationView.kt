@@ -20,7 +20,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.AdapterView
-import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -38,6 +37,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import com.android.healthconnect.controller.utils.toInstant
 import com.android.healthconnect.controller.utils.toLocalDate
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.EntryPointAccessors
 import java.time.Instant
 import java.time.LocalDate
@@ -56,8 +56,8 @@ constructor(
 
     private val logger: HealthConnectLogger
 
-    private lateinit var previousDayButton: ImageButton
-    private lateinit var nextDayButton: ImageButton
+    private lateinit var previousDayButton: View
+    private lateinit var nextDayButton: View
     private lateinit var datePickerSpinner: Spinner
     private lateinit var disabledSpinner: TextView
     private var selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis())
@@ -74,7 +74,14 @@ constructor(
             )
         logger = hiltEntryPoint.logger()
 
-        val view = inflate(context, R.layout.widget_date_navigation_with_spinner, this)
+        val layout =
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                R.layout.expressive_widget_date_navigation_with_spinner
+            } else {
+                R.layout.widget_date_navigation_with_spinner
+            }
+
+        val view = inflate(context, layout, this)
         bindDateTextView(view)
         bindNextDayButton(view)
         bindPreviousDayButton(view)
@@ -143,7 +150,7 @@ constructor(
     }
 
     private fun bindNextDayButton(view: View) {
-        nextDayButton = view.findViewById(R.id.navigation_next_day) as ImageButton
+        nextDayButton = view.findViewById(R.id.navigation_next_day) as View
         logger.logImpression(DataEntriesElement.NEXT_DAY_BUTTON)
         nextDayButton.setOnClickListener {
             logger.logInteraction(DataEntriesElement.NEXT_DAY_BUTTON)
@@ -154,7 +161,7 @@ constructor(
     }
 
     private fun bindPreviousDayButton(view: View) {
-        previousDayButton = view.findViewById(R.id.navigation_previous_day) as ImageButton
+        previousDayButton = view.findViewById(R.id.navigation_previous_day) as View
         logger.logImpression(DataEntriesElement.PREVIOUS_DAY_BUTTON)
         previousDayButton.setOnClickListener {
             logger.logInteraction(DataEntriesElement.PREVIOUS_DAY_BUTTON)
@@ -283,7 +290,7 @@ constructor(
             }
     }
 
-    private fun updateButtonAppearance(button: ImageButton, enable: Boolean) {
+    private fun updateButtonAppearance(button: View, enable: Boolean) {
         button.isEnabled = enable
         button.isClickable = enable
     }
