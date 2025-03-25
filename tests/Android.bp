@@ -13,9 +13,6 @@ filegroup {
         // However, at the moment it is working more as an integration test on the real platform.
         // It is safer leaving the test as is.
         "unittests/src/android/health/connect/HealthPermissionsTest.java",
-        // Needs parcel native code
-        "unittests/src/android/healthconnect/internal/datatypes/SleepStageInternalTest.java",
-        "unittests/src/android/healthconnect/internal/datatypes/SleepSessionInternalTest.java",
         // Still uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/HealthConnectManagerServiceTest.java",
         // Uses ExtendedMockito
