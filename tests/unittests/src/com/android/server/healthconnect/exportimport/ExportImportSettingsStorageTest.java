@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage;
+package com.android.server.healthconnect.exportimport;
 
 import static android.health.connect.exportimport.ImportStatus.DATA_IMPORT_ERROR_NONE;
 
@@ -75,7 +75,8 @@ public final class ExportImportSettingsStorageTest {
     @Mock Cursor mAppNameCursor;
     @Mock Cursor mFileNameCursor;
 
-    private ExportImportSettingsStorage mExportImportSettingsStorage;
+    private com.android.server.healthconnect.exportimport.ExportImportSettingsStorage
+            mExportImportSettingsStorage;
 
     private final PreferenceHelper mFakePreferenceHelper = new FakePreferenceHelper();
     private final Instant mInstant = Instant.ofEpochMilli(12345678);
