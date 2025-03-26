@@ -297,8 +297,7 @@ public final class ChangeLogsHelper extends DatabaseHelper {
                                                     recordId ->
                                                             new DeletedLog(
                                                                     recordId.toString(),
-                                                                    row.timeStamp()
-                                                                            .toEpochMilli())))
+                                                                    row.timeStamp())))
                     .toList();
         }
 

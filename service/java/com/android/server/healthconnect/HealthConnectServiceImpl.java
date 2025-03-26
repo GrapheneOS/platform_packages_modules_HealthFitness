@@ -974,12 +974,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             mAppOpsManagerLocal.isUidInForeground(uid),
                             logger);
                     throwExceptionIfDataSyncInProgress();
-                    if (request.getRecordTypes().isEmpty()) {
+                    if (request.getRecordTypeIds().isEmpty()) {
                         throw new IllegalArgumentException(
                                 "Requested record types must not be empty.");
                     }
                     mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
-                            request.getRecordTypesList(), attributionSource);
+                            request.getRecordTypeIds(), attributionSource);
                     callback.onResult(
                             new ChangeLogTokenResponse(
                                     mChangeLogsRequestHelper.getToken(

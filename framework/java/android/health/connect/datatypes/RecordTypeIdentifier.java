@@ -25,8 +25,10 @@ import android.annotation.IntDef;
 import android.annotation.SystemApi;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Set;
 
 /**
@@ -444,6 +446,7 @@ public final class RecordTypeIdentifier {
     private RecordTypeIdentifier() {}
 
     /** @hide */
+    @Target(ElementType.TYPE_USE)
     @IntDef({
         RECORD_TYPE_UNKNOWN,
         RECORD_TYPE_STEPS,

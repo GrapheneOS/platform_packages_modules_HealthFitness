@@ -261,18 +261,13 @@ public final class StorageUtils {
         return Arrays.stream(stringList.split(delimiter)).mapToLong(Long::valueOf).boxed().toList();
     }
 
-    public static String flattenIntList(List<Integer> values) {
+    /** [1, 2, 3] -> "1,2,3" */
+    public static String flattenIntCollection(Collection<Integer> values) {
         return values.stream().map(String::valueOf).collect(Collectors.joining(DELIMITER));
     }
 
     public static String flattenLongList(List<Long> values) {
         return values.stream().map(String::valueOf).collect(Collectors.joining(DELIMITER));
-    }
-
-    public static String flattenIntArray(int[] values) {
-        return Arrays.stream(values)
-                .mapToObj(String::valueOf)
-                .collect(Collectors.joining(DELIMITER));
     }
 
     private static String getMaxPrimaryKeyQuery(String tableName) {

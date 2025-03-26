@@ -140,4 +140,9 @@ public final class AconfigFlagHelper {
         return Flags.exerciseSegmentImprovements()
                 && isDbFlagEnabled(DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS);
     }
+
+    /** Returns a boolean indicating whether PHR change logs feature is enabled. */
+    public static boolean isPhrChangeLogsEnabled() {
+        return Flags.phrChangeLogs();
+    }
 }

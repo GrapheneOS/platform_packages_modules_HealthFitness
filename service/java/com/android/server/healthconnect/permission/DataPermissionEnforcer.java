@@ -35,6 +35,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -63,13 +64,13 @@ public class DataPermissionEnforcer {
 
     /** Enforces default write permissions for given recordTypeIds */
     public void enforceRecordIdsWritePermissions(
-            List<Integer> recordTypeIds, AttributionSource attributionSource) {
+            Collection<Integer> recordTypeIds, AttributionSource attributionSource) {
         enforceRecordIdWritePermissionInternal(recordTypeIds, attributionSource);
     }
 
     /** Enforces default read permissions for given recordTypeIds */
     public void enforceRecordIdsReadPermissions(
-            List<Integer> recordTypeIds, AttributionSource attributionSource) {
+            Collection<Integer> recordTypeIds, AttributionSource attributionSource) {
         for (Integer recordTypeId : recordTypeIds) {
             String permissionName =
                     mHealthConnectMappings.getHealthReadPermission(
@@ -205,7 +206,7 @@ public class DataPermissionEnforcer {
     }
 
     private void enforceRecordIdWritePermissionInternal(
-            List<Integer> recordTypeIds, AttributionSource attributionSource) {
+            Collection<Integer> recordTypeIds, AttributionSource attributionSource) {
         for (Integer recordTypeId : recordTypeIds) {
             String permissionName =
                     mHealthConnectMappings.getHealthWritePermission(

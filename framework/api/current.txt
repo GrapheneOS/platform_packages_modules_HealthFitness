@@ -392,6 +392,7 @@ package android.health.connect.changelog {
   public final class ChangeLogTokenRequest implements android.os.Parcelable {
     method public int describeContents();
     method @NonNull public java.util.Set<android.health.connect.datatypes.DataOrigin> getDataOriginFilters();
+    method @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") @NonNull public java.util.Set<java.lang.Integer> getMedicalResourceTypes();
     method @NonNull public java.util.Set<java.lang.Class<? extends android.health.connect.datatypes.Record>> getRecordTypes();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.changelog.ChangeLogTokenRequest> CREATOR;
@@ -400,6 +401,7 @@ package android.health.connect.changelog {
   public static final class ChangeLogTokenRequest.Builder {
     ctor public ChangeLogTokenRequest.Builder();
     method @NonNull public android.health.connect.changelog.ChangeLogTokenRequest.Builder addDataOriginFilter(@NonNull android.health.connect.datatypes.DataOrigin);
+    method @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") @NonNull public android.health.connect.changelog.ChangeLogTokenRequest.Builder addMedicalResourceType(int);
     method @NonNull public android.health.connect.changelog.ChangeLogTokenRequest.Builder addRecordType(@NonNull Class<? extends android.health.connect.datatypes.Record>);
     method @NonNull public android.health.connect.changelog.ChangeLogTokenRequest build();
   }
@@ -428,7 +430,9 @@ package android.health.connect.changelog {
   public final class ChangeLogsResponse implements android.os.Parcelable {
     method public int describeContents();
     method @NonNull public java.util.List<android.health.connect.changelog.ChangeLogsResponse.DeletedLog> getDeletedLogs();
+    method @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") @NonNull public java.util.List<android.health.connect.changelog.ChangeLogsResponse.DeletedMedicalResource> getDeletedMedicalResources();
     method @NonNull public String getNextChangesToken();
+    method @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") @NonNull public java.util.List<android.health.connect.datatypes.MedicalResource> getUpsertedMedicalResources();
     method @NonNull public java.util.List<android.health.connect.datatypes.Record> getUpsertedRecords();
     method public boolean hasMorePages();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
@@ -436,8 +440,16 @@ package android.health.connect.changelog {
   }
 
   public static final class ChangeLogsResponse.DeletedLog {
-    ctor public ChangeLogsResponse.DeletedLog(@NonNull String, long);
+    ctor @Deprecated @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") public ChangeLogsResponse.DeletedLog(@NonNull String, long);
+    ctor @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") public ChangeLogsResponse.DeletedLog(@NonNull String, @NonNull java.time.Instant);
     method @NonNull public String getDeletedRecordId();
+    method @NonNull public java.time.Instant getDeletedTime();
+  }
+
+  @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") public static final class ChangeLogsResponse.DeletedMedicalResource {
+    ctor public ChangeLogsResponse.DeletedMedicalResource(@NonNull android.health.connect.MedicalResourceId, @NonNull java.time.Instant);
+    method @NonNull public String getDataSourceId();
+    method @NonNull public android.health.connect.MedicalResourceId getDeletedMedicalResourceId();
     method @NonNull public java.time.Instant getDeletedTime();
   }
 

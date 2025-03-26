@@ -49,7 +49,7 @@ public final class ChangeLogsRequest implements Parcelable {
 
     @NonNull
     public static final Creator<ChangeLogsRequest> CREATOR =
-            new Creator<ChangeLogsRequest>() {
+            new Creator<>() {
                 @Override
                 public ChangeLogsRequest createFromParcel(Parcel in) {
                     return new ChangeLogsRequest(in);

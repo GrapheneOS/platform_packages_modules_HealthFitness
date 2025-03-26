@@ -109,7 +109,7 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
                 String.join(DELIMITER, request.getPackageNamesToFilter()));
         contentValues.put(
                 RECORD_TYPES_COLUMN_NAME,
-                StorageUtils.flattenIntArray(request.getRecordTypesArray()));
+                StorageUtils.flattenIntCollection(request.getRecordTypeIds()));
         contentValues.put(PACKAGE_NAME_COLUMN_NAME, packageName);
         contentValues.put(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, latestChangeLogRowId);
         contentValues.put(TIME_COLUMN_NAME, Instant.now().toEpochMilli());
@@ -147,7 +147,7 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
                 String.join(DELIMITER, changeLogTokenRequest.getPackageNamesToFilter()));
         contentValues.put(
                 RECORD_TYPES_COLUMN_NAME,
-                StorageUtils.flattenIntList(changeLogTokenRequest.getRecordTypes()));
+                StorageUtils.flattenIntCollection(changeLogTokenRequest.getRecordTypes()));
         contentValues.put(
                 PACKAGE_NAME_COLUMN_NAME, changeLogTokenRequest.getRequestingPackageName());
         contentValues.put(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, nextRowId);
