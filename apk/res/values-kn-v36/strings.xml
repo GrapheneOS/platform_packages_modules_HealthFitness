@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2025 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="permgrouplab_health" msgid="2189810208223060173">"ಆರೋಗ್ಯ, ಫಿಟ್‌ನೆಸ್, ವೆಲ್‌ನೆಸ್"</string>
+    <string name="health_permission_header_description" msgid="1816010176505069704">"ಈ ಅನುಮತಿಯನ್ನು ಹೊಂದಿರುವ ಆ್ಯಪ್‌ಗಳು ನಿಮ್ಮ ಆರೋಗ್ಯ, ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಓದಬಹುದು ಮತ್ತು ಬರೆಯಬಹುದು. ಇದು ನಿಮ್ಮ ಸಾಧನಗಳಿಂದ ಟ್ರ್ಯಾಕ್ ಮಾಡಲಾದ ಡೇಟಾ ಮತ್ತು Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಿರುವ ಡೇಟಾವನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ"</string>
+    <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"ನಿಮ್ಮ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು <xliff:g id="APP_NAME">%1$s</xliff:g> ಗೆ ಅನುಮತಿಸಬೇಕೇ?"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"ಈ ಆ್ಯಪ್ ಯಾವೆಲ್ಲ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಇದು ಈ ಸಾಧನದಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಲಾದ ಮತ್ತು ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"ಈ ಆ್ಯಪ್ ಯಾವೆಲ್ಲ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಇದು ಈ ಸಾಧನದಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಲಾದ ಮತ್ತು ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"ಈ ಆ್ಯಪ್ ಯಾವೆಲ್ಲ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಇದು ಈ ಸಾಧನದಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಲಾದ ಮತ್ತು ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_learn_more" msgid="2665249156693144626">"ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ"</string>
+    <string name="settings_manage_permission" msgid="3585762257420446893">"ಆರೋಗ್ಯ, ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್"</string>
+    <string name="settings_combined_permissions" msgid="1243346425556604875">"ಆರೋಗ್ಯ, ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್"</string>
+    <string name="settings_fitness_permissions" msgid="989130669597060476">"ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್"</string>
+    <string name="settings_medical_permissions" msgid="3616285795348645545">"ಆರೋಗ್ಯಕ್ಕೆ ಸಂಬಂಧಿಸಿದ ರೆಕಾರ್ಡ್‌ಗಳು"</string>
+</resources>
