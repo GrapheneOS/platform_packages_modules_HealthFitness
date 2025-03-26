@@ -32,10 +32,14 @@ import static com.android.server.healthconnect.storage.utils.WhereClauses.Logica
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.datatypes.MedicalResource;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.Pair;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -64,6 +68,14 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
     private static final String RECORD_TYPES_COLUMN_NAME = "record_types";
     private static final String PACKAGE_NAME_COLUMN_NAME = "package_name";
     private static final String ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME = "row_id_change_logs_table";
+
+    /**
+     * Public because it is used in {@link
+     * com.android.server.healthconnect.storage.DatabaseUpgradeHelper} to check if the PHR change
+     * logs upgrade has already been applied.
+     */
+    public static final String MEDICAL_RESOURCE_TYPES_COLUMN_NAME = "medical_resource_types";
+
     private static final String TIME_COLUMN_NAME = "time";
 
     private final TransactionManager mTransactionManager;
@@ -91,6 +103,12 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
         return new CreateTableRequest(TABLE_NAME, columns);
     }
 
+    /** Adds the required columns for the PHR change logs feature. */
+    public static AlterTableRequest getAlterTableRequestForPhrChangeLogs() {
+        var columns = List.of(new Pair<>(MEDICAL_RESOURCE_TYPES_COLUMN_NAME, TEXT_NULL));
+        return new AlterTableRequest(TABLE_NAME, columns);
+    }
+
     public static Duration getChangeLogRetentionDuration() {
         return isCloudBackupRestoreEnabled()
                 ? NEW_CHANGE_LOG_RETENTION
@@ -113,6 +131,11 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
         contentValues.put(PACKAGE_NAME_COLUMN_NAME, packageName);
         contentValues.put(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, latestChangeLogRowId);
         contentValues.put(TIME_COLUMN_NAME, Instant.now().toEpochMilli());
+        if (AconfigFlagHelper.isPhrChangeLogsEnabled()) {
+            contentValues.put(
+                    MEDICAL_RESOURCE_TYPES_COLUMN_NAME,
+                    StorageUtils.flattenIntCollection(request.getMedicalResourceTypes()));
+        }
 
         return String.valueOf(
                 mTransactionManager.insertOrThrowOnConflict(
@@ -135,6 +158,10 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
             return new TokenRequest(
                     getCursorStringList(cursor, PACKAGES_TO_FILTER_COLUMN_NAME, DELIMITER),
                     getCursorIntegerList(cursor, RECORD_TYPES_COLUMN_NAME, DELIMITER),
+                    AconfigFlagHelper.isPhrChangeLogsEnabled()
+                            ? getCursorIntegerList(
+                                    cursor, MEDICAL_RESOURCE_TYPES_COLUMN_NAME, DELIMITER)
+                            : List.of(),
                     getCursorString(cursor, PACKAGE_NAME_COLUMN_NAME),
                     getCursorInt(cursor, ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME));
         }
@@ -151,6 +178,12 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
         contentValues.put(
                 PACKAGE_NAME_COLUMN_NAME, changeLogTokenRequest.getRequestingPackageName());
         contentValues.put(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, nextRowId);
+        if (AconfigFlagHelper.isPhrChangeLogsEnabled()) {
+            contentValues.put(
+                    MEDICAL_RESOURCE_TYPES_COLUMN_NAME,
+                    StorageUtils.flattenIntCollection(
+                            changeLogTokenRequest.getMedicalResourceTypes()));
+        }
 
         return String.valueOf(
                 mTransactionManager.insertOrThrowOnConflict(
@@ -168,7 +201,8 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
     /** A class to represent the request corresponding to a token */
     public static final class TokenRequest {
         private final List<String> mPackageNamesToFilter;
-        private final List<Integer> mRecordTypes;
+        private final List<@RecordTypeIdentifier.RecordType Integer> mRecordTypes;
+        private final List<@MedicalResource.MedicalResourceType Integer> mMedicalResourceTypes;
         private final String mRequestingPackageName;
         private final long mRowIdChangeLogs;
 
@@ -180,11 +214,13 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
          */
         public TokenRequest(
                 List<String> packageNamesToFilter,
-                List<Integer> recordTypes,
+                List<@RecordTypeIdentifier.RecordType Integer> recordTypes,
+                List<@MedicalResource.MedicalResourceType Integer> medicalResourceTypes,
                 String requestingPackageName,
                 long rowIdChangeLogs) {
             mPackageNamesToFilter = packageNamesToFilter;
             mRecordTypes = recordTypes;
+            mMedicalResourceTypes = medicalResourceTypes;
             mRequestingPackageName = requestingPackageName;
             mRowIdChangeLogs = rowIdChangeLogs;
         }
@@ -201,8 +237,12 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
             return mPackageNamesToFilter;
         }
 
-        public List<Integer> getRecordTypes() {
+        public List<@RecordTypeIdentifier.RecordType Integer> getRecordTypes() {
             return mRecordTypes;
+        }
+
+        public List<@MedicalResource.MedicalResourceType Integer> getMedicalResourceTypes() {
+            return mMedicalResourceTypes;
         }
     }
 }

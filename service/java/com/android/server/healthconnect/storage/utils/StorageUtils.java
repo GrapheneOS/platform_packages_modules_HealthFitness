@@ -193,24 +193,24 @@ public final class StorageUtils {
 
     /** Checks if the value of given column is null */
     public static boolean isNullValue(Cursor cursor, String columnName) {
-        return cursor.isNull(cursor.getColumnIndex(columnName));
+        return cursor.isNull(cursor.getColumnIndexOrThrow(columnName));
     }
 
     public static String getCursorString(Cursor cursor, String columnName) {
-        return cursor.getString(cursor.getColumnIndex(columnName));
+        return cursor.getString(cursor.getColumnIndexOrThrow(columnName));
     }
 
     public static UUID getCursorUUID(Cursor cursor, String columnName) {
-        return convertBytesToUUID(cursor.getBlob(cursor.getColumnIndex(columnName)));
+        return convertBytesToUUID(cursor.getBlob(cursor.getColumnIndexOrThrow(columnName)));
     }
 
     public static int getCursorInt(Cursor cursor, String columnName) {
-        return cursor.getInt(cursor.getColumnIndex(columnName));
+        return cursor.getInt(cursor.getColumnIndexOrThrow(columnName));
     }
 
     /** Reads integer and converts to false anything apart from 1. */
     public static boolean getIntegerAndConvertToBoolean(Cursor cursor, String columnName) {
-        String value = cursor.getString(cursor.getColumnIndex(columnName));
+        String value = cursor.getString(cursor.getColumnIndexOrThrow(columnName));
         if (value == null || value.isEmpty()) {
             return false;
         }
@@ -218,20 +218,20 @@ public final class StorageUtils {
     }
 
     public static long getCursorLong(Cursor cursor, String columnName) {
-        return cursor.getLong(cursor.getColumnIndex(columnName));
+        return cursor.getLong(cursor.getColumnIndexOrThrow(columnName));
     }
 
     public static double getCursorDouble(Cursor cursor, String columnName) {
-        return cursor.getDouble(cursor.getColumnIndex(columnName));
+        return cursor.getDouble(cursor.getColumnIndexOrThrow(columnName));
     }
 
     public static byte[] getCursorBlob(Cursor cursor, String columnName) {
-        return cursor.getBlob(cursor.getColumnIndex(columnName));
+        return cursor.getBlob(cursor.getColumnIndexOrThrow(columnName));
     }
 
     public static List<String> getCursorStringList(
             Cursor cursor, String columnName, String delimiter) {
-        final String values = cursor.getString(cursor.getColumnIndex(columnName));
+        final String values = cursor.getString(cursor.getColumnIndexOrThrow(columnName));
         if (values == null || values.isEmpty()) {
             return Collections.emptyList();
         }
@@ -241,7 +241,7 @@ public final class StorageUtils {
 
     public static List<Integer> getCursorIntegerList(
             Cursor cursor, String columnName, String delimiter) {
-        final String stringList = cursor.getString(cursor.getColumnIndex(columnName));
+        final String stringList = cursor.getString(cursor.getColumnIndexOrThrow(columnName));
         if (stringList == null || stringList.isEmpty()) {
             return Collections.emptyList();
         }
@@ -253,7 +253,7 @@ public final class StorageUtils {
     }
 
     public static List<Long> getCursorLongList(Cursor cursor, String columnName, String delimiter) {
-        final String stringList = cursor.getString(cursor.getColumnIndex(columnName));
+        final String stringList = cursor.getString(cursor.getColumnIndexOrThrow(columnName));
         if (stringList == null || stringList.isEmpty()) {
             return Collections.emptyList();
         }
@@ -503,7 +503,7 @@ public final class StorageUtils {
     }
 
     public static List<UUID> getCursorUUIDList(Cursor cursor, String columnName) {
-        byte[] bytes = cursor.getBlob(cursor.getColumnIndex(columnName));
+        byte[] bytes = cursor.getBlob(cursor.getColumnIndexOrThrow(columnName));
         return bytesToUuids(bytes);
     }
 
@@ -572,11 +572,8 @@ public final class StorageUtils {
                         + columnName
                         + "';";
         try (Cursor cursor = database.rawQuery(query, null)) {
-            if (cursor.moveToFirst()) {
-                return cursor.getInt(0) > 0;
-            }
+            return cursor.moveToNext() && cursor.getInt(0) > 0;
         }
-        return false;
     }
 
     /** Gets the last id for {@code tableName} exists in the {@code database}. */
@@ -584,7 +581,7 @@ public final class StorageUtils {
         try (Cursor cursor =
                 database.rawQuery(StorageUtils.getMaxPrimaryKeyQuery(tableName), null)) {
             cursor.moveToFirst();
-            return cursor.getLong(cursor.getColumnIndex(PRIMARY_COLUMN_NAME));
+            return cursor.getLong(cursor.getColumnIndexOrThrow(PRIMARY_COLUMN_NAME));
         }
     }
 

@@ -106,7 +106,8 @@ public final class PriorityMigrationHelper extends DatabaseHelper {
         try (Cursor cursor =
                 mTransactionManager.read(new ReadTableRequest(PRE_MIGRATION_TABLE_NAME))) {
             while (cursor.moveToNext()) {
-                int dataCategory = cursor.getInt(cursor.getColumnIndex(CATEGORY_COLUMN_NAME));
+                int dataCategory =
+                        cursor.getInt(cursor.getColumnIndexOrThrow(CATEGORY_COLUMN_NAME));
                 List<Long> appIdsInOrder =
                         StorageUtils.getCursorLongList(
                                 cursor, PRIORITY_ORDER_COLUMN_NAME, DELIMITER);

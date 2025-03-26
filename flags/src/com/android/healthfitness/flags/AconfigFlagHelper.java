@@ -143,6 +143,6 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether PHR change logs feature is enabled. */
     public static boolean isPhrChangeLogsEnabled() {
-        return Flags.phrChangeLogs();
+        return Flags.phrChangeLogs() && Flags.developmentDatabase();
     }
 }

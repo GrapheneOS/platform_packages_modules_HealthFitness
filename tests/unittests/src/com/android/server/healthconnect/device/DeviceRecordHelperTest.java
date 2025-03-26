@@ -205,6 +205,7 @@ public class DeviceRecordHelperTest {
                 new ChangeLogsRequestHelper.TokenRequest(
                         /* packageNamesToFilter= */ Collections.emptyList(),
                         /* recordTypes= */ Collections.emptyList(),
+                        /* medicalResourceTypes= */ Collections.emptyList(),
                         /* requestingPackageName= */ TEST_PACKAGE_NAME,
                         /* rowIdChangeLogs= */ initialChangeLogRowId);
 

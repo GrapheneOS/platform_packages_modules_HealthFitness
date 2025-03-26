@@ -16,23 +16,21 @@
 
 package com.android.server.healthconnect.storage;
 
-import static android.database.DatabaseUtils.queryNumEntries;
-
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
+import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertColumnsExist;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertNumberOfTables;
+import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertTablesExists;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.clearDatabase;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.createEmptyDatabase;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -45,6 +43,7 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -56,6 +55,8 @@ public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_MINDFULNESS_VERSION = 64;
     private static final int NUM_OF_TABLES_IN_STAGING = 70;
     private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
+
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     private SQLiteDatabase mSQLiteDatabase;
 
@@ -82,7 +83,7 @@ public class DatabaseUpgradeHelperTest {
         // We do idempotent upgrades above MIN_SUPPORTED_DB_VERSION
         onUpgrade(mSQLiteDatabase, MIN_SUPPORTED_DB_VERSION, LATEST_DB_VERSION_IN_STAGING);
         // TODO(b/338031465): Improve testing, check that schema indeed match.
-        assertDbSchemaUpToDate();
+        assertDbSchemaUpToDate(mSQLiteDatabase);
     }
 
     // For historical reasons, we don't have schema tests before mindfulness session, so we opt for
@@ -96,7 +97,7 @@ public class DatabaseUpgradeHelperTest {
     @Test
     public void onUpgrade_newVersionGreaterThanMaxSupportedVersion_upgradeToMaxSupportedVersion() {
         onUpgrade(mSQLiteDatabase, 0, Integer.MAX_VALUE);
-        assertDbSchemaUpToDate();
+        assertDbSchemaUpToDate(mSQLiteDatabase);
     }
 
     @Test
@@ -125,50 +126,27 @@ public class DatabaseUpgradeHelperTest {
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_WEIGHT_GRAMS,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_SET_INDEX,
                         ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION));
-        assertDbSchemaUpToDate();
+        assertDbSchemaUpToDate(mSQLiteDatabase);
     }
 
     /**
      * Asserts that the db schema of {@link #LATEST_DB_VERSION_IN_STAGING} matches the desired
      * schema.
      */
-    private void assertDbSchemaUpToDate() {
-        assertNumberOfTables(mSQLiteDatabase, NUM_OF_TABLES_IN_STAGING);
+    private static void assertDbSchemaUpToDate(SQLiteDatabase db) {
+        assertNumberOfTables(db, NUM_OF_TABLES_IN_STAGING);
 
         // PHR
         assertTablesExists(
-                mSQLiteDatabase,
+                db,
                 List.of(
                         MedicalDataSourceHelper.getMainTableName(),
                         MedicalResourceHelper.getMainTableName(),
                         MedicalResourceIndicesHelper.getTableName(),
                         ReadAccessLogsHelper.TABLE_NAME));
         assertColumnsExist(
-                mSQLiteDatabase,
+                db,
                 AccessLogsHelper.TABLE_NAME,
                 List.of("medical_resource_type", "medical_data_source_accessed"));
-    }
-
-    /** Asserts that a list of {@code columns} exist in the specified {@code table}. */
-    private static void assertColumnsExist(SQLiteDatabase db, String table, List<String> columns) {
-        try (Cursor cursor =
-                db.rawQuery("SELECT * FROM " + table + " LIMIT 1", /* selectArgs */ null)) {
-            for (String column : columns) {
-                assertThat(cursor.getColumnIndex(column)).isNotEqualTo(-1);
-            }
-        }
-    }
-
-    /** Asserts that a list of {@code tables} exist. */
-    private static void assertTablesExists(SQLiteDatabase db, List<String> tables) {
-        for (String table : tables) {
-            long numEntries =
-                    queryNumEntries(
-                            db,
-                            "sqlite_master",
-                            /* selection= */ "type = 'table' AND name == '" + table + "'",
-                            /* selectionArgs= */ null);
-            assertThat(numEntries).isGreaterThan(0);
-        }
     }
 }
