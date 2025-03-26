@@ -16,14 +16,14 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.LOCAL_DATE_TIME_END_TIME_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.LOCAL_DATE_TIME_START_TIME_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_TIME_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.IntervalRecordHelper.START_ZONE_OFFSET_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper.LOCAL_DATE_TIME_END_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper.LOCAL_DATE_TIME_START_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper.START_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper.START_ZONE_OFFSET_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.UUID_COLUMN_NAME;
 
 import android.database.Cursor;
 

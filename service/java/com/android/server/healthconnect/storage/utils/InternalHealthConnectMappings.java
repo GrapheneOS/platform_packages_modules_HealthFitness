@@ -30,8 +30,8 @@ import android.util.ArrayMap;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;

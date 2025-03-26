@@ -39,6 +39,7 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.createVaccineMe
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getFhirResource;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getMedicalResourceId;
 
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper.DATA_SOURCE_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper.FHIR_DATA_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper.FHIR_RESOURCE_ID_COLUMN_NAME;
@@ -50,7 +51,6 @@ import static com.android.server.healthconnect.storage.datatypehelpers.MedicalRe
 import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper.getMedicalResourceTypeColumnName;
 import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper.getParentColumnReference;
 import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper.getTableName;
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL;

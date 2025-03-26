@@ -170,6 +170,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP_2,
                     instantTime = time4,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten =
                         mutableSetOf(
                             dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
@@ -265,6 +266,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP_2,
                     instantTime = time3,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten =
                         mutableSetOf(dataTypeToCategory(StepsRecord::class.java).uppercaseTitle()),
                     dataTypesRead =
@@ -278,6 +280,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = time4,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten =
                         mutableSetOf(
                             dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
@@ -355,6 +358,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = time4,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten =
                         mutableSetOf(
                             dataTypeToCategory(StepsRecord::class.java).uppercaseTitle(),
@@ -371,6 +375,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = time5,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten =
                         mutableSetOf(
                             dataTypeToCategory(BasalMetabolicRateRecord::class.java)
@@ -412,6 +417,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP_2,
                     instantTime = NOW.minus(Duration.ofMinutes(10)),
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead =
                         mutableSetOf(dataTypeToCategory(StepsRecord::class.java).uppercaseTitle()),
@@ -420,6 +426,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP_2,
                     instantTime = NOW.minus(Duration.ofMinutes(11)),
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead =
                         mutableSetOf(dataTypeToCategory(StepsRecord::class.java).uppercaseTitle()),
@@ -473,6 +480,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = time3,
                     isToday = false,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten =
                         mutableSetOf(dataTypeToCategory(StepsRecord::class.java).uppercaseTitle()),
                     dataTypesRead =
@@ -530,6 +538,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = time3,
                     isToday = false,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten =
                         mutableSetOf(dataTypeToCategory(StepsRecord::class.java).uppercaseTitle()),
                     dataTypesRead =
@@ -590,6 +599,7 @@ class RecentAccessViewModelTest {
                         metadata = TEST_APP,
                         instantTime = time3,
                         isToday = false,
+                        shouldLaunchAppOnboardingIfAvailable = false,
                         dataTypesWritten =
                             mutableSetOf(
                                 dataTypeToCategory(StepsRecord::class.java).uppercaseTitle()
@@ -691,6 +701,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = time1,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead =
                         mutableSetOf(dataTypeToCategory(StepsRecord::class.java).uppercaseTitle()),
@@ -699,6 +710,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP_2,
                     instantTime = time5,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten =
                         mutableSetOf(
                             dataTypeToCategory(BasalMetabolicRateRecord::class.java)
@@ -710,6 +722,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = time2,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead =
                         mutableSetOf(
@@ -750,6 +763,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = accessTime,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead = mutableSetOf(R.string.wellness_category_uppercase),
                 )
@@ -786,6 +800,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = accessTime,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten = mutableSetOf(R.string.wellness_category_uppercase),
                     dataTypesRead = mutableSetOf(),
                 )
@@ -827,6 +842,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = accessTime,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten = mutableSetOf(),
                     dataTypesRead = mutableSetOf(R.string.medical_permissions),
                 )
@@ -868,6 +884,7 @@ class RecentAccessViewModelTest {
                     metadata = TEST_APP,
                     instantTime = accessTime,
                     isToday = true,
+                    shouldLaunchAppOnboardingIfAvailable = false,
                     dataTypesWritten = mutableSetOf(R.string.medical_permissions),
                     dataTypesRead = mutableSetOf(),
                 )

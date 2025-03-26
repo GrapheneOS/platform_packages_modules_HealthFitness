@@ -35,8 +35,8 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 
 import org.junit.Rule;
 import org.junit.Test;

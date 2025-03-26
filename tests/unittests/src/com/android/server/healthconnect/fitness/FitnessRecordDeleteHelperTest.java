@@ -41,13 +41,13 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppOpLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;

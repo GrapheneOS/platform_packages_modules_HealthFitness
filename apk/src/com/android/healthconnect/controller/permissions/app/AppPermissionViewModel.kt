@@ -14,6 +14,10 @@
 package com.android.healthconnect.controller.permissions.app
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.content.Intent
+import com.android.healthfitness.flags.Flags
+import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
 import android.health.connect.HealthPermissions
 import android.util.Log
 import androidx.annotation.VisibleForTesting
@@ -43,7 +47,6 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
-import com.android.healthfitness.flags.Flags
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant

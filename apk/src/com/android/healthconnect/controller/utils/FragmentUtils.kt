@@ -29,10 +29,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.dialog.ProgressDialogFragment
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
+import com.android.healthfitness.flags.Flags.launchOnboardingActivity
 import dagger.hilt.android.EntryPointAccessors
 
 private lateinit var deviceInfoUtils: DeviceInfoUtils
@@ -104,6 +106,23 @@ fun Fragment.dismissLoadingDialog() {
     if (dialog != null && dialog is ProgressDialogFragment) {
         dialog.dismiss()
     }
+}
+
+/**
+ * If {@code packageName} has exported an onboarding activity, and the package has not yet been
+ * granted any permissions, the onboarding activity will be launched.
+ *
+ * @return {@code true} if the activity was successfully launched. Otherwise, {@code false}.
+ */
+fun Fragment.tryLaunchAppOnboardingActivity(healthPermissionReader: HealthPermissionReader, packageName: String): Boolean {
+    if (launchOnboardingActivity()) {
+        val maybeOnboardingIntent = healthPermissionReader.getOnboardingActivityIntent(requireContext(), packageName)
+        if (maybeOnboardingIntent != null) {
+            activity?.startActivity(maybeOnboardingIntent)
+            return true
+        }
+    }
+    return false
 }
 
 /** Returns a [Lazy] delegate to load the PreferenceFragment's preferences. */

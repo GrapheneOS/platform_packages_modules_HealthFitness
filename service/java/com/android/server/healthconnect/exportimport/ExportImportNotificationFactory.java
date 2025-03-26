@@ -117,9 +117,10 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
 
     @VisibleForTesting static final String APP_ICON_DRAWABLE_NAME = "health_connect_logo";
 
-    public ExportImportNotificationFactory(Context context, String channelId) {
+    public ExportImportNotificationFactory(
+            Context context, HealthConnectResourcesContext resourcesContext, String channelId) {
         mContext = context;
-        mResContext = new HealthConnectResourcesContext(mContext);
+        mResContext = resourcesContext;
         mChannelId = channelId;
     }
 

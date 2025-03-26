@@ -25,7 +25,7 @@ import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid
 import android.annotation.Nullable;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 
 import java.util.Objects;
 

@@ -28,5 +28,6 @@ data class RecentAccessEntry(
     var isInactive: Boolean = false,
     var dataTypesWritten: MutableSet<Int> = mutableSetOf(),
     var dataTypesRead: MutableSet<Int> = mutableSetOf(),
-    var appPermissionsType: AppPermissionsType = AppPermissionsType.FITNESS_PERMISSIONS_ONLY
+    var appPermissionsType: AppPermissionsType = AppPermissionsType.FITNESS_PERMISSIONS_ONLY,
+    var shouldLaunchAppOnboardingIfAvailable: Boolean
 )

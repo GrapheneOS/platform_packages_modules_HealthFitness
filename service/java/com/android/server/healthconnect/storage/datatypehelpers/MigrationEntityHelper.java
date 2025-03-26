@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.storage.datatypehelpers;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;

@@ -28,6 +28,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Pair;
 
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
@@ -161,7 +162,6 @@ public final class ActivityDateHelper extends DatabaseHelper {
     }
 
     private HashMap<Integer, List<Long>> fetchUpdatedDates(List<Integer> recordTypeIds) {
-
         ReadTableRequest request;
         RecordHelper<?> recordHelper;
         HashMap<Integer, List<Long>> recordTypeIdToEpochDays = new HashMap<>();

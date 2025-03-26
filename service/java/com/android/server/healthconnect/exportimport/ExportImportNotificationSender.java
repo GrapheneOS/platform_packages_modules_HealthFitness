@@ -19,6 +19,7 @@ package com.android.server.healthconnect.exportimport;
 import android.annotation.IntDef;
 import android.content.Context;
 
+import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 
 import java.lang.annotation.Retention;
@@ -41,10 +42,12 @@ public class ExportImportNotificationSender {
     private static final String CHANNEL_GROUP_NAME_RESOURCE = "app_label";
 
     /** Create an instance of HealthConnectNotificationSender, setup for export-import. */
-    public static HealthConnectNotificationSender createSender(Context context) {
+    public static HealthConnectNotificationSender createSender(
+            Context context, HealthConnectResourcesContext resourcesContext) {
         return new HealthConnectNotificationSender.Builder()
                 .setContext(context)
-                .setNotificationFactory(new ExportImportNotificationFactory(context, CHANNEL_ID))
+                .setNotificationFactory(
+                        new ExportImportNotificationFactory(context, resourcesContext, CHANNEL_ID))
                 .setChannelGroupId(CHANNEL_GROUP_ID)
                 .setChannelNameResource(CHANNEL_NAME_RESOURCE)
                 .setChannelGroupNameResource(CHANNEL_GROUP_NAME_RESOURCE)

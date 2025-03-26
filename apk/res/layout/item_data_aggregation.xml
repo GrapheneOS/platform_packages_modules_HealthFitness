@@ -31,7 +31,9 @@
         android:id="@+id/item_data_origin_apps"
         android:textAppearance="?attr/textAppearanceSummary"
         android:layout_width="match_parent"
-        android:paddingBottom="@dimen/spacing_normal"
         android:layout_height="wrap_content" />
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/spacing_normal"/>
 </LinearLayout>

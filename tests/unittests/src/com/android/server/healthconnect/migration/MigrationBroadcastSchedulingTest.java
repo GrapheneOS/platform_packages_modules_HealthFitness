@@ -65,6 +65,7 @@ public class MigrationBroadcastSchedulingTest {
     @Mock private MigrationStateManager mMigrationStateManager;
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private HealthConnectThreadScheduler mThreadScheduler;
+    @Mock private MigrationUtils mMigrationUtils;
 
     private MigrationBroadcastScheduler mMigrationBroadcastScheduler;
 
@@ -101,7 +102,8 @@ public class MigrationBroadcastSchedulingTest {
                         UserHandle.getUserHandleForUid(0),
                         mPreferenceHelper,
                         mMigrationBroadcastScheduler,
-                        mThreadScheduler);
+                        mThreadScheduler,
+                        mMigrationUtils);
         migrationStateManager.updateMigrationState(mContext, MIGRATION_STATE_IN_PROGRESS);
 
         verify(mMigrationBroadcastScheduler, times(1)).scheduleNewJobs(any(), any());

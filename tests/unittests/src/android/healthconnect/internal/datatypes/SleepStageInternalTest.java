@@ -22,11 +22,15 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.internal.datatypes.SleepStageInternal;
 import android.os.Parcel;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.Period;
 
+@RunWith(AndroidJUnit4.class)
 public class SleepStageInternalTest {
     private final Instant mStartTime = Instant.now().minus(Period.ofDays(1));
     private final Instant mEndTime = Instant.now();

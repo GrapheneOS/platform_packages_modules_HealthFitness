@@ -22,7 +22,7 @@ import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 
 import static com.android.internal.util.Preconditions.checkArgument;
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_FALSE_VALUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_TRUE_VALUE;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;

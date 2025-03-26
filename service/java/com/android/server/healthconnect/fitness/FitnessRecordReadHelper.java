@@ -29,12 +29,12 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 
