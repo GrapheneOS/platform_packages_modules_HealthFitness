@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage;
+package com.android.server.healthconnect.exportimport;
 
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.exportimport.ScheduledExportStatus.DATA_EXPORT_ERROR_UNSPECIFIED;
@@ -244,11 +244,9 @@ public final class ExportImportSettingsStorage {
      * retries.
      */
     public int getExportRepeatErrorOnRetryCount() {
-            String repeatErrorOnRetry_count =
-                    mPreferenceHelper.getPreference(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
-            return (repeatErrorOnRetry_count == null)
-                    ? 0
-                    : Integer.parseInt(repeatErrorOnRetry_count);
+        String repeatErrorOnRetry_count =
+                mPreferenceHelper.getPreference(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
+        return (repeatErrorOnRetry_count == null) ? 0 : Integer.parseInt(repeatErrorOnRetry_count);
     }
 
     /**
@@ -256,15 +254,13 @@ public final class ExportImportSettingsStorage {
      * during retries. Should be called when an export fails during retries.
      */
     public void increaseExportRepeatErrorOnRetryCount() {
-            String repeatErrorOnRetry_count =
-                    mPreferenceHelper.getPreference(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
-            int count =
-                    (repeatErrorOnRetry_count == null)
-                            ? 0
-                            : Integer.parseInt(repeatErrorOnRetry_count);
-            count++;
-            mPreferenceHelper.insertOrReplacePreference(
-                    EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY, String.valueOf(count));
+        String repeatErrorOnRetry_count =
+                mPreferenceHelper.getPreference(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
+        int count =
+                (repeatErrorOnRetry_count == null) ? 0 : Integer.parseInt(repeatErrorOnRetry_count);
+        count++;
+        mPreferenceHelper.insertOrReplacePreference(
+                EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY, String.valueOf(count));
     }
 
     /**
@@ -274,7 +270,7 @@ public final class ExportImportSettingsStorage {
      * retries finish/a new regular export is scheduled.
      */
     public void resetExportRepeatErrorOnRetryCount() {
-            mPreferenceHelper.removeKey(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
+        mPreferenceHelper.removeKey(EXPORT_REPEAT_ERROR_ON_RETRY_COUNT_KEY);
     }
 
     /** Set the state of an import to started, success or an error of the last import attempt. */

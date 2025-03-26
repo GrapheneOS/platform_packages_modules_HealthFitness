@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect;
+package com.android.server.healthconnect.common.jobs;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -52,9 +52,11 @@ public class HealthConnectDailyJobsTest {
 
     @Test
     public void testJobSchedule() {
-        HealthConnectDailyJobs.schedule(mContext, UserHandle.getUserHandleForUid(0));
+        com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs.schedule(
+                mContext, UserHandle.getUserHandleForUid(0));
         verify(mJobScheduler, times(1)).schedule(any());
-        HealthConnectDailyJobs.schedule(mContext, UserHandle.getUserHandleForUid(1));
+        com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs.schedule(
+                mContext, UserHandle.getUserHandleForUid(1));
         verify(mJobScheduler, times(2)).schedule(any());
         HealthConnectDailyJobs.cancelAllJobs(mContext);
         verify(mJobScheduler, times(1)).cancelAll();

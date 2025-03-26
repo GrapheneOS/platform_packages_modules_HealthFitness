@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect;
+package com.android.server.healthconnect.common.jobs;
 
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_JOB_NAME_KEY;
 import static com.android.server.healthconnect.HealthConnectDailyService.EXTRA_USER_ID;
@@ -27,16 +27,25 @@ import android.health.HealthFitnessStatsLog;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
 
+import com.android.server.healthconnect.HealthConnectDailyService;
 import com.android.server.healthconnect.logging.DailyLoggingService;
 import com.android.server.healthconnect.logging.EcosystemStatsCollector;
 import com.android.server.healthconnect.logging.UsageStatsCollector;
-import com.android.server.healthconnect.storage.DailyCleanupJob;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-/** @hide */
+/**
+ * A job scheduled to run daily.
+ *
+ * <ul>
+ *   <li>Daily maintenance tasks like auto-delete and deleting stale changelogs.
+ *   <li>Daily logging like storage stats or ecosystem metrics.
+ * </ul>
+ *
+ * @hide
+ */
 public class HealthConnectDailyJobs {
     public static final String HC_DAILY_JOB = "hc_daily_job";
     private static final int MIN_JOB_ID = HealthConnectDailyJobs.class.hashCode();
@@ -63,6 +72,7 @@ public class HealthConnectDailyJobs {
                 builder.build());
     }
 
+    /** Cancel the daily job */
     public static void cancelAllJobs(Context context) {
         Objects.requireNonNull(context.getSystemService(JobScheduler.class))
                 .forNamespace(HEALTH_CONNECT_NAMESPACE)
