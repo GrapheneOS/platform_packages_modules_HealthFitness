@@ -213,7 +213,6 @@ public final class BackupRestore {
     private final BackupRestoreJobScheduler mJobScheduler;
     private final GrantTimeXmlHelper mGrantTimeXmlHelper;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public BackupRestore(
             AppInfoHelper appInfoHelper,
             FirstGrantTimeManager firstGrantTimeManager,
