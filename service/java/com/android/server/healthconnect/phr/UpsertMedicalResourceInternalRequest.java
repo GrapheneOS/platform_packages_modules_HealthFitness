@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.request;
+package com.android.server.healthconnect.phr;
 
 import static java.util.Objects.hash;
 import static java.util.Objects.requireNonNull;
