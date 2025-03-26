@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
+package com.android.server.healthconnect.fitness.aggregation;
 
 import static com.android.server.healthconnect.fitness.aggregation.AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_DOUBLE;
 import static com.android.server.healthconnect.fitness.aggregation.AggregateParams.PriorityAggregationExtraParams.VALUE_TYPE_LONG;
@@ -30,12 +30,12 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
  *
  * @hide
  */
-public class ValueColumnAggregationData extends AggregationRecordData {
+class ValueColumnAggregationData extends AggregationRecordData {
     private final String mValueColumnName;
     @ValueColumnType private final int mValueColumnType;
     private double mValue;
 
-    public ValueColumnAggregationData(String valueColumnName, @ValueColumnType int type) {
+    ValueColumnAggregationData(String valueColumnName, @ValueColumnType int type) {
         mValueColumnName = valueColumnName;
         mValueColumnType = type;
     }

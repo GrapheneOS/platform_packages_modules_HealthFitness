@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
+package com.android.server.healthconnect.fitness.aggregation;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper.LOCAL_DATE_TIME_END_TIME_COLUMN_NAME;
@@ -39,7 +39,7 @@ import java.util.UUID;
  *
  * @hide
  */
-public abstract class AggregationRecordData implements Comparable<AggregationRecordData> {
+abstract class AggregationRecordData implements Comparable<AggregationRecordData> {
     private long mRecordStartTime;
     private long mRecordEndTime;
     private int mPriority;

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
+package com.android.server.healthconnect.fitness.aggregation;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.aggregation.PriorityAggregationTestDataFactory.createStepsData;
+import static com.android.server.healthconnect.fitness.aggregation.PriorityAggregationTestDataFactory.createStepsData;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -26,8 +26,6 @@ import static org.mockito.Mockito.when;
 import android.database.Cursor;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +51,8 @@ public class RealDataStepsTest {
         MockitoAnnotations.initMocks(this);
         mOneGroupAggregator =
                 Mockito.spy(
-                        new PriorityRecordsAggregator(
+                        new com.android.server.healthconnect.fitness.aggregation
+                                .PriorityRecordsAggregator(
                                 List.of(
                                         Instant.EPOCH.toEpochMilli(),
                                         Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()),

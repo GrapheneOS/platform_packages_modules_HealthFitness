@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
+package com.android.server.healthconnect.fitness.aggregation;
 
 import android.annotation.IntDef;
 
@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @hide
  */
-public class AggregationTimestamp implements Comparable<AggregationTimestamp> {
+class AggregationTimestamp implements Comparable<AggregationTimestamp> {
 
     @IntDef({GROUP_BORDER, INTERVAL_START, INTERVAL_END})
     public @interface TimestampType {}
@@ -42,7 +42,7 @@ public class AggregationTimestamp implements Comparable<AggregationTimestamp> {
     private AggregationRecordData mParentRecord;
 
     @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    public AggregationTimestamp(int type, long time) {
+    AggregationTimestamp(int type, long time) {
         mTime = time;
         mType = type;
     }

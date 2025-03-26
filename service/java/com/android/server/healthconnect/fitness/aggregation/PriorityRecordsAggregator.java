@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
+package com.android.server.healthconnect.fitness.aggregation;
 
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL;
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.ACTIVITY_INTENSITY_DURATION_TOTAL;
@@ -39,7 +39,6 @@ import android.util.Slog;
 import androidx.annotation.Nullable;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.time.ZoneOffset;
 import java.util.List;
@@ -51,7 +50,7 @@ import java.util.TreeSet;
  *
  * @hide
  */
-public class PriorityRecordsAggregator {
+class PriorityRecordsAggregator {
     static final String TAG = "HealthPriorityRecordsAggregator";
 
     private final List<Long> mGroupSplits;
@@ -70,7 +69,7 @@ public class PriorityRecordsAggregator {
 
     private final boolean mUseLocalTime;
 
-    public PriorityRecordsAggregator(
+    PriorityRecordsAggregator(
             List<Long> groupSplits,
             List<Long> appIdPriorityList,
             @AggregationType.AggregationTypeIdentifier int aggregationType,
@@ -102,7 +101,7 @@ public class PriorityRecordsAggregator {
     }
 
     /** Calculates aggregation result for each group. */
-    public void calculateAggregation(Cursor cursor) {
+    void calculateAggregation(Cursor cursor) {
         initialiseTimestampsBuffer(cursor);
         populateTimestampBuffer(cursor);
         AggregationTimestamp scanPoint, nextPoint;
@@ -226,24 +225,24 @@ public class PriorityRecordsAggregator {
     private AggregationRecordData createAggregationRecordData() {
         return switch (mAggregationType) {
             case STEPS_RECORD_COUNT_TOTAL,
-                    ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL,
-                    DISTANCE_RECORD_DISTANCE_TOTAL,
-                    ELEVATION_RECORD_ELEVATION_GAINED_TOTAL,
-                    FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL,
-                    WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL ->
+                            ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL,
+                            DISTANCE_RECORD_DISTANCE_TOTAL,
+                            ELEVATION_RECORD_ELEVATION_GAINED_TOTAL,
+                            FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL,
+                            WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL ->
                     new ValueColumnAggregationData(
                             mExtraParams.getColumnToAggregateName(),
                             mExtraParams.getColumnToAggregateType());
             case SLEEP_SESSION_DURATION_TOTAL,
-                    EXERCISE_SESSION_DURATION_TOTAL,
-                    MINDFULNESS_SESSION_DURATION_TOTAL ->
+                            EXERCISE_SESSION_DURATION_TOTAL,
+                            MINDFULNESS_SESSION_DURATION_TOTAL ->
                     new SessionDurationAggregationData(
                             mExtraParams.getExcludeIntervalStartColumnName(),
                             mExtraParams.getExcludeIntervalEndColumnName());
             case ACTIVITY_INTENSITY_MODERATE_DURATION_TOTAL,
-                    ACTIVITY_INTENSITY_VIGOROUS_DURATION_TOTAL,
-                    ACTIVITY_INTENSITY_DURATION_TOTAL,
-                    ACTIVITY_INTENSITY_MINUTES_TOTAL ->
+                            ACTIVITY_INTENSITY_VIGOROUS_DURATION_TOTAL,
+                            ACTIVITY_INTENSITY_DURATION_TOTAL,
+                            ACTIVITY_INTENSITY_MINUTES_TOTAL ->
                     new ActivityIntensityAggregationData(mAggregationType);
             default ->
                     throw new UnsupportedOperationException(
