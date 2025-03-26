@@ -31,6 +31,7 @@ import android.health.connect.datatypes.AggregationType;
 
 import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -46,11 +47,17 @@ final class ActivityIntensityAggregationData extends AggregationRecordData {
     private static final long MILLIS_IN_A_MINUTE = TimeUnit.MINUTES.toMillis(1);
 
     @AggregationType.AggregationTypeIdentifier private final int mAggregationType;
-    @ActivityIntensityRecord.ActivityIntensityType private int mActivityIntensityType;
+    @ActivityIntensityRecord.ActivityIntensityType private final int mActivityIntensityType;
 
     ActivityIntensityAggregationData(
+            Cursor cursor,
+            boolean useLocalTime,
+            Map<Long, Integer> appIdToPriority,
             @AggregationType.AggregationTypeIdentifier int aggregationType) {
+        super(cursor, useLocalTime, appIdToPriority);
         mAggregationType = aggregationType;
+        mActivityIntensityType =
+                getCursorInt(cursor, ActivityIntensityRecordHelper.TYPE_COLUMN_NAME);
     }
 
     @Override
@@ -81,11 +88,5 @@ final class ActivityIntensityAggregationData extends AggregationRecordData {
         return overlapDurationMillis
                 * multiplier
                 / (mAggregationType == ACTIVITY_INTENSITY_MINUTES_TOTAL ? MILLIS_IN_A_MINUTE : 1);
-    }
-
-    @Override
-    void populateSpecificAggregationData(Cursor cursor, boolean useLocalTime) {
-        mActivityIntensityType =
-                getCursorInt(cursor, ActivityIntensityRecordHelper.TYPE_COLUMN_NAME);
     }
 }

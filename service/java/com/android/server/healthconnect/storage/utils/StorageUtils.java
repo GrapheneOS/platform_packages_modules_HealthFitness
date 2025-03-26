@@ -286,7 +286,7 @@ public final class StorageUtils {
     /**
      * Reads ZoneOffset using given cursor. Returns null of column name is not present in the table.
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     public static ZoneOffset getZoneOffset(Cursor cursor, String startZoneOffsetColumnName) {
         ZoneOffset zoneOffset = null;
         if (cursor.getColumnIndex(startZoneOffsetColumnName) != -1) {

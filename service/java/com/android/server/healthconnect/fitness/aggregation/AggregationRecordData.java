@@ -25,6 +25,7 @@ import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelpe
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.UUID_COLUMN_NAME;
 
+import android.annotation.Nullable;
 import android.database.Cursor;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -40,39 +41,35 @@ import java.util.UUID;
  * @hide
  */
 abstract class AggregationRecordData implements Comparable<AggregationRecordData> {
-    private long mRecordStartTime;
-    private long mRecordEndTime;
-    private int mPriority;
-    private long mLastModifiedTime;
+    private static final String TAG = "HealthAggregation";
+    private final long mRecordStartTime;
+    private final long mRecordEndTime;
+    private final int mPriority;
+    private final long mLastModifiedTime;
+    @Nullable private final ZoneOffset mStartTimeZoneOffset;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private ZoneOffset mStartTimeZoneOffset;
-
-    long getStartTime() {
-        return mRecordStartTime;
+    @VisibleForTesting
+    AggregationRecordData(
+            long mRecordStartTime,
+            long mRecordEndTime,
+            int mPriority,
+            long mLastModifiedTime,
+            @Nullable ZoneOffset startTimeZoneOffset) {
+        this.mRecordStartTime = mRecordStartTime;
+        this.mRecordEndTime = mRecordEndTime;
+        this.mPriority = mPriority;
+        this.mLastModifiedTime = mLastModifiedTime;
+        this.mStartTimeZoneOffset = startTimeZoneOffset;
     }
 
-    long getEndTime() {
-        return mRecordEndTime;
-    }
-
-    int getPriority() {
-        return mPriority;
-    }
-
-    long getLastModifiedTime() {
-        return mLastModifiedTime;
-    }
-
-    ZoneOffset getStartTimeZoneOffset() {
-        return mStartTimeZoneOffset;
-    }
-
-    protected UUID readUuid(Cursor cursor) {
-        return StorageUtils.getCursorUUID(cursor, UUID_COLUMN_NAME);
-    }
-
-    void populateAggregationData(
+    /**
+     * Initialize the fields from a database row
+     *
+     * @param cursor the cursor to read from
+     * @param useLocalTime whether to use local or global start time
+     * @param appIdToPriority a map to look up priority from
+     */
+    protected AggregationRecordData(
             Cursor cursor, boolean useLocalTime, Map<Long, Integer> appIdToPriority) {
         mRecordStartTime =
                 StorageUtils.getCursorLong(
@@ -90,7 +87,31 @@ abstract class AggregationRecordData implements Comparable<AggregationRecordData
                 appIdToPriority.getOrDefault(
                         StorageUtils.getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME),
                         Integer.MIN_VALUE);
-        populateSpecificAggregationData(cursor, useLocalTime);
+    }
+
+    long getStartTime() {
+        return mRecordStartTime;
+    }
+
+    long getEndTime() {
+        return mRecordEndTime;
+    }
+
+    int getPriority() {
+        return mPriority;
+    }
+
+    long getLastModifiedTime() {
+        return mLastModifiedTime;
+    }
+
+    @Nullable
+    ZoneOffset getStartTimeZoneOffset() {
+        return mStartTimeZoneOffset;
+    }
+
+    protected UUID readUuid(Cursor cursor) {
+        return StorageUtils.getCursorUUID(cursor, UUID_COLUMN_NAME);
     }
 
     AggregationTimestamp getStartTimestamp() {
@@ -103,16 +124,6 @@ abstract class AggregationRecordData implements Comparable<AggregationRecordData
                 .setParentData(this);
     }
 
-    @VisibleForTesting
-    AggregationRecordData setData(
-            long startTime, long endTime, int priority, long lastModifiedTime) {
-        mRecordStartTime = startTime;
-        mRecordEndTime = endTime;
-        mPriority = priority;
-        mLastModifiedTime = lastModifiedTime;
-        return this;
-    }
-
     /**
      * Calculates aggregation result given start and end time of the target interval. Implementation
      * may assume that it's will be called with non overlapping intervals. So (start time, end time)
@@ -120,8 +131,6 @@ abstract class AggregationRecordData implements Comparable<AggregationRecordData
      */
     abstract double getResultOnInterval(
             AggregationTimestamp startPoint, AggregationTimestamp endPoint);
-
-    abstract void populateSpecificAggregationData(Cursor cursor, boolean useLocalTime);
 
     @Override
     public String toString() {

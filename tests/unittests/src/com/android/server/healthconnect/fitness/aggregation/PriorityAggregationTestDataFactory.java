@@ -19,7 +19,9 @@ package com.android.server.healthconnect.fitness.aggregation;
 import java.util.Collections;
 import java.util.List;
 
+/** Helper class to generate aggregated data for unit tests. */
 public class PriorityAggregationTestDataFactory {
+    /** Create session aggregated data. */
     public static AggregationRecordData createSessionData(
             int startTime,
             int endTime,
@@ -29,38 +31,36 @@ public class PriorityAggregationTestDataFactory {
         return createSessionData(startTime, endTime, priority, excludeStarts, excludeEnds, 0);
     }
 
-    public static com.android.server.healthconnect.fitness.aggregation.AggregationRecordData
-            createSessionData(
-                    int startTime,
-                    int endTime,
-                    int priority,
-                    List<Long> excludeStarts,
-                    List<Long> excludeEnds,
-                    int lastModifiedTime) {
-        return new SessionDurationAggregationData("startTime", "endTime")
-                .setExcludeIntervals(excludeStarts, excludeEnds)
-                .setData(startTime, endTime, priority, lastModifiedTime);
+    /** Create session aggregated data with a last modified time. */
+    public static AggregationRecordData createSessionData(
+            int startTime,
+            int endTime,
+            int priority,
+            List<Long> excludeStarts,
+            List<Long> excludeEnds,
+            int lastModifiedTime) {
+        return new SessionDurationAggregationData(
+                startTime, endTime, priority, lastModifiedTime, excludeStarts, excludeEnds);
     }
 
-    public static com.android.server.healthconnect.fitness.aggregation.AggregationRecordData
-            createSessionData(int startTime, int endTime, int priority) {
+    /** Create session aggregated data with no excluded intervals. */
+    public static AggregationRecordData createSessionData(
+            int startTime, int endTime, int priority) {
         return createSessionData(
                 startTime, endTime, priority, Collections.emptyList(), Collections.emptyList());
     }
 
-    public static com.android.server.healthconnect.fitness.aggregation.AggregationRecordData
-            createStepsData(
-                    int startTime, int endTime, int count, int priority, int lastModifiedTime) {
-        return new ValueColumnAggregationData("steps", 0)
-                .setValue(count)
-                .setData(startTime, endTime, priority, lastModifiedTime);
+    /** Create aggregated steps data from integers. */
+    public static AggregationRecordData createStepsData(
+            int startTime, int endTime, int count, int priority, int lastModifiedTime) {
+        return new ValueColumnAggregationData(
+                startTime, endTime, priority, lastModifiedTime, count);
     }
 
-    public static com.android.server.healthconnect.fitness.aggregation.AggregationRecordData
-            createStepsData(
-                    long startTime, long endTime, int count, int priority, int lastModifiedTime) {
-        return new ValueColumnAggregationData("steps", 0)
-                .setValue(count)
-                .setData(startTime, endTime, priority, lastModifiedTime);
+    /** Create aggregated steps data from longs. */
+    public static AggregationRecordData createStepsData(
+            long startTime, long endTime, int count, int priority, int lastModifiedTime) {
+        return new ValueColumnAggregationData(
+                startTime, endTime, priority, lastModifiedTime, count);
     }
 }
