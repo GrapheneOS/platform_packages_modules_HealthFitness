@@ -42,7 +42,7 @@ object UiTestUtils {
 
     private val WAIT_TIMEOUT = Duration.ofSeconds(5)
     private val NOT_DISPLAYED_TIMEOUT = Duration.ofMillis(500)
-    private val FIND_OBJECT_TIMEOUT = Duration.ofMillis(500)
+    private val FIND_OBJECT_TIMEOUT = Duration.ofMillis(1000)
     private val NEW_WINDOW_TIMEOUT_MILLIS = 3000L
     private val RETRY_TIMEOUT_MILLIS = 5000L
 
