@@ -25,6 +25,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
+import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.datatypes.Device.DeviceType;
@@ -56,13 +57,13 @@ public class DeviceInfoHelper extends DatabaseHelper {
     private static final String MODEL_COLUMN_NAME = "model";
     private static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
 
-    /** Map to store deviceInfoId -> DeviceInfo mapping for populating record for read */
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private volatile ConcurrentHashMap<Long, DeviceInfo> mIdDeviceInfoMap;
+    record DeviceInfoCache(
+            // Map to store deviceInfoId -> DeviceInfo mapping for populating record for read.
+            ConcurrentHashMap<Long, DeviceInfo> idToDevice,
+            // DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId)
+            ConcurrentHashMap<DeviceInfo, Long> deviceToRowId) {}
 
-    /** ArrayMap to store DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId) */
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private volatile ConcurrentHashMap<DeviceInfo, Long> mDeviceInfoMap;
+    @Nullable private volatile DeviceInfoCache mDeviceInfoCache;
 
     private final TransactionManager mTransactionManager;
 
@@ -108,11 +109,9 @@ public class DeviceInfoHelper extends DatabaseHelper {
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
     public synchronized void clearCache() {
-        mDeviceInfoMap = null;
-        mIdDeviceInfoMap = null;
+        mDeviceInfoCache = null;
     }
 
     @Override
@@ -120,9 +119,10 @@ public class DeviceInfoHelper extends DatabaseHelper {
         return TABLE_NAME;
     }
 
-    private synchronized void populateDeviceInfoMap() {
-        if (mDeviceInfoMap != null) {
-            return;
+    private synchronized DeviceInfoCache populateDeviceInfoCache() {
+        DeviceInfoCache cache = mDeviceInfoCache;
+        if (cache != null) {
+            return cache;
         }
 
         ConcurrentHashMap<DeviceInfo, Long> deviceInfoMap = new ConcurrentHashMap<>();
@@ -139,23 +139,27 @@ public class DeviceInfoHelper extends DatabaseHelper {
             }
         }
 
-        mDeviceInfoMap = deviceInfoMap;
-        mIdDeviceInfoMap = idDeviceInfoMap;
+        cache = new DeviceInfoCache(idDeviceInfoMap, deviceInfoMap);
+        mDeviceInfoCache = cache;
+        return cache;
     }
 
     private Map<Long, DeviceInfo> getIdDeviceInfoMap() {
-        if (mIdDeviceInfoMap == null) {
-            populateDeviceInfoMap();
+        // Avoid a synchronized call to populateDeviceInfoCache if possible.
+        DeviceInfoCache cache = mDeviceInfoCache;
+        if (cache == null) {
+            cache = populateDeviceInfoCache();
         }
-        return mIdDeviceInfoMap;
+        return cache.idToDevice;
     }
 
     private Map<DeviceInfo, Long> getDeviceInfoMap() {
-        if (mDeviceInfoMap == null) {
-            populateDeviceInfoMap();
+        // Avoid a synchronized call to populateDeviceInfoCache if possible.
+        DeviceInfoCache cache = mDeviceInfoCache;
+        if (cache == null) {
+            cache = populateDeviceInfoCache();
         }
-
-        return mDeviceInfoMap;
+        return cache.deviceToRowId;
     }
 
     private synchronized long insertIfNotPresent(DeviceInfo deviceInfo) {
