@@ -252,7 +252,7 @@ public class SharedMemoryTest {
                                     Length.fromMeters(3.0 * i / recordsToDeleteCount))
                             .build());
         }
-        insertRecords(heightRecords);
+        insertRecords(heightRecords, /* timeoutSeconds= */ 10);
         heightRecords = readAllRecords(HeightRecord.class);
         List<RecordIdFilter> recordIdFiltersToDelete =
                 heightRecords.stream()
@@ -277,7 +277,7 @@ public class SharedMemoryTest {
                                     Mass.fromGrams(1000.0 * 70.0 + i * 10))
                             .build());
         }
-        insertRecords(weightRecords);
+        insertRecords(weightRecords, /* timeoutSeconds= */ 10);
         weightRecords = readAllRecords(WeightRecord.class);
 
         Set<String> deletedLogsIds = new HashSet<>();
