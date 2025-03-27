@@ -3,17 +3,6 @@ package: "com.android.healthfitness.flags"
 container: "com.android.healthfitness"
 
 flag {
-    # Unlike "development_database" flag, this flag is for the implementation of the infrastructure
-    # that allow guarding and rolling out DB schema changes from "Staging" onwards, so this flag
-    # will eventually be rolled out to "mainline" and removed after "mainline".
-    name: "infra_to_guard_db_changes"
-    namespace: "health_fitness_aconfig"
-    description: "Flag to guard implementation of the infrastructure which will be used to flag DB schema changes."
-    bug: "340809376"
-    is_fixed_read_only: true
-}
-
-flag {
     # This flag should NEVER be turned on in prod / release for real users.
     # This flag turns on development only features in the database schema.
     # It is used to guard database schema changes that are not finalized enough

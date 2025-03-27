@@ -52,10 +52,6 @@ public final class AconfigFlagHelper {
      * android.database.sqlite.SQLiteOpenHelper} to dictate which DB upgrades will be executed.
      */
     public static synchronized int getDbVersion() {
-        if (!Flags.infraToGuardDbChanges()) {
-            return LAST_ROLLED_OUT_DB_VERSION;
-        }
-
         int dbVersion = LAST_ROLLED_OUT_DB_VERSION;
         for (Map.Entry<Integer, BooleanSupplier> entry : getDbVersionToDbFlagMap().entrySet()) {
             if (!entry.getValue().getAsBoolean()) {

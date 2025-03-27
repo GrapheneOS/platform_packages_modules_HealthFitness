@@ -36,7 +36,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.checkT
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MindfulnessSessionRecordHelper;
@@ -137,37 +136,9 @@ final class DatabaseUpgradeHelper {
             oldVersion = DB_VERSION_GENERATED_LOCAL_TIME;
         }
         final int effectiveOldVersion = oldVersion;
-
-        if (Flags.infraToGuardDbChanges()) {
-            UPGRADERS.entrySet().stream()
-                    .filter(entry -> shouldUpgrade(entry.getKey(), effectiveOldVersion, newVersion))
-                    .forEach(entry -> entry.getValue().upgrade(db));
-        } else {
-            if (effectiveOldVersion < DB_VERSION_GENERATED_LOCAL_TIME) {
-                UPGRADE_TO_GENERATED_LOCAL_TIME.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_SKIN_TEMPERATURE) {
-                UPGRADE_TO_SKIN_TEMPERATURE.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_PLANNED_EXERCISE_SESSIONS) {
-                UPGRADE_TO_PLANNED_EXERCISE_SESSIONS.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_MINDFULNESS_SESSION) {
-                UPGRADE_TO_MINDFULNESS_SESSION.upgrade(db);
-            }
-            if (shouldUpgrade(DB_VERSION_PERSONAL_HEALTH_RECORD, effectiveOldVersion, newVersion)) {
-                UPGRADE_TO_PERSONAL_HEALTH_RECORD.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_ACTIVITY_INTENSITY) {
-                UPGRADE_TO_ACTIVITY_INTENSITY.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_ECOSYSTEM_METRICS) {
-                UPGRADE_TO_ECOSYSTEM_METRICS.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_CLOUD_BACKUP_AND_RESTORE) {
-                UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE.upgrade(db);
-            }
-        }
+        UPGRADERS.entrySet().stream()
+                .filter(entry -> shouldUpgrade(entry.getKey(), effectiveOldVersion, newVersion))
+                .forEach(entry -> entry.getValue().upgrade(db));
     }
 
     private static boolean isUnsupportedDbVersion(int version) {

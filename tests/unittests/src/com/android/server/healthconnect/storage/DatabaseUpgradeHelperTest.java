@@ -21,7 +21,6 @@ import static android.database.DatabaseUtils.queryNumEntries;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
-import static com.android.healthfitness.flags.Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertNumberOfTables;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.clearDatabase;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.createEmptyDatabase;
@@ -31,9 +30,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.FlagsParameterization;
-import android.platform.test.flag.junit.SetFlagsRule;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper;
@@ -43,28 +41,13 @@ import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHe
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import platform.test.runner.parameterized.ParameterizedAndroidJunit4;
-import platform.test.runner.parameterized.Parameters;
-
 import java.util.List;
 
-@RunWith(ParameterizedAndroidJunit4.class)
+@RunWith(AndroidJUnit4.class)
 public class DatabaseUpgradeHelperTest {
-    @Rule public final SetFlagsRule mSetFlagsRule;
-
-    @Parameters(name = "{0}")
-    public static List<FlagsParameterization> getParams() {
-        return FlagsParameterization.allCombinationsOf(FLAG_INFRA_TO_GUARD_DB_CHANGES);
-    }
-
-    public DatabaseUpgradeHelperTest(FlagsParameterization flags) {
-        mSetFlagsRule = new SetFlagsRule(flags);
-    }
-
     private static final int NUM_OF_TABLES_AT_MIN_SUPPORTED_VERSION = 57;
     private static final int NUM_OF_TABLES_AT_MINDFULNESS_VERSION = 64;
     private static final int NUM_OF_TABLES_IN_STAGING = 70;
@@ -101,7 +84,6 @@ public class DatabaseUpgradeHelperTest {
     // For historical reasons, we don't have schema tests before mindfulness session, so we opt for
     // testing the easiest: number of table.
     @Test
-    @EnableFlags(FLAG_INFRA_TO_GUARD_DB_CHANGES)
     public void onUpgrade_upToMindfulnessSession_numOfTablesMatches() {
         onUpgrade(mSQLiteDatabase, 0, DB_VERSION_MINDFULNESS_SESSION);
         assertNumberOfTables(mSQLiteDatabase, NUM_OF_TABLES_AT_MINDFULNESS_VERSION);
@@ -114,7 +96,6 @@ public class DatabaseUpgradeHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_INFRA_TO_GUARD_DB_CHANGES)
     public void onUpgrade_newVersionSpecified_upgradeUntilNewVersionReached() {
         onUpgrade(mSQLiteDatabase, 0, MIN_SUPPORTED_DB_VERSION);
         assertNumberOfTables(mSQLiteDatabase, NUM_OF_TABLES_AT_MIN_SUPPORTED_VERSION);
