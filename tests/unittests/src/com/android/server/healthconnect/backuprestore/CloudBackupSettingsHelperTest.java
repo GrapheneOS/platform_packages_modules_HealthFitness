@@ -22,12 +22,12 @@ import static com.android.server.healthconnect.backuprestore.CloudBackupSettings
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.HEIGHT_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.TEMPERATURE_UNIT_PREF_KEY;
 import static com.android.server.healthconnect.backuprestore.CloudBackupSettingsHelper.WEIGHT_UNIT_PREF_KEY;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AutoDeleteFrequencyProto;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.DistanceUnitProto;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.EnergyUnitProto;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.HeightUnitProto;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.TemperatureUnitProto;
-import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.WeightUnitProto;
+import static com.android.server.healthconnect.proto.backuprestore.Settings.AutoDeleteFrequencyProto;
+import static com.android.server.healthconnect.proto.backuprestore.Settings.DistanceUnitProto;
+import static com.android.server.healthconnect.proto.backuprestore.Settings.EnergyUnitProto;
+import static com.android.server.healthconnect.proto.backuprestore.Settings.HeightUnitProto;
+import static com.android.server.healthconnect.proto.backuprestore.Settings.TemperatureUnitProto;
+import static com.android.server.healthconnect.proto.backuprestore.Settings.WeightUnitProto;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -41,9 +41,9 @@ import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AppInfo;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.PriorityList;
+import com.android.server.healthconnect.proto.backuprestore.Settings;
+import com.android.server.healthconnect.proto.backuprestore.Settings.AppInfo;
+import com.android.server.healthconnect.proto.backuprestore.Settings.PriorityList;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;

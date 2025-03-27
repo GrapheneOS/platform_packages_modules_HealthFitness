@@ -29,11 +29,11 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BloodPressure;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.InstantRecord;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntervalRecord;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Record;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Steps;
+import com.android.server.healthconnect.proto.backuprestore.BloodPressure;
+import com.android.server.healthconnect.proto.backuprestore.InstantRecord;
+import com.android.server.healthconnect.proto.backuprestore.IntervalRecord;
+import com.android.server.healthconnect.proto.backuprestore.Record;
+import com.android.server.healthconnect.proto.backuprestore.Steps;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package com.android.server.healthconnect.proto.backuprestore;
 
-option java_outer_classname = "BackupRestoreProto";
+option java_multiple_files = true;
 
 message Settings {
   map<int32, PriorityList> priority_list = 1;
