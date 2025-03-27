@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -90,7 +89,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
     private lateinit var header: AppHeaderView
     private lateinit var dateNavigationView: DateNavigationView
     private lateinit var entriesRecyclerView: RecyclerView
-    private lateinit var noDataView: TextView
+    private lateinit var noDataView: View
     private lateinit var loadingView: View
     private lateinit var errorView: View
     private lateinit var adapter: EntriesAdapter
@@ -272,6 +271,8 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
         logger.logImpression(ToolbarElement.TOOLBAR_SETTINGS_BUTTON)
         setTitle(permissionType.upperCaseLabel())
 
+        val isExpressiveThemeEnabled = SettingsThemeHelper.isExpressiveTheme(requireContext())
+
         dateNavigationView = view.findViewById(R.id.date_navigation_view)
         if (permissionType is MedicalPermissionType) {
             dateNavigationView.isVisible = false
@@ -279,11 +280,16 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             setDateNavigationViewMaxDate()
         }
         header = view.findViewById(R.id.app_header)
-        noDataView = view.findViewById(R.id.no_data_view)
+        noDataView =
+            if (isExpressiveThemeEnabled) {
+                view.findViewById(R.id.zerostate_view)
+            } else {
+                view.findViewById(R.id.no_data_view)
+            }
         errorView = view.findViewById(R.id.error_view)
         loadingView = view.findViewById(R.id.loading)
         adapter =
-            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            if (isExpressiveThemeEnabled) {
                 getExpressiveEntriesAdapter()
             } else {
                 getEntriesAdapter()
