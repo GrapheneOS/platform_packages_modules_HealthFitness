@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2025 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="permgrouplab_health" msgid="2189810208223060173">"આરોગ્ય, ફિટનેસ અને સુખાકારી"</string>
+    <string name="health_permission_header_description" msgid="1816010176505069704">"આ પરવાનગી ધરાવતી ઍપ તમારો આરોગ્ય, ફિટનેસ અને સુખાકારીનો ડેટા વાંચી અને લખી શકશે. આમાં તમારા ડિવાઇસમાંથી ટ્રૅક કરાયેલો ડેટા અને Health Connectમાં સ્ટોર કરાયેલો ડેટા શામેલ હોય છે"</string>
+    <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"શું <xliff:g id="APP_NAME">%1$s</xliff:g>ને તમારો ફિટનેસ અને સુખાકારી સંબંધિત ડેટા ઍક્સેસ કરવાની મંજૂરી આપીએ?"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"આ ઍપ કયો ફિટનેસ અને સુખાકારી સંબંધિત ડેટા ઍક્સેસ કરી શકે તે પસંદ કરો. આમાં આ ડિવાઇસ પર ટ્રૅક કરાયેલો અને સ્ટોર કરાયેલો ડેટા શામેલ હોય છે, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"આ ઍપ કયો ફિટનેસ અને સુખાકારી સંબંધિત ડેટા ઍક્સેસ કરી શકે તે પસંદ કરો. આમાં આ ડિવાઇસ પર ટ્રૅક કરાયેલો અને સ્ટોર કરાયેલો ડેટા શામેલ હોય છે, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"આ ઍપ કયો ફિટનેસ અને સુખાકારી સંબંધિત ડેટા ઍક્સેસ કરી શકે તે પસંદ કરો. આમાં આ ડિવાઇસ પર ટ્રૅક કરાયેલો અને સ્ટોર કરાયેલો ડેટા શામેલ હોય છે, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_learn_more" msgid="2665249156693144626">"વધુ જાણો"</string>
+    <string name="settings_manage_permission" msgid="3585762257420446893">"આરોગ્ય, ફિટનેસ અને સુખાકારી"</string>
+    <string name="settings_combined_permissions" msgid="1243346425556604875">"આરોગ્ય, ફિટનેસ અને સુખાકારી"</string>
+    <string name="settings_fitness_permissions" msgid="989130669597060476">"ફિટનેસ અને સુખાકારી"</string>
+    <string name="settings_medical_permissions" msgid="3616285795348645545">"સ્વાસ્થ્ય સંબંધિત માહિતી"</string>
+</resources>

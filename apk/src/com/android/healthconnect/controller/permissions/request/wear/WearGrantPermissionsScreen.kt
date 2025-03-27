@@ -304,7 +304,7 @@ fun GrantReadBackgroundHealthPermission(
         showTimeText = false,
         asScalingList = true,
         image = R.drawable.ic_health_connect,
-        title = res.getString(R.string.wear_allow_app_access_fitness_and_wellness_data, appName),
+        title = res.getString(R.string.allow_all_the_time_prompt, appName),
     ) {
         // Allow all the time button.
         item {

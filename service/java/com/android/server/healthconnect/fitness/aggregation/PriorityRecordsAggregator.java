@@ -43,6 +43,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeSet;
 
 /**
@@ -205,8 +206,7 @@ class PriorityRecordsAggregator {
 
     @VisibleForTesting
     AggregationRecordData readNewData(Cursor cursor) {
-        AggregationRecordData data = createAggregationRecordData();
-        data.populateAggregationData(cursor, mUseLocalTime, mAppIdToPriority);
+        AggregationRecordData data = createAggregationRecordData(cursor);
         return data;
     }
 
@@ -222,7 +222,7 @@ class PriorityRecordsAggregator {
         return mGroupToFirstZoneOffset.get(groupNumber);
     }
 
-    private AggregationRecordData createAggregationRecordData() {
+    private AggregationRecordData createAggregationRecordData(Cursor cursor) {
         return switch (mAggregationType) {
             case STEPS_RECORD_COUNT_TOTAL,
                             ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL,
@@ -231,19 +231,26 @@ class PriorityRecordsAggregator {
                             FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL,
                             WHEEL_CHAIR_PUSHES_RECORD_COUNT_TOTAL ->
                     new ValueColumnAggregationData(
-                            mExtraParams.getColumnToAggregateName(),
+                            cursor,
+                            mUseLocalTime,
+                            mAppIdToPriority,
+                            Objects.requireNonNull(mExtraParams.getColumnToAggregateName()),
                             mExtraParams.getColumnToAggregateType());
             case SLEEP_SESSION_DURATION_TOTAL,
                             EXERCISE_SESSION_DURATION_TOTAL,
                             MINDFULNESS_SESSION_DURATION_TOTAL ->
                     new SessionDurationAggregationData(
+                            cursor,
+                            mUseLocalTime,
+                            mAppIdToPriority,
                             mExtraParams.getExcludeIntervalStartColumnName(),
                             mExtraParams.getExcludeIntervalEndColumnName());
             case ACTIVITY_INTENSITY_MODERATE_DURATION_TOTAL,
                             ACTIVITY_INTENSITY_VIGOROUS_DURATION_TOTAL,
                             ACTIVITY_INTENSITY_DURATION_TOTAL,
                             ACTIVITY_INTENSITY_MINUTES_TOTAL ->
-                    new ActivityIntensityAggregationData(mAggregationType);
+                    new ActivityIntensityAggregationData(
+                            cursor, mUseLocalTime, mAppIdToPriority, mAggregationType);
             default ->
                     throw new UnsupportedOperationException(
                             "Priority aggregation do not support type: " + mAggregationType);
@@ -298,6 +305,7 @@ class PriorityRecordsAggregator {
         }
     }
 
+    @Nullable
     private ZoneOffset getZoneOffsetOfEarliestOpenInterval() {
         AggregationRecordData earliestInterval = mOpenIntervals.first();
         for (AggregationRecordData data : mOpenIntervals) {

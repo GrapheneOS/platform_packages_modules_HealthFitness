@@ -23,7 +23,6 @@ import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_D
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
-import static com.android.healthfitness.flags.Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.NUM_OF_TABLES;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertNumberOfTables;
@@ -41,7 +40,6 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.healthconnect.cts.phr.utils.PhrDataFactory;
 import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -104,16 +102,6 @@ public class HealthConnectDatabaseTest {
     }
 
     @Test
-    @DisableFlags(FLAG_INFRA_TO_GUARD_DB_CHANGES)
-    public void onCreate_infraFlagDisabled_expectCorrectDbVersion() {
-        SQLiteDatabase sqliteDatabase =
-                initializeEmptyHealthConnectDatabase().getWritableDatabase();
-
-        assertThat(sqliteDatabase.getVersion()).isAtMost(AconfigFlagHelper.getDbVersion());
-    }
-
-    @Test
-    @EnableFlags(FLAG_INFRA_TO_GUARD_DB_CHANGES)
     public void onCreate_infraFlagEnabled_expectCorrectDbVersion() {
         SQLiteDatabase sqliteDatabase =
                 initializeEmptyHealthConnectDatabase().getWritableDatabase();

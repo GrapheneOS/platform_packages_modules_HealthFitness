@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.fitness.aggregation;
 
 import android.annotation.IntDef;
+import android.annotation.Nullable;
 
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
@@ -146,15 +147,15 @@ public final class AggregateParams {
 
         @ValueColumnType private int mColumnToAggregateType;
 
-        private String mColumnToAggregateName;
-        private String mExcludeIntervalEndColumnName;
-        private String mExcludeIntervalStartColumnName;
+        @Nullable private String mColumnToAggregateName;
+        @Nullable private String mExcludeIntervalEndColumnName;
+        @Nullable private String mExcludeIntervalStartColumnName;
 
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
         public PriorityAggregationExtraParams(
                 String excludeIntervalStartColumnName, String excludeIntervalEndColumnName) {
-            mExcludeIntervalStartColumnName = excludeIntervalStartColumnName;
-            mExcludeIntervalEndColumnName = excludeIntervalEndColumnName;
+            mExcludeIntervalStartColumnName =
+                    Objects.requireNonNull(excludeIntervalStartColumnName);
+            mExcludeIntervalEndColumnName = Objects.requireNonNull(excludeIntervalEndColumnName);
         }
 
         @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
@@ -166,10 +167,12 @@ public final class AggregateParams {
                     (aggregationType == Long.class ? VALUE_TYPE_LONG : VALUE_TYPE_DOUBLE);
         }
 
+        @Nullable
         public String getExcludeIntervalStartColumnName() {
             return mExcludeIntervalStartColumnName;
         }
 
+        @Nullable
         public String getExcludeIntervalEndColumnName() {
             return mExcludeIntervalEndColumnName;
         }
@@ -179,6 +182,7 @@ public final class AggregateParams {
             return mColumnToAggregateType;
         }
 
+        @Nullable
         public String getColumnToAggregateName() {
             return mColumnToAggregateName;
         }

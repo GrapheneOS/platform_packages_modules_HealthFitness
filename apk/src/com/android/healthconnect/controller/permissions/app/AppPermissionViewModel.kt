@@ -496,6 +496,7 @@ constructor(
             _grantedAdditionalPermissions.value.orEmpty().forEach { permission ->
                 revokePermissionsStatusUseCase.invoke(packageName, permission.additionalPermission)
             }
+            _grantedAdditionalPermissions.postValue(emptySet())
         }
 
         _lastReadPermissionDisconnected.postValue(lastReadPermissionRevoked)

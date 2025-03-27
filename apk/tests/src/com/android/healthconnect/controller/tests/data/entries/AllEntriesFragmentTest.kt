@@ -1,17 +1,17 @@
-/**
- * Copyright (C) 2023 The Android Open Source Project
+/*
+ * Copyright (C) 2025 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.android.healthconnect.controller.tests.data.entries
 
@@ -66,12 +66,10 @@ import com.android.healthconnect.controller.utils.logging.DataEntriesElement
 import com.android.healthconnect.controller.utils.logging.EntriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import java.time.ZoneId
-import java.util.Locale
-import java.util.TimeZone
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -84,6 +82,9 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.time.ZoneId
+import java.util.Locale
+import java.util.TimeZone
 
 @HiltAndroidTest
 class AllEntriesFragmentTest {
@@ -169,7 +170,11 @@ class AllEntriesFragmentTest {
 
         launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
 
-        onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
+        if(SettingsThemeHelper.isExpressiveTheme(context)) {
+            onView(withId(R.id.zerostate_view)).check(matches(isDisplayed()))
+        } else {
+            onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -296,7 +301,11 @@ class AllEntriesFragmentTest {
             bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
         )
 
-        onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
+        if(SettingsThemeHelper.isExpressiveTheme(context)) {
+            onView(withId(R.id.zerostate_view)).check(matches(isDisplayed()))
+        } else {
+            onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
+        }
     }
 
     @Test

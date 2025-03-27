@@ -25,19 +25,46 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams.PriorityAggregationExtraParams.ValueColumnType;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
+import java.util.Map;
+
 /**
  * Represents priority aggregation data for one column.
  *
  * @hide
  */
 class ValueColumnAggregationData extends AggregationRecordData {
-    private final String mValueColumnName;
-    @ValueColumnType private final int mValueColumnType;
-    private double mValue;
+    private final double mValue;
 
-    ValueColumnAggregationData(String valueColumnName, @ValueColumnType int type) {
-        mValueColumnName = valueColumnName;
-        mValueColumnType = type;
+    ValueColumnAggregationData(
+            Cursor cursor,
+            boolean useLocalTime,
+            Map<Long, Integer> appIdToPriority,
+            String valueColumnName,
+            @ValueColumnType int type) {
+        super(cursor, useLocalTime, appIdToPriority);
+        if (type == VALUE_TYPE_DOUBLE) {
+            mValue = StorageUtils.getCursorDouble(cursor, valueColumnName);
+        } else if (type == VALUE_TYPE_LONG) {
+            mValue = StorageUtils.getCursorLong(cursor, valueColumnName);
+        } else {
+            throw new IllegalArgumentException("Unknown aggregation column type.");
+        }
+    }
+
+    @VisibleForTesting
+    ValueColumnAggregationData(
+            long recordStartTime,
+            long recordEndTime,
+            int priority,
+            long lastModifiedTime,
+            double value) {
+        super(
+                recordStartTime,
+                recordEndTime,
+                priority,
+                lastModifiedTime,
+                /* startTimeZoneOffset= */ null);
+        this.mValue = value;
     }
 
     @Override
@@ -64,22 +91,5 @@ class ValueColumnAggregationData extends AggregationRecordData {
         }
 
         return mValue * overlapDuration / intervalDuration;
-    }
-
-    @Override
-    void populateSpecificAggregationData(Cursor cursor, boolean useLocalTime) {
-        if (mValueColumnType == VALUE_TYPE_DOUBLE) {
-            mValue = StorageUtils.getCursorDouble(cursor, mValueColumnName);
-        } else if (mValueColumnType == VALUE_TYPE_LONG) {
-            mValue = StorageUtils.getCursorLong(cursor, mValueColumnName);
-        } else {
-            throw new IllegalArgumentException("Unknown aggregation column type.");
-        }
-    }
-
-    @VisibleForTesting
-    AggregationRecordData setValue(double value) {
-        mValue = value;
-        return this;
     }
 }
