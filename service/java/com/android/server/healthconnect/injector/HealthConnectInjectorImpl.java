@@ -30,7 +30,9 @@ import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
+import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationSender;
+import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
@@ -49,13 +51,13 @@ import com.android.server.healthconnect.migration.notification.HealthConnectReso
 import com.android.server.healthconnect.migration.notification.MigrationNotificationSender;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
+import com.android.server.healthconnect.permission.FirstGrantTimeDatastoreXmlPersistence;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
+import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.permission.PermissionPackageChangesOrchestrator;
-import com.android.server.healthconnect.storage.DailyCleanupJob;
-import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
@@ -137,7 +139,9 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final HealthFitnessStatsLog mHealthFitnesssStatsLog;
     private final ExportImportLogger mExportImportLogger;
     private final TrackerManager mTrackerManager;
+    private final GrantTimeXmlHelper mGrantTimeXmlHelper;
     private final BackupRestoreLogger mBackupRestoreLogger;
+    private final FirstGrantTimeDatastore mFirstGrantTimeDatastore;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -301,15 +305,18 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mPermissionIntentAppsTracker == null
                         ? new HealthPermissionIntentAppsTracker(context)
                         : builder.mPermissionIntentAppsTracker;
+        mGrantTimeXmlHelper = new GrantTimeXmlHelper();
+        mFirstGrantTimeDatastore =
+                builder.mFirstGrantTimeDatastore == null
+                        ? new FirstGrantTimeDatastoreXmlPersistence(
+                                mEnvironmentDataDirectory, mGrantTimeXmlHelper)
+                        : builder.mFirstGrantTimeDatastore;
         mFirstGrantTimeManager =
                 builder.mFirstGrantTimeManager == null
                         ? new FirstGrantTimeManager(
                                 context,
                                 mPermissionIntentAppsTracker,
-                                builder.mFirstGrantTimeDatastore == null
-                                        ? FirstGrantTimeDatastore.createInstance(
-                                                mEnvironmentDataDirectory)
-                                        : builder.mFirstGrantTimeDatastore,
+                                mFirstGrantTimeDatastore,
                                 mPackageInfoUtils,
                                 mHealthDataCategoryPriorityHelper,
                                 mMigrationStateManager,
@@ -414,7 +421,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         mDeviceInfoHelper,
                         mHealthDataCategoryPriorityHelper,
                         mThreadScheduler,
-                        mEnvironmentDataDirectory);
+                        mEnvironmentDataDirectory,
+                        mGrantTimeXmlHelper);
         mPreferencesManager =
                 builder.mPreferencesManager == null
                         ? new PreferencesManager(mPreferenceHelper)
@@ -517,6 +525,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public FirstGrantTimeManager getFirstGrantTimeManager() {
         return mFirstGrantTimeManager;
+    }
+
+    @Override
+    public FirstGrantTimeDatastore getFirstGrantTimeDatastore() {
+        return mFirstGrantTimeDatastore;
     }
 
     @Override
@@ -675,6 +688,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public TrackerManager getTrackerManager() {
         return mTrackerManager;
+    }
+
+    @Override
+    public GrantTimeXmlHelper getGrantTimeXmlHelper() {
+        return mGrantTimeXmlHelper;
     }
 
     /**

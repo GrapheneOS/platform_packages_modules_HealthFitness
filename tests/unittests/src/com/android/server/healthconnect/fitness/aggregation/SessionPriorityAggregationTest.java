@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers.aggregation;
+package com.android.server.healthconnect.fitness.aggregation;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.aggregation.PriorityAggregationTestDataFactory.createSessionData;
+import static com.android.server.healthconnect.fitness.aggregation.PriorityAggregationTestDataFactory.createSessionData;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -26,8 +26,6 @@ import static org.mockito.Mockito.when;
 import android.database.Cursor;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,8 +39,10 @@ import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class SessionPriorityAggregationTest {
-    PriorityRecordsAggregator mOneGroupAggregator;
-    PriorityRecordsAggregator mMultiGroupAggregator;
+    com.android.server.healthconnect.fitness.aggregation.PriorityRecordsAggregator
+            mOneGroupAggregator;
+    com.android.server.healthconnect.fitness.aggregation.PriorityRecordsAggregator
+            mMultiGroupAggregator;
     AggregateParams.PriorityAggregationExtraParams mParams =
             new AggregateParams.PriorityAggregationExtraParams("start", "end");
 
@@ -58,7 +58,8 @@ public class SessionPriorityAggregationTest {
 
         mMultiGroupAggregator =
                 Mockito.spy(
-                        new PriorityRecordsAggregator(
+                        new com.android.server.healthconnect.fitness.aggregation
+                                .PriorityRecordsAggregator(
                                 List.of(10L, 20L, 30L, 40L),
                                 Collections.emptyList(),
                                 0,

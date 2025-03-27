@@ -96,6 +96,7 @@ public class BackupRestoreWithoutMocksTest {
     private TransactionTestUtils mTransactionTestUtils;
     private BackupRestore mBackupRestore;
     private PhrTestUtils mPhrTestUtils;
+    private GrantTimeXmlHelper mGrantTimeXmlHelper;
 
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
@@ -115,6 +116,7 @@ public class BackupRestoreWithoutMocksTest {
 
         AppInfoHelper appInfoHelper = healthConnectInjector.getAppInfoHelper();
         TransactionManager transactionManager = healthConnectInjector.getTransactionManager();
+        mGrantTimeXmlHelper = healthConnectInjector.getGrantTimeXmlHelper();
         mBackupRestore =
                 new BackupRestore(
                         appInfoHelper,
@@ -129,6 +131,7 @@ public class BackupRestoreWithoutMocksTest {
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
                         healthConnectInjector.getThreadScheduler(),
                         healthConnectInjector.getEnvironmentDataDirectory(),
+                        mGrantTimeXmlHelper,
                         // Don't actually schedule jobs
                         mock(BackupRestore.BackupRestoreJobScheduler.class));
 
@@ -188,7 +191,7 @@ public class BackupRestoreWithoutMocksTest {
             assertThat(queryNumEntries(backupDatabase, "medical_resource_table")).isEqualTo(0);
             assertThat(queryNumEntries(backupDatabase, "steps_record_table")).isEqualTo(1);
         }
-        assertThat(GrantTimeXmlHelper.parseGrantTime(grantTimeFileBacked).toString())
+        assertThat(mGrantTimeXmlHelper.parseGrantTime(grantTimeFileBacked).toString())
                 .isEqualTo(userGrantTimeState.toString());
     }
 
@@ -242,7 +245,7 @@ public class BackupRestoreWithoutMocksTest {
             assertThat(queryNumEntries(backupDatabase, "medical_resource_table")).isEqualTo(1);
             assertThat(queryNumEntries(backupDatabase, "steps_record_table")).isEqualTo(1);
         }
-        assertThat(GrantTimeXmlHelper.parseGrantTime(grantTimeFileBacked).toString())
+        assertThat(mGrantTimeXmlHelper.parseGrantTime(grantTimeFileBacked).toString())
                 .isEqualTo(userGrantTimeState.toString());
     }
 

@@ -18,7 +18,7 @@ package com.android.server.healthconnect;
 
 import static android.health.connect.Constants.DEFAULT_INT;
 
-import static com.android.server.healthconnect.HealthConnectDailyJobs.HC_DAILY_JOB;
+import static com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs.HC_DAILY_JOB;
 import static com.android.server.healthconnect.exportimport.ExportImportJobs.PERIODIC_EXPORT_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_COMPLETE_JOB_NAME;
 import static com.android.server.healthconnect.migration.MigrationConstants.MIGRATION_PAUSE_JOB_NAME;
@@ -33,15 +33,16 @@ import android.health.connect.Constants;
 import android.os.UserHandle;
 import android.util.Slog;
 
+import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
+import com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
+import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.logging.EcosystemStatsCollector;
 import com.android.server.healthconnect.logging.UsageStatsCollector;
 import com.android.server.healthconnect.migration.MigrationStateChangeJob;
 import com.android.server.healthconnect.migration.MigrationStateManager;
-import com.android.server.healthconnect.storage.DailyCleanupJob;
-import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
@@ -81,32 +82,29 @@ public class HealthConnectDailyService extends JobService {
         }
 
         HealthConnectInjector healthConnectInjector = HealthConnectInjector.getInstance();
-        DailyCleanupJob dailyCleanupJob = healthConnectInjector.getDailyCleanupJob();
-        ExportImportSettingsStorage exportImportSettingsStorage =
-                healthConnectInjector.getExportImportSettingsStorage();
-        ExportManager exportManager = healthConnectInjector.getExportManager();
+        HealthConnectThreadScheduler threadScheduler = healthConnectInjector.getThreadScheduler();
         PreferenceHelper preferenceHelper = healthConnectInjector.getPreferenceHelper();
         MigrationStateManager migrationStateManager =
                 healthConnectInjector.getMigrationStateManager();
-        UsageStatsCollector usageStatsCollector =
-                healthConnectInjector.getUsageStatsCollector(
-                        HealthConnectContext.create(
-                                context,
-                                sUserHandle,
-                                /* databaseDirName= */ null,
-                                healthConnectInjector.getEnvironmentDataDirectory()));
-        DatabaseStatsCollector databaseStatsCollector =
-                healthConnectInjector.getDatabaseStatsCollector();
-        EcosystemStatsCollector ecosystemStatsCollector =
-                new EcosystemStatsCollector(
-                        healthConnectInjector.getReadAccessLogsHelper(),
-                        healthConnectInjector.getChangeLogsHelper());
-        HealthConnectThreadScheduler threadScheduler = healthConnectInjector.getThreadScheduler();
 
         // This service executes each incoming job on a Handler running on the application's
         // main thread. This means that we must offload the execution logic to background executor.
         switch (jobName) {
             case HC_DAILY_JOB:
+                DailyCleanupJob dailyCleanupJob = healthConnectInjector.getDailyCleanupJob();
+                UsageStatsCollector usageStatsCollector =
+                        healthConnectInjector.getUsageStatsCollector(
+                                HealthConnectContext.create(
+                                        context,
+                                        sUserHandle,
+                                        /* databaseDirName= */ null,
+                                        healthConnectInjector.getEnvironmentDataDirectory()));
+                DatabaseStatsCollector databaseStatsCollector =
+                        healthConnectInjector.getDatabaseStatsCollector();
+                EcosystemStatsCollector ecosystemStatsCollector =
+                        new EcosystemStatsCollector(
+                                healthConnectInjector.getReadAccessLogsHelper(),
+                                healthConnectInjector.getChangeLogsHelper());
                 threadScheduler.scheduleInternalTask(
                         () -> {
                             HealthConnectDailyJobs.execute(
@@ -135,6 +133,9 @@ public class HealthConnectDailyService extends JobService {
                         });
                 return true;
             case PERIODIC_EXPORT_JOB_NAME:
+                ExportManager exportManager = healthConnectInjector.getExportManager();
+                ExportImportSettingsStorage exportImportSettingsStorage =
+                        healthConnectInjector.getExportImportSettingsStorage();
                 threadScheduler.scheduleInternalTask(
                         () -> {
                             boolean isExportSuccessful =

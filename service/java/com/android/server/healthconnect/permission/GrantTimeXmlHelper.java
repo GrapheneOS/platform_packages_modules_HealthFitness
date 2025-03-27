@@ -57,7 +57,7 @@ public final class GrantTimeXmlHelper {
      * @param userGrantTimeState the grant times to be serialized.
      * @param file the file into which the serialized data should be written.
      */
-    public static void serializeGrantTimes(File file, UserGrantTimeState userGrantTimeState) {
+    public void serializeGrantTimes(File file, UserGrantTimeState userGrantTimeState) {
         AtomicFile atomicFile = new AtomicFile(file);
         FileOutputStream outputStream = null;
         try {
@@ -85,7 +85,7 @@ public final class GrantTimeXmlHelper {
      * @return the grant times.
      */
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    public static UserGrantTimeState parseGrantTime(File file) {
+    public UserGrantTimeState parseGrantTime(File file) {
         try (FileInputStream inputStream = new AtomicFile(file).openRead()) {
             XmlPullParser parser = Xml.newPullParser();
             parser.setInput(inputStream, /* inputEncoding= */ null);

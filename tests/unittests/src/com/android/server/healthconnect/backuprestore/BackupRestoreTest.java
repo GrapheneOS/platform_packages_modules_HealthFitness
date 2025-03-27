@@ -81,7 +81,6 @@ import android.util.ArrayMap;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.dx.mockito.inline.extended.ExtendedMockito;
 import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -105,6 +104,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.quality.Strictness;
 
 import java.io.File;
@@ -127,7 +127,6 @@ public class BackupRestoreTest {
     public final ExtendedMockitoRule mExtendedMockitoRule =
             new ExtendedMockitoRule.Builder(this)
                     .mockStatic(SQLiteDatabase.class)
-                    .spyStatic(GrantTimeXmlHelper.class)
                     .setStrictness(Strictness.LENIENT)
                     .build();
 
@@ -142,6 +141,7 @@ public class BackupRestoreTest {
     @Mock private Context mContext;
     @Mock private JobScheduler mJobScheduler;
     @Mock private BackupRestore.BackupRestoreJobScheduler mBackupRestoreJobScheduler;
+    @Spy private GrantTimeXmlHelper mGrantTimeXmlHelper = new GrantTimeXmlHelper();
     @Captor ArgumentCaptor<JobInfo> mJobInfoArgumentCaptor;
     private BackupRestore mBackupRestore;
     private final PreferenceHelper mFakePreferenceHelper = new FakePreferenceHelper();
@@ -184,6 +184,7 @@ public class BackupRestoreTest {
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
                         healthConnectInjector.getThreadScheduler(),
                         healthConnectInjector.getEnvironmentDataDirectory(),
+                        mGrantTimeXmlHelper,
                         mBackupRestoreJobScheduler);
     }
 
@@ -241,7 +242,7 @@ public class BackupRestoreTest {
         mBackupRestore.getAllDataForBackup(new StageRemoteDataRequest(pfdsByFileName), mUserHandle);
 
         assertThat(dbFileBacked.length()).isEqualTo(dbFileToBackup.length());
-        assertThat(GrantTimeXmlHelper.parseGrantTime(grantTimeFileBacked).toString())
+        assertThat(mGrantTimeXmlHelper.parseGrantTime(grantTimeFileBacked).toString())
                 .isEqualTo(userGrantTimeState.toString());
     }
 
@@ -765,8 +766,7 @@ public class BackupRestoreTest {
         when(SQLiteDatabase.openDatabase(any(), any())).thenReturn(mockDb);
 
         mBackupRestore.merge();
-        ExtendedMockito.verify(
-                () -> GrantTimeXmlHelper.parseGrantTime(restoredGrantTimeFileCaptor.capture()));
+        verify(mGrantTimeXmlHelper).parseGrantTime(restoredGrantTimeFileCaptor.capture());
         assertThat(restoredGrantTimeFileCaptor.getValue()).isNotNull();
         assertThat(restoredGrantTimeFileCaptor.getValue().getName())
                 .isEqualTo(GRANT_TIME_FILE_NAME);

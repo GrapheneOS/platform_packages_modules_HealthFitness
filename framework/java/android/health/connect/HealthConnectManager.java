@@ -26,6 +26,7 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
+import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
 import android.Manifest;
@@ -348,10 +349,9 @@ public class HealthConnectManager {
      * <p class="note">Applications exporting an activity that is launched by this intent must also
      * guard it with {@link HealthPermissions#START_ONBOARDING} so that only the system can launch
      * it.
-     *
-     * @hide
      */
     @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    @FlaggedApi(FLAG_LAUNCH_ONBOARDING_ACTIVITY)
     public static final String ACTION_SHOW_ONBOARDING =
             "android.health.connect.action.SHOW_ONBOARDING";
 

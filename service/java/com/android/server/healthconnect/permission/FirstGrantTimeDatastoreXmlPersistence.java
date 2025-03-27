@@ -25,16 +25,24 @@ import com.android.server.healthconnect.utils.FilesUtil;
 
 import java.io.File;
 
-class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
+/**
+ * XML implementation of {@link FirstGrantTimeDatastore}.
+ *
+ * @hide
+ */
+public class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
     private static final String TAG = "HealthConnectFirstGrantTimeDatastore";
     private static final String GRANT_TIME_FILE_NAME = "health-permissions-first-grant-times.xml";
 
     private static final String STAGED_GRANT_TIME_FILE_NAME =
             "staged-health-permissions-first-grant-times.xml";
     private final File mEnvironmentDataDirectory;
+    private final GrantTimeXmlHelper mGrantTimeXmlHelper;
 
-    FirstGrantTimeDatastoreXmlPersistence(File environmentDataDirectory) {
+    public FirstGrantTimeDatastoreXmlPersistence(
+            File environmentDataDirectory, GrantTimeXmlHelper grantTimeXmlHelper) {
         mEnvironmentDataDirectory = environmentDataDirectory;
+        mGrantTimeXmlHelper = grantTimeXmlHelper;
     }
 
     /**
@@ -50,7 +58,7 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
         if (Constants.DEBUG) {
             Log.d(TAG, "Reading xml from " + file);
         }
-        return GrantTimeXmlHelper.parseGrantTime(file);
+        return mGrantTimeXmlHelper.parseGrantTime(file);
     }
 
     /**
@@ -65,7 +73,7 @@ class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeDatastore {
         if (Constants.DEBUG) {
             Log.d(TAG, "Writing xml to " + file);
         }
-        GrantTimeXmlHelper.serializeGrantTimes(file, grantTimesState);
+        mGrantTimeXmlHelper.serializeGrantTimes(file, grantTimesState);
     }
 
     @Override
