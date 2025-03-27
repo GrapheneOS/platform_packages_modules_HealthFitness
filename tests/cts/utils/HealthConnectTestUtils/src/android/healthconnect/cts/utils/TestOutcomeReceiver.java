@@ -55,12 +55,22 @@ public class TestOutcomeReceiver<T, E extends RuntimeException> implements Outco
     private final AtomicReference<E> mException = new AtomicReference<>();
 
     /**
-     * Returns the resppnse received. Fails if no response received within the default timeout.
+     * Returns the response received. Fails if no response received within the default timeout.
      *
      * @throws InterruptedException if this is interrupted before any response received
      */
     public T getResponse() throws InterruptedException {
         verifyNoExceptionOrThrow();
+        return mResponse.get();
+    }
+
+    /**
+     * Returns the response received. Fails if no response received within {@code timeoutSeconds}.
+     *
+     * @throws InterruptedException if this is interrupted before any response received
+     */
+    public T getResponse(int timeoutSeconds) throws InterruptedException {
+        verifyNoExceptionOrThrow(timeoutSeconds);
         return mResponse.get();
     }
 
