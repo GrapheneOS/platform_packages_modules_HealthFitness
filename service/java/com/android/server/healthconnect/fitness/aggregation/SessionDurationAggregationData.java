@@ -19,16 +19,20 @@ package com.android.server.healthconnect.fitness.aggregation;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.isNullValue;
 
+import android.annotation.Nullable;
 import android.database.Cursor;
 import android.health.connect.Constants;
+import android.util.Log;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
 
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -42,17 +46,76 @@ import java.util.UUID;
  */
 class SessionDurationAggregationData extends AggregationRecordData {
     private static final String TAG = "HealthSessionPriorityAggregation";
-    private final String mExcludeIntervalStartTimeColumn;
-    private final String mExcludeIntervalEndTimeColumn;
     private static final long MILLIS_IN_SECOND = 1000L;
-    List<Long> mExcludeStarts;
-    List<Long> mExcludeEnds;
+    @Nullable private final List<Long> mExcludeStarts;
+    @Nullable private final List<Long> mExcludeEnds;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
+    @VisibleForTesting
     SessionDurationAggregationData(
-            String excludeIntervalStartTimeColumn, String excludeIntervalEndTimeColumn) {
-        mExcludeIntervalStartTimeColumn = excludeIntervalStartTimeColumn;
-        mExcludeIntervalEndTimeColumn = excludeIntervalEndTimeColumn;
+            long recordStartTime,
+            long recordEndTime,
+            int priority,
+            long lastModifiedTime,
+            List<Long> mExcludeStarts,
+            List<Long> mExcludeEnds) {
+        super(
+                recordStartTime,
+                recordEndTime,
+                priority,
+                lastModifiedTime,
+                /* startTimeZoneOffset= */ null);
+        this.mExcludeStarts = mExcludeStarts;
+        this.mExcludeEnds = mExcludeEnds;
+    }
+
+    SessionDurationAggregationData(
+            Cursor cursor,
+            boolean useLocalTime,
+            Map<Long, Integer> appIdToPriority,
+            @Nullable String excludeIntervalStartTimeColumn,
+            @Nullable String excludeIntervalEndTimeColumn) {
+        super(cursor, useLocalTime, appIdToPriority);
+
+        UUID currentSessionUuid = readUuid(cursor);
+        List<Long> excludeStarts = new ArrayList<>();
+        List<Long> excludeEnds = new ArrayList<>();
+        do {
+            // Populate stages from each row.
+            Long start =
+                    getExcludeStart(
+                            cursor,
+                            useLocalTime,
+                            excludeIntervalStartTimeColumn,
+                            getStartTimeZoneOffset());
+            if (start != null) {
+                Long end =
+                        getExcludeEnd(
+                                cursor,
+                                useLocalTime,
+                                excludeIntervalEndTimeColumn,
+                                getStartTimeZoneOffset());
+                if (end != null) {
+                    excludeStarts.add(start);
+                    excludeEnds.add(end);
+                }
+            }
+        } while (cursor.moveToNext() && currentSessionUuid.equals(readUuid(cursor)));
+        // In case we hit another record, move the cursor back to read next record in outer
+        // RecordHelper#getInternalRecords loop.
+        cursor.moveToPrevious();
+
+        if (!excludeStarts.isEmpty()) {
+            excludeStarts.sort(Comparator.naturalOrder());
+            excludeEnds.sort(Comparator.naturalOrder());
+            mExcludeStarts = excludeStarts;
+            mExcludeEnds = excludeEnds;
+            if (Constants.DEBUG) {
+                Slog.d(TAG, "Exclude intervals: " + excludeStarts + " ends: " + excludeEnds);
+            }
+        } else {
+            mExcludeStarts = null;
+            mExcludeEnds = null;
+        }
     }
 
     @Override
@@ -62,65 +125,56 @@ class SessionDurationAggregationData extends AggregationRecordData {
                 - calculateDurationToExclude(startPoint.getTime(), endPoint.getTime());
     }
 
-    @Override
-    void populateSpecificAggregationData(Cursor cursor, boolean useLocalTime) {
-        UUID currentSessionUuid = readUuid(cursor);
-        do {
-            // Populate stages from each row.
-            updateIntervalsToExclude(cursor, useLocalTime);
-        } while (cursor.moveToNext() && currentSessionUuid.equals(readUuid(cursor)));
-        // In case we hit another record, move the cursor back to read next record in outer
-        // RecordHelper#getInternalRecords loop.
-        cursor.moveToPrevious();
-
-        if (mExcludeStarts != null) {
-            mExcludeStarts.sort(Comparator.naturalOrder());
-            mExcludeEnds.sort(Comparator.naturalOrder());
-
-            if (Constants.DEBUG) {
-                Slog.d(TAG, "Exclude intervals: " + mExcludeStarts + " ends: " + mExcludeEnds);
-            }
+    private static @Nullable Long getExcludeStart(
+            Cursor cursor,
+            boolean useLocalTime,
+            @Nullable String excludeIntervalStartTimeColumn,
+            @Nullable ZoneOffset zoneOffset) {
+        if (excludeIntervalStartTimeColumn == null) {
+            return null;
         }
-    }
-
-    @VisibleForTesting
-    SessionDurationAggregationData setExcludeIntervals(
-            List<Long> excludeStarts, List<Long> excludeEnds) {
-        mExcludeStarts = excludeStarts;
-        mExcludeEnds = excludeEnds;
-        return this;
-    }
-
-    private void updateIntervalsToExclude(Cursor cursor, boolean useLocalTime) {
-        if (mExcludeIntervalStartTimeColumn == null || mExcludeIntervalEndTimeColumn == null) {
-            return;
+        if (isNullValue(cursor, excludeIntervalStartTimeColumn)) {
+            return null;
         }
-
-        if (isNullValue(cursor, mExcludeIntervalStartTimeColumn)) {
-            return;
-        }
-
-        if (mExcludeStarts == null) {
-            mExcludeStarts = new ArrayList<>();
-            mExcludeEnds = new ArrayList<>();
-        }
-
         if (useLocalTime) {
-            mExcludeStarts.add(calculateLocalTime(cursor, mExcludeIntervalStartTimeColumn));
-            mExcludeEnds.add(calculateLocalTime(cursor, mExcludeIntervalEndTimeColumn));
+            return calculateLocalTime(cursor, excludeIntervalStartTimeColumn, zoneOffset);
         } else {
-            mExcludeStarts.add(getCursorLong(cursor, mExcludeIntervalStartTimeColumn));
-            mExcludeEnds.add(getCursorLong(cursor, mExcludeIntervalEndTimeColumn));
+            return getCursorLong(cursor, excludeIntervalStartTimeColumn);
         }
     }
 
-    private Long calculateLocalTime(Cursor cursor, String physicalColumnName) {
-        return getCursorLong(cursor, physicalColumnName)
-                + MILLIS_IN_SECOND * getStartTimeZoneOffset().getTotalSeconds();
+    @Nullable
+    private static Long getExcludeEnd(
+            Cursor cursor,
+            boolean useLocalTime,
+            @Nullable String excludeIntervalEndTimeColumn,
+            @Nullable ZoneOffset zoneOffset) {
+        if (excludeIntervalEndTimeColumn == null) {
+            return null;
+        }
+        if (useLocalTime) {
+            return calculateLocalTime(cursor, excludeIntervalEndTimeColumn, zoneOffset);
+        } else {
+            return getCursorLong(cursor, excludeIntervalEndTimeColumn);
+        }
+    }
+
+    private static Long calculateLocalTime(
+            Cursor cursor, String physicalColumnName, @Nullable ZoneOffset zoneOffset) {
+        long offsetMillis;
+        if (zoneOffset == null) {
+            // This should not happen, but if we get asked to use local time without getting a zone
+            // offset, treat as no offset.
+            Log.w(TAG, "Asked to calculate a local time without a zone offset");
+            offsetMillis = 0;
+        } else {
+            offsetMillis = MILLIS_IN_SECOND * zoneOffset.getTotalSeconds();
+        }
+        return getCursorLong(cursor, physicalColumnName) + offsetMillis;
     }
 
     private long calculateDurationToExclude(long startTime, long endTime) {
-        if (mExcludeStarts == null) {
+        if (mExcludeStarts == null || mExcludeEnds == null) {
             // No intervals to exclude for this record data.
             return 0;
         }
