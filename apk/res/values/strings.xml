@@ -1669,7 +1669,7 @@
     <!-- endregion -->
 
     <!-- region Grant permission  -->
-    <string name="request_permissions_allow_all_the_time" description="Label for button to allow an app to read health data in background.">Allow all the time</string>
+    <string name="request_permissions_allow_all_the_time" description="Label for button to allow an app to read health data in background.">All the time</string>
     <string name="request_permissions_allow_selected" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow selected</string>
     <string name="request_permissions_while_using_the_app" description="Label for button to deny an app from reading health data in background.">While using the app</string>
     <string name="request_permissions_deny_all" description="Label for button to deny an app to have all the requested permissions for the user's data [CHAR_LIMIT=20]">Deny all</string>
@@ -1681,7 +1681,7 @@
     <!-- region App Info Permissions  -->
     <string name="fitness_and_wellness" description="Title to display fitness and wellness permissions.">Fitness and wellness</string>
     <string name="view_permissions_all_the_time_cap" description="Label for button to allow an app to read health data in background.">All the time</string>
-    <string name="view_permissions_while_in_use_cap" description="Label for button to allow an app to read health data in foreground.">While in use</string>
+    <string name="view_permissions_while_in_use_cap" description="Label for button to allow an app to read health data in foreground.">While using the app</string>
     <string name="view_permissions_description_all_the_time" description="Text that indicates an app is allowed to read health data all the time (in the foreground or background)."><xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> can access all of your fitness and wellness data all the time</string>
     <string name="view_permissions_description_while_in_use" description="Text that indicates an app is only allowed to read health data while in use (in the foreground)."><xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> can access all of your fitness and wellness data while in use</string>
     <string name="allowed_to_access" description="Text to display view permission mode (all the time or while in use).">Allowed to access</string>
@@ -1700,7 +1700,7 @@
     <string name="icon_content_cross_mark" description="Content description for icon to dismiss removing one granular health permission for all apps.">Cross mark</string>
     <string name="current_allow_mode_all_the_time" description="Text to indicate that the app is currently allowed to use the permission all the time (in the foreground or background)">"Currently, <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> can access fitness and wellness data all the time</string>
     <string name="current_allow_mode_while_in_use" description="Text to indicate that the app is currently allowed to use the permission only while in use by the user (in the foreground).">"Currently, <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> can access fitness and wellness data while in use</string>
-    <string name="allow_all_the_time_prompt" description="Title to ask user select all the time or while in use.">Allow <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> access to fitness and wellness data all the time?</string>
+    <string name="allow_all_the_time_prompt" description="Title to ask user to select all the time or while in use.">Choose when <xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> can access your fitness and wellness data</string>
     <string name="current_access" description="Subtitle to indicate which data types the app currently has permission to."><xliff:g id="app_name" example="Run Tracker">%1$s</xliff:g> has access to <xliff:g id="data_types" example="Heart rate, Skin temp">%2$s</xliff:g>.</string>
     <string name="manage_fitness_and_wellness_permissions" description="Label for button to manager fitness and wellness permissions for an app.">Manage fitness and wellness permissions</string>
     <!-- endregion -->
