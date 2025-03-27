@@ -22,9 +22,6 @@ import android.annotation.IntDef;
 import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.health.connect.datatypes.RecordTypeIdentifier;
-import android.health.connect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 import android.util.Pair;
 
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
@@ -47,26 +44,20 @@ public class UpsertTableRequest {
     public static final int TYPE_STRING = 0;
     public static final int TYPE_BLOB = 1;
     private final String mTable;
-    private ContentValues mContentValues;
+    private final ContentValues mContentValues;
     private final List<Pair<String, Integer>> mUniqueColumns;
     private List<UpsertTableRequest> mChildTableRequests = Collections.emptyList();
-    private String mParentCol;
+    @Nullable private String mParentCol;
     private long mRowId = INVALID_ROW_ID;
-    private WhereClauses mWhereClausesForUpdate;
+    @Nullable private WhereClauses mWhereClausesForUpdate;
     private IRequiresUpdate mRequiresUpdate = new IRequiresUpdate() {};
-    private Integer mRecordType;
-    private RecordInternal<?> mRecordInternal;
-    private RecordHelper<?> mRecordHelper;
     private List<String> mPostUpsertCommands = Collections.emptyList();
     private List<TableColumnPair> mChildTableAndColumnPairsToDelete = Collections.emptyList();
-
-    @Nullable private ArrayMap<String, Boolean> mExtraWritePermissionsStateMapping;
 
     public UpsertTableRequest(String table, ContentValues contentValues) {
         this(table, contentValues, Collections.emptyList());
     }
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public UpsertTableRequest(
             String table, ContentValues contentValues, List<Pair<String, Integer>> uniqueColumns) {
         Objects.requireNonNull(table);
@@ -91,12 +82,23 @@ public class UpsertTableRequest {
      * Use this if you want to add row_id of the parent table to all the child entries in {@code
      * parentCol}
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public UpsertTableRequest setParentColumnForChildTables(@Nullable String parentCol) {
         mParentCol = parentCol;
         return this;
     }
 
+    /**
+     * Return a method which tells whether to perform an update in the case of a duplicate primary
+     * key being found, or some other conflict.
+     *
+     * <p>Sometimes when an insert is requested a duplication will be found, eg for same primary
+     * key. By default UpsertTableRequest will do an update to replace the information. However for
+     * some tables (eg records) it can be faster in some circumstances to skip the update. This sets
+     * an {@link IRequiresUpdate} to make the decision on whether the update is required.
+     *
+     * @param requiresUpdate a method to decide whether to update in the event of conflict
+     * @return this UpsertTableRequest
+     */
     public UpsertTableRequest setRequiresUpdateClause(IRequiresUpdate requiresUpdate) {
         Objects.requireNonNull(requiresUpdate);
 
@@ -173,29 +175,19 @@ public class UpsertTableRequest {
         return readWhereClause;
     }
 
-    public boolean requiresUpdate(Cursor cursor, UpsertTableRequest request) {
-        return mRequiresUpdate.requiresUpdate(cursor, getContentValues(), request);
+    /**
+     * Returns true if an update should be performed for the element at the given cursor on the
+     * event of a duplication conflict.
+     *
+     * @param cursor a database cursor pointing to the row to potentially update
+     * @return true if the row should be updated, false otherwise
+     */
+    public boolean requiresUpdate(Cursor cursor) {
+        return mRequiresUpdate.requiresUpdate(cursor, getContentValues(), this);
     }
 
     public String getRowIdColName() {
         return RecordHelper.PRIMARY_COLUMN_NAME;
-    }
-
-    @RecordTypeIdentifier.RecordType
-    public int getRecordType() {
-        Objects.requireNonNull(mRecordType);
-        return mRecordType;
-    }
-
-    public void setRecordType(@RecordTypeIdentifier.RecordType int recordIdentifier) {
-        mRecordType = recordIdentifier;
-    }
-
-    public <T extends RecordInternal<?>> UpsertTableRequest setHelper(
-            RecordHelper<?> recordHelper) {
-        mRecordHelper = recordHelper;
-
-        return this;
     }
 
     /**
@@ -214,29 +206,7 @@ public class UpsertTableRequest {
      * row.
      */
     public List<TableColumnPair> getChildTablesWithRowsToBeDeletedDuringUpdate() {
-        if (mRecordHelper != null) {
-            return mRecordHelper.getChildTablesWithRowsToBeDeletedDuringUpdate(
-                    mExtraWritePermissionsStateMapping);
-        }
         return mChildTableAndColumnPairsToDelete;
-    }
-
-    public List<String> getAllChildTables() {
-        return mRecordHelper == null ? Collections.emptyList() : mRecordHelper.getAllChildTables();
-    }
-
-    public RecordInternal<?> getRecordInternal() {
-        return mRecordInternal;
-    }
-
-    public void setRecordInternal(RecordInternal<?> recordInternal) {
-        mRecordInternal = recordInternal;
-    }
-
-    public <T extends RecordInternal<?>> UpsertTableRequest setExtraWritePermissionsStateMapping(
-            @Nullable ArrayMap<String, Boolean> extraWritePermissionsToState) {
-        mExtraWritePermissionsStateMapping = extraWritePermissionsToState;
-        return this;
     }
 
     /** Get SQL commands to be exected after this upsert has completed. */

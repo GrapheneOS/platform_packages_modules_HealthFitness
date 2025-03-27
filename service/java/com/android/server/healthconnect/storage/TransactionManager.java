@@ -34,7 +34,6 @@ import android.util.Slog;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TableColumnPair;
 
@@ -52,28 +51,19 @@ public final class TransactionManager {
     private static final String TAG = "HealthConnectTransactionMan";
 
     private volatile HealthConnectDatabase mHealthConnectDatabase;
-    private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
     /** Create for the given context */
-    public static TransactionManager create(
-            HealthConnectContext hcContext,
-            InternalHealthConnectMappings internalHealthConnectMappings) {
-        return new TransactionManager(
-                new HealthConnectDatabase(hcContext), internalHealthConnectMappings);
+    public static TransactionManager create(HealthConnectContext hcContext) {
+        return new TransactionManager(new HealthConnectDatabase(hcContext));
     }
 
     /** Create for a staged database, used in import and d2d restore */
-    public static TransactionManager forStagedDatabase(
-            HealthConnectDatabase stagedDatabase,
-            InternalHealthConnectMappings internalHealthConnectMappings) {
-        return new TransactionManager(stagedDatabase, internalHealthConnectMappings);
+    public static TransactionManager forStagedDatabase(HealthConnectDatabase stagedDatabase) {
+        return new TransactionManager(stagedDatabase);
     }
 
-    private TransactionManager(
-            HealthConnectDatabase hcDatabase,
-            InternalHealthConnectMappings internalHealthConnectMappings) {
+    private TransactionManager(HealthConnectDatabase hcDatabase) {
         mHealthConnectDatabase = hcDatabase;
-        mInternalHealthConnectMappings = internalHealthConnectMappings;
     }
 
     /** Called when we are switching from the current user. */
@@ -280,7 +270,7 @@ public final class TransactionManager {
             }
         }
 
-        if (request.getAllChildTables().isEmpty()) {
+        if (request.getChildTablesWithRowsToBeDeletedDuringUpdate().isEmpty()) {
             return;
         }
 
@@ -504,7 +494,7 @@ public final class TransactionManager {
 
     private long updateEntriesIfRequired(
             SQLiteDatabase db, UpsertTableRequest request, Cursor cursor) {
-        if (!request.requiresUpdate(cursor, request)) {
+        if (!request.requiresUpdate(cursor)) {
             return -1;
         }
         db.update(
