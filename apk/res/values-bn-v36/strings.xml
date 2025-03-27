@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (C) 2025 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="permgrouplab_health" msgid="2189810208223060173">"স্বাস্থ্য, ফিটনেস ও সুস্থতা"</string>
+    <string name="health_permission_header_description" msgid="1816010176505069704">"এই অনুমতি রয়েছে এমন অ্যাপ, আপনার স্বাস্থ্য, ফিটনেস ও সুস্থতা সম্পর্কিত ডেটা পড়তে ও লিখতে পারবে। এর মধ্যে অন্তর্ভুক্ত রয়েছে আপনার ডিভাইস থেকে ট্র্যাক করা ডেটা এবং Health Connect-এ সেভ করা ডেটা"</string>
+    <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"<xliff:g id="APP_NAME">%1$s</xliff:g> অ্যাপকে আপনার ফিটনেস ও সুস্থতা সংক্রান্ত ডেটা অ্যাক্সেস করার অনুমতি দিতে চান?"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"ফিটনেস ও সুস্থতা সম্পর্কিত কোন ডেটা এই অ্যাপ অ্যাক্সেস করতে পারবে তা বেছে নিন। এর মধ্যে অন্তর্ভুক্ত রয়েছে এই ডিভাইসে ট্র্যাক ও সেভ করা ডেটা, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"ফিটনেস ও সুস্থতা সম্পর্কিত কোন ডেটা এই অ্যাপ অ্যাক্সেস করতে পারবে তা বেছে নিন। এর মধ্যে অন্তর্ভুক্ত রয়েছে এই ডিভাইসে ট্র্যাক ও সেভ করা ডেটা, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"ফিটনেস ও সুস্থতা সম্পর্কিত কোন ডেটা এই অ্যাপ অ্যাক্সেস করতে পারবে তা বেছে নিন। এর মধ্যে অন্তর্ভুক্ত রয়েছে এই ডিভাইসে ট্র্যাক ও সেভ করা ডেটা, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_learn_more" msgid="2665249156693144626">"আরও জানুন"</string>
+    <string name="settings_manage_permission" msgid="3585762257420446893">"স্বাস্থ্য, ফিটনেস ও সুস্থতা"</string>
+    <string name="settings_combined_permissions" msgid="1243346425556604875">"স্বাস্থ্য, ফিটনেস ও সুস্থতা"</string>
+    <string name="settings_fitness_permissions" msgid="989130669597060476">"ফিটনেস ও সুস্থতা"</string>
+    <string name="settings_medical_permissions" msgid="3616285795348645545">"স্বাস্থ্য বিষয়ক রেকর্ড"</string>
+</resources>

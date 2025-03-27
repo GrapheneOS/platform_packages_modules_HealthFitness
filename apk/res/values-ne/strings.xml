@@ -19,8 +19,7 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"एपलाई स्वास्थ्यसम्बन्धी जानकारी प्रयोग गर्न दिने कि नदिने भन्ने कुरा व्यवस्थापन गर्नुहोस्"</string>
-    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
-    <skip />
+    <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"अपडेट तथा अलर्टहरू"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"अनुमति तथा डेटा"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"आफ्नो डिभाइसमा भएका स्वास्थ्य र तन्दुरुस्तीसम्बन्धी जानकारी व्यवस्थापन गर्नुहोस् र ती जानकारी कुन कुन एपलाई प्रयोग गर्न दिने भन्ने कुरा नियन्त्रण गर्नुहोस्"</string>
     <string name="data_title" msgid="4456619761533380816">"डेटा र एक्सेस"</string>
@@ -43,14 +42,10 @@
     <string name="manage_data_summary" msgid="8537870912521944449">"स्वतः मेटाउने सुविधा, डेटाको स्रोत, ब्याकअप र रिस्टोर गर्ने सुविधा"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"थप सामग्री"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"अझ कम सामग्री"</string>
-    <!-- no translation found for settings_manage_permission (3805037674102124581) -->
-    <skip />
-    <!-- no translation found for settings_combined_permissions (3660209476196545539) -->
-    <skip />
-    <!-- no translation found for settings_fitness_permissions (8133228907519227359) -->
-    <skip />
-    <!-- no translation found for settings_medical_permissions (4621535972501674863) -->
-    <skip />
+    <string name="settings_manage_permission" msgid="3805037674102124581">"Health Connect"</string>
+    <string name="settings_combined_permissions" msgid="3660209476196545539">"Health Connect"</string>
+    <string name="settings_fitness_permissions" msgid="8133228907519227359">"Health Connect"</string>
+    <string name="settings_medical_permissions" msgid="4621535972501674863">"Health Connect"</string>
     <string name="backup_title" msgid="211503191266235085">"ब्याकअप"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"डेटाका स्रोतहरू र प्राथमिकता"</string>
     <string name="set_units_title" msgid="2657822539603758029">"एकाइ सेट गर्नुहोस्"</string>
@@ -72,8 +67,7 @@
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"हालसालै तपाईंको डेटा एक्सेस गरेका एपहरू स्वतः यहाँ देखिने छन्"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"सबै हेर्नुहोस्"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"हालसालै गरिएको एक्सेससम्बन्धी जानकारी लोड गर्न सकिएन"</string>
-    <!-- no translation found for recent_access_inactive_app (8754221676902025802) -->
-    <skip />
+    <string name="recent_access_inactive_app" msgid="8754221676902025802">"यो एप अब उपलब्ध छैन"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"क्रियाकलाप"</string>
     <string name="activity_category_lowercase" msgid="3007220578865400601">"क्रियाकलाप"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"शारीरिक नाप"</string>
@@ -379,20 +373,14 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"अनुमति दिनुहोस्"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"एपलाई सबै अनुमति दिनुहोस्"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"अनुमति नदिनुहोस्"</string>
-    <!-- no translation found for request_fitness_permissions_data_access_type_read_write (4803850894991591079) -->
-    <skip />
-    <!-- no translation found for request_fitness_permissions_data_access_type_read (1936040466183377312) -->
-    <skip />
-    <!-- no translation found for request_fitness_permissions_data_access_type_write (953067161810334338) -->
-    <skip />
-    <!-- no translation found for request_medical_permissions_data_access_type_read_write (3777178665662806833) -->
-    <skip />
-    <!-- no translation found for request_medical_permissions_data_access_type_read (2155961852937520094) -->
-    <skip />
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"तपाईं यो एपलाई Health Connect मा कुन कुन डेटा रिड वा राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी रिड गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"तपाईं यो एपलाई Health Connect मा कुन कुन डेटा रिड वा राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी रिड गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"तपाईंले डेटा रिड गर्ने अनुमति दिनुभयो भने यो एपले नयाँ डेटाका साथै पछिल्ला ३० दिनका डेटा पनि रिड गर्न सक्छ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"तपाईंले डेटा रिड गर्ने अनुमति दिनुभयो भने यो एपले नयाँ तथा पुराना डेटा रिड गर्न सक्छ"</string>
-    <!-- no translation found for request_fitness_permissions_header_title (5330395074131008360) -->
-    <skip />
+    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई Health Connect एक्सेस गर्ने अनुमति दिने हो?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई व्यायाम तथा तन्दुरुस्तीसम्बन्धी जानकारी एक्सेस गर्न दिने हो?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"तपाईं <xliff:g id="APP_NAME">%1$s</xliff:g> को <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> पढेर यसले तपाईंको जानकारी कसरी व्यवस्थापन गर्छ भन्ने बारेमा जान्न सक्नुहुन्छ"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"गोपनीयता नीति"</string>
