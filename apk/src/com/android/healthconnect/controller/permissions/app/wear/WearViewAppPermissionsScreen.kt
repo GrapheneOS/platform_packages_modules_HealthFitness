@@ -98,6 +98,9 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
             derivedStateOf { grantedAdditionalPermissions.any { it.isBackgroundReadPermission() } }
         }
 
+    val atLeastOneFitnessPermissionGranted by
+        viewModel.atLeastOneFitnessPermissionGranted.observeAsState(false)
+
     ScrollableScreen(
         asScalingList = true,
         showTimeText = true,
@@ -200,7 +203,7 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
                     label = res.getString(R.string.view_permissions_all_the_time_cap),
                     toggleControl = WearPermissionToggleControlType.Radio,
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = true,
+                    enabled = atLeastOneFitnessPermissionGranted,
                 )
             }
             // Allow while in use. (Deny background read permission.)
@@ -219,7 +222,7 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
                     label = res.getString(R.string.view_permissions_while_in_use_cap),
                     toggleControl = WearPermissionToggleControlType.Radio,
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = true,
+                    enabled = atLeastOneFitnessPermissionGranted,
                 )
             }
 
@@ -229,11 +232,16 @@ fun WearViewAppPermissionsScreen(viewModel: AppPermissionViewModel) {
                     horizontalArrangement = Arrangement.Start,
                 ) {
                     val resourceId =
-                        if (allowAllTheTimeGranted) {
-                            R.string.view_permissions_description_all_the_time
+                        if (!atLeastOneFitnessPermissionGranted) {
+                            R.string.additional_access_background_footer
                         } else {
-                            R.string.view_permissions_description_while_in_use
+                            if (allowAllTheTimeGranted) {
+                                R.string.view_permissions_description_all_the_time
+                            } else {
+                                R.string.view_permissions_description_while_in_use
+                            }
                         }
+
                     Text(
                         text = res.getString(resourceId, appName),
                         style = TextStyle(fontSize = 12.sp),
