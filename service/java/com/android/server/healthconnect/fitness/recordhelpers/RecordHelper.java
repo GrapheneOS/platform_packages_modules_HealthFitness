@@ -58,6 +58,7 @@ import android.util.Slog;
 import androidx.annotation.Nullable;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -284,13 +285,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Gets {@link UpsertTableRequest} from {@code recordInternal}. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    public UpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
+    public RecordUpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
         return getUpsertTableRequest(recordInternal, null);
     }
 
     @SuppressWarnings("unchecked")
-    public UpsertTableRequest getUpsertTableRequest(
+    public RecordUpsertTableRequest getUpsertTableRequest(
             RecordInternal<?> recordInternal,
             @Nullable ArrayMap<String, Boolean> extraWritePermissionToStateMap) {
         ContentValues upsertValues = getContentValues((T) recordInternal);
@@ -317,7 +317,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                                             contentValues.put(
                                                     UUID_COLUMN_NAME,
                                                     StorageUtils.convertUUIDToBytes(oldUUID));
-                                            request.getRecordInternal().setUuid(oldUUID);
+                                            recordInternal.setUuid(oldUUID);
                                             // This means there was a duplication conflict, we want
                                             // to update in this case.
                                             return true;
@@ -334,10 +334,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                                     }
                                 })
                         .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal))
-                        .setPostUpsertCommands(getPostUpsertCommands(recordInternal))
-                        .setHelper(this)
-                        .setExtraWritePermissionsStateMapping(extraWritePermissionToStateMap);
-        return upsertTableRequest;
+                        .setChildTablesWithRowsToBeDeletedDuringUpdate(
+                                getChildTablesWithRowsToBeDeletedDuringUpdate(
+                                        extraWritePermissionToStateMap))
+                        .setPostUpsertCommands(getPostUpsertCommands(recordInternal));
+        return new RecordUpsertTableRequest(upsertTableRequest, recordInternal);
     }
 
     /* Updates upsert content values based on extra permissions state. */
@@ -502,7 +503,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     /**
      * Returns List of Internal records from the cursor. If the cursor contains more than {@link
-     * MAXIMUM_ALLOWED_CURSOR_COUNT} records, it throws {@link IllegalArgumentException}.
+     * android.health.connect.Constants#MAXIMUM_ALLOWED_CURSOR_COUNT} records, it throws {@link
+     * IllegalArgumentException}.
      */
     public List<RecordInternal<?>> getInternalRecords(
             Cursor cursor, DeviceInfoHelper deviceInfoHelper, AppInfoHelper appInfoHelper) {
@@ -526,7 +528,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * Returns a list of Internal records from the cursor up to the requested size, with pagination
      * handled.
      *
-     * @see #getNextInternalRecordsPageAndToken(Cursor, int, PageTokenWrapper, Map)
+     * @see #getNextInternalRecordsPageAndToken
      */
     public Pair<List<RecordInternal<?>>, PageTokenWrapper> getNextInternalRecordsPageAndToken(
             DeviceInfoHelper deviceInfoHelper,
@@ -1007,7 +1009,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * referenced it.
      */
     public List<ReadTableRequest> getReadRequestsForRecordsModifiedByUpsertion(
-            UUID upsertedRecordId, UpsertTableRequest upsertTableRequest, long appId) {
+            UUID upsertedRecordId, RecordUpsertTableRequest upsertTableRequest, long appId) {
         return Collections.emptyList();
     }
 }

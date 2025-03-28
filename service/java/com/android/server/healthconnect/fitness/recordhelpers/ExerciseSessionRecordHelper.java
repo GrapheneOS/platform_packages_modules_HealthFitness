@@ -58,6 +58,7 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger.Operations;
@@ -452,7 +453,7 @@ public final class ExerciseSessionRecordHelper
 
     @Override
     public List<ReadTableRequest> getReadRequestsForRecordsModifiedByUpsertion(
-            UUID upsertedRecordId, UpsertTableRequest upsertTableRequest, long appId) {
+            UUID upsertedRecordId, RecordUpsertTableRequest upsertTableRequest, long appId) {
         List<ReadTableRequest> result = new ArrayList<>();
         ExerciseSessionRecordInternal session =
                 (ExerciseSessionRecordInternal) upsertTableRequest.getRecordInternal();
