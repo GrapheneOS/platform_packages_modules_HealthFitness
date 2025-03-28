@@ -1180,7 +1180,7 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Accessed <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Accessed yesterday <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"Accessed <xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"Allow all the time"</string>
+    <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"All the time"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Allow selected"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"While using the app"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Deny all"</string>
@@ -1189,7 +1189,7 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Allow <xliff:g id="APP_NAME">%1$s</xliff:g> to access <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness and wellness"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"All the time"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"While in use"</string>
+    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"While using the app"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> can access all of your fitness and wellness data all the time"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> can access all of your fitness and wellness data while in use"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Allowed to access"</string>
@@ -1205,7 +1205,7 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Cross mark"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Currently, <xliff:g id="APP_NAME">%1$s</xliff:g> can access fitness and wellness data all the time"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Currently, <xliff:g id="APP_NAME">%1$s</xliff:g> can access fitness and wellness data while in use"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"Allow <xliff:g id="APP_NAME">%1$s</xliff:g> access to fitness and wellness data all the time?"</string>
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Choose when <xliff:g id="APP_NAME">%1$s</xliff:g> can access your fitness and wellness data"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> has access to <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Manage fitness and wellness permissions"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Used by 1 app}other{Used by # apps}}"</string>

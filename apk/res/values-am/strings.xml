@@ -418,8 +418,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"የተመረጠው ቀን"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"ቀዳሚው ቀን"</string>
     <string name="default_error" msgid="7966868260616403475">"የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።"</string>
-    <!-- no translation found for unkwown_resource (5414479649607888981) -->
-    <skip />
+    <string name="unkwown_resource" msgid="5414479649607888981">"(ርዕስ የሌለው)"</string>
     <string name="raw_fhir_title" msgid="1295744907036066319">"የምንጭ ውሂብ"</string>
     <string name="raw_fhir_open_bracket" msgid="7974657451368655325">"<xliff:g id="PREFIX">%1$s</xliff:g> ክፍት ቅንፍ።"</string>
     <string name="raw_fhir_closed_bracket" msgid="9084379463440675078">"<xliff:g id="PREFIX">%1$s</xliff:g>ዝግ ቅንፍ።"</string>
@@ -1181,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"በ<xliff:g id="TIME_DATE">%1$s</xliff:g> ላይ ተደርሶበታል"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"ትላንት በ<xliff:g id="TIME_DATE">%1$s</xliff:g> ላይ ተደርስበታል"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"በ<xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g> ላይ ተደርስበታል"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"ሁልጊዜ ፍቀድ"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"ተመርጧል የሚለውን ይፍቀዱ"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"መተግበሪያውን እየተጠቀሙ ሳለ"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"ሁሉንም ከልክል"</string>
@@ -1190,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="APP_NAME">%1$s</xliff:g> <xliff:g id="DATA_TYPE">%2$s</xliff:g>ን እንዲደርስበት ይፈቀድለት?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"ብቃት እና ጤንነት"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"ሁልጊዜ"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"በጥቅም ላይ ሳለ"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> ሁሉንም የእርስዎን ብቃት እና ጤንነት ውሂብ ሁልጊዜ መድረስ ይችላል"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> ሁሉንም የእርስዎን ብቃት እና ጤንነት ውሂብ ጥቅም ላይ ሳለ መድረስ ይችላል"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"ለመድረስ የተፈቀደለት"</string>
@@ -1206,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"የመስቀል ምልክት"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"በአሁኑ ጊዜ፣ <xliff:g id="APP_NAME">%1$s</xliff:g> የብቃት እና ጤንነት ውሂብን ሁልጊዜ መድረስ ይችላል"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"በአሁኑ ጊዜ፣ <xliff:g id="APP_NAME">%1$s</xliff:g> የብቃት እና ጤንነት ውሂብን በጥቅም ላይ ሳለ መድረስ ይችላል"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"ለብቃት እና ጤንነት ውሂብ ሁልጊዜ ለ<xliff:g id="APP_NAME">%1$s</xliff:g> መዳረሻ ይፈቅዳሉ?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> ወደ <xliff:g id="DATA_TYPES">%2$s</xliff:g> መዳረሻ አለው።"</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"የብቃት እና ጤንነት ፈቃዶች አስተዳድር"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{በ1 መተግበሪያ ጥቅም ላይ ውሏል}one{በ# መተግበሪያዎች ጥቅም ላይ ውሏል}other{በ# መተግበሪያዎች ጥቅም ላይ ውሏል}}"</string>

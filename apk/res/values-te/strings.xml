@@ -1180,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>‌కు యాక్సెస్ చేశారు"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"నిన్న <xliff:g id="TIME_DATE">%1$s</xliff:g>‌కు యాక్సెస్‌ చేశారు"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"<xliff:g id="TIME_DATE_0">%1$s</xliff:g>‌న<xliff:g id="TIME_DATE_1">%2$s</xliff:g>‌కు యాక్సెస్‌ చేశారు"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"ఎల్లప్పుడూ అనుమతించండి"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"ఎంపికైనవి అనుమతించు"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"యాప్‌ను ఉపయోగిస్తున్నప్పుడు"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"అన్నీ నిరాకరించండి"</string>
@@ -1189,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="DATA_TYPE">%2$s</xliff:g>‌ను యాక్సెస్ చేయడానికి <xliff:g id="APP_NAME">%1$s</xliff:g>‌కు అనుమతినివ్వాలా?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"ఫిట్‌నెస్, వెల్‌నెస్"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"అన్ని సమయాలలో అనుమతించండి"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"ఉపయోగంలో ఉన్నప్పుడు"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"మీ వెల్‌నెస్ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఎల్లప్పుడూ యాక్సెస్ చేయగలదు"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"మీ వెల్‌నెస్ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఉపయోగంలో ఉన్నప్పుడు మాత్రమే యాక్సెస్ చేయగలదు"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"యాక్సెస్ చేయడానికి అనుమతించబడ్డాయి"</string>
@@ -1205,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"క్రాస్ గుర్తు"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"ప్రస్తుతం, ఫిట్‌నెస్, వెల్‌నెస్ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఎల్లప్పుడూ యాక్సెస్ చేయగలదు"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"ప్రస్తుతం, వెల్‌నెస్ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఉపయోగంలో ఉన్నప్పుడు మాత్రమే యాక్సెస్ చేయగలదు"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"ఫిట్‌నెస్, వెల్‌నెస్ డేటాకు <xliff:g id="APP_NAME">%1$s</xliff:g>‌కు యాక్సెస్‌ను అన్ని సమయాల్లో అనుమతించాలా?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> <xliff:g id="DATA_TYPES">%2$s</xliff:g>‌కు యాక్సెస్‌ను కలిగి ఉంది."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"ఫిట్‌నెస్, వెల్‌నెస్ అనుమతులను మేనేజ్ చేయండి"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 యాప్ ద్వారా ఉపయోగించబడింది}other{# యాప్‌ల ద్వారా ఉపయోగించబడింది}}"</string>
