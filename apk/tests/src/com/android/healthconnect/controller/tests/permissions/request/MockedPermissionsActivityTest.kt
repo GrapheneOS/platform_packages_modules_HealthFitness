@@ -199,12 +199,8 @@ class MockedPermissionsActivityTest {
     fun whenHealthConnectNotAvailable_sendsResultCanceled() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(false)
 
-        val scenario =
-            launchActivityForResult<TrampolineActivity>(
-                getPermissionScreenIntent(arrayOf(READ_STEPS))
-            )
-
-        assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+        launchActivityForResult<TrampolineActivity>(getPermissionScreenIntent(arrayOf(READ_STEPS)))
+            .use { scenario -> assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED) }
     }
 
     @Test
@@ -214,9 +210,9 @@ class MockedPermissionsActivityTest {
                 .putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, arrayOf<String>())
                 .addFlags(FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(FLAG_ACTIVITY_CLEAR_TASK)
-        val scenario = launchActivityForResult<PermissionsActivity>(intent)
-
-        assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+        launchActivityForResult<PermissionsActivity>(intent).use { scenario ->
+            assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+        }
     }
 
     @Test
@@ -225,12 +221,8 @@ class MockedPermissionsActivityTest {
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowMedical(isWriteOnly = true))
         }
-        val scenario =
-            launchActivityForResult<TrampolineActivity>(
-                getPermissionScreenIntent(arrayOf(READ_STEPS))
-            )
-
-        assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+        launchActivityForResult<TrampolineActivity>(getPermissionScreenIntent(arrayOf(READ_STEPS)))
+            .use { scenario -> assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED) }
     }
 
     @Test
@@ -254,47 +246,48 @@ class MockedPermissionsActivityTest {
         val permissions = arrayOf(WRITE_MEDICAL_DATA)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        onView(withText("Allow $TEST_APP_NAME to access your health records?"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            onView(withText("Allow $TEST_APP_NAME to access your health records?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
-        onView(withText("Data to share includes")).check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(3))
-        val availableMedicalPermissionsString =
-            "Allergies\n" +
-                "Conditions\n" +
-                "Lab results\n" +
-                "Medications\n" +
-                "Procedures\n" +
-                "Vaccines\n" +
-                "Vital signs"
-        onView(withText(availableMedicalPermissionsString)).check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        Espresso.onIdle()
-        onView(
-                withText(
-                    "Sync your health records from your different apps and sources to keep " +
-                        "them in one place"
+                .check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
+            onView(withText("Data to share includes")).check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(3))
+            val availableMedicalPermissionsString =
+                "Allergies\n" +
+                    "Conditions\n" +
+                    "Lab results\n" +
+                    "Medications\n" +
+                    "Procedures\n" +
+                    "Vaccines\n" +
+                    "Vital signs"
+            onView(withText(availableMedicalPermissionsString)).check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            Espresso.onIdle()
+            onView(
+                    withText(
+                        "Sync your health records from your different apps and sources to keep " +
+                            "them in one place"
+                    )
                 )
-            )
-            .perform(scrollTo())
-        onView(
-                withText(
-                    "Sync your health records from your different apps and sources to keep " +
-                        "them in one place"
+                .perform(scrollTo())
+            onView(
+                    withText(
+                        "Sync your health records from your different apps and sources to keep " +
+                            "them in one place"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("About health records")).check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+            onView(withText("About health records")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -318,15 +311,15 @@ class MockedPermissionsActivityTest {
         val permissions = arrayOf(WRITE_MEDICAL_DATA)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent)
-
-        verify(healthConnectLogger, atLeast(1))
-            .setPageId(PageName.REQUEST_WRITE_MEDICAL_PERMISSION_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(MedicalWritePermissionPageElement.ALLOW_WRITE_HEALTH_RECORDS_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(MedicalWritePermissionPageElement.CANCEL_WRITE_HEALTH_RECORDS_BUTTON)
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.REQUEST_WRITE_MEDICAL_PERMISSION_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(MedicalWritePermissionPageElement.ALLOW_WRITE_HEALTH_RECORDS_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(MedicalWritePermissionPageElement.CANCEL_WRITE_HEALTH_RECORDS_BUTTON)
+        }
     }
 
     @Test
@@ -352,31 +345,32 @@ class MockedPermissionsActivityTest {
         val permissions = arrayOf(WRITE_MEDICAL_DATA, READ_MEDICAL_DATA_VACCINES)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        onView(withText("Allow $TEST_APP_NAME to access your health records?"))
-            .check(matches(isDisplayed()))
-        onView(withText("Choose data you want this app to read or write to Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout health records"
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            onView(withText("Allow $TEST_APP_NAME to access your health records?"))
+                .check(matches(isDisplayed()))
+            onView(withText("Choose data you want this app to read or write to Health Connect"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout health records"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText("Vaccines")).check(matches(isDisplayed()))
-        onView(withText("All health records")).check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
+            onView(withText("Allow all")).check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Vaccines")).check(matches(isDisplayed()))
+            onView(withText("All health records")).check(matches(isDisplayed()))
+        }
     }
 
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
@@ -405,30 +399,31 @@ class MockedPermissionsActivityTest {
         val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
-            .check(matches(isDisplayed()))
-        onView(withText("Choose data you want this app to read or write to Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
+                .check(matches(isDisplayed()))
+            onView(withText("Choose data you want this app to read or write to Health Connect"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText("Steps")).check(matches(isDisplayed()))
-        onView(withText("Distance")).check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
+            onView(withText("Allow all")).check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Steps")).check(matches(isDisplayed()))
+            onView(withText("Distance")).check(matches(isDisplayed()))
+        }
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
@@ -457,34 +452,35 @@ class MockedPermissionsActivityTest {
         val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText("Steps")).check(matches(isDisplayed()))
-        onView(withText("Distance")).check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
+            onView(withText("Allow all")).check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Steps")).check(matches(isDisplayed()))
+            onView(withText("Distance")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -509,15 +505,16 @@ class MockedPermissionsActivityTest {
         val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        onView(withText("Allow additional access for $TEST_APP_NAME?"))
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
-            .check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText("Access past data")).check(matches(isDisplayed()))
-        onView(withText("Access data in the background")).check(matches(isDisplayed()))
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            onView(withText("Allow additional access for $TEST_APP_NAME?"))
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
+                .check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Access past data")).check(matches(isDisplayed()))
+            onView(withText("Access data in the background")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -526,11 +523,13 @@ class MockedPermissionsActivityTest {
             MutableLiveData(PermissionsActivityState.NoPermissions)
         }
         val startActivityIntent = getPermissionScreenIntent(arrayOf())
-        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
-        val returnedIntent = scenario.result.resultData
-        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES)).isEmpty()
-        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS)).isEmpty()
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+            val returnedIntent = scenario.result.resultData
+            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+                .isEmpty()
+            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS)).isEmpty()
+        }
     }
 
     @Test
@@ -550,13 +549,14 @@ class MockedPermissionsActivityTest {
                 )
             )
         val startActivityIntent = getPermissionScreenIntent(arrayOf(READ_STEPS, WRITE_DISTANCE))
-        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
-        val returnedIntent = scenario.result.resultData
-        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
-            .isEqualTo(arrayOf(READ_STEPS, WRITE_DISTANCE))
-        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
-            .isEqualTo(intArrayOf(PERMISSION_DENIED, PERMISSION_DENIED))
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+            val returnedIntent = scenario.result.resultData
+            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+                .isEqualTo(arrayOf(READ_STEPS, WRITE_DISTANCE))
+            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+                .isEqualTo(intArrayOf(PERMISSION_DENIED, PERMISSION_DENIED))
+        }
     }
 
     @Test
@@ -588,10 +588,11 @@ class MockedPermissionsActivityTest {
         val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        Espresso.onIdle()
-        onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
-            .check(matches(isDisplayed()))
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            Espresso.onIdle()
+            onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -609,13 +610,14 @@ class MockedPermissionsActivityTest {
                 )
             )
         val startActivityIntent = getPermissionScreenIntent(arrayOf(READ_STEPS, WRITE_DISTANCE))
-        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
-        val returnedIntent = scenario.result.resultData
-        assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
-            .isEqualTo(arrayOf(READ_STEPS, WRITE_DISTANCE))
-        assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
-            .isEqualTo(intArrayOf(PERMISSION_DENIED, PERMISSION_DENIED))
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+            val returnedIntent = scenario.result.resultData
+            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
+                .isEqualTo(arrayOf(READ_STEPS, WRITE_DISTANCE))
+            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
+                .isEqualTo(intArrayOf(PERMISSION_DENIED, PERMISSION_DENIED))
+        }
     }
 
     @Test
@@ -662,30 +664,31 @@ class MockedPermissionsActivityTest {
         val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        onView(withText("Health Connect integration in progress"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use $TEST_APP_NAME with Health Connect."
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            onView(withText("Health Connect integration in progress"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use $TEST_APP_NAME with Health Connect."
+                    )
                 )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
+            onView(withText("Got it")).inRoot(isDialog()).perform(click())
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        // Needed to make sure activity has finished
-        Thread.sleep(2_000)
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+            // Needed to make sure activity has finished
+            Thread.sleep(2_000)
+            assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        }
     }
 
     @Test
@@ -730,32 +733,32 @@ class MockedPermissionsActivityTest {
         whenever(viewModel.allFitnessPermissionsGranted).then { MutableLiveData(false) }
         val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
         val startActivityIntent = getPermissionScreenIntent(permissions)
-        val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
-
-        Espresso.onIdle()
-        onView(withText("Health Connect restore in progress"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is restoring data and permissions. This may take some time to complete."
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            Espresso.onIdle()
+            onView(withText("Health Connect restore in progress"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health Connect is restoring data and permissions. This may take some time to complete."
+                    )
                 )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
+            verify(healthConnectLogger)
+                .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
+            onView(withText("Got it")).inRoot(isDialog()).perform(click())
+            verify(healthConnectLogger)
+                .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        // Needed to makes sure activity has finished
-        Thread.sleep(2_000)
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+            // Needed to makes sure activity has finished
+            Thread.sleep(2_000)
+            assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        }
     }
 
     @Test
@@ -801,29 +804,29 @@ class MockedPermissionsActivityTest {
         val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
         val startActivityIntent = getPermissionScreenIntent(permissions)
 
-        launchActivityForResult<PermissionsActivity>(startActivityIntent)
-
-        onView(
-                withText(
-                    "Health Connect is ready to be integrated with your Android system. If you give $TEST_APP_NAME access now, some features may not work until integration is complete."
+        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
+            onView(
+                    withText(
+                        "Health Connect is ready to be integrated with your Android system. If you give $TEST_APP_NAME access now, some features may not work until integration is complete."
+                    )
                 )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        // TODO (b/322495982) check navigation to Migration activity
-        onView(withText("Start integration")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON)
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            // TODO (b/322495982) check navigation to Migration activity
+            onView(withText("Start integration")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTAINER)
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON)
 
-        onView(withText("Continue")).inRoot(isDialog()).perform(click())
-        onView(withText("Continue")).check(doesNotExist())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+            onView(withText("Continue")).inRoot(isDialog()).perform(click())
+            onView(withText("Continue")).check(doesNotExist())
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+        }
     }
 
     private fun getPermissionScreenIntent(permissions: Array<String>): Intent =
