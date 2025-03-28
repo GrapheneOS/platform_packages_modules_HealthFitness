@@ -63,6 +63,10 @@ constructor(
     val alertDialogCheckBoxChecked: LiveData<Boolean>
         get() = _alertDialogCheckBoxChecked
 
+    private val _showSystemApps = MutableLiveData(false)
+    val showSystemApps: LiveData<Boolean>
+        get() = _showSystemApps
+
     init {
         loadConnectedApps()
     }
@@ -75,10 +79,22 @@ constructor(
         _alertDialogCheckBoxChecked.postValue(isChecked)
     }
 
+    fun setShowSystemApps(showSystem: Boolean) {
+        _showSystemApps.postValue(showSystem)
+        loadConnectedApps()
+    }
+
     fun loadConnectedApps() {
         viewModelScope.launch {
             _connectedApps.postValueIfUpdated(
-                loadHealthPermissionApps.invoke().filter { !it.appMetadata.isSystem }
+                loadHealthPermissionApps.invoke().filter {
+                    val showSystemAppsValue = _showSystemApps.value ?: false
+                    if (showSystemAppsValue) {
+                        true
+                    } else {
+                        !it.appMetadata.isSystem
+                    }
+                }
             )
         }
     }

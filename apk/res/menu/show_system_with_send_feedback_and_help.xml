@@ -4,11 +4,6 @@
       android:id="@+id/menu_show_hide_system"
       android:title="@string/menu_show_system" />
   <item
-      android:id="@+id/menu_search"
-      android:icon="?attr/searchIcon"
-      android:showAsAction="always|collapseActionView"
-      android:title="@string/search_connected_apps" />
-  <item
       android:id="@+id/menu_send_feedback"
       android:title="@string/send_feedback" />
   <item
