@@ -25,6 +25,7 @@ import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRec
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.LAST_MODIFIED_TIME_COLUMN_NAME;
 
+import android.annotation.Nullable;
 import android.database.Cursor;
 import android.util.Pair;
 
@@ -63,14 +64,11 @@ public final class MergeDataHelper {
             Comparator.comparing(RecordData::startTime)
                     .thenComparing(PRIORITY_COMPARATOR.reversed());
     private final List<Long> mReversedPriorityList;
-    private Instant mStartTime;
-    private Instant mEndTime;
     private final String mColumnNameToMerge;
     private final Class<?> mValueColumnType;
 
     private final boolean mUseLocalTime;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public MergeDataHelper(
             List<Long> priorityList,
             String columnNameToMerge,
@@ -105,8 +103,8 @@ public final class MergeDataHelper {
      */
     public MergeResult readCursor(Cursor cursor, long startTime, long endTime) {
         TreeSet<RecordData> bufferWindow = new TreeSet<>(RECORD_DATA_COMPARATOR);
-        mStartTime = Instant.ofEpochMilli(startTime);
-        mEndTime = Instant.ofEpochMilli(endTime);
+        Instant windowStart = Instant.ofEpochMilli(startTime);
+        Instant windowEnd = Instant.ofEpochMilli(endTime);
         List<RecordData> recordDataList = new ArrayList<>();
         cursor.moveToPosition(-1);
         while (true) {
@@ -121,10 +119,10 @@ public final class MergeDataHelper {
                                     .startTime()
                                     .isBefore(bufferWindow.first().endTime()))
                     && cursor.moveToNext()) {
-                if (cursorOutOfRange(cursor)) {
+                if (cursorOutOfRange(cursor, windowStart, windowEnd)) {
                     continue;
                 }
-                RecordData recordData = getRecordData(cursor);
+                RecordData recordData = getRecordData(cursor, windowStart, windowEnd);
                 if (recordData != null) {
                     bufferWindow.add(recordData);
                 }
@@ -140,13 +138,14 @@ public final class MergeDataHelper {
         return new MergeResult(recordDataList);
     }
 
-    private boolean cursorOutOfRange(Cursor cursor) {
+    private boolean cursorOutOfRange(
+            Cursor cursor, Instant windowStartTime, Instant windowEndTime) {
         long cursorStartTime = StorageUtils.getCursorLong(cursor, startTimeColumnName());
         long cursorEndTime = StorageUtils.getCursorLong(cursor, endTimeColumnName());
-        return (cursorStartTime < mStartTime.toEpochMilli()
-                        && cursorEndTime <= mStartTime.toEpochMilli())
-                || (cursorStartTime > mEndTime.toEpochMilli()
-                        && cursorEndTime > mEndTime.toEpochMilli());
+        return (cursorStartTime < windowStartTime.toEpochMilli()
+                        && cursorEndTime <= windowStartTime.toEpochMilli())
+                || (cursorStartTime > windowEndTime.toEpochMilli()
+                        && cursorEndTime > windowEndTime.toEpochMilli());
     }
 
     private String startTimeColumnName() {
@@ -157,11 +156,12 @@ public final class MergeDataHelper {
         return mUseLocalTime ? LOCAL_DATE_TIME_END_TIME_COLUMN_NAME : END_TIME_COLUMN_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private TreeSet<RecordData> eliminateEarliestRecordOverlaps(TreeSet<RecordData> bufferWindow) {
         RecordData firstBufferData = bufferWindow.pollFirst();
         if (firstBufferData == null) {
-            return null;
+            // This can only happen is we are called with an empty buffer window, and that is
+            // guarded on above.
+            throw new IllegalArgumentException("Called with empty buffer window");
         }
         TreeSet<RecordData> newBuffer = new TreeSet<>(RECORD_DATA_COMPARATOR);
         Iterator<RecordData> bufferIterator = bufferWindow.iterator();
@@ -227,44 +227,42 @@ public final class MergeDataHelper {
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private RecordData getRecordData(Cursor cursor) {
-        if (cursor != null) {
-            double factor = 1;
+    /** Returns the record data at the cursor, or null if this record should be ignored. */
+    @Nullable
+    private RecordData getRecordData(Cursor cursor, Instant windowStart, Instant windowEnd) {
+        double factor = 1;
 
-            Instant startTime =
-                    Instant.ofEpochMilli(StorageUtils.getCursorLong(cursor, startTimeColumnName()));
-            Instant endTime =
-                    Instant.ofEpochMilli(StorageUtils.getCursorLong(cursor, endTimeColumnName()));
-            Instant currentStartTime = TimeUtils.latest(startTime, mStartTime);
-            Instant currentEndTime = TimeUtils.earliest(endTime, mEndTime);
-            double aggregateData = getDataToAggregate(cursor);
-            if (currentStartTime.equals(mStartTime) || currentEndTime.equals(mEndTime)) {
-                // If either startTime or endTime of current cursor was outside the range of
-                // current group, then calculate factor of value for the time range that is within
-                // the group.
-                factor =
-                        (double) TimeUtils.getDurationInMillis(currentStartTime, currentEndTime)
-                                / TimeUtils.getDurationInMillis(startTime, endTime);
-                aggregateData *= factor;
-            }
-
-            if (!currentEndTime.isAfter(currentStartTime)) {
-                return null;
-            }
-            long appId = StorageUtils.getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
-            int priority = mReversedPriorityList.indexOf(appId);
-            if (priority == -1) {
-                return null;
-            }
-            return new RecordData(
-                    currentStartTime,
-                    currentEndTime,
-                    StorageUtils.getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME),
-                    aggregateData,
-                    priority);
+        Instant startTime =
+                Instant.ofEpochMilli(StorageUtils.getCursorLong(cursor, startTimeColumnName()));
+        Instant endTime =
+                Instant.ofEpochMilli(StorageUtils.getCursorLong(cursor, endTimeColumnName()));
+        Instant currentStartTime = TimeUtils.latest(startTime, windowStart);
+        Instant currentEndTime = TimeUtils.earliest(endTime, windowEnd);
+        double aggregateData = getDataToAggregate(cursor);
+        if (currentStartTime.equals(windowStart) || currentEndTime.equals(windowEnd)) {
+            // If either startTime or endTime of current cursor was outside the range of
+            // current group, then calculate factor of value for the time range that is within
+            // the group.
+            factor =
+                    (double) TimeUtils.getDurationInMillis(currentStartTime, currentEndTime)
+                            / TimeUtils.getDurationInMillis(startTime, endTime);
+            aggregateData *= factor;
         }
-        return null;
+
+        if (!currentEndTime.isAfter(currentStartTime)) {
+            return null;
+        }
+        long appId = StorageUtils.getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
+        int priority = mReversedPriorityList.indexOf(appId);
+        if (priority == -1) {
+            return null;
+        }
+        return new RecordData(
+                currentStartTime,
+                currentEndTime,
+                StorageUtils.getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME),
+                aggregateData,
+                priority);
     }
 
     /**
@@ -272,19 +270,18 @@ public final class MergeDataHelper {
      * non-overlapping record having updated interval between startTime and endTime. It also updates
      * the data column value based on a multiplying factor calculated for the duration of
      * non-overlapping time interval. This data will be added to form a new buffer window.
+     *
+     * @return the trimmed data or null if this record should be ignored.
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     private RecordData trimRecordData(RecordData data, Instant startTime, Instant endTime) {
         if (startTime.isAfter(data.endTime())) {
-            // throw new IllegalArgumentException("startTime must be before data.endTime to trim.");
             return null;
         }
         if (!endTime.isAfter(startTime)) {
-            // throw new IllegalArgumentException("startTime must be before endTime to trim.");
             return null;
         }
         if (endTime.isBefore(data.startTime())) {
-            // throw new IllegalArgumentException("endTime must be after data.startTime to trim.");
             return null;
         }
         startTime = startTime.isBefore(data.startTime()) ? data.startTime() : startTime;
@@ -345,7 +342,7 @@ public final class MergeDataHelper {
          */
         public List<Pair<Instant, Instant>> getEmptyIntervals(Instant startTime, Instant endTime) {
             List<Pair<Instant, Instant>> emptyIntervals = new ArrayList<>();
-            if (mRecordDataList.size() == 0) {
+            if (mRecordDataList.isEmpty()) {
                 if (!startTime.equals(endTime)) {
                     emptyIntervals.add(new Pair<>(startTime, endTime));
                 }
