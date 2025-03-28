@@ -42,6 +42,9 @@
     <action
         android:id="@+id/action_home_screen_to_permissionsRequestScreen"
         app:destination="@id/permissions_request_screen" />
+    <action
+        android:id="@+id/action_home_screen_to_backupRestoreScreen"
+         app:destination="@id/backup_restore_screen" />
   </fragment>
 
   <fragment
@@ -110,7 +113,13 @@
       android:label="permissions_request"
       android:name="com.android.healthconnect.testapps.toolbox.ui.PermissionsRequestFragment"
       tools:layout="@layout/fragment_permissions_request">
+  </fragment>
 
+  <fragment
+    android:id="@+id/backup_restore_screen"
+      android:label="backup_restore"
+    android:name="com.android.healthconnect.testapps.toolbox.ui.BackupRestoreFragment"
+    tools:layout="@layout/fragment_backup_restore">
   </fragment>
 
 </navigation>
