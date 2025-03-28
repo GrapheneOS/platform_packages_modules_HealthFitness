@@ -69,7 +69,9 @@ constructor(
 
     fun loadConnectedApps() {
         viewModelScope.launch {
-            _connectedApps.postValueIfUpdated(loadHealthPermissionApps.invoke())
+            _connectedApps.postValueIfUpdated(
+                loadHealthPermissionApps.invoke().filter { !it.appMetadata.isSystem }
+            )
         }
     }
 
