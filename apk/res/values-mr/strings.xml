@@ -1180,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> वाजता ॲक्सेस केले"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"काल <xliff:g id="TIME_DATE">%1$s</xliff:g> वाजता ॲक्सेस केले"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"<xliff:g id="TIME_DATE_0">%1$s</xliff:g> ला <xliff:g id="TIME_DATE_1">%2$s</xliff:g> वाजता ॲक्सेस केले"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"नेहमी अनुमती द्या"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"निवडीला अनुमती द्या"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"ॲप वापरताना"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"सर्वांना नकार द्या"</string>
@@ -1189,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="APP_NAME">%1$s</xliff:g> ला <xliff:g id="DATA_TYPE">%2$s</xliff:g> अ‍ॅक्सेस करण्याची अनुमती द्यायची आहे का?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"फिटनेस आणि स्वास्थ्य"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"पूर्ण वेळ"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"वापरत असताना"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> हे कधीही तुमचा फिटनेस आणि स्वास्थ्यासंबंधित सर्व डेटा अ‍ॅक्सेस करू शकते"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> हे वापरले जात असताना, ते तुमचा फिटनेस आणि स्वास्थ्यासंबंधित सर्व डेटा अ‍ॅक्सेस करू शकते"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"अ‍ॅक्सेस करण्याची अनुमती आहे"</string>
@@ -1205,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"फुलीची खूण"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"सध्या, <xliff:g id="APP_NAME">%1$s</xliff:g> हे कधीही फिटनेस आणि स्वास्थ्यासंबंधित डेटा अ‍ॅक्सेस करू शकते"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"सध्या, <xliff:g id="APP_NAME">%1$s</xliff:g> वापरले जात असताना, ते फिटनेस आणि स्वास्थ्यासंबंधित डेटा अ‍ॅक्सेस करू शकते"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"<xliff:g id="APP_NAME">%1$s</xliff:g> ला नेहमी फिटनेस आणि स्वास्थ्यासंबंधित डेटा अ‍ॅक्सेस करण्याची अनुमती द्यायची आहे का?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> ला <xliff:g id="DATA_TYPES">%2$s</xliff:g> चा अ‍ॅक्सेस आहे."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"फिटनेस आणि स्वास्थ्यासंबंधित परवानग्या व्यवस्थापित करा"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{१ अ‍ॅपने वापरल्या}other{# अ‍ॅप्सनी वापरल्या}}"</string>
