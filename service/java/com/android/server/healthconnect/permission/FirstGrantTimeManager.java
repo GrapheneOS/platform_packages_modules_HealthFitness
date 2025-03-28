@@ -349,7 +349,6 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @GuardedBy("mGrantTimeLock")
     private boolean tryUpdateGrantTimeFromStagedDataLocked(UserHandle user, Integer uid) {
         UserGrantTimeState backupState = mDatastore.readForUser(user, DATA_TYPE_STAGED);
@@ -679,7 +678,6 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
          *
          * <p>Always uses package names, even if shared user names for an app is present.
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         UserGrantTimeState extractUserGrantTimeStateDoNotUseSharedNames(UserHandle user) {
             Map<String, Instant> sharedUserToGrantTime = new ArrayMap<>();
             Map<String, Instant> packageNameToGrantTime = new ArrayMap<>();
