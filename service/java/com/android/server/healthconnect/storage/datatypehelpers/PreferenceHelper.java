@@ -60,9 +60,8 @@ public class PreferenceHelper extends DatabaseHelper {
     private static final String PREFS_KEY_PHR_LAST_READ_MEDICAL_RESOURCES_API =
             "phr_last_read_medical_resources_api";
 
-    protected volatile ConcurrentHashMap<String, String> mPreferences;
+    @Nullable protected volatile ConcurrentHashMap<String, String> mPreferences;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public PreferenceHelper(
             TransactionManager transactionManager, DatabaseHelpers databaseHelpers) {
         super(databaseHelpers);
@@ -107,7 +106,6 @@ public class PreferenceHelper extends DatabaseHelper {
         return getPreferences().get(key);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
     public synchronized void clearCache() {
         mPreferences = null;
@@ -124,10 +122,11 @@ public class PreferenceHelper extends DatabaseHelper {
     }
 
     protected Map<String, String> getPreferences() {
-        if (mPreferences == null) {
-            populatePreferences();
+        ConcurrentHashMap<String, String> preferences = mPreferences;
+        if (preferences == null) {
+            preferences = populatePreferences();
         }
-        return mPreferences;
+        return preferences;
     }
 
     private ContentValues getContentValues(String key, String value) {
@@ -137,19 +136,22 @@ public class PreferenceHelper extends DatabaseHelper {
         return contentValues;
     }
 
-    private synchronized void populatePreferences() {
-        if (mPreferences != null) {
-            return;
+    private synchronized ConcurrentHashMap<String, String> populatePreferences() {
+        ConcurrentHashMap<String, String> preferences = mPreferences;
+        if (preferences != null) {
+            return preferences;
         }
 
-        mPreferences = new ConcurrentHashMap<>();
+        preferences = new ConcurrentHashMap<>();
         try (Cursor cursor = mTransactionManager.read(new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
                 String key = StorageUtils.getCursorString(cursor, KEY_COLUMN_NAME);
                 String value = StorageUtils.getCursorString(cursor, VALUE_COLUMN_NAME);
-                mPreferences.put(key, value);
+                preferences.put(key, value);
             }
         }
+        mPreferences = preferences;
+        return preferences;
     }
 
     private static List<Pair<String, String>> getColumnInfo() {
