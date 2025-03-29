@@ -131,10 +131,7 @@ fun GrantMultipleFitnessPermissions(
                         .uppercaseLabel
                 )
             val isChecked = checkedStates[index]
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-            ) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 SwitchButton(
                     label = {
                         Text(
@@ -162,7 +159,7 @@ fun GrantMultipleFitnessPermissions(
         item {
             WearPermissionButton(
                 label =
-                    if (expandableState.expanded) {
+                    if (expandableState.expanded && checkedStates.any { !it }) {
                         res.getString(R.string.request_permissions_allow_selected)
                     } else {
                         res.getString(R.string.request_permissions_allow_all)

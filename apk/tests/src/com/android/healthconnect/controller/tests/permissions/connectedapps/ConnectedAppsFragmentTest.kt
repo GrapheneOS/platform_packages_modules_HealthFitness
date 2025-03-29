@@ -86,6 +86,7 @@ import javax.inject.Inject
 import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
@@ -566,6 +567,7 @@ class ConnectedAppsFragmentTest {
     }
 
     @Test
+    @Ignore("b/406847310")
     fun appNeedsUpdatingElements_shownWhenOldAppWithDataInstalled() {
         val connectApp =
             listOf(

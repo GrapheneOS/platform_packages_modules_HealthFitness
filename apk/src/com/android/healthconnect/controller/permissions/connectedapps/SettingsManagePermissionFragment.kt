@@ -60,8 +60,10 @@ import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
+import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
+import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -83,6 +85,7 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
     }
 
     @Inject lateinit var navigationUtils: NavigationUtils
+    @Inject lateinit var logger: HealthConnectLogger
 
     private val allowedAppsGroup: PreferenceGroup by pref(ALLOWED_APPS_GROUP)
 
@@ -129,6 +132,20 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
                 else -> {
                     // do nothing
                 }
+            }
+        }
+
+        setupMenu(R.menu.show_system_with_send_feedback_and_help, viewLifecycleOwner, logger) {
+            menuItem ->
+            if (menuItem.itemId == R.id.menu_show_hide_system) {
+                val isShowingSystem = viewModel.showSystemApps.value ?: false
+                menuItem.setTitle(
+                    if (isShowingSystem) R.string.menu_show_system else R.string.menu_hide_system
+                )
+                viewModel.setShowSystemApps(!isShowingSystem)
+                true
+            } else {
+                false
             }
         }
     }

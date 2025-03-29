@@ -1180,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"ප්‍රවේශ වූයේ <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"ප්‍රවේශ වූයේ ඊයේ <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"ප්‍රවේශ වූයේ <xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"සැම විට ඉඩ දෙන්න"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"තෝරා ගැනීමට ඉඩ දෙන්න"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"යෙදුම භාවිත කරන අතරතුර"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"සියල්ල ප්‍රතික්ෂේප කරන්න"</string>
@@ -1189,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="APP_NAME">%1$s</xliff:g> හට <xliff:g id="DATA_TYPE">%2$s</xliff:g> වෙත ප්‍රවේශයට ඉඩ දෙන්න ද?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"යෝග්‍යතාවය සහ සුවතාවය"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"සෑම විට ම"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"භාවිත කරන අතරේ"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> හට ඔබේ සියලුම යෝග්‍යතා සහ සුවතා දත්ත වෙත සැමවිටම ප්‍රවේශ විය හැක"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"භාවිතයේ තිබියදී <xliff:g id="APP_NAME">%1$s</xliff:g> හට ඔබේ සියලු යෝග්‍යතා සහ සුවතා දත්ත වෙත ප්‍රවේශ විය හැක"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"ප්‍රවේශ වීමට අවසර ඇත"</string>
@@ -1205,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"හරස් ලකුණ"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"දැනට, <xliff:g id="APP_NAME">%1$s</xliff:g> හට සෑම විටම යෝග්‍යතා සහ සුවතා දත්ත වෙත ප්‍රවේශ විය හැක"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"දැනට, භාවිතයේ තිබියදී <xliff:g id="APP_NAME">%1$s</xliff:g> හට යෝග්‍යතා සහ සුවතා දත්ත වෙත ප්‍රවේශ විය හැක"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"සැම විට ම යෝග්‍යතා සහ සුවතා දත්ත වෙත <xliff:g id="APP_NAME">%1$s</xliff:g> හට ප්‍රවේශයට ඉඩ දෙන්න ද?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> හට <xliff:g id="DATA_TYPES">%2$s</xliff:g> වෙත ප්‍රවේශය ඇත."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"යෝග්‍යතා සහ සුවතා අවසර කළමනාකරණය කරන්න"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{යෙදුම් 1කින් භාවිත කෙරේ}one{යෙදුම් #කින් භාවිත කෙරේ}other{යෙදුම් #කින් භාවිත කෙරේ}}"</string>

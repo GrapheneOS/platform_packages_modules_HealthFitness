@@ -418,8 +418,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"Valgt dag"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"Forrige dag"</string>
     <string name="default_error" msgid="7966868260616403475">"Noget gik galt. Prøv igen."</string>
-    <!-- no translation found for unkwown_resource (5414479649607888981) -->
-    <skip />
+    <string name="unkwown_resource" msgid="5414479649607888981">"(Intet navn)"</string>
     <string name="raw_fhir_title" msgid="1295744907036066319">"Kildedata"</string>
     <string name="raw_fhir_open_bracket" msgid="7974657451368655325">"<xliff:g id="PREFIX">%1$s</xliff:g>Venstre krøllet parentes."</string>
     <string name="raw_fhir_closed_bracket" msgid="9084379463440675078">"<xliff:g id="PREFIX">%1$s</xliff:g>Højre krøllet parentes."</string>
@@ -1181,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Tilgået kl. <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Tilgået i går kl. <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"Tilgået <xliff:g id="TIME_DATE_0">%1$s</xliff:g> kl. <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"Tillad altid"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Tillad valgte"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Mens appen bruges"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Afvis alle"</string>
@@ -1190,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness og sundhed"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Hele tiden"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"Under brug"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan til enhver tid tilgå alle dine trænings- og sundhedsdata"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan tilgå alle dine trænings- og sundhedsdata, når appen er i brug"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Har adgang"</string>
@@ -1206,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Kryds"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan i øjeblikket tilgå trænings- og sundhedsdata til enhver tid"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan i øjeblikket tilgå trænings- og sundhedsdata, når appen er i brug"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til trænings- og sundhedsdata hele tiden?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> har adgang til <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Administrer tilladelser for træning og sundhed"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Anvendes af 1 app}one{Anvendes af # app}other{Anvendes af # apps}}"</string>

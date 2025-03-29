@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage.utils;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.SELECT_ALL;
 
+import android.annotation.Nullable;
 import android.annotation.StringDef;
 
 import java.lang.annotation.Retention;
@@ -51,13 +52,11 @@ public final class SqlJoin {
     private final String mSelfColumnNameToMatch;
     private final String mJoiningColumnNameToMatch;
 
-    private List<SqlJoin> mAttachedJoins;
+    @Nullable private List<SqlJoin> mAttachedJoins;
     private String mJoinType = SQL_JOIN_INNER;
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private WhereClauses mTableToJoinWhereClause = null;
+    @Nullable private WhereClauses mTableToJoinWhereClause = null;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public SqlJoin(
             String selfTableName,
             String tableNameToJoinOn,
@@ -125,10 +124,13 @@ public final class SqlJoin {
 
     private String getJoinCommand(boolean withInnerQuery) {
         String selfColumnPrefix = withInnerQuery ? INNER_QUERY_ALIAS + "." : mSelfTableName + ".";
+        WhereClauses tableToJoinWhereClause = mTableToJoinWhereClause;
         return " "
                 + mJoinType
                 + " JOIN "
-                + (mTableToJoinWhereClause == null ? "" : "( " + buildFilterQuery() + ") ")
+                + (tableToJoinWhereClause == null
+                        ? ""
+                        : "( " + buildFilterQuery(tableToJoinWhereClause) + ") ")
                 + mTableNameToJoinOn
                 + " ON "
                 + selfColumnPrefix
@@ -140,8 +142,8 @@ public final class SqlJoin {
                 + buildAttachedJoinsCommand(withInnerQuery);
     }
 
-    private String buildFilterQuery() {
-        return SELECT_ALL + mTableNameToJoinOn + mTableToJoinWhereClause.get(true);
+    private String buildFilterQuery(WhereClauses tableToJoinWhereClause) {
+        return SELECT_ALL + mTableNameToJoinOn + tableToJoinWhereClause.get(true);
     }
 
     private String buildAttachedJoinsCommand(boolean withInnerQuery) {

@@ -418,8 +418,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"தேர்ந்தெடுத்துள்ள நாள்"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"முந்தைய நாள்"</string>
     <string name="default_error" msgid="7966868260616403475">"ஏதோ தவறாகிவிட்டது. மீண்டும் முயலவும்."</string>
-    <!-- no translation found for unkwown_resource (5414479649607888981) -->
-    <skip />
+    <string name="unkwown_resource" msgid="5414479649607888981">"(தலைப்பு இல்லை)"</string>
     <string name="raw_fhir_title" msgid="1295744907036066319">"மூலத் தரவு"</string>
     <string name="raw_fhir_open_bracket" msgid="7974657451368655325">"<xliff:g id="PREFIX">%1$s</xliff:g>திறந்த சுருள் அடைப்புக்குறி."</string>
     <string name="raw_fhir_closed_bracket" msgid="9084379463440675078">"<xliff:g id="PREFIX">%1$s</xliff:g>மூடிய சுருள் அடைப்புக்குறி."</string>
@@ -1181,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"அணுகிய நேரம்: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"நேற்று அணுகிய நேரம்: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"அணுகிய நேரம்: <xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"எப்போதும் அனுமதி"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"தேர்வான ஆப்ஸை அனுமதி"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"ஆப்ஸைப் பயன்படுத்தும்போது"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"அனைத்தையும் நிராகரி"</string>
@@ -1190,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="DATA_TYPE">%2$s</xliff:g> ஐ அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்கவா?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"உடற்பயிற்சியும் ஆரோக்கியமும்"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"எப்போதும்"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"ஆப்ஸைப் பயன்படுத்தும்போது"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த உங்கள் தரவு அனைத்தையும் எப்போதும் அணுக முடியும்"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த உங்கள் தரவு அனைத்தையும் ஆப்ஸ் பயன்பாட்டின்போது அணுக முடியும்"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"அணுக அனுமதிக்கப்பட்டது"</string>
@@ -1206,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"இல்லை குறி"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"தற்போது, <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த தரவை எப்போதும் அணுக முடியும்"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"தற்போது, <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த தரவை ஆப்ஸ் பயன்பாட்டின்போது அணுக முடியும்"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸ் எப்போதும் அணுக அனுமதிக்கவா?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸ் <xliff:g id="DATA_TYPES">%2$s</xliff:g>க்கான அணுகலைக் கொண்டுள்ளது."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"உடற்பயிற்சி மற்றும் ஆரோக்கியத்திற்கான அனுமதிகளை நிர்வகியுங்கள்"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 ஆப்ஸ் பயன்படுத்தியுள்ளது}other{# ஆப்ஸ் பயன்படுத்தியுள்ளது}}"</string>
