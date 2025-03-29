@@ -19,8 +19,7 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Povezivanje zdravlja"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"Upravljajte pristupom aplikacija podacima o zdravlju"</string>
-    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
-    <skip />
+    <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"Novosti i upozorenja"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Dozvole i podaci"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Upravljajte podacima o zdravlju i fitnesu na uređaju i kontrolišite koje aplikacije mogu da im pristupaju"</string>
     <string name="data_title" msgid="4456619761533380816">"Podaci i pristup"</string>
@@ -43,6 +42,10 @@
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatsko brisanje, izvori podataka, rezervna kopija i vraćanje"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Više stavki"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Manje stavki"</string>
+    <string name="settings_manage_permission" msgid="3805037674102124581">"Povezivanje zdravlja"</string>
+    <string name="settings_combined_permissions" msgid="3660209476196545539">"Povezivanje zdravlja"</string>
+    <string name="settings_fitness_permissions" msgid="8133228907519227359">"Povezivanje zdravlja"</string>
+    <string name="settings_medical_permissions" msgid="4621535972501674863">"Povezivanje zdravlja"</string>
     <string name="backup_title" msgid="211503191266235085">"Rezervna kopija"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Izvori podataka i prioritet"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Podesi jedinice"</string>
@@ -64,6 +67,7 @@
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Aplikacije koje su nedavno pristupale vašim podacima će se automatski prikazivati ovde"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"Prikaži sve"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"Učitavanje nedavnih pristupa nije uspelo"</string>
+    <string name="recent_access_inactive_app" msgid="8754221676902025802">"Ova aplikacija više nije dostupna"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"Aktivnosti"</string>
     <string name="activity_category_lowercase" msgid="3007220578865400601">"aktivnosti"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"Telesne mere"</string>
@@ -369,12 +373,14 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"Dozvoli"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Dozvoli sve"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Ne dozvoli"</string>
-    <string name="request_permissions_data_access_type_read_write" msgid="3179244850699732544">"Odaberite podatke koje želite da ova aplikacija čita ili upisuje u Povezivanje zdravlja"</string>
-    <string name="request_permissions_data_access_type_read" msgid="6005792244220381045">"Odaberite podatke koje želite da ova aplikacija čita iz Povezivanja zdravlja"</string>
-    <string name="request_permissions_data_access_type_write" msgid="6369810467678676337">"Odaberite podatke koje želite da ova aplikacija upisuje u Povezivanje zdravlja"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Odaberite podatke koje želite da ova aplikacija čita ili upisuje u Povezivanje zdravlja"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Odaberite podatke koje želite da ova aplikacija čita iz Povezivanja zdravlja"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Odaberite podatke koje želite da ova aplikacija upisuje u Povezivanje zdravlja"</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Odaberite podatke koje želite da ova aplikacija čita ili upisuje u Povezivanje zdravlja"</string>
+    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Odaberite podatke koje želite da ova aplikacija čita iz Povezivanja zdravlja"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ako date pristup za čitanje, aplikacija može da čita nove podatke i podatke iz prethodnih 30 dana"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ako date pristup za čitanje, ova aplikacija može da čita nove i ranije podatke"</string>
-    <string name="request_permissions_header_title" msgid="4264236128614363479">"Želite da dozvolite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Povezivanju zdravlja?"</string>
+    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Želite da dozvolite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Povezivanju zdravlja?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Želite da dozvolite da <xliff:g id="APP_NAME">%1$s</xliff:g> pristupa podacima o fitnesu i velnesu?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Možete da saznate kako <xliff:g id="APP_NAME">%1$s</xliff:g> upravlja vašim podacima u: <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"politika privatnosti"</string>
@@ -412,7 +418,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"Izabrani dan"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"Prethodni dan"</string>
     <string name="default_error" msgid="7966868260616403475">"Došlo je do greške. Probajte ponovo."</string>
-    <string name="unkwown_resource" msgid="7932225227431922125">"Nepoznat resurs"</string>
+    <string name="unkwown_resource" msgid="5414479649607888981">"(bez naslova)"</string>
     <string name="raw_fhir_title" msgid="1295744907036066319">"Izvorni podaci"</string>
     <string name="raw_fhir_open_bracket" msgid="7974657451368655325">"<xliff:g id="PREFIX">%1$s</xliff:g>Otvorena velika zagrada."</string>
     <string name="raw_fhir_closed_bracket" msgid="9084379463440675078">"<xliff:g id="PREFIX">%1$s</xliff:g>Zatvorena velika zagrada."</string>
@@ -1174,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Pristupljeno: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Pristupano juče: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"Pristupano: <xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"Dozvoli uvek"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Dozvoli izabrano"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Dok koristim aplikaciju"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Odbij sve"</string>
@@ -1183,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Dozvoljavate da <xliff:g id="APP_NAME">%1$s</xliff:g> pristupa podacima: <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitnes i velnes"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Sve vreme"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"Dok se koristi"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> može uvek da pristupa svim podacima o fitnesu i velnesu"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> može da pristupa svim podacima o fitnesu i velnesu dok se koristi"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Dozvoljen pristup"</string>
@@ -1199,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Znak x"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Trenutno, <xliff:g id="APP_NAME">%1$s</xliff:g> može uvek da pristupa podacima o fitnesu i velnesu"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Trenutno, <xliff:g id="APP_NAME">%1$s</xliff:g> može da pristupa podacima o fitnesu i velnesu dok se koristi"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"Želite da dozvolite da <xliff:g id="APP_NAME">%1$s</xliff:g> stalno pristupa podacima o fitnesu i velnesu?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> ima pristup za: <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Upravljaj dozvolama za fitnes i velnes"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Koristi 1 aplikacija}one{Koristi # aplikacija}few{Koriste # aplikacije}other{Koristi # aplikacija}}"</string>

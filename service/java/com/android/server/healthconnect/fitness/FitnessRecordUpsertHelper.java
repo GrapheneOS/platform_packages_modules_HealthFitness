@@ -18,8 +18,8 @@ package com.android.server.healthconnect.fitness;
 
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.UUID_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.UUID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.addNameBasedUUIDTo;
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
@@ -34,12 +34,12 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
@@ -193,7 +193,7 @@ public class FitnessRecordUpsertHelper {
             Objects.requireNonNull(callingPackageName);
         }
 
-        List<UpsertTableRequest> upsertRequests = new ArrayList<>();
+        List<RecordUpsertTableRequest> upsertRequests = new ArrayList<>();
         @RecordTypeIdentifier.RecordType Set<Integer> recordTypes = new ArraySet<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
             mAppInfoHelper.populateAppInfoId(recordInternal, /* requireAllFields= */ true);
@@ -224,7 +224,7 @@ public class FitnessRecordUpsertHelper {
 
         return mTransactionManager.runAsTransaction(
                 db -> {
-                    for (UpsertTableRequest upsertRequest : upsertRequests) {
+                    for (RecordUpsertTableRequest upsertRequest : upsertRequests) {
                         if (shouldGenerateChangeLog) {
                             upsertionChangelogs.addUUID(
                                     upsertRequest.getRecordInternal().getRecordType(),
@@ -238,12 +238,14 @@ public class FitnessRecordUpsertHelper {
                         }
                         if (isInsertRequest) {
                             if (shouldPreferNewRecord) {
-                                mTransactionManager.insertOrReplaceOnConflict(db, upsertRequest);
+                                mTransactionManager.insertOrReplaceOnConflict(
+                                        db, upsertRequest.getUpsertTableRequest());
                             } else {
-                                mTransactionManager.insertOrIgnoreOnConflict(db, upsertRequest);
+                                mTransactionManager.insertOrIgnoreOnConflict(
+                                        db, upsertRequest.getUpsertTableRequest());
                             }
                         } else {
-                            mTransactionManager.update(upsertRequest);
+                            mTransactionManager.update(upsertRequest.getUpsertTableRequest());
                         }
                     }
                     if (shouldGenerateChangeLog) {
@@ -268,7 +270,7 @@ public class FitnessRecordUpsertHelper {
                 });
     }
 
-    private List<String> getUUIdsInOrder(List<UpsertTableRequest> upsertRequests) {
+    private List<String> getUUIdsInOrder(List<RecordUpsertTableRequest> upsertRequests) {
         return upsertRequests.stream()
                 .map((request) -> request.getRecordInternal().getUuid().toString())
                 .collect(Collectors.toList());
@@ -284,32 +286,31 @@ public class FitnessRecordUpsertHelper {
         return whereClauseForUpdateRequest;
     }
 
-    private UpsertTableRequest createUpsertRequestForRecord(
+    private RecordUpsertTableRequest createUpsertRequestForRecord(
             RecordInternal<?> recordInternal,
             boolean isInsertRequest,
             @Nullable ArrayMap<String, Boolean> extraPermsStateMap) {
         RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(recordInternal.getRecordType());
 
-        UpsertTableRequest request =
+        RecordUpsertTableRequest request =
                 recordHelper.getUpsertTableRequest(recordInternal, extraPermsStateMap);
-        request.setRecordType(recordHelper.getRecordIdentifier());
         if (!isInsertRequest) {
-            request.setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
+            request.getUpsertTableRequest()
+                    .setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
         }
-        request.setRecordInternal(recordInternal);
-
         return request;
     }
 
     private void addChangelogsForOtherModifiedRecords(
             long callingPackageAppInfoId,
-            UpsertTableRequest upsertRequest,
+            RecordUpsertTableRequest upsertRequest,
             ChangeLogsHelper.ChangeLogs modificationChangelogs) {
         // Carries out read requests provided by the record helper and uses the results to add
         // changelogs to the transaction.
         final RecordHelper<?> recordHelper =
-                mInternalHealthConnectMappings.getRecordHelper(upsertRequest.getRecordType());
+                mInternalHealthConnectMappings.getRecordHelper(
+                        upsertRequest.getRecordInternal().getRecordType());
         for (ReadTableRequest additionalChangelogUuidRequest :
                 recordHelper.getReadRequestsForRecordsModifiedByUpsertion(
                         upsertRequest.getRecordInternal().getUuid(),

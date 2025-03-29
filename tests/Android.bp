@@ -7,15 +7,10 @@ package {
 filegroup {
     name: "robo-tests-sources-exclude",
     srcs: [
-        // Not sure, it is getting an index out of bounds for shared memory
-        "unittests/src/android/health/connect/MigrationEntityParcelTest.java",
         // This test could be made to work by mocking out the package manager.
         // However, at the moment it is working more as an integration test on the real platform.
         // It is safer leaving the test as is.
         "unittests/src/android/health/connect/HealthPermissionsTest.java",
-        // Needs parcel native code
-        "unittests/src/android/healthconnect/internal/datatypes/SleepStageInternalTest.java",
-        "unittests/src/android/healthconnect/internal/datatypes/SleepSessionInternalTest.java",
         // Still uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/HealthConnectManagerServiceTest.java",
         // Uses ExtendedMockito
@@ -24,22 +19,18 @@ filegroup {
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreWithoutMocksTest.java",
         // These fail because the Robolectric mocks for package manager return null rather
         // than application icon or throw exception for getApplicationIcon() when not set.
+        // Should be fixed when android gets latest robolectric update.
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupRestoreTest.java",
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupSettingsHelperTest.java",
         "unittests/src/com/android/server/healthconnect/backuprestore/CloudRestoreManagerTest.java",
-        // Uses ExtendedMockito
+        // Fails due to attempts to reference an inaccessible file don't fail with Robolectric.
         "unittests/src/com/android/server/healthconnect/exportimport/ExportManagerTest.java",
-        // Doesn't work because tries to read resources from the Health Connect APK.
-        // Possibly this can be fixed by changing "Instrumentation for" or something like that
-        "unittests/src/com/android/server/healthconnect/exportimport/ExportImportNotificationFactoryTest.java",
-        // Requires TestUtils for waitForAllTasksToCOmplete()
+        // Failing because of getIntrinicWidth, Robolectric application icon.
+        // Should be fixed when android gets latest robolectric update.
         "unittests/src/com/android/server/healthconnect/exportimport/ImportManagerTest.java",
-        // Not passing because the SQLite library we have doesn't support dbstat
-        "unittests/src/com/android/server/healthconnect/logging/DatabaseStatsCollectorTest.java",
-        // Uses ExtendedMockito
-        "unittests/src/com/android/server/healthconnect/migration/MigrationStateManagerTest.java",
-        // Fails due to resources not included
-        "unittests/src/com/android/server/healthconnect/migration/notification/MigrationNotificationFactoryTest.java",
+        // Explicit tests that needed resources are present in the controller APK.
+        // Not expected to be bivalent.
+        "unittests/src/com/android/server/healthconnect/migration/notification/HealthConnectResourcesContextTest.java",
         // Doesn't work because does complicated things with Health Connect permissions on previous
         // SDK versions for some tests.
         // These are not represented well by Robolectric
@@ -88,6 +79,9 @@ android_robolectric_test {
         "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
         ":robo-tests-sources-exclude",
     ],
+    test_suites: [
+        "general-tests",
+    ],
     static_libs: [
         // This is required to get mocking of final classes
         "inline-mockito-robolectric-prebuilt",
@@ -110,6 +104,8 @@ android_robolectric_test {
     ],
     java_resource_dirs: ["config"],
     libs: [
+        // Needed for android.os.ext.SdkExtensions in some tests
+        "framework-sdkextensions.stubs.module_lib",
     ],
     instrumentation_for: "HealthConnectFakeTestApp",
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package healthconnect.exportimport;
+package com.android.server.healthconnect.exportimport;
 
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_GENERIC_ERROR;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_NOT_ENOUGH_SPACE;
@@ -26,10 +26,14 @@ import static com.android.server.healthconnect.exportimport.ExportImportNotifica
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.health.connect.HealthConnectManager;
 import android.platform.test.annotations.EnableFlags;
@@ -39,23 +43,27 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.server.healthconnect.exportimport.ExportImportNotificationFactory;
+import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-
-import java.util.Optional;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
 public class ExportImportNotificationFactoryTest {
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
-    @Mock private Context mContext;
+    private Context mContext;
+    @Mock private HealthConnectResourcesContext mResourcesContext;
 
+    private static final Bitmap BITMAP = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+    private static final Icon APP_ICON = Icon.createWithBitmap(BITMAP);
     private static final String NOTIFICATION_CHANNEL_ID = "healthconnect-channel";
 
     private static final String HEALTH_CONNECT_RESTART_IMPORT_ACTION =
@@ -70,7 +78,18 @@ public class ExportImportNotificationFactoryTest {
     @Before
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
-        mFactory = new ExportImportNotificationFactory(mContext, NOTIFICATION_CHANNEL_ID);
+        mFactory =
+                new ExportImportNotificationFactory(
+                        mContext, mResourcesContext, NOTIFICATION_CHANNEL_ID);
+        // Return the requested name as the string resource
+        when(mResourcesContext.getStringByName(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(mResourcesContext.getStringByNameWithArgs(any(), any()))
+                .thenAnswer(
+                        invocation -> invocation.getArgument(0) + "," + invocation.getArgument(1));
+        when(mResourcesContext.getIconByDrawableName(
+                        ExportImportNotificationFactory.APP_ICON_DRAWABLE_NAME))
+                .thenReturn(APP_ICON);
     }
 
     @Test
@@ -78,16 +97,13 @@ public class ExportImportNotificationFactoryTest {
         String[] expectedStrings = mFactory.getNotificationStringResources();
         for (String s : expectedStrings) {
             String fetched = mFactory.getStringResource(s);
-            String failMessage = "String resource with name " + s + " cannot be found.";
-            assertWithMessage(failMessage).that(fetched).isNotNull();
+            assertThat(fetched).isEqualTo(s);
         }
     }
 
     @Test
     public void testAppIconDrawableExists() {
-        Optional<Icon> fetchedAppIcon = mFactory.getAppIcon();
-        String failMessage = "Drawable resource with name 'health_connect_logo' cannot be found.";
-        assertWithMessage(failMessage).that(fetchedAppIcon).isNotNull();
+        assertThat(mFactory.getAppIcon()).hasValue(APP_ICON);
     }
 
     @Test
@@ -107,7 +123,7 @@ public class ExportImportNotificationFactoryTest {
         assertThat(result.actions).hasLength(1);
 
         Notification.Action action = result.actions[0];
-        assertThat(action.title.toString()).isEqualTo("Open");
+        assertThat(action.title.toString()).isEqualTo("import_notification_open_intent_button");
 
         PendingIntent pendingIntent = action.actionIntent;
         assertThat(pendingIntent.getCreatorPackage())
@@ -132,7 +148,8 @@ public class ExportImportNotificationFactoryTest {
         assertThat(result.actions).hasLength(1);
 
         Notification.Action action = result.actions[0];
-        assertThat(action.title.toString()).isEqualTo("Choose file");
+        assertThat(action.title.toString())
+                .isEqualTo("import_notification_choose_file_intent_button");
 
         PendingIntent pendingIntent = action.actionIntent;
         assertThat(pendingIntent.getCreatorPackage())
@@ -157,7 +174,8 @@ public class ExportImportNotificationFactoryTest {
         assertThat(result.actions).hasLength(1);
 
         Notification.Action action = result.actions[0];
-        assertThat(action.title.toString()).isEqualTo("Update now");
+        assertThat(action.title.toString())
+                .isEqualTo("import_notification_update_now_intent_button");
 
         PendingIntent pendingIntent = action.actionIntent;
         assertThat(pendingIntent.getCreatorPackage())
@@ -182,7 +200,8 @@ public class ExportImportNotificationFactoryTest {
         assertThat(result.actions).hasLength(1);
 
         Notification.Action action = result.actions[0];
-        assertThat(action.title.toString()).isEqualTo("Try again");
+        assertThat(action.title.toString())
+                .isEqualTo("import_notification_try_again_intent_button");
 
         PendingIntent pendingIntent = action.actionIntent;
 
@@ -209,7 +228,7 @@ public class ExportImportNotificationFactoryTest {
         assertThat(result.actions).hasLength(1);
 
         Notification.Action action = result.actions[0];
-        assertThat(action.title.toString()).isEqualTo("Set up");
+        assertThat(action.title.toString()).isEqualTo("export_notification_set_up_intent_button");
 
         PendingIntent pendingIntent = action.actionIntent;
 
@@ -228,6 +247,7 @@ public class ExportImportNotificationFactoryTest {
 
         assertThat(result.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
         assertThat(result.extras.getString(Notification.EXTRA_TITLE)).isNotNull();
-        assertThat(result.extras.getString(Notification.EXTRA_TITLE)).contains("More space needed");
+        assertThat(result.extras.getString(Notification.EXTRA_TITLE))
+                .contains("export_notification_error_more_space_needed_title");
     }
 }

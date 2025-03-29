@@ -217,6 +217,23 @@ public final class TestUtils {
     }
 
     /**
+     * Inserts records to the database with {@code timeoutSeconds}.
+     *
+     * @param records records to insert
+     * @return inserted records
+     */
+    public static List<Record> insertRecords(List<? extends Record> records, int timeoutSeconds)
+            throws InterruptedException {
+        HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
+        getHealthConnectManager(ApplicationProvider.getApplicationContext())
+                .insertRecords(
+                        unmodifiableList(records), Executors.newSingleThreadExecutor(), receiver);
+        List<Record> returnedRecords = receiver.getResponse(timeoutSeconds).getRecords();
+        assertThat(returnedRecords).hasSize(records.size());
+        return returnedRecords;
+    }
+
+    /**
      * Inserts records to the database.
      *
      * @param records records to insert.

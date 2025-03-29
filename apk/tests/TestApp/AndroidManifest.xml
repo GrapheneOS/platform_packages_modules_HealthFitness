@@ -64,5 +64,14 @@
                 <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
             </intent-filter>
         </activity>
+        <activity-alias
+            android:name="OnboardingActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity"
+            android:permission="android.permission.health.START_ONBOARDING">
+            <intent-filter>
+                <action android:name="android.health.connect.action.ACTION_SHOW_ONBOARDING" />
+            </intent-filter>
+        </activity-alias>
     </application>
 </manifest>

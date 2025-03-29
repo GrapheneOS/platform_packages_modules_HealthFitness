@@ -41,7 +41,6 @@ import static android.health.connect.HealthPermissions.READ_STEPS;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
-import static com.android.healthfitness.flags.Flags.FLAG_PERMISSION_METRICS;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
@@ -190,8 +189,6 @@ public class DailyLoggingServiceTest {
                         eq(true));
     }
 
-    @Test
-    @EnableFlags(FLAG_PERMISSION_METRICS)
     public void permissionMetricsEnabled_twoConnectedApps_testPermissionsStatsLogs() {
 
         when(mUsageStatsCollector.getPackagesHoldingHealthPermissions())
@@ -221,30 +218,6 @@ public class DailyLoggingServiceTest {
                                 new String[] {
                                     "READ_STEPS",
                                 }));
-    }
-
-    @Test
-    @DisableFlags(FLAG_PERMISSION_METRICS)
-    public void permissionMetricsDisabled_oneConnectedApps_testPermissionsStatsDoNotLog() {
-        when(mUsageStatsCollector.getPackagesHoldingHealthPermissions())
-                .thenReturn(
-                        Map.of(
-                                CONNECTED_APP_PACKAGE_NAME,
-                                List.of(READ_DISTANCE, READ_EXERCISE),
-                                CONNECTED_APP_TWO_PACKAGE_NAME,
-                                List.of(READ_STEPS)));
-
-        DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector,
-                mDatabaseStatsCollector,
-                mEcosystemStatsCollector,
-                mHealthFitnessStatsLog);
-
-        verify(mHealthFitnessStatsLog, never())
-                .write(
-                        eq(HEALTH_CONNECT_PERMISSION_STATS),
-                        eq(CONNECTED_APP_PACKAGE_NAME),
-                        eq(new String[] {"READ_DISTANCE"}));
     }
 
     @Test

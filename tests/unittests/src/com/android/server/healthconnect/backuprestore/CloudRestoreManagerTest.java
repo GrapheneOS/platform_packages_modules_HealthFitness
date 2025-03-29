@@ -43,7 +43,7 @@ import static org.junit.Assert.assertThrows;
 
 import android.content.Context;
 import android.health.connect.HealthDataCategory;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
@@ -201,12 +201,45 @@ public class CloudRestoreManagerTest {
     }
 
     @Test
+    public void restoreChanges_duplicatedChangesIgnored() {
+        Record stepsRecord = generateRecord(RecordTypeIdentifier.RECORD_TYPE_STEPS);
+        RestoreChange stepsChange =
+                new RestoreChange(
+                        BackupData.newBuilder().setRecord(stepsRecord).build().toByteArray());
+        Record bloodPressureRecord =
+                generateRecord(RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE);
+        RestoreChange bloodPressureChange =
+                new RestoreChange(
+                        BackupData.newBuilder()
+                                .setRecord(bloodPressureRecord)
+                                .build()
+                                .toByteArray());
+
+        // First restore
+        mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
+
+        // Second restore does not throw any exceptions
+        mCloudRestoreManager.restoreChanges(List.of(stepsChange, bloodPressureChange));
+        List<RecordInternal<?>> records =
+                mTransactionTestUtils.readRecordsByIds(
+                        ImmutableMap.of(
+                                RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                                List.of(UUID.fromString(stepsRecord.getUuid())),
+                                RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
+                                List.of(UUID.fromString(bloodPressureRecord.getUuid()))));
+        assertThat(records).hasSize(2);
+        assertThat(mRecordProtoConverter.toRecordProto(records.get(0))).isEqualTo(stepsRecord);
+        assertThat(mRecordProtoConverter.toRecordProto(records.get(1)))
+                .isEqualTo(bloodPressureRecord);
+    }
+
+    @Test
     public void whenRestoreSettingsCalled_noExportSettings_settingsSuccessfullyRestored() {
         CloudBackupSettingsHelper cloudBackupSettingsHelper =
                 new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);
         setupInitialSettings();
         Settings settingsToRestore = createSettingsToRestore(false);
-        mCloudRestoreManager.restoreSettings(new BackupSettings(settingsToRestore.toByteArray()));
+        mCloudRestoreManager.restoreSettings(new BackupMetadata(settingsToRestore.toByteArray()));
 
         Settings currentSettings = cloudBackupSettingsHelper.collectUserSettings();
         mDatabaseHelpers.clearAllData(mTransactionManager);
@@ -230,7 +263,7 @@ public class CloudRestoreManagerTest {
                 ENERGY_UNIT_PREF_KEY, Settings.EnergyUnitProto.CALORIE.toString());
         setupInitialSettings();
         Settings settingsToRestore = createSettingsToRestore(true);
-        mCloudRestoreManager.restoreSettings(new BackupSettings(settingsToRestore.toByteArray()));
+        mCloudRestoreManager.restoreSettings(new BackupMetadata(settingsToRestore.toByteArray()));
 
         Settings currentSettings = cloudBackupSettingsHelper.collectUserSettings();
         mDatabaseHelpers.clearAllData(mTransactionManager);
@@ -345,7 +378,7 @@ public class CloudRestoreManagerTest {
 
     @Test
     public void restoreInvalidSettings_throwsException() {
-        BackupSettings backupSettings = new BackupSettings(new byte[] {45, 36});
+        BackupMetadata backupSettings = new BackupMetadata(new byte[] {45, 36});
         assertThrows(
                 IllegalArgumentException.class,
                 () -> mCloudRestoreManager.restoreSettings(backupSettings));
@@ -367,7 +400,7 @@ public class CloudRestoreManagerTest {
                         .setAutoDeleteFrequencyValue(invalidEnumValue)
                         .build();
 
-        BackupSettings backupSettings = new BackupSettings(settings.toByteArray());
+        BackupMetadata backupSettings = new BackupMetadata(settings.toByteArray());
         mCloudRestoreManager.restoreSettings(backupSettings);
 
         // stay the same as initial settings

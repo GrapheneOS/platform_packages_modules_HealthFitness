@@ -39,7 +39,6 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
-import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -83,6 +82,7 @@ public class ExportManager {
     private final File mEnvironmentDataDirectory;
     private final ExportImportLogger mExportImportLogger;
     private final ErrorReporter mErrorReporter;
+    private final Compressor mCompressor;
 
     // Tables to drop instead of tables to keep to avoid risk of bugs if new data types are added.
     /**
@@ -116,7 +116,8 @@ public class ExportManager {
                 notificationSender,
                 environmentDataDirectory,
                 exportImportLogger,
-                new ErrorReporter());
+                new ErrorReporter(),
+                new Compressor());
     }
 
     @VisibleForTesting
@@ -128,7 +129,8 @@ public class ExportManager {
             HealthConnectNotificationSender notificationSender,
             File environmentDataDirectory,
             ExportImportLogger exportImportLogger,
-            ErrorReporter errorReporter) {
+            ErrorReporter errorReporter,
+            Compressor compressor) {
         mContext = context;
         mClock = clock;
         mExportImportSettingsStorage = exportImportSettingsStorage;
@@ -137,11 +139,14 @@ public class ExportManager {
         mEnvironmentDataDirectory = environmentDataDirectory;
         mExportImportLogger = exportImportLogger;
         mErrorReporter = errorReporter;
+        mCompressor = compressor;
     }
 
     /**
      * Makes a local copy of the HC database, deletes the unnecessary data for export and sends the
      * data to a cloud provider.
+     *
+     * @return true if the export was successful, false otherwise
      */
     public synchronized boolean runExport(UserHandle userHandle) {
         Slog.i(TAG, "Export started.");
@@ -207,7 +212,7 @@ public class ExportManager {
             }
 
             try {
-                Compressor.compress(
+                mCompressor.compress(
                         localExportDbFile, LOCAL_EXPORT_DATABASE_FILE_NAME, localExportZipFile);
             } catch (Exception e) {
                 mErrorReporter.failed(ErrorReporter.COMPRESSION, e, intSizeInKb(localExportDbFile));

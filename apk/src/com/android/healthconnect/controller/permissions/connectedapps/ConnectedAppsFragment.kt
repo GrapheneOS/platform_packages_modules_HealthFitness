@@ -45,6 +45,7 @@ import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
 import com.android.healthconnect.controller.shared.Constants.APP_UPDATE_NEEDED_BANNER_SEEN
 import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.ALLOWED
@@ -68,8 +69,8 @@ import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
-import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.healthconnect.controller.utils.showLoadingDialog
+import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.TopIntroPreference
@@ -103,6 +104,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     @Inject lateinit var appStoreUtils: AppStoreUtils
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
     @Inject lateinit var navigationUtils: NavigationUtils
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private val viewModel: ConnectedAppsViewModel by viewModels()
     private val deletionViewModel: DeletionViewModel by activityViewModels()
@@ -228,23 +230,31 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     }
 
     private fun observeConnectedApps() {
+        setupMenu(R.menu.connected_apps, viewLifecycleOwner, logger) { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_search -> {
+                    searchMenuItem = menuItem
+                    logger.logInteraction(AppPermissionsElement.SEARCH_BUTTON)
+                    findNavController().navigate(R.id.action_connectedApps_to_searchApps)
+                    true
+                }
+                R.id.menu_show_hide_system -> {
+                    val isShowingSystem = viewModel.showSystemApps.value ?: false
+                    menuItem.setTitle(
+                        if (isShowingSystem) R.string.menu_show_system
+                        else R.string.menu_hide_system
+                    )
+                    viewModel.setShowSystemApps(!isShowingSystem)
+                    true
+                }
+                else -> false
+            }
+        }
         viewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             clearAllCategories()
             if (connectedApps.isEmpty()) {
-                setupSharedMenu(viewLifecycleOwner, logger)
                 setUpEmptyState()
             } else {
-                setupMenu(R.menu.connected_apps, viewLifecycleOwner, logger) { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.menu_search -> {
-                            searchMenuItem = menuItem
-                            logger.logInteraction(AppPermissionsElement.SEARCH_BUTTON)
-                            findNavController().navigate(R.id.action_connectedApps_to_searchApps)
-                            true
-                        }
-                        else -> false
-                    }
-                }
                 logger.logImpression(AppPermissionsElement.SEARCH_BUTTON)
 
                 topIntroPreference.title = getString(R.string.connected_apps_text)
@@ -364,7 +374,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 .sortedBy { it.appMetadata.appName }
                 .forEach { app ->
                     allowedAppsCategory.addPreference(
-                        getAppPreference(app) { navigateToAppInfoScreen(app) }
+                        getAppPreference(app) { navigateToAppInfoOrOnboarding(app) }
                     )
                 }
         }
@@ -378,13 +388,13 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 .sortedBy { it.appMetadata.appName }
                 .forEach { app ->
                     notAllowedAppsCategory.addPreference(
-                        getAppPreference(app) { navigateToAppInfoScreen(app) }
+                        getAppPreference(app) { navigateToAppInfoOrOnboarding(app) }
                     )
                 }
         }
     }
 
-    private fun navigateToAppInfoScreen(app: ConnectedAppMetadata) {
+    private fun navigateToAppInfoOrOnboarding(app: ConnectedAppMetadata) {
         val navigationId =
             when (app.permissionsType) {
                 AppPermissionsType.FITNESS_PERMISSIONS_ONLY ->
@@ -394,6 +404,16 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                 AppPermissionsType.COMBINED_PERMISSIONS ->
                     R.id.action_connectedApps_to_combinedPermissions
             }
+        val currentApp =
+            viewModel.connectedApps.value?.find {
+                it.appMetadata.packageName == app.appMetadata.packageName
+            }
+        if (
+            currentApp!!.status == DENIED &&
+                tryLaunchAppOnboardingActivity(healthPermissionReader, app.appMetadata.packageName)
+        ) {
+            return
+        }
         findNavController()
             .navigate(
                 navigationId,

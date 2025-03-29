@@ -29,7 +29,6 @@ import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectDailyService;
-import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 
 import java.time.Duration;
 import java.util.Objects;

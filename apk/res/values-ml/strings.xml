@@ -19,8 +19,7 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"നിങ്ങളുടെ ആരോഗ്യം സംബന്ധിച്ച ഡാറ്റയിലേക്കുള്ള ആപ്പ് ആക്‌സസ് മാനേജ് ചെയ്യുക"</string>
-    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
-    <skip />
+    <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"അപ്‌ഡേറ്റുകളും മുന്നറിയിപ്പുകളും"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"അനുമതികളും ഡാറ്റയും"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"നിങ്ങളുടെ ഉപകരണത്തിൽ ആരോഗ്യ, ഫിറ്റ്നസ് ഡാറ്റ മാനേജ് ചെയ്യൂ, ഏതെല്ലാം ആപ്പുകൾക്ക് അത് ആക്‌സസ് ചെയ്യാനാകുമെന്ന് നിയന്ത്രിക്കുകയും ചെയ്യൂ"</string>
     <string name="data_title" msgid="4456619761533380816">"ഡാറ്റയും ആക്‌സസും"</string>
@@ -43,6 +42,10 @@
     <string name="manage_data_summary" msgid="8537870912521944449">"സ്വയമേവ ഇല്ലാതാക്കൽ, ഡാറ്റാ ഉറവിടങ്ങൾ, ബാക്കപ്പ്, പുനഃസ്ഥാപിക്കൽ"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"കൂടുതൽ ഇനങ്ങൾ"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"കുറച്ച് മാത്രം ഇനങ്ങൾ"</string>
+    <string name="settings_manage_permission" msgid="3805037674102124581">"Health Connect"</string>
+    <string name="settings_combined_permissions" msgid="3660209476196545539">"Health Connect"</string>
+    <string name="settings_fitness_permissions" msgid="8133228907519227359">"Health Connect"</string>
+    <string name="settings_medical_permissions" msgid="4621535972501674863">"Health Connect"</string>
     <string name="backup_title" msgid="211503191266235085">"ബാക്കപ്പ് ചെയ്യുക"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"ഡാറ്റ ഉറവിടങ്ങളും മുൻഗണനയും"</string>
     <string name="set_units_title" msgid="2657822539603758029">"യൂണിറ്റുകൾ സജ്ജീകരിക്കുക"</string>
@@ -64,6 +67,7 @@
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"അടുത്തിടെ നിങ്ങളുടെ ഡാറ്റ ആക്‌സസ് ചെയ്‌ത ആപ്പുകൾ സ്വയമേവ ഇവിടെ കാണിക്കും"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"എല്ലാം കാണുക"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"അടുത്തിടെയുള്ള ആക്‌സസ് ലോഡ് ചെയ്യാനായില്ല"</string>
+    <string name="recent_access_inactive_app" msgid="8754221676902025802">"ഈ ആപ്പ് ഇനി ലഭ്യമല്ല"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"ആക്റ്റിവിറ്റി"</string>
     <string name="activity_category_lowercase" msgid="3007220578865400601">"ആക്റ്റിവിറ്റി"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"ശാരീരിക അളവുകൾ"</string>
@@ -369,12 +373,14 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"അനുവദിക്കുക"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"എല്ലാം അനുവദിക്കുക"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"അനുവദിക്കരുത്"</string>
-    <string name="request_permissions_data_access_type_read_write" msgid="3179244850699732544">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യണമെന്നോ റൈറ്റ് ചെയ്യണമെന്നോ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
-    <string name="request_permissions_data_access_type_read" msgid="6005792244220381045">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
-    <string name="request_permissions_data_access_type_write" msgid="6369810467678676337">"Health Connect-ലേക്ക് ഈ ആപ്പ് എഴുതാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യണമെന്നോ റൈറ്റ് ചെയ്യണമെന്നോ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect-ൽ ഈ ആപ്പ് റൈറ്റ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യണമെന്നോ റൈറ്റ് ചെയ്യണമെന്നോ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
+    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"നിങ്ങൾ റീഡ് ചെയ്യാനുള്ള ആക്‌സസ് നൽകിയാൽ, പുതിയ ഡാറ്റയും കഴിഞ്ഞ 30 ദിവസത്തെ ഡാറ്റയും ആപ്പിന് റീഡ് ചെയ്യാനാകും"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"നിങ്ങൾ റീഡ് ആക്‌സസ് നൽകിയാൽ, പുതിയ ഡാറ്റയും മുമ്പത്തെ ഡാറ്റയും ആപ്പിന് റീഡ് ചെയ്യാനാകും"</string>
-    <string name="request_permissions_header_title" msgid="4264236128614363479">"Health Connect ആക്‌സസ് ചെയ്യാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിനെ അനുവദിക്കണോ?"</string>
+    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connect ആക്‌സസ് ചെയ്യാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിനെ അനുവദിക്കണോ?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"ഫിറ്റ്‌നസ്, വെൽനസ് ഡാറ്റ ആക്സസ് ചെയ്യാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിനെ അനുവദിക്കണോ?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"നിങ്ങളുടെ ഡാറ്റ <xliff:g id="APP_NAME">%1$s</xliff:g> കൈകാര്യം ചെയ്യുന്നത് എങ്ങനെയെന്ന് അവരുടെ <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> എന്നതിൽ നിന്ന് മനസ്സിലാക്കാം"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"സ്വകാര്യതാ നയം"</string>
@@ -412,7 +418,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"തിരഞ്ഞെടുത്ത ദിവസം"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"മുമ്പത്തെ ദിവസം"</string>
     <string name="default_error" msgid="7966868260616403475">"എന്തോ കുഴപ്പമുണ്ടായി. വീണ്ടും ശ്രമിക്കുക."</string>
-    <string name="unkwown_resource" msgid="7932225227431922125">"അജ്ഞാത വിഭവസാമഗ്രി"</string>
+    <string name="unkwown_resource" msgid="5414479649607888981">"(പേരില്ല)"</string>
     <string name="raw_fhir_title" msgid="1295744907036066319">"ഉറവിട ഡാറ്റ"</string>
     <string name="raw_fhir_open_bracket" msgid="7974657451368655325">"<xliff:g id="PREFIX">%1$s</xliff:g>ഓപ്പൺ ബ്രാക്കറ്റ്."</string>
     <string name="raw_fhir_closed_bracket" msgid="9084379463440675078">"<xliff:g id="PREFIX">%1$s</xliff:g>ക്ലോസ്ഡ് ബ്രാക്കറ്റ്."</string>
@@ -1174,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>-ന് ആക്‌സസ് ചെയ്തു"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"ഇന്നലെ <xliff:g id="TIME_DATE">%1$s</xliff:g>-ന് ആക്‌സസ് ചെയ്തു"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"<xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g>-ന് ആക്‌സസ് ചെയ്തു"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"എല്ലാ സമയത്തും അനുവദിക്കുക"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"തിരഞ്ഞെടുത്തവ അനുവദിക്കുക"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"ആപ്പ് ഉപയോഗിക്കുമ്പോൾ"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"എല്ലാം നിരസിക്കുക"</string>
@@ -1183,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="DATA_TYPE">%2$s</xliff:g> ആക്‌സസ് ചെയ്യാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിനെ അനുവദിക്കണോ?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"ഫിറ്റ്നസും ശാരീരികക്ഷമതയും"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"എല്ലായ്‌പ്പോഴും"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"ഉപയോഗത്തിലുള്ളപ്പോൾ"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്ന ആപ്പിന് എല്ലാ സമയത്തും നിങ്ങളുടെ എല്ലാ ഫിറ്റ്‌നസ്, വെൽനെസ് ഡാറ്റയും ആക്‌സസ് ചെയ്യാനാകും"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്ന ആപ്പിന് ഉപയോഗിക്കുന്ന സമയത്ത് നിങ്ങളുടെ എല്ലാ ഫിറ്റ്‌നസ്, വെൽനെസ് ഡാറ്റയും ആക്‌സസ് ചെയ്യാനാകും"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"ആക്സസ് ചെയ്യാൻ അനുവദിച്ചു"</string>
@@ -1199,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"ക്രോസ് മാർക്ക്"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"നിലവിൽ, <xliff:g id="APP_NAME">%1$s</xliff:g> എന്ന ആപ്പിന് എല്ലാ സമയത്തും ഫിറ്റ്‌നസ്, വെൽനെസ് ഡാറ്റ ആക്‌സസ് ചെയ്യാനാകും"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"നിലവിൽ, <xliff:g id="APP_NAME">%1$s</xliff:g> എന്ന ആപ്പിന് ഉപയോഗിക്കുന്ന സമയത്ത് ഫിറ്റ്‌നസ്, വെൽനെസ് ഡാറ്റ ആക്‌സസ് ചെയ്യാനാകും"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"എല്ലായ്‌പ്പോഴും ഫിറ്റ്‌നസ്, വെൽനെസ് ഡാറ്റയിലേക്ക് <xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിന് ആക്‌സസ് അനുവദിക്കണോ?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്നതിന് <xliff:g id="DATA_TYPES">%2$s</xliff:g> എന്നതിലേക്ക് ആക്‌സസ് ഉണ്ട്."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"ഫിറ്റ്നസ്, വെൽനെസ് അനുമതികൾ മാനേജ് ചെയ്യുക"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{ഒരു ആപ്പ് ഉപയോഗിച്ചു}other{# ആപ്പുകൾ ഉപയോഗിച്ചു}}"</string>

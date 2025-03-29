@@ -28,7 +28,6 @@ import android.os.UserManager;
 import android.util.Log;
 import android.util.Slog;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.BackgroundThread;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
@@ -100,15 +99,9 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
         // the intent tracker, if the package was removed. Keep calling this even if
         // isPackageRemoved is true.
         boolean removePermissions;
-        if (Flags.permissionTrackerFixMappingInit()) {
-            removePermissions =
-                    !mPermissionIntentTracker.updateAndGetSupportsPackageUsageIntent(
-                            packageName, userHandle);
-        } else {
-            removePermissions =
-                    mPermissionIntentTracker.updateStateAndGetIfIntentWasRemoved(
-                            packageName, userHandle);
-        }
+        removePermissions =
+                !mPermissionIntentTracker.updateAndGetSupportsPackageUsageIntent(
+                        packageName, userHandle);
 
         // If the package was removed, we reset grant time. If the package is present but the health
         // intent support removed we revoke all health permissions and also reset grant time

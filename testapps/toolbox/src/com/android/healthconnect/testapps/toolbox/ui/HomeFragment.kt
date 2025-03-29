@@ -145,12 +145,14 @@ class HomeFragment : Fragment() {
         }
         view.findViewById<Button>(R.id.phr_options_button).setOnClickListener { goToPhrOptions() }
 
-
         view.requireViewById<Button>(R.id.exit_process_button).setOnClickListener {
             exitProcess(status = 0)
         }
         view.findViewById<Button>(R.id.new_screens_button).setOnClickListener {
             startActivity(Intent(requireActivity(), HomeActivity::class.java))
+        }
+        view.requireViewById<Button>(R.id.backup_restore_button).setOnClickListener {
+            goToBackupRestorePage()
         }
 
         // view
@@ -235,5 +237,9 @@ class HomeFragment : Fragment() {
 
     private fun goToPhrOptions() {
         mNavigationController.navigate(R.id.action_homeFragment_to_phrOptions)
+    }
+
+    private fun goToBackupRestorePage() {
+        mNavigationController.navigate(R.id.action_home_screen_to_backupRestoreScreen)
     }
 }

@@ -19,8 +19,7 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"एपलाई स्वास्थ्यसम्बन्धी जानकारी प्रयोग गर्न दिने कि नदिने भन्ने कुरा व्यवस्थापन गर्नुहोस्"</string>
-    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
-    <skip />
+    <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"अपडेट तथा अलर्टहरू"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"अनुमति तथा डेटा"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"आफ्नो डिभाइसमा भएका स्वास्थ्य र तन्दुरुस्तीसम्बन्धी जानकारी व्यवस्थापन गर्नुहोस् र ती जानकारी कुन कुन एपलाई प्रयोग गर्न दिने भन्ने कुरा नियन्त्रण गर्नुहोस्"</string>
     <string name="data_title" msgid="4456619761533380816">"डेटा र एक्सेस"</string>
@@ -43,6 +42,10 @@
     <string name="manage_data_summary" msgid="8537870912521944449">"स्वतः मेटाउने सुविधा, डेटाको स्रोत, ब्याकअप र रिस्टोर गर्ने सुविधा"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"थप सामग्री"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"अझ कम सामग्री"</string>
+    <string name="settings_manage_permission" msgid="3805037674102124581">"Health Connect"</string>
+    <string name="settings_combined_permissions" msgid="3660209476196545539">"Health Connect"</string>
+    <string name="settings_fitness_permissions" msgid="8133228907519227359">"Health Connect"</string>
+    <string name="settings_medical_permissions" msgid="4621535972501674863">"Health Connect"</string>
     <string name="backup_title" msgid="211503191266235085">"ब्याकअप"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"डेटाका स्रोतहरू र प्राथमिकता"</string>
     <string name="set_units_title" msgid="2657822539603758029">"एकाइ सेट गर्नुहोस्"</string>
@@ -64,6 +67,7 @@
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"हालसालै तपाईंको डेटा एक्सेस गरेका एपहरू स्वतः यहाँ देखिने छन्"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"सबै हेर्नुहोस्"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"हालसालै गरिएको एक्सेससम्बन्धी जानकारी लोड गर्न सकिएन"</string>
+    <string name="recent_access_inactive_app" msgid="8754221676902025802">"यो एप अब उपलब्ध छैन"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"क्रियाकलाप"</string>
     <string name="activity_category_lowercase" msgid="3007220578865400601">"क्रियाकलाप"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"शारीरिक नाप"</string>
@@ -369,12 +373,14 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"अनुमति दिनुहोस्"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"एपलाई सबै अनुमति दिनुहोस्"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"अनुमति नदिनुहोस्"</string>
-    <string name="request_permissions_data_access_type_read_write" msgid="3179244850699732544">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी रिड वा राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
-    <string name="request_permissions_data_access_type_read" msgid="6005792244220381045">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी रिड गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
-    <string name="request_permissions_data_access_type_write" msgid="6369810467678676337">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"तपाईं यो एपलाई Health Connect मा कुन कुन डेटा रिड वा राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी रिड गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"तपाईं यो एपलाई Health Connect मा कुन कुन डेटा रिड वा राइट गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
+    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी रिड गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"तपाईंले डेटा रिड गर्ने अनुमति दिनुभयो भने यो एपले नयाँ डेटाका साथै पछिल्ला ३० दिनका डेटा पनि रिड गर्न सक्छ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"तपाईंले डेटा रिड गर्ने अनुमति दिनुभयो भने यो एपले नयाँ तथा पुराना डेटा रिड गर्न सक्छ"</string>
-    <string name="request_permissions_header_title" msgid="4264236128614363479">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई Health Connect प्रयोग गर्ने अनुमति दिने हो?"</string>
+    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई Health Connect एक्सेस गर्ने अनुमति दिने हो?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई व्यायाम तथा तन्दुरुस्तीसम्बन्धी जानकारी एक्सेस गर्न दिने हो?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"तपाईं <xliff:g id="APP_NAME">%1$s</xliff:g> को <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> पढेर यसले तपाईंको जानकारी कसरी व्यवस्थापन गर्छ भन्ने बारेमा जान्न सक्नुहुन्छ"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"गोपनीयता नीति"</string>
@@ -412,7 +418,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"चयन गरिएको दिन"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"अघिल्लो दिन"</string>
     <string name="default_error" msgid="7966868260616403475">"कुनै समस्या आयो। कृपया फेरि प्रयास गर्नुहोस्।"</string>
-    <string name="unkwown_resource" msgid="7932225227431922125">"अज्ञात स्रोत"</string>
+    <string name="unkwown_resource" msgid="5414479649607888981">"(शीर्षक छैन)"</string>
     <string name="raw_fhir_title" msgid="1295744907036066319">"डेटाको स्रोत"</string>
     <string name="raw_fhir_open_bracket" msgid="7974657451368655325">"<xliff:g id="PREFIX">%1$s</xliff:g>ओपन ब्राकेट।"</string>
     <string name="raw_fhir_closed_bracket" msgid="9084379463440675078">"<xliff:g id="PREFIX">%1$s</xliff:g>क्लोज्ड ब्राकेट।"</string>
@@ -1174,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> मा एक्सेस गरिएको"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"हिजो <xliff:g id="TIME_DATE">%1$s</xliff:g> मा एक्सेस गरिएको"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"<xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g> मा एक्सेस गरिएको"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"सधैँ अनुमति दिनुहोस्"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"चयन गरिएका कुराहरूको एक्सेस दिनुहोस्"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"एप चलाएका बेला"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"सबै अस्वीकार गर्नुहोस्"</string>
@@ -1183,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई <xliff:g id="DATA_TYPE">%2$s</xliff:g> एक्सेस गर्ने अनुमति दिने हो?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"तन्दुरुस्ती तथा आरोग्य"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"सधैँ"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"प्रयोग गर्दै गर्दा"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> ले जुनसुकै बेला तन्दुरुस्ती तथा आरोग्यसम्बन्धी तपाईंका सबै जानकारी एक्सेस गर्न पाउँछ"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> ले यो एप प्रयोग गरिएका बेला मात्र तन्दुरुस्ती तथा आरोग्यसम्बन्धी तपाईंका सबै जानकारी एक्सेस गर्न पाउँछ"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"एक्सेस गर्ने अनुमति दिइएको छ"</string>
@@ -1199,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"क्रस चिन्ह"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"हाल <xliff:g id="APP_NAME">%1$s</xliff:g> ले जुनसुकै बेला तन्दुरुस्ती तथा आरोग्यसम्बन्धी जानकारी एक्सेस गर्न पाउँछ"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"हाल <xliff:g id="APP_NAME">%1$s</xliff:g> ले यो एप प्रयोग गरिएका बेला मात्र तन्दुरुस्ती तथा आरोग्यसम्बन्धी जानकारी एक्सेस गर्न पाउँछ"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई सधैँ तन्दुरुस्ती तथा आरोग्यसम्बन्धी जानकारी एक्सेस गर्न दिने हो?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई <xliff:g id="DATA_TYPES">%2$s</xliff:g> एक्सेस गर्ने अनुमति दिइएको छ।"</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"तन्दुरुस्ती तथा आरोग्यसम्बन्धी अनुमतिहरू व्यवस्थापन गर्नुहोस्"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{एउटा एपले प्रयोग गरेको}other{# वटा एपले प्रयोग गरेका}}"</string>

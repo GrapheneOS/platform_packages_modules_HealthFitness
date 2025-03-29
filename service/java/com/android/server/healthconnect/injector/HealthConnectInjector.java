@@ -25,6 +25,8 @@ import androidx.annotation.VisibleForTesting;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
+import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
+import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
@@ -39,13 +41,13 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
+import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
+import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.permission.PermissionPackageChangesOrchestrator;
-import com.android.server.healthconnect.storage.DailyCleanupJob;
-import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
@@ -154,6 +156,12 @@ public abstract class HealthConnectInjector {
      * Getter for {@link FirstGrantTimeManager} instance initialised by the Health Connect Injector.
      */
     public abstract FirstGrantTimeManager getFirstGrantTimeManager();
+
+    /**
+     * Getter for {@link FirstGrantTimeDatastore} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract FirstGrantTimeDatastore getFirstGrantTimeDatastore();
 
     /**
      * Getter for {@link HealthPermissionIntentAppsTracker} instance initialised by the Health
@@ -301,6 +309,11 @@ public abstract class HealthConnectInjector {
 
     /** Getter for {@link TrackerManager} instance initialised by the Health Connect Injector. */
     public abstract TrackerManager getTrackerManager();
+
+    /**
+     * Getter for {@link GrantTimeXmlHelper} instance initialised by the Health Connect Injector.
+     */
+    public abstract GrantTimeXmlHelper getGrantTimeXmlHelper();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {

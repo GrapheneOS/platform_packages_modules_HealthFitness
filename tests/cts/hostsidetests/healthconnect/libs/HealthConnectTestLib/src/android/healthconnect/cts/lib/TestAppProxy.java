@@ -48,8 +48,6 @@ import android.healthconnect.cts.utils.ProxyActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.cts.install.lib.TestApp;
-
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
@@ -75,11 +73,6 @@ public class TestAppProxy {
     private TestAppProxy(String packageName, boolean inBackground) {
         mPackageName = packageName;
         mInBackground = inBackground;
-    }
-
-    /** Create a new {@link TestAppProxy} for given test app. */
-    public static TestAppProxy forApp(TestApp testApp) {
-        return forPackageName(testApp.getPackageName());
     }
 
     /** Create a new {@link TestAppProxy} for given package name. */

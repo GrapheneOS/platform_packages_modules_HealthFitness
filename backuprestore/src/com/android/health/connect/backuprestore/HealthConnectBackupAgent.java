@@ -30,7 +30,6 @@ import android.os.ParcelFileDescriptor;
 import android.util.ArrayMap;
 import android.util.Slog;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.io.File;
@@ -136,15 +135,13 @@ public class HealthConnectBackupAgent extends BackupAgent {
                     }
                 });
 
-        if (Flags.d2dFileDeletionBugFix()) {
-            try {
-                boolean callbackCalled = latch.await(10, TimeUnit.SECONDS);
-                if (!callbackCalled) {
-                    throw new TimeoutException();
-                }
-            } catch (InterruptedException | TimeoutException e) {
-                Slog.e(TAG, "Exception while waiting for callback, Files might not be deleted", e);
+        try {
+            boolean callbackCalled = latch.await(10, TimeUnit.SECONDS);
+            if (!callbackCalled) {
+                throw new TimeoutException();
             }
+        } catch (InterruptedException | TimeoutException e) {
+            Slog.e(TAG, "Exception while waiting for callback, Files might not be deleted", e);
         }
 
         // close the FDs

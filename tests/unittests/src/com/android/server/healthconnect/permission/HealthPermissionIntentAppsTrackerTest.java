@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.permission;
 
-import static com.android.healthfitness.flags.Flags.FLAG_PERMISSION_TRACKER_FIX_MAPPING_INIT;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,7 +29,6 @@ import android.content.pm.ResolveInfo;
 import android.os.Process;
 import android.os.UserHandle;
 import android.os.UserManager;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -87,7 +84,6 @@ public class HealthPermissionIntentAppsTrackerTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERMISSION_TRACKER_FIX_MAPPING_INIT})
     public void testCheckPackage_userNotInit_packageSupportsIntent_returnsTrue() {
         setSelfIntentSupport(/* intentSupported= */ true);
         HealthPermissionIntentAppsTracker mTracker =

@@ -226,7 +226,6 @@ android_test {
         "testng",
         "cts-healthconnect-lib",
         "cts-healthconnect-phr-lib",
-        "cts-install-lib",
         "cts-healthconnect-utils",
         "aconfig_settingstheme_exported_flags_java_lib",
     ],

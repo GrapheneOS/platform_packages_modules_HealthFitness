@@ -22,8 +22,6 @@ import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetr
 
 import android.health.HealthFitnessStatsLog;
 
-import com.android.healthfitness.flags.Flags;
-
 import java.util.List;
 import java.util.Map;
 
@@ -90,11 +88,6 @@ final class UsageStatsLogger {
     }
 
     void logPermissionStats(Map<String, List<String>> packageNameToPermissionsGranted) {
-
-        if (!Flags.permissionMetrics()) {
-            return;
-        }
-
         for (Map.Entry<String, List<String>> connectedAppToPermissionsGranted :
                 packageNameToPermissionsGranted.entrySet()) {
 

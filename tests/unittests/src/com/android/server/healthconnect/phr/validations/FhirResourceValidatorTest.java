@@ -42,7 +42,7 @@ import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import com.google.testing.junit.testparameterinjector.TestParameterInjector;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +51,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(TestParameterInjector.class)
+@RunWith(AndroidJUnit4.class)
 public class FhirResourceValidatorTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 

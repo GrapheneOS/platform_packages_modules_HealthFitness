@@ -1,24 +1,24 @@
-/**
- * Copyright (C) 2022 The Android Open Source Project
+/*
+ * Copyright (C) 2025 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.android.healthconnect.controller.tests.data.entries.datenavigation
 
 import android.content.Context
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.test.platform.app.InstrumentationRegistry
@@ -48,8 +48,8 @@ class DateNavigationViewTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     private lateinit var dateNavigationView: DateNavigationView
-    private lateinit var previousDayButton: ImageButton
-    private lateinit var nextDayButton: ImageButton
+    private lateinit var previousDayButton: View
+    private lateinit var nextDayButton: View
     private lateinit var datePickerSpinner: Spinner
     private lateinit var disabledSpinner: TextView
 
@@ -165,7 +165,7 @@ class DateNavigationViewTest {
         assertSpinnerView("Sep 25 – Oct 1")
     }
 
-        @Test
+    @Test
     fun setPeriodToWeek_ukLocale_navigateToMonday_showsThisWeek() {
         setLocale(Locale.UK)
         dateNavigationView.setDate(NOW.minus(Duration.ofDays(3)))

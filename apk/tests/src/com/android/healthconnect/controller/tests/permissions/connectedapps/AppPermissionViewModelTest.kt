@@ -759,6 +759,10 @@ class AppPermissionViewModelTest {
             appPermissionViewModel.grantedFitnessPermissions.observeForever(
                 grantedPermissionsObserver
             )
+            val grantedAdditionalPermissionsObserver = TestObserver<Set<AdditionalPermission>>()
+            appPermissionViewModel.grantedAdditionalPermissions.observeForever(
+                grantedAdditionalPermissionsObserver
+            )
 
             appPermissionViewModel.loadPermissionsForPackage(TEST_APP_PACKAGE_NAME)
             advanceUntilIdle()
@@ -786,9 +790,10 @@ class AppPermissionViewModelTest {
                 )
             advanceUntilIdle()
 
+            assertThat(result).isTrue()
             assertThat(grantedPermissionsObserver.getLastValue())
                 .containsExactlyElementsIn(setOf(writeDistancePermission))
-            assertThat(result).isTrue()
+            assertThat(grantedAdditionalPermissionsObserver.getLastValue()).isEmpty()
             verify(revokePermissionStatusUseCase)
                 .invoke(TEST_APP_PACKAGE_NAME, readExerciseRoutesPermission.additionalPermission)
             verify(revokePermissionStatusUseCase)
@@ -2403,8 +2408,8 @@ class AppPermissionViewModelTest {
         advanceUntilIdle()
 
         assertThat(
-                appPermissionViewModel.shouldNavigateToAppPermissionsFragment(TEST_APP_PACKAGE_NAME)
-            )
+            appPermissionViewModel.shouldNavigateToAppPermissionsFragment(TEST_APP_PACKAGE_NAME)
+        )
             .isTrue()
     }
 
@@ -2428,8 +2433,8 @@ class AppPermissionViewModelTest {
         advanceUntilIdle()
 
         assertThat(
-                appPermissionViewModel.shouldNavigateToAppPermissionsFragment(TEST_APP_PACKAGE_NAME)
-            )
+            appPermissionViewModel.shouldNavigateToAppPermissionsFragment(TEST_APP_PACKAGE_NAME)
+        )
             .isTrue()
     }
 
@@ -2451,10 +2456,10 @@ class AppPermissionViewModelTest {
             advanceUntilIdle()
 
             assertThat(
-                    appPermissionViewModel.shouldNavigateToAppPermissionsFragment(
-                        TEST_APP_PACKAGE_NAME
-                    )
+                appPermissionViewModel.shouldNavigateToAppPermissionsFragment(
+                    TEST_APP_PACKAGE_NAME
                 )
+            )
                 .isFalse()
         }
 

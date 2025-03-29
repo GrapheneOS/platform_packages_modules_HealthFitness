@@ -61,9 +61,10 @@ public class MigrationNotificationFactory {
     @VisibleForTesting static final String APP_ICON_DRAWABLE_NAME = "health_connect_logo";
 
     @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    public MigrationNotificationFactory(Context context) {
+    public MigrationNotificationFactory(
+            Context context, HealthConnectResourcesContext resourcesContext) {
         mContext = context;
-        mResContext = new HealthConnectResourcesContext(mContext);
+        mResContext = resourcesContext;
     }
 
     /**

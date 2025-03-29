@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.health.connect.HealthPermissions
 import android.health.connect.datatypes.*
 import android.health.connect.datatypes.units.Length
 import android.os.SystemClock
@@ -41,7 +42,7 @@ object UiTestUtils {
 
     private val WAIT_TIMEOUT = Duration.ofSeconds(5)
     private val NOT_DISPLAYED_TIMEOUT = Duration.ofMillis(500)
-    private val FIND_OBJECT_TIMEOUT = Duration.ofMillis(500)
+    private val FIND_OBJECT_TIMEOUT = Duration.ofMillis(1000)
     private val NEW_WINDOW_TIMEOUT_MILLIS = 3000L
     private val RETRY_TIMEOUT_MILLIS = 5000L
 
@@ -57,6 +58,8 @@ object UiTestUtils {
     const val TEST_APP_2_PACKAGE_NAME = "android.healthconnect.cts.app2"
 
     const val TEST_APP_NAME = "Health Connect cts test app"
+
+    const val TEST_APP_2_NAME = "Health Connect cts test app 2"
 
     private const val MASK_PERMISSION_FLAGS =
         (PackageManager.FLAG_PERMISSION_USER_SET or
@@ -186,6 +189,20 @@ object UiTestUtils {
         findObjectAndClick(By.desc(desc))
     }
 
+    /**
+     * Clicks on action button on collapsing tool bar.
+     *
+     * Throws if the object is not visible.
+     *
+     * Use this if the object is expected to be visible on the screen without scrolling.
+     */
+    fun findActionButtonAndClick() {
+        findObjectAndClick(
+            By.clazz("android.widget.ImageButton")
+                .hasParent(By.clazz("android.widget.LinearLayout"))
+        )
+    }
+
     /** Throws an exception if given object is visible on the screen. */
     fun verifyObjectNotFound(selector: BySelector) {
         if (findObjectOrNull(selector) != null) {
@@ -226,6 +243,11 @@ object UiTestUtils {
 
     fun scrollUpTo(selector: BySelector) {
         waitFindObject(By.scrollable(true)).scrollUntil(Direction.UP, Until.findObject(selector))
+    }
+
+    fun scrollUpToAndFindText(text: String) {
+        scrollUpTo(By.text(text))
+        findText(text)
     }
 
     fun scrollDownToAndClick(selector: BySelector) {
@@ -470,6 +492,86 @@ object UiTestUtils {
             { pm.grantRuntimePermission(packageName, permName, context.user) },
             Manifest.permission.GRANT_RUNTIME_PERMISSIONS,
         )
+    }
+
+    fun setPermissionsAsUserFixed(context: Context, packageName: String, value: Boolean) {
+        val mPackageManager = context.packageManager
+
+        val flagMask = PackageManager.FLAG_PERMISSION_USER_FIXED
+        val flagValues = if (value) PackageManager.FLAG_PERMISSION_USER_FIXED else 0
+        val additionalAccessPermissions =
+            setOf(
+                HealthPermissions.READ_HEALTH_DATA_HISTORY,
+                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+            )
+
+        runWithShellPermissionIdentity(
+            {
+                val permissions =
+                    try {
+                        mPackageManager
+                            .getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+                            .requestedPermissions
+                            ?.toList() ?: emptyList()
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        emptyList()
+                    }
+
+                for (permission in
+                    permissions.filterNot { additionalAccessPermissions.contains(it) }) {
+                    mPackageManager.updatePermissionFlags(
+                        permission,
+                        packageName,
+                        flagMask,
+                        flagValues,
+                        context.user,
+                    )
+                }
+            },
+            Manifest.permission.GRANT_RUNTIME_PERMISSIONS,
+        )
+    }
+
+    fun hasUserFixedPermissions(context: Context, packageName: String): Boolean {
+        val pm = context.packageManager
+
+        var result = false
+        runWithShellPermissionIdentity(
+            {
+                val permissions =
+                    try {
+                        pm.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+                            .requestedPermissions
+                            ?.toList() ?: emptyList()
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        emptyList()
+                    }
+
+                for (permission in permissions) {
+                    val flags = pm.getPermissionFlags(permission, packageName, context.user)
+                    if ((flags and PackageManager.FLAG_PERMISSION_USER_FIXED) != 0) {
+                        // Found a permission with the USER_FIXED flag set.
+                        result = true
+                    }
+                }
+            },
+            Manifest.permission.GRANT_RUNTIME_PERMISSIONS,
+        )
+
+        // No user-fixed permissions found.
+        return result
+    }
+
+    fun revokeAllPermissionsViaPackageManager(context: Context, packageName: String) {
+        val pm = context.packageManager
+        try {
+            val packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+            packageInfo.requestedPermissions?.forEach { permName ->
+                revokePermissionViaPackageManager(context, packageName, permName)
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            // ignore.
+        }
     }
 
     fun revokePermissionViaPackageManager(context: Context, packageName: String, permName: String) {

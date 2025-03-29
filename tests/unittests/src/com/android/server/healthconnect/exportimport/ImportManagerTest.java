@@ -57,7 +57,6 @@ import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
-import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
@@ -128,6 +127,7 @@ public class ImportManagerTest {
     private ReadAccessLogsHelper mReadAccessLogsHelper;
     private InternalHealthConnectMappings mInternalHealthConnectMappings;
     private HealthConnectThreadScheduler mThreadScheduler;
+    private final Compressor mCompressor = new Compressor();
 
     @Mock private HealthConnectNotificationSender mNotificationSender;
     // TODO(b/373322447): Remove the mock FirstGrantTimeManager
@@ -180,7 +180,8 @@ public class ImportManagerTest {
                         fakeClock,
                         mNotificationSender,
                         mEnvironmentDataDirectory.getRoot(),
-                        mExportImportLogger);
+                        mExportImportLogger,
+                        mCompressor);
         mImportManagerSpy = Mockito.spy(importManager);
         doReturn(TEST_COMPRESSED_FILE_SIZE)
                 .when(mImportManagerSpy)
@@ -442,7 +443,7 @@ public class ImportManagerTest {
                         "wrong_name.txt");
         File zipToImport =
                 new File(mContext.getDir(TEST_DIRECTORY_NAME, Context.MODE_PRIVATE), "export.zip");
-        Compressor.compress(textFileToImport, "wrong_name.txt", zipToImport);
+        mCompressor.compress(textFileToImport, "wrong_name.txt", zipToImport);
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
@@ -472,7 +473,7 @@ public class ImportManagerTest {
                         "wrong_name.txt");
         File zipToImport =
                 new File(mContext.getDir(TEST_DIRECTORY_NAME, Context.MODE_PRIVATE), "export.zip");
-        Compressor.compress(textFileToImport, "wrong_name.txt", zipToImport);
+        mCompressor.compress(textFileToImport, "wrong_name.txt", zipToImport);
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
@@ -649,7 +650,7 @@ public class ImportManagerTest {
     private File zipExportedDb(File dbToImport) throws Exception {
         File zipToImport =
                 new File(mContext.getDir(TEST_DIRECTORY_NAME, Context.MODE_PRIVATE), "export.zip");
-        Compressor.compress(dbToImport, LOCAL_EXPORT_DATABASE_FILE_NAME, zipToImport);
+        mCompressor.compress(dbToImport, LOCAL_EXPORT_DATABASE_FILE_NAME, zipToImport);
         return zipToImport;
     }
 

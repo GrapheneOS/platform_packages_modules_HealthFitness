@@ -211,8 +211,8 @@ public final class BackupRestore {
     private volatile UserHandle mCurrentForegroundUser;
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final BackupRestoreJobScheduler mJobScheduler;
+    private final GrantTimeXmlHelper mGrantTimeXmlHelper;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public BackupRestore(
             AppInfoHelper appInfoHelper,
             FirstGrantTimeManager firstGrantTimeManager,
@@ -225,7 +225,8 @@ public final class BackupRestore {
             DeviceInfoHelper deviceInfoHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             HealthConnectThreadScheduler threadScheduler,
-            File environmentDataDirectory) {
+            File environmentDataDirectory,
+            GrantTimeXmlHelper grantTimeXmlHelper) {
         this(
                 appInfoHelper,
                 firstGrantTimeManager,
@@ -239,6 +240,7 @@ public final class BackupRestore {
                 healthDataCategoryPriorityHelper,
                 threadScheduler,
                 environmentDataDirectory,
+                grantTimeXmlHelper,
                 new BackupRestoreJobScheduler());
     }
 
@@ -256,6 +258,7 @@ public final class BackupRestore {
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             HealthConnectThreadScheduler threadScheduler,
             File environmentDataDirectory,
+            GrantTimeXmlHelper grantTimeXmlHelper,
             BackupRestoreJobScheduler jobScheduler) {
         mFirstGrantTimeManager = firstGrantTimeManager;
         mMigrationStateManager = migrationStateManager;
@@ -274,6 +277,7 @@ public final class BackupRestore {
         mThreadScheduler = threadScheduler;
         mEnvironmentDataDirectory = environmentDataDirectory;
         mJobScheduler = jobScheduler;
+        mGrantTimeXmlHelper = grantTimeXmlHelper;
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
@@ -463,9 +467,7 @@ public final class BackupRestore {
                     }
                 });
 
-        if (Flags.d2dFileDeletionBugFix()) {
-            deleteBackupFiles(backupDataDir);
-        }
+        deleteBackupFiles(backupDataDir);
     }
 
     /** Get the file names of all the files that are transported during backup / restore. */
@@ -772,7 +774,7 @@ public final class BackupRestore {
         File grantTimeFile = new File(backupDataDir, GRANT_TIME_FILE_NAME);
         try {
             grantTimeFile.createNewFile();
-            GrantTimeXmlHelper.serializeGrantTimes(
+            mGrantTimeXmlHelper.serializeGrantTimes(
                     grantTimeFile, mFirstGrantTimeManager.getGrantTimeStateForUser(userHandle));
             backupFilesByFileNames.put(grantTimeFile.getName(), grantTimeFile);
         } catch (IOException e) {
@@ -1096,14 +1098,12 @@ public final class BackupRestore {
         Slog.i(TAG, "Merging grant times.");
 
         UserGrantTimeState userGrantTimeState =
-                GrantTimeXmlHelper.parseGrantTime(restoredGrantTimeFile);
+                mGrantTimeXmlHelper.parseGrantTime(restoredGrantTimeFile);
         mFirstGrantTimeManager.applyAndStageGrantTimeStateForUser(
                 mCurrentForegroundUser, userGrantTimeState);
 
-        if (Flags.d2dFileDeletionBugFix()) {
-            Slog.i(TAG, "Deleting staged grant times after merging.");
-            restoredGrantTimeFile.delete();
-        }
+        Slog.i(TAG, "Deleting staged grant times after merging.");
+        restoredGrantTimeFile.delete();
     }
 
     private void mergeDatabase(HealthConnectContext dbContext) {

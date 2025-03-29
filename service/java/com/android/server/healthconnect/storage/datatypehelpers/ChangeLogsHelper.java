@@ -22,9 +22,9 @@ import static android.health.connect.Constants.DELETE;
 import static android.health.connect.Constants.UPSERT;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper.DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper.NEW_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
-import static com.android.server.healthconnect.storage.datatypehelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_NON_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
@@ -194,7 +194,6 @@ public final class ChangeLogsHelper extends DatabaseHelper {
                 });
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private static int addChangeLogs(Cursor cursor, Map<Integer, ChangeLogs> changeLogs) {
         @RecordTypeIdentifier.RecordType
         int recordType = getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME);
@@ -292,7 +291,6 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         }
 
         /** Function to add an uuid corresponding to given pair of @recordType and @appId */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         public void addUUID(
                 @RecordTypeIdentifier.RecordType int recordType, long appId, UUID uuid) {
             Objects.requireNonNull(uuid);
@@ -333,7 +331,6 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         }
 
         /** Adds {@code uuids} to {@link ChangeLogs}. */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         public ChangeLogs addUUIDs(
                 @RecordTypeIdentifier.RecordType int recordType, long appId, List<UUID> uuids) {
             RecordTypeAndAppIdPair recordTypeAndAppIdPair =

@@ -105,8 +105,8 @@ import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
+import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
-import android.health.connect.aidl.IGetSettingsForBackupResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
@@ -127,7 +127,7 @@ import android.health.connect.aidl.RecordTypeInfoResponseParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.UpdatePriorityRequestParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogTokenResponse;
@@ -180,12 +180,14 @@ import com.android.server.healthconnect.backuprestore.CloudRestoreManager;
 import com.android.server.healthconnect.common.RequestContext;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
+import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.exportimport.ImportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
@@ -204,7 +206,6 @@ import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
 import com.android.server.healthconnect.phr.validations.FhirResourceValidator;
 import com.android.server.healthconnect.phr.validations.MedicalResourceValidator;
-import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
@@ -219,7 +220,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceH
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.PreferencesManager;
@@ -3232,7 +3232,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     @Override
     @RequiresApi(Build.VERSION_CODES.BAKLAVA)
-    public void getSettingsForBackup(IGetSettingsForBackupResponseCallback callback) {
+    public void getLatestMetadataForBackup(IGetLatestMetadataForBackupResponseCallback callback) {
         checkParamsNonNull(callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
@@ -3247,7 +3247,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 || !Flags.cloudBackupAndRestore()
                                 || !isCloudBackupRestoreEnabled()) {
                             throw new UnsupportedOperationException(
-                                    "getSettingsForBackup is not supported.");
+                                    "getLatestMetadataForBackup is not supported.");
                         }
                         enforceIsForegroundUser(userHandle);
                         mContext.enforcePermission(
@@ -3255,7 +3255,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 pid,
                                 uid,
                                 "Caller does not have permission to call"
-                                        + " getSettingsForBackup.");
+                                        + " getLatestMetadataForBackup.");
                         callback.onResult(mCloudBackupManager.getSettingsForBackup());
                     } catch (UnsupportedOperationException e) {
                         tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
@@ -3269,8 +3269,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     @Override
     @RequiresApi(Build.VERSION_CODES.BAKLAVA)
-    public void restoreSettings(BackupSettings backupSettings, IEmptyResponseCallback callback) {
-        checkParamsNonNull(backupSettings);
+    public void restoreLatestMetadata(
+            BackupMetadata backupMetadata, IEmptyResponseCallback callback) {
+        checkParamsNonNull(backupMetadata);
         checkParamsNonNull(callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
@@ -3294,7 +3295,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 pid,
                                 uid,
                                 "Caller does not have permission to call restoreSettings.");
-                        mCloudRestoreManager.restoreSettings(backupSettings);
+                        mCloudRestoreManager.restoreSettings(backupMetadata);
                         callback.onResult();
                     } catch (UnsupportedOperationException e) {
                         tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);

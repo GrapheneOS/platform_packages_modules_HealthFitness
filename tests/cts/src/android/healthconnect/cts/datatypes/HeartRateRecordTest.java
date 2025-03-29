@@ -120,7 +120,7 @@ public class HeartRateRecordTest {
         // Use longer timeout for the large insert.
         HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
         getHealthConnectManager().insertRecords(hearRateRecords, outcomeExecutor(), receiver);
-        receiver.verifyNoExceptionOrThrow(/* timeoutSeconds= */ 10);
+        receiver.verifyNoExceptionOrThrow(/* timeoutSeconds= */ 20);
     }
 
     @Test

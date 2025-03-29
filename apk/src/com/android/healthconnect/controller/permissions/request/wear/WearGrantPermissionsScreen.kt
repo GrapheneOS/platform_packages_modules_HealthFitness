@@ -131,10 +131,7 @@ fun GrantMultipleFitnessPermissions(
                         .uppercaseLabel
                 )
             val isChecked = checkedStates[index]
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-            ) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 SwitchButton(
                     label = {
                         Text(
@@ -162,7 +159,7 @@ fun GrantMultipleFitnessPermissions(
         item {
             WearPermissionButton(
                 label =
-                    if (expandableState.expanded) {
+                    if (expandableState.expanded && checkedStates.any { !it }) {
                         res.getString(R.string.request_permissions_allow_selected)
                     } else {
                         res.getString(R.string.request_permissions_allow_all)
@@ -304,7 +301,7 @@ fun GrantReadBackgroundHealthPermission(
         showTimeText = false,
         asScalingList = true,
         image = R.drawable.ic_health_connect,
-        title = res.getString(R.string.wear_allow_app_access_fitness_and_wellness_data, appName),
+        title = res.getString(R.string.allow_all_the_time_prompt, appName),
     ) {
         // Allow all the time button.
         item {

@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
@@ -50,6 +51,8 @@ class AggregationViewBinder : SimpleViewBinder<FormattedAggregation, View> {
 
         aggregation.text = data.aggregation
         aggregation.contentDescription = data.aggregationA11y
+
+        apps.isVisible = data.contributingApps.isNotEmpty()
         apps.text = data.contributingApps
     }
 }

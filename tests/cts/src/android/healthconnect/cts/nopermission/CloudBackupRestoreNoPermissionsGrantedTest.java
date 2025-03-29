@@ -27,9 +27,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.GetChangesForBackupResponse;
-import android.health.connect.backuprestore.GetSettingsForBackupResponse;
+import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
@@ -83,10 +83,11 @@ public class CloudBackupRestoreNoPermissionsGrantedTest {
     }
 
     @Test
-    public void getSettingsForBackup_noPermission_securityException() throws InterruptedException {
-        HealthConnectReceiver<GetSettingsForBackupResponse> receiver =
+    public void getLatestMetadataForBackup_noPermission_securityException()
+            throws InterruptedException {
+        HealthConnectReceiver<GetLatestMetadataForBackupResponse> receiver =
                 new HealthConnectReceiver<>();
-        mManager.getSettingsForBackup(Executors.newSingleThreadExecutor(), receiver);
+        mManager.getLatestMetadataForBackup(Executors.newSingleThreadExecutor(), receiver);
 
         HealthConnectException e = receiver.assertAndGetException();
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
@@ -121,10 +122,10 @@ public class CloudBackupRestoreNoPermissionsGrantedTest {
     }
 
     @Test
-    public void restoreSettings_noPermission_securityException() throws InterruptedException {
+    public void restoreLatestMetadata_noPermission_securityException() throws InterruptedException {
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
-        mManager.restoreSettings(
-                new BackupSettings(new byte[0]), Executors.newSingleThreadExecutor(), receiver);
+        mManager.restoreLatestMetadata(
+                new BackupMetadata(new byte[0]), Executors.newSingleThreadExecutor(), receiver);
 
         HealthConnectException e = receiver.assertAndGetException();
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);

@@ -52,6 +52,7 @@ import android.util.Slog;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
@@ -63,7 +64,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCatego
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
@@ -132,8 +132,7 @@ public final class DatabaseMerger {
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public synchronized void merge(HealthConnectDatabase stagedDatabase) {
         TransactionManager stagedTransactionManager =
-                TransactionManager.forStagedDatabase(
-                        stagedDatabase, mInternalHealthConnectMappings);
+                TransactionManager.forStagedDatabase(stagedDatabase);
 
         Slog.i(TAG, "Merging app info");
 

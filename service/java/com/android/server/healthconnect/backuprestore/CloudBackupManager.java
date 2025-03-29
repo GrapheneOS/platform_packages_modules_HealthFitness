@@ -22,9 +22,9 @@ import static com.android.server.healthconnect.backuprestore.RecordProtoConverte
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.database.sqlite.SQLiteException;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.GetChangesForBackupResponse;
-import android.health.connect.backuprestore.GetSettingsForBackupResponse;
+import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Slog;
 
@@ -137,13 +137,13 @@ public final class CloudBackupManager {
 
     /** Returns all user settings bundled as a single byte array. */
     @NonNull
-    public GetSettingsForBackupResponse getSettingsForBackup() {
+    public GetLatestMetadataForBackupResponse getSettingsForBackup() {
         Slog.i(TAG, "Formatting user settings for export.");
         CloudBackupSettingsHelper cloudBackupSettingsHelper =
                 new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);
 
         byte[] data = cloudBackupSettingsHelper.collectUserSettings().toByteArray();
 
-        return new GetSettingsForBackupResponse(PROTO_VERSION, new BackupSettings(data));
+        return new GetLatestMetadataForBackupResponse(PROTO_VERSION, new BackupMetadata(data));
     }
 }

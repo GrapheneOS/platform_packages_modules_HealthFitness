@@ -220,6 +220,13 @@
        "name": "CtsHealthFitnessDeviceTestCasesRateLimiter"
     }
   ],
+  // Run our bivalent tests in postsubmit.
+  // TODO: b/403335385 - Move these to presubmit once they are stable.
+  "postsubmit": [
+    {
+      "name": "HealthFitnessRoboUnitTests"
+    }
+  ],
   "healthfitness-screenshot-tests": [
     {
         "name": "HealthFitnessScreenDiffTests",

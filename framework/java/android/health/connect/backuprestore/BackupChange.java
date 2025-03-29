@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Represents a record in Health Connect to be backed up.
+ * Represents a change in Health Connect to be backed up.
  *
  * @hide
  */
@@ -37,26 +37,52 @@ import java.util.Objects;
 @SystemApi
 public final class BackupChange implements Parcelable {
 
-    // A record ID that uniquely identifies the specific record this change refers to.
-    @NonNull private final String mRecordId;
+    // A change ID that uniquely identifies the specific data point this change refers to.
+    @NonNull private final String mChangeId;
 
     private final boolean mIsDeletion;
 
     // Only present if isDeletion is false.
-    // The data is returned as bytes rather than records to keep the data opaque from the client.
+    // The data is a byte array to keep the data opaque from the client.
     // As long as the client doesn't parse the data, it doesn't know what type of data this is.
     @Nullable private final byte[] mData;
 
     /**
-     * @param recordId A record ID that uniquely identifies the specific record this change refers
-     *     to.
-     * @param isDeletion Whether this change is a deletion.
-     * @param data Only present if isDeletion is false. The data is returned as bytes rather than
-     *     records to keep the data opaque from the client. The caller shouldn't make any
-     *     assumptions about the format of the data.
+     * Creates a new BackupChange of a deletion. This indicates that the previously backed up change
+     * with the id equal to {@code changeId} should be deleted from the backup history.
+     *
+     * @param changeId A change ID that uniquely identifies the specific data point this deletion
+     *     change refers to.
+     * @return A new {@code BackupChange} of a deletion.
      */
-    public BackupChange(@NonNull String recordId, boolean isDeletion, @Nullable byte[] data) {
-        mRecordId = recordId;
+    @NonNull
+    public static BackupChange ofDeletion(@NonNull String changeId) {
+        return new BackupChange(changeId, /* isDeletion= */ true, /* data= */ null);
+    }
+
+    /**
+     * Creates a new BackupChange of an insertion or an update. This indicates that either a new
+     * change with the {@code changeId} should be inserted or the previously backed up change with
+     * the id equal to {@code changeId} should be modified in the backup history.
+     *
+     * @param changeId A change ID that uniquely identifies the specific data point this upsertion
+     *     change refers to.
+     * @param data The data to be backed up.
+     * @return A new {@code BackupChange} of an insertion or an update.
+     */
+    @NonNull
+    public static BackupChange ofUpsertion(@NonNull String changeId, @NonNull byte[] data) {
+        return new BackupChange(changeId, /* isDeletion= */ false, data);
+    }
+
+    /**
+     * @param changeId A change ID that uniquely identifies the specific data point this change
+     *     refers to.
+     * @param isDeletion Whether this change is a deletion.
+     * @param data The data to be backed up. Only present if isDeletion is false.
+     */
+    private BackupChange(@NonNull String changeId, boolean isDeletion, @Nullable byte[] data) {
+        mChangeId = changeId;
         mIsDeletion = isDeletion;
         mData = data;
     }
@@ -66,19 +92,19 @@ public final class BackupChange implements Parcelable {
         if (this == o) return true;
         if (!(o instanceof BackupChange that)) return false;
         return mIsDeletion == that.mIsDeletion
-                && mRecordId.equals(that.mRecordId)
+                && mChangeId.equals(that.mChangeId)
                 && Arrays.equals(mData, that.mData);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(mRecordId, mIsDeletion);
+        int result = Objects.hash(mChangeId, mIsDeletion);
         result = 31 * result + Arrays.hashCode(mData);
         return result;
     }
 
     private BackupChange(Parcel in) {
-        mRecordId = in.readString();
+        mChangeId = in.readString();
         mIsDeletion = in.readByte() != 0;
         mData = in.readBlob();
     }
@@ -97,21 +123,28 @@ public final class BackupChange implements Parcelable {
                 }
             };
 
-    /** Returns the ID of the record that was changed. */
+    /**
+     * @return A change ID that uniquely identifies the specific data point this change refers to.
+     */
     @NonNull
-    public String getRecordId() {
-        return mRecordId;
+    public String getChangeId() {
+        return mChangeId;
     }
 
-    /** Returns whether this change is a deletion. */
+    /**
+     * @return whether this change is a deletion. The caller should delete its copy of a data point
+     *     if a deletion change is received.
+     */
     public boolean isDeletion() {
         return mIsDeletion;
     }
 
     /**
-     * Returns the record that was changed.
+     * The data is a byte array to keep the itself opaque from the client. The valid format of the
+     * data is a serialized record, though the caller shouldn't make any assumptions about the
+     * format of the data.
      *
-     * <p>Only present if isDeletion is false.
+     * @return the data to be backed up. Only present if isDeletion is false.
      */
     @Nullable
     public byte[] getData() {
@@ -125,7 +158,7 @@ public final class BackupChange implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(mRecordId);
+        dest.writeString(mChangeId);
         dest.writeByte((byte) (mIsDeletion ? 1 : 0));
         dest.writeBlob(mData);
     }

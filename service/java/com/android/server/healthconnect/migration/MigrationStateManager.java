@@ -86,17 +86,20 @@ public final class MigrationStateManager {
     private final Object mLock = new Object();
     private final MigrationBroadcastScheduler mMigrationBroadcastScheduler;
     private final HealthConnectThreadScheduler mThreadScheduler;
+    private final MigrationUtils mMigrationUtils;
     private UserHandle mUserHandle;
 
     public MigrationStateManager(
             UserHandle userHandle,
             PreferenceHelper preferenceHelper,
             MigrationBroadcastScheduler migrationBroadcastScheduler,
-            HealthConnectThreadScheduler threadScheduler) {
+            HealthConnectThreadScheduler threadScheduler,
+            MigrationUtils migrationUtils) {
         mUserHandle = userHandle;
         mPreferenceHelper = preferenceHelper;
         mMigrationBroadcastScheduler = migrationBroadcastScheduler;
         mThreadScheduler = threadScheduler;
+        mMigrationUtils = migrationUtils;
     }
 
     /** Re-initialize this class instance with the new user */
@@ -449,9 +452,9 @@ public final class MigrationStateManager {
     }
 
     /**
-     * Checks if the original {@link MIGRATION_STATE_ALLOWED} timeout period has passed. We do not
-     * want to reset the ALLOWED_STATE timeout everytime state changes to this state, hence
-     * persisting the original timeout time.
+     * Checks if the original {@link HealthConnectDataState#MIGRATION_STATE_ALLOWED} timeout period
+     * has passed. We do not want to reset the ALLOWED_STATE timeout everytime state changes to this
+     * state, hence persisting the original timeout time.
      */
     boolean hasAllowedStateTimedOut() {
         String allowedStateTimeout = getAllowedStateTimeout();
@@ -550,7 +553,7 @@ public final class MigrationStateManager {
 
     /**
      * Checks if the version set by the migrator apk is the current module version and send a {@link
-     * HealthConnectManager.ACTION_HEALTH_CONNECT_MIGRATION_READY intent. If not, re-sync the state
+     * HealthConnectManager#ACTION_HEALTH_CONNECT_MIGRATION_READY intent. If not, re-sync the state
      * update job.}
      */
     @GuardedBy("mLock")
@@ -587,8 +590,9 @@ public final class MigrationStateManager {
     }
 
     /**
-     * Tracks the number of times migration is started from {@link MIGRATION_STATE_ALLOWED}. If more
-     * than 3 times, the migration is marked as complete
+     * Tracks the number of times migration is started from {@link
+     * HealthConnectDataState#MIGRATION_STATE_ALLOWED}. If more than 3 times, the migration is
+     * marked as complete
      */
     @GuardedBy("mLock")
     private void updateMigrationStartsCount() {
@@ -694,8 +698,7 @@ public final class MigrationStateManager {
         return !allComponents.isEmpty();
     }
 
-    private static boolean hasMigratorPackageKnownSignerSignature(
-            Context context, String packageName) {
+    private boolean hasMigratorPackageKnownSignerSignature(Context context, String packageName) {
         List<String> stringSignatures;
         try {
             stringSignatures =
@@ -731,9 +734,9 @@ public final class MigrationStateManager {
                                 .getIdentifier(HC_RELEASE_CERT_CONFIG_NAME, null, null));
     }
 
-    private static List<String> getPackageSignatures(PackageInfo packageInfo) {
+    private List<String> getPackageSignatures(PackageInfo packageInfo) {
         return Arrays.stream(packageInfo.signingInfo.getApkContentsSigners())
-                .map(signature -> MigrationUtils.computeSha256DigestBytes(signature.toByteArray()))
+                .map(signature -> mMigrationUtils.computeSha256DigestBytes(signature.toByteArray()))
                 .filter(signature -> signature != null)
                 .toList();
     }

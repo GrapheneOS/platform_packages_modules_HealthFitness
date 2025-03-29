@@ -3,17 +3,6 @@ package: "com.android.healthfitness.flags"
 container: "com.android.healthfitness"
 
 flag {
-    # Unlike "development_database" flag, this flag is for the implementation of the infrastructure
-    # that allow guarding and rolling out DB schema changes from "Staging" onwards, so this flag
-    # will eventually be rolled out to "mainline" and removed after "mainline".
-    name: "infra_to_guard_db_changes"
-    namespace: "health_fitness_aconfig"
-    description: "Flag to guard implementation of the infrastructure which will be used to flag DB schema changes."
-    bug: "340809376"
-    is_fixed_read_only: true
-}
-
-flag {
     # This flag should NEVER be turned on in prod / release for real users.
     # This flag turns on development only features in the database schema.
     # It is used to guard database schema changes that are not finalized enough
@@ -259,39 +248,6 @@ flag {
 }
 
 flag {
-    name: "d2d_file_deletion_bug_fix"
-    namespace: "health_fitness_aconfig"
-    description: "Fixes bugs that prevents file deletion during d2d."
-    bug: "301926710"
-    is_fixed_read_only: true
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
-    is_exported: true
-}
-
-flag {
-    name: "permission_tracker_fix_mapping_init"
-    namespace: "health_fitness_aconfig"
-    description: "Fixes a bug when setting up intent tracker for a new user."
-    bug: "301926710"
-    is_fixed_read_only: true
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
-    is_exported: true
-}
-
-flag {
-    name: "dependency_injection"
-    namespace: "health_fitness_aconfig"
-    description: "Enables dependency injection."
-    bug: "341654919"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "new_information_architecture"
     namespace: "health_fitness_aconfig"
     description: "Enables new information architecture."
@@ -400,15 +356,6 @@ flag {
     namespace: "health_fitness_aconfig"
     description: "Enables DB modification to allow collection of ecosystem metrics."
     bug: "369507783"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "permission_metrics"
-    namespace: "health_fitness_aconfig"
-    description: "Enables collection of permission metrics."
-    bug: "372464298"
     is_fixed_read_only: true
     is_exported: true
 }

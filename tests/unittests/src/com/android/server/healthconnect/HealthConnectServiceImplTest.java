@@ -123,7 +123,7 @@ import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
-import android.health.connect.aidl.IGetSettingsForBackupResponseCallback;
+import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
@@ -133,7 +133,7 @@ import android.health.connect.aidl.IMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
@@ -269,8 +269,8 @@ public class HealthConnectServiceImplTest {
                     "queryAllMedicalResourceTypeInfos",
                     "runImmediateExport",
                     "getChangesForBackup",
-                    "getSettingsForBackup",
-                    "restoreSettings",
+                    "getLatestMetadataForBackup",
+                    "restoreLatestMetadata",
                     "canRestore",
                     "restoreChanges");
 
@@ -2850,10 +2850,11 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
-    public void getSettingsForBackup_flagDisabled_unsupportedOperation() throws RemoteException {
-        IGetSettingsForBackupResponseCallback callback =
-                mock(IGetSettingsForBackupResponseCallback.class);
-        mHealthConnectService.getSettingsForBackup(callback);
+    public void getLatestMetadataForBackup_flagDisabled_unsupportedOperation()
+            throws RemoteException {
+        IGetLatestMetadataForBackupResponseCallback callback =
+                mock(IGetLatestMetadataForBackupResponseCallback.class);
+        mHealthConnectService.getLatestMetadataForBackup(callback);
 
         verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
@@ -2873,7 +2874,7 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @DisableFlags(FLAG_CLOUD_BACKUP_AND_RESTORE)
-    public void restoreSettings_flagDisabled_unsupportedOperation() throws RemoteException {
+    public void restoreLatestMetadata_flagDisabled_unsupportedOperation() throws RemoteException {
         IEmptyResponseCallback callback = mock(IEmptyResponseCallback.class);
         Settings settings =
                 Settings.newBuilder()
@@ -2881,7 +2882,8 @@ public class HealthConnectServiceImplTest {
                         .setDistanceUnitSetting(Settings.DistanceUnitProto.MILES)
                         .build();
 
-        mHealthConnectService.restoreSettings(new BackupSettings(settings.toByteArray()), callback);
+        mHealthConnectService.restoreLatestMetadata(
+                new BackupMetadata(settings.toByteArray()), callback);
 
         verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())

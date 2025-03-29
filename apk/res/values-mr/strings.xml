@@ -19,8 +19,7 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"आरोग्यविषयक डेटासंबंधित अ‍ॅपचा अ‍ॅक्सेस नियंत्रित करा"</string>
-    <!-- no translation found for health_connect_notification_channel_name (5189243942800749782) -->
-    <skip />
+    <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"अपडेट आणि सूचना"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"परवानग्या आणि डेटा"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"तुमच्या डिव्हाइसवरील आरोग्य आणि फिटनेससंबंधी डेटा व्यवस्थापित करा व कोणती अ‍ॅप्स तो डेटा अ‍ॅक्सेस करू शकतात हे नियंत्रित करा"</string>
     <string name="data_title" msgid="4456619761533380816">"डेटा आणि ॲक्सेस"</string>
@@ -43,6 +42,10 @@
     <string name="manage_data_summary" msgid="8537870912521944449">"ऑटो-डिलीट, डेटा स्रोत, बॅकअप आणि रिस्टोअर करणे"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"आणखी आयटम"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"कमी आयटम"</string>
+    <string name="settings_manage_permission" msgid="3805037674102124581">"Health Connect"</string>
+    <string name="settings_combined_permissions" msgid="3660209476196545539">"Health Connect"</string>
+    <string name="settings_fitness_permissions" msgid="8133228907519227359">"Health Connect"</string>
+    <string name="settings_medical_permissions" msgid="4621535972501674863">"Health Connect"</string>
     <string name="backup_title" msgid="211503191266235085">"बॅकअप"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"डेटा स्रोत आणि प्राधान्य"</string>
     <string name="set_units_title" msgid="2657822539603758029">"युनिट सेट करा"</string>
@@ -64,6 +67,7 @@
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"तुमचा डेटा अलीकडे अ‍ॅक्सेस केलेली अ‍ॅप्स इथे आपोआप दिसतील"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"सर्व पहा"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"अलीकडील अ‍ॅक्सेस लोड करता आला नाही"</string>
+    <string name="recent_access_inactive_app" msgid="8754221676902025802">"हे अ‍ॅप आता उपलब्ध नाही"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"ॲक्टिव्हिटी"</string>
     <string name="activity_category_lowercase" msgid="3007220578865400601">"ॲक्टिव्हिटी"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"शरीराचे मोजमाप"</string>
@@ -369,12 +373,14 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"अनुमती द्या"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"सर्वांना अनुमती द्या"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"अनुमती देऊ नका"</string>
-    <string name="request_permissions_data_access_type_read_write" msgid="3179244850699732544">"या अ‍ॅपने Health Connect ला रीड किंवा राइट करावा असे तुम्हाला वाटत असलेला डेटा निवडा"</string>
-    <string name="request_permissions_data_access_type_read" msgid="6005792244220381045">"या अ‍ॅपने Health Connect वरून रीड करावा असे तुम्हाला वाटत असलेला डेटा निवडा"</string>
-    <string name="request_permissions_data_access_type_write" msgid="6369810467678676337">"या अ‍ॅपने Health Connect ला राइट करावा असे तुम्हाला वाटत असलेला डेटा निवडा"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"या अ‍ॅपने Health Connect ला रीड किंवा राइट करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"या अ‍ॅपने Health Connect वरून रीड करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"या अ‍ॅपने Health Connect ला राइट करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"या अ‍ॅपने Health Connect ला रीड किंवा राइट करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
+    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"या अ‍ॅपने Health Connect वरून रीड करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"तुम्ही रीड अ‍ॅक्सेस दिल्यास, अ‍ॅप नवीन डेटा आणि मागील ३० दिवसांचा डेटा रीड करू शकेल"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"तुम्ही रीड अ‍ॅक्सेस दिल्यास, हे अ‍ॅप नवीन आणि मागील डेटा रीड करू शकेल"</string>
-    <string name="request_permissions_header_title" msgid="4264236128614363479">"<xliff:g id="APP_NAME">%1$s</xliff:g> ला Health Connect अ‍ॅक्सेस करण्याची परवानगी द्यायची आहे का?"</string>
+    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> ला Health Connect अ‍ॅक्सेस करण्याची अनुमती द्यायची आहे का?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> आरोग्य आणि फिटनेससंबंधित डेटा अ‍ॅक्सेस करण्याची अनुमती द्यायची आहे का?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> तुमचा डेटा कसा हाताळते हे तुम्ही त्यांच्या <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> मध्ये जाणून घेऊ शकता"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"गोपनीयता धोरण"</string>
@@ -412,7 +418,7 @@
     <string name="navigation_selected_day" msgid="2510843479734091348">"निवडलेला दिवस"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"मागील दिवस"</string>
     <string name="default_error" msgid="7966868260616403475">"काहीतरी चूक झाली. कृपया पुन्हा प्रयत्न करा."</string>
-    <string name="unkwown_resource" msgid="7932225227431922125">"अज्ञात स्रोत"</string>
+    <string name="unkwown_resource" msgid="5414479649607888981">"(शीर्षक नाही)"</string>
     <string name="raw_fhir_title" msgid="1295744907036066319">"स्रोत डेटा"</string>
     <string name="raw_fhir_open_bracket" msgid="7974657451368655325">"<xliff:g id="PREFIX">%1$s</xliff:g>सुरुवातीचा कंस."</string>
     <string name="raw_fhir_closed_bracket" msgid="9084379463440675078">"<xliff:g id="PREFIX">%1$s</xliff:g>शेवटचा कंस."</string>
@@ -1174,7 +1180,8 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> वाजता ॲक्सेस केले"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"काल <xliff:g id="TIME_DATE">%1$s</xliff:g> वाजता ॲक्सेस केले"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"<xliff:g id="TIME_DATE_0">%1$s</xliff:g> ला <xliff:g id="TIME_DATE_1">%2$s</xliff:g> वाजता ॲक्सेस केले"</string>
-    <string name="request_permissions_allow_all_the_time" msgid="4081502779872893569">"नेहमी अनुमती द्या"</string>
+    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
+    <skip />
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"निवडीला अनुमती द्या"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"ॲप वापरताना"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"सर्वांना नकार द्या"</string>
@@ -1183,7 +1190,8 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="APP_NAME">%1$s</xliff:g> ला <xliff:g id="DATA_TYPE">%2$s</xliff:g> अ‍ॅक्सेस करण्याची अनुमती द्यायची आहे का?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"फिटनेस आणि स्वास्थ्य"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"पूर्ण वेळ"</string>
-    <string name="view_permissions_while_in_use_cap" msgid="2567477283044619917">"वापरत असताना"</string>
+    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
+    <skip />
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> हे कधीही तुमचा फिटनेस आणि स्वास्थ्यासंबंधित सर्व डेटा अ‍ॅक्सेस करू शकते"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> हे वापरले जात असताना, ते तुमचा फिटनेस आणि स्वास्थ्यासंबंधित सर्व डेटा अ‍ॅक्सेस करू शकते"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"अ‍ॅक्सेस करण्याची अनुमती आहे"</string>
@@ -1199,7 +1207,8 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"फुलीची खूण"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"सध्या, <xliff:g id="APP_NAME">%1$s</xliff:g> हे कधीही फिटनेस आणि स्वास्थ्यासंबंधित डेटा अ‍ॅक्सेस करू शकते"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"सध्या, <xliff:g id="APP_NAME">%1$s</xliff:g> वापरले जात असताना, ते फिटनेस आणि स्वास्थ्यासंबंधित डेटा अ‍ॅक्सेस करू शकते"</string>
-    <string name="allow_all_the_time_prompt" msgid="5625132426961157398">"<xliff:g id="APP_NAME">%1$s</xliff:g> ला नेहमी फिटनेस आणि स्वास्थ्यासंबंधित डेटा अ‍ॅक्सेस करण्याची अनुमती द्यायची आहे का?"</string>
+    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
+    <skip />
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> ला <xliff:g id="DATA_TYPES">%2$s</xliff:g> चा अ‍ॅक्सेस आहे."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"फिटनेस आणि स्वास्थ्यासंबंधित परवानग्या व्यवस्थापित करा"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{१ अ‍ॅपने वापरल्या}other{# अ‍ॅप्सनी वापरल्या}}"</string>

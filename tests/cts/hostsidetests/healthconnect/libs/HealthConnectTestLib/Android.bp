@@ -25,7 +25,7 @@ java_library {
     static_libs: [
         "androidx.appcompat_appcompat",
         "androidx.test.rules",
-        "cts-install-lib",
+        "compatibility-device-util-axt",
         "platform-test-annotations",
         "cts-healthconnect-utils",
     ],

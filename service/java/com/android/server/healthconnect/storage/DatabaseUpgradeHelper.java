@@ -28,35 +28,34 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PERSON
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PLANNED_EXERCISE_SESSIONS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SKIN_TEMPERATURE;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
+import static com.android.server.healthconnect.fitness.recordhelpers.PlannedExerciseSessionRecordHelper.PLANNED_EXERCISE_SESSION_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
 import static com.android.server.healthconnect.storage.TransactionManager.runAsTransaction;
 import static com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper.getAlterTableRequestForPhrAccessLogs;
-import static com.android.server.healthconnect.storage.datatypehelpers.PlannedExerciseSessionRecordHelper.PLANNED_EXERCISE_SESSION_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.MindfulnessSessionRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.PlannedExerciseSessionRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.SkinTemperatureRecordHelper;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ActivityIntensityRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.BackupChangeTokenHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MindfulnessSessionRecordHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.PlannedExerciseSessionRecordHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.RecordHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.SkinTemperatureRecordHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DropTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
@@ -137,37 +136,9 @@ final class DatabaseUpgradeHelper {
             oldVersion = DB_VERSION_GENERATED_LOCAL_TIME;
         }
         final int effectiveOldVersion = oldVersion;
-
-        if (Flags.infraToGuardDbChanges()) {
-            UPGRADERS.entrySet().stream()
-                    .filter(entry -> shouldUpgrade(entry.getKey(), effectiveOldVersion, newVersion))
-                    .forEach(entry -> entry.getValue().upgrade(db));
-        } else {
-            if (effectiveOldVersion < DB_VERSION_GENERATED_LOCAL_TIME) {
-                UPGRADE_TO_GENERATED_LOCAL_TIME.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_SKIN_TEMPERATURE) {
-                UPGRADE_TO_SKIN_TEMPERATURE.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_PLANNED_EXERCISE_SESSIONS) {
-                UPGRADE_TO_PLANNED_EXERCISE_SESSIONS.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_MINDFULNESS_SESSION) {
-                UPGRADE_TO_MINDFULNESS_SESSION.upgrade(db);
-            }
-            if (shouldUpgrade(DB_VERSION_PERSONAL_HEALTH_RECORD, effectiveOldVersion, newVersion)) {
-                UPGRADE_TO_PERSONAL_HEALTH_RECORD.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_ACTIVITY_INTENSITY) {
-                UPGRADE_TO_ACTIVITY_INTENSITY.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_ECOSYSTEM_METRICS) {
-                UPGRADE_TO_ECOSYSTEM_METRICS.upgrade(db);
-            }
-            if (effectiveOldVersion < DB_VERSION_CLOUD_BACKUP_AND_RESTORE) {
-                UPGRADE_TO_CLOUD_BACKUP_AND_RESTORE.upgrade(db);
-            }
-        }
+        UPGRADERS.entrySet().stream()
+                .filter(entry -> shouldUpgrade(entry.getKey(), effectiveOldVersion, newVersion))
+                .forEach(entry -> entry.getValue().upgrade(db));
     }
 
     private static boolean isUnsupportedDbVersion(int version) {

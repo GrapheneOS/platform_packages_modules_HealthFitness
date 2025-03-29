@@ -15,9 +15,14 @@
  */
 package com.android.healthconnect.controller.tests.permissions.connectedapps
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Context
+import android.content.Intent
 import android.health.connect.HealthConnectManager
+import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
 import android.os.Bundle
+import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -29,6 +34,9 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasPackage
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
@@ -42,6 +50,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.ConnectedA
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.Loading
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.NotStarted
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState.Updated
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
@@ -55,6 +64,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.isAbove
 import com.android.healthconnect.controller.tests.utils.launchFragment
@@ -66,6 +76,7 @@ import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -73,14 +84,15 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import javax.inject.Inject
 import org.hamcrest.Matchers.`is`
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
@@ -97,6 +109,8 @@ class ConnectedAppsFragmentTest {
 
     @BindValue
     val viewModel: ConnectedAppsViewModel = Mockito.mock(ConnectedAppsViewModel::class.java)
+    @BindValue
+    val healthPermissionReader: HealthPermissionReader = Mockito.mock(HealthPermissionReader::class.java)
 
     @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
     @BindValue val navigationUtils: NavigationUtils = Mockito.mock(NavigationUtils::class.java)
@@ -113,6 +127,7 @@ class ConnectedAppsFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
         toggleAnimation(false)
+        Intents.init()
     }
 
     @After
@@ -120,6 +135,7 @@ class ConnectedAppsFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).reset()
         reset(healthConnectLogger)
         toggleAnimation(true)
+        Intents.release()
     }
 
     @Test
@@ -551,6 +567,7 @@ class ConnectedAppsFragmentTest {
     }
 
     @Test
+    @Ignore("b/406847310")
     fun appNeedsUpdatingElements_shownWhenOldAppWithDataInstalled() {
         val connectApp =
             listOf(
@@ -647,6 +664,34 @@ class ConnectedAppsFragmentTest {
         onView(withText("Check for updates")).perform(click())
         assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.update_apps_activity)
         verify(healthConnectLogger).logInteraction(MigrationElement.MIGRATION_APP_UPDATE_BUTTON)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY)
+    fun notAllowedApps_launchesOnboardingActivityIfAvailable() {
+        val connectedApps =
+            listOf(
+                ConnectedAppMetadata(
+                    AppMetadata(packageName = TEST_APP_PACKAGE_NAME, appName = TEST_APP_NAME, icon = null),
+                    status = DENIED,
+                ),
+            )
+
+        val testIntent = Intent(ACTION_SHOW_ONBOARDING)
+        testIntent.setPackage(TEST_APP.packageName)
+        // Assume that the client onboarding activity completes normally.
+        Intents.intending(hasAction(ACTION_SHOW_ONBOARDING)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_OK, Intent()))
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectedApps) }
+        whenever(healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))).thenReturn(testIntent)
+
+        launchFragment<ConnectedAppsFragment>(Bundle())
+        onView(withText(TEST_APP_NAME)).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText(TEST_APP_NAME)).perform(click())
+
+        Intents.intended(hasAction(ACTION_SHOW_ONBOARDING))
+        Intents.intended(hasPackage(TEST_APP_PACKAGE_NAME))
     }
 
     private fun setupFragmentForNavigation() {

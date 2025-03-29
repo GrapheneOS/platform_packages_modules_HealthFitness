@@ -47,20 +47,6 @@ public class AconfigFlagHelperTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Test
-    @DisableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
-    public void infraToGuardDbChangesDisabled() {
-        // clear the map to setup a hypothetical test case
-        DB_VERSION_TO_DB_FLAG_MAP.clear();
-        // putting a very high DB version mapping to true to the map
-        DB_VERSION_TO_DB_FLAG_MAP.put(1000_000, () -> true);
-
-        // since FLAG_INFRA_TO_GUARD_DB_CHANGES is disabled, that very high version shouldn't be
-        // taken into account.
-        assertThat(getDbVersion()).isEqualTo(LAST_ROLLED_OUT_DB_VERSION);
-    }
-
-    @Test
-    @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
     public void infraToGuardDbChangesEnabled() {
         // clear the map to setup a hypothetical test case
@@ -69,7 +55,6 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void readDbVersionToDbFlagMap_expectNoDbVersionSmallerThanBaseline() {
         // clear the map to setup a hypothetical test case
         DB_VERSION_TO_DB_FLAG_MAP.clear();
@@ -86,7 +71,6 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void testGetDbVersion_true_true_true() {
         // clear the map to setup a hypothetical test case
         DB_VERSION_TO_DB_FLAG_MAP.clear();
@@ -100,7 +84,6 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void testGetDbVersion_true_false_true() {
         // clear the map to setup a hypothetical test case
         DB_VERSION_TO_DB_FLAG_MAP.clear();
@@ -114,7 +97,6 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void testGetDbVersion_true_false_false() {
         // clear the map to setup a hypothetical test case
         DB_VERSION_TO_DB_FLAG_MAP.clear();
@@ -128,7 +110,6 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_INFRA_TO_GUARD_DB_CHANGES})
     public void testToEnsureLastRolledOutDbVersionIsSetCorrectly() {
         // This test is to prevent the case where the instructions in
         // go/hc-mainline-dev/trunk_stable/add-db-changes aren't followed correctly.

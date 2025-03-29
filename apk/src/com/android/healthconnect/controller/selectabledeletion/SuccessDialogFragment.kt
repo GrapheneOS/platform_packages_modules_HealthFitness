@@ -67,6 +67,9 @@ class SuccessDialogFragment : Hilt_SuccessDialogFragment() {
                     SuccessDialogElement.DELETION_DIALOG_SUCCESS_DONE_BUTTON,
                 )
 
+        val fragmentsWithSeeConnectedAppsButton =
+            setOf(R.id.entriesAndAccessFragment, R.id.allDataFragment, R.id.medicalAllDataFragment)
+
         navAction?.let {
             dialogBuilder.setNegativeButton(
                 R.string.delete_dialog_see_connected_apps_button,
@@ -74,7 +77,7 @@ class SuccessDialogFragment : Hilt_SuccessDialogFragment() {
                 onClickListener = { _, _ ->
                     this.dismiss()
                     val navController = findNavController()
-                    if (navController.currentDestination?.id == R.id.entriesAndAccessFragment) {
+                    if (navController.currentDestination?.id in fragmentsWithSeeConnectedAppsButton) {
                         findNavController().navigate(it)
                     }
                 },

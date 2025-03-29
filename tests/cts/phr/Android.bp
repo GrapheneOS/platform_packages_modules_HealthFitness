@@ -70,7 +70,6 @@ java_library {
     static_libs: [
         "androidx.appcompat_appcompat",
         "androidx.test.rules",
-        "cts-install-lib",
         "platform-test-annotations",
         "cts-healthconnect-utils",
         "cts-healthconnect-lib",

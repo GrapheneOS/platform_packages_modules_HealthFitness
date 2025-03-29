@@ -24,9 +24,11 @@ import android.content.pm.PackageManager.NameNotFoundException
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.pm.PackageManager.ResolveInfoFlags
 import android.health.connect.HealthConnectManager
+import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
 import android.health.connect.HealthPermissions
 import android.os.Process
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
+import com.android.healthconnect.controller.permissions.api.SetHealthPermissionsUserFixedFlagValueUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.isAdditionalPermission
@@ -50,6 +52,7 @@ class HealthPermissionReader
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
+    private val setHealthPermissionsUserFixedFlagValueUseCase: SetHealthPermissionsUserFixedFlagValueUseCase,
     private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
 ) {
 
@@ -536,6 +539,42 @@ constructor(
             else -> false
         }
     }
+
+    fun getOnboardingActivityIntent(context: Context, packageName: String): Intent? {
+        if (!Flags.launchOnboardingActivity()) {
+            return null
+        }
+        val intent = Intent(ACTION_SHOW_ONBOARDING)
+        intent.setPackage(packageName)
+        val resolveInfoList =
+            context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_ALL)
+        resolveInfoList.find { resolveInfo ->
+            resolveInfo.activityInfo != null
+                    && resolveInfo.activityInfo.exported
+                    // We verify that the activity is guarded by this permission. This essentially
+                    // forces developers to guard it with this permission (otherwise we wouldn't
+                    // launch it), ensuring other apps can't launch the onboarding activity.
+                    && resolveInfo.activityInfo.permission == HealthPermissions.START_ONBOARDING
+        }?.let {
+            intent.setClassName(packageName, it.activityInfo.name)
+            // Create a new task and clear any existing task stack. This avoids awkward scenario
+            // where the user hits back after launching onboarding and ends up somewhere in the
+            // 3P app instead of back in Health Connect itself.
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            // If we didn't do this, the app might be unable to make a permissions request if it
+            // had been blocked. Resetting the USER_FIXED status ensures this can't happen.
+            resetPermissionFlags(packageName)
+            return intent
+        }
+        // Application hasn't exported an onboarding activity.
+        return null
+    }
+
+    private fun resetPermissionFlags(packageName: String) {
+        val permissions = getValidHealthPermissions(packageName)
+        setHealthPermissionsUserFixedFlagValueUseCase(packageName, permissions.map { it.toString() }, false)
+    }
+
 
     private fun getRationaleIntent(packageName: String? = null): Intent {
         val intent =

@@ -46,7 +46,6 @@ import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
-import com.android.server.healthconnect.storage.ExportImportSettingsStorage;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -81,6 +80,7 @@ public class ImportManager {
     private final File mEnvironmentDataDirectory;
     private final ExportImportLogger mExportImportLogger;
     @Nullable private final Clock mClock;
+    private final Compressor mCompressor;
 
     public ImportManager(
             AppInfoHelper appInfoHelper,
@@ -95,6 +95,37 @@ public class ImportManager {
             HealthConnectNotificationSender notificationSender,
             File environmentDataDirectory,
             ExportImportLogger exportImportLogger) {
+        this(
+                appInfoHelper,
+                context,
+                exportImportSettingsStorage,
+                transactionManager,
+                fitnessRecordUpsertHelper,
+                fitnessRecordReadHelper,
+                deviceInfoHelper,
+                healthDataCategoryPriorityHelper,
+                clock,
+                notificationSender,
+                environmentDataDirectory,
+                exportImportLogger,
+                new Compressor());
+    }
+
+    @VisibleForTesting
+    ImportManager(
+            AppInfoHelper appInfoHelper,
+            Context context,
+            ExportImportSettingsStorage exportImportSettingsStorage,
+            TransactionManager transactionManager,
+            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
+            FitnessRecordReadHelper fitnessRecordReadHelper,
+            DeviceInfoHelper deviceInfoHelper,
+            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
+            @Nullable Clock clock,
+            HealthConnectNotificationSender notificationSender,
+            File environmentDataDirectory,
+            ExportImportLogger exportImportLogger,
+            Compressor compressor) {
         mContext = context;
         mDatabaseMerger =
                 new DatabaseMerger(
@@ -110,6 +141,7 @@ public class ImportManager {
         mNotificationSender = notificationSender;
         mEnvironmentDataDirectory = environmentDataDirectory;
         mExportImportLogger = exportImportLogger;
+        mCompressor = compressor;
     }
 
     /** Reads and merges the backup data from a local file. */
@@ -137,7 +169,7 @@ public class ImportManager {
         try {
             try {
                 Slog.d(TAG, "Starting to unzip file: " + importDbFile.getAbsolutePath());
-                Compressor.decompress(
+                mCompressor.decompress(
                         uri, LOCAL_EXPORT_DATABASE_FILE_NAME, importDbFile, userContext);
                 Slog.i(TAG, "Import file unzipped: " + importDbFile.getAbsolutePath());
             } catch (IllegalArgumentException e) {

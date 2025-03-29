@@ -60,13 +60,4 @@ public interface FirstGrantTimeDatastore {
      * @hide
      */
     File getFile(UserHandle user, @DataType int dataType);
-
-    /**
-     * Create instance of the datastore class.
-     *
-     * @hide
-     */
-    static FirstGrantTimeDatastore createInstance(File environmentDataDirectory) {
-        return new FirstGrantTimeDatastoreXmlPersistence(environmentDataDirectory);
-    }
 }

@@ -19,7 +19,7 @@ package com.android.server.healthconnect.backuprestore;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
 
 import android.annotation.Nullable;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.RestoreChange;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
@@ -98,7 +98,7 @@ public class CloudRestoreManager {
     }
 
     /** Takes the serialized user settings and overwrites existing settings. */
-    public void restoreSettings(BackupSettings newSettings) {
+    public void restoreSettings(BackupMetadata newSettings) {
         Slog.i(TAG, "Restoring user settings.");
         CloudBackupSettingsHelper cloudBackupSettingsHelper =
                 new CloudBackupSettingsHelper(mPriorityHelper, mPreferenceHelper, mAppInfoHelper);

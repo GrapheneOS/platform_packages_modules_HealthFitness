@@ -125,6 +125,7 @@ package android.health.connect {
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") @RequiresPermission(android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA) public void upsertMedicalResources(@NonNull java.util.List<android.health.connect.UpsertMedicalResourceRequest>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.datatypes.MedicalResource>,android.health.connect.HealthConnectException>);
     field public static final String ACTION_MANAGE_HEALTH_PERMISSIONS = "android.health.connect.action.MANAGE_HEALTH_PERMISSIONS";
     field public static final String ACTION_REQUEST_EXERCISE_ROUTE = "android.health.connect.action.REQUEST_EXERCISE_ROUTE";
+    field @FlaggedApi("com.android.healthfitness.flags.launch_onboarding_activity") public static final String ACTION_SHOW_ONBOARDING = "android.health.connect.action.SHOW_ONBOARDING";
     field public static final String CATEGORY_HEALTH_PERMISSIONS = "android.intent.category.HEALTH_PERMISSIONS";
     field public static final String EXTRA_EXERCISE_ROUTE = "android.health.connect.extra.EXERCISE_ROUTE";
     field public static final String EXTRA_SESSION_ID = "android.health.connect.extra.SESSION_ID";
@@ -185,6 +186,7 @@ package android.health.connect {
     field public static final String READ_VO2_MAX = "android.permission.health.READ_VO2_MAX";
     field public static final String READ_WEIGHT = "android.permission.health.READ_WEIGHT";
     field public static final String READ_WHEELCHAIR_PUSHES = "android.permission.health.READ_WHEELCHAIR_PUSHES";
+    field @FlaggedApi("com.android.healthfitness.flags.launch_onboarding_activity") public static final String START_ONBOARDING = "android.permission.health.START_ONBOARDING";
     field public static final String WRITE_ACTIVE_CALORIES_BURNED = "android.permission.health.WRITE_ACTIVE_CALORIES_BURNED";
     field @FlaggedApi("com.android.healthfitness.flags.activity_intensity") public static final String WRITE_ACTIVITY_INTENSITY = "android.permission.health.WRITE_ACTIVITY_INTENSITY";
     field public static final String WRITE_BASAL_BODY_TEMPERATURE = "android.permission.health.WRITE_BASAL_BODY_TEMPERATURE";

@@ -21,7 +21,7 @@ import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
-import android.health.connect.aidl.IGetSettingsForBackupResponseCallback;
+import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -41,7 +41,7 @@ import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.UpdatePriorityRequestParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
-import android.health.connect.backuprestore.BackupSettings;
+import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.MedicalDataSource;
@@ -539,19 +539,19 @@ interface IHealthConnectService {
     void getChangesForBackup(in @nullable String changeToken, in IGetChangesForBackupResponseCallback callback);
 
     /**
-     * Returns the settings for cloud backup.
+     * Returns the latest metadata for cloud backup.
      *
      * @param callback Callback to receive result of performing this operation.
      */
-    void getSettingsForBackup(in IGetSettingsForBackupResponseCallback callback);
+    void getLatestMetadataForBackup(in IGetLatestMetadataForBackupResponseCallback callback);
 
     /**
-     * Restores the backed up user settings.
+     * Restores the backed up metadata.
      *
-     * @param backupSettings Settings that were previously backed up.
+     * @param backupMetadata Metadata that were previously backed up and to be restored.
      * @param callback Callback to receive result of performing this operation.
      */
-    void restoreSettings(in BackupSettings backupSettings, in IEmptyResponseCallback callback);
+    void restoreLatestMetadata(in BackupMetadata backupMetadata, in IEmptyResponseCallback callback);
 
     /**
      * Returns whether the input data version can be restored.
