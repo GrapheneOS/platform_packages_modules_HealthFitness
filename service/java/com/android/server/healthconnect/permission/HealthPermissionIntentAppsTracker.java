@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.permission;
 
+import android.annotation.Nullable;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -151,7 +152,7 @@ public class HealthPermissionIntentAppsTracker {
                 userHandle);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     private String extractPackageName(ResolveInfo info) {
         if (info == null
                 || info.activityInfo == null
