@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.migration;
 
 import android.Manifest;
+import android.annotation.Nullable;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -120,8 +121,11 @@ public class MigrationUtils {
         return filteredPackages;
     }
 
-    /** Computes the SHA256 digest of the input data. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    /**
+     * Returns the SHA256 digest of the input data, or null if the SHA-256 algorithm cannot be
+     * initialised.
+     */
+    @Nullable
     public String computeSha256DigestBytes(byte[] data) {
         MessageDigest messageDigest;
         try {
