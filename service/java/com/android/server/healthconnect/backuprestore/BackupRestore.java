@@ -1099,8 +1099,12 @@ public final class BackupRestore {
 
         UserGrantTimeState userGrantTimeState =
                 mGrantTimeXmlHelper.parseGrantTime(restoredGrantTimeFile);
-        mFirstGrantTimeManager.applyAndStageGrantTimeStateForUser(
-                mCurrentForegroundUser, userGrantTimeState);
+        if (userGrantTimeState != null) {
+            mFirstGrantTimeManager.applyAndStageGrantTimeStateForUser(
+                    mCurrentForegroundUser, userGrantTimeState);
+        } else {
+            Slog.i(TAG, "Failed to find user grant times at " + restoredGrantTimeFile);
+        }
 
         Slog.i(TAG, "Deleting staged grant times after merging.");
         restoredGrantTimeFile.delete();
