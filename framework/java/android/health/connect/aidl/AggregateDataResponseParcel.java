@@ -41,6 +41,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,16 +63,14 @@ public class AggregateDataResponseParcel implements Parcelable {
                 }
             };
     private final List<AggregateRecordsResponse<?>> mAggregateRecordsResponses;
-    private Duration mDuration;
-    private Period mPeriod;
-    private TimeRangeFilter mTimeRangeFilter;
+    @Nullable private Duration mDuration;
+    @Nullable private Period mPeriod;
+    @Nullable private TimeRangeFilter mTimeRangeFilter;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public AggregateDataResponseParcel(List<AggregateRecordsResponse<?>> aggregateRecordsResponse) {
         mAggregateRecordsResponses = aggregateRecordsResponse;
     }
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     protected AggregateDataResponseParcel(Parcel in) {
         final int size = in.readInt();
         mAggregateRecordsResponses = new ArrayList<>(size);
@@ -131,7 +130,6 @@ public class AggregateDataResponseParcel implements Parcelable {
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public AggregateDataResponseParcel setDuration(
             @Nullable Duration duration, @Nullable TimeRangeFilter timeRangeFilter) {
         mDuration = duration;
@@ -140,7 +138,6 @@ public class AggregateDataResponseParcel implements Parcelable {
         return this;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public AggregateDataResponseParcel setPeriod(
             @Nullable Period period, @Nullable TimeRangeFilter timeRangeFilter) {
         mPeriod = period;
@@ -159,8 +156,8 @@ public class AggregateDataResponseParcel implements Parcelable {
     /**
      * @return responses from {@code mAggregateRecordsResponses} grouped as per the {@code
      *     mDuration}
+     * @throws NullPointerException if duration not set
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public List<AggregateRecordsGroupedByDurationResponse<?>>
             getAggregateDataResponseGroupedByDuration() {
         Objects.requireNonNull(mDuration);
@@ -170,13 +167,37 @@ public class AggregateDataResponseParcel implements Parcelable {
         }
 
         if (mTimeRangeFilter instanceof LocalTimeRangeFilter timeFilter) {
-            return getAggregateDataResponseForLocalTimeGroupedByDuration(
-                    timeFilter.getStartTime(), timeFilter.getEndTime());
+            LocalDateTime startTime = timeFilter.getStartTime();
+            // In practice with the current implementation this cannot be null.
+            // However, the API is marked as Nullable so handle in case of future changes.
+            if (startTime == null) {
+                startTime = LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.MIN);
+            }
+            LocalDateTime endTime = timeFilter.getEndTime();
+            // In practice with the current implementation this cannot be null.
+            // However, the API is marked as Nullable so handle in case of future changes.
+            if (endTime == null) {
+                endTime =
+                        LocalDateTime.ofInstant(
+                                Instant.now().plus(1, ChronoUnit.DAYS), ZoneOffset.MAX);
+            }
+            return getAggregateDataResponseForLocalTimeGroupedByDuration(startTime, endTime);
         }
 
         if (mTimeRangeFilter instanceof TimeInstantRangeFilter timeFilter) {
-            return getAggregateDataResponseForInstantTimeGroupedByDuration(
-                    timeFilter.getStartTime(), timeFilter.getEndTime());
+            Instant startTime = timeFilter.getStartTime();
+            // In practice currently this will never be null. But the API is marked as Nullable
+            // so handle in the case of any future changes.
+            if (startTime == null) {
+                startTime = Instant.EPOCH;
+            }
+            Instant endTime = timeFilter.getEndTime();
+            // In practice currently this will never be null. But the API is marked as Nullable
+            // so handle in the case of any future changes.
+            if (endTime == null) {
+                endTime = Instant.now().plus(1, ChronoUnit.DAYS);
+            }
+            return getAggregateDataResponseForInstantTimeGroupedByDuration(startTime, endTime);
         }
 
         throw new IllegalArgumentException(
@@ -232,16 +253,23 @@ public class AggregateDataResponseParcel implements Parcelable {
 
     /**
      * @return responses from {@code mAggregateRecordsResponses} grouped as per the {@code mPeriod}
+     * @throws NullPointerException if period or time range filter not set
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public List<AggregateRecordsGroupedByPeriodResponse<?>>
             getAggregateDataResponseGroupedByPeriod() {
         Objects.requireNonNull(mPeriod);
+        Objects.requireNonNull(mTimeRangeFilter);
 
         List<AggregateRecordsGroupedByPeriodResponse<?>> aggregateRecordsGroupedByPeriodResponses =
                 new ArrayList<>();
 
-        LocalDateTime groupBoundary = ((LocalTimeRangeFilter) mTimeRangeFilter).getStartTime();
+        LocalDateTime startTime = ((LocalTimeRangeFilter) mTimeRangeFilter).getStartTime();
+        // In practice with the current implementation this cannot be null.
+        // However, the API is marked as Nullable so handle in case of future changes.
+        if (startTime == null) {
+            startTime = LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.MIN);
+        }
+        LocalDateTime groupBoundary = startTime;
         for (AggregateRecordsResponse<?> aggregateRecordsResponse : mAggregateRecordsResponses) {
             aggregateRecordsGroupedByPeriodResponses.add(
                     new AggregateRecordsGroupedByPeriodResponse<>(
@@ -281,7 +309,7 @@ public class AggregateDataResponseParcel implements Parcelable {
                                     val.putToParcel(dest);
                                     ZoneOffset zoneOffset = val.getZoneOffset();
                                     if (zoneOffset != null) {
-                                        dest.writeInt(val.getZoneOffset().getTotalSeconds());
+                                        dest.writeInt(zoneOffset.getTotalSeconds());
                                     } else {
                                         dest.writeInt(DEFAULT_INT);
                                     }
@@ -320,7 +348,7 @@ public class AggregateDataResponseParcel implements Parcelable {
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     private ZoneOffset parseZoneOffset(Parcel in) {
         int zoneOffsetInSecs = in.readInt();
         ZoneOffset zoneOffset = null;
@@ -331,14 +359,21 @@ public class AggregateDataResponseParcel implements Parcelable {
         return zoneOffset;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private LocalDateTime getPeriodEndLocalDateTime(TimeRangeFilter timeRangeFilter) {
         if (timeRangeFilter instanceof TimeInstantRangeFilter) {
             return LocalDateTime.ofInstant(
                     ((TimeInstantRangeFilter) timeRangeFilter).getEndTime(),
                     ZoneOffset.systemDefault());
         } else if (timeRangeFilter instanceof LocalTimeRangeFilter) {
-            return ((LocalTimeRangeFilter) timeRangeFilter).getEndTime();
+            LocalDateTime endTime = ((LocalTimeRangeFilter) timeRangeFilter).getEndTime();
+            // In practice with the current implementation this can never be null.
+            // However, the API is marked as Nullable, so handle in case of future changes.
+            if (endTime == null) {
+                endTime =
+                        LocalDateTime.ofInstant(
+                                Instant.now().plus(1, ChronoUnit.DAYS), ZoneOffset.MAX);
+            }
+            return endTime;
         } else {
             throw new IllegalArgumentException(
                     "Invalid time filter object. Object should be either "
