@@ -19,6 +19,7 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.validation.ValidationUtils.requireInRange;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.internal.datatypes.BodyWaterMassRecordInternal;
 
@@ -66,12 +67,11 @@ public final class BodyWaterMassRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the object
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        BodyWaterMassRecord that = (BodyWaterMassRecord) o;
+        if (!(o instanceof BodyWaterMassRecord that)) return false;
         return getBodyWaterMass().equals(that.getBodyWaterMass());
     }
 

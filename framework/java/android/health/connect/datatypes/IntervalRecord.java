@@ -71,6 +71,7 @@ public abstract class IntervalRecord extends Record {
         mEndTime = endTime;
         mEndZoneOffset = endZoneOffset;
     }
+
     /**
      * @return Start time of the activity
      */
@@ -78,6 +79,7 @@ public abstract class IntervalRecord extends Record {
     public Instant getStartTime() {
         return mStartTime;
     }
+
     /**
      * @return Start time's zone offset of the activity
      */
@@ -85,6 +87,7 @@ public abstract class IntervalRecord extends Record {
     public ZoneOffset getStartZoneOffset() {
         return mStartZoneOffset;
     }
+
     /**
      * @return End time of the activity
      */
@@ -92,6 +95,7 @@ public abstract class IntervalRecord extends Record {
     public Instant getEndTime() {
         return mEndTime;
     }
+
     /**
      * @return End time's zone offset of the activity
      */
@@ -106,11 +110,10 @@ public abstract class IntervalRecord extends Record {
      * @param object the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
     public boolean equals(@Nullable Object object) {
         if (super.equals(object)) {
-            IntervalRecord other = (IntervalRecord) object;
+            if (!(object instanceof IntervalRecord other)) return false;
             return getStartTime().toEpochMilli() == other.getStartTime().toEpochMilli()
                     && getEndTime().toEpochMilli() == other.getEndTime().toEpochMilli()
                     && getStartZoneOffset().equals(other.getStartZoneOffset())
@@ -118,6 +121,7 @@ public abstract class IntervalRecord extends Record {
         }
         return false;
     }
+
     /**
      * Returns a hash code value for the object.
      *

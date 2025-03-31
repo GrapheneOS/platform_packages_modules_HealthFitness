@@ -122,13 +122,11 @@ public final class SleepSessionRecord extends IntervalRecord {
         return mStages;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
-        if (!(o instanceof SleepSessionRecord)) return false;
+        if (!(o instanceof SleepSessionRecord that)) return false;
         if (!super.equals(o)) return false;
-        SleepSessionRecord that = (SleepSessionRecord) o;
         return isEqualNullableCharSequences(getNotes(), that.getNotes())
                 && isEqualNullableCharSequences(getTitle(), that.getTitle())
                 && Objects.equals(getStages(), that.getStages());

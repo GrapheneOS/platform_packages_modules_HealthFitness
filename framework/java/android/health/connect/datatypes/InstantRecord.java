@@ -75,11 +75,10 @@ public abstract class InstantRecord extends Record {
      * @param object the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
     public boolean equals(@Nullable Object object) {
         if (super.equals(object)) {
-            InstantRecord other = (InstantRecord) object;
+            if (!(object instanceof InstantRecord other)) return false;
             return this.getTime().toEpochMilli() == other.getTime().toEpochMilli()
                     && this.getZoneOffset().equals(other.getZoneOffset());
         }

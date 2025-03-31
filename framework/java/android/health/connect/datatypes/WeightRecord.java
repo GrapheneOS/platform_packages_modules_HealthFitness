@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WEIGHT;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.validation.ValidationUtils;
@@ -88,6 +89,7 @@ public final class WeightRecord extends InstantRecord {
         }
         mWeight = weight;
     }
+
     /**
      * @return weight in {@link Mass} unit.
      */
@@ -102,12 +104,11 @@ public final class WeightRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        WeightRecord that = (WeightRecord) o;
+        if (!(o instanceof WeightRecord that)) return false;
         return getWeight().equals(that.getWeight());
     }
 

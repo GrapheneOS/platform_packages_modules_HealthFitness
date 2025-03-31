@@ -266,10 +266,9 @@ public final class ExerciseRoute implements Parcelable {
         }
 
         @Override
-        public boolean equals(Object o) {
+        public boolean equals(@Nullable Object o) {
             if (this == o) return true;
-            if (!(o instanceof Location)) return false;
-            Location that = (Location) o;
+            if (!(o instanceof Location that)) return false;
             return Objects.equals(getAltitude(), that.getAltitude())
                     && getTime().equals(that.getTime())
                     && (getLatitude() == that.getLatitude())

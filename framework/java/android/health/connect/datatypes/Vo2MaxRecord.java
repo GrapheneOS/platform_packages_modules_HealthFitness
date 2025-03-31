@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.validation.ValidationUtils.valida
 import android.annotation.FloatRange;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.Vo2MaxRecordInternal;
 
@@ -128,12 +129,11 @@ public final class Vo2MaxRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        Vo2MaxRecord that = (Vo2MaxRecord) o;
+        if (!(o instanceof Vo2MaxRecord that)) return false;
         return getMeasurementMethod() == that.getMeasurementMethod()
                 && Double.compare(
                                 that.getVo2MillilitersPerMinuteKilogram(),

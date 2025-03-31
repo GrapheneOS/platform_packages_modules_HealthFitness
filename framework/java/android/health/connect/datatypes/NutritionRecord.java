@@ -1870,12 +1870,11 @@ public final class NutritionRecord extends IntervalRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        NutritionRecord that = (NutritionRecord) o;
+        if (!(o instanceof NutritionRecord that)) return false;
         return getMealType() == that.getMealType()
                 && Objects.equals(getUnsaturatedFat(), that.getUnsaturatedFat())
                 && Objects.equals(getPotassium(), that.getPotassium())

@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations;
 import android.health.connect.datatypes.units.Temperature;
 import android.health.connect.datatypes.validation.ValidationUtils;
@@ -91,12 +92,11 @@ public final class BodyTemperatureRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        BodyTemperatureRecord that = (BodyTemperatureRecord) o;
+        if (!(o instanceof BodyTemperatureRecord that)) return false;
         return getMeasurementLocation() == that.getMeasurementLocation()
                 && getTemperature().equals(that.getTemperature());
     }
