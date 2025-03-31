@@ -56,11 +56,11 @@ public final class DeriveTotalCaloriesBurnedHelper {
     private DeriveBasalCaloriesBurnedHelper mBasalCaloriesBurnedHelper;
     private final TransactionManager mTransactionManager;
 
-    private String mInstantRecordTimeColumnName;
+    private final String mInstantRecordTimeColumnName;
 
-    private String mIntervalStartTimeColumnName;
+    private final String mIntervalStartTimeColumnName;
 
-    private boolean mUseLocalTime;
+    private final boolean mUseLocalTime;
 
     public DeriveTotalCaloriesBurnedHelper(
             long startTime,
@@ -112,12 +112,7 @@ public final class DeriveTotalCaloriesBurnedHelper {
                                                 .addOrderByClause(
                                                         mInstantRecordTimeColumnName, true)));
         mMergeDataHelper =
-                new MergeDataHelper(
-                        mActiveCaloriesBurnedCursor,
-                        mPriority,
-                        ENERGY_COLUMN_NAME,
-                        Double.class,
-                        mUseLocalTime);
+                new MergeDataHelper(mPriority, ENERGY_COLUMN_NAME, Double.class, mUseLocalTime);
         mBasalCaloriesBurnedHelper =
                 new DeriveBasalCaloriesBurnedHelper(
                         mBasalCaloriesBurnedCursor,
@@ -146,7 +141,12 @@ public final class DeriveTotalCaloriesBurnedHelper {
             long intervalStartTime = instantInstantPair.first.toEpochMilli();
             long intervalEndTime = instantInstantPair.second.toEpochMilli();
             totalDerivedCalories +=
-                    mMergeDataHelper.readCursor(intervalStartTime, intervalEndTime)
+                    mMergeDataHelper
+                                    .readCursor(
+                                            mActiveCaloriesBurnedCursor,
+                                            intervalStartTime,
+                                            intervalEndTime)
+                                    .getTotal()
                             + mBasalCaloriesBurnedHelper.getBasalCaloriesBurned(
                                     intervalStartTime, intervalEndTime);
         }
