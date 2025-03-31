@@ -27,6 +27,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.FloorsClimbedRecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.ArrayList;
@@ -53,8 +55,8 @@ public final class FloorsClimbedRecordHelper
         return FLOORS_CLIMBED_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case FLOORS_CLIMBED_RECORD_FLOORS_CLIMBED_TOTAL:

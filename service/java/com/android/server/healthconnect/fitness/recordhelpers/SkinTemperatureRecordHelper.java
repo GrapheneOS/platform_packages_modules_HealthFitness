@@ -179,8 +179,8 @@ public final class SkinTemperatureRecordHelper
         createTable(db, getCreateTableRequest());
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case SKIN_TEMPERATURE_RECORD_DELTA_AVG:

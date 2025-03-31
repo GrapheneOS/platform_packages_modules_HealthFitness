@@ -29,6 +29,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.ActiveCaloriesBurnedRecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
@@ -81,8 +83,8 @@ public final class ActiveCaloriesBurnedRecordHelper
         return ACTIVE_CALORIES_BURNED_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL:

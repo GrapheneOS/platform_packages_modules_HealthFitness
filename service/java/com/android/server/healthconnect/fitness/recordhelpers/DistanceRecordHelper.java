@@ -27,6 +27,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.DistanceRecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.ArrayList;
@@ -52,8 +54,8 @@ public final class DistanceRecordHelper extends IntervalRecordHelper<DistanceRec
         return DISTANCE_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case DISTANCE_RECORD_DISTANCE_TOTAL:

@@ -73,8 +73,8 @@ public final class HydrationRecordHelper extends IntervalRecordHelper<HydrationR
         hydrationRecord.setVolume(getCursorDouble(cursor, VOLUME_COLUMN_NAME));
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case HYDRATION_RECORD_VOLUME_TOTAL:
