@@ -45,57 +45,56 @@ public final class NutritionRecord extends IntervalRecord {
         private final Instant mEndTime;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
-        private Mass mUnsaturatedFat;
-        private Mass mPotassium;
-        private Mass mThiamin;
+        @Nullable private Mass mUnsaturatedFat;
+        @Nullable private Mass mPotassium;
+        @Nullable private Mass mThiamin;
         private int mMealType;
-        private Mass mTransFat;
-        private Mass mManganese;
-        private Energy mEnergyFromFat;
-        private Mass mCaffeine;
-        private Mass mDietaryFiber;
-        private Mass mSelenium;
-        private Mass mVitaminB6;
-        private Mass mProtein;
-        private Mass mChloride;
-        private Mass mCholesterol;
-        private Mass mCopper;
-        private Mass mIodine;
-        private Mass mVitaminB12;
-        private Mass mZinc;
-        private Mass mRiboflavin;
-        private Energy mEnergy;
-        private Mass mMolybdenum;
-        private Mass mPhosphorus;
-        private Mass mChromium;
-        private Mass mTotalFat;
-        private Mass mCalcium;
-        private Mass mVitaminC;
-        private Mass mVitaminE;
-        private Mass mBiotin;
-        private Mass mVitaminD;
-        private Mass mNiacin;
-        private Mass mMagnesium;
-        private Mass mTotalCarbohydrate;
-        private Mass mVitaminK;
-        private Mass mPolyunsaturatedFat;
-        private Mass mSaturatedFat;
-        private Mass mSodium;
-        private Mass mFolate;
-        private Mass mMonounsaturatedFat;
-        private Mass mPantothenicAcid;
-        private String mMealName;
-        private Mass mIron;
-        private Mass mVitaminA;
-        private Mass mFolicAcid;
-        private Mass mSugar;
+        @Nullable private Mass mTransFat;
+        @Nullable private Mass mManganese;
+        @Nullable private Energy mEnergyFromFat;
+        @Nullable private Mass mCaffeine;
+        @Nullable private Mass mDietaryFiber;
+        @Nullable private Mass mSelenium;
+        @Nullable private Mass mVitaminB6;
+        @Nullable private Mass mProtein;
+        @Nullable private Mass mChloride;
+        @Nullable private Mass mCholesterol;
+        @Nullable private Mass mCopper;
+        @Nullable private Mass mIodine;
+        @Nullable private Mass mVitaminB12;
+        @Nullable private Mass mZinc;
+        @Nullable private Mass mRiboflavin;
+        @Nullable private Energy mEnergy;
+        @Nullable private Mass mMolybdenum;
+        @Nullable private Mass mPhosphorus;
+        @Nullable private Mass mChromium;
+        @Nullable private Mass mTotalFat;
+        @Nullable private Mass mCalcium;
+        @Nullable private Mass mVitaminC;
+        @Nullable private Mass mVitaminE;
+        @Nullable private Mass mBiotin;
+        @Nullable private Mass mVitaminD;
+        @Nullable private Mass mNiacin;
+        @Nullable private Mass mMagnesium;
+        @Nullable private Mass mTotalCarbohydrate;
+        @Nullable private Mass mVitaminK;
+        @Nullable private Mass mPolyunsaturatedFat;
+        @Nullable private Mass mSaturatedFat;
+        @Nullable private Mass mSodium;
+        @Nullable private Mass mFolate;
+        @Nullable private Mass mMonounsaturatedFat;
+        @Nullable private Mass mPantothenicAcid;
+        @Nullable private String mMealName;
+        @Nullable private Mass mIron;
+        @Nullable private Mass mVitaminA;
+        @Nullable private Mass mFolicAcid;
+        @Nullable private Mass mSugar;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
          * @param endTime End time of this activity
          */
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
         public Builder(
                 @NonNull Metadata metadata, @NonNull Instant startTime, @NonNull Instant endTime) {
             Objects.requireNonNull(metadata);
@@ -145,7 +144,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param unsaturatedFat UnsaturatedFat of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setUnsaturatedFat(@Nullable Mass unsaturatedFat) {
             mUnsaturatedFat = unsaturatedFat;
@@ -157,7 +155,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param potassium Potassium of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setPotassium(@Nullable Mass potassium) {
             mPotassium = potassium;
@@ -169,7 +166,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param thiamin Thiamin of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setThiamin(@Nullable Mass thiamin) {
             mThiamin = thiamin;
@@ -192,7 +188,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param transFat TransFat of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setTransFat(@Nullable Mass transFat) {
             mTransFat = transFat;
@@ -204,7 +199,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param manganese Manganese of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setManganese(@Nullable Mass manganese) {
             mManganese = manganese;
@@ -216,7 +210,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param energyFromFat EnergyFromFat of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setEnergyFromFat(@Nullable Energy energyFromFat) {
             mEnergyFromFat = energyFromFat;
@@ -228,7 +221,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param caffeine Caffeine of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setCaffeine(@Nullable Mass caffeine) {
             mCaffeine = caffeine;
@@ -240,7 +232,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param dietaryFiber DietaryFiber of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setDietaryFiber(@Nullable Mass dietaryFiber) {
             mDietaryFiber = dietaryFiber;
@@ -252,7 +243,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param selenium Selenium of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setSelenium(@Nullable Mass selenium) {
             mSelenium = selenium;
@@ -264,7 +254,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param vitaminB6 VitaminB6 of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setVitaminB6(@Nullable Mass vitaminB6) {
             mVitaminB6 = vitaminB6;
@@ -276,7 +265,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param protein Protein of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setProtein(@Nullable Mass protein) {
             mProtein = protein;
@@ -288,7 +276,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param chloride Chloride of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setChloride(@Nullable Mass chloride) {
             mChloride = chloride;
@@ -300,7 +287,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param cholesterol Cholesterol of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setCholesterol(@Nullable Mass cholesterol) {
             mCholesterol = cholesterol;
@@ -312,7 +298,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param copper Copper of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setCopper(@Nullable Mass copper) {
             mCopper = copper;
@@ -324,7 +309,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param iodine Iodine of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setIodine(@Nullable Mass iodine) {
             mIodine = iodine;
@@ -336,7 +320,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param vitaminB12 VitaminB12 of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setVitaminB12(@Nullable Mass vitaminB12) {
             mVitaminB12 = vitaminB12;
@@ -348,7 +331,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param zinc Zinc of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setZinc(@Nullable Mass zinc) {
             mZinc = zinc;
@@ -360,7 +342,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param riboflavin Riboflavin of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setRiboflavin(@Nullable Mass riboflavin) {
             mRiboflavin = riboflavin;
@@ -372,7 +353,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param energy Energy of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setEnergy(@Nullable Energy energy) {
             mEnergy = energy;
@@ -384,7 +364,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param molybdenum Molybdenum of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setMolybdenum(@Nullable Mass molybdenum) {
             mMolybdenum = molybdenum;
@@ -396,7 +375,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param phosphorus Phosphorus of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setPhosphorus(@Nullable Mass phosphorus) {
             mPhosphorus = phosphorus;
@@ -408,7 +386,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param chromium Chromium of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setChromium(@Nullable Mass chromium) {
             mChromium = chromium;
@@ -420,7 +397,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param totalFat TotalFat of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setTotalFat(@Nullable Mass totalFat) {
             mTotalFat = totalFat;
@@ -432,7 +408,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param calcium Calcium of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setCalcium(@Nullable Mass calcium) {
             mCalcium = calcium;
@@ -444,7 +419,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param vitaminC VitaminC of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setVitaminC(@Nullable Mass vitaminC) {
             mVitaminC = vitaminC;
@@ -456,7 +430,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param vitaminE VitaminE of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setVitaminE(@Nullable Mass vitaminE) {
             mVitaminE = vitaminE;
@@ -468,7 +441,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param biotin Biotin of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setBiotin(@Nullable Mass biotin) {
             mBiotin = biotin;
@@ -480,7 +452,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param vitaminD VitaminD of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setVitaminD(@Nullable Mass vitaminD) {
             mVitaminD = vitaminD;
@@ -492,7 +463,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param niacin Niacin of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setNiacin(@Nullable Mass niacin) {
             mNiacin = niacin;
@@ -504,7 +474,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param magnesium Magnesium of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setMagnesium(@Nullable Mass magnesium) {
             mMagnesium = magnesium;
@@ -516,7 +485,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param totalCarbohydrate TotalCarbohydrate of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setTotalCarbohydrate(@Nullable Mass totalCarbohydrate) {
             mTotalCarbohydrate = totalCarbohydrate;
@@ -528,7 +496,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param vitaminK VitaminK of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setVitaminK(@Nullable Mass vitaminK) {
             mVitaminK = vitaminK;
@@ -540,7 +507,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param polyunsaturatedFat PolyunsaturatedFat of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setPolyunsaturatedFat(@Nullable Mass polyunsaturatedFat) {
             mPolyunsaturatedFat = polyunsaturatedFat;
@@ -552,7 +518,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param saturatedFat SaturatedFat of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setSaturatedFat(@Nullable Mass saturatedFat) {
             mSaturatedFat = saturatedFat;
@@ -564,7 +529,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param sodium Sodium of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setSodium(@Nullable Mass sodium) {
             mSodium = sodium;
@@ -576,7 +540,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param folate Folate of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setFolate(@Nullable Mass folate) {
             mFolate = folate;
@@ -588,7 +551,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param monounsaturatedFat MonounsaturatedFat of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setMonounsaturatedFat(@Nullable Mass monounsaturatedFat) {
             mMonounsaturatedFat = monounsaturatedFat;
@@ -600,7 +562,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param pantothenicAcid PantothenicAcid of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setPantothenicAcid(@Nullable Mass pantothenicAcid) {
             mPantothenicAcid = pantothenicAcid;
@@ -623,7 +584,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param iron Iron of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setIron(@Nullable Mass iron) {
             mIron = iron;
@@ -635,7 +595,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param vitaminA VitaminA of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setVitaminA(@Nullable Mass vitaminA) {
             mVitaminA = vitaminA;
@@ -647,7 +606,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param folicAcid FolicAcid of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setFolicAcid(@Nullable Mass folicAcid) {
             mFolicAcid = folicAcid;
@@ -659,7 +617,6 @@ public final class NutritionRecord extends IntervalRecord {
          *
          * @param sugar Sugar of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setSugar(@Nullable Mass sugar) {
             mSugar = sugar;
@@ -1260,49 +1217,49 @@ public final class NutritionRecord extends IntervalRecord {
                     Mass.class);
 
     private final int mMealType;
-    private final Mass mUnsaturatedFat;
-    private final Mass mPotassium;
-    private final Mass mThiamin;
-    private final Mass mTransFat;
-    private final Mass mManganese;
-    private final Energy mEnergyFromFat;
-    private final Mass mCaffeine;
-    private final Mass mDietaryFiber;
-    private final Mass mSelenium;
-    private final Mass mVitaminB6;
-    private final Mass mProtein;
-    private final Mass mChloride;
-    private final Mass mCholesterol;
-    private final Mass mCopper;
-    private final Mass mIodine;
-    private final Mass mVitaminB12;
-    private final Mass mZinc;
-    private final Mass mRiboflavin;
-    private final Energy mEnergy;
-    private final Mass mMolybdenum;
-    private final Mass mPhosphorus;
-    private final Mass mChromium;
-    private final Mass mTotalFat;
-    private final Mass mCalcium;
-    private final Mass mVitaminC;
-    private final Mass mVitaminE;
-    private final Mass mBiotin;
-    private final Mass mVitaminD;
-    private final Mass mNiacin;
-    private final Mass mMagnesium;
-    private final Mass mTotalCarbohydrate;
-    private final Mass mVitaminK;
-    private final Mass mPolyunsaturatedFat;
-    private final Mass mSaturatedFat;
-    private final Mass mSodium;
-    private final Mass mFolate;
-    private final Mass mMonounsaturatedFat;
-    private final Mass mPantothenicAcid;
-    private final String mMealName;
-    private final Mass mIron;
-    private final Mass mVitaminA;
-    private final Mass mFolicAcid;
-    private final Mass mSugar;
+    @Nullable private final Mass mUnsaturatedFat;
+    @Nullable private final Mass mPotassium;
+    @Nullable private final Mass mThiamin;
+    @Nullable private final Mass mTransFat;
+    @Nullable private final Mass mManganese;
+    @Nullable private final Energy mEnergyFromFat;
+    @Nullable private final Mass mCaffeine;
+    @Nullable private final Mass mDietaryFiber;
+    @Nullable private final Mass mSelenium;
+    @Nullable private final Mass mVitaminB6;
+    @Nullable private final Mass mProtein;
+    @Nullable private final Mass mChloride;
+    @Nullable private final Mass mCholesterol;
+    @Nullable private final Mass mCopper;
+    @Nullable private final Mass mIodine;
+    @Nullable private final Mass mVitaminB12;
+    @Nullable private final Mass mZinc;
+    @Nullable private final Mass mRiboflavin;
+    @Nullable private final Energy mEnergy;
+    @Nullable private final Mass mMolybdenum;
+    @Nullable private final Mass mPhosphorus;
+    @Nullable private final Mass mChromium;
+    @Nullable private final Mass mTotalFat;
+    @Nullable private final Mass mCalcium;
+    @Nullable private final Mass mVitaminC;
+    @Nullable private final Mass mVitaminE;
+    @Nullable private final Mass mBiotin;
+    @Nullable private final Mass mVitaminD;
+    @Nullable private final Mass mNiacin;
+    @Nullable private final Mass mMagnesium;
+    @Nullable private final Mass mTotalCarbohydrate;
+    @Nullable private final Mass mVitaminK;
+    @Nullable private final Mass mPolyunsaturatedFat;
+    @Nullable private final Mass mSaturatedFat;
+    @Nullable private final Mass mSodium;
+    @Nullable private final Mass mFolate;
+    @Nullable private final Mass mMonounsaturatedFat;
+    @Nullable private final Mass mPantothenicAcid;
+    @Nullable private final String mMealName;
+    @Nullable private final Mass mIron;
+    @Nullable private final Mass mVitaminA;
+    @Nullable private final Mass mFolicAcid;
+    @Nullable private final Mass mSugar;
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -1360,7 +1317,6 @@ public final class NutritionRecord extends IntervalRecord {
      * @param sugar Sugar of this activity in {@link Mass} unit. Optional field.
      * @param skipValidation Boolean flag to skip validation of record values.
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private NutritionRecord(
             @NonNull Metadata metadata,
             @NonNull Instant startTime,
