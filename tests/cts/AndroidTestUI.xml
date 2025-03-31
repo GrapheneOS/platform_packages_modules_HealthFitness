@@ -59,7 +59,14 @@
     <test class="com.android.tradefed.testtype.AndroidJUnitTest" >
         <option name="package" value="android.healthconnect.cts.ui" />
         <option name="hidden-api-checks" value="false" />
+        <option name="device-listeners" value="android.device.collectors.ScreenshotOnFailureCollector"/>
     </test>
+
+    <metrics_collector class="com.android.tradefed.device.metric.FilePullerLogCollector">
+        <!-- Collect the files generated on error -->
+        <option name="pull-pattern-keys" value="android.device.collectors.ScreenshotOnFailureCollector.*\.png"/>
+        <option name="collect-on-run-ended-only" value="false" />
+    </metrics_collector>
 
     <object type="module_controller" class="com.android.tradefed.testtype.suite.module.MainlineTestModuleController">
         <option name="mainline-module-package-name" value="com.google.android.healthfitness" />
