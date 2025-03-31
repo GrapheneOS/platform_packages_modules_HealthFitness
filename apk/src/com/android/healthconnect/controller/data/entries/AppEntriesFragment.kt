@@ -76,8 +76,10 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
         private const val DELETION_TAG = "DeletionTag"
     }
 
-    @Inject lateinit var logger: HealthConnectLogger
-    @Inject lateinit var timeSource: TimeSource
+    @Inject
+    lateinit var logger: HealthConnectLogger
+    @Inject
+    lateinit var timeSource: TimeSource
 
     private var packageName: String = ""
     private var appName: String = ""
@@ -206,11 +208,13 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                 triggerDeletionState(DELETE)
                 true
             }
+
             R.id.menu_open_units -> {
                 logger.logInteraction(ToolbarElement.TOOLBAR_UNITS_BUTTON)
                 findNavController().navigate(R.id.action_appEntriesFragment_to_setUnitsFragment)
                 true
             }
+
             else -> false
         }
     }
@@ -223,6 +227,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                 deleteData()
                 true
             }
+
             else -> false
         }
     }
@@ -248,13 +253,13 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
     ): View? {
         if (
             requireArguments().containsKey(EXTRA_PACKAGE_NAME) &&
-                requireArguments().getString(EXTRA_PACKAGE_NAME) != null
+            requireArguments().getString(EXTRA_PACKAGE_NAME) != null
         ) {
             packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
         }
         if (
             requireArguments().containsKey(Constants.EXTRA_APP_NAME) &&
-                requireArguments().getString(Constants.EXTRA_APP_NAME) != null
+            requireArguments().getString(Constants.EXTRA_APP_NAME) != null
         ) {
             appName = requireArguments().getString(Constants.EXTRA_APP_NAME)!!
         }
@@ -298,6 +303,9 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             view.findViewById<RecyclerView?>(R.id.data_entries_list).also {
                 it.adapter = adapter
                 it.layoutManager = LinearLayoutManager(context, VERTICAL, false)
+                if (isExpressiveThemeEnabled) {
+                    it.addItemDecoration(MarginItemDecoration)
+                }
             }
 
         if (childFragmentManager.findFragmentByTag(DELETION_TAG) == null) {
@@ -413,7 +421,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
     private fun reloadEntries() {
         if (
             entriesViewModel.currentSelectedDate.value != null &&
-                entriesViewModel.period.value != null
+            entriesViewModel.period.value != null
         ) {
             val date = entriesViewModel.currentSelectedDate.value!!
             val selectedPeriod = entriesViewModel.period.value!!
@@ -509,6 +517,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                     errorView.isVisible = false
                     entriesRecyclerView.isVisible = false
                 }
+
                 is Empty -> {
                     noDataView.isVisible = true
                     loadingView.isVisible = false
@@ -522,6 +531,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                         )
                     }
                 }
+
                 is With -> {
                     entriesRecyclerView.isVisible = true
                     adapter.updateData(state.entries)
@@ -530,7 +540,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                     aggregation =
                         if (
                             state.entries.isNotEmpty() &&
-                                state.entries[0] is FormattedEntry.FormattedAggregation
+                            state.entries[0] is FormattedEntry.FormattedAggregation
                         ) {
                             state.entries[0] as FormattedEntry.FormattedAggregation
                         } else {
@@ -544,6 +554,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                         triggerDeletionState(screenState = it)
                     }
                 }
+
                 is LoadingFailed -> {
                     errorView.isVisible = true
                     loadingView.isVisible = false
