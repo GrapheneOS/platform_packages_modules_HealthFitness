@@ -37,9 +37,8 @@ public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
     private static final int MAX_LAP_LENGTH_METRES = 1000000;
 
     private final TimeInterval mInterval;
-    private final Length mLength;
+    @Nullable private final Length mLength;
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private ExerciseLap(
             @NonNull TimeInterval interval, @Nullable Length length, boolean skipValidation) {
         Objects.requireNonNull(interval);
@@ -119,9 +118,8 @@ public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
     /** Builder class for {@link ExerciseLap} */
     public static final class Builder {
         private final TimeInterval mInterval;
-        private Length mLength;
+        @Nullable private Length mLength;
 
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
         public Builder(@NonNull Instant startTime, @NonNull Instant endTime) {
             mInterval = new TimeInterval(startTime, endTime);
         }
