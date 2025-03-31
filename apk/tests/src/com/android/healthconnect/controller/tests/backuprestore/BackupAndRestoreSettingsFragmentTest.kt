@@ -21,7 +21,6 @@ import android.app.Activity
 import android.app.Instrumentation.ActivityResult
 import android.content.Context
 import android.content.Intent
-import android.health.connect.exportimport.ImportStatus.*
 import android.net.Uri
 import android.os.Bundle
 import android.platform.test.annotations.DisableFlags
@@ -828,5 +827,27 @@ class BackupAndRestoreSettingsFragmentTest {
 
         onView(withText("About backup and restore")).perform(scrollTo(), click())
         assertThat(fakeDeviceInfoUtils.backupAndRestoreHelpCenterInvoked).isTrue()
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_HC_UI)
+    fun cloudBackupRestore_UIElementDisabled() {
+        whenever(exportSettingsViewModel.storedExportSettings).then {
+            MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
+        }
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
+        onView(withText("Backup")).check(doesNotExist())
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_HC_UI)
+    fun cloudBackupRestore_ClicksThroughAsIntended() {
+        whenever(exportSettingsViewModel.storedExportSettings).then {
+            MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_WEEKLY))
+        }
+        launchFragment<BackupAndRestoreSettingsFragment>(Bundle())
+
+        onView(withText("Backup")).check(matches(isDisplayed()))
+        // TODO: b/358032341 Extend when click through is implemented.
     }
 }
