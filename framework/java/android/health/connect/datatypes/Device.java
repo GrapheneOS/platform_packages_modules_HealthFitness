@@ -39,16 +39,13 @@ public final class Device {
      * @see Device
      */
     public static final class Builder {
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-        private String mManufacturer;
+        @Nullable private String mManufacturer;
 
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-        private String mModel;
+        @Nullable private String mModel;
 
         @DeviceType private int mType = DEVICE_TYPE_UNKNOWN;
 
         /** Sets an optional client supplied manufacturer of the device */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setManufacturer(@Nullable String manufacturer) {
             mManufacturer = manufacturer;
@@ -56,7 +53,6 @@ public final class Device {
         }
 
         /** Sets an optional client supplied model of the device */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setModel(@Nullable String model) {
             mModel = model;
@@ -88,8 +84,8 @@ public final class Device {
     public static final int DEVICE_TYPE_SMART_DISPLAY = 8;
 
     // Instant records
-    private final String mManufacturer;
-    private final String mModel;
+    @Nullable private final String mManufacturer;
+    @Nullable private final String mModel;
     @DeviceType private final int mType;
 
     /**
@@ -97,7 +93,7 @@ public final class Device {
      * @param model An optional client supplied model of the device
      * @param type An optional client supplied type of the device
      */
-    private Device(String manufacturer, String model, @DeviceType int type) {
+    private Device(@Nullable String manufacturer, @Nullable String model, @DeviceType int type) {
         validateIntDefValue(type, Device.VALID_TYPES, DeviceType.class.getSimpleName());
         mManufacturer = manufacturer;
         mModel = model;
