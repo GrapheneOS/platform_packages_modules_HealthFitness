@@ -137,8 +137,7 @@ public final class Device {
     @Override
     public boolean equals(@Nullable Object object) {
         if (this == object) return true;
-        if (object instanceof Device) {
-            Device other = (Device) object;
+        if (object instanceof Device other) {
             return this.getType() == other.getType()
                     && Objects.equals(this.getManufacturer(), other.getManufacturer())
                     && Objects.equals(this.getModel(), other.getModel());

@@ -54,6 +54,7 @@ public final class Metadata {
      * <p>For e.g. Nutrition or weight data entered by the user.
      */
     public static final int RECORDING_METHOD_MANUAL_ENTRY = 3;
+
     /**
      * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
      * type.
@@ -191,8 +192,7 @@ public final class Metadata {
     @Override
     public boolean equals(@Nullable Object object) {
         if (this == object) return true;
-        if (object instanceof Metadata) {
-            Metadata other = (Metadata) object;
+        if (object instanceof Metadata other) {
             return getDevice().equals(other.getDevice())
                     && getDataOrigin().equals(other.getDataOrigin())
                     && getId().equals(other.getId())

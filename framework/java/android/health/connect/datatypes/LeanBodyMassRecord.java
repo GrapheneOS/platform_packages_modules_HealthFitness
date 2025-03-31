@@ -16,6 +16,7 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.LeanBodyMassRecordInternal;
@@ -55,6 +56,7 @@ public final class LeanBodyMassRecord extends InstantRecord {
         }
         mMass = mass;
     }
+
     /**
      * @return mass in {@link Mass} unit.
      */
@@ -69,12 +71,11 @@ public final class LeanBodyMassRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        LeanBodyMassRecord that = (LeanBodyMassRecord) o;
+        if (!(o instanceof LeanBodyMassRecord that)) return false;
         return getMass().equals(that.getMass());
     }
 

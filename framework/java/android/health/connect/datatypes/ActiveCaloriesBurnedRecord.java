@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.validation.ValidationUtils;
@@ -190,12 +191,11 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        ActiveCaloriesBurnedRecord that = (ActiveCaloriesBurnedRecord) o;
+        if (!(o instanceof ActiveCaloriesBurnedRecord that)) return false;
         return getEnergy().equals(that.getEnergy());
     }
 
