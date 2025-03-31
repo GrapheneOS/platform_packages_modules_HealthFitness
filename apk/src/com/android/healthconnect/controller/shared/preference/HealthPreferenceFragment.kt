@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.accessibility.AccessibilityEvent
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
@@ -84,6 +85,7 @@ abstract class HealthPreferenceFragment : SettingsBasePreferenceFragment() {
         preferenceContainer =
             super.onCreateView(inflater, container, savedInstanceState) as ViewGroup
         setLoading(isLoading, animate = false, force = true)
+        preferenceContainer.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         prefView.addView(preferenceContainer)
         return rootView
     }
