@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.permission;
 
+import android.annotation.Nullable;
 import android.util.ArrayMap;
 import android.util.AtomicFile;
 import android.util.Log;
@@ -84,7 +85,7 @@ public final class GrantTimeXmlHelper {
      * @param file the file from which the data should be parsed.
      * @return the grant times.
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     public UserGrantTimeState parseGrantTime(File file) {
         try (FileInputStream inputStream = new AtomicFile(file).openRead()) {
             XmlPullParser parser = Xml.newPullParser();
