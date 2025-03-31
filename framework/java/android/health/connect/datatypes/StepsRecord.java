@@ -19,6 +19,7 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
@@ -42,6 +43,7 @@ public final class StepsRecord extends IntervalRecord {
         private final long mCount;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
+
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
@@ -177,12 +179,11 @@ public final class StepsRecord extends IntervalRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        StepsRecord record = (StepsRecord) o;
+        if (!(o instanceof StepsRecord record)) return false;
         return getCount() == record.getCount();
     }
 

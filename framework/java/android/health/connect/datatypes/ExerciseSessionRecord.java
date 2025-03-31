@@ -189,9 +189,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         return mPlannedExerciseSessionId;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!(o instanceof ExerciseSessionRecord)) return false;
         if (!super.equals(o)) return false;

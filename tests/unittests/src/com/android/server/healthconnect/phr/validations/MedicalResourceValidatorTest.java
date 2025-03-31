@@ -70,7 +70,7 @@ import android.healthconnect.cts.phr.utils.ProcedureBuilder;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import com.android.server.healthconnect.storage.request.UpsertMedicalResourceInternalRequest;
+import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 
 import com.google.testing.junit.testparameterinjector.TestParameter;
 import com.google.testing.junit.testparameterinjector.TestParameterInjector;

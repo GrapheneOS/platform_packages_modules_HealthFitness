@@ -17,6 +17,7 @@
 package android.health.connect;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.DataOrigin;
 import android.os.Parcel;
 import android.util.ArraySet;
@@ -33,7 +34,7 @@ import java.util.Set;
  */
 public final class AggregateResult<T> {
     private final T mResult;
-    private ZoneOffset mZoneOffset;
+    @Nullable private ZoneOffset mZoneOffset;
     private Set<DataOrigin> mDataOrigins;
 
     @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
@@ -53,12 +54,13 @@ public final class AggregateResult<T> {
      * @return {@link ZoneOffset} for the underlying record, null if aggregation was derived from
      *     multiple records
      */
+    @Nullable
     public ZoneOffset getZoneOffset() {
         return mZoneOffset;
     }
 
     /** Sets the {@link ZoneOffset} for the underlying record. */
-    public AggregateResult<T> setZoneOffset(ZoneOffset zoneOffset) {
+    public AggregateResult<T> setZoneOffset(@Nullable ZoneOffset zoneOffset) {
         mZoneOffset = zoneOffset;
         return this;
     }

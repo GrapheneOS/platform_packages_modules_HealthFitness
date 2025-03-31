@@ -107,11 +107,7 @@ public final class TotalCaloriesBurnedRecordHelper
         List<Long> priorityList = request.getAppIdPriorityList(RECORD_TYPE_TOTAL_CALORIES_BURNED);
         MergeDataHelper mergeDataHelper =
                 new MergeDataHelper(
-                        cursor,
-                        priorityList,
-                        ENERGY_COLUMN_NAME,
-                        Double.class,
-                        request.getUseLocalTime());
+                        priorityList, ENERGY_COLUMN_NAME, Double.class, request.getUseLocalTime());
         DeriveTotalCaloriesBurnedHelper deriveTotalCaloriesBurnedHelper =
                 new DeriveTotalCaloriesBurnedHelper(
                         groupIntervals.get(0).first,
@@ -125,11 +121,13 @@ public final class TotalCaloriesBurnedRecordHelper
             long groupEndTime = groupInterval.second;
             // Based on the number of groups calculate aggregate for each group by calling
             // MergeDataHelper by eliminate duplicate for overlapping time interval
-            double total = mergeDataHelper.readCursor(groupStartTime, groupEndTime);
+            MergeDataHelper.MergeResult mergeResult =
+                    mergeDataHelper.readCursor(cursor, groupStartTime, groupEndTime);
+            double total = mergeResult.getTotal();
             // For only TotalCaloriesBurned aggregate request we derive data from
             // ActiveCaloriesRecord and BasalMetabolicRateRecord for empty intervals
             List<Pair<Instant, Instant>> emptyIntervalList =
-                    mergeDataHelper.getEmptyIntervals(
+                    mergeResult.getEmptyIntervals(
                             Instant.ofEpochMilli(groupStartTime),
                             Instant.ofEpochMilli(groupEndTime));
             if (emptyIntervalList.size() > 0) {

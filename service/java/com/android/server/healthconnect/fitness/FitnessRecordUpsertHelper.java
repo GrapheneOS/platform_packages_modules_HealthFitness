@@ -245,7 +245,7 @@ public class FitnessRecordUpsertHelper {
                                         db, upsertRequest.getUpsertTableRequest());
                             }
                         } else {
-                            mTransactionManager.update(upsertRequest.getUpsertTableRequest());
+                            mTransactionManager.update(db, upsertRequest.getUpsertTableRequest());
                         }
                     }
                     if (shouldGenerateChangeLog) {

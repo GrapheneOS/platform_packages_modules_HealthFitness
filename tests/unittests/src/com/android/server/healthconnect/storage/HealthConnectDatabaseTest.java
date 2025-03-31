@@ -51,9 +51,9 @@ import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper;
+import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
+import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
+import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;

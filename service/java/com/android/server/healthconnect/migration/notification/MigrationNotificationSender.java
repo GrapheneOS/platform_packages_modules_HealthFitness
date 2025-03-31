@@ -68,8 +68,11 @@ public final class MigrationNotificationSender {
                     mNotificationFactory.createNotification(notificationType, CHANNEL_ID);
 
             NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
-            notifyFromSystem(notificationManager, notification);
-
+            if (notificationManager != null) {
+                notifyFromSystem(notificationManager, notification);
+            } else {
+                Log.w(TAG, "Unable to get NotificationManager service for user");
+            }
         } catch (MigrationNotificationFactory.IllegalMigrationNotificationStateException ignored) {
             // Do not send any notification
         }
@@ -78,7 +81,11 @@ public final class MigrationNotificationSender {
     /** Cancels all Health Connect notifications. */
     public void clearNotifications(UserHandle userHandle) {
         NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
-        cancelFromSystem(notificationManager);
+        if (notificationManager != null) {
+            cancelFromSystem(notificationManager);
+        } else {
+            Log.w(TAG, "Unable to get NotificationManager service for user");
+        }
     }
 
     /** Returns a {@link NotificationManager} which will send notifications to the given user. */
@@ -88,9 +95,8 @@ public final class MigrationNotificationSender {
         return contextAsUser.getSystemService(NotificationManager.class);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private void notifyFromSystem(
-            @Nullable NotificationManager notificationManager, Notification notification) {
+            NotificationManager notificationManager, Notification notification) {
         // This call is needed to send a notification from the system and this also grants the
         // necessary POST_NOTIFICATIONS permission.
         final long callingId = Binder.clearCallingIdentity();
@@ -104,8 +110,7 @@ public final class MigrationNotificationSender {
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private void cancelFromSystem(@Nullable NotificationManager notificationManager) {
+    private void cancelFromSystem(NotificationManager notificationManager) {
         final long callingId = Binder.clearCallingIdentity();
         try {
             // We use the same (tag, id)
@@ -117,7 +122,6 @@ public final class MigrationNotificationSender {
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private void createNotificationChannel(UserHandle userHandle) {
 
         final String channelGroupName =
@@ -140,8 +144,14 @@ public final class MigrationNotificationSender {
         NotificationManager notificationManager = getNotificationManagerForUser(userHandle);
 
         try {
-            notificationManager.createNotificationChannelGroup(group);
-            notificationManager.createNotificationChannel(notificationChannel);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannelGroup(group);
+                notificationManager.createNotificationChannel(notificationChannel);
+            } else {
+                Log.w(
+                        TAG,
+                        "Unable to get NotificationManager service for user, no channel createdd");
+            }
         } catch (Throwable e) {
             Log.w(TAG, "Unable to create notification channel", e);
         } finally {

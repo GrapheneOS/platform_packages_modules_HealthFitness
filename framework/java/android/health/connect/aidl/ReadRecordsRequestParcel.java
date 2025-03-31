@@ -20,6 +20,7 @@ import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.TimeRangeFilterHelper;
@@ -52,7 +53,7 @@ public class ReadRecordsRequestParcel implements Parcelable {
                 }
             };
 
-    private final RecordIdFiltersParcel mRecordIdFiltersParcel;
+    @Nullable private final RecordIdFiltersParcel mRecordIdFiltersParcel;
     @RecordTypeIdentifier.RecordType private final int mRecordType;
     private final List<String> mPackageFilters;
     private final long mStartTime;
@@ -90,7 +91,6 @@ public class ReadRecordsRequestParcel implements Parcelable {
         mAscending = true;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public ReadRecordsRequestParcel(ReadRecordsRequestUsingFilters<?> request) {
         mPackageFilters =
                 request.getDataOrigins().stream()
@@ -101,13 +101,15 @@ public class ReadRecordsRequestParcel implements Parcelable {
             // Use defaults values to signal filters not set
             mStartTime = DEFAULT_LONG;
             mEndTime = DEFAULT_LONG;
+            mLocalTimeFilter = false;
         } else {
             mStartTime =
                     TimeRangeFilterHelper.getFilterStartTimeMillis(request.getTimeRangeFilter());
             mEndTime = TimeRangeFilterHelper.getFilterEndTimeMillis(request.getTimeRangeFilter());
+            mLocalTimeFilter =
+                    TimeRangeFilterHelper.isLocalTimeFilter(request.getTimeRangeFilter());
         }
 
-        mLocalTimeFilter = TimeRangeFilterHelper.isLocalTimeFilter(request.getTimeRangeFilter());
         mRecordType = HealthConnectMappings.getInstance().getRecordType(request.getRecordType());
         mPageSize = request.getPageSize();
         mPageToken = request.getPageToken();
@@ -130,6 +132,7 @@ public class ReadRecordsRequestParcel implements Parcelable {
         return mEndTime;
     }
 
+    @Nullable
     public RecordIdFiltersParcel getRecordIdFiltersParcel() {
         return mRecordIdFiltersParcel;
     }

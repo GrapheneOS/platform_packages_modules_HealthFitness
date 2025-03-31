@@ -90,10 +90,9 @@ public final class ExerciseLap implements TimeInterval.TimeIntervalHolder {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
-        if (!(o instanceof ExerciseLap)) return false;
-        ExerciseLap that = (ExerciseLap) o;
+        if (!(o instanceof ExerciseLap that)) return false;
         return Objects.equals(mInterval, that.mInterval)
                 && Objects.equals(getLength(), that.getLength());
     }

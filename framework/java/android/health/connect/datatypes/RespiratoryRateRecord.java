@@ -17,6 +17,7 @@ package android.health.connect.datatypes;
 
 import android.annotation.FloatRange;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.RespiratoryRateRecordInternal;
 
@@ -68,12 +69,11 @@ public final class RespiratoryRateRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        RespiratoryRateRecord that = (RespiratoryRateRecord) o;
+        if (!(o instanceof RespiratoryRateRecord that)) return false;
         return Double.compare(that.getRate(), getRate()) == 0;
     }
 

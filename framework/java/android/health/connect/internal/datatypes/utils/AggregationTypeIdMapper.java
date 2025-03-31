@@ -106,6 +106,7 @@ import static android.health.connect.datatypes.WeightRecord.WEIGHT_MIN;
 import static android.health.connect.datatypes.WheelchairPushesRecord.WHEEL_CHAIR_PUSHES_COUNT_TOTAL;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RestingHeartRateRecord;
@@ -137,8 +138,7 @@ import java.util.Map;
  * @hide
  */
 public final class AggregationTypeIdMapper {
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private static volatile AggregationTypeIdMapper sAggregationTypeIdMapper;
+    @Nullable private static volatile AggregationTypeIdMapper sAggregationTypeIdMapper;
 
     private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
@@ -264,11 +264,13 @@ public final class AggregationTypeIdMapper {
 
     @NonNull
     public static synchronized AggregationTypeIdMapper getInstance() {
-        if (sAggregationTypeIdMapper == null) {
-            sAggregationTypeIdMapper = new AggregationTypeIdMapper();
+        AggregationTypeIdMapper instance = sAggregationTypeIdMapper;
+        if (instance == null) {
+            instance = new AggregationTypeIdMapper();
+            sAggregationTypeIdMapper = instance;
         }
 
-        return sAggregationTypeIdMapper;
+        return instance;
     }
 
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression

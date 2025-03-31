@@ -22,10 +22,10 @@ import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetr
 
 import android.health.HealthFitnessStatsLog;
 
+import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
+import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
+import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper;
 
 import java.util.Set;
 

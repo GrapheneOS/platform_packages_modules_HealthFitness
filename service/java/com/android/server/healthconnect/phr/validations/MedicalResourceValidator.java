@@ -51,7 +51,7 @@ import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.datatypes.FhirVersion;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.server.healthconnect.storage.request.UpsertMedicalResourceInternalRequest;
+import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -165,9 +165,8 @@ public final class ActivityIntensityRecord extends IntervalRecord {
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;
-        if (!(o instanceof ActivityIntensityRecord)) return false;
+        if (!(o instanceof ActivityIntensityRecord that)) return false;
         if (!super.equals(o)) return false;
-        ActivityIntensityRecord that = (ActivityIntensityRecord) o;
         return getActivityIntensityType() == that.getActivityIntensityType();
     }
 

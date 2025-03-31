@@ -16,6 +16,7 @@
 
 package android.health.connect.datatypes.validation;
 
+import android.annotation.Nullable;
 import android.health.connect.datatypes.TimeInterval;
 
 import java.time.Instant;
@@ -109,7 +110,7 @@ public final class ValidationUtils {
 
     /** Requires comparable class to be within the range. */
     public static <T extends Comparable<T>> void requireInRangeIfExists(
-            Comparable<T> value, T threshold, T limit, String name) {
+            @Nullable Comparable<T> value, T threshold, T limit, String name) {
         if (value != null && value.compareTo(threshold) < 0) {
             throw new IllegalArgumentException(
                     name + " must not be less than " + threshold + ", currently " + value);

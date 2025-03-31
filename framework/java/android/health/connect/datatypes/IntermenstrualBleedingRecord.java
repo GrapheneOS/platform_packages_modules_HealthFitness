@@ -17,6 +17,7 @@
 package android.health.connect.datatypes;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.internal.datatypes.IntermenstrualBleedingRecordInternal;
 
 import java.time.Instant;
@@ -46,9 +47,8 @@ public final class IntermenstrualBleedingRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the object
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         return super.equals(o);
     }
 

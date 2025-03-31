@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.phr.storage;
 
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper.MEDICAL_RESOURCE_TABLE_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper.getPrimaryColumn;
-import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper.getCreateMedicalResourceIndicesTableRequest;
-import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper.getMedicalResourceTypeColumnName;
-import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper.getParentColumnReference;
-import static com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper.getTableName;
+import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.MEDICAL_RESOURCE_TABLE_NAME;
+import static com.android.server.healthconnect.phr.storage.MedicalResourceHelper.getPrimaryColumn;
+import static com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper.getCreateMedicalResourceIndicesTableRequest;
+import static com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper.getMedicalResourceTypeColumnName;
+import static com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper.getParentColumnReference;
+import static com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper.getTableName;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 
 import static com.google.common.truth.Truth.assertThat;

@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Power;
@@ -75,12 +76,11 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        BasalMetabolicRateRecord that = (BasalMetabolicRateRecord) o;
+        if (!(o instanceof BasalMetabolicRateRecord that)) return false;
         return getBasalMetabolicRate().equals(that.getBasalMetabolicRate());
     }
 
