@@ -148,11 +148,10 @@ public final class TransactionManager {
      * conflict it leads to abort of the transaction.
      *
      * @param request an insert request.
-     * @return rowId of the inserted or updated record.
      */
-    public long insertOrReplaceOnConflict(UpsertTableRequest request) {
+    public void insertOrReplaceOnConflict(UpsertTableRequest request) {
         final SQLiteDatabase db = getWritableDb();
-        return insertOrReplaceOnConflict(db, request);
+        insertOrReplaceOnConflict(db, request);
     }
 
     /**
@@ -161,7 +160,7 @@ public final class TransactionManager {
      *
      * <p>Note: This function updates rather than the traditional delete + insert in SQLite
      */
-    public long insertOrReplaceOnConflict(SQLiteDatabase db, UpsertTableRequest request) {
+    public void insertOrReplaceOnConflict(SQLiteDatabase db, UpsertTableRequest request) {
         try {
             if (request.getUniqueColumnsCount() == 0) {
                 throw new RuntimeException(
@@ -178,8 +177,6 @@ public final class TransactionManager {
             for (String postUpsertCommand : request.getPostUpsertCommands()) {
                 db.execSQL(postUpsertCommand);
             }
-
-            return rowId;
         } catch (SQLiteConstraintException e) {
             try (Cursor cursor = db.rawQuery(request.getReadRequest().getReadCommand(), null)) {
                 if (!cursor.moveToFirst()) {
@@ -187,11 +184,16 @@ public final class TransactionManager {
                             ERROR_INTERNAL, "Conflict found, but couldn't read the entry.", e);
                 }
 
-                long updateResult = updateEntriesIfRequired(db, request, cursor);
-                for (String postUpsertCommand : request.getPostUpsertCommands()) {
-                    db.execSQL(postUpsertCommand);
+                if (request.requiresUpdate(cursor)) {
+                    try {
+                        update(db, request);
+                    } catch (IllegalArgumentException ex) {
+                        Slog.e(TAG, "Unexpected exception when trying to update", ex);
+                        // Update within insert historically doesn't throw exceptions for some
+                        // error prone scenarios.
+                        // See http://ag/32804082/comment/843fbba3_3bb8b5da/
+                    }
                 }
-                return updateResult;
             }
         }
     }
@@ -239,7 +241,8 @@ public final class TransactionManager {
         update(db, request);
     }
 
-    private void update(SQLiteDatabase db, UpsertTableRequest request) {
+    /** Updates data for the given db and request. */
+    public void update(SQLiteDatabase db, UpsertTableRequest request) {
         // Perform an update operation where UUID and packageName (mapped by appInfoId) is same
         // as that of the update request.
         try {
@@ -249,17 +252,17 @@ public final class TransactionManager {
                             request.getContentValues(),
                             request.getUpdateWhereClauses().get(/* withWhereKeyword */ false),
                             /* WHERE args */ null);
-            for (String postUpsertCommand : request.getPostUpsertCommands()) {
-                db.execSQL(postUpsertCommand);
-            }
 
-            // throw an exception if the no row was updated, i.e. the uuid with corresponding
-            // app_id_info for this request is not found in the table.
+            // Throw an exception if the no row was updated.
             if (numberOfRowsUpdated == 0) {
                 throw new IllegalArgumentException(
                         "No record found for the following input : "
                                 + new StorageUtils.RecordIdentifierData(
                                         request.getContentValues()));
+            }
+
+            for (String postUpsertCommand : request.getPostUpsertCommands()) {
+                db.execSQL(postUpsertCommand);
             }
         } catch (SQLiteConstraintException e) {
             try (Cursor cursor = db.rawQuery(request.getReadRequest().getReadCommand(), null)) {
@@ -279,6 +282,12 @@ public final class TransactionManager {
             if (!cursor.moveToFirst()) {
                 throw new HealthConnectException(
                         ERROR_INTERNAL, "Expected to read an entry for update, but none found");
+            }
+            if (cursor.getColumnIndex(request.getRowIdColName()) == -1) {
+                // Any table with child tables currently requires row_ids.
+                // Note: request.getRowIdColName() currently defaults to RecordHelper's primary id.
+                throw new IllegalArgumentException(
+                        "row_id not found when trying to insert child tables");
             }
             final long rowId = StorageUtils.getCursorLong(cursor, request.getRowIdColName());
             deleteChildTableRequest(request, rowId, db);
@@ -490,30 +499,6 @@ public final class TransactionManager {
             throw new InternalError("SQLite DB not found");
         }
         return sqLiteDatabase;
-    }
-
-    private long updateEntriesIfRequired(
-            SQLiteDatabase db, UpsertTableRequest request, Cursor cursor) {
-        if (!request.requiresUpdate(cursor)) {
-            return -1;
-        }
-        db.update(
-                request.getTable(),
-                request.getContentValues(),
-                request.getUpdateWhereClauses().get(/* withWhereKeyword */ false),
-                /* WHERE args */ null);
-        if (cursor.getColumnIndex(request.getRowIdColName()) == -1) {
-            // The table is not explicitly using row_ids hence returning -1 here is ok, as
-            // the rowid is of no use to this table.
-            // NOTE: Such tables in HC don't support child tables either as child tables
-            // inherently require row_ids to have support parent key.
-            return -1;
-        }
-        final long rowId = StorageUtils.getCursorLong(cursor, request.getRowIdColName());
-        deleteChildTableRequest(request, rowId, db);
-        insertChildTableRequest(request, rowId, db);
-
-        return rowId;
     }
 
     private void deleteChildTableRequest(
