@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.fitness.utils;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper.END_TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper.LOCAL_DATE_TIME_END_TIME_COLUMN_NAME;
@@ -41,7 +41,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(TestParameterInjector.class)
-public class MergeDataHelperTest {
+public class MergeDataUtilTest {
     @TestParameter private boolean mUseLocalTime;
 
     private static final long APP_ID_1 = 0xDEADBEEFL;
@@ -52,9 +52,8 @@ public class MergeDataHelperTest {
     @Test
     public void testReadCursor_emptyTable_returnsZero() {
         MatrixCursor cursor = new MatrixCursor(Row.GENERAL_COLUMNS);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
 
         long startTime = 0L;
         long endTime = 1000L;
@@ -69,9 +68,8 @@ public class MergeDataHelperTest {
         long dataTime = 500L;
         Cursor cursor =
                 new Row<>(value, dataTime, dataTime, APP_ID_1, dataTime).toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
 
         assertThat(helper.readCursor(cursor, startTime, endTime).getTotal()).isEqualTo(0.0);
     }
@@ -86,9 +84,8 @@ public class MergeDataHelperTest {
         Cursor cursor =
                 new Row<>(value, dataStartTime, dataEndTime, APP_ID_1, dataEndTime)
                         .toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
 
         assertThat(helper.readCursor(cursor, startTime, endTime).getTotal())
                 .isEqualTo((double) value);
@@ -104,9 +101,8 @@ public class MergeDataHelperTest {
         Cursor cursor =
                 new Row<>(value, dataStartTime, dataEndTime, APP_ID_1, dataEndTime)
                         .toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_2), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_2), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
 
         assertThat(helper.readCursor(cursor, startTime, endTime).getTotal()).isEqualTo(0.0);
     }
@@ -121,8 +117,8 @@ public class MergeDataHelperTest {
         Cursor cursor =
                 new Row<>(value, dataStartTime, dataEndTime, APP_ID_1, dataEndTime)
                         .toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
+        MergeDataUtil helper =
+                new MergeDataUtil(
                         List.of(APP_ID_1), VALUE_COLUMN_NAME, Double.class, mUseLocalTime);
 
         assertThat(helper.readCursor(cursor, startTime, endTime).getTotal()).isEqualTo(value);
@@ -141,8 +137,8 @@ public class MergeDataHelperTest {
         double value2 = 67.8;
         Row<Double> row2 = new Row<>(value2, t1, t2, APP_ID_2, lastModifiedTime);
         Cursor cursor = Row.rowsToCursor(List.of(row1, row2), mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(priorities, VALUE_COLUMN_NAME, Double.class, mUseLocalTime);
+        MergeDataUtil helper =
+                new MergeDataUtil(priorities, VALUE_COLUMN_NAME, Double.class, mUseLocalTime);
 
         assertThat(helper.readCursor(cursor, startTime, endTime).getTotal()).isEqualTo(value1);
     }
@@ -160,8 +156,8 @@ public class MergeDataHelperTest {
         double value2 = 67.8;
         Row<Double> row2 = new Row<>(value2, t1, t2, APP_ID_2, lastModifiedTime);
         Cursor cursor = Row.rowsToCursor(List.of(row1, row2), mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(priorities, VALUE_COLUMN_NAME, Double.class, mUseLocalTime);
+        MergeDataUtil helper =
+                new MergeDataUtil(priorities, VALUE_COLUMN_NAME, Double.class, mUseLocalTime);
 
         assertThat(helper.readCursor(cursor, startTime, endTime).getTotal()).isEqualTo(value2);
     }
@@ -183,8 +179,8 @@ public class MergeDataHelperTest {
         double value3 = 67.8;
         Row<Double> row3 = new Row<>(value2, t2, t4, APP_ID_3, lastModifiedTime);
         Cursor cursor = Row.rowsToCursor(List.of(row1, row2, row3), mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(priorities, VALUE_COLUMN_NAME, Double.class, mUseLocalTime);
+        MergeDataUtil helper =
+                new MergeDataUtil(priorities, VALUE_COLUMN_NAME, Double.class, mUseLocalTime);
 
         // From javadoc:
         // App1 : T1-T2 -> value1, App2 : T2-T3 -> value2*(T3-T2)/(T3-T1), App3 : T3-T4 ->
@@ -202,7 +198,7 @@ public class MergeDataHelperTest {
         assertThrows(
                 IllegalArgumentException.class,
                 () ->
-                        new MergeDataHelper(
+                        new MergeDataUtil(
                                 List.of(APP_ID_1),
                                 VALUE_COLUMN_NAME,
                                 Integer.class,
@@ -212,10 +208,9 @@ public class MergeDataHelperTest {
     @Test
     public void testGetEmptyIntervals_emptyData_wholeThingEmptyInterval() {
         MatrixCursor cursor = new MatrixCursor(Row.GENERAL_COLUMNS);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult mergeResult = helper.readCursor(cursor, 0, 1000);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult mergeResult = helper.readCursor(cursor, 0, 1000);
 
         Instant startTime = Instant.ofEpochMilli(0);
         Instant endTime = Instant.ofEpochMilli(1000);
@@ -226,10 +221,9 @@ public class MergeDataHelperTest {
     @Test
     public void testGetEmptyIntervals_emptyDataPointInTime_noEmptyInterval() {
         MatrixCursor cursor = new MatrixCursor(Row.GENERAL_COLUMNS);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult mergeResult = helper.readCursor(cursor, 0, 1000);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult mergeResult = helper.readCursor(cursor, 0, 1000);
 
         Instant time = Instant.ofEpochMilli(0);
         assertThat(mergeResult.getEmptyIntervals(time, time)).isEmpty();
@@ -243,10 +237,9 @@ public class MergeDataHelperTest {
         Cursor cursor =
                 new Row<>(1L, startMillis, endMillis, APP_ID_1, lastModifiedMillis)
                         .toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
 
         assertThat(
                         mergeResult.getEmptyIntervals(
@@ -262,10 +255,9 @@ public class MergeDataHelperTest {
         Cursor cursor =
                 new Row<>(1L, startMillis, endMillis, APP_ID_1, lastModifiedMillis)
                         .toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
 
         assertThat(
                         mergeResult.getEmptyIntervals(
@@ -283,10 +275,9 @@ public class MergeDataHelperTest {
         Cursor cursor =
                 new Row<>(1L, startMillis, midMillis, APP_ID_1, lastModifiedMillis)
                         .toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
 
         assertThat(
                         mergeResult.getEmptyIntervals(
@@ -305,10 +296,9 @@ public class MergeDataHelperTest {
         Cursor cursor =
                 new Row<>(1L, midMillis, endMillis, APP_ID_1, lastModifiedMillis)
                         .toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
 
         assertThat(
                         mergeResult.getEmptyIntervals(
@@ -329,10 +319,9 @@ public class MergeDataHelperTest {
         Cursor cursor =
                 new Row<>(1L, mid1Millis, mid2Millis, APP_ID_1, lastModifiedMillis)
                         .toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
 
         assertThat(
                         mergeResult.getEmptyIntervals(
@@ -355,10 +344,9 @@ public class MergeDataHelperTest {
         Cursor cursor =
                 new Row<>(1L, mid1Millis, mid2Millis, APP_ID_1, lastModifiedMillis)
                         .toCursor(mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_2), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_2), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
 
         assertThat(
                         mergeResult.getEmptyIntervals(
@@ -394,10 +382,9 @@ public class MergeDataHelperTest {
                                         APP_ID_1,
                                         lastModifiedMillis)),
                         mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult result = helper.readCursor(cursor, startMillis, endMillis);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult result = helper.readCursor(cursor, startMillis, endMillis);
 
         assertThat(
                         result.getEmptyIntervals(
@@ -436,10 +423,9 @@ public class MergeDataHelperTest {
                                         APP_ID_1,
                                         lastModifiedMillis)),
                         mUseLocalTime);
-        MergeDataHelper helper =
-                new MergeDataHelper(
-                        List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
-        MergeDataHelper.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
+        MergeDataUtil helper =
+                new MergeDataUtil(List.of(APP_ID_1), VALUE_COLUMN_NAME, Long.class, mUseLocalTime);
+        MergeDataUtil.MergeResult mergeResult = helper.readCursor(cursor, startMillis, endMillis);
 
         assertThat(
                         mergeResult.getEmptyIntervals(

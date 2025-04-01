@@ -29,9 +29,9 @@ import android.os.UserHandle;
 
 import com.android.server.healthconnect.HealthConnectDailyService;
 import com.android.server.healthconnect.logging.DailyLoggingService;
+import com.android.server.healthconnect.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.logging.EcosystemStatsCollector;
 import com.android.server.healthconnect.logging.UsageStatsCollector;
-import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

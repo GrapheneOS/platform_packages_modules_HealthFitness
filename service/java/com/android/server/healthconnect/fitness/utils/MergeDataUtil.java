@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.fitness.utils;
 
 import static android.health.connect.Constants.DEFAULT_DOUBLE;
 
@@ -48,7 +48,7 @@ import java.util.TreeSet;
  *
  * @hide
  */
-public final class MergeDataHelper {
+public final class MergeDataUtil {
     /** Class to hold cursor entry for the Tree buffer window */
     private record RecordData(
             Instant startTime,
@@ -69,7 +69,7 @@ public final class MergeDataHelper {
 
     private final boolean mUseLocalTime;
 
-    public MergeDataHelper(
+    public MergeDataUtil(
             List<Long> priorityList,
             String columnNameToMerge,
             Class<?> valueColumnType,
