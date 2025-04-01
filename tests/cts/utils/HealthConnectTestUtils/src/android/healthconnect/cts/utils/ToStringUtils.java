@@ -17,6 +17,7 @@ package android.healthconnect.cts.utils;
 
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.HeartRateRecord.HeartRateSample;
 import android.health.connect.datatypes.InstantRecord;
@@ -86,9 +87,12 @@ public final class ToStringUtils {
         addLine(result, baseIndentation + 2, "DATA");
         if (record instanceof HeartRateRecord heartRateRecord) {
             return heartRateRecordToString(result, baseIndentation + 4, heartRateRecord);
+        } else if (record instanceof ExerciseSessionRecord exerciseSessionRecord) {
+            addLine(result, baseIndentation + 4, "hasRoute = " + exerciseSessionRecord.hasRoute());
+            addLine(result, baseIndentation + 4, "getRoute = " + exerciseSessionRecord.getRoute());
         }
 
-        return record.toString();
+        return result.toString();
     }
 
     private static String heartRateRecordToString(
