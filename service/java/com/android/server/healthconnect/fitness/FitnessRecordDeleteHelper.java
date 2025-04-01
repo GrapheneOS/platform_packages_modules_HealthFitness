@@ -278,11 +278,11 @@ public final class FitnessRecordDeleteHelper {
 
                     for (UpsertTableRequest insertRequestsForChangeLog :
                             deletionChangelogs.getUpsertTableRequests()) {
-                        mTransactionManager.insert(db, insertRequestsForChangeLog);
+                        mTransactionManager.insertOrThrowOnConflict(db, insertRequestsForChangeLog);
                     }
                     for (UpsertTableRequest modificationChangelog :
                             modificationChangelogs.getUpsertTableRequests()) {
-                        mTransactionManager.insert(db, modificationChangelog);
+                        mTransactionManager.insertOrThrowOnConflict(db, modificationChangelog);
                     }
                     if (Flags.addMissingAccessLogs() && shouldRecordAccessLog) {
                         mAccessLogsHelper.recordDeleteAccessLog(

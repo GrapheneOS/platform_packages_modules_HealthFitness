@@ -73,7 +73,8 @@ public class BackupChangeTokenHelper {
         contentValues.put(CHANGE_LOGS_REQUEST_TOKEN_COLUMN_NAME, changeLogsRequestToken);
 
         return String.valueOf(
-                transactionManager.insert(new UpsertTableRequest(TABLE_NAME, contentValues)));
+                transactionManager.insertOrThrowOnConflict(
+                        new UpsertTableRequest(TABLE_NAME, contentValues)));
     }
 
     /** Reads the database and get backup change token. */

@@ -148,7 +148,7 @@ public final class PriorityMigrationHelper extends DatabaseHelper {
                                         PRE_MIGRATION_TABLE_NAME,
                                         getContentValuesFor(category, priority),
                                         UNIQUE_COLUMN_INFO);
-                        mTransactionManager.insert(request);
+                        mTransactionManager.insertOrThrowOnConflict(request);
                     }
                 });
         if (existingPriority.values().stream()
@@ -165,7 +165,7 @@ public final class PriorityMigrationHelper extends DatabaseHelper {
                             PRE_MIGRATION_TABLE_NAME,
                             getContentValuesFor(HealthDataCategory.UNKNOWN, new ArrayList<>()),
                             UNIQUE_COLUMN_INFO);
-            mTransactionManager.insert(request);
+            mTransactionManager.insertOrThrowOnConflict(request);
         }
     }
 

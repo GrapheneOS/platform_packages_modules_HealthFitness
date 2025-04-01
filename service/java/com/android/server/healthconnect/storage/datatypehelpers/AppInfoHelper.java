@@ -751,8 +751,11 @@ public final class AppInfoHelper extends DatabaseHelper {
         UpsertTableRequest upsertRequest =
                 new UpsertTableRequest(
                         TABLE_NAME, getContentValues(packageName, appInfo), UNIQUE_COLUMN_INFO);
-        return db.map(sqLiteDatabase -> mTransactionManager.insert(sqLiteDatabase, upsertRequest))
-                .orElseGet(() -> mTransactionManager.insert(upsertRequest));
+        return db.map(
+                        sqLiteDatabase ->
+                                mTransactionManager.insertOrThrowOnConflict(
+                                        sqLiteDatabase, upsertRequest))
+                .orElseGet(() -> mTransactionManager.insertOrThrowOnConflict(upsertRequest));
     }
 
     private synchronized void updateIfPresent(String packageName, AppInfoInternal appInfoInternal) {

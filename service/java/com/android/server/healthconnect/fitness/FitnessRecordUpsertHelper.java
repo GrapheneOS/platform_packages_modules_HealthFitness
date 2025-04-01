@@ -251,11 +251,12 @@ public class FitnessRecordUpsertHelper {
                     if (shouldGenerateChangeLog) {
                         for (UpsertTableRequest upsertRequestsForChangeLog :
                                 upsertionChangelogs.getUpsertTableRequests()) {
-                            mTransactionManager.insert(db, upsertRequestsForChangeLog);
+                            mTransactionManager.insertOrThrowOnConflict(
+                                    db, upsertRequestsForChangeLog);
                         }
                         for (UpsertTableRequest modificationChangelog :
                                 otherModifiedRecordsChangelogs.getUpsertTableRequests()) {
-                            mTransactionManager.insert(db, modificationChangelog);
+                            mTransactionManager.insertOrThrowOnConflict(db, modificationChangelog);
                         }
                     }
 

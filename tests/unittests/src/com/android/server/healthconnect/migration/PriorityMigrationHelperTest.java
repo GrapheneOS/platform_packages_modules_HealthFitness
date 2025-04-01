@@ -119,7 +119,7 @@ public class PriorityMigrationHelperTest {
         when(mTransactionManager.queryNumEntries(eq(PRE_MIGRATION_TABLE_NAME))).thenReturn(1L);
         mPriorityMigrationHelper.populatePreMigrationPriority();
 
-        verify(mTransactionManager, never()).insert(any());
+        verify(mTransactionManager, never()).insertOrThrowOnConflict(any());
     }
 
     @Test
@@ -174,7 +174,7 @@ public class PriorityMigrationHelperTest {
     private void verifyPreMigrationPriorityWrite(
             VerificationMode verificationMode, int category, List<Long> priorityOrder) {
         verify(mTransactionManager, verificationMode)
-                .insert(
+                .insertOrThrowOnConflict(
                         argThat(
                                 request ->
                                         PRE_MIGRATION_TABLE_NAME.equals(request.getTable())
