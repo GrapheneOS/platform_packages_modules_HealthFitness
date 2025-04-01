@@ -20,4 +20,5 @@
         @string/*_notification_title,
         @string/export_notification_*,
         @string/import_notification_*,
+        @string/health_connect_notification_channel_name,
     " />
