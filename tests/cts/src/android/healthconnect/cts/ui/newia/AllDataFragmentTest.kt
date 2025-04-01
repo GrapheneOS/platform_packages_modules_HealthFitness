@@ -40,6 +40,7 @@ import android.healthconnect.cts.utils.TestUtils
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.uiautomator.By
+import com.android.compatibility.common.util.SystemUtil.runShellCommand
 import java.time.Duration
 import java.time.Instant
 import org.junit.After
@@ -49,11 +50,19 @@ import org.junit.Test
 
 /** CTS test for Health Connect All Data fragment. */
 class AllDataFragmentTest : HealthConnectBaseTest() {
-
     @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+
+    private var previousDate = ""
 
     @Before
     fun setup() {
+        previousDate = runShellCommand("date +%Y-%m-%d")
+        // Don't throw if failed to set the system time as this might not be available on all
+        // devices. As tests are generally expected to be running with the current real-world time
+        // this usually isn't an issue. However some tests might have previously had the device time
+        // set to the past and this protects against that as Health Connect records generally can't
+        // be in the future.
+        runShellCommand("su 0 date -s $TEST_SYSTEM_CLOCK_TIME")
         TestUtils.deleteAllStagedRemoteData()
         insertData()
     }
@@ -61,9 +70,13 @@ class AllDataFragmentTest : HealthConnectBaseTest() {
     @After
     fun tearDown() {
         TestUtils.deleteAllStagedRemoteData()
+        if (!previousDate.isEmpty()) {
+            runShellCommand("su 0 date -s $previousDate")
+        }
     }
 
     companion object {
+        private const val TEST_SYSTEM_CLOCK_TIME: String = "2025-03-31"
         private val NOW: Instant = Instant.parse("2024-01-20T07:06:05.432Z")
     }
 
