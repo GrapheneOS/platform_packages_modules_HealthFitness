@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.UserManager
 import android.text.TextUtils
 import android.util.Log
@@ -30,6 +31,8 @@ interface DeviceInfoUtils {
     fun isPlayStoreAvailable(context: Context): Boolean
 
     fun openHCGetStartedLink(activity: FragmentActivity)
+
+    fun openHealthFitnessPermissionsLearnMoreLink(activity: FragmentActivity)
 
     fun openHCBackupAndRestoreLink(activity: FragmentActivity)
 
@@ -62,7 +65,8 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
             Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse(playStorePackageName)
                 setPackage(vendingPackageName)
-            })
+            },
+        )
     }
 
     override fun openHCGetStartedLink(activity: FragmentActivity) {
@@ -71,6 +75,20 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
 
     override fun openHCBackupAndRestoreLink(activity: FragmentActivity) {
         openHealthConnectHelpCenterLink(activity, R.string.hc_backup_and_restore_link)
+    }
+
+    override fun openHealthFitnessPermissionsLearnMoreLink(activity: FragmentActivity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+            openHealthConnectHelpCenterLink(
+                activity,
+                R.string.health_fitness_permissions_learn_more_link,
+            )
+        } else {
+            Log.e(
+                TAG,
+                "attempting to open health fitness permissions URL on Build ${Build.VERSION.SDK_INT}",
+            )
+        }
     }
 
     private fun openHealthConnectHelpCenterLink(activity: FragmentActivity, resourceId: Int) {

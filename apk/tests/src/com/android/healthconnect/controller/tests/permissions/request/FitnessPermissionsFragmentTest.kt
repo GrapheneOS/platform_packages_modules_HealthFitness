@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -34,6 +35,7 @@ import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
@@ -50,9 +52,12 @@ import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.any
+import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.toggleAnimation
+import com.android.healthconnect.controller.utils.DeviceInfoUtils
+import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
@@ -61,12 +66,14 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import java.util.Locale
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito.atLeast
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.reset
@@ -76,13 +83,17 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
+@UninstallModules(DeviceInfoUtilsModule::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class FitnessPermissionsFragmentTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @BindValue
     val viewModel: RequestPermissionViewModel = mock(RequestPermissionViewModel::class.java)
     @BindValue val healthConnectLogger: HealthConnectLogger = mock(HealthConnectLogger::class.java)
+    @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
+    private val fakeDeviceInfoUtils = deviceInfoUtils as FakeDeviceInfoUtils
 
     private lateinit var appMetadata: AppMetadata
     private lateinit var fitnessReadPermissions: List<FitnessPermission>
@@ -238,6 +249,28 @@ class FitnessPermissionsFragmentTest {
         verify(healthConnectLogger, times(4)).logImpression(PermissionsElement.PERMISSION_SWITCH)
         verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
     }
+
+    // TODO: b/407072322 - Enable test clicking "learn more" link.
+    // @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    // @Test
+    // fun fitnessReadAndWrite_clicksLearnMore_jumpsToHealthFitnessPermissionsHelpCenterPage() {
+    //     whenever(viewModel.fitnessScreenState).then {
+    //         MutableLiveData(
+    //             FitnessScreenState.ShowFitnessReadWrite(
+    //                 historyGranted = false,
+    //                 hasMedical = false,
+    //                 appMetadata = appMetadata,
+    //                 fitnessPermissions = fitnessReadWritePermissions,
+    //             )
+    //         )
+    //     }
+    //     launchFragment<FitnessPermissionsFragment>(bundleOf())
+    //
+    //     onView(withId(R.id.data_access_type)).check(matches(isClickable()))
+    //     onView(withId(R.id.data_access_type)).perform(click())
+    //
+    //     assertThat(fakeDeviceInfoUtils.healthFitnessPermissionsHelpCenterInvoked).isTrue()
+    // }
 
     @Test
     fun whenMedical_headerDisplaysCorrectTitle() {
