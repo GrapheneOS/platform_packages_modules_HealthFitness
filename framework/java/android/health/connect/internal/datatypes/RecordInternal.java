@@ -297,6 +297,20 @@ public abstract class RecordInternal<T extends Record> {
                 .build();
     }
 
+    /** Sets the fields for meta data for internal records */
+    @NonNull
+    public RecordInternal<T> setMetaData(Metadata metaData) {
+        return this.setUuid(metaData.getId())
+                .setPackageName(metaData.getDataOrigin().getPackageName())
+                .setLastModifiedTime(metaData.getLastModifiedTime().toEpochMilli())
+                .setClientRecordId(metaData.getClientRecordId())
+                .setClientRecordVersion(metaData.getClientRecordVersion())
+                .setManufacturer(metaData.getDevice().getManufacturer())
+                .setModel(metaData.getDevice().getModel())
+                .setDeviceType(metaData.getDevice().getType())
+                .setRecordingMethod(metaData.getRecordingMethod());
+    }
+
     /**
      * @return the {@link LocalDate} object of this activity start time.
      */

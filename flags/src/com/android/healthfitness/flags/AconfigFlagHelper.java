@@ -153,4 +153,9 @@ public final class AconfigFlagHelper {
         return Flags.cloudBackupAndRestore()
                 && isDbFlagEnabled(DB_VERSION_CLOUD_BACKUP_AND_RESTORE);
     }
+
+    /** Returns a boolean indicating whether Nicotine Intake data type is enabled. */
+    public static boolean isNicotineIntakeEnabled() {
+        return Flags.smoking() && Flags.smokingDb() && Flags.healthConnectMappings();
+    }
 }
