@@ -28,6 +28,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Holds app priority migration data payload.
@@ -69,11 +70,15 @@ public final class PriorityMigrationPayload extends MigrationPayload implements 
         mDataOrigins =
                 requireNonNull(in.createStringArrayList()).stream()
                         .map(PriorityMigrationPayload::dataOriginOf)
+                        .filter(Objects::nonNull)
                         .toList();
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     private static DataOrigin dataOriginOf(@Nullable String packageName) {
+        if (packageName == null) {
+            return null;
+        }
         return new DataOrigin.Builder().setPackageName(packageName).build();
     }
 
