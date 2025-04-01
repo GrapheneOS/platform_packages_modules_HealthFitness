@@ -51,7 +51,7 @@ class AppInfoReaderTest {
     fun uninstalledApp_returnsMetadataFromStorage() = runBlocking {
         mockPackageManager.stub {
             on { getApplicationInfo(eq(PACKAGE_NAME), any<ApplicationInfoFlags>()) } doThrow
-                    NameNotFoundException()
+                NameNotFoundException()
             on { getApplicationIcon(PACKAGE_NAME) } doThrow NameNotFoundException()
         }
 
@@ -69,7 +69,7 @@ class AppInfoReaderTest {
             }
         mockPackageManager.stub {
             on { getApplicationInfo(eq(PACKAGE_NAME), any<ApplicationInfoFlags>()) } doReturn
-                    applicationInfo
+                applicationInfo
             on { getApplicationLabel(applicationInfo) } doReturn PACKAGE_MANAGER_LABEL
         }
 
@@ -87,7 +87,7 @@ class AppInfoReaderTest {
             }
         mockPackageManager.stub {
             on { getApplicationInfo(eq(PACKAGE_NAME), any<ApplicationInfoFlags>()) } doReturn
-                    applicationInfo
+                applicationInfo
             on { getApplicationLabel(applicationInfo) } doReturn PACKAGE_MANAGER_LABEL
         }
 
@@ -95,13 +95,32 @@ class AppInfoReaderTest {
         assertThat(appMetadata.packageName).isEqualTo(PACKAGE_NAME)
         assertThat(appMetadata.appName).isEqualTo(PACKAGE_MANAGER_LABEL)
     }
+
+    @Test
+    fun returnsIsSystem() = runBlocking {
+        val applicationInfo =
+            ApplicationInfo().apply() {
+                packageName = PACKAGE_NAME
+                enabled = true
+            }
+        mockPackageManager.stub {
+            on { getApplicationInfo(eq(PACKAGE_NAME), any<ApplicationInfoFlags>()) } doReturn
+                applicationInfo
+            on { getApplicationLabel(applicationInfo) } doReturn PACKAGE_MANAGER_LABEL
+        }
+
+        val appMetadata = appInfoReader.getAppMetadata(PACKAGE_NAME, isSystem = false)
+        assertThat(appMetadata.isSystem).isFalse()
+        val appMetadata2 = appInfoReader.getAppMetadata(PACKAGE_NAME, isSystem = true)
+        assertThat(appMetadata2.isSystem).isTrue()
+    }
 }
 
 private class FakeGetContributorAppInfoUseCase : IGetContributorAppInfoUseCase {
     override suspend fun invoke(): Map<String, AppMetadata> {
         return mapOf(
             PACKAGE_NAME to
-                    AppMetadata(packageName = PACKAGE_NAME, appName = STORED_LABEL, icon = null)
+                AppMetadata(packageName = PACKAGE_NAME, appName = STORED_LABEL, icon = null)
         )
     }
 }
