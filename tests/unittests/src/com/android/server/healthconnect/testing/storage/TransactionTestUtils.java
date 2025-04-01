@@ -89,7 +89,7 @@ public final class TransactionTestUtils {
     public void insertApp(String packageName) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PACKAGE_COLUMN_NAME, packageName);
-        mTransactionManager.insert(
+        mTransactionManager.insertOrThrowOnConflict(
                 new UpsertTableRequest(
                         AppInfoHelper.TABLE_NAME, contentValues, UNIQUE_COLUMN_INFO));
         mHealthConnectInjector.getAppInfoHelper().clearCache();
@@ -101,7 +101,7 @@ public final class TransactionTestUtils {
     public void insertApp(HealthConnectDatabase db, String packageName) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PACKAGE_COLUMN_NAME, packageName);
-        mTransactionManager.insert(
+        mTransactionManager.insertOrThrowOnConflict(
                 db.getWritableDatabase(),
                 new UpsertTableRequest(
                         AppInfoHelper.TABLE_NAME, contentValues, UNIQUE_COLUMN_INFO));
@@ -240,7 +240,7 @@ public final class TransactionTestUtils {
         contentValues.put("app_id", "fake_app_id");
         contentValues.put("access_time", "fake_access_time");
         contentValues.put("operation_type", "fake_operation_type");
-        mTransactionManager.insert(
+        mTransactionManager.insertOrThrowOnConflict(
                 new UpsertTableRequest(AccessLogsHelper.TABLE_NAME, contentValues));
     }
 
@@ -251,7 +251,7 @@ public final class TransactionTestUtils {
         contentValues.put("app_id", "fake_app_id");
         contentValues.put("uuids", "fake_uuids");
         contentValues.put("operation_type", "fake_operation_type");
-        mTransactionManager.insert(
+        mTransactionManager.insertOrThrowOnConflict(
                 new UpsertTableRequest(ChangeLogsHelper.TABLE_NAME, contentValues));
     }
 

@@ -210,7 +210,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
         }
         UpsertTableRequest request =
                 getUpsertTableRequest(appInfoId, recordTypeList, operationType);
-        mTransactionManager.insert(request);
+        mTransactionManager.insertOrThrowOnConflict(request);
     }
 
     /**
@@ -232,7 +232,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
         UpsertTableRequest request =
                 getUpsertTableRequestForPhr(
                         appInfoId, medicalResourceTypes, operationType, accessedMedicalDataSource);
-        mTransactionManager.insert(db, request);
+        mTransactionManager.insertOrThrowOnConflict(db, request);
     }
 
     private static UpsertTableRequest getUpsertTableRequestForPhr(
@@ -308,7 +308,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
                 populateCommonColumns(
                         appInfoId, filteredRecordTypeIds.stream().toList(), operationType);
         UpsertTableRequest request = new UpsertTableRequest(TABLE_NAME, contentValues);
-        mTransactionManager.insert(db, request);
+        mTransactionManager.insertOrThrowOnConflict(db, request);
     }
 
     @VisibleForTesting
