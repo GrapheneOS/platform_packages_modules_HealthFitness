@@ -23,6 +23,7 @@ import static android.health.connect.datatypes.AggregationType.SUM;
 
 import static java.util.Objects.requireNonNull;
 
+import android.annotation.Nullable;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
@@ -45,8 +46,7 @@ public class InternalHealthConnectMappings {
     private final Map<Integer, InternalDataTypeDescriptor> mRecordTypeIdToDescriptor;
     private final List<RecordHelper<?>> mAllRecordHelpers;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private static volatile InternalHealthConnectMappings sInternalHealthConnectMappings;
+    @Nullable private static volatile InternalHealthConnectMappings sInternalHealthConnectMappings;
 
     /** Exists for compatibility with classes which don't support injections yet. */
     // TODO(b/353283052): inject where possible instead of using the singleton.
