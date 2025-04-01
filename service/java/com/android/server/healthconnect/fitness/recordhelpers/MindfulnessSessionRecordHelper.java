@@ -32,6 +32,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.MindfulnessSessionRecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.List;
@@ -83,11 +85,12 @@ public class MindfulnessSessionRecordHelper
     }
 
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         @AggregationType.AggregationTypeIdentifier.Id
         int aggregationTypeId = aggregateRequest.getAggregationTypeIdentifier();
         if (aggregationTypeId != MINDFULNESS_SESSION_DURATION_TOTAL) {
-            throw new IllegalArgumentException("Illegal aggregation type id: " + aggregationTypeId);
+            return null;
         }
 
         return new AggregateParams(TABLE_NAME, getPriorityAggregationColumnNames());

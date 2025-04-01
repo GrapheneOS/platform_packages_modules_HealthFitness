@@ -129,8 +129,8 @@ public class StepsCadenceRecordHelper
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case STEPS_CADENCE_RECORD_RATE_AVG:

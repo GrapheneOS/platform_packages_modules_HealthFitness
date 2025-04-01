@@ -111,8 +111,8 @@ public final class BloodPressureRecordHelper
         return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         List<String> columnNames;
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

@@ -829,7 +829,7 @@ public final class BundleHelper {
                     TAG,
                     BundleHelper.class.getSimpleName()
                             + ".java - decoded = "
-                            + ToStringUtils.recordToString(record));
+                            + ToStringUtils.recordToString(decodedRecord));
             throw new IllegalArgumentException(
                     "Some fields are incorrectly encoded in " + record.getClass().getSimpleName());
         }

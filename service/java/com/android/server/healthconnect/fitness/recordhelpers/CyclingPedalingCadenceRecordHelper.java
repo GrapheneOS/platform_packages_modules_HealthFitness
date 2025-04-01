@@ -135,8 +135,8 @@ public class CyclingPedalingCadenceRecordHelper
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     final AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case CYCLING_PEDALING_CADENCE_RECORD_RPM_MIN:

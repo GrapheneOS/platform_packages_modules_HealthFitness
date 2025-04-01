@@ -37,8 +37,12 @@ constructor(
     private val packageManager = context.packageManager
 
     suspend fun getAppMetadata(packageName: String, isSystem: Boolean = false): AppMetadata {
-        if (cache.containsKey(packageName)) {
-            return cache[packageName]!!
+        cache[packageName]?.let {
+            return if (it.isSystem == isSystem) {
+                it
+            } else {
+                AppMetadata(it.packageName, it.appName, it.icon, isSystem)
+            }
         }
         try {
             val app =

@@ -29,6 +29,8 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -71,8 +73,8 @@ public final class BasalMetabolicRateRecordHelper
         return BASAL_METABOLIC_RATE_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case BMR_RECORD_BASAL_CALORIES_TOTAL:

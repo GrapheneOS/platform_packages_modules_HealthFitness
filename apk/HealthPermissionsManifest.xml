@@ -354,6 +354,12 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
+    <permission
+        android:name="android.permission.health.READ_NICOTINE_INTAKE"
+        android:label="@string/nicotine_intake_read_content_description"
+        android:protectionLevel="dangerous"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
     <!-- Write permissions -->
     <!-- Write permissions for activities -->
     <permission
@@ -607,6 +613,12 @@
     <permission
         android:name="android.permission.health.WRITE_MINDFULNESS"
         android:label="@string/mindfulness_write_content_description"
+        android:protectionLevel="dangerous"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
+    <permission
+        android:name="android.permission.health.WRITE_NICOTINE_INTAKE"
+        android:label="@string/nicotine_intake_write_content_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 </manifest>
