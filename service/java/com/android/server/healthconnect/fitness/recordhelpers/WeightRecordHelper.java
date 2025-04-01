@@ -73,8 +73,8 @@ public final class WeightRecordHelper extends InstantRecordHelper<WeightRecordIn
         return WEIGHT_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         List<String> columnNames;
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

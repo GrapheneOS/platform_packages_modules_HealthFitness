@@ -74,8 +74,8 @@ public final class HeightRecordHelper extends InstantRecordHelper<HeightRecordIn
         return HEIGHT_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         List<String> columnNames;
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

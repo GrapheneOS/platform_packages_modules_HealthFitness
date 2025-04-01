@@ -93,8 +93,8 @@ public class HeartRateRecordHelper
         return EPOCH_MILLIS_COLUMN_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     final AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case HEART_RATE_RECORD_BPM_MAX:

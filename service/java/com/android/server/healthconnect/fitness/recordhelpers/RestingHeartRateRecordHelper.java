@@ -76,8 +76,8 @@ public final class RestingHeartRateRecordHelper
         return RESTING_HEART_RATE_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         List<String> columnNames;
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

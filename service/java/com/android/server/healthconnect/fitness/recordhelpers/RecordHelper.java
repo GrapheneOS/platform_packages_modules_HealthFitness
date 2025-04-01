@@ -137,6 +137,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             long startDateAccess,
             boolean useLocalTime) {
         AggregateParams params = getAggregateParams(aggregationType);
+        if (params == null) {
+            throw new NullPointerException(
+                    "Unsupported aggregation requested for "
+                            + aggregationType
+                            + " from "
+                            + getRecordIdentifier());
+        }
         String physicalTimeColumnName = getStartTimeColumnName();
         String startTimeColumnName;
         String endTimeColumnName;
@@ -742,8 +749,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return null;
     }
 
-    /** Returns the information required to perform aggregate operation. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    /**
+     * Returns the information required to perform aggregate operation or null if this type is not
+     * supported.
+     */
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         if (Flags.refactorAggregations()) {
             throw new UnsupportedOperationException("Not implemented by the subclass");
