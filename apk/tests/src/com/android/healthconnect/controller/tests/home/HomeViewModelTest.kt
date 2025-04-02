@@ -33,6 +33,9 @@ import com.android.healthconnect.controller.data.appdata.AllDataUseCase
 import com.android.healthconnect.controller.home.HomeViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.shared.Constants
+import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
+import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
@@ -437,6 +440,50 @@ class HomeViewModelTest {
 
         assertThat(testObserver.getLastValue())
             .isEqualTo(HomeViewModel.LockScreenBannerState.NoBanner)
+    }
+
+    @Test
+    fun loadConnectedApps_connectedAppsExcludeSystemApps() = runTest {
+        (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(
+            listOf(
+                ConnectedAppMetadata(
+                    AppMetadata(
+                        packageName = "not.a.system.app",
+                        appName = "NOT_A_SYSTEM_APP",
+                        icon = null,
+                    ),
+                    ConnectedAppStatus.ALLOWED,
+                ),
+                ConnectedAppMetadata(
+                    AppMetadata(
+                        packageName = "is.a.system.app",
+                        appName = "IS_A_SYSTEM_APP",
+                        icon = null,
+                        isSystem = true,
+                    ),
+                    ConnectedAppStatus.ALLOWED,
+                ),
+            )
+        )
+
+        val testObserver = TestObserver<List<ConnectedAppMetadata>>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue())
+            .isEqualTo(
+                listOf(
+                    ConnectedAppMetadata(
+                        AppMetadata(
+                            packageName = "not.a.system.app",
+                            appName = "NOT_A_SYSTEM_APP",
+                            icon = null,
+                        ),
+                        ConnectedAppStatus.ALLOWED,
+                    )
+                )
+            )
     }
 
     // endregion
