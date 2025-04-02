@@ -53,7 +53,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_BASIC_COMPLEX_
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_STRUCTURAL_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_UPSERT_FIX_USE_SHARED_MEMORY;
@@ -414,7 +413,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PHR_FHIR_STRUCTURAL_VALIDATION})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_validationEnabledUnknownField_throws() throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         String immunizationResource =
@@ -432,7 +431,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PHR_FHIR_STRUCTURAL_VALIDATION})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_nonPrimitiveFieldWithUnderscore_throws()
             throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -456,7 +455,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PHR_FHIR_STRUCTURAL_VALIDATION})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_missingRequiredField_throws() throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         String immunizationResource = new ImmunizationBuilder().removeField("vaccineCode").toJson();
@@ -473,7 +472,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PHR_FHIR_STRUCTURAL_VALIDATION})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_missingRequiredMultiTypeField_throws() throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         String immunizationResource =
@@ -494,7 +493,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PHR_FHIR_STRUCTURAL_VALIDATION})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_multipleMultiTypeFieldsSet_throws() throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         String immunizationResource =
@@ -515,11 +514,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
     public void testUpsertMedicalResources_onlyPrimitiveTypeExtensionPresentForRequired_succeeds()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -565,7 +560,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_primitiveTypeExtensionIsNull_throws() throws Exception {
@@ -589,7 +583,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_primitiveTypeIsNull_throws() throws Exception {
@@ -613,7 +606,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_complexTypeIsNull_throws() throws Exception {
@@ -637,7 +629,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_primitiveTypeIsJsonObjectNotPrimitive_throws()
@@ -664,7 +655,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_primitiveTypeExtensionNotJsonObject_throws()
@@ -691,7 +681,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_complexTypeNotJsonObject_throws() throws Exception {
@@ -717,7 +706,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION
     })
@@ -750,7 +738,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_arrayFieldIsNotArray_throws() throws Exception {
@@ -776,7 +763,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_arrayOfPrimitiveTypeExtensions_succeeds()
@@ -802,7 +788,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_arrayOfPrimitiveTypeExtensionsWithNulls_succeeds()
@@ -828,7 +813,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_arrayOfPrimitiveTypeArrayWithNulls_throws()
@@ -853,7 +837,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
     })
     public void testUpsertMedicalResources_arrayOfComplexTypeNotObject_throws() throws Exception {
@@ -915,7 +898,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_EXTENSION_VALIDATION
@@ -961,7 +943,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION,
     })
@@ -1323,7 +1304,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PHR_FHIR_STRUCTURAL_VALIDATION})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_resourceIncludesContainedResource_throws()
             throws InterruptedException {
         String medicationStatementWithContainedResource =
@@ -1346,7 +1327,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PHR_FHIR_STRUCTURAL_VALIDATION})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_containedFieldIsNotArray_throws()
             throws InterruptedException, JSONException {
         String medicationStatementWithContainedResource =
@@ -1372,7 +1353,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION,
     })
@@ -1398,7 +1378,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS,
     })
@@ -1423,7 +1402,6 @@ public class UpsertMedicalResourcesCtsTest {
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-        FLAG_PHR_FHIR_STRUCTURAL_VALIDATION,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS,
     })

@@ -2616,9 +2616,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     List<UpsertMedicalResourceInternalRequest> validatedMedicalResourcesToUpsert =
                             new ArrayList<>();
                     FhirResourceValidator fhirResourceValidator =
-                            Flags.phrFhirStructuralValidation()
-                                    ? getOrCreateFhirResourceValidator()
-                                    : null;
+                            getOrCreateFhirResourceValidator();
                     for (UpsertMedicalResourceRequest upsertMedicalResourceRequest : requests) {
                         MedicalResourceValidator validator =
                                 new MedicalResourceValidator(
