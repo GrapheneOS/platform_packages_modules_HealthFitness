@@ -129,7 +129,6 @@ public final class DatabaseMerger {
     }
 
     /** Merge data */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public synchronized void merge(HealthConnectDatabase stagedDatabase) {
         TransactionManager stagedTransactionManager =
                 TransactionManager.forStagedDatabase(stagedDatabase);
@@ -475,7 +474,6 @@ public final class DatabaseMerger {
         Class<? extends Record> recordTypeClass =
                 mHealthConnectMappings.getRecordIdToExternalRecordClassMap().get(recordType);
         Slog.d(TAG, "Deleting table for: " + recordTypeClass);
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         DeleteTableRequest deleteTableRequest =
                 recordHelper.getDeleteTableRequest(
                         null /* packageFilters */,
