@@ -20,6 +20,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 
+import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -131,7 +132,7 @@ public abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>>
         return LOCAL_DATE_COLUMN_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     final ZoneOffset getZoneOffset(Cursor cursor) {
         ZoneOffset zoneOffset = null;
         if (cursor.getCount() > 0 && cursor.getColumnIndex(START_ZONE_OFFSET_COLUMN_NAME) != -1) {
