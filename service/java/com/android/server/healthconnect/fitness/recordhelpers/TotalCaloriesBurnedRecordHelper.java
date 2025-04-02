@@ -61,8 +61,8 @@ public final class TotalCaloriesBurnedRecordHelper
         super(RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double aggregation) {
         switch (aggregationType.getAggregationTypeIdentifier()) {

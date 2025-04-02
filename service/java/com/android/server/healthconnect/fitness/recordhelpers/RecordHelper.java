@@ -243,9 +243,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * @param aggregationType the aggregation type being calculated.
      * @param total the calculated derived value for this group returned by {@link
      *     #deriveAggregate(Cursor, AggregateRecordRequest, TransactionManager)}.
-     * @return {@link AggregateResult} for {@link AggregationType}
+     * @return {@link AggregateResult} for {@link AggregationType} or null if the type is not
+     *     supported
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double total) {
         if (Flags.refactorAggregations()) {
