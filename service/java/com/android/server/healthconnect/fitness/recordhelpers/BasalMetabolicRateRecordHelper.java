@@ -55,8 +55,8 @@ public final class BasalMetabolicRateRecordHelper
         super(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double result) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
