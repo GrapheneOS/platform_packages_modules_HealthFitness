@@ -106,10 +106,7 @@ public final class TransactionManager {
      */
     public long insertOrThrowOnConflict(SQLiteDatabase db, UpsertTableRequest request) {
         long rowId = db.insertOrThrow(request.getTable(), null, request.getContentValues());
-        request.getChildTableRequests()
-                .forEach(
-                        childRequest ->
-                                insertOrThrowOnConflict(db, childRequest.withParentKey(rowId)));
+        insertChildTableRequests(request, rowId, db);
         for (String postUpsertCommand : request.getPostUpsertCommands()) {
             db.execSQL(postUpsertCommand);
         }
@@ -173,7 +170,7 @@ public final class TransactionManager {
                             null,
                             request.getContentValues(),
                             SQLiteDatabase.CONFLICT_FAIL);
-            insertChildTableRequest(request, rowId, db);
+            insertChildTableRequests(request, rowId, db);
             for (String postUpsertCommand : request.getPostUpsertCommands()) {
                 db.execSQL(postUpsertCommand);
             }
@@ -236,10 +233,7 @@ public final class TransactionManager {
                         SQLiteDatabase.CONFLICT_IGNORE);
 
         if (rowId != -1) {
-            request.getChildTableRequests()
-                    .forEach(
-                            childRequest ->
-                                    insertOrThrowOnConflict(db, childRequest.withParentKey(rowId)));
+            insertChildTableRequests(request, rowId, db);
             for (String postUpsertCommand : request.getPostUpsertCommands()) {
                 db.execSQL(postUpsertCommand);
             }
@@ -320,8 +314,8 @@ public final class TransactionManager {
                         "row_id not found when trying to insert child tables");
             }
             final long rowId = StorageUtils.getCursorLong(cursor, request.getRowIdColName());
-            deleteChildTableRequest(request, rowId, db);
-            insertChildTableRequest(request, rowId, db);
+            deleteChildTableRequests(request, rowId, db);
+            insertChildTableRequests(request, rowId, db);
         }
     }
 
@@ -531,7 +525,7 @@ public final class TransactionManager {
         return sqLiteDatabase;
     }
 
-    private void deleteChildTableRequest(
+    private void deleteChildTableRequests(
             UpsertTableRequest request, long rowId, SQLiteDatabase db) {
         for (TableColumnPair childTableAndColumn :
                 request.getChildTablesWithRowsToBeDeletedDuringUpdate()) {
@@ -542,13 +536,13 @@ public final class TransactionManager {
         }
     }
 
-    private void insertChildTableRequest(
+    private void insertChildTableRequests(
             UpsertTableRequest request, long rowId, SQLiteDatabase db) {
         for (UpsertTableRequest childTableRequest : request.getChildTableRequests()) {
             String tableName = childTableRequest.getTable();
             ContentValues contentValues = childTableRequest.withParentKey(rowId).getContentValues();
             long childRowId = db.insertOrThrow(tableName, null, contentValues);
-            insertChildTableRequest(childTableRequest, childRowId, db);
+            insertChildTableRequests(childTableRequest, childRowId, db);
         }
     }
 }
