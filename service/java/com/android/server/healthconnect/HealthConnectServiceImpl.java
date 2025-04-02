@@ -2070,7 +2070,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void runImport(UserHandle user, Uri file, IEmptyResponseCallback callback) {
         if (mImportManager == null) return;
-        checkParamsNonNull(file);
+        checkParamsNonNull(user, file, callback);
+        ErrorCallback errorCallback = callback::onError;
 
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
@@ -2082,15 +2083,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         mImportManager.runImport(userHandle, file);
                         callback.onResult();
+                    } catch (HealthConnectException healthConnectException) {
+                        Slog.e(TAG, "HealthConnectException: ", healthConnectException);
+                        tryAndThrowException(
+                                errorCallback,
+                                healthConnectException,
+                                healthConnectException.getErrorCode());
                     } catch (Exception exception) {
-                        throw new HealthConnectException(ERROR_IO, exception.toString());
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(errorCallback, exception, ERROR_IO);
                     }
                 });
     }
 
     @Override
     public void runImmediateExport(Uri file, IEmptyResponseCallback callback) {
-        checkParamsNonNull(file);
+        checkParamsNonNull(file, callback);
+        ErrorCallback errorCallback = callback::onError;
 
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
@@ -2103,8 +2112,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         // TODO(b/370954019): Modify runExport to use specific file.
                         mExportManager.runExport(userHandle);
                         callback.onResult();
+                    } catch (HealthConnectException healthConnectException) {
+                        Slog.e(TAG, "HealthConnectException: ", healthConnectException);
+                        tryAndThrowException(
+                                errorCallback,
+                                healthConnectException,
+                                healthConnectException.getErrorCode());
                     } catch (Exception exception) {
-                        throw new HealthConnectException(ERROR_IO, exception.toString());
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(errorCallback, exception, ERROR_IO);
                     }
                 });
     }
@@ -2130,9 +2146,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         callback.onResult(providers);
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        throw new HealthConnectException(
-                                HealthConnectException.ERROR_SECURITY,
-                                securityException.toString());
+                        tryAndThrowException(errorCallback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
