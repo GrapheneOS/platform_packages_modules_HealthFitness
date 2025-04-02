@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect;
 
+import android.annotation.Nullable;
 import android.util.Log;
 
 import com.android.internal.annotations.GuardedBy;
@@ -39,8 +40,8 @@ public final class HealthConnectRoundRobinScheduler {
     @GuardedBy("mLock")
     private boolean mPauseScheduler;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     @GuardedBy("mLock")
+    @Nullable
     private Integer mLastKeyUsed;
 
     void resume() {
@@ -49,7 +50,6 @@ public final class HealthConnectRoundRobinScheduler {
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     void addTask(int uid, Runnable task) {
         synchronized (mLock) {
             // If the scheduler is currently paused (this can happen if the platform is doing a user
