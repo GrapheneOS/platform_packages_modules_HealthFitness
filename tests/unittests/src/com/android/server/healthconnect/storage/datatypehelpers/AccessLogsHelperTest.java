@@ -303,7 +303,7 @@ public class AccessLogsHelperTest {
                 populateCommonColumns(-2, List.of(RECORD_TYPE_BLOOD_PRESSURE), OPERATION_TYPE_READ);
         UpsertTableRequest request =
                 new UpsertTableRequest(AccessLogsHelper.TABLE_NAME, contentValues);
-        mTransactionManager.insert(request);
+        mTransactionManager.insertOrThrowOnConflict(request);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         assertThat(result).isEmpty();

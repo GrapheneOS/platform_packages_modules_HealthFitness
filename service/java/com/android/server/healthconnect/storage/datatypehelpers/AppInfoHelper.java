@@ -281,7 +281,7 @@ public final class AppInfoHelper extends DatabaseHelper {
      * @param packageNames List of package names
      * @return A list of appinfo ids from the application_info_table.
      */
-    public List<Long> getAppInfoIds(List<String> packageNames) {
+    public List<Long> getAppInfoIds(@Nullable List<String> packageNames) {
         if (DEBUG) {
             Slog.d(TAG, "App info map: " + getAppInfoMap());
         }
@@ -751,8 +751,11 @@ public final class AppInfoHelper extends DatabaseHelper {
         UpsertTableRequest upsertRequest =
                 new UpsertTableRequest(
                         TABLE_NAME, getContentValues(packageName, appInfo), UNIQUE_COLUMN_INFO);
-        return db.map(sqLiteDatabase -> mTransactionManager.insert(sqLiteDatabase, upsertRequest))
-                .orElseGet(() -> mTransactionManager.insert(upsertRequest));
+        return db.map(
+                        sqLiteDatabase ->
+                                mTransactionManager.insertOrThrowOnConflict(
+                                        sqLiteDatabase, upsertRequest))
+                .orElseGet(() -> mTransactionManager.insertOrThrowOnConflict(upsertRequest));
     }
 
     private synchronized void updateIfPresent(String packageName, AppInfoInternal appInfoInternal) {

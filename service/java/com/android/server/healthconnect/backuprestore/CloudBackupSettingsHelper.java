@@ -19,6 +19,7 @@ package com.android.server.healthconnect.backuprestore;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AppInfo;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AutoDeleteFrequencyProto;
@@ -29,7 +30,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.TemperatureUnitProto;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.WeightUnitProto;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import java.util.HashMap;

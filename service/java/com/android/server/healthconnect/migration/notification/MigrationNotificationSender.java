@@ -48,7 +48,8 @@ public final class MigrationNotificationSender {
     private static final String NOTIFICATION_TAG = "HealthConnectTag";
     private static final String CHANNEL_ID = "healthconnect-channel";
     private static final String CHANNEL_GROUP_ID = "healthconnect-channel-group";
-    private static final String CHANNEL_NAME_RESOURCE = "app_label";
+    private static final String CHANNEL_NAME_RESOURCE = "health_connect_notification_channel_name";
+    private static final String CHANNEL_GROUP_NAME_RESOURCE = "app_label";
 
     private final Context mContext;
     private final MigrationNotificationFactory mNotificationFactory;
@@ -125,7 +126,7 @@ public final class MigrationNotificationSender {
     private void createNotificationChannel(UserHandle userHandle) {
 
         final String channelGroupName =
-                mNotificationFactory.getStringResource(CHANNEL_NAME_RESOURCE);
+                mNotificationFactory.getStringResource(CHANNEL_GROUP_NAME_RESOURCE);
         CharSequence channelName = mNotificationFactory.getStringResource(CHANNEL_NAME_RESOURCE);
 
         // group def
@@ -137,7 +138,7 @@ public final class MigrationNotificationSender {
         NotificationChannel notificationChannel =
                 new NotificationChannel(CHANNEL_ID, channelName, importance);
         notificationChannel.setGroup(CHANNEL_GROUP_ID);
-        notificationChannel.setBlockable(false);
+        notificationChannel.setBlockable(true);
 
         final long callingId = Binder.clearCallingIdentity();
 

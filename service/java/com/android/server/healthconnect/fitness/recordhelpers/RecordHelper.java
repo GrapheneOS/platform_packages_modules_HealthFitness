@@ -61,10 +61,10 @@ import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -243,9 +243,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * @param aggregationType the aggregation type being calculated.
      * @param total the calculated derived value for this group returned by {@link
      *     #deriveAggregate(Cursor, AggregateRecordRequest, TransactionManager)}.
-     * @return {@link AggregateResult} for {@link AggregationType}
+     * @return {@link AggregateResult} for {@link AggregationType} or null if the type is not
+     *     supported
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double total) {
         if (Flags.refactorAggregations()) {
@@ -676,7 +677,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     public DeleteTableRequest getDeleteTableRequest(
-            List<String> packageFilters,
+            @Nullable List<String> packageFilters,
             long startTime,
             long endTime,
             boolean usesLocalTimeFilter,

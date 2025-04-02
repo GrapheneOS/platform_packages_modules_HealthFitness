@@ -29,6 +29,7 @@ import android.util.Slog;
 
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BackupData;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Record;
@@ -36,7 +37,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 

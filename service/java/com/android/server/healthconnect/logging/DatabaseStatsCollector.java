@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.logging;
 
 import android.annotation.Nullable;
 import android.database.Cursor;
@@ -25,6 +25,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelp
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SeriesRecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 
 import java.util.Collection;
@@ -52,7 +53,7 @@ public class DatabaseStatsCollector {
     }
 
     /** Get the number of interval record entries in Health Connect database. */
-    public long getNumberOfIntervalRecordRows() {
+    long getNumberOfIntervalRecordRows() {
         long count = 0L;
         for (RecordHelper<?> recordHelper : mInternalHealthConnectMappings.getRecordHelpers()) {
             if (recordHelper instanceof IntervalRecordHelper
@@ -64,7 +65,7 @@ public class DatabaseStatsCollector {
     }
 
     /** Get the number of series record entries in Health Connect database. */
-    public long getNumberOfSeriesRecordRows() {
+    long getNumberOfSeriesRecordRows() {
         long count = 0L;
         for (RecordHelper<?> recordHelper : mInternalHealthConnectMappings.getRecordHelpers()) {
             if (recordHelper instanceof SeriesRecordHelper) {
@@ -75,7 +76,7 @@ public class DatabaseStatsCollector {
     }
 
     /** Get the number of instant record entries in Health Connect database. */
-    public long getNumberOfInstantRecordRows() {
+    long getNumberOfInstantRecordRows() {
         long count = 0L;
         for (RecordHelper<?> recordHelper : mInternalHealthConnectMappings.getRecordHelpers()) {
             if (recordHelper instanceof InstantRecordHelper) {
@@ -86,7 +87,7 @@ public class DatabaseStatsCollector {
     }
 
     /** Get the number of change log entries in Health Connect database. */
-    public long getNumberOfChangeLogs() {
+    long getNumberOfChangeLogs() {
         return queryNumEntries(ChangeLogsHelper.TABLE_NAME);
     }
 
@@ -104,7 +105,7 @@ public class DatabaseStatsCollector {
      *     cannot be read
      */
     @Nullable
-    public Long getFileBytes(Collection<String> tables) {
+    Long getFileBytes(Collection<String> tables) {
         if (tables.isEmpty()) {
             return 0L;
         }

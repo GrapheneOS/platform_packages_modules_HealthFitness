@@ -169,7 +169,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
         }
 
         long rowId =
-                mTransactionManager.insert(
+                mTransactionManager.insertOrThrowOnConflict(
                         new UpsertTableRequest(
                                 TABLE_NAME,
                                 getContentValues(

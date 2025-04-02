@@ -228,7 +228,7 @@ public class ReadAccessLogsHelper extends DatabaseHelper {
                             /* readTimeStamp' */ readTimeStamp);
             UpsertTableRequest upsertTableRequest =
                     new UpsertTableRequest(TABLE_NAME, contentValues);
-            mTransactionManager.insert(db, upsertTableRequest);
+            mTransactionManager.insertOrThrowOnConflict(db, upsertTableRequest);
         }
     }
 
@@ -262,7 +262,7 @@ public class ReadAccessLogsHelper extends DatabaseHelper {
                                 /* readTimeStamp' */ readTimeStamp);
                 UpsertTableRequest upsertTableRequest =
                         new UpsertTableRequest(TABLE_NAME, contentValues);
-                mTransactionManager.insert(db, upsertTableRequest);
+                mTransactionManager.insertOrThrowOnConflict(db, upsertTableRequest);
             }
         }
     }

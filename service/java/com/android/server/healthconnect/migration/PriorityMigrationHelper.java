@@ -28,9 +28,9 @@ import android.health.connect.HealthDataCategory;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
@@ -148,7 +148,7 @@ public final class PriorityMigrationHelper extends DatabaseHelper {
                                         PRE_MIGRATION_TABLE_NAME,
                                         getContentValuesFor(category, priority),
                                         UNIQUE_COLUMN_INFO);
-                        mTransactionManager.insert(request);
+                        mTransactionManager.insertOrThrowOnConflict(request);
                     }
                 });
         if (existingPriority.values().stream()
@@ -165,7 +165,7 @@ public final class PriorityMigrationHelper extends DatabaseHelper {
                             PRE_MIGRATION_TABLE_NAME,
                             getContentValuesFor(HealthDataCategory.UNKNOWN, new ArrayList<>()),
                             UNIQUE_COLUMN_INFO);
-            mTransactionManager.insert(request);
+            mTransactionManager.insertOrThrowOnConflict(request);
         }
     }
 

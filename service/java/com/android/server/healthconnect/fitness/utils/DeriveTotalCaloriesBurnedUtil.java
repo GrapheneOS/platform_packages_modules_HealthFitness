@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.fitness.recordhelpers;
+package com.android.server.healthconnect.fitness.utils;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.ActiveCaloriesBurnedRecordHelper.ACTIVE_CALORIES_BURNED_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.ActiveCaloriesBurnedRecordHelper.ENERGY_COLUMN_NAME;
@@ -30,7 +30,6 @@ import android.database.Cursor;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.MergeDataHelper;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
@@ -46,14 +45,14 @@ import java.util.Objects;
  *
  * @hide
  */
-public final class DeriveTotalCaloriesBurnedHelper {
+public final class DeriveTotalCaloriesBurnedUtil {
     private final long mStartTime;
     private final long mEndTime;
     private final List<Long> mPriority;
     private Cursor mActiveCaloriesBurnedCursor;
     private Cursor mBasalCaloriesBurnedCursor;
-    private MergeDataHelper mMergeDataHelper;
-    private DeriveBasalCaloriesBurnedHelper mBasalCaloriesBurnedHelper;
+    private MergeDataUtil mMergeDataUtil;
+    private DeriveBasalCaloriesBurnedUtil mBasalCaloriesBurnedHelper;
     private final TransactionManager mTransactionManager;
 
     private final String mInstantRecordTimeColumnName;
@@ -62,7 +61,7 @@ public final class DeriveTotalCaloriesBurnedHelper {
 
     private final boolean mUseLocalTime;
 
-    public DeriveTotalCaloriesBurnedHelper(
+    public DeriveTotalCaloriesBurnedUtil(
             long startTime,
             long endTime,
             List<Long> priorityList,
@@ -111,10 +110,10 @@ public final class DeriveTotalCaloriesBurnedHelper {
                                         new OrderByClause()
                                                 .addOrderByClause(
                                                         mInstantRecordTimeColumnName, true)));
-        mMergeDataHelper =
-                new MergeDataHelper(mPriority, ENERGY_COLUMN_NAME, Double.class, mUseLocalTime);
+        mMergeDataUtil =
+                new MergeDataUtil(mPriority, ENERGY_COLUMN_NAME, Double.class, mUseLocalTime);
         mBasalCaloriesBurnedHelper =
-                new DeriveBasalCaloriesBurnedHelper(
+                new DeriveBasalCaloriesBurnedUtil(
                         mBasalCaloriesBurnedCursor,
                         BASAL_METABOLIC_RATE_COLUMN_NAME,
                         mInstantRecordTimeColumnName,
@@ -141,7 +140,7 @@ public final class DeriveTotalCaloriesBurnedHelper {
             long intervalStartTime = instantInstantPair.first.toEpochMilli();
             long intervalEndTime = instantInstantPair.second.toEpochMilli();
             totalDerivedCalories +=
-                    mMergeDataHelper
+                    mMergeDataUtil
                                     .readCursor(
                                             mActiveCaloriesBurnedCursor,
                                             intervalStartTime,

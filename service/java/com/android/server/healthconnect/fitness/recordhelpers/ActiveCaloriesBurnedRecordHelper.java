@@ -60,8 +60,8 @@ public final class ActiveCaloriesBurnedRecordHelper
      *     derived type.
      */
     @Deprecated
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double aggregation) {
         if (Flags.refactorAggregations()) {

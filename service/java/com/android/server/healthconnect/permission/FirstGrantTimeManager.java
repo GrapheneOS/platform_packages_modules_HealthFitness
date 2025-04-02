@@ -33,8 +33,8 @@ import android.util.Log;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.migration.MigrationStateManager;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import java.io.File;
 import java.time.Instant;

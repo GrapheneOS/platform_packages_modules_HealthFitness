@@ -368,7 +368,7 @@ public class MedicalDataSourceHelper {
         UUID dataSourceUuid = UUID.randomUUID();
         UpsertTableRequest upsertTableRequest =
                 getUpsertTableRequest(dataSourceUuid, request, appInfoId, instant);
-        mTransactionManager.insert(db, upsertTableRequest);
+        mTransactionManager.insertOrThrowOnConflict(db, upsertTableRequest);
         mAccessLogsHelper.addAccessLog(
                 db,
                 packageName,

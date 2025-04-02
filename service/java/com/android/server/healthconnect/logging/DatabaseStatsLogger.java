@@ -25,7 +25,6 @@ import android.health.HealthFitnessStatsLog;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
 
 import java.util.Set;
 

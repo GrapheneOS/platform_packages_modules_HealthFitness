@@ -7,6 +7,9 @@
 //
 // We separately also need to add test targets to mts test list to run them in mainline postsubmit.
 // See ag/29549414 and go/mainline-test-suite for instructions.
+
+// If you are adding a new cts test module, please also exclude it from cts-on-gsi test mapping.
+// See ag/32853520 for instructions.
 {
   // This runs our test modules on mainline targets
   // (e.g. mainline_modules_x86_64_default-trunk_staging-userdebug.)

@@ -220,7 +220,7 @@ public final class HealthConnectNotificationSender {
         NotificationChannel notificationChannel =
                 new NotificationChannel(mChannelId, channelName, importance);
         notificationChannel.setGroup(mChannelGroupId);
-        notificationChannel.setBlockable(false);
+        notificationChannel.setBlockable(true);
 
         final long callingId = Binder.clearCallingIdentity();
 

@@ -38,7 +38,7 @@ public class ExportImportNotificationSender {
     private static final String NOTIFICATION_TAG = "HealthConnectTag";
     private static final String CHANNEL_ID = "healthconnect-channel";
     private static final String CHANNEL_GROUP_ID = "healthconnect-channel-group";
-    private static final String CHANNEL_NAME_RESOURCE = "app_label";
+    private static final String CHANNEL_NAME_RESOURCE = "health_connect_notification_channel_name";
     private static final String CHANNEL_GROUP_NAME_RESOURCE = "app_label";
 
     /** Create an instance of HealthConnectNotificationSender, setup for export-import. */
