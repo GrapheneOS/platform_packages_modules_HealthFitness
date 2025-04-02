@@ -187,6 +187,8 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.ExportImportLogger;
@@ -211,13 +213,11 @@ import com.android.server.healthconnect.phr.validations.FhirResourceValidator;
 import com.android.server.healthconnect.phr.validations.MedicalResourceValidator;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
@@ -298,7 +298,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final MedicalDataSourceHelper mMedicalDataSourceHelper;
     private final ExportManager mExportManager;
     private final AccessLogsHelper mAccessLogsHelper;
-    private final ActivityDateHelper mActivityDateHelper;
+    private final RecordDateHelper mActivityDateHelper;
     private final ChangeLogsHelper mChangeLogsHelper;
     private final ChangeLogsRequestHelper mChangeLogsRequestHelper;
     private final MigrationEntityHelper mMigrationEntityHelper;
@@ -342,7 +342,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             BackupRestore backupRestore,
             AccessLogsHelper accessLogsHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
-            ActivityDateHelper activityDateHelper,
+            RecordDateHelper recordDateHelper,
             ChangeLogsHelper changeLogsHelper,
             ChangeLogsRequestHelper changeLogsRequestHelper,
             PriorityMigrationHelper priorityMigrationHelper,
@@ -390,7 +390,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         mAccessLogsHelper = accessLogsHelper;
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
-        mActivityDateHelper = activityDateHelper;
+        mActivityDateHelper = recordDateHelper;
         mChangeLogsHelper = changeLogsHelper;
         mChangeLogsRequestHelper = changeLogsRequestHelper;
         mPriorityMigrationHelper = priorityMigrationHelper;
@@ -1478,7 +1478,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         List<LocalDate> localDates =
-                                mActivityDateHelper.getActivityDates(
+                                mActivityDateHelper.getRecordDates(
                                         activityDatesRequestParcel.getRecordTypes());
 
                         callback.onResult(new ActivityDatesResponseParcel(localDates));

@@ -29,11 +29,11 @@ import android.util.ArrayMap;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 

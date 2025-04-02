@@ -19,13 +19,13 @@ package com.android.server.healthconnect.common.jobs;
 import android.util.Slog;
 
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
@@ -48,7 +48,7 @@ public class DailyCleanupJob {
     private final AppInfoHelper mAppInfoHelper;
     private final TransactionManager mTransactionManager;
     private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
-    private final ActivityDateHelper mActivityDateHelper;
+    private final RecordDateHelper mActivityDateHelper;
 
     public DailyCleanupJob(
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
@@ -56,7 +56,7 @@ public class DailyCleanupJob {
             AppInfoHelper appInfoHelper,
             TransactionManager transactionManager,
             FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
-            ActivityDateHelper activityDateHelper) {
+            RecordDateHelper activityDateHelper) {
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mPreferencesManager = preferencesManager;
         mAppInfoHelper = appInfoHelper;

@@ -30,7 +30,7 @@ import android.util.Slog;
 
 import com.android.modules.utils.BackgroundThread;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 
 /**
  * Tracks packages changes (install, update, uninstall, changed) and calls permission classes to

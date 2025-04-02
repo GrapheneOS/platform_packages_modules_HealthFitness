@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.fitness.helpers;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
@@ -30,6 +30,7 @@ import android.util.Pair;
 
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -43,16 +44,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Helper for Activity Date Table. The table maps a record to a date on which there was a db write
- * for that record
+ * Helper for Record Date Table. The table maps a record to a date on which there was a db write for
+ * that record
  *
  * @hide
  */
-public final class ActivityDateHelper extends DatabaseHelper {
+public final class RecordDateHelper extends DatabaseHelper {
     private static final String TABLE_NAME = "activity_date_table";
     private static final String EPOCH_DAYS_COLUMN_NAME = "epoch_days";
     private static final String RECORD_TYPE_ID_COLUMN_NAME = "record_type_id";
@@ -60,7 +60,7 @@ public final class ActivityDateHelper extends DatabaseHelper {
     private final TransactionManager mTransactionManager;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
-    public ActivityDateHelper(
+    public RecordDateHelper(
             TransactionManager transactionManager,
             InternalHealthConnectMappings internalHealthConnectMappings,
             DatabaseHelpers databaseHelpers) {
@@ -85,8 +85,6 @@ public final class ActivityDateHelper extends DatabaseHelper {
 
     /** Insert a new activity dates for the given records */
     public void insertRecordDate(List<RecordInternal<?>> recordInternals) {
-        Objects.requireNonNull(recordInternals);
-
         List<UpsertTableRequest> upsertTableRequests = new ArrayList<>();
         recordInternals.forEach(
                 (recordInternal) -> upsertTableRequests.add(getUpsertTableRequest(recordInternal)));
@@ -95,7 +93,7 @@ public final class ActivityDateHelper extends DatabaseHelper {
     }
 
     /** Returns a list of all dates with database writes for the given record types */
-    public List<LocalDate> getActivityDates(List<Class<? extends Record>> recordTypes) {
+    public List<LocalDate> getRecordDates(List<Class<? extends Record>> recordTypes) {
         HealthConnectMappings healthConnectMappings = HealthConnectMappings.getInstance();
         List<Integer> recordTypeIds =
                 recordTypes.stream()
@@ -112,7 +110,7 @@ public final class ActivityDateHelper extends DatabaseHelper {
                         .setDistinctClause(true));
     }
 
-    /** Updates the activity dates cache for all records */
+    /** Updates the dates cache for all records */
     public void reSyncForAllRecords() {
         List<Integer> recordTypeIds =
                 HealthConnectMappings.getInstance()
@@ -124,7 +122,7 @@ public final class ActivityDateHelper extends DatabaseHelper {
         reSyncByRecordTypeIds(recordTypeIds);
     }
 
-    /** Updates the activity dates cache for the given record IDs */
+    /** Updates the dates cache for the given record IDs */
     public void reSyncByRecordTypeIds(List<Integer> recordTypeIds) {
         List<UpsertTableRequest> upsertTableRequests = new ArrayList<>();
 
@@ -134,7 +132,7 @@ public final class ActivityDateHelper extends DatabaseHelper {
                                 RECORD_TYPE_ID_COLUMN_NAME,
                                 recordTypeIds.stream().map(String::valueOf).toList());
 
-        // Fetch updated dates from respective record table and update the activity dates cache.
+        // Fetch updated dates from respective record table and update the dates cache.
         HashMap<Integer, List<Long>> recordTypeIdToEpochDays = fetchUpdatedDates(recordTypeIds);
 
         recordTypeIdToEpochDays.forEach(

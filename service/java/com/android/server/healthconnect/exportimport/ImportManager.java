@@ -44,6 +44,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.storage.HealthConnectContext;
@@ -51,7 +52,6 @@ import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;

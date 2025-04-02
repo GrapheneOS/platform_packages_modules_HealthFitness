@@ -46,7 +46,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
 import com.android.server.healthconnect.testing.fakes.FakeTimeSource;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 

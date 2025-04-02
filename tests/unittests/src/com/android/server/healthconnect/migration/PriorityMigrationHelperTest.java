@@ -36,9 +36,9 @@ import android.health.connect.HealthDataCategory;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import org.junit.Before;

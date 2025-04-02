@@ -19,8 +19,6 @@ package com.android.server.healthconnect.logging;
 import android.health.HealthFitnessStatsLog;
 import android.util.Slog;
 
-import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
-
 /**
  * Class to log Health Connect metrics logged every 24hrs.
  *

@@ -34,8 +34,8 @@ import java.util.List;
  */
 public final class LeanBodyMassRecordHelper
         extends InstantRecordHelper<LeanBodyMassRecordInternal> {
-    static final String LEAN_BODY_MASS_RECORD_TABLE_NAME = "lean_body_mass_record_table";
-    static final String MASS_COLUMN_NAME = "mass";
+    public static final String LEAN_BODY_MASS_RECORD_TABLE_NAME = "lean_body_mass_record_table";
+    public static final String MASS_COLUMN_NAME = "mass";
 
     public LeanBodyMassRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_LEAN_BODY_MASS);

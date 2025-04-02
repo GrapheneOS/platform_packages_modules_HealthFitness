@@ -38,7 +38,10 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
+import com.android.server.healthconnect.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.logging.UsageStatsCollector;
 import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
@@ -63,15 +66,12 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppOpLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
-import com.android.server.healthconnect.storage.datatypehelpers.DatabaseStatsCollector;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
@@ -108,7 +108,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final AppInfoHelper mAppInfoHelper;
     private final AppOpLogsHelper mAppOpLogsHelper;
     private final AccessLogsHelper mAccessLogsHelper;
-    private final ActivityDateHelper mActivityDateHelper;
+    private final RecordDateHelper mActivityDateHelper;
     private final HealthConnectMappings mHealthConnectMappings;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
     private final ChangeLogsHelper mChangeLogsHelper;
@@ -288,7 +288,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mReadAccessLogsHelper;
         mActivityDateHelper =
                 builder.mActivityDateHelper == null
-                        ? new ActivityDateHelper(
+                        ? new RecordDateHelper(
                                 mTransactionManager,
                                 mInternalHealthConnectMappings,
                                 mDatabaseHelpers)
@@ -498,7 +498,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
-    public ActivityDateHelper getActivityDateHelper() {
+    public RecordDateHelper getActivityDateHelper() {
         return mActivityDateHelper;
     }
 
@@ -727,7 +727,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private AppInfoHelper mAppInfoHelper;
         @Nullable private AppOpLogsHelper mAppOpLogsHelper;
         @Nullable private AccessLogsHelper mAccessLogsHelper;
-        @Nullable private ActivityDateHelper mActivityDateHelper;
+        @Nullable private RecordDateHelper mActivityDateHelper;
         @Nullable private ChangeLogsHelper mChangeLogsHelper;
         @Nullable private ChangeLogsRequestHelper mChangeLogsRequestHelper;
         @Nullable private FirstGrantTimeManager mFirstGrantTimeManager;
@@ -853,10 +853,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
             return this;
         }
 
-        /** Set fake or custom {@link ActivityDateHelper} */
-        public Builder setActivityDateHelper(ActivityDateHelper activityDateHelper) {
-            Objects.requireNonNull(activityDateHelper);
-            mActivityDateHelper = activityDateHelper;
+        /** Set fake or custom {@link RecordDateHelper} */
+        public Builder setActivityDateHelper(RecordDateHelper recordDateHelper) {
+            Objects.requireNonNull(recordDateHelper);
+            mActivityDateHelper = recordDateHelper;
             return this;
         }
 

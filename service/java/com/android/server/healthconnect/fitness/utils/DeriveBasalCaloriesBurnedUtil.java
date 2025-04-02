@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.fitness.recordhelpers;
+package com.android.server.healthconnect.fitness.utils;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.BasalMetabolicRateRecordHelper.BASAL_METABOLIC_RATE_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.BasalMetabolicRateRecordHelper.BASAL_METABOLIC_RATE_RECORD_TABLE_NAME;
@@ -47,7 +47,7 @@ import java.util.Objects;
  *
  * @hide
  */
-public final class DeriveBasalCaloriesBurnedHelper {
+public final class DeriveBasalCaloriesBurnedUtil {
     private static final int KCAL_TO_CAL = 1000;
     private static final double GMS_IN_KG = 1000.0;
     private static final double WATT_TO_CAL_PER_HR = 860;
@@ -65,7 +65,7 @@ public final class DeriveBasalCaloriesBurnedHelper {
     @SuppressWarnings("GoodTime") // constant age represented by primitive
     private static final int DEFAULT_AGE = 30;
 
-    public DeriveBasalCaloriesBurnedHelper(
+    public DeriveBasalCaloriesBurnedUtil(
             Cursor cursor,
             String columnName,
             String timeColumnName,
