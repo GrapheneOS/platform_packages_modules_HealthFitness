@@ -676,7 +676,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     public DeleteTableRequest getDeleteTableRequest(
-            List<String> packageFilters,
+            @Nullable List<String> packageFilters,
             long startTime,
             long endTime,
             boolean usesLocalTimeFilter,
