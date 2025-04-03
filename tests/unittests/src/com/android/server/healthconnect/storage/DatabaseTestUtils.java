@@ -30,7 +30,7 @@ public final class DatabaseTestUtils {
     // The number of table we released to the public. This number can only increase, as we are not
     // allowed to make changes that remove tables or columns.
     // Development tables that haven't reached prod are excluded.
-    static final int NUM_OF_TABLES = 64;
+    static final int NUM_OF_TABLES = 67;
     static final File MOCK_DATABASE_PATH =
             InstrumentationRegistry.getInstrumentation().getContext().getDatabasePath("mock");
 
