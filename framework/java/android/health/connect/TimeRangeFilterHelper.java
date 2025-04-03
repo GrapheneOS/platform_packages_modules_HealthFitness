@@ -40,12 +40,22 @@ public final class TimeRangeFilterHelper {
      * @return start time epoch milliseconds for Instant time filter and epoch milliseconds using
      *     UTC zoneOffset for LocalTime filter
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public static long getFilterStartTimeMillis(@NonNull TimeRangeFilter timeRangeFilter) {
-        if (isLocalTimeFilter(timeRangeFilter)) {
-            return getMillisOfLocalTime(((LocalTimeRangeFilter) timeRangeFilter).getStartTime());
-        } else if (timeRangeFilter instanceof TimeInstantRangeFilter) {
-            return ((TimeInstantRangeFilter) timeRangeFilter).getStartTime().toEpochMilli();
+        if ((timeRangeFilter instanceof LocalTimeRangeFilter localTimeRangeFilter)) {
+            LocalDateTime startTime = localTimeRangeFilter.getStartTime();
+            // The annotations say startTime can be nullable, but the current implementation can
+            // never be nullable. Rather than change the API, repeat the logic to make it non-null
+            startTime =
+                    startTime != null
+                            ? startTime
+                            : LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.MIN);
+            return getMillisOfLocalTime(startTime);
+        } else if (timeRangeFilter instanceof TimeInstantRangeFilter timeInstantRangeFilter) {
+            Instant startTime = timeInstantRangeFilter.getStartTime();
+            // The annotations say startTime can be nullable, but the current implementation can
+            // never be nullable. Rather than change the API, repeat the logic to make it non-null
+            startTime = startTime != null ? startTime : Instant.EPOCH;
+            return startTime.toEpochMilli();
         } else {
             throw new IllegalArgumentException(
                     "Invalid time filter object. Object should be either "
