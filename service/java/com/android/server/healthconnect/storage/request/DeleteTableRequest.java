@@ -17,13 +17,11 @@
 package com.android.server.healthconnect.storage.request;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.annotation.Nullable;
 import android.health.connect.Constants;
-import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -31,10 +29,12 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * No need to have delete-requests for child tables as ideally they should be following cascaded
+ * Request object used in @{@link com.android.server.healthconnect.storage.TransactionManager} to
+ * deleted entries from a table.
+ *
+ * <p>There is no need to have delete-requests for child tables they should be following cascaded
  * deletes. If not please rethink the table structure and if possible remove the parent-child
  * relationship.
  *
@@ -44,7 +44,6 @@ public class DeleteTableRequest {
 
     private static final String TAG = "HealthConnectDelete";
     private final String mTableName;
-    @RecordTypeIdentifier.RecordType private final int mRecordType;
 
     @Nullable private String mIdColumnName;
     @Nullable private String mPackageColumnName;
@@ -55,21 +54,12 @@ public class DeleteTableRequest {
     @Nullable private List<String> mIds;
     private final WhereClauses mExtraWhereClauses = new WhereClauses(AND);
 
-    public DeleteTableRequest(String tableName, @RecordTypeIdentifier.RecordType int recordType) {
-        mTableName = tableName;
-        mRecordType = recordType;
-    }
-
     public DeleteTableRequest(String tableName) {
-        Objects.requireNonNull(tableName);
-
         mTableName = tableName;
-        mRecordType = RECORD_TYPE_UNKNOWN;
     }
 
-    @Nullable
-    public String getPackageColumnName() {
-        return mPackageColumnName;
+    public String getTableName() {
+        return mTableName;
     }
 
     public DeleteTableRequest setIdColumnName(String idColumnName) {
@@ -89,22 +79,9 @@ public class DeleteTableRequest {
         return this;
     }
 
-    public int getRecordType() {
-        return mRecordType;
-    }
-
     @Nullable
     public String getIdColumnName() {
         return mIdColumnName;
-    }
-
-    @Nullable
-    public List<String> getIds() {
-        return mIds;
-    }
-
-    public String getTableName() {
-        return mTableName;
     }
 
     public DeleteTableRequest setPackageColumnName(String packageColumnName) {
@@ -119,6 +96,11 @@ public class DeleteTableRequest {
         return this;
     }
 
+    @Nullable
+    public String getPackageColumnName() {
+        return mPackageColumnName;
+    }
+
     /** Adds an extra {@link WhereClauses} that filters the rows to be deleted. */
     public DeleteTableRequest addExtraWhereClauses(WhereClauses whereClauses) {
         mExtraWhereClauses.addNestedWhereClauses(whereClauses);
@@ -129,17 +111,7 @@ public class DeleteTableRequest {
         return "DELETE FROM " + mTableName + getWhereCommand();
     }
 
-    public String getReadCommand() {
-        return "SELECT "
-                + mIdColumnName
-                + ", "
-                + mPackageColumnName
-                + " FROM "
-                + mTableName
-                + getWhereCommand();
-    }
-
-    private String getWhereCommand() {
+    public String getWhereCommand() {
         WhereClauses whereClauses = new WhereClauses(AND);
         whereClauses.addNestedWhereClauses(mExtraWhereClauses);
         whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
@@ -159,8 +131,6 @@ public class DeleteTableRequest {
     }
 
     public DeleteTableRequest setTimeFilter(String timeColumnName, long startTime, long endTime) {
-        Objects.requireNonNull(timeColumnName);
-
         // Return if the params will result in no impact on the query
         if (startTime < 0 || endTime < startTime) {
             return this;

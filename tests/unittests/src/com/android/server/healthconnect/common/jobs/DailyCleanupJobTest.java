@@ -23,6 +23,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
@@ -34,6 +35,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
+import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -123,8 +125,7 @@ public class DailyCleanupJobTest {
 
         mDailyCleanupJob.startDailyCleanup();
 
-        verify(mTransactionManager, Mockito.times(2))
-                .deleteAll(Mockito.argThat(this::checkTableNames_getPreferenceReturnNull));
+        verifyNoMoreInteractions(mFitnessRecordDeleteHelper);
         verify(mAppInfoHelper).syncAppInfoRecordTypesUsed();
         verify(mHealthDataCategoryPriorityHelper).reSyncHealthDataPriorityTable();
         verify(mActivityDateHelper, times(1)).reSyncForAllRecords();
@@ -137,44 +138,31 @@ public class DailyCleanupJobTest {
 
         mDailyCleanupJob.startDailyCleanup();
 
-        verify(mTransactionManager, Mockito.times(2))
-                .deleteAll(Mockito.argThat(this::checkTableNames_getPreferenceReturnNonNull));
         verify(mFitnessRecordDeleteHelper)
-                .deleteRecordsUnrestricted(
-                        Mockito.argThat(this::checkTableNames_getPreferenceReturnNonNull));
+                .deleteRecordsUnrestricted(Mockito.argThat(this::checkTableNamesDeleteRecords));
         verify(mAppInfoHelper).syncAppInfoRecordTypesUsed();
         verify(mHealthDataCategoryPriorityHelper).reSyncHealthDataPriorityTable();
         verify(mActivityDateHelper, times(1)).reSyncForAllRecords();
     }
 
-    private boolean checkTableNames_getPreferenceReturnNull(List<DeleteTableRequest> list) {
+
+    private boolean checkTableNamesDeleteRecords(List<RecordDeleteTableRequest> list) {
         Set<String> tableNames = new HashSet<>();
-        for (DeleteTableRequest request : list) {
+        for (RecordDeleteTableRequest request : list) {
             tableNames.add(request.getTableName());
         }
-        return (tableNames.equals(getTableNamesForDeletingStaleChangeLogEntries())
-                || tableNames.equals(getTableNamesForDeletingStaleAccessLogsEntries()));
+        return tableNames.equals(getTableNamesForDeletingStaleRecordEntries());
     }
 
-    private boolean checkTableNames_getPreferenceReturnNonNull(List<DeleteTableRequest> list) {
-        Set<String> tableNames = new HashSet<>();
-        for (DeleteTableRequest request : list) {
-            tableNames.add(request.getTableName());
-        }
-        return (tableNames.equals(getTableNamesForDeletingStaleChangeLogEntries())
-                || tableNames.equals(getTableNamesForDeletingStaleAccessLogsEntries())
-                || tableNames.equals(getTableNamesForDeletingStaleRecordEntries()));
-    }
-
-    List<DeleteTableRequest> getDeleteTableRequests(int recordAutoDeletePeriod) {
-        List<DeleteTableRequest> deleteTableRequests = new ArrayList<>();
+    List<RecordDeleteTableRequest> getDeleteTableRequests(int recordAutoDeletePeriod) {
+        List<RecordDeleteTableRequest> deleteTableRequests = new ArrayList<>();
 
         mHealthConnectInjector
                 .getInternalHealthConnectMappings()
                 .getRecordHelpers()
                 .forEach(
                         (recordHelper) -> {
-                            DeleteTableRequest request =
+                            RecordDeleteTableRequest request =
                                     recordHelper.getDeleteRequestForAutoDelete(
                                             recordAutoDeletePeriod);
                             deleteTableRequests.add(request);
@@ -186,7 +174,7 @@ public class DailyCleanupJobTest {
     Set<String> getTableNamesForDeletingStaleRecordEntries() {
         Set<String> tableNames = new HashSet<>();
 
-        for (DeleteTableRequest deleteTableRequest : getDeleteTableRequests(30)) {
+        for (RecordDeleteTableRequest deleteTableRequest : getDeleteTableRequests(30)) {
             tableNames.add(deleteTableRequest.getTableName());
         }
 
