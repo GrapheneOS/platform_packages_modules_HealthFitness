@@ -68,8 +68,8 @@ import java.util.Map;
  */
 interface IHealthConnectService {
     void grantHealthPermission(String packageName, String permissionName, in UserHandle user);
-    void revokeHealthPermission(String packageName, String permissionName, String reason, in UserHandle user);
-    void revokeAllHealthPermissions(String packageName, String reason, in UserHandle user);
+    void revokeHealthPermission(String packageName, String permissionName, in @nullable @JavaPassthrough(annotation="@android.annotation.Nullable") String reason, in UserHandle user);
+    void revokeAllHealthPermissions(String packageName, in @nullable @JavaPassthrough(annotation="@android.annotation.Nullable") String reason, in UserHandle user);
     List<String> getGrantedHealthPermissions(String packageName, in UserHandle user);
 
     /**
@@ -347,7 +347,7 @@ interface IHealthConnectService {
     *
     * @hide
     */
-    void configureScheduledExport(in @nullable ScheduledExportSettings settings, in UserHandle userHandle);
+    void configureScheduledExport(in @JavaPassthrough(annotation="@android.annotation.Nullable") ScheduledExportSettings settings, in UserHandle userHandle);
 
     /**
     * Gets the period in days between scheduled exports of Health Connect data.
@@ -536,7 +536,7 @@ interface IHealthConnectService {
      * @param changeToken Indicates whether and where to resume to the data backup.
      * @param callback Callback to receive result of performing this operation.
      */
-    void getChangesForBackup(in @nullable String changeToken, in IGetChangesForBackupResponseCallback callback);
+    void getChangesForBackup(in @nullable @JavaPassthrough(annotation="@android.annotation.Nullable") String changeToken, in IGetChangesForBackupResponseCallback callback);
 
     /**
      * Returns the latest metadata for cloud backup.
