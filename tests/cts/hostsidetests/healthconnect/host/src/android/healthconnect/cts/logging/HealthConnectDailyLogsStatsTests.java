@@ -19,7 +19,6 @@ package android.healthconnect.cts.logging;
 import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -151,7 +150,6 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
 
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrUsageStats() throws Exception {
@@ -181,7 +179,6 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
 
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrStorageStats() throws Exception {

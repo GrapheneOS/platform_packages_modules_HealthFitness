@@ -31,13 +31,12 @@ import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.uiautomator.By
 import com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD
-import com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+@RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
 class AllMedicalEntriesFragmentTest : HealthConnectBaseTest() {
     @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 

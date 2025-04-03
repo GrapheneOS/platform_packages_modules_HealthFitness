@@ -48,7 +48,6 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.getUpsertMedica
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getUpsertMedicalResourceRequestBuilder;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -83,10 +82,7 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-@EnableFlags({
-    FLAG_PERSONAL_HEALTH_RECORD,
-    FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-})
+@EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
 @RunWith(TestParameterInjector.class)
 public class MedicalResourceValidatorTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();

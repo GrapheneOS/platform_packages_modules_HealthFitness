@@ -39,7 +39,6 @@ import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflec
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -111,7 +110,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesByRequest_invalidPackageNameByReflection_throws()
             throws NoSuchFieldException, IllegalAccessException {
         GetMedicalDataSourcesRequest request =
@@ -130,7 +129,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesByRequest_migrationInProgress_apiBlocked()
             throws Exception {
         HealthConnectReceiver<List<MedicalDataSource>> receiver = new HealthConnectReceiver<>();
@@ -146,7 +145,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesByRequest_readLimitExceeded_throws()
             throws InterruptedException {
         MedicalDataSource dataSource =
@@ -174,7 +173,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesByRequest_withManageHealthPerm_nothingPresent_returnEmpty()
             throws Exception {
         HealthConnectReceiver<List<MedicalDataSource>> receiver = new HealthConnectReceiver<>();
@@ -191,7 +190,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesByRequest_withManageHealthPerm_canReadAll()
             throws Exception {
         grantHealthPermission(PHR_BACKGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
@@ -220,7 +219,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesByRequest_onePresentNoData_returnsItAndNullUpdateTime()
             throws Exception {
         HealthConnectReceiver<MedicalDataSource> createReceiver = new HealthConnectReceiver<>();
@@ -239,7 +238,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void
             testGetMedicalDataSourcesByRequest_onePresentWithData_returnsCorrectLastDataUpdateTime()
                     throws Exception {
@@ -263,7 +262,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalResourcesByRequest_deletedResource_notCountedInLastDataUpdateTime()
             throws InterruptedException {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -284,7 +283,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesByRequest_InBackgroundNoPermission_throws() {
         GetMedicalDataSourcesRequest request = new GetMedicalDataSourcesRequest.Builder().build();
 
@@ -297,7 +296,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesByRequest_InForegroundNoPermission_throws() {
         GetMedicalDataSourcesRequest request = new GetMedicalDataSourcesRequest.Builder().build();
 
@@ -310,7 +309,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetByPackage_packageFilterEmpty_inBgWithBgPermHasWriteAndReadPerm()
             throws Exception {
         grantHealthPermissions(
@@ -356,7 +355,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetByPackage_packageFilterEmpty_inForegroundHasWriteAndReadPerm()
             throws Exception {
         grantHealthPermissions(
@@ -398,7 +397,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetByPackage_withPackageFilterSelfIncluded_inFgHasWriteAndReadPerm()
             throws Exception {
         grantHealthPermissions(
@@ -443,7 +442,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetByPackage_withPackageFilterSelfIncluded_inBgWithPermHasWriteAndReadPerm()
             throws Exception {
         grantHealthPermissions(
@@ -492,7 +491,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetByPackage_withPackageFilterSelfNotIncluded_inBgWithPermHasWriteAndReadPerm()
             throws Exception {
         grantHealthPermissions(
@@ -539,7 +538,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetByPackage_withPackageFilterSelfNotIncluded_inForegroundWriteAndReadPerm()
             throws Exception {
         grantHealthPermissions(
@@ -582,7 +581,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetByPackage_emptyPackageFilter_inBgWithoutBgPermHasWritePermNoReadPerms()
             throws Exception {
         grantHealthPermissions(PHR_FOREGROUND_APP_PKG, List.of(WRITE_MEDICAL_DATA));
@@ -620,7 +619,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_withPackageFilterSelfIncluded_inBgWithoutBgPermHasWritePermButNoRead()
             throws Exception {
         grantHealthPermissions(PHR_FOREGROUND_APP_PKG, List.of(WRITE_MEDICAL_DATA));
@@ -662,7 +661,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_withPackageFilterSelfNotIncluded_inBgWithoutBgPermHasWritePermNoRead()
             throws Exception {
         grantHealthPermissions(PHR_FOREGROUND_APP_PKG, List.of(WRITE_MEDICAL_DATA));
@@ -685,7 +684,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_emptyPackageFilter_inBgWithoutBgPermHasWritePermAndReadPerms()
             throws Exception {
         grantHealthPermissions(
@@ -724,7 +723,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_withPackageFilterSelfIncluded_inBgWithoutBgPermHasWriteAndReadPerm()
             throws Exception {
         grantHealthPermissions(
@@ -767,7 +766,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_noPackageFilter_inBgWithoutBgPermHasReadPermNoWritePerm()
             throws Exception {
         grantHealthPermissions(
@@ -808,7 +807,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_withPackageFilterSelfIncluded_inBgWithoutBgPermHasReadPermNoWrite()
             throws Exception {
         grantHealthPermissions(
@@ -853,7 +852,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_emptyPackageFilter_inBgWithoutBgPermHasMultipleReadPermsNoWritePerm()
             throws Exception {
         grantHealthPermissions(
@@ -899,7 +898,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_filterOnPackageWithSelf_inBgWithoutBgPermHasMultipleReadPermsNoWrite()
             throws Exception {
         grantHealthPermissions(
@@ -947,7 +946,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_noPackageFilter_inForegroundHasWritePermNoReadPerm()
             throws Exception {
         grantHealthPermission(PHR_BACKGROUND_APP_PKG, WRITE_MEDICAL_DATA);
@@ -985,7 +984,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_noPackageFilter_inBgWithBgPermHasWritePermNoReadPerm()
             throws Exception {
         grantHealthPermissions(
@@ -1025,7 +1024,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_packageFilterWithSelf_inFgHasWritePermNoReadPerm() throws Exception {
         grantHealthPermission(PHR_BACKGROUND_APP_PKG, WRITE_MEDICAL_DATA);
         grantHealthPermission(PHR_FOREGROUND_APP_PKG, WRITE_MEDICAL_DATA);
@@ -1066,7 +1065,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_packageFilterWithSelf_inBgWithBgPermHasWritePermNoReadPerm()
             throws Exception {
         grantHealthPermissions(
@@ -1110,7 +1109,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void
             getByPackages_withPackageFilterSelfNotIncluded_inForegroundHasWritePermNoReadPerms() {
         grantHealthPermissions(PHR_FOREGROUND_APP_PKG, List.of(WRITE_MEDICAL_DATA));
@@ -1131,7 +1130,7 @@ public class GetMedicalDataSourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void getByPackages_withPackageFilterSelfNotIncluded_inBgWithBgReadHasWritePermNoRead() {
         grantHealthPermissions(PHR_BACKGROUND_APP_PKG, List.of(WRITE_MEDICAL_DATA));
 
