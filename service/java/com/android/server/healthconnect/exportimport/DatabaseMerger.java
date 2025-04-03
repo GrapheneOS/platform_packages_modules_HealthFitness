@@ -52,6 +52,7 @@ import android.util.Slog;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
@@ -64,7 +65,6 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -474,7 +474,7 @@ public final class DatabaseMerger {
         Class<? extends Record> recordTypeClass =
                 mHealthConnectMappings.getRecordIdToExternalRecordClassMap().get(recordType);
         Slog.d(TAG, "Deleting table for: " + recordTypeClass);
-        DeleteTableRequest deleteTableRequest =
+        RecordDeleteTableRequest deleteTableRequest =
                 recordHelper.getDeleteTableRequest(
                         null /* packageFilters */,
                         DEFAULT_LONG /* startTime */,
@@ -482,7 +482,9 @@ public final class DatabaseMerger {
                         false /* useLocalTimeFilter */,
                         mAppInfoHelper);
 
-        stagedDatabase.getWritableDatabase().execSQL(deleteTableRequest.getDeleteCommand());
+        stagedDatabase
+                .getWritableDatabase()
+                .execSQL(deleteTableRequest.getDeleteTableRequest().getDeleteCommand());
     }
 
     private Pair<List<RecordInternal<?>>, PageTokenWrapper> getRecordsToMerge(

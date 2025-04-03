@@ -58,6 +58,7 @@ import android.util.Slog;
 import androidx.annotation.Nullable;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
@@ -676,7 +677,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         readExtraData((List<T>) internalRecords, cursorExtraData);
     }
 
-    public DeleteTableRequest getDeleteTableRequest(
+    public RecordDeleteTableRequest getDeleteTableRequest(
             @Nullable List<String> packageFilters,
             long startTime,
             long endTime,
@@ -684,29 +685,40 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             AppInfoHelper appInfoHelper) {
         final String timeColumnName =
                 usesLocalTimeFilter ? getLocalStartTimeColumnName() : getStartTimeColumnName();
-        return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
-                .setTimeFilter(timeColumnName, startTime, endTime)
-                .setPackageFilter(
-                        APP_INFO_ID_COLUMN_NAME, appInfoHelper.getAppInfoIds(packageFilters))
-                .setIdColumnName(UUID_COLUMN_NAME);
+        DeleteTableRequest deleteTableRequest =
+                new DeleteTableRequest(getMainTableName())
+                        .setTimeFilter(timeColumnName, startTime, endTime)
+                        .setIdColumnName(UUID_COLUMN_NAME);
+        if (packageFilters == null) {
+            deleteTableRequest.setPackageColumnName(APP_INFO_ID_COLUMN_NAME);
+        } else {
+            deleteTableRequest.setPackageFilter(
+                    APP_INFO_ID_COLUMN_NAME, appInfoHelper.getAppInfoIds(packageFilters));
+        }
+        return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
 
-    public DeleteTableRequest getDeleteTableRequest(List<UUID> ids) {
-        return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
-                .setIds(UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(ids))
-                .setPackageColumnName(APP_INFO_ID_COLUMN_NAME);
+    public RecordDeleteTableRequest getDeleteTableRequest(List<UUID> ids) {
+        DeleteTableRequest deleteTableRequest =
+                new DeleteTableRequest(getMainTableName())
+                        .setPackageColumnName(APP_INFO_ID_COLUMN_NAME)
+                        .setIds(UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(ids));
+        return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
 
-    public DeleteTableRequest getDeleteRequestForAutoDelete(int recordAutoDeletePeriodInDays) {
-        return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
-                .setTimeFilter(
-                        getStartTimeColumnName(),
-                        Instant.EPOCH.toEpochMilli(),
-                        Instant.now()
-                                .minus(recordAutoDeletePeriodInDays, ChronoUnit.DAYS)
-                                .toEpochMilli())
-                .setPackageFilter(APP_INFO_ID_COLUMN_NAME, List.of())
-                .setIdColumnName(UUID_COLUMN_NAME);
+    public RecordDeleteTableRequest getDeleteRequestForAutoDelete(
+            int recordAutoDeletePeriodInDays) {
+        DeleteTableRequest deleteTableRequest =
+                new DeleteTableRequest(getMainTableName())
+                        .setTimeFilter(
+                                getStartTimeColumnName(),
+                                Instant.EPOCH.toEpochMilli(),
+                                Instant.now()
+                                        .minus(recordAutoDeletePeriodInDays, ChronoUnit.DAYS)
+                                        .toEpochMilli())
+                        .setPackageColumnName(APP_INFO_ID_COLUMN_NAME)
+                        .setIdColumnName(UUID_COLUMN_NAME);
+        return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
 
     public abstract String getDurationGroupByColumnName();
