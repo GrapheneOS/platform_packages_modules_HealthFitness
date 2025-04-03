@@ -17,6 +17,7 @@
 package android.health.connect.internal.datatypes;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.os.Parcel;
 
@@ -66,7 +67,7 @@ public final class SleepStageInternal {
         return externalStages;
     }
 
-    static void writeStagesToParcel(List<SleepStageInternal> stages, Parcel parcel) {
+    static void writeStagesToParcel(@Nullable List<SleepStageInternal> stages, Parcel parcel) {
         if (stages == null) {
             parcel.writeInt(0);
             return;
