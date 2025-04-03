@@ -39,7 +39,6 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
@@ -119,7 +118,7 @@ public final class FitnessRecordDeleteHelper {
             DeleteUsingFiltersRequestParcel request,
             boolean enforceSelfDelete,
             boolean shouldRecordAccessLog) {
-        List<DeleteTableRequest> deleteTableRequests =
+        List<RecordDeleteTableRequest> deleteTableRequests =
                 new ArrayList<>(request.getRecordTypeFilters().size());
         Set<Integer> recordTypeIds = new HashSet<>();
 
@@ -158,7 +157,7 @@ public final class FitnessRecordDeleteHelper {
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
             boolean shouldRecordAccessLog) {
-        List<DeleteTableRequest> deleteTableRequests =
+        List<RecordDeleteTableRequest> deleteTableRequests =
                 new ArrayList<>(request.getRecordTypeFilters().size());
         Set<Integer> recordTypeIds = new HashSet<>();
 
@@ -197,7 +196,7 @@ public final class FitnessRecordDeleteHelper {
 
     private int delete(
             @Nullable String callingPackageName,
-            List<DeleteTableRequest> deleteTableRequests,
+            List<RecordDeleteTableRequest> deleteTableRequests,
             @Nullable Set<Integer> recordTypeIds,
             boolean shouldRecordAccessLog,
             boolean enforceSelfDelete) {
@@ -217,7 +216,7 @@ public final class FitnessRecordDeleteHelper {
         return mTransactionManager.runAsTransaction(
                 db -> {
                     int numberOfRecordsDeleted = 0;
-                    for (DeleteTableRequest deleteTableRequest : deleteTableRequests) {
+                    for (RecordDeleteTableRequest deleteTableRequest : deleteTableRequests) {
                         final RecordHelper<?> recordHelper =
                                 mInternalHealthConnectMappings.getRecordHelper(
                                         deleteTableRequest.getRecordType());
@@ -229,9 +228,8 @@ public final class FitnessRecordDeleteHelper {
                                 db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
                             while (cursor.moveToNext()) {
                                 String packageColumnName =
-                                        requireNonNull(deleteTableRequest.getPackageColumnName());
-                                String idColumnName =
-                                        requireNonNull(deleteTableRequest.getIdColumnName());
+                                        deleteTableRequest.getPackageColumnName();
+                                String idColumnName = deleteTableRequest.getIdColumnName();
                                 numberOfRecordsDeleted++;
                                 long readDataAppInfoId =
                                         StorageUtils.getCursorLong(cursor, packageColumnName);
@@ -273,7 +271,7 @@ public final class FitnessRecordDeleteHelper {
                                 }
                             }
                         }
-                        db.execSQL(deleteTableRequest.getDeleteCommand());
+                        db.execSQL(deleteTableRequest.getDeleteTableRequest().getDeleteCommand());
                     }
 
                     for (UpsertTableRequest insertRequestsForChangeLog :
@@ -299,7 +297,7 @@ public final class FitnessRecordDeleteHelper {
      *
      * @param deleteTableRequests list of delete requests for a record table.
      */
-    public void deleteRecordsUnrestricted(List<DeleteTableRequest> deleteTableRequests) {
+    public void deleteRecordsUnrestricted(List<RecordDeleteTableRequest> deleteTableRequests) {
         delete(
                 /* callingPackageName= */ null,
                 deleteTableRequests,

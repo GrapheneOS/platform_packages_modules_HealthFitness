@@ -112,17 +112,7 @@ public final class IntermenstrualBleedingRecord extends InstantRecord {
     public IntermenstrualBleedingRecordInternal toRecordInternal() {
         IntermenstrualBleedingRecordInternal recordInternal =
                 (IntermenstrualBleedingRecordInternal)
-                        new IntermenstrualBleedingRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new IntermenstrualBleedingRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         return recordInternal;

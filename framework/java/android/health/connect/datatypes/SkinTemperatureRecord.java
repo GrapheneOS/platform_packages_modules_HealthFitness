@@ -200,17 +200,7 @@ public final class SkinTemperatureRecord extends IntervalRecord {
     public SkinTemperatureRecordInternal toRecordInternal() {
         SkinTemperatureRecordInternal recordInternal =
                 (SkinTemperatureRecordInternal)
-                        new SkinTemperatureRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new SkinTemperatureRecordInternal().setMetaData(getMetadata());
         if (getBaseline() != null) {
             recordInternal.setBaseline(getBaseline());
         }

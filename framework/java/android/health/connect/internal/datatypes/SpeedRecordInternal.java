@@ -26,6 +26,7 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -38,8 +39,7 @@ import java.util.Set;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
 public class SpeedRecordInternal
         extends SeriesRecordInternal<SpeedRecord, SpeedRecord.SpeedRecordSample> {
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private Set<SpeedRecordSample> mSpeedRecordSamples;
+    private Set<SpeedRecordSample> mSpeedRecordSamples = Collections.emptySet();
 
     @Override
     void populateIntervalRecordFrom(@NonNull Parcel parcel) {

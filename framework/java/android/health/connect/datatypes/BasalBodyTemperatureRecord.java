@@ -179,17 +179,7 @@ public final class BasalBodyTemperatureRecord extends InstantRecord {
     public BasalBodyTemperatureRecordInternal toRecordInternal() {
         BasalBodyTemperatureRecordInternal recordInternal =
                 (BasalBodyTemperatureRecordInternal)
-                        new BasalBodyTemperatureRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new BasalBodyTemperatureRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setMeasurementLocation(mMeasurementLocation);

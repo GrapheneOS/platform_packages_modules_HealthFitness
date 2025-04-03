@@ -281,7 +281,7 @@ public final class AppInfoHelper extends DatabaseHelper {
      * @param packageNames List of package names
      * @return A list of appinfo ids from the application_info_table.
      */
-    public List<Long> getAppInfoIds(@Nullable List<String> packageNames) {
+    public List<Long> getAppInfoIds(List<String> packageNames) {
         if (DEBUG) {
             Slog.d(TAG, "App info map: " + getAppInfoMap());
         }
