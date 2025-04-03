@@ -41,7 +41,7 @@ import java.util.concurrent.Executor;
  * @param <T> the type of the Record for the request
  */
 public final class ReadRecordsRequestUsingFilters<T extends Record> extends ReadRecordsRequest<T> {
-    private final TimeRangeFilter mTimeRangeFilter;
+    @Nullable private final TimeRangeFilter mTimeRangeFilter;
     private final Set<DataOrigin> mDataOrigins;
     private final int mPageSize;
     private final long mPageToken;
@@ -51,7 +51,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
      * @see Builder
      */
     private ReadRecordsRequestUsingFilters(
-            @NonNull TimeRangeFilter timeRangeFilter,
+            @Nullable TimeRangeFilter timeRangeFilter,
             @NonNull Class<T> recordType,
             @NonNull Set<DataOrigin> dataOrigins,
             int pageSize,
@@ -110,7 +110,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
     public static final class Builder<T extends Record> {
         private final Class<T> mRecordType;
         private final Set<DataOrigin> mDataOrigins = new ArraySet<>();
-        private TimeRangeFilter mTimeRangeFilter;
+        @Nullable private TimeRangeFilter mTimeRangeFilter;
         private int mPageSize = DEFAULT_PAGE_SIZE;
         private long mPageToken = DEFAULT_LONG;
         private boolean mAscending = true;
@@ -119,7 +119,6 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         /**
          * @param recordType Class object of {@link Record} type that needs to be read
          */
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
         public Builder(@NonNull Class<T> recordType) {
             Objects.requireNonNull(recordType);
 
@@ -148,7 +147,6 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
          *     <p>If not time range filter is present all the records will be read without any time
          *     constraints.
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder<T> setTimeRangeFilter(@Nullable TimeRangeFilter timeRangeFilter) {
             mTimeRangeFilter = timeRangeFilter;
