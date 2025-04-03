@@ -335,18 +335,7 @@ public final class HeartRateRecord extends IntervalRecord {
     @Override
     public HeartRateRecordInternal toRecordInternal() {
         HeartRateRecordInternal recordInternal =
-                (HeartRateRecordInternal)
-                        new HeartRateRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                (HeartRateRecordInternal) new HeartRateRecordInternal().setMetaData(getMetadata());
         Set<HeartRateRecordInternal.HeartRateSample> samples = new HashSet<>(getSamples().size());
 
         for (HeartRateRecord.HeartRateSample heartRateSample : getSamples()) {

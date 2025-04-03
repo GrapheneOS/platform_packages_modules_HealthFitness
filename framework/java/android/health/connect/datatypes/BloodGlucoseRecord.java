@@ -338,17 +338,7 @@ public final class BloodGlucoseRecord extends InstantRecord {
     public BloodGlucoseRecordInternal toRecordInternal() {
         BloodGlucoseRecordInternal recordInternal =
                 (BloodGlucoseRecordInternal)
-                        new BloodGlucoseRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new BloodGlucoseRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setSpecimenSource(mSpecimenSource);

@@ -140,17 +140,7 @@ public final class BodyWaterMassRecord extends InstantRecord {
     public BodyWaterMassRecordInternal toRecordInternal() {
         BodyWaterMassRecordInternal recordInternal =
                 (BodyWaterMassRecordInternal)
-                        new BodyWaterMassRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new BodyWaterMassRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setBodyWaterMass(mBodyWaterMass.getInGrams());

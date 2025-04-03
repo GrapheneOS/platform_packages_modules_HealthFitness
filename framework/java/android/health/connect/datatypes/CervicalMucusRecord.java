@@ -256,17 +256,7 @@ public final class CervicalMucusRecord extends InstantRecord {
     public CervicalMucusRecordInternal toRecordInternal() {
         CervicalMucusRecordInternal recordInternal =
                 (CervicalMucusRecordInternal)
-                        new CervicalMucusRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new CervicalMucusRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setSensation(mSensation);

@@ -168,17 +168,7 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
     public BasalMetabolicRateRecordInternal toRecordInternal() {
         BasalMetabolicRateRecordInternal recordInternal =
                 (BasalMetabolicRateRecordInternal)
-                        new BasalMetabolicRateRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new BasalMetabolicRateRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setBasalMetabolicRate(mBasalMetabolicRate.getInWatts());

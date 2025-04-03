@@ -142,17 +142,7 @@ public final class HeartRateVariabilityRmssdRecord extends InstantRecord {
     public HeartRateVariabilityRmssdRecordInternal toRecordInternal() {
         HeartRateVariabilityRmssdRecordInternal recordInternal =
                 (HeartRateVariabilityRmssdRecordInternal)
-                        new HeartRateVariabilityRmssdRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new HeartRateVariabilityRmssdRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setHeartRateVariabilityMillis(mHeartRateVariabilityMillis);

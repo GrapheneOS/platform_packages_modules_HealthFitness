@@ -216,18 +216,7 @@ public final class DistanceRecord extends IntervalRecord {
     @Override
     public DistanceRecordInternal toRecordInternal() {
         DistanceRecordInternal recordInternal =
-                (DistanceRecordInternal)
-                        new DistanceRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                (DistanceRecordInternal) new DistanceRecordInternal().setMetaData(getMetadata());
         recordInternal.setStartTime(getStartTime().toEpochMilli());
         recordInternal.setEndTime(getEndTime().toEpochMilli());
         recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());

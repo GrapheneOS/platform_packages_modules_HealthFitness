@@ -1934,18 +1934,7 @@ public final class NutritionRecord extends IntervalRecord {
     @Override
     public NutritionRecordInternal toRecordInternal() {
         NutritionRecordInternal recordInternal =
-                (NutritionRecordInternal)
-                        new NutritionRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                (NutritionRecordInternal) new NutritionRecordInternal().setMetaData(getMetadata());
 
         recordInternal.setStartTime(getStartTime().toEpochMilli());
         recordInternal.setEndTime(getEndTime().toEpochMilli());
