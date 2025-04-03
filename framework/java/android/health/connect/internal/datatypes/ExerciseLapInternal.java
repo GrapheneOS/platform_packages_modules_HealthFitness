@@ -17,6 +17,7 @@
 package android.health.connect.internal.datatypes;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.units.Length;
 import android.os.Parcel;
@@ -48,7 +49,7 @@ public class ExerciseLapInternal {
                 .setLength(parcel.readDouble());
     }
 
-    static void writeLapsToParcel(List<ExerciseLapInternal> laps, Parcel parcel) {
+    static void writeLapsToParcel(@Nullable List<ExerciseLapInternal> laps, Parcel parcel) {
         if (laps == null) {
             parcel.writeInt(0);
             return;
@@ -66,7 +67,7 @@ public class ExerciseLapInternal {
         return externalLaps;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     static List<ExerciseLapInternal> populateLapsFromParcel(Parcel parcel) {
         int lapsSize = parcel.readInt();
         if (lapsSize == 0) {
