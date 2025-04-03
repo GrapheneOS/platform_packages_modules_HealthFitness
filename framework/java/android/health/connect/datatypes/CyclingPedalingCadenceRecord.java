@@ -330,17 +330,7 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
     public CyclingPedalingCadenceRecordInternal toRecordInternal() {
         CyclingPedalingCadenceRecordInternal recordInternal =
                 (CyclingPedalingCadenceRecordInternal)
-                        new CyclingPedalingCadenceRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new CyclingPedalingCadenceRecordInternal().setMetaData(getMetadata());
         Set<CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample> samples =
                 new HashSet<>(getSamples().size());
 

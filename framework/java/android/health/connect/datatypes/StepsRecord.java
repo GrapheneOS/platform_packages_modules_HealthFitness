@@ -199,18 +199,7 @@ public final class StepsRecord extends IntervalRecord {
     @Override
     public StepsRecordInternal toRecordInternal() {
         StepsRecordInternal recordInternal =
-                (StepsRecordInternal)
-                        new StepsRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                (StepsRecordInternal) new StepsRecordInternal().setMetaData(getMetadata());
         recordInternal.setStartTime(getStartTime().toEpochMilli());
         recordInternal.setEndTime(getEndTime().toEpochMilli());
         recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());

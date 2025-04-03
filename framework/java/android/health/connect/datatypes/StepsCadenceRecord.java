@@ -317,17 +317,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
     public StepsCadenceRecordInternal toRecordInternal() {
         StepsCadenceRecordInternal recordInternal =
                 (StepsCadenceRecordInternal)
-                        new StepsCadenceRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new StepsCadenceRecordInternal().setMetaData(getMetadata());
         Set<StepsCadenceRecordInternal.StepsCadenceRecordSample> samples =
                 new HashSet<>(getSamples().size());
 

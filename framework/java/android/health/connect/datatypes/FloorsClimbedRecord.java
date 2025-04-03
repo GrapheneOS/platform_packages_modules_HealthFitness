@@ -207,17 +207,7 @@ public final class FloorsClimbedRecord extends IntervalRecord {
     public FloorsClimbedRecordInternal toRecordInternal() {
         FloorsClimbedRecordInternal recordInternal =
                 (FloorsClimbedRecordInternal)
-                        new FloorsClimbedRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new FloorsClimbedRecordInternal().setMetaData(getMetadata());
         recordInternal.setStartTime(getStartTime().toEpochMilli());
         recordInternal.setEndTime(getEndTime().toEpochMilli());
         recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());

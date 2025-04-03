@@ -208,18 +208,7 @@ public final class HydrationRecord extends IntervalRecord {
     @Override
     public HydrationRecordInternal toRecordInternal() {
         HydrationRecordInternal recordInternal =
-                (HydrationRecordInternal)
-                        new HydrationRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                (HydrationRecordInternal) new HydrationRecordInternal().setMetaData(getMetadata());
         recordInternal.setStartTime(getStartTime().toEpochMilli());
         recordInternal.setEndTime(getEndTime().toEpochMilli());
         recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
