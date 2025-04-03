@@ -368,6 +368,10 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"マインドフルネス"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"マインドフルネスを読み取る"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"マインドフルネスを書き込む"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"ニコチン摂取量"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"ニコチン摂取量"</string>
+    <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"ニコチン摂取量の読み取り"</string>
+    <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"ニコチン摂取量の書き込み"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」に読み取りを許可する"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」に書き込みを許可する"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"許可する"</string>
@@ -1180,8 +1184,7 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>にアクセス"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"昨日の <xliff:g id="TIME_DATE">%1$s</xliff:g> にアクセス"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"<xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g> にアクセス"</string>
-    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
-    <skip />
+    <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"常時"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"選択された権限を許可"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"アプリの使用時のみ"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"すべて拒否"</string>
@@ -1190,8 +1193,7 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="APP_NAME">%1$s</xliff:g> に<xliff:g id="DATA_TYPE">%2$s</xliff:g>へのアクセスを許可しますか？"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"フィットネスとウ⁠ェ⁠ル⁠ネ⁠ス"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"常時"</string>
-    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
-    <skip />
+    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"アプリの使用時のみ"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> はフィットネスとウェルネスに関する全データへのアクセスを常に許可されています"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> はフィットネスとウェルネスに関する全データへのアクセスをアプリの使用中のみ許可されています"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"アクセスの許可"</string>
@@ -1207,8 +1209,7 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"バツマーク"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"現在、<xliff:g id="APP_NAME">%1$s</xliff:g> はフィットネスとウェルネスに関するデータへのアクセスを常に許可されています"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"現在、<xliff:g id="APP_NAME">%1$s</xliff:g> はフィットネスとウェルネスに関するデータへのアクセスをアプリの使用中のみ許可されています"</string>
-    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
-    <skip />
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"<xliff:g id="APP_NAME">%1$s</xliff:g> がフィットネスとウェルネスに関するデータにアクセスできるタイミングを選択してください"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> は<xliff:g id="DATA_TYPES">%2$s</xliff:g>にアクセスできます。"</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"フィットネスとウェルネスに関する権限を管⁠理"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 件のアプリが使用}other{# 件のアプリが使用}}"</string>

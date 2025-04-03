@@ -368,6 +368,10 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"mindfulness"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"Ler dados de mindfulness"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"Escrever dados de mindfulness"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"Consumo de nicotina"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"consumo de nicotina"</string>
+    <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Ler o consumo de nicotina"</string>
+    <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Escrever o consumo de nicotina"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Permita a leitura pela app \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permita a escrita pela app \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
@@ -1180,8 +1184,7 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Último acesso: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Acedido ontem à(s) <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"Acedido a <xliff:g id="TIME_DATE_0">%1$s</xliff:g> à(s) <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
-    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
-    <skip />
+    <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"Sempre"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Permitir seleção"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Durante a utilização da app"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Recusar tudo"</string>
@@ -1190,8 +1193,7 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Permitir que a app <xliff:g id="APP_NAME">%1$s</xliff:g> aceda a <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness e bem-estar"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Sempre"</string>
-    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
-    <skip />
+    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Durante a utilização da app"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"A app <xliff:g id="APP_NAME">%1$s</xliff:g> pode aceder sempre a todos os seus dados de fitness e bem-estar"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"A app <xliff:g id="APP_NAME">%1$s</xliff:g> pode aceder a todos os seus dados de fitness e bem-estar enquanto está a ser usada"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Com permissão para aceder"</string>
@@ -1207,8 +1209,7 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Marca de cruz"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Atualmente, a app <xliff:g id="APP_NAME">%1$s</xliff:g> pode aceder sempre a dados de fitness e bem-estar"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Atualmente, a app <xliff:g id="APP_NAME">%1$s</xliff:g> pode aceder a dados de fitness e bem-estar enquanto está a ser usada"</string>
-    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
-    <skip />
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Escolha quando a app <xliff:g id="APP_NAME">%1$s</xliff:g> pode aceder aos seus dados de fitness e bem-estar"</string>
     <string name="current_access" msgid="1457167070428176139">"A app <xliff:g id="APP_NAME">%1$s</xliff:g> tem acesso a dados de <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Gerir permissões de fitness e bem-estar"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Usada por 1 app}other{Usada por # apps}}"</string>

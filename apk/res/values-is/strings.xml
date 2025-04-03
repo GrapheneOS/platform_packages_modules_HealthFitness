@@ -368,6 +368,10 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"núvitund"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"Lesa núvitund"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"Skrifa núvitund"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"Neysla nikótíns"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"neysla nikótíns"</string>
+    <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Lesa neyslu nikótíns"</string>
+    <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Skrifa neyslu nikótíns"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Leyfa „<xliff:g id="APP_NAME">%1$s</xliff:g>“ að lesa"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Leyfa „<xliff:g id="APP_NAME">%1$s</xliff:g>“ að skrifa"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Leyfa"</string>
@@ -1180,8 +1184,7 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Opnað kl. <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Opnað í gær kl. <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"Opnað <xliff:g id="TIME_DATE_0">%1$s</xliff:g> kl. <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
-    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
-    <skip />
+    <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"Alltaf"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Leyfa valið"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Meðan verið er að nota forritið"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Hafna öllu"</string>
@@ -1190,8 +1193,7 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Viltu veita <xliff:g id="APP_NAME">%1$s</xliff:g> aðgang að „<xliff:g id="DATA_TYPE">%2$s</xliff:g>“?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Hreysti og vellíðan"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Hvenær sem er"</string>
-    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
-    <skip />
+    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Á meðan forritið er í notkun"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> getur skoðað öll heilsu- og hreystigögnin þín hvenær sem er"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> getur skoðað öll heilsu- og hreystigögnin þín á meðan forritið er í notkun"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Með aðgang"</string>
@@ -1207,8 +1209,7 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Kross"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Eins og er getur <xliff:g id="APP_NAME">%1$s</xliff:g> skoðað öll gögn þín um hreysti og vellíðan hvenær sem er"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Eins og er getur <xliff:g id="APP_NAME">%1$s</xliff:g> skoðað öll gögn þín um hreysti og vellíðan á meðan forritið er í notkun"</string>
-    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
-    <skip />
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Veldu hvenær <xliff:g id="APP_NAME">%1$s</xliff:g> hefur aðgang að gögnum sem tengjast heilsu þinni og vellíðan."</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> hefur aðgang að <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Stjórna heimildum fyrir hreysti og vellíðan"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Notuð af einu forriti}one{Notuð af # forriti}other{Notuð af # forritum}}"</string>
