@@ -19,6 +19,7 @@ import static android.health.connect.Constants.DEFAULT_DOUBLE;
 import static android.health.connect.Constants.DEFAULT_INT;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.MealType;
 import android.health.connect.datatypes.NutritionRecord;
@@ -73,8 +74,7 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
     private double mMonounsaturatedFat = DEFAULT_DOUBLE;
     private double mPantothenicAcid = DEFAULT_DOUBLE;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private String mMealName;
+    @Nullable private String mMealName;
 
     private double mIron = DEFAULT_DOUBLE;
     private double mVitaminA = DEFAULT_DOUBLE;
@@ -511,13 +511,14 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
         return this;
     }
 
+    @Nullable
     public String getMealName() {
         return mMealName;
     }
 
     /** returns this object with the specified name */
     @NonNull
-    public NutritionRecordInternal setMealName(String mealName) {
+    public NutritionRecordInternal setMealName(@Nullable String mealName) {
         this.mMealName = mealName;
         return this;
     }
@@ -569,54 +570,60 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
     @NonNull
     @Override
     public NutritionRecord toExternalRecord() {
-        return new NutritionRecord.Builder(buildMetaData(), getStartTime(), getEndTime())
-                .setUnsaturatedFat(Mass.fromGrams(getUnsaturatedFat()))
-                .setPotassium(Mass.fromGrams(getPotassium()))
-                .setThiamin(Mass.fromGrams(getThiamin()))
-                .setMealType(getMealType())
-                .setTransFat(Mass.fromGrams(getTransFat()))
-                .setManganese(Mass.fromGrams(getManganese()))
-                .setEnergyFromFat(Energy.fromCalories(getEnergyFromFat()))
-                .setCaffeine(Mass.fromGrams(getCaffeine()))
-                .setDietaryFiber(Mass.fromGrams(getDietaryFiber()))
-                .setSelenium(Mass.fromGrams(getSelenium()))
-                .setVitaminB6(Mass.fromGrams(getVitaminB6()))
-                .setProtein(Mass.fromGrams(getProtein()))
-                .setChloride(Mass.fromGrams(getChloride()))
-                .setCholesterol(Mass.fromGrams(getCholesterol()))
-                .setCopper(Mass.fromGrams(getCopper()))
-                .setIodine(Mass.fromGrams(getIodine()))
-                .setVitaminB12(Mass.fromGrams(getVitaminB12()))
-                .setZinc(Mass.fromGrams(getZinc()))
-                .setRiboflavin(Mass.fromGrams(getRiboflavin()))
-                .setEnergy(Energy.fromCalories(getEnergy()))
-                .setMolybdenum(Mass.fromGrams(getMolybdenum()))
-                .setPhosphorus(Mass.fromGrams(getPhosphorus()))
-                .setChromium(Mass.fromGrams(getChromium()))
-                .setTotalFat(Mass.fromGrams(getTotalFat()))
-                .setCalcium(Mass.fromGrams(getCalcium()))
-                .setVitaminC(Mass.fromGrams(getVitaminC()))
-                .setVitaminE(Mass.fromGrams(getVitaminE()))
-                .setBiotin(Mass.fromGrams(getBiotin()))
-                .setVitaminD(Mass.fromGrams(getVitaminD()))
-                .setNiacin(Mass.fromGrams(getNiacin()))
-                .setMagnesium(Mass.fromGrams(getMagnesium()))
-                .setTotalCarbohydrate(Mass.fromGrams(getTotalCarbohydrate()))
-                .setVitaminK(Mass.fromGrams(getVitaminK()))
-                .setPolyunsaturatedFat(Mass.fromGrams(getPolyunsaturatedFat()))
-                .setSaturatedFat(Mass.fromGrams(getSaturatedFat()))
-                .setSodium(Mass.fromGrams(getSodium()))
-                .setFolate(Mass.fromGrams(getFolate()))
-                .setMonounsaturatedFat(Mass.fromGrams(getMonounsaturatedFat()))
-                .setPantothenicAcid(Mass.fromGrams(getPantothenicAcid()))
-                .setMealName(getMealName())
-                .setIron(Mass.fromGrams(getIron()))
-                .setVitaminA(Mass.fromGrams(getVitaminA()))
-                .setFolicAcid(Mass.fromGrams(getFolicAcid()))
-                .setSugar(Mass.fromGrams(getSugar()))
-                .setStartZoneOffset(getStartZoneOffset())
-                .setEndZoneOffset(getEndZoneOffset())
-                .buildWithoutValidation();
+        NutritionRecord.Builder builder =
+                new NutritionRecord.Builder(buildMetaData(), getStartTime(), getEndTime())
+                        .setUnsaturatedFat(Mass.fromGrams(getUnsaturatedFat()))
+                        .setPotassium(Mass.fromGrams(getPotassium()))
+                        .setThiamin(Mass.fromGrams(getThiamin()))
+                        .setMealType(getMealType())
+                        .setTransFat(Mass.fromGrams(getTransFat()))
+                        .setManganese(Mass.fromGrams(getManganese()))
+                        .setEnergyFromFat(Energy.fromCalories(getEnergyFromFat()))
+                        .setCaffeine(Mass.fromGrams(getCaffeine()))
+                        .setDietaryFiber(Mass.fromGrams(getDietaryFiber()))
+                        .setSelenium(Mass.fromGrams(getSelenium()))
+                        .setVitaminB6(Mass.fromGrams(getVitaminB6()))
+                        .setProtein(Mass.fromGrams(getProtein()))
+                        .setChloride(Mass.fromGrams(getChloride()))
+                        .setCholesterol(Mass.fromGrams(getCholesterol()))
+                        .setCopper(Mass.fromGrams(getCopper()))
+                        .setIodine(Mass.fromGrams(getIodine()))
+                        .setVitaminB12(Mass.fromGrams(getVitaminB12()))
+                        .setZinc(Mass.fromGrams(getZinc()))
+                        .setRiboflavin(Mass.fromGrams(getRiboflavin()))
+                        .setEnergy(Energy.fromCalories(getEnergy()))
+                        .setMolybdenum(Mass.fromGrams(getMolybdenum()))
+                        .setPhosphorus(Mass.fromGrams(getPhosphorus()))
+                        .setChromium(Mass.fromGrams(getChromium()))
+                        .setTotalFat(Mass.fromGrams(getTotalFat()))
+                        .setCalcium(Mass.fromGrams(getCalcium()))
+                        .setVitaminC(Mass.fromGrams(getVitaminC()))
+                        .setVitaminE(Mass.fromGrams(getVitaminE()))
+                        .setBiotin(Mass.fromGrams(getBiotin()))
+                        .setVitaminD(Mass.fromGrams(getVitaminD()))
+                        .setNiacin(Mass.fromGrams(getNiacin()))
+                        .setMagnesium(Mass.fromGrams(getMagnesium()))
+                        .setTotalCarbohydrate(Mass.fromGrams(getTotalCarbohydrate()))
+                        .setVitaminK(Mass.fromGrams(getVitaminK()))
+                        .setPolyunsaturatedFat(Mass.fromGrams(getPolyunsaturatedFat()))
+                        .setSaturatedFat(Mass.fromGrams(getSaturatedFat()))
+                        .setSodium(Mass.fromGrams(getSodium()))
+                        .setFolate(Mass.fromGrams(getFolate()))
+                        .setMonounsaturatedFat(Mass.fromGrams(getMonounsaturatedFat()))
+                        .setPantothenicAcid(Mass.fromGrams(getPantothenicAcid()))
+                        .setIron(Mass.fromGrams(getIron()))
+                        .setVitaminA(Mass.fromGrams(getVitaminA()))
+                        .setFolicAcid(Mass.fromGrams(getFolicAcid()))
+                        .setSugar(Mass.fromGrams(getSugar()))
+                        .setStartZoneOffset(getStartZoneOffset())
+                        .setEndZoneOffset(getEndZoneOffset());
+        // Even though mealName can be null in NutritionRecord, it cannot be set to null in the
+        // builder.
+        String mealName = getMealName();
+        if (mealName != null) {
+            builder.setMealName(mealName);
+        }
+        return builder.buildWithoutValidation();
     }
 
     @Override
