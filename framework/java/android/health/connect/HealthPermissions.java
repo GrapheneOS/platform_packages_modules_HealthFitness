@@ -1039,8 +1039,8 @@ public final class HealthPermissions {
      * @deprecated Use {@link HealthConnectMappings#getHealthReadPermission(int)}.
      * @hide
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Deprecated
+    @Nullable
     public static String getHealthReadPermission(
             @HealthPermissionCategory.Type int permissionCategory) {
         if (sHealthCategoryToReadPermissionMap.isEmpty()) {
