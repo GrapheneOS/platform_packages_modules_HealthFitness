@@ -213,10 +213,7 @@ public final class ActiveCaloriesBurnedRecord extends IntervalRecord {
         ActiveCaloriesBurnedRecordInternal recordInternal =
                 (ActiveCaloriesBurnedRecordInternal)
                         new ActiveCaloriesBurnedRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
         recordInternal.setEnergy(mEnergy.getInCalories());
         return recordInternal;
     }

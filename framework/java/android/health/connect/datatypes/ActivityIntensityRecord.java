@@ -271,10 +271,7 @@ public final class ActivityIntensityRecord extends IntervalRecord {
         ActivityIntensityRecordInternal recordInternal =
                 (ActivityIntensityRecordInternal)
                         new ActivityIntensityRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
         recordInternal.setActivityIntensityType(getActivityIntensityType());
         return recordInternal;
     }

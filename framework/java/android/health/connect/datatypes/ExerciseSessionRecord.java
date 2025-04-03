@@ -421,10 +421,7 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         ExerciseSessionRecordInternal recordInternal =
                 (ExerciseSessionRecordInternal)
                         new ExerciseSessionRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
 
         if (getNotes() != null) {
             recordInternal.setNotes(getNotes().toString());

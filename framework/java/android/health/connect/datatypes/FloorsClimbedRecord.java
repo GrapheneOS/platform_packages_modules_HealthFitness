@@ -208,10 +208,7 @@ public final class FloorsClimbedRecord extends IntervalRecord {
         FloorsClimbedRecordInternal recordInternal =
                 (FloorsClimbedRecordInternal)
                         new FloorsClimbedRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
         recordInternal.setFloors(mFloors);
         return recordInternal;
     }

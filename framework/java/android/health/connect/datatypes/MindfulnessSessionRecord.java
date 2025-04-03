@@ -297,10 +297,7 @@ public final class MindfulnessSessionRecord extends IntervalRecord {
         MindfulnessSessionRecordInternal recordInternal =
                 (MindfulnessSessionRecordInternal)
                         new MindfulnessSessionRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
         recordInternal.setMindfulnessSessionType(getMindfulnessSessionType());
         if (getTitle() != null) {
             recordInternal.setTitle(getTitle().toString());
