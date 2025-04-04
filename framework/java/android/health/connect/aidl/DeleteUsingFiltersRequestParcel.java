@@ -67,7 +67,6 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
                         RecordIdFiltersParcel.class.getClassLoader(), RecordIdFiltersParcel.class);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public DeleteUsingFiltersRequestParcel(DeleteUsingFiltersRequest request) {
         mPackageNameFilters =
                 request.getDataOrigins().stream()
@@ -85,12 +84,14 @@ public class DeleteUsingFiltersRequestParcel implements Parcelable {
             // Use defaults values to signal filters not set
             mStartTime = DEFAULT_LONG;
             mEndTime = DEFAULT_LONG;
+            mLocalTimeFilter = false;
         } else {
             mStartTime =
                     TimeRangeFilterHelper.getFilterStartTimeMillis(request.getTimeRangeFilter());
             mEndTime = TimeRangeFilterHelper.getFilterEndTimeMillis(request.getTimeRangeFilter());
+            mLocalTimeFilter =
+                    TimeRangeFilterHelper.isLocalTimeFilter(request.getTimeRangeFilter());
         }
-        mLocalTimeFilter = TimeRangeFilterHelper.isLocalTimeFilter(request.getTimeRangeFilter());
         mRecordIdFiltersParcel = new RecordIdFiltersParcel(Collections.emptyList());
     }
 
