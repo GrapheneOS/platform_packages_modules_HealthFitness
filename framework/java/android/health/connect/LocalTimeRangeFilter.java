@@ -103,16 +103,13 @@ public final class LocalTimeRangeFilter implements TimeRangeFilter {
 
     /** Builder class for {@link LocalTimeRangeFilter} */
     public static final class Builder {
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-        private LocalDateTime mLocalStartTime;
+        @Nullable private LocalDateTime mLocalStartTime;
 
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-        private LocalDateTime mLocalEndTime;
+        @Nullable private LocalDateTime mLocalEndTime;
 
         /**
          * @param localStartTime represents local start time of this filter
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public LocalTimeRangeFilter.Builder setStartTime(@Nullable LocalDateTime localStartTime) {
             mLocalStartTime = localStartTime;
@@ -122,7 +119,6 @@ public final class LocalTimeRangeFilter implements TimeRangeFilter {
         /**
          * @param localEndTime represents local end time of this filter
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public LocalTimeRangeFilter.Builder setEndTime(@Nullable LocalDateTime localEndTime) {
             mLocalEndTime = localEndTime;
