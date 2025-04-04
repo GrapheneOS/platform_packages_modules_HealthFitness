@@ -81,9 +81,12 @@ import org.mockito.invocation.InvocationOnMock
 @UninstallModules(HealthManagerModule::class, DispatcherModule::class)
 @HiltAndroidTest
 class MockedAppEntriesFragmentTest {
-    @get:Rule val coroutineTestRule = CoroutineTestRule()
-    @get:Rule val hiltRule = HiltAndroidRule(this)
-    @BindValue val manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+    @BindValue
+    val manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
     private val NOW: Instant =
         LocalDate.now(ZoneId.systemDefault())
             .atStartOfDay()
@@ -396,7 +399,7 @@ class MockedAppEntriesFragmentTest {
     }
 
     private fun prepareStepsAggregationAnswer():
-        (InvocationOnMock) -> AggregateRecordsResponse<Long> {
+                (InvocationOnMock) -> AggregateRecordsResponse<Long> {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Long>, *>
             receiver.onResult(getStepsAggregationResponse())
@@ -406,25 +409,27 @@ class MockedAppEntriesFragmentTest {
     }
 
     private fun getStepsAggregationResponse(): AggregateRecordsResponse<Long> {
-        val aggregationResult = AggregateResult<Long>(60)
-        aggregationResult.setDataOrigins(listOf(TEST_APP_PACKAGE_NAME))
+        val aggregationResult = AggregateResult<Long>(
+            60, null,
+            AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME))
+        )
         return AggregateRecordsResponse<Long>(
             mapOf(
                 AggregationType.AggregationTypeIdentifier.STEPS_RECORD_COUNT_TOTAL to
-                    aggregationResult
+                        aggregationResult
             )
         )
     }
 
     private fun getStepsCadence(samples: List<Double>): StepsCadenceRecord {
         return StepsCadenceRecord.Builder(
-                getMetaDataWithUniqueIds(),
-                NOW,
-                NOW.plusSeconds(samples.size.toLong() + 1),
-                samples.map { rate ->
-                    StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
-                },
-            )
+            getMetaDataWithUniqueIds(),
+            NOW,
+            NOW.plusSeconds(samples.size.toLong() + 1),
+            samples.map { rate ->
+                StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
+            },
+        )
             .build()
     }
 
@@ -435,7 +440,9 @@ class MockedAppEntriesFragmentTest {
         @Provides
         fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
-        @IoDispatcher @Provides fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.Main
+        @IoDispatcher
+        @Provides
+        fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
         @MainDispatcher
         @Provides

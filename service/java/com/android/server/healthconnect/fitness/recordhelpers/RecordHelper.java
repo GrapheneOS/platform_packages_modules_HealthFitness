@@ -48,6 +48,7 @@ import android.health.connect.PageTokenWrapper;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
@@ -224,7 +225,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      */
     @Nullable
     public AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor cursor, AggregationType<?> aggregationType) {
+            Cursor cursor, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         if (Flags.refactorAggregations()) {
             throw new UnsupportedOperationException("Not implemented by the subclass");
         }
@@ -249,7 +250,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      */
     @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
-            Cursor results, AggregationType<?> aggregationType, double total) {
+            Cursor results,
+            AggregationType<?> aggregationType,
+            double total,
+            Set<DataOrigin> dataOrigins) {
         if (Flags.refactorAggregations()) {
             throw new UnsupportedOperationException("Not implemented by the subclass");
         }

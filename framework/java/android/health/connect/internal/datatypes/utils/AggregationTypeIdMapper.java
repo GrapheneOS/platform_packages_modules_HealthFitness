@@ -107,7 +107,6 @@ import static android.health.connect.datatypes.WheelchairPushesRecord.WHEEL_CHAI
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
-import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RestingHeartRateRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
@@ -130,22 +129,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Creates and maintains a map of {@link AggregationType.AggregationTypeIdentifier} to {@link
- * AggregationType} and its result creator {@link AggregationResultCreator}
+ * AggregationType} and its {@link ParcelDataReader}.
  *
  * @hide
  */
 public final class AggregationTypeIdMapper {
     @Nullable private static volatile AggregationTypeIdMapper sAggregationTypeIdMapper;
 
-    private final Map<Integer, AggregationResultCreator> mIdToAggregateResult;
+    private final Map<Integer, ParcelDataReader<?>> mIdToParcelDataReader;
     private final Map<Integer, AggregationType<?>> mIdDataAggregationTypeMap;
     private final Map<AggregationType<?>, Integer> mDataAggregationTypeIdMap;
 
     private AggregationTypeIdMapper() {
-        mIdToAggregateResult = new HashMap<>();
+        mIdToParcelDataReader = new HashMap<>();
         mIdDataAggregationTypeMap = new HashMap<>();
         mDataAggregationTypeIdMap = new HashMap<>();
 
@@ -273,189 +273,129 @@ public final class AggregationTypeIdMapper {
         return instance;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
-    public AggregateResult<?> getAggregateResultFor(
-            @AggregationType.AggregationTypeIdentifier.Id int id, @NonNull Parcel parcel) {
-        return mIdToAggregateResult.get(id).getAggregateResult(parcel);
+    public ParcelDataReader<?> getParcelDataReaderFor(
+            @AggregationType.AggregationTypeIdentifier.Id int id) {
+        return Objects.requireNonNull(
+                mIdToParcelDataReader.get(id), "No parcel data reader for aggregation type " + id);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    @NonNull
     public AggregationType<?> getAggregationTypeFor(
             @AggregationType.AggregationTypeIdentifier.Id int id) {
-        return mIdDataAggregationTypeMap.get(id);
+        return Objects.requireNonNull(
+                mIdDataAggregationTypeMap.get(id), "No aggregation type for id " + id);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    @NonNull
     @AggregationType.AggregationTypeIdentifier.Id
     public int getIdFor(AggregationType<?> aggregationType) {
-        return mDataAggregationTypeIdMap.get(aggregationType);
-    }
-
-    @NonNull
-    private AggregateResult<Long> getLongResult(long result) {
-        return new AggregateResult<>(result);
-    }
-
-    @NonNull
-    private AggregateResult<Double> getDoubleResult(double result) {
-        return new AggregateResult<>(result);
-    }
-
-    @NonNull
-    private AggregateResult<Energy> getEnergyResult(double result) {
-        return new AggregateResult<>(Energy.fromCalories(result));
-    }
-
-    @NonNull
-    private AggregateResult<Power> getPowerResult(double result) {
-        return new AggregateResult<>(Power.fromWatts(result));
-    }
-
-    @NonNull
-    private AggregateResult<TemperatureDelta> getTemperatureDeltaResult(double result) {
-        return new AggregateResult<>(TemperatureDelta.fromCelsius(result));
-    }
-
-    @NonNull
-    private AggregateResult<Pressure> getPressureResult(double result) {
-        return new AggregateResult<>(Pressure.fromMillimetersOfMercury(result));
-    }
-
-    @NonNull
-    private AggregateResult<Length> getLengthResult(double result) {
-        return new AggregateResult<>(Length.fromMeters(result));
-    }
-
-    @NonNull
-    private AggregateResult<Volume> getVolumeResult(double result) {
-        return new AggregateResult<>(Volume.fromLiters(result));
-    }
-
-    @NonNull
-    private AggregateResult<Mass> getMassResult(double result) {
-        return new AggregateResult<>(Mass.fromGrams(result));
-    }
-
-    @NonNull
-    private AggregateResult<Velocity> getVelocityResult(double result) {
-        return new AggregateResult<>(Velocity.fromMetersPerSecond(result));
-    }
-
-    @NonNull
-    private AggregateResult<Duration> getDurationResult(long resultMillis) {
-        return new AggregateResult<>(Duration.ofMillis(resultMillis));
+        return Objects.requireNonNull(
+                mDataAggregationTypeIdMap.get(aggregationType),
+                "No aggregation type id for " + aggregationType);
     }
 
     private void addLongIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getLongResult(result.readLong()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(type.getAggregationTypeIdentifier(), Parcel::readLong);
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addDoubleIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getDoubleResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(type.getAggregationTypeIdentifier(), Parcel::readDouble);
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addEnergyIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getEnergyResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(
+                    type.getAggregationTypeIdentifier(),
+                    parcel -> Energy.fromCalories(parcel.readDouble()));
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addPowerIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getPowerResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(
+                    type.getAggregationTypeIdentifier(),
+                    parcel -> Power.fromWatts(parcel.readDouble()));
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addTemperatureDeltaIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getTemperatureDeltaResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(
+                    type.getAggregationTypeIdentifier(),
+                    parcel -> TemperatureDelta.fromCelsius(parcel.readDouble()));
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addPressureIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getPressureResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(
+                    type.getAggregationTypeIdentifier(),
+                    parcel -> Pressure.fromMillimetersOfMercury(parcel.readDouble()));
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addLengthIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getLengthResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(
+                    type.getAggregationTypeIdentifier(),
+                    parcel -> Length.fromMeters(parcel.readDouble()));
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addVolumeIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getVolumeResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(
+                    type.getAggregationTypeIdentifier(),
+                    parcel -> Volume.fromLiters(parcel.readDouble()));
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addMassIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getMassResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(
+                    type.getAggregationTypeIdentifier(),
+                    parcel -> Mass.fromGrams(parcel.readDouble()));
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addVelocityIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getVelocityResult(result.readDouble()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(
+                    type.getAggregationTypeIdentifier(),
+                    parcel -> Velocity.fromMetersPerSecond(parcel.readDouble()));
+            populateIdDataAggregationType(type);
         }
     }
 
     private void addDurationIdsToAggregateResultMap(
             @NonNull List<AggregationType<?>> aggregationTypeList) {
-        for (AggregationType<?> aggregationType : aggregationTypeList) {
-            mIdToAggregateResult.put(
-                    aggregationType.getAggregationTypeIdentifier(),
-                    result -> getDurationResult(result.readLong()));
-            populateIdDataAggregationType(aggregationType);
+        for (AggregationType<?> type : aggregationTypeList) {
+            mIdToParcelDataReader.put(
+                    type.getAggregationTypeIdentifier(),
+                    parcel -> Duration.ofMillis(parcel.readLong()));
+            populateIdDataAggregationType(type);
         }
     }
 
@@ -467,10 +407,13 @@ public final class AggregationTypeIdMapper {
     }
 
     /**
-     * Implementation should get and covert result to appropriate type (such as long, double etc.)
-     * using {@code result}
+     * Helper interface to read the value of an {@link android.health.connect.AggregateResult} from
+     * the given parcel.
+     *
+     * @param <T> the type of data read.
      */
-    private interface AggregationResultCreator {
-        AggregateResult<?> getAggregateResult(Parcel result);
+    public interface ParcelDataReader<T> {
+        /** Read an aggregate result value of type T from the parcel. */
+        T readData(Parcel in);
     }
 }

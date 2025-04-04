@@ -25,6 +25,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.util.Pair;
@@ -43,6 +44,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Helper class for TotalCaloriesBurnedRecord.
@@ -65,12 +67,15 @@ public final class TotalCaloriesBurnedRecordHelper
     @Override
     @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
-            Cursor results, AggregationType<?> aggregationType, double aggregation) {
+            Cursor results,
+            AggregationType<?> aggregationType,
+            double aggregation,
+            Set<DataOrigin> dataOrigins) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL:
                 results.moveToFirst();
                 ZoneOffset zoneOffset = getZoneOffset(results);
-                return new AggregateResult<>(aggregation).setZoneOffset(zoneOffset);
+                return new AggregateResult<>(aggregation, zoneOffset, dataOrigins);
             default:
                 return null;
         }

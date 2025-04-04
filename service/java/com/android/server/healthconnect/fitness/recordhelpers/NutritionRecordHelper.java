@@ -69,6 +69,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.NutritionRecordInternal;
 import android.util.Pair;
@@ -80,6 +81,7 @@ import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Helper class for NutritionRecord.
@@ -140,7 +142,7 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
     @Override
     @Nullable
     public AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         double aggregateValue;
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case NUTRITION_RECORD_BIOTIN_TOTAL:
@@ -280,7 +282,7 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
             default:
                 return null;
         }
-        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
+        return new AggregateResult<>(aggregateValue, getZoneOffset(results), dataOrigins);
     }
 
     @Override

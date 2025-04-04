@@ -30,6 +30,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.StepsCadenceRecordInternal;
 import android.util.Pair;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -116,14 +118,15 @@ public class StepsCadenceRecordHelper
     @Override
     @Nullable
     public AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case STEPS_CADENCE_RECORD_RATE_AVG:
             case STEPS_CADENCE_RECORD_RATE_MIN:
             case STEPS_CADENCE_RECORD_RATE_MAX:
                 return new AggregateResult<>(
-                                results.getDouble(results.getColumnIndex(RATE_COLUMN_NAME)))
-                        .setZoneOffset(getZoneOffset(results));
+                        results.getDouble(results.getColumnIndex(RATE_COLUMN_NAME)),
+                        getZoneOffset(results),
+                        dataOrigins);
             default:
                 return null;
         }
