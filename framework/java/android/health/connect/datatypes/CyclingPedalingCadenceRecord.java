@@ -342,10 +342,7 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
                             cyclingPedalingCadenceRecordSample.getTime().toEpochMilli()));
         }
         recordInternal.setSamples(samples);
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
 
         return recordInternal;
     }

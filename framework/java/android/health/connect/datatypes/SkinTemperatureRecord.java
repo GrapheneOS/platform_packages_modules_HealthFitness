@@ -53,12 +53,16 @@ import java.util.stream.Collectors;
 public final class SkinTemperatureRecord extends IntervalRecord {
     /** Skin temperature measurement location unknown. */
     public static final int MEASUREMENT_LOCATION_UNKNOWN = 0;
+
     /** Skin temperature measurement location finger. */
     public static final int MEASUREMENT_LOCATION_FINGER = 1;
+
     /** Skin temperature measurement location toe. */
     public static final int MEASUREMENT_LOCATION_TOE = 2;
+
     /** Skin temperature measurement location wrist. */
     public static final int MEASUREMENT_LOCATION_WRIST = 3;
+
     /**
      * Metric identifier to retrieve average skin temperature delta using aggregate APIs in {@link
      * HealthConnectManager}.
@@ -70,6 +74,7 @@ public final class SkinTemperatureRecord extends IntervalRecord {
                     AggregationType.AVG,
                     RECORD_TYPE_SKIN_TEMPERATURE,
                     TemperatureDelta.class);
+
     /**
      * Metric identifier to retrieve minimum skin temperature delta using aggregate APIs in {@link
      * HealthConnectManager}.
@@ -81,6 +86,7 @@ public final class SkinTemperatureRecord extends IntervalRecord {
                     AggregationType.MIN,
                     RECORD_TYPE_SKIN_TEMPERATURE,
                     TemperatureDelta.class);
+
     /**
      * Metric identifier to retrieve maximum skin temperature delta using aggregate APIs in {@link
      * HealthConnectManager}.
@@ -215,10 +221,7 @@ public final class SkinTemperatureRecord extends IntervalRecord {
                                                 delta.getTime().toEpochMilli()))
                         .collect(Collectors.toSet()));
         recordInternal.setMeasurementLocation(getMeasurementLocation());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
 
         return recordInternal;
     }

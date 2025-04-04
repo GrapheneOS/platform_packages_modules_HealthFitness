@@ -251,6 +251,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
             mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
+
         /**
          * @return Object of {@link StepsCadenceRecord} without validating the values.
          * @hide
@@ -328,10 +329,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
                             stepsCadenceRecordSample.getTime().toEpochMilli()));
         }
         recordInternal.setSamples(samples);
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
 
         return recordInternal;
     }

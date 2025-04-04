@@ -1936,10 +1936,7 @@ public final class NutritionRecord extends IntervalRecord {
         NutritionRecordInternal recordInternal =
                 (NutritionRecordInternal) new NutritionRecordInternal().setMetaData(getMetadata());
 
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
 
         if (!Objects.isNull(getUnsaturatedFat())) {
             recordInternal.setUnsaturatedFat(getUnsaturatedFat().getInGrams());
