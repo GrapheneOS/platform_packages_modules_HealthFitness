@@ -28,12 +28,12 @@ import static com.android.server.healthconnect.backuprestore.ProtoTestData.gener
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateIntervalRecord;
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateRecord;
 import static com.android.server.healthconnect.backuprestore.RecordProtoConverter.PROTO_VERSION;
-import static com.android.server.healthconnect.proto.backuprestore.Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.Settings.DistanceUnitProto.DISTANCE_UNIT_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.Settings.EnergyUnitProto.ENERGY_UNIT_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.Settings.HeightUnitProto.HEIGHT_UNIT_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.Settings.TemperatureUnitProto.TEMPERATURE_UNIT_UNSPECIFIED;
-import static com.android.server.healthconnect.proto.backuprestore.Settings.WeightUnitProto.WEIGHT_UNIT_UNSPECIFIED;
+import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AutoDeleteFrequencyProto.AUTO_DELETE_RANGE_UNSPECIFIED;
+import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.DistanceUnitProto.DISTANCE_UNIT_UNSPECIFIED;
+import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.EnergyUnitProto.ENERGY_UNIT_UNSPECIFIED;
+import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.HeightUnitProto.HEIGHT_UNIT_UNSPECIFIED;
+import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.TemperatureUnitProto.TEMPERATURE_UNIT_UNSPECIFIED;
+import static com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.WeightUnitProto.WEIGHT_UNIT_UNSPECIFIED;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -53,19 +53,19 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
-import com.android.server.healthconnect.proto.backuprestore.BackupData;
-import com.android.server.healthconnect.proto.backuprestore.Record;
-import com.android.server.healthconnect.proto.backuprestore.Settings;
-import com.android.server.healthconnect.proto.backuprestore.Settings.PriorityList;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BackupData;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Record;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.PriorityList;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;

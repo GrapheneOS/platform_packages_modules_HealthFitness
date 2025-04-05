@@ -122,13 +122,11 @@ public final class SleepSessionRecord extends IntervalRecord {
         return mStages;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
-        if (!(o instanceof SleepSessionRecord)) return false;
+        if (!(o instanceof SleepSessionRecord that)) return false;
         if (!super.equals(o)) return false;
-        SleepSessionRecord that = (SleepSessionRecord) o;
         return isEqualNullableCharSequences(getNotes(), that.getNotes())
                 && isEqualNullableCharSequences(getTitle(), that.getTitle())
                 && Objects.equals(getStages(), that.getStages());
@@ -293,15 +291,14 @@ public final class SleepSessionRecord extends IntervalRecord {
         private final List<Stage> mStages;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
-        private CharSequence mNotes;
-        private CharSequence mTitle;
+        @Nullable private CharSequence mNotes;
+        @Nullable private CharSequence mTitle;
 
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this sleep session
          * @param endTime End time of this sleep session
          */
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
         public Builder(
                 @NonNull Metadata metadata, @NonNull Instant startTime, @NonNull Instant endTime) {
             Objects.requireNonNull(metadata);
@@ -351,7 +348,6 @@ public final class SleepSessionRecord extends IntervalRecord {
          *
          * @param notes Additional notes for the session. Optional field.
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setNotes(@Nullable CharSequence notes) {
             mNotes = notes;
@@ -363,7 +359,6 @@ public final class SleepSessionRecord extends IntervalRecord {
          *
          * @param title Title of the session. Optional field.
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setTitle(@Nullable CharSequence title) {
             mTitle = title;
@@ -422,21 +417,8 @@ public final class SleepSessionRecord extends IntervalRecord {
     public SleepSessionRecordInternal toRecordInternal() {
         SleepSessionRecordInternal recordInternal =
                 (SleepSessionRecordInternal)
-                        new SleepSessionRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+                        new SleepSessionRecordInternal().setMetaData(getMetadata());
+        recordInternal.setTimeInterval(this);
         recordInternal.setSleepStages(
                 getStages().stream().map(Stage::toInternalStage).collect(Collectors.toList()));
 

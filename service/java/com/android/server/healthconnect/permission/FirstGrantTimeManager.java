@@ -33,8 +33,8 @@ import android.util.Log;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.migration.MigrationStateManager;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 
 import java.io.File;
 import java.time.Instant;
@@ -349,7 +349,6 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @GuardedBy("mGrantTimeLock")
     private boolean tryUpdateGrantTimeFromStagedDataLocked(UserHandle user, Integer uid) {
         UserGrantTimeState backupState = mDatastore.readForUser(user, DATA_TYPE_STAGED);
@@ -679,7 +678,6 @@ public final class FirstGrantTimeManager implements PackageManager.OnPermissions
          *
          * <p>Always uses package names, even if shared user names for an app is present.
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         UserGrantTimeState extractUserGrantTimeStateDoNotUseSharedNames(UserHandle user) {
             Map<String, Instant> sharedUserToGrantTime = new ArrayMap<>();
             Map<String, Instant> packageNameToGrantTime = new ArrayMap<>();

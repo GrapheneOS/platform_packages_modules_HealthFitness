@@ -61,6 +61,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
+import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
@@ -483,6 +484,15 @@ public final class HealthPermissions {
     public static final String READ_MINDFULNESS = "android.permission.health.READ_MINDFULNESS";
 
     /**
+     * Allows an application to read user's nicotine intake data.
+     *
+     * <p>Protection level: dangerous
+     */
+    @FlaggedApi(FLAG_SMOKING)
+    public static final String READ_NICOTINE_INTAKE =
+            "android.permission.health.READ_NICOTINE_INTAKE";
+
+    /**
      * Allows an application to write the user's calories burned data.
      *
      * <p>Protection level: dangerous.
@@ -791,6 +801,15 @@ public final class HealthPermissions {
     @FlaggedApi(FLAG_MINDFULNESS)
     public static final String WRITE_MINDFULNESS = "android.permission.health.WRITE_MINDFULNESS";
 
+    /**
+     * Allows an application to write user's nicotine intake data.
+     *
+     * <p>Protection level: dangerous.
+     */
+    @FlaggedApi(FLAG_SMOKING)
+    public static final String WRITE_NICOTINE_INTAKE =
+            "android.permission.health.WRITE_NICOTINE_INTAKE";
+
     /* Personal Health Record permissions */
 
     /**
@@ -1020,8 +1039,8 @@ public final class HealthPermissions {
      * @deprecated Use {@link HealthConnectMappings#getHealthReadPermission(int)}.
      * @hide
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Deprecated
+    @Nullable
     public static String getHealthReadPermission(
             @HealthPermissionCategory.Type int permissionCategory) {
         if (sHealthCategoryToReadPermissionMap.isEmpty()) {
@@ -1133,6 +1152,7 @@ public final class HealthPermissions {
     static boolean isPermissionEnabled(@NonNull String permission) {
         return switch (permission) {
             case READ_ACTIVITY_INTENSITY, WRITE_ACTIVITY_INTENSITY -> Flags.activityIntensity();
+            case READ_NICOTINE_INTAKE, WRITE_NICOTINE_INTAKE -> Flags.smoking();
             default -> true;
         };
     }

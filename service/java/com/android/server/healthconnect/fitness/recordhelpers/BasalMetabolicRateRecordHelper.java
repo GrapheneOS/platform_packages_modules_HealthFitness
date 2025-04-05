@@ -29,8 +29,11 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
+import com.android.server.healthconnect.fitness.utils.DeriveBasalCaloriesBurnedUtil;
 import com.android.server.healthconnect.storage.TransactionManager;
 
 import java.util.ArrayList;
@@ -53,8 +56,8 @@ public final class BasalMetabolicRateRecordHelper
         super(RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double result) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
@@ -71,8 +74,8 @@ public final class BasalMetabolicRateRecordHelper
         return BASAL_METABOLIC_RATE_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case BMR_RECORD_BASAL_CALORIES_TOTAL:
@@ -95,14 +98,14 @@ public final class BasalMetabolicRateRecordHelper
     @Override
     public double[] deriveAggregate(
             Cursor cursor, AggregateRecordRequest request, TransactionManager transactionManager) {
-        DeriveBasalCaloriesBurnedHelper deriveBasalCaloriesBurnedHelper =
-                new DeriveBasalCaloriesBurnedHelper(
+        DeriveBasalCaloriesBurnedUtil deriveBasalCaloriesBurnedUtil =
+                new DeriveBasalCaloriesBurnedUtil(
                         cursor,
                         BASAL_METABOLIC_RATE_COLUMN_NAME,
                         request.getTimeColumnName(),
                         transactionManager);
         List<Pair<Long, Long>> groupIntervals = request.getGroupSplitIntervals();
-        return deriveBasalCaloriesBurnedHelper.getBasalCaloriesBurned(groupIntervals);
+        return deriveBasalCaloriesBurnedUtil.getBasalCaloriesBurned(groupIntervals);
     }
 
     @Override

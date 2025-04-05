@@ -29,11 +29,14 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.TotalCaloriesBurnedRecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
+import com.android.server.healthconnect.fitness.utils.DeriveTotalCaloriesBurnedUtil;
+import com.android.server.healthconnect.fitness.utils.MergeDataUtil;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.MergeDataHelper;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -59,8 +62,8 @@ public final class TotalCaloriesBurnedRecordHelper
         super(RecordTypeIdentifier.RECORD_TYPE_TOTAL_CALORIES_BURNED);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double aggregation) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
@@ -78,8 +81,8 @@ public final class TotalCaloriesBurnedRecordHelper
         return TOTAL_CALORIES_BURNED_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case TOTAL_CALORIES_BURNED_RECORD_ENERGY_TOTAL:
@@ -105,15 +108,11 @@ public final class TotalCaloriesBurnedRecordHelper
         List<Pair<Long, Long>> groupIntervals = request.getGroupSplitIntervals();
 
         List<Long> priorityList = request.getAppIdPriorityList(RECORD_TYPE_TOTAL_CALORIES_BURNED);
-        MergeDataHelper mergeDataHelper =
-                new MergeDataHelper(
-                        cursor,
-                        priorityList,
-                        ENERGY_COLUMN_NAME,
-                        Double.class,
-                        request.getUseLocalTime());
-        DeriveTotalCaloriesBurnedHelper deriveTotalCaloriesBurnedHelper =
-                new DeriveTotalCaloriesBurnedHelper(
+        MergeDataUtil mergeDataUtil =
+                new MergeDataUtil(
+                        priorityList, ENERGY_COLUMN_NAME, Double.class, request.getUseLocalTime());
+        DeriveTotalCaloriesBurnedUtil deriveTotalCaloriesBurnedUtil =
+                new DeriveTotalCaloriesBurnedUtil(
                         groupIntervals.get(0).first,
                         groupIntervals.get(groupIntervals.size() - 1).second,
                         priorityList,
@@ -125,20 +124,22 @@ public final class TotalCaloriesBurnedRecordHelper
             long groupEndTime = groupInterval.second;
             // Based on the number of groups calculate aggregate for each group by calling
             // MergeDataHelper by eliminate duplicate for overlapping time interval
-            double total = mergeDataHelper.readCursor(groupStartTime, groupEndTime);
+            MergeDataUtil.MergeResult mergeResult =
+                    mergeDataUtil.readCursor(cursor, groupStartTime, groupEndTime);
+            double total = mergeResult.getTotal();
             // For only TotalCaloriesBurned aggregate request we derive data from
             // ActiveCaloriesRecord and BasalMetabolicRateRecord for empty intervals
             List<Pair<Instant, Instant>> emptyIntervalList =
-                    mergeDataHelper.getEmptyIntervals(
+                    mergeResult.getEmptyIntervals(
                             Instant.ofEpochMilli(groupStartTime),
                             Instant.ofEpochMilli(groupEndTime));
             if (emptyIntervalList.size() > 0) {
-                total += deriveTotalCaloriesBurnedHelper.getDerivedCalories(emptyIntervalList);
+                total += deriveTotalCaloriesBurnedUtil.getDerivedCalories(emptyIntervalList);
             }
 
             totalCaloriesBurnedArray[index++] = total;
         }
-        deriveTotalCaloriesBurnedHelper.closeCursors();
+        deriveTotalCaloriesBurnedUtil.closeCursors();
         return totalCaloriesBurnedArray;
     }
 

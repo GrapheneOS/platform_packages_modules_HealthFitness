@@ -296,21 +296,8 @@ public final class MindfulnessSessionRecord extends IntervalRecord {
     public MindfulnessSessionRecordInternal toRecordInternal() {
         MindfulnessSessionRecordInternal recordInternal =
                 (MindfulnessSessionRecordInternal)
-                        new MindfulnessSessionRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+                        new MindfulnessSessionRecordInternal().setMetaData(getMetadata());
+        recordInternal.setTimeInterval(this);
         recordInternal.setMindfulnessSessionType(getMindfulnessSessionType());
         if (getTitle() != null) {
             recordInternal.setTitle(getTitle().toString());

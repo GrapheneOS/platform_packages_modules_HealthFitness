@@ -17,6 +17,7 @@
 package android.health.connect.internal.datatypes.utils;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.BasalBodyTemperatureRecord;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
@@ -106,6 +107,7 @@ import android.util.ArrayMap;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @deprecated Use {@link HealthConnectMappings}
@@ -115,8 +117,7 @@ import java.util.Map;
 public final class RecordMapper {
     private static final int NUM_ENTRIES = 35;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private static volatile RecordMapper sRecordMapper;
+    @Nullable private static volatile RecordMapper sRecordMapper;
 
     private final Map<Integer, Class<? extends RecordInternal<?>>>
             mRecordIdToInternalRecordClassMap;
@@ -341,11 +342,13 @@ public final class RecordMapper {
 
     @NonNull
     public static synchronized RecordMapper getInstance() {
-        if (sRecordMapper == null) {
-            sRecordMapper = new RecordMapper();
+        RecordMapper recordMapper = sRecordMapper;
+        if (recordMapper == null) {
+            recordMapper = new RecordMapper();
+            sRecordMapper = recordMapper;
         }
 
-        return sRecordMapper;
+        return recordMapper;
     }
 
     /**
@@ -369,11 +372,12 @@ public final class RecordMapper {
     /**
      * @deprecated {@link HealthConnectMappings#getRecordType(Class)}
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Deprecated
     @RecordTypeIdentifier.RecordType
     public int getRecordType(Class<? extends Record> recordClass) {
-        return mExternalRecordClassToRecordIdMap.get(recordClass);
+        return Objects.requireNonNull(
+                mExternalRecordClassToRecordIdMap.get(recordClass),
+                "Unknown record class " + recordClass);
     }
 
     /**

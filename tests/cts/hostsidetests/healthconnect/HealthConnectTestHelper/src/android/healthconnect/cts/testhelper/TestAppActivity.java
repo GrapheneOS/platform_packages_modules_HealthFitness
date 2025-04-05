@@ -37,9 +37,11 @@ public class TestAppActivity extends Activity {
         // out the action requested by the intent, as that action may involve
         // killing the app. See b/348171256 for background. Note: in the case of
         // a request to self-kill, sending the return broadcast is not required.
+        Log.i(TAG, TAG + " onCreate() - before finish()");
         finish();
+        Log.i(TAG, TAG + " onCreate() - after finish()");
         Intent intent = getIntent();
-        Log.i(TAG, TAG + " onCreate(): " + intent);
+        Log.i(TAG, TAG + " onCreate(): " + intent + " - extra: " + intent.getExtras());
         Intent returnIntent =
                 TestAppHelper.handleRequest(getApplicationContext(), intent.getExtras());
 

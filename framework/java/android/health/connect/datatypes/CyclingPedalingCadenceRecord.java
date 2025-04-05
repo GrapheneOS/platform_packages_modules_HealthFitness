@@ -301,11 +301,10 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
      * @param object the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
     public boolean equals(@Nullable Object object) {
         if (super.equals(object)) {
-            CyclingPedalingCadenceRecord other = (CyclingPedalingCadenceRecord) object;
+            if (!(object instanceof CyclingPedalingCadenceRecord other)) return false;
             if (getSamples().size() != other.getSamples().size()) return false;
             for (int idx = 0; idx < getSamples().size(); idx++) {
                 if (getSamples().get(idx).getRevolutionsPerMinute()
@@ -331,17 +330,7 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
     public CyclingPedalingCadenceRecordInternal toRecordInternal() {
         CyclingPedalingCadenceRecordInternal recordInternal =
                 (CyclingPedalingCadenceRecordInternal)
-                        new CyclingPedalingCadenceRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new CyclingPedalingCadenceRecordInternal().setMetaData(getMetadata());
         Set<CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample> samples =
                 new HashSet<>(getSamples().size());
 
@@ -353,10 +342,7 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
                             cyclingPedalingCadenceRecordSample.getTime().toEpochMilli()));
         }
         recordInternal.setSamples(samples);
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
 
         return recordInternal;
     }

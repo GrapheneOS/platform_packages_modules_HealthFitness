@@ -56,14 +56,13 @@ public class AggregateDataRequestParcel implements Parcelable {
     private final int[] mAggregateIds;
     private final List<String> mPackageFilters;
     // If set represents that the aggregations have to be grouped by on {@code mDuration}
-    private Duration mDuration;
+    @Nullable private Duration mDuration;
     // If set represents that the aggregations have to be grouped by on {@code mPeriod}. If both are
     // set the duration takes precedence, but there should not be case when both are set.
-    private Period mPeriod;
+    @Nullable private Period mPeriod;
 
     private final boolean mLocalTimeFilter;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public AggregateDataRequestParcel(AggregateRecordsRequest<?> request) {
         mStartTime = TimeRangeFilterHelper.getFilterStartTimeMillis(request.getTimeRangeFilter());
         mEndTime = TimeRangeFilterHelper.getFilterEndTimeMillis(request.getTimeRangeFilter());
@@ -87,7 +86,6 @@ public class AggregateDataRequestParcel implements Parcelable {
         mDuration = duration;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public AggregateDataRequestParcel(AggregateRecordsRequest request, Period period) {
         this(request);
         mDuration = null;
@@ -99,7 +97,6 @@ public class AggregateDataRequestParcel implements Parcelable {
         }
     }
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     protected AggregateDataRequestParcel(Parcel in) {
         mStartTime = in.readLong();
         mEndTime = in.readLong();

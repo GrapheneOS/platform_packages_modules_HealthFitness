@@ -50,7 +50,6 @@ public class FirstGrantTimeDatastoreXmlPersistence implements FirstGrantTimeData
      *
      * @hide
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Nullable
     @Override
     public UserGrantTimeState readForUser(UserHandle user, @DataType int dataType) {

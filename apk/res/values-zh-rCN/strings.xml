@@ -368,6 +368,10 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"正念"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"读取正念数据"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"写入正念数据"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"尼古丁摄入数据"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"尼古丁摄入数据"</string>
+    <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"读取尼古丁摄入数据"</string>
+    <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"写入尼古丁摄入数据"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”读取"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”写入"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"允许"</string>
@@ -380,7 +384,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"选择您希望允许此应用从“健康数据共享”读取的数据"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果您授予读取权限，该应用可以读取新数据和过去 30 天的数据"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果您授予读取权限，该应用可以读取新数据和过往数据"</string>
-    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允许<xliff:g id="APP_NAME">%1$s</xliff:g>访问健康数据共享吗？"</string>
+    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问“健康数据共享”吗？"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"要允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问健身与健康数据吗？"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"您可以参阅“<xliff:g id="APP_NAME">%1$s</xliff:g>”的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，了解该应用如何处理您的数据"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"隐私权政策"</string>
@@ -1180,8 +1184,7 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"上次访问时间：<xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"昨天<xliff:g id="TIME_DATE">%1$s</xliff:g>访问过"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"<xliff:g id="TIME_DATE_0">%1$s</xliff:g><xliff:g id="TIME_DATE_1">%2$s</xliff:g>访问过"</string>
-    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
-    <skip />
+    <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"始终"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"允许使用所选权限"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"仅在使用该应用时允许"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"全部拒绝"</string>
@@ -1190,8 +1193,7 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问<xliff:g id="DATA_TYPE">%2$s</xliff:g>吗？"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"健身与健康"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"始终"</string>
-    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
-    <skip />
+    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"使用该应用期间"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"始终允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问您的所有健身与健康数据"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"仅在使用时允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问您的所有健身与健康数据"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"允许访问"</string>
@@ -1207,8 +1209,7 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"叉号"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"目前，始终允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问健身与健康数据"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"目前，仅在使用时允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问健身与健康数据"</string>
-    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
-    <skip />
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"选择“<xliff:g id="APP_NAME">%1$s</xliff:g>”何时可以访问您的健身和身心状态数据"</string>
     <string name="current_access" msgid="1457167070428176139">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”可以访问<xliff:g id="DATA_TYPES">%2$s</xliff:g>。"</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"管理健身与健康相关权限"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{有 1 个应用使用过}other{有 # 个应用使用过}}"</string>

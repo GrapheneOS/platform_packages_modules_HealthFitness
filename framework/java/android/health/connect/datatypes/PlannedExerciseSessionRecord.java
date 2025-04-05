@@ -426,21 +426,8 @@ public final class PlannedExerciseSessionRecord extends IntervalRecord {
     public PlannedExerciseSessionRecordInternal toRecordInternal() {
         PlannedExerciseSessionRecordInternal recordInternal =
                 (PlannedExerciseSessionRecordInternal)
-                        new PlannedExerciseSessionRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+                        new PlannedExerciseSessionRecordInternal().setMetaData(getMetadata());
+        recordInternal.setTimeInterval(this);
         if (getNotes() != null) {
             recordInternal.setNotes(getNotes().toString());
         }

@@ -58,13 +58,14 @@ import android.util.Slog;
 import androidx.annotation.Nullable;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -137,6 +138,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             long startDateAccess,
             boolean useLocalTime) {
         AggregateParams params = getAggregateParams(aggregationType);
+        if (params == null) {
+            throw new NullPointerException(
+                    "Unsupported aggregation requested for "
+                            + aggregationType
+                            + " from "
+                            + getRecordIdentifier());
+        }
         String physicalTimeColumnName = getStartTimeColumnName();
         String startTimeColumnName;
         String endTimeColumnName;
@@ -236,9 +244,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * @param aggregationType the aggregation type being calculated.
      * @param total the calculated derived value for this group returned by {@link
      *     #deriveAggregate(Cursor, AggregateRecordRequest, TransactionManager)}.
-     * @return {@link AggregateResult} for {@link AggregationType}
+     * @return {@link AggregateResult} for {@link AggregationType} or null if the type is not
+     *     supported
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
             Cursor results, AggregationType<?> aggregationType, double total) {
         if (Flags.refactorAggregations()) {
@@ -668,37 +677,48 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         readExtraData((List<T>) internalRecords, cursorExtraData);
     }
 
-    public DeleteTableRequest getDeleteTableRequest(
-            List<String> packageFilters,
+    public RecordDeleteTableRequest getDeleteTableRequest(
+            @Nullable List<String> packageFilters,
             long startTime,
             long endTime,
             boolean usesLocalTimeFilter,
             AppInfoHelper appInfoHelper) {
         final String timeColumnName =
                 usesLocalTimeFilter ? getLocalStartTimeColumnName() : getStartTimeColumnName();
-        return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
-                .setTimeFilter(timeColumnName, startTime, endTime)
-                .setPackageFilter(
-                        APP_INFO_ID_COLUMN_NAME, appInfoHelper.getAppInfoIds(packageFilters))
-                .setIdColumnName(UUID_COLUMN_NAME);
+        DeleteTableRequest deleteTableRequest =
+                new DeleteTableRequest(getMainTableName())
+                        .setTimeFilter(timeColumnName, startTime, endTime)
+                        .setIdColumnName(UUID_COLUMN_NAME);
+        if (packageFilters == null) {
+            deleteTableRequest.setPackageColumnName(APP_INFO_ID_COLUMN_NAME);
+        } else {
+            deleteTableRequest.setPackageFilter(
+                    APP_INFO_ID_COLUMN_NAME, appInfoHelper.getAppInfoIds(packageFilters));
+        }
+        return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
 
-    public DeleteTableRequest getDeleteTableRequest(List<UUID> ids) {
-        return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
-                .setIds(UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(ids))
-                .setPackageColumnName(APP_INFO_ID_COLUMN_NAME);
+    public RecordDeleteTableRequest getDeleteTableRequest(List<UUID> ids) {
+        DeleteTableRequest deleteTableRequest =
+                new DeleteTableRequest(getMainTableName())
+                        .setPackageColumnName(APP_INFO_ID_COLUMN_NAME)
+                        .setIds(UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(ids));
+        return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
 
-    public DeleteTableRequest getDeleteRequestForAutoDelete(int recordAutoDeletePeriodInDays) {
-        return new DeleteTableRequest(getMainTableName(), getRecordIdentifier())
-                .setTimeFilter(
-                        getStartTimeColumnName(),
-                        Instant.EPOCH.toEpochMilli(),
-                        Instant.now()
-                                .minus(recordAutoDeletePeriodInDays, ChronoUnit.DAYS)
-                                .toEpochMilli())
-                .setPackageFilter(APP_INFO_ID_COLUMN_NAME, List.of())
-                .setIdColumnName(UUID_COLUMN_NAME);
+    public RecordDeleteTableRequest getDeleteRequestForAutoDelete(
+            int recordAutoDeletePeriodInDays) {
+        DeleteTableRequest deleteTableRequest =
+                new DeleteTableRequest(getMainTableName())
+                        .setTimeFilter(
+                                getStartTimeColumnName(),
+                                Instant.EPOCH.toEpochMilli(),
+                                Instant.now()
+                                        .minus(recordAutoDeletePeriodInDays, ChronoUnit.DAYS)
+                                        .toEpochMilli())
+                        .setPackageColumnName(APP_INFO_ID_COLUMN_NAME)
+                        .setIdColumnName(UUID_COLUMN_NAME);
+        return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
 
     public abstract String getDurationGroupByColumnName();
@@ -742,8 +762,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return null;
     }
 
-    /** Returns the information required to perform aggregate operation. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    /**
+     * Returns the information required to perform aggregate operation or null if this type is not
+     * supported.
+     */
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         if (Flags.refactorAggregations()) {
             throw new UnsupportedOperationException("Not implemented by the subclass");

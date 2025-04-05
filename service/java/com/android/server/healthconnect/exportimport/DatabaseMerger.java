@@ -23,10 +23,10 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_PLANNED_EXERCISE_SESSION;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
-import static com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper.APP_ID_PRIORITY_ORDER_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper.HEALTH_DATA_CATEGORY_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper.PRIORITY_TABLE_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper.getReadQueryForDataSourcesUsingUniqueIds;
+import static com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper.APP_ID_PRIORITY_ORDER_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper.HEALTH_DATA_CATEGORY_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper.PRIORITY_TABLE_NAME;
+import static com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper.getReadQueryForDataSourcesUsingUniqueIds;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
@@ -52,19 +52,19 @@ import android.util.Slog;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
+import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
+import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
+import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceIndicesHelper;
-import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -129,7 +129,6 @@ public final class DatabaseMerger {
     }
 
     /** Merge data */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public synchronized void merge(HealthConnectDatabase stagedDatabase) {
         TransactionManager stagedTransactionManager =
                 TransactionManager.forStagedDatabase(stagedDatabase);
@@ -475,8 +474,7 @@ public final class DatabaseMerger {
         Class<? extends Record> recordTypeClass =
                 mHealthConnectMappings.getRecordIdToExternalRecordClassMap().get(recordType);
         Slog.d(TAG, "Deleting table for: " + recordTypeClass);
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-        DeleteTableRequest deleteTableRequest =
+        RecordDeleteTableRequest deleteTableRequest =
                 recordHelper.getDeleteTableRequest(
                         null /* packageFilters */,
                         DEFAULT_LONG /* startTime */,
@@ -484,7 +482,9 @@ public final class DatabaseMerger {
                         false /* useLocalTimeFilter */,
                         mAppInfoHelper);
 
-        stagedDatabase.getWritableDatabase().execSQL(deleteTableRequest.getDeleteCommand());
+        stagedDatabase
+                .getWritableDatabase()
+                .execSQL(deleteTableRequest.getDeleteTableRequest().getDeleteCommand());
     }
 
     private Pair<List<RecordInternal<?>>, PageTokenWrapper> getRecordsToMerge(

@@ -89,8 +89,8 @@ public class PowerRecordHelper
         return EPOCH_MILLIS_COLUMN_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     final AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         switch (aggregateRequest.getAggregationTypeIdentifier()) {
             case POWER_RECORD_POWER_MIN:

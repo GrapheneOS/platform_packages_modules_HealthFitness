@@ -53,7 +53,7 @@ constructor(
 
     private var appName: String? = null
     private var onRationaleLinkClicked: (() -> Unit)? = null
-    private var onAboutHealthRecordsClicked: (() -> Unit)? = null
+    private var onLearnMoreClicked: (() -> Unit)? = null
     private var screenState = RequestPermissionsScreenState()
 
     private val dateFormatter by lazy { LocalDateTimeFormatter(context) }
@@ -94,12 +94,12 @@ constructor(
         appName: String,
         screenState: RequestPermissionsScreenState,
         onRationaleLinkClicked: (() -> Unit)? = null,
-        onAboutHealthRecordsClicked: (() -> Unit)? = null,
+        onLearnMoreClicked: (() -> Unit)? = null,
     ) {
         this.appName = appName
         this.screenState = screenState
         this.onRationaleLinkClicked = onRationaleLinkClicked
-        this.onAboutHealthRecordsClicked = onAboutHealthRecordsClicked
+        this.onLearnMoreClicked = onLearnMoreClicked
         notifyChanged()
     }
 
@@ -321,6 +321,23 @@ constructor(
                 detailedPermissions.visibility = View.GONE
             }
         }
+
+        // For Baklava platform and above, "learn more" links to a help center page.
+        if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA &&
+                detailedPermissions.visibility != View.GONE
+        ) {
+            val learnMoreString = context.getString(R.string.request_learn_more)
+            val dataAccessTypeText = dataAccessType.text!!.toString()
+            convertTextViewIntoLink(
+                dataAccessType,
+                dataAccessTypeText,
+                dataAccessTypeText.indexOf(learnMoreString),
+                dataAccessTypeText.indexOf(learnMoreString) + learnMoreString.length,
+            ) {
+                onLearnMoreClicked?.invoke()
+            }
+        }
     }
 
     private fun updateFitnessAccessInfo(isHistoryGranted: Boolean) {
@@ -357,7 +374,7 @@ constructor(
             accessInfoText.indexOf(aboutHealthRecordsString),
             accessInfoText.indexOf(aboutHealthRecordsString) + aboutHealthRecordsString.length,
         ) {
-            onAboutHealthRecordsClicked?.invoke()
+            onLearnMoreClicked?.invoke()
         }
     }
 

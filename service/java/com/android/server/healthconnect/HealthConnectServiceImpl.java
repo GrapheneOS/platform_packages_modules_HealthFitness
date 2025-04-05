@@ -187,6 +187,8 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.ExportImportLogger;
@@ -204,23 +206,21 @@ import com.android.server.healthconnect.permission.MedicalDataPermissionEnforcer
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
+import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
+import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
+import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.validations.FhirResourceValidator;
 import com.android.server.healthconnect.phr.validations.MedicalResourceValidator;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalDataSourceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.request.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.PreferencesManager;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -298,7 +298,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final MedicalDataSourceHelper mMedicalDataSourceHelper;
     private final ExportManager mExportManager;
     private final AccessLogsHelper mAccessLogsHelper;
-    private final ActivityDateHelper mActivityDateHelper;
+    private final RecordDateHelper mActivityDateHelper;
     private final ChangeLogsHelper mChangeLogsHelper;
     private final ChangeLogsRequestHelper mChangeLogsRequestHelper;
     private final MigrationEntityHelper mMigrationEntityHelper;
@@ -342,7 +342,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             BackupRestore backupRestore,
             AccessLogsHelper accessLogsHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
-            ActivityDateHelper activityDateHelper,
+            RecordDateHelper recordDateHelper,
             ChangeLogsHelper changeLogsHelper,
             ChangeLogsRequestHelper changeLogsRequestHelper,
             PriorityMigrationHelper priorityMigrationHelper,
@@ -390,7 +390,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         mAccessLogsHelper = accessLogsHelper;
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
-        mActivityDateHelper = activityDateHelper;
+        mActivityDateHelper = recordDateHelper;
         mChangeLogsHelper = changeLogsHelper;
         mChangeLogsRequestHelper = changeLogsRequestHelper;
         mPriorityMigrationHelper = priorityMigrationHelper;
@@ -1478,7 +1478,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         List<LocalDate> localDates =
-                                mActivityDateHelper.getActivityDates(
+                                mActivityDateHelper.getRecordDates(
                                         activityDatesRequestParcel.getRecordTypes());
 
                         callback.onResult(new ActivityDatesResponseParcel(localDates));
@@ -2070,7 +2070,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void runImport(UserHandle user, Uri file, IEmptyResponseCallback callback) {
         if (mImportManager == null) return;
-        checkParamsNonNull(file);
+        checkParamsNonNull(user, file, callback);
+        ErrorCallback errorCallback = callback::onError;
 
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
@@ -2082,15 +2083,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         mImportManager.runImport(userHandle, file);
                         callback.onResult();
+                    } catch (HealthConnectException healthConnectException) {
+                        Slog.e(TAG, "HealthConnectException: ", healthConnectException);
+                        tryAndThrowException(
+                                errorCallback,
+                                healthConnectException,
+                                healthConnectException.getErrorCode());
                     } catch (Exception exception) {
-                        throw new HealthConnectException(ERROR_IO, exception.toString());
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(errorCallback, exception, ERROR_IO);
                     }
                 });
     }
 
     @Override
     public void runImmediateExport(Uri file, IEmptyResponseCallback callback) {
-        checkParamsNonNull(file);
+        checkParamsNonNull(file, callback);
+        ErrorCallback errorCallback = callback::onError;
 
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
@@ -2103,8 +2112,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         // TODO(b/370954019): Modify runExport to use specific file.
                         mExportManager.runExport(userHandle);
                         callback.onResult();
+                    } catch (HealthConnectException healthConnectException) {
+                        Slog.e(TAG, "HealthConnectException: ", healthConnectException);
+                        tryAndThrowException(
+                                errorCallback,
+                                healthConnectException,
+                                healthConnectException.getErrorCode());
                     } catch (Exception exception) {
-                        throw new HealthConnectException(ERROR_IO, exception.toString());
+                        Slog.e(TAG, "Exception: ", exception);
+                        tryAndThrowException(errorCallback, exception, ERROR_IO);
                     }
                 });
     }
@@ -2130,9 +2146,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         callback.onResult(providers);
                     } catch (SecurityException securityException) {
                         Slog.e(TAG, "SecurityException: ", securityException);
-                        throw new HealthConnectException(
-                                HealthConnectException.ERROR_SECURITY,
-                                securityException.toString());
+                        tryAndThrowException(errorCallback, securityException, ERROR_SECURITY);
                     } catch (HealthConnectException healthConnectException) {
                         Slog.e(TAG, "HealthConnectException: ", healthConnectException);
                         tryAndThrowException(
@@ -2602,9 +2616,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     List<UpsertMedicalResourceInternalRequest> validatedMedicalResourcesToUpsert =
                             new ArrayList<>();
                     FhirResourceValidator fhirResourceValidator =
-                            Flags.phrFhirStructuralValidation()
-                                    ? getOrCreateFhirResourceValidator()
-                                    : null;
+                            getOrCreateFhirResourceValidator();
                     for (UpsertMedicalResourceRequest upsertMedicalResourceRequest : requests) {
                         MedicalResourceValidator validator =
                                 new MedicalResourceValidator(

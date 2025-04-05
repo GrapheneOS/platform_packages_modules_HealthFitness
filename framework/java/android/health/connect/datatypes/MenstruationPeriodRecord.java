@@ -152,21 +152,8 @@ public final class MenstruationPeriodRecord extends IntervalRecord {
     public MenstruationPeriodRecordInternal toRecordInternal() {
         MenstruationPeriodRecordInternal recordInternal =
                 (MenstruationPeriodRecordInternal)
-                        new MenstruationPeriodRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+                        new MenstruationPeriodRecordInternal().setMetaData(getMetadata());
+        recordInternal.setTimeInterval(this);
         return recordInternal;
     }
 }

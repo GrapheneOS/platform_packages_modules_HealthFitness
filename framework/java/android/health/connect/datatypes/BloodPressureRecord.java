@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.validation.ValidationUtils.valida
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Pressure;
 import android.health.connect.datatypes.validation.ValidationUtils;
@@ -206,12 +207,16 @@ public final class BloodPressureRecord extends InstantRecord {
     public static final class BloodPressureMeasurementLocation {
 
         public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_UNKNOWN = 0;
+
         /** Blood pressure measurement location constant for the left wrist. */
         public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_WRIST = 1;
+
         /** Blood pressure measurement location constant for the right wrist. */
         public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_RIGHT_WRIST = 2;
+
         /** Blood pressure measurement location constant for the left upper arm. */
         public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM = 3;
+
         /** Blood pressure measurement location constant for the right upper arm. */
         public static final int BLOOD_PRESSURE_MEASUREMENT_LOCATION_RIGHT_UPPER_ARM = 4;
 
@@ -248,12 +253,16 @@ public final class BloodPressureRecord extends InstantRecord {
 
         /** Body position unknown / not identified. */
         public static final int BODY_POSITION_UNKNOWN = 0;
+
         /** Body position constant representing standing up. */
         public static final int BODY_POSITION_STANDING_UP = 1;
+
         /** Body position constant representing sitting down. */
         public static final int BODY_POSITION_SITTING_DOWN = 2;
+
         /** Body position constant representing lying down. */
         public static final int BODY_POSITION_LYING_DOWN = 3;
+
         /** Body position constant representing semi-recumbent (partially reclining) pose. */
         public static final int BODY_POSITION_RECLINING = 4;
 
@@ -291,12 +300,11 @@ public final class BloodPressureRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        BloodPressureRecord that = (BloodPressureRecord) o;
+        if (!(o instanceof BloodPressureRecord that)) return false;
         return getMeasurementLocation() == that.getMeasurementLocation()
                 && getBodyPosition() == that.getBodyPosition()
                 && getSystolic().equals(that.getSystolic())
@@ -415,17 +423,7 @@ public final class BloodPressureRecord extends InstantRecord {
     public BloodPressureRecordInternal toRecordInternal() {
         BloodPressureRecordInternal recordInternal =
                 (BloodPressureRecordInternal)
-                        new BloodPressureRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new BloodPressureRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setMeasurementLocation(mMeasurementLocation);

@@ -368,6 +368,10 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"ਚੌਕਸੀ"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"ਚੌਕਸੀ ਸੰਬੰਧੀ ਸੈਸ਼ਨ ਦੇ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹੋ"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"ਚੌਕਸੀ ਸੰਬੰਧੀ ਸੈਸ਼ਨ ਦੇ ਡਾਟੇ ਨੂੰ ਲਿਖੋ"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"ਨਿਕੋਟੀਨ ਦੀ ਵਰਤੋਂ"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"ਨਿਕੋਟੀਨ ਦੀ ਵਰਤੋਂ ਸੰਬੰਧੀ ਡਾਟਾ"</string>
+    <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"ਨਿਕੋਟੀਨ ਦੀ ਵਰਤੋਂ ਸੰਬੰਧੀ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ"</string>
+    <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"ਨਿਕੋਟੀਨ ਦੀ ਵਰਤੋਂ ਸੰਬੰਧੀ ਡਾਟੇ ਨੂੰ ਲਿਖਣ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ਨੂੰ ਪੜ੍ਹਨ ਦੀ ਆਗਿਆ ਦਿਓ"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ਨੂੰ ਲਿਖਣ ਦੀ ਆਗਿਆ ਦਿਓ"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"ਆਗਿਆ ਦਿਓ"</string>
@@ -1180,8 +1184,7 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> ਵਜੇ ਪਹੁੰਚ ਕੀਤੀ ਗਈ"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"<xliff:g id="TIME_DATE">%1$s</xliff:g> ਵਜੇ ਕੱਲ੍ਹ ਪਹੁੰਚ ਕੀਤੀ ਗਈ"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"<xliff:g id="TIME_DATE_0">%1$s</xliff:g> ਨੂੰ <xliff:g id="TIME_DATE_1">%2$s</xliff:g> ਵਜੇ ਪਹੁੰਚ ਕੀਤੀ ਗਈ"</string>
-    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
-    <skip />
+    <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"ਹਰ ਸਮੇਂ"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"ਚੁਣੀਆਂ ਇਜਾਜ਼ਤਾਂ ਦਿਓ"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"ਐਪ ਵਰਤਣ ਦੌਰਾਨ"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"ਕੋਈ ਇਜਾਜ਼ਤ ਨਾ ਦਿਓ"</string>
@@ -1190,8 +1193,7 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"ਕੀ <xliff:g id="APP_NAME">%1$s</xliff:g> ਨੂੰ <xliff:g id="DATA_TYPE">%2$s</xliff:g> ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਦੇਣੀ ਹੈ?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"ਹਰ ਸਮੇਂ"</string>
-    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
-    <skip />
+    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"ਐਪ ਵਰਤਣ ਦੌਰਾਨ"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> ਐਪ ਹਰ ਸਮੇਂ ਤੁਹਾਡੇ ਸਾਰੇ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> ਐਪ ਵਰਤੋਂ ਵਿੱਚ ਹੋਣ ਸਮੇਂ ਤੁਹਾਡੇ ਸਾਰੇ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਹੈ"</string>
@@ -1207,8 +1209,7 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"ਗਲਤ ਦਾ ਨਿਸ਼ਾਨ"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"ਫ਼ਿਲਹਾਲ, <xliff:g id="APP_NAME">%1$s</xliff:g> ਐਪ ਹਰ ਸਮੇਂ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"ਫ਼ਿਲਹਾਲ, <xliff:g id="APP_NAME">%1$s</xliff:g> ਐਪ ਵਰਤੋਂ ਵਿੱਚ ਹੋਣ ਸਮੇਂ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ"</string>
-    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
-    <skip />
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"ਚੁਣੋ ਕਿ <xliff:g id="APP_NAME">%1$s</xliff:g> ਐਪ ਤੁਹਾਡੇ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਡਾਟੇ ਤੱਕ ਕਦੋਂ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> ਕੋਲ <xliff:g id="DATA_TYPES">%2$s</xliff:g> ਤੱਕ ਪਹੁੰਚ ਹੈ।"</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਇਜਾਜ਼ਤਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{1 ਐਪ ਵੱਲੋਂ ਇਜਾਜ਼ਤ ਵਰਤੀ ਗਈ}one{# ਐਪ ਵੱਲੋਂ ਇਜਾਜ਼ਤ ਵਰਤੀ ਗਈ}other{# ਐਪਾਂ ਵੱਲੋਂ ਇਜਾਜ਼ਤ ਵਰਤੀ ਗਈ}}"</string>

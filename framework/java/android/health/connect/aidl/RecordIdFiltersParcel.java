@@ -18,17 +18,21 @@ package android.health.connect.aidl;
 
 import android.annotation.NonNull;
 import android.health.connect.RecordIdFilter;
+import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /** @hide */
 public final class RecordIdFiltersParcel implements Parcelable {
+    private static final String TAG = RecordIdFiltersParcel.class.getSimpleName();
+
     public static final Creator<RecordIdFiltersParcel> CREATOR =
-            new Creator<RecordIdFiltersParcel>() {
+            new Creator<>() {
                 @Override
                 public RecordIdFiltersParcel createFromParcel(Parcel in) {
                     return new RecordIdFiltersParcel(in);
@@ -46,29 +50,29 @@ public final class RecordIdFiltersParcel implements Parcelable {
         mRecordIdFilters = recordIdFilters;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private RecordIdFiltersParcel(Parcel in) {
         int size = in.readInt();
         mRecordIdFilters = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             String id = in.readString();
             String clientRecordId = in.readString();
+            int recordId = in.readInt();
+            Class<? extends Record> recordType =
+                    HealthConnectMappings.getInstance()
+                            .getRecordIdToExternalRecordClassMap()
+                            .get(recordId);
+            if (recordType == null) {
+                Log.w(TAG, "Unknown record type for record id " + recordId);
+                continue;
+            }
             // A RecordId Filter can be built either only with an id or client record id and the
             // other will be null.
             if (id != null) {
-                mRecordIdFilters.add(
-                        RecordIdFilter.fromId(
-                                HealthConnectMappings.getInstance()
-                                        .getRecordIdToExternalRecordClassMap()
-                                        .get(in.readInt()),
-                                id));
+                mRecordIdFilters.add(RecordIdFilter.fromId(recordType, id));
+            } else if (clientRecordId != null) {
+                mRecordIdFilters.add(RecordIdFilter.fromClientRecordId(recordType, clientRecordId));
             } else {
-                mRecordIdFilters.add(
-                        RecordIdFilter.fromClientRecordId(
-                                HealthConnectMappings.getInstance()
-                                        .getRecordIdToExternalRecordClassMap()
-                                        .get(in.readInt()),
-                                clientRecordId));
+                Log.w(TAG, "Filter with both id and client record id null " + recordId);
             }
         }
     }

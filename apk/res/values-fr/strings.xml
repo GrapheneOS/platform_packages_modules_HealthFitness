@@ -368,18 +368,22 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"pleine conscience"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"Lire les données de Pleine conscience"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"Écrire les données de Pleine conscience"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"Consommation de nicotine"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"consommation de nicotine"</string>
+    <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Lire la consommation de nicotine"</string>
+    <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Écrire la consommation de nicotine"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à lire les données suivantes"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à écrire les données suivantes"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Autoriser"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Tout autoriser"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Ne pas autoriser"</string>
-    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Sélectionnez les données que vous voulez autoriser cette appli à lire ou à écrire dans Santé Connect."</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Sélectionnez les données que cette appli pourra lire ou écrire dans Santé Connect"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Sélectionnez les données que vous voulez autoriser cette appli à lire dans Santé Connect."</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Sélectionnez les données que vous voulez autoriser cette appli à écrire dans Santé Connect."</string>
-    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Sélectionnez les données que vous voulez autoriser cette appli à lire ou à écrire dans Santé Connect."</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Sélectionnez les données que cette appli pourra lire ou écrire dans Santé Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Sélectionnez les données que vous voulez autoriser cette appli à lire dans Santé Connect."</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Si vous lui donnez accès en lecture, l\'appli pourra lire les nouvelles données et celles des 30 derniers jours."</string>
-    <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Si vous lui donnez accès en lecture, l\'appli pourra lire les anciennes et les nouvelles données."</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Si vous lui donnez accès en lecture, l\'appli pourra lire les nouvelles données et celles des 30 derniers jours"</string>
+    <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Si vous lui donnez accès en lecture, l\'appli pourra lire les anciennes et les nouvelles données"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à Santé Connect ?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à vos données de fitness et de bien-être ?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Consultez les <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> de l\'application <xliff:g id="APP_NAME">%1$s</xliff:g> pour découvrir comment elle gère vos données"</string>
@@ -1180,8 +1184,7 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Dernière consultation : <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Dernière consultation : hier, à <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"Dernière consultation : <xliff:g id="TIME_DATE_0">%1$s</xliff:g><xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
-    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
-    <skip />
+    <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"Tout le temps"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Autoriser la sélection"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"En utilisant l\'application"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Tout refuser"</string>
@@ -1190,8 +1193,7 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à <xliff:g id="DATA_TYPE">%2$s</xliff:g> ?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness et bien-être"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Tout le temps"</string>
-    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
-    <skip />
+    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Lorsque vous utilisez l\'appli"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à l\'ensemble de vos données de fitness et de bien-être à tout moment"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à l\'ensemble de vos données de fitness et de bien-être lorsqu\'elle est en cours d\'utilisation"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Accès autorisé"</string>
@@ -1207,8 +1209,7 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Croix"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Actuellement, <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à vos données de fitness et de bien-être à tout moment"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Actuellement, <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à vos données de fitness et de bien-être lorsqu\'elle est en cours d\'utilisation"</string>
-    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
-    <skip />
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Choisissez quand <xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder à vos données de remise en forme et de bien-être"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut accéder aux données suivantes : <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Gérer les autorisations fitness et bien-être"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Utilisée par 1 appli}one{Utilisée par # appli}other{Utilisée par # applis}}"</string>

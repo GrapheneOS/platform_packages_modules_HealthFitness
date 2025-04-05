@@ -39,6 +39,7 @@ import static com.android.server.healthconnect.migration.MigrationConstants.PREM
 import static com.android.server.healthconnect.migration.MigrationUtils.filterIntent;
 import static com.android.server.healthconnect.migration.MigrationUtils.filterPermissions;
 
+import android.annotation.Nullable;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -570,8 +571,7 @@ public final class MigrationStateManager {
         }
     }
 
-    @SuppressWarnings("NullAway")
-    // TODO(b/317029272): fix this suppression
+    @Nullable
     String getAllowedStateTimeout() {
         String allowedStateStartTime =
                 mPreferenceHelper.getPreference(ALLOWED_STATE_START_TIME_KEY);

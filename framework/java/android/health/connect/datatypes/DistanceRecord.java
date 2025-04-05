@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.validation.ValidationUtils;
@@ -195,12 +196,11 @@ public final class DistanceRecord extends IntervalRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        DistanceRecord that = (DistanceRecord) o;
+        if (!(o instanceof DistanceRecord that)) return false;
         return getDistance().equals(that.getDistance());
     }
 
@@ -216,22 +216,8 @@ public final class DistanceRecord extends IntervalRecord {
     @Override
     public DistanceRecordInternal toRecordInternal() {
         DistanceRecordInternal recordInternal =
-                (DistanceRecordInternal)
-                        new DistanceRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+                (DistanceRecordInternal) new DistanceRecordInternal().setMetaData(getMetadata());
+        recordInternal.setTimeInterval(this);
         recordInternal.setDistance(mDistance.getInMeters());
         return recordInternal;
     }

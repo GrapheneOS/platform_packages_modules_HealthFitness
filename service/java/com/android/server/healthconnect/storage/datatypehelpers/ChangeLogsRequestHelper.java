@@ -103,7 +103,8 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
         contentValues.put(TIME_COLUMN_NAME, Instant.now().toEpochMilli());
 
         return String.valueOf(
-                mTransactionManager.insert(new UpsertTableRequest(TABLE_NAME, contentValues)));
+                mTransactionManager.insertOrThrowOnConflict(
+                        new UpsertTableRequest(TABLE_NAME, contentValues)));
     }
 
     public TokenRequest getRequest(String packageName, String token) {
@@ -140,7 +141,8 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
         contentValues.put(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, nextRowId);
 
         return String.valueOf(
-                mTransactionManager.insert(new UpsertTableRequest(TABLE_NAME, contentValues)));
+                mTransactionManager.insertOrThrowOnConflict(
+                        new UpsertTableRequest(TABLE_NAME, contentValues)));
     }
 
     public static DeleteTableRequest getDeleteRequestForAutoDelete() {

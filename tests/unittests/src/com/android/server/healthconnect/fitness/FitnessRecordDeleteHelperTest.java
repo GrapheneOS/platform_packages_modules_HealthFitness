@@ -237,12 +237,12 @@ public class FitnessRecordDeleteHelperTest {
         RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(
                         RecordTypeIdentifier.RECORD_TYPE_STEPS);
-        DeleteTableRequest deleteTableRequest =
-                new DeleteTableRequest(
-                                recordHelper.getMainTableName(),
-                                RecordTypeIdentifier.RECORD_TYPE_STEPS)
-                        .setPackageFilter(RecordHelper.APP_INFO_ID_COLUMN_NAME, List.of())
-                        .setIdColumnName(RecordHelper.UUID_COLUMN_NAME);
+        RecordDeleteTableRequest deleteTableRequest =
+                new RecordDeleteTableRequest(
+                        new DeleteTableRequest(recordHelper.getMainTableName())
+                                .setPackageFilter(RecordHelper.APP_INFO_ID_COLUMN_NAME, List.of())
+                                .setIdColumnName(RecordHelper.UUID_COLUMN_NAME),
+                        RecordTypeIdentifier.RECORD_TYPE_STEPS);
         mFitnessRecordDeleteHelper.deleteRecordsUnrestricted(List.of(deleteTableRequest));
 
         records =
@@ -259,12 +259,12 @@ public class FitnessRecordDeleteHelperTest {
         RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(
                         RecordTypeIdentifier.RECORD_TYPE_STEPS);
-        DeleteTableRequest deleteTableRequest =
-                new DeleteTableRequest(
-                                recordHelper.getMainTableName(),
-                                RecordTypeIdentifier.RECORD_TYPE_STEPS)
-                        .setPackageFilter(RecordHelper.APP_INFO_ID_COLUMN_NAME, List.of())
-                        .setIdColumnName(RecordHelper.UUID_COLUMN_NAME);
+        RecordDeleteTableRequest deleteTableRequest =
+                new RecordDeleteTableRequest(
+                        new DeleteTableRequest(recordHelper.getMainTableName())
+                                .setPackageFilter(RecordHelper.APP_INFO_ID_COLUMN_NAME, List.of())
+                                .setIdColumnName(RecordHelper.UUID_COLUMN_NAME),
+                        RecordTypeIdentifier.RECORD_TYPE_STEPS);
         mFitnessRecordDeleteHelper.deleteRecordsUnrestricted(List.of(deleteTableRequest));
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);

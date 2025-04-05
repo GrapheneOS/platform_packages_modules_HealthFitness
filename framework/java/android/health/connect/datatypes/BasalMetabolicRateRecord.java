@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BASAL_METABOLIC_RATE;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Power;
@@ -75,12 +76,11 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        BasalMetabolicRateRecord that = (BasalMetabolicRateRecord) o;
+        if (!(o instanceof BasalMetabolicRateRecord that)) return false;
         return getBasalMetabolicRate().equals(that.getBasalMetabolicRate());
     }
 
@@ -168,17 +168,7 @@ public final class BasalMetabolicRateRecord extends InstantRecord {
     public BasalMetabolicRateRecordInternal toRecordInternal() {
         BasalMetabolicRateRecordInternal recordInternal =
                 (BasalMetabolicRateRecordInternal)
-                        new BasalMetabolicRateRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new BasalMetabolicRateRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setBasalMetabolicRate(mBasalMetabolicRate.getInWatts());

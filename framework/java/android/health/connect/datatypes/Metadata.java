@@ -54,6 +54,7 @@ public final class Metadata {
      * <p>For e.g. Nutrition or weight data entered by the user.
      */
     public static final int RECORDING_METHOD_MANUAL_ENTRY = 3;
+
     /**
      * Valid set of values for this IntDef. Update this set when add new type or deprecate existing
      * type.
@@ -70,7 +71,7 @@ public final class Metadata {
     private final Device mDevice;
     private final DataOrigin mDataOrigin;
     private final Instant mLastModifiedTime;
-    private final String mClientRecordId;
+    @Nullable private final String mClientRecordId;
     private final long mClientRecordVersion;
     @RecordingMethod private final int mRecordingMethod;
     private String mId;
@@ -104,7 +105,7 @@ public final class Metadata {
             DataOrigin dataOrigin,
             String id,
             Instant lastModifiedTime,
-            String clientRecordId,
+            @Nullable String clientRecordId,
             long clientRecordVersion,
             @RecordingMethod int recordingMethod) {
         validateIntDefValue(recordingMethod, VALID_TYPES, RecordingMethod.class.getSimpleName());
@@ -191,8 +192,7 @@ public final class Metadata {
     @Override
     public boolean equals(@Nullable Object object) {
         if (this == object) return true;
-        if (object instanceof Metadata) {
-            Metadata other = (Metadata) object;
+        if (object instanceof Metadata other) {
             return getDevice().equals(other.getDevice())
                     && getDataOrigin().equals(other.getDataOrigin())
                     && getId().equals(other.getId())
@@ -242,12 +242,11 @@ public final class Metadata {
         private DataOrigin mDataOrigin = new DataOrigin.Builder().build();
         private String mId = "";
         private Instant mLastModifiedTime = Instant.EPOCH;
-        private String mClientRecordId;
+        @Nullable private String mClientRecordId;
         private long mClientRecordVersion = 0;
 
         @RecordingMethod private int mRecordingMethod = RECORDING_METHOD_UNKNOWN;
 
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
         public Builder() {}
 
         /** Sets optional client supplied device information associated with the data. */
@@ -307,7 +306,6 @@ public final class Metadata {
          *
          * <p>A null value means that no clientRecordId is set
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setClientRecordId(@Nullable String clientRecordId) {
             mClientRecordId = clientRecordId;

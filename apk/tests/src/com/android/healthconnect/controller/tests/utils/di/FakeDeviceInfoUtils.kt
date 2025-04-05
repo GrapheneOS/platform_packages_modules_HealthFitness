@@ -34,6 +34,7 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
 
     var helpCenterInvoked = false
     var backupAndRestoreHelpCenterInvoked = false
+    var healthFitnessPermissionsHelpCenterInvoked = false
 
     fun reset() {
         sendFeedbackAvailable = false
@@ -41,6 +42,7 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
         isHealthConnectAvailable = true
         helpCenterInvoked = false
         backupAndRestoreHelpCenterInvoked = false
+        healthFitnessPermissionsHelpCenterInvoked = false
     }
 
     fun setSendFeedbackAvailability(available: Boolean) {
@@ -77,6 +79,10 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
 
     override fun openHCBackupAndRestoreLink(activity: FragmentActivity) {
         backupAndRestoreHelpCenterInvoked = true
+    }
+
+    override fun openHealthFitnessPermissionsLearnMoreLink(activity: FragmentActivity) {
+        healthFitnessPermissionsHelpCenterInvoked = true
     }
 
     override fun openSendFeedbackActivity(activity: FragmentActivity) {}

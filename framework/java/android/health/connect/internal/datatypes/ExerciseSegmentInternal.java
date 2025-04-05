@@ -17,6 +17,7 @@
 package android.health.connect.internal.datatypes;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSegmentType;
 import android.os.Parcel;
@@ -52,7 +53,7 @@ public class ExerciseSegmentInternal {
                 .setSegmentType(parcel.readInt());
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     static List<ExerciseSegmentInternal> populateSegmentsFromParcel(Parcel parcel) {
         int size = parcel.readInt();
         if (size == 0) {
@@ -72,7 +73,8 @@ public class ExerciseSegmentInternal {
         return externalSegments;
     }
 
-    static void writeSegmentsToParcel(List<ExerciseSegmentInternal> segments, Parcel parcel) {
+    static void writeSegmentsToParcel(
+            @Nullable List<ExerciseSegmentInternal> segments, Parcel parcel) {
         if (segments == null) {
             parcel.writeInt(0);
             return;

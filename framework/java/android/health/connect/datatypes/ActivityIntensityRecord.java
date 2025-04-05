@@ -165,9 +165,8 @@ public final class ActivityIntensityRecord extends IntervalRecord {
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;
-        if (!(o instanceof ActivityIntensityRecord)) return false;
+        if (!(o instanceof ActivityIntensityRecord that)) return false;
         if (!super.equals(o)) return false;
-        ActivityIntensityRecord that = (ActivityIntensityRecord) o;
         return getActivityIntensityType() == that.getActivityIntensityType();
     }
 
@@ -271,21 +270,8 @@ public final class ActivityIntensityRecord extends IntervalRecord {
     public ActivityIntensityRecordInternal toRecordInternal() {
         ActivityIntensityRecordInternal recordInternal =
                 (ActivityIntensityRecordInternal)
-                        new ActivityIntensityRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+                        new ActivityIntensityRecordInternal().setMetaData(getMetadata());
+        recordInternal.setTimeInterval(this);
         recordInternal.setActivityIntensityType(getActivityIntensityType());
         return recordInternal;
     }

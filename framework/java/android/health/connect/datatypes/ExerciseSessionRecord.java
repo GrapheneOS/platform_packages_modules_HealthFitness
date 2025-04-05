@@ -189,9 +189,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         return mPlannedExerciseSessionId;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!(o instanceof ExerciseSessionRecord)) return false;
         if (!super.equals(o)) return false;
@@ -226,9 +225,9 @@ public final class ExerciseSessionRecord extends IntervalRecord {
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
         private final int mExerciseType;
-        private CharSequence mNotes;
-        private CharSequence mTitle;
-        private ExerciseRoute mRoute;
+        @Nullable private CharSequence mNotes;
+        @Nullable private CharSequence mTitle;
+        @Nullable private ExerciseRoute mRoute;
         private final List<ExerciseSegment> mSegments;
         private final List<ExerciseLap> mLaps;
         private boolean mHasRoute;
@@ -241,7 +240,6 @@ public final class ExerciseSessionRecord extends IntervalRecord {
          * @param exerciseType Type of exercise (e.g. walking, swimming). Required field. Allowed
          *     values: {@link ExerciseSessionType}
          */
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull Instant startTime,
@@ -297,7 +295,6 @@ public final class ExerciseSessionRecord extends IntervalRecord {
          *
          * @param notes Notes for this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setNotes(@Nullable CharSequence notes) {
             mNotes = notes;
@@ -309,7 +306,6 @@ public final class ExerciseSessionRecord extends IntervalRecord {
          *
          * @param title Title of this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setTitle(@Nullable CharSequence title) {
             mTitle = title;
@@ -321,7 +317,6 @@ public final class ExerciseSessionRecord extends IntervalRecord {
          *
          * @param route ExerciseRoute for this activity
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setRoute(@Nullable ExerciseRoute route) {
             mRoute = route;
@@ -425,21 +420,8 @@ public final class ExerciseSessionRecord extends IntervalRecord {
     public ExerciseSessionRecordInternal toRecordInternal() {
         ExerciseSessionRecordInternal recordInternal =
                 (ExerciseSessionRecordInternal)
-                        new ExerciseSessionRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+                        new ExerciseSessionRecordInternal().setMetaData(getMetadata());
+        recordInternal.setTimeInterval(this);
 
         if (getNotes() != null) {
             recordInternal.setNotes(getNotes().toString());

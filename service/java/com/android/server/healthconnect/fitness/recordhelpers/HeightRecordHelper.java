@@ -46,7 +46,7 @@ import java.util.List;
 public final class HeightRecordHelper extends InstantRecordHelper<HeightRecordInternal> {
 
     public static final String HEIGHT_RECORD_TABLE_NAME = "height_record_table";
-    static final String HEIGHT_COLUMN_NAME = "height";
+    public static final String HEIGHT_COLUMN_NAME = "height";
 
     public HeightRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_HEIGHT);
@@ -74,8 +74,8 @@ public final class HeightRecordHelper extends InstantRecordHelper<HeightRecordIn
         return HEIGHT_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         List<String> columnNames;
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

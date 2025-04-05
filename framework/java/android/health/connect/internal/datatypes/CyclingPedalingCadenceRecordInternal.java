@@ -25,6 +25,7 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -39,8 +40,8 @@ public class CyclingPedalingCadenceRecordInternal
         extends SeriesRecordInternal<
                 CyclingPedalingCadenceRecord,
                 CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample> {
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private Set<CyclingPedalingCadenceRecordSample> mCyclingPedalingCadenceRecordSamples;
+    private Set<CyclingPedalingCadenceRecordSample> mCyclingPedalingCadenceRecordSamples =
+            Collections.emptySet();
 
     @Override
     @NonNull

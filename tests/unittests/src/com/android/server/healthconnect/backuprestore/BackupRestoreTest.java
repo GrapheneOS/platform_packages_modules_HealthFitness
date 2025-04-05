@@ -57,6 +57,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.timeout;
@@ -744,6 +745,11 @@ public class BackupRestoreTest {
         mFakePreferenceHelper.insertOrReplacePreference(
                 DATA_RESTORE_STATE_KEY, String.valueOf(INTERNAL_RESTORE_STATE_STAGING_DONE));
         when(mTransactionManager.getDatabaseVersion()).thenReturn(1);
+        UserGrantTimeState userGrantTimeState =
+                new UserGrantTimeState(Map.of("package", Instant.now()), Map.of(), 1);
+        when(mFirstGrantTimeManager.getGrantTimeStateForUser(mUserHandle))
+                .thenReturn(userGrantTimeState);
+        doReturn(userGrantTimeState).when(mGrantTimeXmlHelper).parseGrantTime(any());
 
         SQLiteDatabase mockDb = mock(SQLiteDatabase.class);
         when(mockDb.getVersion()).thenReturn(1);

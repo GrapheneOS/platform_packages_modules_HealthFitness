@@ -316,18 +316,7 @@ public final class PowerRecord extends IntervalRecord {
     @Override
     public PowerRecordInternal toRecordInternal() {
         PowerRecordInternal recordInternal =
-                (PowerRecordInternal)
-                        new PowerRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                (PowerRecordInternal) new PowerRecordInternal().setMetaData(getMetadata());
         Set<PowerRecordInternal.PowerRecordSample> samples = new HashSet<>(getSamples().size());
 
         for (PowerRecord.PowerRecordSample powerRecordSample : getSamples()) {
@@ -337,10 +326,7 @@ public final class PowerRecord extends IntervalRecord {
                             powerRecordSample.getTime().toEpochMilli()));
         }
         recordInternal.setSamples(samples);
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
 
         return recordInternal;
     }

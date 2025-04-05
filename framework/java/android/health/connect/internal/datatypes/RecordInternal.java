@@ -42,14 +42,14 @@ import java.util.UUID;
  */
 public abstract class RecordInternal<T extends Record> {
     private final int mRecordIdentifier;
-    private UUID mUuid;
-    private String mPackageName;
-    private String mAppName;
+    @Nullable private UUID mUuid;
+    @Nullable private String mPackageName;
+    @Nullable private String mAppName;
     private long mLastModifiedTime = DEFAULT_LONG;
-    private String mClientRecordId;
+    @Nullable private String mClientRecordId;
     private long mClientRecordVersion = DEFAULT_LONG;
-    private String mManufacturer;
-    private String mModel;
+    @Nullable private String mManufacturer;
+    @Nullable private String mModel;
     private int mDeviceType;
     private long mDeviceInfoId = DEFAULT_LONG;
     private long mAppInfoId = DEFAULT_LONG;
@@ -57,7 +57,6 @@ public abstract class RecordInternal<T extends Record> {
 
     @Metadata.RecordingMethod private int mRecordingMethod;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     RecordInternal() {
         Identifier annotation = this.getClass().getAnnotation(Identifier.class);
         Objects.requireNonNull(annotation);
@@ -116,14 +115,12 @@ public abstract class RecordInternal<T extends Record> {
         return mUuid;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public RecordInternal<T> setUuid(@Nullable UUID uuid) {
         this.mUuid = uuid;
         return this;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public RecordInternal<T> setUuid(@Nullable String uuid) {
         if (uuid == null || uuid.isEmpty()) {
@@ -168,7 +165,6 @@ public abstract class RecordInternal<T extends Record> {
     }
 
     /** Sets the application name for this record. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public RecordInternal<T> setAppName(@Nullable String appName) {
         mAppName = appName;
@@ -190,7 +186,6 @@ public abstract class RecordInternal<T extends Record> {
         return mClientRecordId;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public RecordInternal<T> setClientRecordId(@Nullable String clientRecordId) {
         this.mClientRecordId = clientRecordId;
@@ -212,7 +207,6 @@ public abstract class RecordInternal<T extends Record> {
         return mManufacturer;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public RecordInternal<T> setManufacturer(@Nullable String manufacturer) {
         this.mManufacturer = manufacturer;
@@ -224,7 +218,6 @@ public abstract class RecordInternal<T extends Record> {
         return mModel;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public RecordInternal<T> setModel(@Nullable String model) {
         this.mModel = model;
@@ -295,6 +288,20 @@ public abstract class RecordInternal<T extends Record> {
                                 .setModel(getModel())
                                 .build())
                 .build();
+    }
+
+    /** Sets the fields for meta data for internal records */
+    @NonNull
+    public RecordInternal<T> setMetaData(Metadata metaData) {
+        return this.setUuid(metaData.getId())
+                .setPackageName(metaData.getDataOrigin().getPackageName())
+                .setLastModifiedTime(metaData.getLastModifiedTime().toEpochMilli())
+                .setClientRecordId(metaData.getClientRecordId())
+                .setClientRecordVersion(metaData.getClientRecordVersion())
+                .setManufacturer(metaData.getDevice().getManufacturer())
+                .setModel(metaData.getDevice().getModel())
+                .setDeviceType(metaData.getDevice().getType())
+                .setRecordingMethod(metaData.getRecordingMethod());
     }
 
     /**

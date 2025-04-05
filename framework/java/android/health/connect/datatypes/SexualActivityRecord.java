@@ -19,6 +19,7 @@ import static android.health.connect.datatypes.validation.ValidationUtils.valida
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.internal.datatypes.SexualActivityRecordInternal;
 
 import java.lang.annotation.Retention;
@@ -101,12 +102,11 @@ public final class SexualActivityRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        SexualActivityRecord that = (SexualActivityRecord) o;
+        if (!(o instanceof SexualActivityRecord that)) return false;
         return getProtectionUsed() == that.getProtectionUsed();
     }
 
@@ -180,17 +180,7 @@ public final class SexualActivityRecord extends InstantRecord {
     public SexualActivityRecordInternal toRecordInternal() {
         SexualActivityRecordInternal recordInternal =
                 (SexualActivityRecordInternal)
-                        new SexualActivityRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new SexualActivityRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setProtectionUsed(mProtectionUsed);

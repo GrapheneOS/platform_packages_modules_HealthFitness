@@ -39,7 +39,7 @@ import androidx.annotation.VisibleForTesting;
 public class MigrationNotificationFactory {
     private final Context mContext;
     private final HealthConnectResourcesContext mResContext;
-    private Icon mAppIcon;
+    @Nullable private Icon mAppIcon;
 
     // String names used to fetch resources
     private static final String MIGRATION_MODULE_UPDATE_NEEDED_NOTIFICATION_TITLE =
@@ -60,7 +60,6 @@ public class MigrationNotificationFactory {
 
     @VisibleForTesting static final String APP_ICON_DRAWABLE_NAME = "health_connect_logo";
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     public MigrationNotificationFactory(
             Context context, HealthConnectResourcesContext resourcesContext) {
         mContext = context;
@@ -93,7 +92,7 @@ public class MigrationNotificationFactory {
     }
 
     /** Retrieves a string resource by name from the Health Connect resources. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @Nullable
     public String getStringResource(String name) {
         return mResContext.getStringByName(name);
     }
@@ -166,7 +165,6 @@ public class MigrationNotificationFactory {
         return getPendingIntent(intent);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @VisibleForTesting
     @Nullable
     Icon getAppIcon() {

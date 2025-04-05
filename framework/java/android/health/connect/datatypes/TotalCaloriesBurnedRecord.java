@@ -219,21 +219,8 @@ public final class TotalCaloriesBurnedRecord extends IntervalRecord {
     public TotalCaloriesBurnedRecordInternal toRecordInternal() {
         TotalCaloriesBurnedRecordInternal recordInternal =
                 (TotalCaloriesBurnedRecordInternal)
-                        new TotalCaloriesBurnedRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+                        new TotalCaloriesBurnedRecordInternal().setMetaData(getMetadata());
+        recordInternal.setTimeInterval(this);
         recordInternal.setEnergy(mEnergy.getInCalories());
         return recordInternal;
     }

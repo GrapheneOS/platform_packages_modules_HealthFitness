@@ -44,8 +44,8 @@ import java.util.List;
  * @hide
  */
 public final class WeightRecordHelper extends InstantRecordHelper<WeightRecordInternal> {
-    static final String WEIGHT_RECORD_TABLE_NAME = "weight_record_table";
-    static final String WEIGHT_COLUMN_NAME = "weight";
+    public static final String WEIGHT_RECORD_TABLE_NAME = "weight_record_table";
+    public static final String WEIGHT_COLUMN_NAME = "weight";
 
     public WeightRecordHelper() {
         super(RecordTypeIdentifier.RECORD_TYPE_WEIGHT);
@@ -73,8 +73,8 @@ public final class WeightRecordHelper extends InstantRecordHelper<WeightRecordIn
         return WEIGHT_RECORD_TABLE_NAME;
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
+    @Nullable
     AggregateParams getAggregateParams(AggregationType<?> aggregateRequest) {
         List<String> columnNames;
         switch (aggregateRequest.getAggregationTypeIdentifier()) {

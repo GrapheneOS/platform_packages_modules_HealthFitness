@@ -108,8 +108,9 @@ public final class AppOpLogsHelper {
         final AppOpsManager.HistoricalOpsRequest request =
                 new HistoricalOpsRequest.Builder(beginTimeMillis, endTimeMillis)
                         .setOpNames(opNamesToQuery)
-                        .setFlags(
-                                AppOpsManager.OP_FLAG_SELF | AppOpsManager.OP_FLAG_TRUSTED_PROXIED)
+                        .setFlags(AppOpsManager.OP_FLAG_SELF
+                            | AppOpsManager.OP_FLAG_TRUSTED_PROXIED
+                            | OP_FLAG_TRUSTED_PROXY)
                         .setHistoryFlags(
                                 AppOpsManager.HISTORY_FLAG_DISCRETE
                                         | HISTORY_FLAG_GET_ATTRIBUTION_CHAINS)

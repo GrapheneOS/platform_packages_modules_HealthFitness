@@ -19,15 +19,15 @@ package com.android.server.healthconnect.common.jobs;
 import android.util.Slog;
 
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
+import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ActivityDateHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.PreferencesManager;
 
@@ -48,7 +48,7 @@ public class DailyCleanupJob {
     private final AppInfoHelper mAppInfoHelper;
     private final TransactionManager mTransactionManager;
     private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
-    private final ActivityDateHelper mActivityDateHelper;
+    private final RecordDateHelper mActivityDateHelper;
 
     public DailyCleanupJob(
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
@@ -56,7 +56,7 @@ public class DailyCleanupJob {
             AppInfoHelper appInfoHelper,
             TransactionManager transactionManager,
             FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
-            ActivityDateHelper activityDateHelper) {
+            RecordDateHelper activityDateHelper) {
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mPreferencesManager = preferencesManager;
         mAppInfoHelper = appInfoHelper;
@@ -89,12 +89,12 @@ public class DailyCleanupJob {
         int recordAutoDeletePeriod = mPreferencesManager.getRecordRetentionPeriodInDays();
         if (recordAutoDeletePeriod != 0) {
             // 0 represents that no period is set,to delete only if not 0 else don't do anything
-            List<DeleteTableRequest> deleteTableRequests = new ArrayList<>();
+            List<RecordDeleteTableRequest> deleteTableRequests = new ArrayList<>();
             InternalHealthConnectMappings.getInstance()
                     .getRecordHelpers()
                     .forEach(
                             (recordHelper) -> {
-                                DeleteTableRequest request =
+                                RecordDeleteTableRequest request =
                                         recordHelper.getDeleteRequestForAutoDelete(
                                                 recordAutoDeletePeriod);
                                 deleteTableRequests.add(request);

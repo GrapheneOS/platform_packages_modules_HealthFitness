@@ -49,7 +49,6 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.getUpsertMedica
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_STRUCTURAL_VALIDATION;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -70,7 +69,7 @@ import android.healthconnect.cts.phr.utils.ProcedureBuilder;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import com.android.server.healthconnect.storage.request.UpsertMedicalResourceInternalRequest;
+import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 
 import com.google.testing.junit.testparameterinjector.TestParameter;
 import com.google.testing.junit.testparameterinjector.TestParameterInjector;
@@ -87,7 +86,6 @@ import java.util.List;
 @EnableFlags({
     FLAG_PERSONAL_HEALTH_RECORD,
     FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
-    FLAG_PHR_FHIR_STRUCTURAL_VALIDATION
 })
 @RunWith(TestParameterInjector.class)
 public class MedicalResourceValidatorTest {

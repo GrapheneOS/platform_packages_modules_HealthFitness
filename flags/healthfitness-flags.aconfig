@@ -122,15 +122,6 @@ flag {
 }
 
 flag {
-    name: "phr_fhir_structural_validation"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for validating structure of FHIR resources when upserting medical data."
-    bug: "350010200"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "phr_fhir_oneof_validation"
     namespace: "health_fitness_aconfig"
     description: "UNUSED."
@@ -349,6 +340,15 @@ flag {
     bug: "369798725"
     is_fixed_read_only: true
     is_exported: true
+}
+
+flag {
+    name: "cloud_backup_and_restore_hc_ui"
+    namespace: "health_fitness_aconfig"
+    description: "Enables the UI for cloud B&R in Health Connect settings."
+    bug: "400640806"
+    is_fixed_read_only: true
+    is_exported: false
 }
 
 flag {

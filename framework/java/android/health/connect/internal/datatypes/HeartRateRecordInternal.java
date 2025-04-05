@@ -25,6 +25,7 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -70,8 +71,7 @@ public class HeartRateRecordInternal
         }
     }
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private Set<HeartRateSample> mHeartRateHeartRateSamples;
+    private Set<HeartRateSample> mHeartRateHeartRateSamples = Collections.emptySet();
 
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override

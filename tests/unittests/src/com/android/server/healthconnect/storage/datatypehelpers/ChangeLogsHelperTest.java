@@ -240,7 +240,7 @@ public class ChangeLogsHelperTest {
         contentValues.put(TIME_COLUMN_NAME, timeStamp);
         contentValues.put(
                 UUIDS_COLUMN_NAME, StorageUtils.getSingleByteArray(Collections.emptyList()));
-        mTransactionManager.insert(
+        mTransactionManager.insertOrThrowOnConflict(
                 new UpsertTableRequest(ChangeLogsHelper.TABLE_NAME, contentValues));
     }
 }

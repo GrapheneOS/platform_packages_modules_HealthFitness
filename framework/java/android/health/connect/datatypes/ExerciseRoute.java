@@ -116,9 +116,9 @@ public final class ExerciseRoute implements Parcelable {
         private final Instant mTime;
         private final double mLatitude;
         private final double mLongitude;
-        private final Length mHorizontalAccuracy;
-        private final Length mVerticalAccuracy;
-        private final Length mAltitude;
+        @Nullable private final Length mHorizontalAccuracy;
+        @Nullable private final Length mVerticalAccuracy;
+        @Nullable private final Length mAltitude;
 
         @NonNull
         public static final Creator<Location> CREATOR =
@@ -164,7 +164,6 @@ public final class ExerciseRoute implements Parcelable {
          * @param skipValidation Boolean flag to skip validation of record values.
          * @see ExerciseRoute
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         private Location(
                 @NonNull Instant time,
                 @FloatRange(from = MIN_LATITUDE, to = MAX_LATITUDE) double latitude,
@@ -266,10 +265,9 @@ public final class ExerciseRoute implements Parcelable {
         }
 
         @Override
-        public boolean equals(Object o) {
+        public boolean equals(@Nullable Object o) {
             if (this == o) return true;
-            if (!(o instanceof Location)) return false;
-            Location that = (Location) o;
+            if (!(o instanceof Location that)) return false;
             return Objects.equals(getAltitude(), that.getAltitude())
                     && getTime().equals(that.getTime())
                     && (getLatitude() == that.getLatitude())

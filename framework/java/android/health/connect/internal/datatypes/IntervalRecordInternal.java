@@ -104,6 +104,15 @@ public abstract class IntervalRecordInternal<T extends IntervalRecord> extends R
         return this;
     }
 
+    /** Sets the time and zone offsets for interval internal records */
+    @NonNull
+    public IntervalRecordInternal<T> setTimeInterval(IntervalRecord record) {
+        return this.setStartTime(record.getStartTime().toEpochMilli())
+                .setEndTime(record.getEndTime().toEpochMilli())
+                .setStartZoneOffset(record.getStartZoneOffset().getTotalSeconds())
+                .setEndZoneOffset(record.getEndZoneOffset().getTotalSeconds());
+    }
+
     ZoneOffset getEndZoneOffset() {
         return ZoneOffset.ofTotalSeconds(mEndZoneOffset);
     }

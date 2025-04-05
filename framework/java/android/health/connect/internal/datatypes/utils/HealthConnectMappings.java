@@ -182,7 +182,9 @@ public final class HealthConnectMappings {
     /** @hide */
     public String getHealthReadPermission(@HealthPermissionCategory.Type int permissionCategory) {
         if (!Flags.healthConnectMappings()) {
-            return HealthPermissions.getHealthReadPermission(permissionCategory);
+            return Objects.requireNonNull(
+                    HealthPermissions.getHealthReadPermission(permissionCategory),
+                    "Read permission not found for permission category:" + permissionCategory);
         }
 
         return Objects.requireNonNull(

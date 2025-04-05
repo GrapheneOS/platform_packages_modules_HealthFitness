@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.validation.ValidationUtils.valida
 import android.annotation.FloatRange;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.Vo2MaxRecordInternal;
 
@@ -128,12 +129,11 @@ public final class Vo2MaxRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        Vo2MaxRecord that = (Vo2MaxRecord) o;
+        if (!(o instanceof Vo2MaxRecord that)) return false;
         return getMeasurementMethod() == that.getMeasurementMethod()
                 && Double.compare(
                                 that.getVo2MillilitersPerMinuteKilogram(),
@@ -227,18 +227,7 @@ public final class Vo2MaxRecord extends InstantRecord {
     @Override
     public Vo2MaxRecordInternal toRecordInternal() {
         Vo2MaxRecordInternal recordInternal =
-                (Vo2MaxRecordInternal)
-                        new Vo2MaxRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                (Vo2MaxRecordInternal) new Vo2MaxRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setMeasurementMethod(mMeasurementMethod);

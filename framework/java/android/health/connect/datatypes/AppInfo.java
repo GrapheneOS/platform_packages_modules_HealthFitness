@@ -25,10 +25,10 @@ import java.util.Objects;
 /** Application Info class containing details about a given application */
 public final class AppInfo {
     /** Application name/label */
-    private final String mName;
+    @Nullable private final String mName;
 
     /** Application icon as bitmap */
-    private final Bitmap mIcon;
+    @Nullable private final Bitmap mIcon;
 
     /** Application package name */
     private final String mPackageName;
@@ -40,15 +40,14 @@ public final class AppInfo {
      */
     public static final class Builder {
         private final String mPackageName;
-        private final String mName;
-        private final Bitmap mIcon;
+        @Nullable private final String mName;
+        @Nullable private final Bitmap mIcon;
 
         /**
          * @param packageName package name of the application
          * @param name name/label of the application. Optional
          * @param icon icon of the application. Optional.
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         public Builder(@NonNull String packageName, @Nullable String name, @Nullable Bitmap icon) {
             Objects.requireNonNull(packageName);
             mPackageName = packageName;
@@ -65,7 +64,6 @@ public final class AppInfo {
         }
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private AppInfo(@NonNull String packageName, @Nullable String name, @Nullable Bitmap icon) {
         Objects.requireNonNull(packageName);
         mPackageName = packageName;

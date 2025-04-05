@@ -19,6 +19,7 @@ import static android.health.connect.datatypes.validation.ValidationUtils.valida
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.units.BloodGlucose;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.BloodGlucoseRecordInternal;
@@ -163,16 +164,22 @@ public final class BloodGlucoseRecord extends InstantRecord {
     public static final class SpecimenSource {
         /** Fluid used to measure glucose is not identified. */
         public static final int SPECIMEN_SOURCE_UNKNOWN = 0;
+
         /** Glucose was measured in interstitial fluid. */
         public static final int SPECIMEN_SOURCE_INTERSTITIAL_FLUID = 1;
+
         /** Glucose was measured in capillary blood. */
         public static final int SPECIMEN_SOURCE_CAPILLARY_BLOOD = 2;
+
         /** Glucose was measured in plasma. */
         public static final int SPECIMEN_SOURCE_PLASMA = 3;
+
         /** Glucose was measured in serum. */
         public static final int SPECIMEN_SOURCE_SERUM = 4;
+
         /** Glucose was measured in tears. */
         public static final int SPECIMEN_SOURCE_TEARS = 5;
+
         /** Glucose was measured from whole blood. */
         public static final int SPECIMEN_SOURCE_WHOLE_BLOOD = 6;
 
@@ -214,12 +221,11 @@ public final class BloodGlucoseRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        BloodGlucoseRecord that = (BloodGlucoseRecord) o;
+        if (!(o instanceof BloodGlucoseRecord that)) return false;
         return getSpecimenSource() == that.getSpecimenSource()
                 && getRelationToMeal() == that.getRelationToMeal()
                 && getMealType() == that.getMealType()
@@ -292,6 +298,7 @@ public final class BloodGlucoseRecord extends InstantRecord {
             mZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
+
         /**
          * @return Object of {@link BloodGlucoseRecord} without validating the values.
          * @hide
@@ -331,17 +338,7 @@ public final class BloodGlucoseRecord extends InstantRecord {
     public BloodGlucoseRecordInternal toRecordInternal() {
         BloodGlucoseRecordInternal recordInternal =
                 (BloodGlucoseRecordInternal)
-                        new BloodGlucoseRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new BloodGlucoseRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setSpecimenSource(mSpecimenSource);

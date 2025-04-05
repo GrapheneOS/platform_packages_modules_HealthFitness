@@ -233,17 +233,16 @@ public final class RateLimiter {
         mQuotaBucketToAcrossAppsRemainingMemoryQuota.clear();
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private Object getLockObject(int uid) {
-        mLocks.putIfAbsent(uid, uid);
-        return mLocks.get(uid);
+        Integer previous = mLocks.putIfAbsent(uid, uid);
+        return previous == null ? uid : previous;
     }
 
     private void spendApiCallResourcesIfAvailable(int uid, List<Integer> quotaBuckets, int cost) {
         Map<Integer, Float> quotaBucketToAvailableQuotaMap =
                 getQuotaBucketToAvailableQuotaMap(uid, quotaBuckets);
-        checkIfResourcesAreAvailable(quotaBucketToAvailableQuotaMap, quotaBuckets, cost);
-        spendAvailableResources(uid, quotaBucketToAvailableQuotaMap, quotaBuckets, cost);
+        checkIfResourcesAreAvailable(quotaBucketToAvailableQuotaMap, cost);
+        spendAvailableResources(uid, quotaBucketToAvailableQuotaMap, cost);
     }
 
     private void spendApiAndMemoryResourcesIfAvailable(
@@ -265,28 +264,23 @@ public final class RateLimiter {
                     memoryCost,
                     QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_ACROSS_APPS_15M);
         }
-        checkIfResourcesAreAvailable(apiQuotaBucketToAvailableQuotaMap, apiQuotaBuckets, cost);
-        checkIfResourcesAreAvailable(
-                memoryQuotaBucketToAvailableQuotaMap, memoryQuotaBuckets, memoryCost);
+        checkIfResourcesAreAvailable(apiQuotaBucketToAvailableQuotaMap, cost);
+        checkIfResourcesAreAvailable(memoryQuotaBucketToAvailableQuotaMap, memoryCost);
         if (!isInForeground) {
             spendAvailableResources(
                     getQuota(QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_ACROSS_APPS_15M),
                     QuotaBucket.QUOTA_BUCKET_DATA_PUSH_LIMIT_ACROSS_APPS_15M,
                     memoryCost);
         }
-        spendAvailableResources(uid, apiQuotaBucketToAvailableQuotaMap, apiQuotaBuckets, cost);
-        spendAvailableResources(
-                uid, memoryQuotaBucketToAvailableQuotaMap, memoryQuotaBuckets, memoryCost);
+        spendAvailableResources(uid, apiQuotaBucketToAvailableQuotaMap, cost);
+        spendAvailableResources(uid, memoryQuotaBucketToAvailableQuotaMap, memoryCost);
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private void checkIfResourcesAreAvailable(
-            Map<Integer, Float> quotaBucketToAvailableQuotaMap,
-            List<Integer> quotaBuckets,
-            long cost) {
-        for (@QuotaBucket.Type int quotaBucket : quotaBuckets) {
-            hasSufficientQuota(quotaBucketToAvailableQuotaMap.get(quotaBucket), cost, quotaBucket);
-        }
+            Map<Integer, Float> quotaBucketToAvailableQuotaMap, long cost) {
+        quotaBucketToAvailableQuotaMap.forEach(
+                (Integer quotaBucket, Float available) ->
+                        hasSufficientQuota(available, cost, quotaBucket));
     }
 
     private void spendAvailableResources(Quota quota, Integer quotaBucket, long memoryCost) {
@@ -294,27 +288,24 @@ public final class RateLimiter {
         quota.setLastUpdatedTimeMillis(SystemClock.elapsedRealtime());
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private void spendAvailableResources(
-            int uid,
-            Map<Integer, Float> quotaBucketToAvailableQuotaMap,
-            List<Integer> quotaBuckets,
-            long cost) {
-        for (@QuotaBucket.Type int quotaBucket : quotaBuckets) {
-            spendResources(uid, quotaBucket, quotaBucketToAvailableQuotaMap.get(quotaBucket), cost);
-        }
+            int uid, Map<Integer, Float> quotaBucketToAvailableQuotaMap, long cost) {
+        quotaBucketToAvailableQuotaMap.forEach(
+                (Integer quotaBucket, Float available) ->
+                        spendResources(uid, quotaBucket, available, cost));
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private void spendResources(
             int uid, @QuotaBucket.Type int quotaBucket, float availableQuota, long cost) {
-        mUserIdToQuotasMap
-                .get(uid)
-                .put(
-                        quotaBucket,
-                        new Quota(
-                                /* lastUpdatedTimeMillis= */ SystemClock.elapsedRealtime(),
-                                availableQuota - cost));
+        Map<Integer, Quota> bucketToQuotaMap = mUserIdToQuotasMap.get(uid);
+        if (bucketToQuotaMap != null) {
+            // Null should only happen if the cache is cleared mid update.
+            bucketToQuotaMap.put(
+                    quotaBucket,
+                    new Quota(
+                            /* lastUpdatedTimeMillis= */ SystemClock.elapsedRealtime(),
+                            availableQuota - cost));
+        }
     }
 
     private Map<Integer, Float> getQuotaBucketToAvailableQuotaMap(

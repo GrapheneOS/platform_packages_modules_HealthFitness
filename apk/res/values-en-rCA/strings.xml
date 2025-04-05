@@ -368,6 +368,10 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"mindfulness"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"Read mindfulness"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"Write mindfulness"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"Nicotine intake"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"nicotine intake"</string>
+    <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Read nicotine intake"</string>
+    <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Write nicotine intake"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to read"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Allow “<xliff:g id="APP_NAME">%1$s</xliff:g>” to write"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Allow"</string>

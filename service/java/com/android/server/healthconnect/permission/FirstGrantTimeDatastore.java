@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.permission;
 
 import android.annotation.IntDef;
+import android.annotation.Nullable;
 import android.os.UserHandle;
 
 import java.io.File;
@@ -43,8 +44,10 @@ public interface FirstGrantTimeDatastore {
     /**
      * Read {@link UserGrantTimeState for given user}.
      *
+     * @return the grant time state or null if no valid storage can be found.
      * @hide
      */
+    @Nullable
     UserGrantTimeState readForUser(UserHandle user, @DataType int dataType);
 
     /**

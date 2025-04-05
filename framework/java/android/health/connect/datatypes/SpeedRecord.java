@@ -322,18 +322,7 @@ public final class SpeedRecord extends IntervalRecord {
     @Override
     public SpeedRecordInternal toRecordInternal() {
         SpeedRecordInternal recordInternal =
-                (SpeedRecordInternal)
-                        new SpeedRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                (SpeedRecordInternal) new SpeedRecordInternal().setMetaData(getMetadata());
         Set<SpeedRecordInternal.SpeedRecordSample> samples = new HashSet<>(getSamples().size());
 
         for (SpeedRecord.SpeedRecordSample speedRecordSample : getSamples()) {
@@ -343,10 +332,7 @@ public final class SpeedRecord extends IntervalRecord {
                             speedRecordSample.getTime().toEpochMilli()));
         }
         recordInternal.setSamples(samples);
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
 
         return recordInternal;
     }

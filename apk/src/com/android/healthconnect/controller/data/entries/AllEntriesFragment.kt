@@ -275,6 +275,9 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
             view.findViewById<RecyclerView?>(R.id.data_entries_list).also {
                 it.adapter = adapter
                 it.layoutManager = LinearLayoutManager(context, VERTICAL, false)
+                if (isExpressiveThemeEnabled) {
+                    it.addItemDecoration(MarginItemDecoration)
+                }
             }
 
         return view

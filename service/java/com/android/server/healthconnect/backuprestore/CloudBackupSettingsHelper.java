@@ -19,17 +19,17 @@ package com.android.server.healthconnect.backuprestore;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.proto.backuprestore.Settings;
-import com.android.server.healthconnect.proto.backuprestore.Settings.AppInfo;
-import com.android.server.healthconnect.proto.backuprestore.Settings.AutoDeleteFrequencyProto;
-import com.android.server.healthconnect.proto.backuprestore.Settings.DistanceUnitProto;
-import com.android.server.healthconnect.proto.backuprestore.Settings.EnergyUnitProto;
-import com.android.server.healthconnect.proto.backuprestore.Settings.HeightUnitProto;
-import com.android.server.healthconnect.proto.backuprestore.Settings.PriorityList;
-import com.android.server.healthconnect.proto.backuprestore.Settings.TemperatureUnitProto;
-import com.android.server.healthconnect.proto.backuprestore.Settings.WeightUnitProto;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AppInfo;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.AutoDeleteFrequencyProto;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.DistanceUnitProto;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.EnergyUnitProto;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.HeightUnitProto;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.PriorityList;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.TemperatureUnitProto;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings.WeightUnitProto;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import java.util.HashMap;

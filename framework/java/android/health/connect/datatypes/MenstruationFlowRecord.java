@@ -19,6 +19,7 @@ import static android.health.connect.datatypes.validation.ValidationUtils.valida
 
 import android.annotation.IntDef;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.internal.datatypes.MenstruationFlowRecordInternal;
 
 import java.lang.annotation.Retention;
@@ -96,12 +97,11 @@ public final class MenstruationFlowRecord extends InstantRecord {
      * @param o the reference object with which to compare.
      * @return {@code true} if this object is the same as the obj
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!super.equals(o)) return false;
-        MenstruationFlowRecord that = (MenstruationFlowRecord) o;
+        if (!(o instanceof MenstruationFlowRecord that)) return false;
         return getFlow() == that.getFlow();
     }
 
@@ -174,17 +174,7 @@ public final class MenstruationFlowRecord extends InstantRecord {
     public MenstruationFlowRecordInternal toRecordInternal() {
         MenstruationFlowRecordInternal recordInternal =
                 (MenstruationFlowRecordInternal)
-                        new MenstruationFlowRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                        new MenstruationFlowRecordInternal().setMetaData(getMetadata());
         recordInternal.setTime(getTime().toEpochMilli());
         recordInternal.setZoneOffset(getZoneOffset().getTotalSeconds());
         recordInternal.setFlow(mFlow);

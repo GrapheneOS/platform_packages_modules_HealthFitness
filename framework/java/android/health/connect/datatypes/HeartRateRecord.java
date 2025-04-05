@@ -45,6 +45,7 @@ public final class HeartRateRecord extends IntervalRecord {
                     AggregationType.MAX,
                     RECORD_TYPE_HEART_RATE,
                     Long.class);
+
     /**
      * Metric identifier to get min heart rate in beats per minute using aggregate APIs in {@link
      * HealthConnectManager}
@@ -233,6 +234,7 @@ public final class HeartRateRecord extends IntervalRecord {
         private final List<HeartRateSample> mHeartRateSamples;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
+
         /**
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
@@ -335,18 +337,7 @@ public final class HeartRateRecord extends IntervalRecord {
     @Override
     public HeartRateRecordInternal toRecordInternal() {
         HeartRateRecordInternal recordInternal =
-                (HeartRateRecordInternal)
-                        new HeartRateRecordInternal()
-                                .setUuid(getMetadata().getId())
-                                .setPackageName(getMetadata().getDataOrigin().getPackageName())
-                                .setLastModifiedTime(
-                                        getMetadata().getLastModifiedTime().toEpochMilli())
-                                .setClientRecordId(getMetadata().getClientRecordId())
-                                .setClientRecordVersion(getMetadata().getClientRecordVersion())
-                                .setManufacturer(getMetadata().getDevice().getManufacturer())
-                                .setModel(getMetadata().getDevice().getModel())
-                                .setDeviceType(getMetadata().getDevice().getType())
-                                .setRecordingMethod(getMetadata().getRecordingMethod());
+                (HeartRateRecordInternal) new HeartRateRecordInternal().setMetaData(getMetadata());
         Set<HeartRateRecordInternal.HeartRateSample> samples = new HashSet<>(getSamples().size());
 
         for (HeartRateRecord.HeartRateSample heartRateSample : getSamples()) {
@@ -356,10 +347,7 @@ public final class HeartRateRecord extends IntervalRecord {
                             heartRateSample.getTime().toEpochMilli()));
         }
         recordInternal.setSamples(samples);
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
 
         return recordInternal;
     }
