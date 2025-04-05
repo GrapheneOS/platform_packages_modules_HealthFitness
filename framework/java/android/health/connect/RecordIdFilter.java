@@ -25,20 +25,19 @@ import java.util.Objects;
 /** A class to represent filtering based on record ID or client ID. */
 public class RecordIdFilter {
     private final Class<? extends Record> mRecordType;
-    private final String mId;
-    private final String mClientRecordId;
+    @Nullable private final String mId;
+    @Nullable private final String mClientRecordId;
 
     /**
      * Creates an instance of Record id filter based on client record id.
      *
-     * <p>Note: this only works when reading own records, using client record ids to read
-     * records inserted by another app will return no result.
+     * <p>Note: this only works when reading own records, using client record ids to read records
+     * inserted by another app will return no result.
      *
      * @param recordType Record class for which the client record id must be set.
      * @param clientRecordId Client identifier that was set while inserting the record.
      * @return Object of {@link RecordIdFilter}
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public static RecordIdFilter fromClientRecordId(
             @NonNull Class<? extends Record> recordType, @NonNull String clientRecordId) {
@@ -55,7 +54,6 @@ public class RecordIdFilter {
      *     HealthConnectManager#insertRecords}
      * @return Object of {@link RecordIdFilter}
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public static RecordIdFilter fromId(
             @NonNull Class<? extends Record> recordType, @NonNull String id) {
@@ -64,7 +62,10 @@ public class RecordIdFilter {
         return new RecordIdFilter(recordType, id, null);
     }
 
-    private RecordIdFilter(Class<? extends Record> recordType, String id, String clientRecordId) {
+    private RecordIdFilter(
+            Class<? extends Record> recordType,
+            @Nullable String id,
+            @Nullable String clientRecordId) {
         mRecordType = recordType;
         mId = id;
         mClientRecordId = clientRecordId;

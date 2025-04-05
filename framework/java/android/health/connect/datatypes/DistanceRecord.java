@@ -217,10 +217,7 @@ public final class DistanceRecord extends IntervalRecord {
     public DistanceRecordInternal toRecordInternal() {
         DistanceRecordInternal recordInternal =
                 (DistanceRecordInternal) new DistanceRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
         recordInternal.setDistance(mDistance.getInMeters());
         return recordInternal;
     }

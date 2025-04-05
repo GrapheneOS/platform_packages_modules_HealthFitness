@@ -50,7 +50,6 @@ import android.annotation.Nullable;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.datatypes.FhirVersion;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 
 import org.json.JSONArray;
@@ -133,9 +132,7 @@ public class MedicalResourceValidator {
 
         validateResourceId(extractedFhirResourceId);
         validateFhirVersion(mFhirVersion, extractedFhirResourceId);
-        if (Flags.phrFhirStructuralValidation()) {
-            validateNoContainedResourcesPresent(parsedFhirJsonObj, extractedFhirResourceId);
-        }
+        validateNoContainedResourcesPresent(parsedFhirJsonObj, extractedFhirResourceId);
 
         @FhirResourceType
         int fhirResourceTypeInt =

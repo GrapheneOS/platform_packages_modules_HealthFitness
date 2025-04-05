@@ -37,22 +37,17 @@ import java.util.UUID;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION)
 public final class ExerciseSessionRecordInternal
         extends IntervalRecordInternal<ExerciseSessionRecord> {
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private String mNotes;
+    @Nullable private String mNotes;
 
     private int mExerciseType;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private String mTitle;
+    @Nullable private String mTitle;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private ExerciseRouteInternal mExerciseRoute;
+    @Nullable private ExerciseRouteInternal mExerciseRoute;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private List<ExerciseLapInternal> mExerciseLaps;
+    @Nullable private List<ExerciseLapInternal> mExerciseLaps;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private List<ExerciseSegmentInternal> mExerciseSegments;
+    @Nullable private List<ExerciseSegmentInternal> mExerciseSegments;
 
     private boolean mHasRoute;
 
@@ -200,16 +195,20 @@ public final class ExerciseSessionRecordInternal
 
         builder.setHasRoute(mHasRoute);
 
-        if (getLaps() != null) {
-            builder.setLaps(ExerciseLapInternal.getExternalLaps(mExerciseLaps));
+        List<ExerciseLapInternal> laps = mExerciseLaps;
+        if (laps != null) {
+            builder.setLaps(ExerciseLapInternal.getExternalLaps(laps));
         }
 
-        if (getSegments() != null) {
-            builder.setSegments(ExerciseSegmentInternal.getExternalSegments(mExerciseSegments));
+        List<ExerciseSegmentInternal> segments = mExerciseSegments;
+        if (segments != null) {
+            builder.setSegments(ExerciseSegmentInternal.getExternalSegments(segments));
         }
 
-        builder.setPlannedExerciseSessionId(
-                mPlannedExerciseSessionId == null ? null : mPlannedExerciseSessionId.toString());
+        UUID sessionId = mPlannedExerciseSessionId;
+        if (sessionId != null) {
+            builder.setPlannedExerciseSessionId(sessionId.toString());
+        }
         return builder.buildWithoutValidation();
     }
 
@@ -226,7 +225,6 @@ public final class ExerciseSessionRecordInternal
                 mPlannedExerciseSessionId == null ? null : mPlannedExerciseSessionId.toString());
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @Override
     public void populateIntervalRecordFrom(@NonNull Parcel parcel) {
         mNotes = parcel.readString();

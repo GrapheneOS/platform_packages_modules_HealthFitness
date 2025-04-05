@@ -34,14 +34,13 @@ import java.util.Set;
  */
 @SystemApi
 public final class DeleteUsingFiltersRequest {
-    private final TimeRangeFilter mTimeRangeFilter;
+    @Nullable private final TimeRangeFilter mTimeRangeFilter;
     private final Set<Class<? extends Record>> mRecordTypes;
     private final Set<DataOrigin> mDataOrigins;
 
     /**
      * @see Builder
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     private DeleteUsingFiltersRequest(
             @Nullable TimeRangeFilter timeRangeFilter,
             @NonNull Set<Class<? extends Record>> recordTypes,
@@ -81,8 +80,7 @@ public final class DeleteUsingFiltersRequest {
         private final Set<DataOrigin> mDataOrigins = new ArraySet<>();
         private final Set<Class<? extends Record>> mRecordTypes = new ArraySet<>();
 
-        @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-        private TimeRangeFilter mTimeRangeFilter;
+        @Nullable private TimeRangeFilter mTimeRangeFilter;
 
         /**
          * Sets {@link DataOrigin} to be deleted for this builder. If not set all the data origins

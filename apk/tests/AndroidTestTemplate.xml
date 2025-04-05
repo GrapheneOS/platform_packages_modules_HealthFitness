@@ -40,6 +40,7 @@
     <!-- Reset display and font -->
     <option name="run-command" value="settings put system font_scale 0.85" />
     <option name="run-command" value="wm density reset" />
+    <option name="run-command" value="wm size reset" />
     <!-- disable DeprecatedAbi warning -->
     <option name="run-command" value="setprop debug.wm.disable_deprecated_abi_dialog 1" />
   </target_preparer>

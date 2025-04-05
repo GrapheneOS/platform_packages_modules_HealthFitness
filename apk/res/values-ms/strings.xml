@@ -368,6 +368,10 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"kesedaran minda"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"Baca data kesedaran minda"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"Tulis data kesedaran minda"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"Pengambilan nikotin"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"pengambilan nikotin"</string>
+    <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Baca pengambilan nikotin"</string>
+    <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Tulis pengambilan nikotin"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Benarkan “<xliff:g id="APP_NAME">%1$s</xliff:g>” membaca"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Benarkan “<xliff:g id="APP_NAME">%1$s</xliff:g>” menulis"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Benarkan"</string>
@@ -1180,8 +1184,7 @@
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Diakses <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Diakses semalam <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"Diakses <xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
-    <!-- no translation found for request_permissions_allow_all_the_time (559097424823775606) -->
-    <skip />
+    <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"Sepanjang masa"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Benarkan kebenaran yang dipilih"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Semasa menggunakan apl"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Nafikan semua"</string>
@@ -1190,8 +1193,7 @@
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Kecergasan dan kesejahteraan"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Sepanjang masa"</string>
-    <!-- no translation found for view_permissions_while_in_use_cap (675022827435901270) -->
-    <skip />
+    <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Semasa menggunakan apl"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> boleh mengakses semua data kecergasan dan kesejahteraan anda sepanjang masa"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> boleh mengakses semua data kecergasan dan kesejahteraan anda semasa sedang digunakan"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Dibenarkan untuk mengakses"</string>
@@ -1207,8 +1209,7 @@
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Tanda silang"</string>
     <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Pada masa ini, <xliff:g id="APP_NAME">%1$s</xliff:g> boleh mengakses data kecergasan dan kesejahteraan sepanjang masa"</string>
     <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Pada masa ini, <xliff:g id="APP_NAME">%1$s</xliff:g> boleh mengakses data kecergasan dan kesejahteraan semasa apl digunakan"</string>
-    <!-- no translation found for allow_all_the_time_prompt (3749806575200677882) -->
-    <skip />
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Pilih masa <xliff:g id="APP_NAME">%1$s</xliff:g> boleh mengakses data kecergasan dan kesejahteraan anda"</string>
     <string name="current_access" msgid="1457167070428176139">"<xliff:g id="APP_NAME">%1$s</xliff:g> memiliki akses kepada <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
     <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Urus kebenaran kecergasan dan kesejahteraan"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Digunakan oleh 1 apl}other{Digunakan oleh # apl}}"</string>

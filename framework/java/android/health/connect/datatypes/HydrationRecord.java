@@ -209,10 +209,7 @@ public final class HydrationRecord extends IntervalRecord {
     public HydrationRecordInternal toRecordInternal() {
         HydrationRecordInternal recordInternal =
                 (HydrationRecordInternal) new HydrationRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
         recordInternal.setVolume(mVolume.getInLiters());
         return recordInternal;
     }

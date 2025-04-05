@@ -404,7 +404,6 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public void revokeHealthPermission(
@@ -424,7 +423,6 @@ public class HealthConnectManager {
      *
      * @hide
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
     @UserHandleAware
     public void revokeAllHealthPermissions(@NonNull String packageName, @Nullable String reason) {
@@ -1755,7 +1753,6 @@ public class HealthConnectManager {
      * @throws RuntimeException for internal errors
      * @hide
      */
-    @SuppressWarnings("NullAway") // TODO: b/178748627 - fix this suppression.
     @WorkerThread
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public void configureScheduledExport(@Nullable ScheduledExportSettings settings) {
@@ -2860,7 +2857,6 @@ public class HealthConnectManager {
      * @hide
      */
     @SystemApi
-    @SuppressWarnings("NullAway") // TODO: b/178748627 - fix this suppression.
     @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE)
     @RequiresPermission(BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS)
     public void getChangesForBackup(

@@ -418,10 +418,7 @@ public final class SleepSessionRecord extends IntervalRecord {
         SleepSessionRecordInternal recordInternal =
                 (SleepSessionRecordInternal)
                         new SleepSessionRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
         recordInternal.setSleepStages(
                 getStages().stream().map(Stage::toInternalStage).collect(Collectors.toList()));
 

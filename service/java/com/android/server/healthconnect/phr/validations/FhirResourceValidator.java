@@ -20,8 +20,6 @@ import static android.health.connect.datatypes.FhirResource.FhirResourceType;
 
 import android.health.connect.datatypes.FhirVersion;
 
-import com.android.healthfitness.flags.Flags;
-
 import org.json.JSONObject;
 
 /**
@@ -34,10 +32,6 @@ public class FhirResourceValidator {
     private final FhirObjectTypeValidator mFhirObjectTypeValidator;
 
     public FhirResourceValidator() {
-        if (!Flags.phrFhirStructuralValidation()) {
-            throw new UnsupportedOperationException("Validating FHIR resources is not supported.");
-        }
-
         // TODO: b/374058373 - When we support R5 or other versions this needs to be updated to
         //  support other fhir versions.
         FhirSpecProvider fhirSpec = new FhirSpecProvider(FhirVersion.parseFhirVersion("4.0.1"));

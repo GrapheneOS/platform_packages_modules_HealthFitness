@@ -212,10 +212,7 @@ public final class ElevationGainedRecord extends IntervalRecord {
         ElevationGainedRecordInternal recordInternal =
                 (ElevationGainedRecordInternal)
                         new ElevationGainedRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
         recordInternal.setElevation(mElevation.getInMeters());
         return recordInternal;
     }

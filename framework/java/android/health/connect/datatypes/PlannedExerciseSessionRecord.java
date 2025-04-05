@@ -427,10 +427,7 @@ public final class PlannedExerciseSessionRecord extends IntervalRecord {
         PlannedExerciseSessionRecordInternal recordInternal =
                 (PlannedExerciseSessionRecordInternal)
                         new PlannedExerciseSessionRecordInternal().setMetaData(getMetadata());
-        recordInternal.setStartTime(getStartTime().toEpochMilli());
-        recordInternal.setEndTime(getEndTime().toEpochMilli());
-        recordInternal.setStartZoneOffset(getStartZoneOffset().getTotalSeconds());
-        recordInternal.setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
+        recordInternal.setTimeInterval(this);
         if (getNotes() != null) {
             recordInternal.setNotes(getNotes().toString());
         }
