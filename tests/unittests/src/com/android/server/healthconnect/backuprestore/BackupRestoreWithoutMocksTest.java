@@ -139,10 +139,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_D2D
-    })
+    @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_D2D})
     public void testGetAllDataForBackup_disableD2dFlagEnabled_copiesAllDataExceptPhr()
             throws Exception {
         // Insert a MedicalDataSource and MedicalResource.
@@ -195,7 +192,6 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD})
     @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_D2D})
     public void testGetAllDataForBackup_disableD2dFlagDisabled_copiesAllDataIncludingPhr()
             throws Exception {
@@ -250,7 +246,6 @@ public class BackupRestoreWithoutMocksTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
     })
     public void testMerge_withPhrMergeEnabled_over5000Resources_copiesAllPhrData()
@@ -308,7 +303,6 @@ public class BackupRestoreWithoutMocksTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
     })
     public void testMerge_withPhrMergeEnabled_copiesAllPhrData() throws Exception {
@@ -367,7 +361,6 @@ public class BackupRestoreWithoutMocksTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
     })
     public void testMerge_withPhrMergeEnabled_doesNotCopyMedicalDataSourceDuplicates()
@@ -433,7 +426,6 @@ public class BackupRestoreWithoutMocksTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
     })
     public void testMerge_withPhrMergeEnabled_doesNotCopyMedicalResourceDuplicates()
@@ -497,7 +489,6 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD})
     @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT})
     public void testMerge_withPhrMergeDisabled_doesNotCopyPhrData() throws Exception {
         HealthConnectContext dbContext =

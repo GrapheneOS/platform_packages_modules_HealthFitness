@@ -29,16 +29,12 @@ import static org.junit.Assert.assertThrows;
 
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.os.Parcel;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
-
-import com.android.healthfitness.flags.Flags;
 
 import org.junit.Rule;
 import org.junit.Test;
 
-@RequiresFlagsEnabled(Flags.FLAG_PERSONAL_HEALTH_RECORD)
 public class UpsertMedicalResourceRequestTest {
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();

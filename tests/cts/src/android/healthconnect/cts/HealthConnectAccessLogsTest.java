@@ -48,7 +48,6 @@ import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 import static com.android.healthfitness.flags.Flags.FLAG_ADD_MISSING_ACCESS_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -477,7 +476,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testAccessLogs_phrFlagOn() throws InterruptedException {
         List<AccessLog> oldAccessLogsResponse = queryAccessLogs();
         // TODO(b/337018927): Change below to upsert and read MedicalResources once we actually

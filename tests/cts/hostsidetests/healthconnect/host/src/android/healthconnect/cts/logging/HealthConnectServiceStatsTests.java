@@ -30,7 +30,6 @@ import static android.healthfitness.api.ApiMethod.UPSERT_MEDICAL_RESOURCES;
 import static android.healthfitness.api.ApiStatus.ERROR;
 import static android.healthfitness.api.ApiStatus.SUCCESS;
 
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -126,7 +125,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testCreateMedicalDataSourceSuccess() throws Exception {
@@ -141,7 +139,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testCreateMedicalDataSourceError() throws Exception {
@@ -156,7 +153,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testGetMedicalDataSourcesByIdsSuccess() throws Exception {
@@ -171,7 +167,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testGetMedicalDataSourcesByIdsError() throws Exception {
@@ -186,7 +181,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testGetMedicalDataSourcesByRequestSuccess()
@@ -202,7 +196,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testGetMedicalDataSourcesByRequestError() throws Exception {
@@ -217,7 +210,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testDeleteMedicalDataSourceWithDataSuccess()
@@ -233,7 +225,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testDeleteMedicalDataSourceWithDataError()
@@ -249,7 +240,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testUpsertMedicalResourcesSuccess() throws Exception {
@@ -264,7 +254,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testUpsertMedicalResourcesError() throws Exception {
@@ -279,7 +268,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testReadMedicalResourcesByIdsSuccess() throws Exception {
@@ -294,7 +282,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testReadMedicalResourcesByIdsError() throws Exception {
@@ -309,7 +296,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testReadMedicalResourcesByRequestsSuccess()
@@ -325,7 +311,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testReadMedicalResourcesByRequestsError() throws Exception {
@@ -340,7 +325,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testDeleteMedicalResourcesByIdsSuccess() throws Exception {
@@ -355,7 +339,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testDeleteMedicalResourcesByIdsError() throws Exception {
@@ -370,7 +353,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testDeleteMedicalResourcesByRequestSuccess()
@@ -386,7 +368,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void testPhrApiAndStatusLogs_testDeleteMedicalResourcesByRequestError()

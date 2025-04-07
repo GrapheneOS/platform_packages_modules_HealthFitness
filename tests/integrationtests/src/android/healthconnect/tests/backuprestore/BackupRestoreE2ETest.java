@@ -150,7 +150,6 @@ public class BackupRestoreE2ETest {
 
     @Test
     @RequiresFlagsEnabled({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
     })
     @RequiresFlagsDisabled(Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_D2D)

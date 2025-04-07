@@ -24,13 +24,10 @@ import static org.junit.Assert.assertThrows;
 
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.os.Parcel;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.android.healthfitness.flags.Flags;
 
 import com.google.common.collect.Sets;
 
@@ -40,7 +37,6 @@ import org.junit.runner.RunWith;
 
 import java.util.Set;
 
-@RequiresFlagsEnabled(Flags.FLAG_PERSONAL_HEALTH_RECORD)
 @RunWith(AndroidJUnit4.class)
 public class GetMedicalDataSourcesRequestTest {
     @Rule

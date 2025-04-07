@@ -28,8 +28,6 @@ import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_
 import static android.healthconnect.cts.phr.utils.ObservationBuilder.ObservationCategory.LABORATORY;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.HealthConnectManager;
@@ -49,7 +47,6 @@ import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
@@ -91,7 +88,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testPatientInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource patient =
@@ -109,7 +105,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testLabResultsInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource labResult =
@@ -133,7 +128,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testPregnancyInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource pregnancyStatus =
@@ -155,7 +149,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testSocialHistoryInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource smoking =
@@ -177,7 +170,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testVitalSignsInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource heartRate =
@@ -196,7 +188,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testConditionInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource condition =
@@ -213,7 +204,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testPractitionerInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource practitioner =
@@ -231,7 +221,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testPractitionerRoleInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource practitioner =
@@ -249,7 +238,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testProcedureInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource procedure =
@@ -266,7 +254,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testMedicationInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource medication =
@@ -284,7 +271,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testMedicationStatementInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource statement =
@@ -302,7 +288,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testMedicationRequestInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource medicationRequest =
@@ -319,7 +304,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testEncounterInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource encounter =
@@ -337,7 +321,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testLocationInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource location =
@@ -354,7 +337,6 @@ public class MedicalResourceTypesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testOrganizationInsertAndRead() throws Exception {
         MedicalDataSource dataSource1 = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         MedicalResource organization =

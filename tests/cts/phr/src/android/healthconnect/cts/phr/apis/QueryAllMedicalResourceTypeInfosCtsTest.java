@@ -37,7 +37,6 @@ import static android.healthconnect.cts.utils.TestUtils.finishMigrationWithShell
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -50,7 +49,6 @@ import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
@@ -97,7 +95,6 @@ public class QueryAllMedicalResourceTypeInfosCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testQueryAllMedicalResourceTypeInfos_migrationInProgress_apiBlocked()
             throws Exception {
         startMigrationWithShellPermissionIdentity();
@@ -117,7 +114,6 @@ public class QueryAllMedicalResourceTypeInfosCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testQueryAllMedicalResourceTypeInfos_withManagePerm_hasData_succeeds()
             throws Exception {
         // Create some data sources with data: ds1 contains [vaccine, differentVaccine,
@@ -202,7 +198,6 @@ public class QueryAllMedicalResourceTypeInfosCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testQueryAllMedicalResourceTypeInfos_withManagePerm_noDataSources_succeeds() {
         HealthConnectReceiver<List<MedicalResourceTypeInfo>> receiver =
                 new HealthConnectReceiver<>();
@@ -244,7 +239,6 @@ public class QueryAllMedicalResourceTypeInfosCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testQueryAllMedicalResourceTypeInfos_withManagePerm_noMedicalResources_succeeds()
             throws Exception {
         mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -287,7 +281,6 @@ public class QueryAllMedicalResourceTypeInfosCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testQueryAllMedicalResourceTypeInfos_withoutManagePerm_throws()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResourceTypeInfo>> receiver =
