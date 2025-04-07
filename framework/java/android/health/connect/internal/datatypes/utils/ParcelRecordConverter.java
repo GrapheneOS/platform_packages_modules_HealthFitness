@@ -17,6 +17,7 @@
 package android.health.connect.internal.datatypes.utils;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.os.Parcel;
@@ -31,8 +32,7 @@ import java.util.Objects;
  * @hide
  */
 public final class ParcelRecordConverter {
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private static volatile ParcelRecordConverter sParcelRecordConverter = null;
+    @Nullable private static volatile ParcelRecordConverter sParcelRecordConverter = null;
 
     private final Map<Integer, Class<? extends RecordInternal<?>>> mDataTypeClassMap;
 
@@ -44,11 +44,13 @@ public final class ParcelRecordConverter {
 
     @NonNull
     public static synchronized ParcelRecordConverter getInstance() {
-        if (sParcelRecordConverter == null) {
-            sParcelRecordConverter = new ParcelRecordConverter();
+        ParcelRecordConverter instance = sParcelRecordConverter;
+        if (instance == null) {
+            instance = new ParcelRecordConverter();
+            sParcelRecordConverter = instance;
         }
 
-        return sParcelRecordConverter;
+        return instance;
     }
 
     /** Returns a record for {@code bundle}, assuming it is of type represented by {@code type} */
