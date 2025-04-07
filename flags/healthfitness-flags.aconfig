@@ -510,21 +510,21 @@ flag {
 }
 
 flag {
-    name: "exercise_segment_weight"
+    name: "exercise_segment_improvements"
     namespace: "health_fitness_aconfig"
-    description: "Enables changes to add optional weight data to exercise segments APIs"
+    description: "Enables changes to add new optional fields, weight, set index and RPE to exercise segments APIs"
     bug: "396405077"
     is_fixed_read_only: true
-    is_exported: true
+    is_exported: false
 }
 
 flag {
-    name: "exercise_segment_weight_db"
+    name: "exercise_segment_improvements_db"
     namespace: "health_fitness_aconfig"
-    description: "Enables database changes to add optional weight data to exercise segments APIs"
+    description: "Enables database changes to add new optional fields, weight, set index and to exercise segments APIs"
     bug: "396405077"
     is_fixed_read_only: true
-    is_exported: true
+    is_exported: false
 }
 
 flag {
