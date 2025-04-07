@@ -31,6 +31,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.util.Pair;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -107,14 +109,15 @@ public class SpeedRecordHelper
     @Override
     @Nullable
     public AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case SPEED_RECORD_SPEED_MAX:
             case SPEED_RECORD_SPEED_MIN:
             case SPEED_RECORD_SPEED_AVG:
                 return new AggregateResult<>(
-                                results.getDouble(results.getColumnIndex(SPEED_COLUMN_NAME)))
-                        .setZoneOffset(getZoneOffset(results));
+                        results.getDouble(results.getColumnIndex(SPEED_COLUMN_NAME)),
+                        getZoneOffset(results),
+                        dataOrigins);
             default:
                 return null;
         }

@@ -31,6 +31,7 @@ import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.TimeRangeFilter;
 import android.health.connect.TimeRangeFilterHelper;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.util.ArrayMap;
 import android.util.Pair;
 import android.util.Slog;
@@ -48,9 +49,10 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * A request for {@link TransactionManager} to query the DB for aggregation results
@@ -67,7 +69,6 @@ public class AggregateRecordRequest {
     private final List<String> mColumnNamesToAggregate;
     private final AggregationType<?> mAggregationType;
     private final RecordHelper<?> mRecordHelper;
-    private final Map<Integer, AggregateResult<?>> mAggregateResults = new ArrayMap<>();
 
     /**
      * Represents "start time" for interval record, and "time" for instant record.
@@ -138,15 +139,12 @@ public class AggregateRecordRequest {
         return mRecordHelper;
     }
 
-    /**
-     * @return results fetched after performing aggregate operation for this class.
-     *     <p>Note: Only available after the call to {@link
-     *     TransactionManager#populateWithAggregation} has been made
-     */
-    public List<AggregateResult<?>> getAggregateResults() {
+    /** {@return results fetched after performing aggregate operation for this class}. */
+    private List<AggregateResult<?>> getAggregateResults(
+            ArrayMap<Integer, AggregateResult<?>> results) {
         List<AggregateResult<?>> aggregateResults = new ArrayList<>(mGroupBySize);
         for (int i = 0; i < mGroupBySize; i++) {
-            aggregateResults.add(mAggregateResults.get(i));
+            aggregateResults.add(results.get(i));
         }
 
         return aggregateResults;
@@ -241,23 +239,21 @@ public class AggregateRecordRequest {
         }
     }
 
-    /**
-     * Fetches the result of the aggregation and returns the packages contributing to the given
-     * aggregation.
-     */
-    public List<String> processResultsAndReturnContributingPackages(
-            Cursor cursor, Cursor metaDataCursor) {
+    /** Returns the result of the aggregation. */
+    public List<AggregateResult<?>> processResults(
+            Cursor cursor, List<String> dataOriginsPackageNames) {
+        Set<DataOrigin> dataOrigins = AggregateResult.convertDataOrigins(dataOriginsPackageNames);
+        ArrayMap<Integer, AggregateResult<?>> results;
         if (mInternalHealthConnectMappings.isDerivedType(mRecordHelper.getRecordIdentifier())) {
-            deriveAggregate(cursor);
+            results = deriveAggregate(cursor, dataOrigins);
         } else if (mInternalHealthConnectMappings.supportsPriority(
                 mRecordHelper.getRecordIdentifier(),
                 mAggregationType.getAggregateOperationType())) {
-            processPriorityRequest(cursor);
+            results = processPriorityRequest(cursor, dataOrigins);
         } else {
-            processNoPrioritiesRequest(cursor);
+            results = processNoPrioritiesRequest(cursor, dataOrigins);
         }
-
-        return updateResultWithDataOriginPackageNames(metaDataCursor);
+        return getAggregateResults(results);
     }
 
     /** Returns list of app Ids of contributing apps for the record type in the priority order */
@@ -268,7 +264,8 @@ public class AggregateRecordRequest {
                         .getRecordCategoryForRecordType(recordType));
     }
 
-    private void processPriorityRequest(Cursor cursor) {
+    private ArrayMap<Integer, AggregateResult<?>> processPriorityRequest(
+            Cursor cursor, Set<DataOrigin> dataOrigins) {
         List<Long> priorityList = getAppIdPriorityList(mRecordHelper.getRecordIdentifier());
         PriorityRecordsAggregator aggregator =
                 new PriorityRecordsAggregator(
@@ -278,36 +275,47 @@ public class AggregateRecordRequest {
                         mPriorityParams,
                         mUseLocalTime);
         aggregator.calculateAggregation(cursor);
+        ArrayMap<Integer, AggregateResult<?>> results = new ArrayMap<>(mGroupBySize);
         AggregateResult<?> result;
         for (int groupNumber = 0; groupNumber < mGroupBySize; groupNumber++) {
             if (aggregator.getResultForGroup(groupNumber) == null) {
                 continue;
             }
+            ZoneOffset zoneOffsetForGroup = aggregator.getZoneOffsetForGroup(groupNumber);
 
             if (mAggregationType.getAggregateResultClass() == Long.class
                     || mAggregationType.getAggregateResultClass() == Duration.class) {
                 result =
                         new AggregateResult<>(
-                                aggregator.getResultForGroup(groupNumber).longValue());
+                                aggregator.getResultForGroup(groupNumber).longValue(),
+                                zoneOffsetForGroup,
+                                dataOrigins);
             } else {
-                result = new AggregateResult<>(aggregator.getResultForGroup(groupNumber));
+                result =
+                        new AggregateResult<>(
+                                aggregator.getResultForGroup(groupNumber),
+                                zoneOffsetForGroup,
+                                dataOrigins);
             }
-            mAggregateResults.put(
-                    groupNumber,
-                    result.setZoneOffset(aggregator.getZoneOffsetForGroup(groupNumber)));
+            results.put(groupNumber, result);
         }
 
         if (Constants.DEBUG) {
-            Slog.d(TAG, "Priority aggregation result: " + mAggregateResults);
+            Slog.d(TAG, "Priority aggregation result: " + results);
         }
+        return results;
     }
 
-    private void processNoPrioritiesRequest(Cursor cursor) {
+    private ArrayMap<Integer, AggregateResult<?>> processNoPrioritiesRequest(
+            Cursor cursor, Set<DataOrigin> dataOrigins) {
+        ArrayMap<Integer, AggregateResult<?>> results = new ArrayMap<>();
         while (cursor.moveToNext()) {
-            mAggregateResults.put(
+            results.put(
                     StorageUtils.getCursorInt(cursor, GROUP_BY_COLUMN_NAME),
-                    mRecordHelper.getNoPriorityAggregateResult(cursor, mAggregationType));
+                    mRecordHelper.getNoPriorityAggregateResult(
+                            cursor, mAggregationType, dataOrigins));
         }
+        return results;
     }
 
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
@@ -366,8 +374,8 @@ public class AggregateRecordRequest {
         return builder.toString();
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private List<String> updateResultWithDataOriginPackageNames(Cursor metaDataCursor) {
+    /** Returns the names of the packages that contributed to this aggregation result. */
+    public List<String> getDataOriginPackageNames(Cursor metaDataCursor) {
         List<Long> packageIds = new ArrayList<>();
         List<Long> priorityList = getAppIdPriorityList(mRecordHelper.getRecordIdentifier());
         boolean supportsPriority =
@@ -388,8 +396,6 @@ public class AggregateRecordRequest {
             }
         }
         List<String> packageNames = mAppInfoHelper.getPackageNames(packageIds);
-        mAggregateResults.replaceAll(
-                (n, v) -> mAggregateResults.get(n).setDataOrigins(packageNames));
         return packageNames;
     }
 
@@ -456,17 +462,21 @@ public class AggregateRecordRequest {
         return splits;
     }
 
-    private void deriveAggregate(Cursor cursor) {
+    private ArrayMap<Integer, AggregateResult<?>> deriveAggregate(
+            Cursor cursor, Set<DataOrigin> dataOrigins) {
         double[] derivedAggregateArray =
                 mRecordHelper.deriveAggregate(cursor, this, mTransactionManager);
         int index = 0;
         cursor.moveToFirst();
+        ArrayMap<Integer, AggregateResult<?>> results = new ArrayMap<>();
         for (double aggregate : derivedAggregateArray) {
-            mAggregateResults.put(
+            results.put(
                     index,
-                    mRecordHelper.getDerivedAggregateResult(cursor, mAggregationType, aggregate));
+                    mRecordHelper.getDerivedAggregateResult(
+                            cursor, mAggregationType, aggregate, dataOrigins));
             index++;
         }
+        return results;
     }
 
     public int getRecordTypeId() {

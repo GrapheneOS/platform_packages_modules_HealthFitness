@@ -75,6 +75,7 @@ public class AggregateDataResponseParcel implements Parcelable {
         final int size = in.readInt();
         mAggregateRecordsResponses = new ArrayList<>(size);
 
+        AggregationTypeIdMapper aggregationTypeIdMapper = AggregationTypeIdMapper.getInstance();
         for (int i = 0; i < size; i++) {
             final int mapSize = in.readInt();
             Map<Integer, AggregateResult<?>> result = new ArrayMap<>(mapSize);
@@ -83,12 +84,9 @@ public class AggregateDataResponseParcel implements Parcelable {
                 int id = in.readInt();
                 boolean hasValue = in.readBoolean();
                 if (hasValue) {
-                    result.put(
-                            id,
-                            AggregationTypeIdMapper.getInstance()
-                                    .getAggregateResultFor(id, in)
-                                    .setZoneOffset(parseZoneOffset(in))
-                                    .setDataOrigins(in.createStringArrayList()));
+                    AggregationTypeIdMapper.ParcelDataReader<?> parcelDataReader =
+                            aggregationTypeIdMapper.getParcelDataReaderFor(id);
+                    result.put(id, getAggregateResult(in, parcelDataReader));
                 } else {
                     result.put(id, null);
                 }
@@ -128,6 +126,27 @@ public class AggregateDataResponseParcel implements Parcelable {
                                 .build();
             }
         }
+    }
+
+    private static <T> AggregateResult<T> getAggregateResult(
+            Parcel parcel, AggregationTypeIdMapper.ParcelDataReader<T> parcelReader) {
+        T value = parcelReader.readData(parcel);
+        ZoneOffset zoneOffset = parseZoneOffset(parcel);
+        Set<DataOrigin> dataOrigins =
+                AggregateResult.convertDataOrigins(
+                        Objects.requireNonNull(parcel.createStringArrayList()));
+        return new AggregateResult<>(value, zoneOffset, dataOrigins);
+    }
+
+    @Nullable
+    private static ZoneOffset parseZoneOffset(Parcel in) {
+        int zoneOffsetInSecs = in.readInt();
+        ZoneOffset zoneOffset = null;
+        if (zoneOffsetInSecs != DEFAULT_INT) {
+            zoneOffset = ZoneOffset.ofTotalSeconds(zoneOffsetInSecs);
+        }
+
+        return zoneOffset;
     }
 
     public AggregateDataResponseParcel setDuration(
@@ -346,17 +365,6 @@ public class AggregateDataResponseParcel implements Parcelable {
             dest.writeLong(DEFAULT_LONG);
             dest.writeLong(DEFAULT_LONG);
         }
-    }
-
-    @Nullable
-    private ZoneOffset parseZoneOffset(Parcel in) {
-        int zoneOffsetInSecs = in.readInt();
-        ZoneOffset zoneOffset = null;
-        if (zoneOffsetInSecs != DEFAULT_INT) {
-            zoneOffset = ZoneOffset.ofTotalSeconds(zoneOffsetInSecs);
-        }
-
-        return zoneOffset;
     }
 
     private LocalDateTime getPeriodEndLocalDateTime(TimeRangeFilter timeRangeFilter) {

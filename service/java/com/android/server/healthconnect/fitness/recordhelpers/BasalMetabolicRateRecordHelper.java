@@ -25,6 +25,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.BasalMetabolicRateRecordInternal;
 import android.util.Pair;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Helper class for BasalMetabolicRateRecord.
@@ -59,10 +61,13 @@ public final class BasalMetabolicRateRecordHelper
     @Override
     @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
-            Cursor results, AggregationType<?> aggregationType, double result) {
+            Cursor results,
+            AggregationType<?> aggregationType,
+            double result,
+            Set<DataOrigin> dataOrigins) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case BMR_RECORD_BASAL_CALORIES_TOTAL:
-                return new AggregateResult<>(result).setZoneOffset(getZoneOffset(results));
+                return new AggregateResult<>(result, getZoneOffset(results), dataOrigins);
 
             default:
                 return null;
