@@ -278,7 +278,8 @@ public class AggregateRecordRequest {
         ArrayMap<Integer, AggregateResult<?>> results = new ArrayMap<>(mGroupBySize);
         AggregateResult<?> result;
         for (int groupNumber = 0; groupNumber < mGroupBySize; groupNumber++) {
-            if (aggregator.getResultForGroup(groupNumber) == null) {
+            Double resultForGroup = aggregator.getResultForGroup(groupNumber);
+            if (resultForGroup == null) {
                 continue;
             }
             ZoneOffset zoneOffsetForGroup = aggregator.getZoneOffsetForGroup(groupNumber);
@@ -287,15 +288,9 @@ public class AggregateRecordRequest {
                     || mAggregationType.getAggregateResultClass() == Duration.class) {
                 result =
                         new AggregateResult<>(
-                                aggregator.getResultForGroup(groupNumber).longValue(),
-                                zoneOffsetForGroup,
-                                dataOrigins);
+                                resultForGroup.longValue(), zoneOffsetForGroup, dataOrigins);
             } else {
-                result =
-                        new AggregateResult<>(
-                                aggregator.getResultForGroup(groupNumber),
-                                zoneOffsetForGroup,
-                                dataOrigins);
+                result = new AggregateResult<>(resultForGroup, zoneOffsetForGroup, dataOrigins);
             }
             results.put(groupNumber, result);
         }
