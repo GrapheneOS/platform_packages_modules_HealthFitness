@@ -18,13 +18,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_data_entry_container"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:clipToPadding="false"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
 
     <LinearLayout
-        android:id="@+id/item_data_entry_container"
+        android:id="@+id/text_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -80,13 +81,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/item_data_entry_container">
+        app:layout_constraintStart_toEndOf="@id/text_container">
 
         <com.android.healthconnect.controller.shared.RoundView
             android:id="@+id/map_round_view"
             android:layout_width="@dimen/round_map_size"
             android:layout_height="@dimen/round_map_size"
-            android:layout_marginEnd="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/item_exercise_session_marginEnd"
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:visibility="gone">
