@@ -108,7 +108,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final AppInfoHelper mAppInfoHelper;
     private final AppOpLogsHelper mAppOpLogsHelper;
     private final AccessLogsHelper mAccessLogsHelper;
-    private final RecordDateHelper mActivityDateHelper;
+    private final RecordDateHelper mRecordDateHelper;
     private final HealthConnectMappings mHealthConnectMappings;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
     private final ChangeLogsHelper mChangeLogsHelper;
@@ -286,7 +286,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         ? new ReadAccessLogsHelper(
                                 mAppInfoHelper, mTransactionManager, mDatabaseHelpers)
                         : builder.mReadAccessLogsHelper;
-        mActivityDateHelper =
+        mRecordDateHelper =
                 builder.mActivityDateHelper == null
                         ? new RecordDateHelper(
                                 mTransactionManager,
@@ -357,6 +357,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
                                 mAccessLogsHelper,
+                                mRecordDateHelper,
+                                mThreadScheduler,
                                 mInternalHealthConnectMappings)
                         : builder.mFitnessRecordUpsertHelper;
         mFitnessRecordReadHelper =
@@ -374,6 +376,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mTransactionManager,
                                 mAppInfoHelper,
                                 mAccessLogsHelper,
+                                mRecordDateHelper,
+                                mThreadScheduler,
                                 mInternalHealthConnectMappings)
                         : builder.mFitnessRecordDeleteHelper;
         mFitnessRecordAggregateHelper =
@@ -498,8 +502,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
-    public RecordDateHelper getActivityDateHelper() {
-        return mActivityDateHelper;
+    public RecordDateHelper getRecordDateHelper() {
+        return mRecordDateHelper;
     }
 
     @Override
@@ -625,7 +629,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 getAppInfoHelper(),
                 getTransactionManager(),
                 getFitnessRecordDeleteHelper(),
-                getActivityDateHelper());
+                getRecordDateHelper());
     }
 
     @Override
