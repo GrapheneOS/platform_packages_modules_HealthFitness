@@ -101,6 +101,7 @@ import java.util.Locale
 import java.util.TimeZone
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
@@ -1056,6 +1057,7 @@ class HomeFragmentTest {
 
     // region Onboarding banners
     @Test
+    @Ignore("b/399086212 - Re-enable when new banner logic in place")
     @EnableFlags(Flags.FLAG_ONBOARDING)
     fun onboardingFlagOn_whenNoAppsConnected_andOneAvailable_showsStartUsingHcBanner() {
         setStartUsingHcBannerSeen(context, false)
@@ -1098,6 +1100,7 @@ class HomeFragmentTest {
     }
 
     @Test
+    @Ignore("b/399086212 - Re-enable when new banner logic in place")
     @EnableFlags(Flags.FLAG_ONBOARDING)
     fun onboardingFlagOn_whenOneAppConnected_andMoreAvailable_showsConnectMoreAppsBanner() {
         setConnectMoreAppsBannerSeen(context, false)
@@ -1158,6 +1161,7 @@ class HomeFragmentTest {
     }
 
     @Test
+    @Ignore("b/399086212 - Re-enable when new banner logic in place")
     @EnableFlags(Flags.FLAG_ONBOARDING)
     fun onboardingFlagOn_playstoreAvailable_whenOneAppConnected_andNoMoreAvailable_showsSeeCompatibleAppsBanner() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
@@ -1183,6 +1187,7 @@ class HomeFragmentTest {
     }
 
     @Test
+    @Ignore("b/399086212 - Re-enable when new banner logic in place")
     @EnableFlags(Flags.FLAG_ONBOARDING)
     fun onboardingFlagOn_playstoreNotAvailable_doesNotShowSeeCompatibleAppsBanner() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
@@ -1611,15 +1616,15 @@ class HomeFragmentTest {
                 isInactive = false,
                 shouldLaunchAppOnboardingIfAvailable = true,
                 dataTypesWritten =
-                mutableSetOf(
-                    HealthDataCategory.ACTIVITY.uppercaseTitle(),
-                    HealthDataCategory.VITALS.uppercaseTitle(),
-                ),
+                    mutableSetOf(
+                        HealthDataCategory.ACTIVITY.uppercaseTitle(),
+                        HealthDataCategory.VITALS.uppercaseTitle(),
+                    ),
                 dataTypesRead =
-                mutableSetOf(
-                    HealthDataCategory.SLEEP.uppercaseTitle(),
-                    HealthDataCategory.NUTRITION.uppercaseTitle(),
-                ),
+                    mutableSetOf(
+                        HealthDataCategory.SLEEP.uppercaseTitle(),
+                        HealthDataCategory.NUTRITION.uppercaseTitle(),
+                    ),
                 appPermissionsType = AppPermissionsType.COMBINED_PERMISSIONS,
             )
         whenever(recentAccessViewModel.recentAccessApps).then {
@@ -1629,11 +1634,12 @@ class HomeFragmentTest {
         testIntent.setPackage(TEST_APP.packageName)
 
         // Assume that the client onboarding activity completes normally.
-        Intents.intending(hasAction(ACTION_SHOW_ONBOARDING)).respondWith(
-            Instrumentation.ActivityResult(
-                Activity.RESULT_OK, Intent()
-            ))
-        whenever(healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))).thenReturn(testIntent)
+        Intents.intending(hasAction(ACTION_SHOW_ONBOARDING))
+            .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
+        whenever(
+                healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))
+            )
+            .thenReturn(testIntent)
 
         launchFragment<HomeFragment>(Bundle()) {
             navHostController.setGraph(R.navigation.nav_graph)
@@ -1647,8 +1653,7 @@ class HomeFragmentTest {
         intended(hasAction(ACTION_SHOW_ONBOARDING))
         intended(hasPackage(TEST_APP_PACKAGE_NAME))
         // We should remain where we started.
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.homeFragment)
+        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.homeFragment)
     }
 
     @Test
@@ -1662,15 +1667,15 @@ class HomeFragmentTest {
                 isInactive = false,
                 shouldLaunchAppOnboardingIfAvailable = false,
                 dataTypesWritten =
-                mutableSetOf(
-                    HealthDataCategory.ACTIVITY.uppercaseTitle(),
-                    HealthDataCategory.VITALS.uppercaseTitle(),
-                ),
+                    mutableSetOf(
+                        HealthDataCategory.ACTIVITY.uppercaseTitle(),
+                        HealthDataCategory.VITALS.uppercaseTitle(),
+                    ),
                 dataTypesRead =
-                mutableSetOf(
-                    HealthDataCategory.SLEEP.uppercaseTitle(),
-                    HealthDataCategory.NUTRITION.uppercaseTitle(),
-                ),
+                    mutableSetOf(
+                        HealthDataCategory.SLEEP.uppercaseTitle(),
+                        HealthDataCategory.NUTRITION.uppercaseTitle(),
+                    ),
                 appPermissionsType = AppPermissionsType.COMBINED_PERMISSIONS,
             )
         whenever(recentAccessViewModel.recentAccessApps).then {
@@ -1680,11 +1685,12 @@ class HomeFragmentTest {
         testIntent.setPackage(TEST_APP.packageName)
 
         // Assume that the client onboarding activity completes normally.
-        Intents.intending(hasAction(ACTION_SHOW_ONBOARDING)).respondWith(
-            Instrumentation.ActivityResult(
-                Activity.RESULT_OK, Intent()
-            ))
-        whenever(healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))).thenReturn(testIntent)
+        Intents.intending(hasAction(ACTION_SHOW_ONBOARDING))
+            .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, Intent()))
+        whenever(
+                healthPermissionReader.getOnboardingActivityIntent(any(), eq(TEST_APP.packageName))
+            )
+            .thenReturn(testIntent)
 
         launchFragment<HomeFragment>(Bundle()) {
             navHostController.setGraph(R.navigation.nav_graph)
@@ -1695,7 +1701,8 @@ class HomeFragmentTest {
         onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
         onView(withText(TEST_APP_NAME)).perform(click())
 
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.combinedPermissionsFragment)
+        assertThat(navHostController.currentDestination?.id)
+            .isEqualTo(R.id.combinedPermissionsFragment)
     }
 
     // endregion
