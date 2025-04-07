@@ -36,6 +36,7 @@ abstract class HealthSetupFragment : SettingsBasePreferenceFragment() {
     private lateinit var preferenceContainer: ViewGroup
     private lateinit var preferenceArea: ViewGroup
 
+    private lateinit var buttonArea: FrameLayout
     private lateinit var primaryButtonFull: Button
     private lateinit var primaryButtonOutline: Button
     private lateinit var secondaryButton: Button
@@ -72,7 +73,7 @@ abstract class HealthSetupFragment : SettingsBasePreferenceFragment() {
                 R.layout.widget_setup_bottom_button_bar_legacy
             }
 
-        val buttonArea = rootView.findViewById<FrameLayout>(R.id.action_container)
+        buttonArea = rootView.findViewById<FrameLayout>(R.id.action_container)
         val buttons = inflater.inflate(buttonLayoutId, buttonArea, false)
         buttonArea.addView(buttons)
 
@@ -101,6 +102,14 @@ abstract class HealthSetupFragment : SettingsBasePreferenceFragment() {
     }
 
     fun getSecondaryButton(): Button = secondaryButton
+
+    fun hideButtons() {
+        buttonArea.visibility = View.GONE
+    }
+
+    private fun showButtons() {
+        buttonArea.visibility = View.VISIBLE
+    }
 
     private fun setupLogger() {
         val hiltEntryPoint =
