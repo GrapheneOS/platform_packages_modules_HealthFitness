@@ -24,7 +24,6 @@ import android.util.ArraySet;
 
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -33,13 +32,15 @@ import java.util.Set;
  * @hide
  */
 public final class AggregateResult<T> {
-    private final T mResult;
-    @Nullable private ZoneOffset mZoneOffset;
-    private Set<DataOrigin> mDataOrigins;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    public AggregateResult(T result) {
+    private final T mResult;
+    @Nullable private final ZoneOffset mZoneOffset;
+    private final Set<DataOrigin> mDataOrigins;
+
+    public AggregateResult(T result, @Nullable ZoneOffset zoneOffset, Set<DataOrigin> dataOrigins) {
         mResult = result;
+        mZoneOffset = zoneOffset;
+        mDataOrigins = dataOrigins;
     }
 
     public void putToParcel(@NonNull Parcel parcel) {
@@ -59,27 +60,10 @@ public final class AggregateResult<T> {
         return mZoneOffset;
     }
 
-    /** Sets the {@link ZoneOffset} for the underlying record. */
-    public AggregateResult<T> setZoneOffset(@Nullable ZoneOffset zoneOffset) {
-        mZoneOffset = zoneOffset;
-        return this;
-    }
-
     /** Returns set of {@link DataOrigin} that contributed to the aggregation result */
     @NonNull
     public Set<DataOrigin> getDataOrigins() {
         return mDataOrigins;
-    }
-
-    /** Sets a Set of {@link DataOrigin} that contributed to the aggregation result. */
-    public AggregateResult<T> setDataOrigins(@NonNull List<String> packageNameList) {
-        Objects.requireNonNull(packageNameList);
-
-        mDataOrigins = new ArraySet<>();
-        for (String packageName : packageNameList) {
-            mDataOrigins.add(new DataOrigin.Builder().setPackageName(packageName).build());
-        }
-        return this;
     }
 
     /**
@@ -88,5 +72,15 @@ public final class AggregateResult<T> {
     @NonNull
     T getResult() {
         return mResult;
+    }
+
+    /** Returns a Set of {@link DataOrigin} that contributed to the aggregation result. */
+    public static Set<DataOrigin> convertDataOrigins(@NonNull List<String> packageNameList) {
+        Set<DataOrigin> result = new ArraySet<>();
+
+        for (String packageName : packageNameList) {
+            result.add(new DataOrigin.Builder().setPackageName(packageName).build());
+        }
+        return result;
     }
 }

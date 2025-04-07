@@ -22,6 +22,7 @@ import android.annotation.Nullable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 
 /**
  * A helper class for {@link TimeRangeFilter} to handle possible time filter types.
@@ -67,12 +68,19 @@ public final class TimeRangeFilterHelper {
      * @return end time epoch milliseconds for Instant time filter and epoch milliseconds using UTC
      *     zoneOffset for LocalTime filter
      */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public static long getFilterEndTimeMillis(@NonNull TimeRangeFilter timeRangeFilter) {
-        if (isLocalTimeFilter(timeRangeFilter)) {
-            return getMillisOfLocalTime(((LocalTimeRangeFilter) timeRangeFilter).getEndTime());
-        } else if (timeRangeFilter instanceof TimeInstantRangeFilter) {
-            return ((TimeInstantRangeFilter) timeRangeFilter).getEndTime().toEpochMilli();
+        if ((timeRangeFilter instanceof LocalTimeRangeFilter localTimeRangeFilter)) {
+            LocalDateTime endTime = localTimeRangeFilter.getEndTime();
+            endTime =
+                    endTime != null
+                            ? endTime
+                            : LocalDateTime.ofInstant(
+                                    Instant.now().plus(1, ChronoUnit.DAYS), ZoneOffset.MAX);
+            return getMillisOfLocalTime(endTime);
+        } else if (timeRangeFilter instanceof TimeInstantRangeFilter timeInstantRangeFilter) {
+            Instant endTime = timeInstantRangeFilter.getEndTime();
+            endTime = endTime != null ? endTime : Instant.now().plus(1, ChronoUnit.DAYS);
+            return endTime.toEpochMilli();
         } else {
             throw new IllegalArgumentException(
                     "Invalid time filter object. Object should be either "

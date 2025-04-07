@@ -29,7 +29,6 @@ import android.annotation.StringDef;
 import android.health.connect.Constants;
 import android.util.Slog;
 
-import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
@@ -60,7 +59,6 @@ public class ReadTableRequest {
     public @interface UnionType {}
 
     private final String mTableName;
-    @Nullable private RecordHelper<?> mRecordHelper;
     @Nullable private List<String> mColumnNames;
     @Nullable private SqlJoin mJoinClause;
     private WhereClauses mWhereClauses = new WhereClauses(AND);
@@ -76,30 +74,11 @@ public class ReadTableRequest {
     private String mUnionType = UNION_ALL;
 
     public ReadTableRequest(String tableName) {
-        Objects.requireNonNull(tableName);
-
         mTableName = tableName;
-    }
-
-    /** Returns the record helper associated with this request if it has been set, or null. */
-    @Nullable
-    public RecordHelper<?> getRecordHelper() {
-        return mRecordHelper;
-    }
-
-    /**
-     * Sets the record helper associated with this request. This is not used for creating the SQL,
-     * but is a side channel for other classes processing this request.
-     */
-    public ReadTableRequest setRecordHelper(RecordHelper<?> recordHelper) {
-        mRecordHelper = Objects.requireNonNull(recordHelper);
-        return this;
     }
 
     /** Sets the column names to select. */
     public ReadTableRequest setColumnNames(List<String> columnNames) {
-        Objects.requireNonNull(columnNames);
-
         mColumnNames = columnNames;
         return this;
     }

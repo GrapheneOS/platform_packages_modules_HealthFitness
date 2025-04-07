@@ -42,7 +42,6 @@ import static android.health.connect.HealthPermissions.READ_STEPS;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -240,7 +239,6 @@ public class DailyLoggingServiceTest {
     @Test
     @EnableFlags({
         FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void phrStats_flagEnabledAndIsMonthlyActiveUser_expectCorrectLogs() {
@@ -268,7 +266,6 @@ public class DailyLoggingServiceTest {
     @Test
     @EnableFlags({
         FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void phrStats_flagEnabledAndIsNotMonthlyActiveUser_expectCorrectLogs() {
@@ -296,7 +293,6 @@ public class DailyLoggingServiceTest {
     @Test
     @EnableFlags({
         FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void phrStats_flagEnabled_phrDataExists_expectCorrectPhrDbStatsLogs() {
@@ -321,7 +317,6 @@ public class DailyLoggingServiceTest {
     @Test
     @EnableFlags({
         FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
     })
     public void phrStats_flagEnabled_noPhRdata_expectNoPhrDbStatsLogs() {

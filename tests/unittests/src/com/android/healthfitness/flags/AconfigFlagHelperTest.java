@@ -47,7 +47,7 @@ public class AconfigFlagHelperTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Test
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @DisableFlags(Flags.FLAG_ACTIVITY_INTENSITY_DB)
     public void infraToGuardDbChangesEnabled() {
         // clear the map to setup a hypothetical test case
         DB_VERSION_TO_DB_FLAG_MAP.clear();
@@ -142,28 +142,14 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE, Flags.FLAG_PERSONAL_HEALTH_RECORD})
-    public void phr_featureFlagTrueAndDbFlagTrue_expectTrue() {
+    @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD})
+    public void phr_featureFlagTrue_expectTrue() {
         assertThat(isPersonalHealthRecordEnabled()).isTrue();
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE, Flags.FLAG_PERSONAL_HEALTH_RECORD})
-    public void phr_featureFlagFalseAndDbFlagFalse_expectFalse() {
-        assertThat(isPersonalHealthRecordEnabled()).isFalse();
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
-    public void phr_featureFlagFalseAndDbTrue_expectFalse() {
-        assertThat(isPersonalHealthRecordEnabled()).isFalse();
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
-    public void phr_featureFlagTrueAndDbFalse_expectFalse() {
+    @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD})
+    public void phr_featureFlagFalse_expectFalse() {
         assertThat(isPersonalHealthRecordEnabled()).isFalse();
     }
 

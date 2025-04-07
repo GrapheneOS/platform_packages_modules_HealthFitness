@@ -219,7 +219,8 @@ class HomeFragment : Hilt_HomeFragment() {
         }
         homeViewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
             updateConnectedApps(connectedApps)
-            updateOnboardingBanner(connectedApps)
+            // TODO - b/399086212 - Re-enable when new banner logic in place
+            //  updateOnboardingBanner(connectedApps)
         }
         migrationViewModel.migrationState.observe(viewLifecycleOwner) { migrationState ->
             when (migrationState) {
@@ -737,7 +738,13 @@ class HomeFragment : Hilt_HomeFragment() {
                     R.id.action_homeFragment_to_combinedPermissionsFragment
             }
 
-        if (recentApp.shouldLaunchAppOnboardingIfAvailable && tryLaunchAppOnboardingActivity(healthPermissionReader, recentApp.metadata.packageName)) {
+        if (
+            recentApp.shouldLaunchAppOnboardingIfAvailable &&
+                tryLaunchAppOnboardingActivity(
+                    healthPermissionReader,
+                    recentApp.metadata.packageName,
+                )
+        ) {
             return
         }
         findNavController()

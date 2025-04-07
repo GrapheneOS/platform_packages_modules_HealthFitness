@@ -45,6 +45,7 @@ import android.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -278,9 +279,9 @@ public class RecordHelperTest {
                         .setTimeRangeFilter(filter)
                         .setPageSize(pageSize)
                         .build();
-        ReadTableRequest request1 =
+        RecordReadTableRequest request1 =
                 getReadTableRequest(helper, readRequest1.toReadRecordsRequestParcel());
-        try (Cursor cursor = mTransactionManager.read(request1)) {
+        try (Cursor cursor = mTransactionManager.read(request1.getReadTableRequest())) {
             Pair<List<RecordInternal<?>>, PageTokenWrapper> page1 =
                     helper.getNextInternalRecordsPageAndToken(
                             mDeviceInfoHelper,
@@ -301,9 +302,9 @@ public class RecordHelperTest {
                         .setPageSize(pageSize)
                         .setPageToken(expectedPageToken.encode())
                         .build();
-        ReadTableRequest request2 =
+        RecordReadTableRequest request2 =
                 getReadTableRequest(helper, readRequest2.toReadRecordsRequestParcel());
-        try (Cursor cursor = mTransactionManager.read(request2)) {
+        try (Cursor cursor = mTransactionManager.read(request2.getReadTableRequest())) {
             Pair<List<RecordInternal<?>>, PageTokenWrapper> page2 =
                     helper.getNextInternalRecordsPageAndToken(
                             mDeviceInfoHelper, cursor, pageSize, expectedPageToken, mAppInfoHelper);
@@ -381,7 +382,7 @@ public class RecordHelperTest {
         }
     }
 
-    private ReadTableRequest getReadTableRequest(
+    private RecordReadTableRequest getReadTableRequest(
             RecordHelper<?> helper, ReadRecordsRequestParcel request) {
         return helper.getReadTableRequest(
                 request,

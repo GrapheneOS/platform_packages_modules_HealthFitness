@@ -24,6 +24,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.addNam
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toSet;
 
 import android.annotation.Nullable;
 import android.database.Cursor;
@@ -34,13 +35,14 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -68,6 +70,8 @@ public class FitnessRecordUpsertHelper {
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final AccessLogsHelper mAccessLogsHelper;
+    private final RecordDateHelper mRecordDateHelper;
+    private final HealthConnectThreadScheduler mThreadScheduler;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
     /** Create an upsert request for insert API calls. */
@@ -76,11 +80,15 @@ public class FitnessRecordUpsertHelper {
             DeviceInfoHelper deviceInfoHelper,
             AppInfoHelper appInfoHelper,
             AccessLogsHelper accessLogsHelper,
+            RecordDateHelper recordDateHelper,
+            HealthConnectThreadScheduler threadScheduler,
             InternalHealthConnectMappings internalHealthConnectMappings) {
         mTransactionManager = transactionManager;
         mDeviceInfoHelper = deviceInfoHelper;
         mAppInfoHelper = appInfoHelper;
         mAccessLogsHelper = accessLogsHelper;
+        mRecordDateHelper = recordDateHelper;
+        mThreadScheduler = threadScheduler;
         mInternalHealthConnectMappings = internalHealthConnectMappings;
     }
 
@@ -107,15 +115,31 @@ public class FitnessRecordUpsertHelper {
             addNameBasedUUIDTo(recordInternal);
         }
 
-        return upsert(
-                callingPackageName,
-                recordInternals,
-                /* isInsertRequest= */ true,
-                /* shouldGenerateAccessLog= */ true,
-                /* shouldGenerateChangeLog= */ true,
-                /* shouldPreferNewRecord= */ true,
-                /* updateLastModifiedTime= */ true,
-                extraPermsStateMap);
+        List<String> insertedUuids =
+                upsert(
+                        callingPackageName,
+                        recordInternals,
+                        /* isInsertRequest= */ true,
+                        /* shouldGenerateAccessLog= */ true,
+                        /* shouldGenerateChangeLog= */ true,
+                        /* shouldPreferNewRecord= */ true,
+                        /* updateLastModifiedTime= */ true,
+                        extraPermsStateMap);
+
+        mThreadScheduler.scheduleInternalTask(
+                () -> postInsertTasks(callingPackageName, recordInternals));
+        return insertedUuids;
+    }
+
+    private void postInsertTasks(
+            String callingPackageName, List<? extends RecordInternal<?>> recordInternals) {
+        mRecordDateHelper.insertRecordDate(recordInternals);
+        Set<Integer> recordsTypesInsertedSet =
+                recordInternals.stream().map(RecordInternal::getRecordType).collect(toSet());
+        // Update AppInfo table with the record types of records inserted in the request for the
+        // current package.
+        mAppInfoHelper.updateAppInfoRecordTypesUsedOnInsert(
+                recordsTypesInsertedSet, callingPackageName);
     }
 
     /**
@@ -141,15 +165,24 @@ public class FitnessRecordUpsertHelper {
             // uuid passed as input.
             StorageUtils.updateNameBasedUUIDIfRequired(recordInternal);
         }
-        return upsert(
-                callingPackageName,
-                recordInternals,
-                /* isInsertRequest= */ false,
-                /* shouldGenerateAccessLog= */ true,
-                /* shouldGenerateChangeLog= */ true,
-                /* shouldPreferNewRecord= */ true,
-                /* updateLastModifiedTime= */ true,
-                extraPermsStateMap);
+        List<String> updatedUuids =
+                upsert(
+                        callingPackageName,
+                        recordInternals,
+                        /* isInsertRequest= */ false,
+                        /* shouldGenerateAccessLog= */ true,
+                        /* shouldGenerateChangeLog= */ true,
+                        /* shouldPreferNewRecord= */ true,
+                        /* updateLastModifiedTime= */ true,
+                        extraPermsStateMap);
+
+        mThreadScheduler.scheduleInternalTask(
+                () ->
+                        mRecordDateHelper.reSyncByRecordTypeIds(
+                                recordInternals.stream()
+                                        .map(RecordInternal::getRecordType)
+                                        .toList()));
+        return updatedUuids;
     }
 
     /**
@@ -158,6 +191,9 @@ public class FitnessRecordUpsertHelper {
      * <p>The records should have a pre-existing package name present.
      *
      * <p>This method prefers existing records, if a similar record is already present.
+     *
+     * <p>Note: This method doesn't run post delete tasks. In most cases, they should be run at the
+     * end of the operation (e.g. with d2d transfer, once all the data has been merged).
      *
      * @param recordInternals The list of records to be inserted.
      * @param shouldGenerateChangeLog Whether changelogs should be generated for these inserts.
@@ -312,12 +348,13 @@ public class FitnessRecordUpsertHelper {
         final RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(
                         upsertRequest.getRecordInternal().getRecordType());
-        for (ReadTableRequest additionalChangelogUuidRequest :
+        for (RecordReadTableRequest additionalChangelogUuidRequest :
                 recordHelper.getReadRequestsForRecordsModifiedByUpsertion(
                         upsertRequest.getRecordInternal().getUuid(),
                         upsertRequest,
                         callingPackageAppInfoId)) {
-            Cursor cursorAdditionalUuids = mTransactionManager.read(additionalChangelogUuidRequest);
+            Cursor cursorAdditionalUuids =
+                    mTransactionManager.read(additionalChangelogUuidRequest.getReadTableRequest());
             while (cursorAdditionalUuids.moveToNext()) {
                 RecordHelper<?> extraRecordHelper =
                         requireNonNull(additionalChangelogUuidRequest.getRecordHelper());

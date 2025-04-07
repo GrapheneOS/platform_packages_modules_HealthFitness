@@ -130,23 +130,23 @@ public final class FitnessRecordAggregateHelper {
         }
 
         Map<AggregationType<?>, List<AggregateResult<?>>> results = new ArrayMap<>();
+        List<AggregateResult<?>> firstResults = null;
         for (AggregateRecordRequest aggregateRecordRequest : mAggregateRecordRequests) {
-            populateRequestWithResults(
-                    callingPackageName,
-                    aggregateRecordRequest,
-                    recordTypeIds,
-                    request.getTimeRangeFilter(),
-                    shouldRecordAccessLog,
-                    requestTime);
-            results.put(
-                    aggregateRecordRequest.getAggregationType(),
-                    aggregateRecordRequest.getAggregateResults());
+            List<AggregateResult<?>> aggregateResults =
+                    getAggregateResults(
+                            callingPackageName,
+                            aggregateRecordRequest,
+                            recordTypeIds,
+                            request.getTimeRangeFilter(),
+                            shouldRecordAccessLog,
+                            requestTime);
+            if (firstResults == null) {
+                firstResults = aggregateResults;
+            }
+            results.put(aggregateRecordRequest.getAggregationType(), aggregateResults);
         }
 
-        int responseSize =
-                mAggregateRecordRequests.isEmpty()
-                        ? 0
-                        : mAggregateRecordRequests.get(0).getAggregateResults().size();
+        int responseSize = firstResults == null ? 0 : firstResults.size();
         List<AggregateRecordsResponse<?>> aggregateRecordsResponses = new ArrayList<>(responseSize);
         for (int i = 0; i < responseSize; i++) {
             Map<Integer, AggregateResult<?>> aggregateResultMap = new ArrayMap<>();
@@ -172,15 +172,16 @@ public final class FitnessRecordAggregateHelper {
     }
 
     // Computes aggregations and record read access log
-    private void populateRequestWithResults(
+    private List<AggregateResult<?>> getAggregateResults(
             String callingPackageName,
             AggregateRecordRequest aggregateRecordRequest,
             Set<Integer> recordTypeIds,
             TimeRangeFilter timeRangeFilter,
             boolean shouldRecordAccessLog,
             long requestTime) {
-        mTransactionManager.runWithoutTransaction(
+        return mTransactionManager.runWithoutTransaction(
                 db -> {
+                    List<AggregateResult<?>> aggregateResults;
                     try (Cursor cursor =
                                     db.rawQuery(
                                             aggregateRecordRequest.getAggregationCommand(), null);
@@ -189,11 +190,10 @@ public final class FitnessRecordAggregateHelper {
                                             aggregateRecordRequest
                                                     .getCommandToFetchAggregateMetadata(),
                                             null)) {
-                        // processResultsAndReturnContributingPackages stores the aggregation result
-                        // in the aggregateTableRequest.
                         List<String> contributingPackages =
-                                aggregateRecordRequest.processResultsAndReturnContributingPackages(
-                                        cursor, metaDataCursor);
+                                aggregateRecordRequest.getDataOriginPackageNames(metaDataCursor);
+                        aggregateResults =
+                                aggregateRecordRequest.processResults(cursor, contributingPackages);
                         if (AconfigFlagHelper.isEcosystemMetricsEnabled()
                                 && shouldRecordAccessLog) {
                             mReadAccessLogsHelper.recordAccessLogForAggregationReads(
@@ -210,6 +210,7 @@ public final class FitnessRecordAggregateHelper {
                         mAccessLogsHelper.recordReadAccessLog(
                                 db, callingPackageName, recordTypeIds);
                     }
+                    return aggregateResults;
                 });
     }
 }

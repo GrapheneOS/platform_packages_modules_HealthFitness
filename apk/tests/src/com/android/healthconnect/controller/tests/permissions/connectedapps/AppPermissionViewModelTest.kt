@@ -3089,7 +3089,7 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun revokeMedicalShouldIncludePastData_whenNoFitnessReadDeclared_returnsFalse() = runTest {
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(true)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
@@ -3260,7 +3260,7 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun revokeAllShouldIncludeBackground_whenNoReadPermissionDeclared_returnsFalse() = runTest {
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(true)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
@@ -3350,7 +3350,7 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun revokeAllShouldIncludePastData_whenNoReadFitnessPermissionDeclared_returnsFalse() =
         runTest {
             whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(true)

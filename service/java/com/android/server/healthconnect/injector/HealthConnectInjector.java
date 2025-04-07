@@ -127,7 +127,7 @@ public abstract class HealthConnectInjector {
     public abstract AccessLogsHelper getAccessLogsHelper();
 
     /** Getter for {@link RecordDateHelper} instance initialised by the Health Connect Injector. */
-    public abstract RecordDateHelper getActivityDateHelper();
+    public abstract RecordDateHelper getRecordDateHelper();
 
     /** Getter for {@link ChangeLogsHelper} instance initialised by the Health Connect Injector. */
     public abstract ChangeLogsHelper getChangeLogsHelper();

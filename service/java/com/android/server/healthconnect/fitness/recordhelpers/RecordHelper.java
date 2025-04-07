@@ -48,6 +48,7 @@ import android.health.connect.PageTokenWrapper;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
@@ -59,6 +60,7 @@ import androidx.annotation.Nullable;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
+import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
@@ -224,7 +226,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      */
     @Nullable
     public AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor cursor, AggregationType<?> aggregationType) {
+            Cursor cursor, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         if (Flags.refactorAggregations()) {
             throw new UnsupportedOperationException("Not implemented by the subclass");
         }
@@ -249,7 +251,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      */
     @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
-            Cursor results, AggregationType<?> aggregationType, double total) {
+            Cursor results,
+            AggregationType<?> aggregationType,
+            double total,
+            Set<DataOrigin> dataOrigins) {
         if (Flags.refactorAggregations()) {
             throw new UnsupportedOperationException("Not implemented by the subclass");
         }
@@ -387,7 +392,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Returns ReadSingleTableRequest for {@code request} and package name {@code packageName} */
-    public ReadTableRequest getReadTableRequest(
+    public RecordReadTableRequest getReadTableRequest(
             ReadRecordsRequestParcel request,
             String callingPackageName,
             boolean enforceSelfRead,
@@ -395,26 +400,27 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             Set<String> grantedExtraReadPermissions,
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {
-        return new ReadTableRequest(getMainTableName())
-                .setJoinClause(getJoinForReadRequest())
-                .setWhereClause(
-                        getReadTableWhereClause(
-                                request,
-                                callingPackageName,
-                                enforceSelfRead,
-                                startDateAccessMillis,
-                                appInfoHelper))
-                .setOrderBy(getOrderByClause(request))
-                .setLimit(getLimitSize(request))
-                .setRecordHelper(this)
-                .setExtraReadRequests(
-                        getExtraDataReadRequests(
-                                request,
-                                callingPackageName,
-                                startDateAccessMillis,
-                                grantedExtraReadPermissions,
-                                isInForeground,
-                                appInfoHelper));
+        ReadTableRequest readTableRequest =
+                new ReadTableRequest(getMainTableName())
+                        .setJoinClause(getJoinForReadRequest())
+                        .setWhereClause(
+                                getReadTableWhereClause(
+                                        request,
+                                        callingPackageName,
+                                        enforceSelfRead,
+                                        startDateAccessMillis,
+                                        appInfoHelper))
+                        .setOrderBy(getOrderByClause(request))
+                        .setLimit(getLimitSize(request))
+                        .setExtraReadRequests(
+                                getExtraDataReadRequests(
+                                        request,
+                                        callingPackageName,
+                                        startDateAccessMillis,
+                                        grantedExtraReadPermissions,
+                                        isInForeground,
+                                        appInfoHelper));
+        return new RecordReadTableRequest(readTableRequest, this);
     }
 
     /**
@@ -446,30 +452,32 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Returns ReadTableRequest for {@code uuids} */
-    public final ReadTableRequest getReadTableRequest(
+    public final RecordReadTableRequest getReadTableRequest(
             String packageName,
             List<UUID> uuids,
             long startDateAccess,
             Set<String> grantedExtraReadPermissions,
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {
-        return new ReadTableRequest(getMainTableName())
-                .setJoinClause(getJoinForReadRequest())
-                .setWhereClause(
-                        new WhereClauses(AND)
-                                .addWhereInClauseWithoutQuotes(
-                                        UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(uuids))
-                                .addWhereLaterThanTimeClause(
-                                        getStartTimeColumnName(), startDateAccess))
-                .setRecordHelper(this)
-                .setExtraReadRequests(
-                        getExtraDataReadRequests(
-                                packageName,
-                                uuids,
-                                startDateAccess,
-                                grantedExtraReadPermissions,
-                                isInForeground,
-                                appInfoHelper));
+        ReadTableRequest readTableRequest =
+                new ReadTableRequest(getMainTableName())
+                        .setJoinClause(getJoinForReadRequest())
+                        .setWhereClause(
+                                new WhereClauses(AND)
+                                        .addWhereInClauseWithoutQuotes(
+                                                UUID_COLUMN_NAME,
+                                                StorageUtils.getListOfHexStrings(uuids))
+                                        .addWhereLaterThanTimeClause(
+                                                getStartTimeColumnName(), startDateAccess))
+                        .setExtraReadRequests(
+                                getExtraDataReadRequests(
+                                        packageName,
+                                        uuids,
+                                        startDateAccess,
+                                        grantedExtraReadPermissions,
+                                        isInForeground,
+                                        appInfoHelper));
+        return new RecordReadTableRequest(readTableRequest, this);
     }
 
     /**
@@ -1017,7 +1025,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * referenced it. When a training plan is deleted, a read request is made on the exercise
      * session table to find any exercise sessions that referenced it.
      */
-    public List<ReadTableRequest> getReadRequestsForRecordsModifiedByDeletion(
+    public List<RecordReadTableRequest> getReadRequestsForRecordsModifiedByDeletion(
             UUID deletedRecordUuid) {
         return Collections.emptyList();
     }
@@ -1031,7 +1039,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * exercise session may modify the 'completedSessionId' field of any planned sessions that
      * referenced it.
      */
-    public List<ReadTableRequest> getReadRequestsForRecordsModifiedByUpsertion(
+    public List<RecordReadTableRequest> getReadRequestsForRecordsModifiedByUpsertion(
             UUID upsertedRecordId, RecordUpsertTableRequest upsertTableRequest, long appId) {
         return Collections.emptyList();
     }

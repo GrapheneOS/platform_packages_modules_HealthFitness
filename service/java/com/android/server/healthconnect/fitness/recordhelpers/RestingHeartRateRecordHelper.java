@@ -26,6 +26,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RestingHeartRateRecordInternal;
 import android.util.Pair;
@@ -37,6 +38,7 @@ import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Helper class for RestingHeartRateRecord.
@@ -56,7 +58,7 @@ public final class RestingHeartRateRecordHelper
     @Override
     @Nullable
     public AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         long aggregateValue;
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case RESTING_HEART_RATE_RECORD_BPM_MAX:
@@ -68,7 +70,7 @@ public final class RestingHeartRateRecordHelper
             default:
                 return null;
         }
-        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
+        return new AggregateResult<>(aggregateValue, getZoneOffset(results), dataOrigins);
     }
 
     @Override

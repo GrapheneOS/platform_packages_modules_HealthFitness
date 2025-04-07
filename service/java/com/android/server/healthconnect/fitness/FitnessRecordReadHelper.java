@@ -19,7 +19,6 @@ package com.android.server.healthconnect.fitness;
 import static android.health.connect.Constants.DEFAULT_LONG;
 
 import static java.util.Collections.singletonList;
-import static java.util.Objects.requireNonNull;
 
 import android.annotation.Nullable;
 import android.database.Cursor;
@@ -110,7 +109,7 @@ public class FitnessRecordReadHelper {
             @Nullable Map<Long, String> packageNamesByAppIds) {
         int recordTypeId = request.getRecordType();
         RecordHelper<?> recordHelper = mInternalHealthConnectMappings.getRecordHelper(recordTypeId);
-        ReadTableRequest readTableRequest =
+        RecordReadTableRequest readTableRequest =
                 recordHelper.getReadTableRequest(
                         request,
                         callingPackageName,
@@ -136,7 +135,7 @@ public class FitnessRecordReadHelper {
         int pageSize = request.getPageSize();
 
         Pair<List<RecordInternal<?>>, PageTokenWrapper> readResult;
-        try (Cursor cursor = transactionManager.read(readTableRequest)) {
+        try (Cursor cursor = transactionManager.read(readTableRequest.getReadTableRequest())) {
             readResult =
                     recordHelper.getNextInternalRecordsPageAndToken(
                             mDeviceInfoHelper,
@@ -218,7 +217,7 @@ public class FitnessRecordReadHelper {
             long startDateAccessMillis,
             boolean isInForeground,
             boolean shouldRecordAccessLog) {
-        List<ReadTableRequest> readTableRequests = new ArrayList<>();
+        List<RecordReadTableRequest> readTableRequests = new ArrayList<>();
         recordTypeToUuids.forEach(
                 (recordType, uuids) ->
                         readTableRequests.add(
@@ -276,13 +275,12 @@ public class FitnessRecordReadHelper {
             TransactionManager transactionManager,
             String callingPackageName,
             Set<Integer> recordTypeIds,
-            List<ReadTableRequest> readTableRequests,
+            List<RecordReadTableRequest> readTableRequests,
             boolean shouldRecordAccessLog) {
         List<RecordInternal<?>> recordInternals = new ArrayList<>();
-        for (ReadTableRequest readTableRequest : readTableRequests) {
+        for (RecordReadTableRequest readTableRequest : readTableRequests) {
             RecordHelper<?> helper = readTableRequest.getRecordHelper();
-            requireNonNull(helper);
-            try (Cursor cursor = transactionManager.read(readTableRequest)) {
+            try (Cursor cursor = transactionManager.read(readTableRequest.getReadTableRequest())) {
                 List<RecordInternal<?>> internalRecords =
                         helper.getInternalRecords(cursor, mDeviceInfoHelper, mAppInfoHelper);
                 populateInternalRecordsWithExtraData(
@@ -336,11 +334,12 @@ public class FitnessRecordReadHelper {
     private void populateInternalRecordsWithExtraData(
             TransactionManager transactionManager,
             List<RecordInternal<?>> records,
-            ReadTableRequest request) {
-        if (request.getExtraReadRequests() == null) {
+            RecordReadTableRequest request) {
+        if (request.getReadTableRequest().getExtraReadRequests() == null) {
             return;
         }
-        for (ReadTableRequest extraDataRequest : request.getExtraReadRequests()) {
+        for (ReadTableRequest extraDataRequest :
+                request.getReadTableRequest().getExtraReadRequests()) {
             Cursor cursorExtraData = transactionManager.read(extraDataRequest);
             RecordHelper<?> recordHelper = request.getRecordHelper();
             if (recordHelper == null) {

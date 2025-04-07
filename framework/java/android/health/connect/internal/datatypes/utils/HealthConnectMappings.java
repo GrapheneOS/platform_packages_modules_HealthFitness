@@ -58,8 +58,7 @@ public final class HealthConnectMappings {
 
     private final RecordMapper mRecordMapper = RecordMapper.getInstance();
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
-    private static volatile HealthConnectMappings sHealthConnectMappings;
+    @Nullable private static volatile HealthConnectMappings sHealthConnectMappings;
 
     /** Exists for compatibility with classes which don't support injections yet. */
     // TODO(b/353283052): inject where possible instead of using the singleton.

@@ -24,6 +24,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.HydrationRecordInternal;
 import android.util.Pair;
@@ -34,6 +35,7 @@ import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Helper class for HydrationRecord.
@@ -51,12 +53,13 @@ public final class HydrationRecordHelper extends IntervalRecordHelper<HydrationR
     @Override
     @Nullable
     public AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case HYDRATION_RECORD_VOLUME_TOTAL:
                 return new AggregateResult<>(
-                                results.getDouble(results.getColumnIndex(VOLUME_COLUMN_NAME)))
-                        .setZoneOffset(getZoneOffset(results));
+                        results.getDouble(results.getColumnIndex(VOLUME_COLUMN_NAME)),
+                        getZoneOffset(results),
+                        dataOrigins);
 
             default:
                 return null;
