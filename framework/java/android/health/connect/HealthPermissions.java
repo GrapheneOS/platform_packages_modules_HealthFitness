@@ -56,7 +56,6 @@ import static android.health.connect.HealthPermissionCategory.VO2_MAX;
 import static android.health.connect.HealthPermissionCategory.WEIGHT;
 import static android.health.connect.HealthPermissionCategory.WHEELCHAIR_PUSHES;
 
-import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
@@ -1076,10 +1075,6 @@ public final class HealthPermissions {
      * @hide
      */
     public static Set<String> getAllMedicalPermissions() {
-        if (!isPersonalHealthRecordEnabled()) {
-            throw new UnsupportedOperationException("getAllMedicalPermissions is not supported");
-        }
-
         Set<String> permissions = new ArraySet<>();
         permissions.add(WRITE_MEDICAL_DATA);
         permissions.add(READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES);

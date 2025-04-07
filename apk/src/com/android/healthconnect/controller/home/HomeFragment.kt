@@ -71,7 +71,6 @@ import com.android.healthconnect.controller.utils.logging.RecentAccessElement
 import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
-import com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled
 import com.android.healthfitness.flags.Flags.onboarding
 import com.android.healthfitness.flags.Flags.personalHealthRecordLockScreenBanner
 import com.android.settingslib.widget.BannerMessagePreference
@@ -166,20 +165,16 @@ class HomeFragment : Hilt_HomeFragment() {
         }
         manageDataPreference.summary = getString(R.string.manage_data_summary)
 
-        if (isPersonalHealthRecordEnabled()) {
-            browseMedicalDataPreference.setOnPreferenceClickListener {
-                findNavController()
-                    .navigate(
-                        R.id.action_homeFragment_to_medicalDataFragment,
-                        bundleOf(IS_BROWSE_MEDICAL_DATA_SCREEN to true),
-                    )
-                true
-            }
-            browseMedicalDataPreference.isVisible = false
-            browseMedicalDataPreference.logName = HomePageElement.BROWSE_HEALTH_RECORDS_BUTTON
-        } else {
-            preferenceScreen.removePreferenceRecursively(BROWSE_MEDICAL_DATA_PREFERENCE_KEY)
+        browseMedicalDataPreference.setOnPreferenceClickListener {
+            findNavController()
+                .navigate(
+                    R.id.action_homeFragment_to_medicalDataFragment,
+                    bundleOf(IS_BROWSE_MEDICAL_DATA_SCREEN to true),
+                )
+            true
         }
+        browseMedicalDataPreference.isVisible = false
+        browseMedicalDataPreference.logName = HomePageElement.BROWSE_HEALTH_RECORDS_BUTTON
 
         migrationBannerSummary = getString(R.string.resume_migration_banner_description_fallback)
     }
@@ -189,14 +184,12 @@ class HomeFragment : Hilt_HomeFragment() {
         recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
         homeViewModel.loadConnectedApps()
         exportStatusViewModel.loadScheduledExportStatus()
-        if (isPersonalHealthRecordEnabled()) {
-            homeViewModel.loadHasAnyMedicalData()
-            if (isLockScreenBannerAvailable) {
-                homeViewModel.loadShouldShowLockScreenBanner(
-                    getSharedPreference(),
-                    requireContext(),
-                )
-            }
+        homeViewModel.loadHasAnyMedicalData()
+        if (isLockScreenBannerAvailable) {
+            homeViewModel.loadShouldShowLockScreenBanner(
+                getSharedPreference(),
+                requireContext(),
+            )
         }
     }
 
@@ -244,20 +237,18 @@ class HomeFragment : Hilt_HomeFragment() {
             }
         }
 
-        if (isPersonalHealthRecordEnabled()) {
-            homeViewModel.loadHasAnyMedicalData()
-            homeViewModel.hasAnyMedicalData.observe(viewLifecycleOwner) { hasAnyMedicalData ->
-                browseMedicalDataPreference.isVisible = hasAnyMedicalData ?: false
-            }
-            if (isLockScreenBannerAvailable) {
-                val sharedPreference = getSharedPreference()
-                homeViewModel.loadShouldShowLockScreenBanner(sharedPreference, requireContext())
-                homeViewModel.showLockScreenBanner.observe(viewLifecycleOwner) { bannerState ->
-                    if (bannerState is LockScreenBannerState.ShowBanner) {
-                        addLockScreenBanner(bannerState)
-                    } else {
-                        removeLockScreenBanner()
-                    }
+        homeViewModel.loadHasAnyMedicalData()
+        homeViewModel.hasAnyMedicalData.observe(viewLifecycleOwner) { hasAnyMedicalData ->
+            browseMedicalDataPreference.isVisible = hasAnyMedicalData ?: false
+        }
+        if (isLockScreenBannerAvailable) {
+            val sharedPreference = getSharedPreference()
+            homeViewModel.loadShouldShowLockScreenBanner(sharedPreference, requireContext())
+            homeViewModel.showLockScreenBanner.observe(viewLifecycleOwner) { bannerState ->
+                if (bannerState is LockScreenBannerState.ShowBanner) {
+                    addLockScreenBanner(bannerState)
+                } else {
+                    removeLockScreenBanner()
                 }
             }
         }

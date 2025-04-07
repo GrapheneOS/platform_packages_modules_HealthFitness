@@ -36,7 +36,6 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.datatypes.MedicalDataSource.validateMedicalDataSourceIds;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
-import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
 import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetry;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
@@ -1321,10 +1320,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         throwExceptionIfDataSyncInProgress();
                         // Get AppInfo IDs which has PHR data.
                         Set<Long> appIdsWithPhrData = Set.of();
-                        if (isPersonalHealthRecordEnabled()) {
-                            appIdsWithPhrData =
-                                    mMedicalDataSourceHelper.getAllContributorAppInfoIds();
-                        }
+                        appIdsWithPhrData = mMedicalDataSourceHelper.getAllContributorAppInfoIds();
                         // Get all AppInfos which has either Fitness data or PHR data.
                         List<AppInfo> applicationInfosWithData =
                                 mAppInfoHelper.getApplicationInfosWithRecordTypesOrInIdsList(
@@ -2152,19 +2148,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Creating MedicalDataSource is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
-
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
 
@@ -2222,19 +2205,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Creating MedicalDataSource by ids is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
-
                     if (ids.size() > MAXIMUM_PAGE_SIZE) {
                         HealthConnectException invalidSizeException =
                                 new HealthConnectException(
@@ -2342,18 +2312,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Getting MedicalDataSources by request is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     throwExceptionIfDataSyncInProgress();
@@ -2439,19 +2397,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Deleting MedicalDataSource is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
-
                     if (id.trim().isEmpty()) {
                         tryAndThrowException(
                                 errorCallback,
@@ -2542,19 +2487,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Upsert MedicalResources is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
-
                     if (requests.isEmpty()) {
                         tryAndReturnMedicalResourcesResult(callback, List.of(), logger);
                     }
@@ -2667,19 +2599,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Reading MedicalResources by ids is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
-
                     if (personalHealthRecordTelemetry()) {
                         // Stores the timestamp for calls made by ANY client, including the
                         // controller
@@ -2795,19 +2714,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Reading MedicalResources by request is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
-
                     if (personalHealthRecordTelemetry()) {
                         // Stores the timestamp for calls made by ANY client, including the
                         // controller
@@ -2919,19 +2825,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Deleting MedicalResources by ids is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
-
                     if (medicalResourceIds.isEmpty()) {
                         tryAndReturnResult(callback, logger);
                         logger.build().log();
@@ -2991,19 +2884,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Deleting MedicalResources by request is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
-
                     Set<Integer> medicalResourceTypes = request.getMedicalResourceTypes();
                     logger.setMedicalResourceTypes(medicalResourceTypes);
                     if (request.getDataSourceIds().isEmpty() && medicalResourceTypes.isEmpty()) {
@@ -3139,19 +3019,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final UserHandle userHandle = Binder.getCallingUserHandle();
         mThreadScheduler.scheduleControllerTask(
                 () -> {
-                    if (!isPersonalHealthRecordEnabled()) {
-                        HealthConnectException unsupportedException =
-                                new HealthConnectException(
-                                        ERROR_UNSUPPORTED_OPERATION,
-                                        "Querying MedicalResource types info is not supported.");
-                        Slog.e(TAG, "HealthConnectException: ", unsupportedException);
-                        tryAndThrowException(
-                                errorCallback,
-                                unsupportedException,
-                                unsupportedException.getErrorCode());
-                        return;
-                    }
-
                     try {
                         enforceIsForegroundUser(userHandle);
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);

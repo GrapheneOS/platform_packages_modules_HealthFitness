@@ -52,7 +52,6 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.getUpsertMedica
 import static android.healthconnect.cts.utils.DataFactory.MAXIMUM_PAGE_SIZE;
 import static android.healthconnect.cts.utils.DataFactory.NOW;
 
-import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
@@ -3009,9 +3008,6 @@ public class HealthConnectServiceImplTest {
      * needs.
      */
     private void setUpAllMedicalPermissionChecksHardDenied() {
-        if (!isPersonalHealthRecordEnabled()) {
-            return;
-        }
         for (String permission : getAllMedicalPermissions()) {
             // Some methods use ForPreflight while others use ForDataDelivery. Set both here.
             when(mPermissionManager.checkPermissionForPreflight(permission, mAttributionSource))

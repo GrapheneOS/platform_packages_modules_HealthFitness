@@ -35,11 +35,7 @@ constructor(
     suspend fun invoke() =
         withContext(dispatcher) {
             val deleteFitnessData = async { deleteAllFitnessDataUseCase.invoke() }
-            val deleteMedicalData = async {
-                if (personalHealthRecord()) {
-                    deleteAllMedicalDataUseCase.invoke()
-                }
-            }
+            val deleteMedicalData = async { deleteAllMedicalDataUseCase.invoke() }
             deleteFitnessData.await()
             deleteMedicalData.await()
         }

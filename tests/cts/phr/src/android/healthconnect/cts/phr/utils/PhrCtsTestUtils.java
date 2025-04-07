@@ -48,8 +48,6 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedica
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermission;
 
-import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
-
 import static com.google.common.base.Preconditions.checkState;
 
 import static java.util.stream.Collectors.toSet;
@@ -294,9 +292,6 @@ public class PhrCtsTestUtils {
      * database.
      */
     public void deleteAllMedicalData() throws InterruptedException {
-        if (!isPersonalHealthRecordEnabled()) {
-            return;
-        }
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
         try {
