@@ -523,7 +523,6 @@ public final class BackupRestore {
     }
 
     /** Deletes all the staged data and resets all the states. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public void deleteAndResetEverything(UserHandle userHandle) {
         HealthConnectContext dbContext =
                 HealthConnectContext.create(
