@@ -40,7 +40,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -312,12 +311,13 @@ public class FitnessRecordUpsertHelper {
         final RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(
                         upsertRequest.getRecordInternal().getRecordType());
-        for (ReadTableRequest additionalChangelogUuidRequest :
+        for (RecordReadTableRequest additionalChangelogUuidRequest :
                 recordHelper.getReadRequestsForRecordsModifiedByUpsertion(
                         upsertRequest.getRecordInternal().getUuid(),
                         upsertRequest,
                         callingPackageAppInfoId)) {
-            Cursor cursorAdditionalUuids = mTransactionManager.read(additionalChangelogUuidRequest);
+            Cursor cursorAdditionalUuids =
+                    mTransactionManager.read(additionalChangelogUuidRequest.getReadTableRequest());
             while (cursorAdditionalUuids.moveToNext()) {
                 RecordHelper<?> extraRecordHelper =
                         requireNonNull(additionalChangelogUuidRequest.getRecordHelper());

@@ -39,7 +39,6 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -249,12 +248,13 @@ public final class FitnessRecordDeleteHelper {
                                 // Add changelogs for affected records, e.g. a training plan
                                 // being deleted will create changelogs for affected exercise
                                 // sessions.
-                                for (ReadTableRequest additionalChangelogUuidRequest :
+                                for (RecordReadTableRequest additionalChangelogUuidRequest :
                                         recordHelper.getReadRequestsForRecordsModifiedByDeletion(
                                                 deletedRecordUuid)) {
                                     Cursor cursorAdditionalUuids =
                                             mTransactionManager.read(
-                                                    additionalChangelogUuidRequest);
+                                                    additionalChangelogUuidRequest
+                                                            .getReadTableRequest());
                                     while (cursorAdditionalUuids.moveToNext()) {
                                         modificationChangelogs.addUUID(
                                                 requireNonNull(
