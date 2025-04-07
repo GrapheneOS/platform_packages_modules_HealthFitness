@@ -333,7 +333,6 @@ public class HealthConnectServiceImplTest {
     @Mock IMedicalResourceListParcelResponseCallback mMedicalResourceListParcelResponseCallback;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
-    @Captor ArgumentCaptor<List<MedicalDataSource>> mMedicalDataSourcesResponseCaptor;
     private FakeTimeSource mFakeTimeSource;
     private Context mContext;
     private AttributionSource mAttributionSource;
@@ -421,7 +420,7 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getBackupRestore(),
                         healthConnectInjector.getAccessLogsHelper(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
-                        healthConnectInjector.getActivityDateHelper(),
+                        healthConnectInjector.getRecordDateHelper(),
                         healthConnectInjector.getChangeLogsHelper(),
                         healthConnectInjector.getChangeLogsRequestHelper(),
                         healthConnectInjector.getPriorityMigrationHelper(),
@@ -430,7 +429,6 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getPreferenceHelper(),
                         healthConnectInjector.getDatabaseHelpers(),
                         healthConnectInjector.getPreferencesManager(),
-                        healthConnectInjector.getReadAccessLogsHelper(),
                         healthConnectInjector.getAppOpsManagerLocal(),
                         healthConnectInjector.getThreadScheduler(),
                         mRateLimiter,
@@ -1009,10 +1007,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testGetMedicalDataSources_byIds_fromBgWithBgReadPermFromSplit_callsHelperWithoutBgRead()
@@ -1320,10 +1315,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testGetMedicalDataSources_byRequest_fromBgWithBgReadPermFromSplit_callsHelperWithoutBgRead()
@@ -1385,10 +1377,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE})
     public void testUpsertMedicalResources_weakReferenceFlagOn_succeeds() throws RemoteException {
         setUpPhrMocksWithIrrelevantResponses();
         setDataManagementPermission(PERMISSION_DENIED);
@@ -1920,10 +1909,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testReadMedicalResources_byIds_fromBgWithBgReadPermFromSplit_callsHelperWithoutBgRead()
@@ -2139,10 +2125,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testReadMedicalResources_byRequest_onlyReadPermission_withBgReadFromSplitPermission_enforceSelfRead()

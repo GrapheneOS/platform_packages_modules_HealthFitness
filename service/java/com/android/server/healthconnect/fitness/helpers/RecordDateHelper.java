@@ -84,7 +84,7 @@ public final class RecordDateHelper extends DatabaseHelper {
     }
 
     /** Insert a new activity dates for the given records */
-    public void insertRecordDate(List<RecordInternal<?>> recordInternals) {
+    public void insertRecordDate(List<? extends RecordInternal<?>> recordInternals) {
         List<UpsertTableRequest> upsertTableRequests = new ArrayList<>();
         recordInternals.forEach(
                 (recordInternal) -> upsertTableRequests.add(getUpsertTableRequest(recordInternal)));

@@ -34,6 +34,8 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
@@ -66,6 +68,8 @@ public final class FitnessRecordDeleteHelper {
     private final TransactionManager mTransactionManager;
     private final AppInfoHelper mAppInfoHelper;
     private final AccessLogsHelper mAccessLogsHelper;
+    private final RecordDateHelper mRecordDateHelper;
+    private final HealthConnectThreadScheduler mThreadScheduler;
     private final HealthConnectMappings mHealthConnectMappings;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
@@ -73,10 +77,14 @@ public final class FitnessRecordDeleteHelper {
             TransactionManager transactionManager,
             AppInfoHelper appInfoHelper,
             AccessLogsHelper accessLogsHelper,
+            RecordDateHelper recordDateHelper,
+            HealthConnectThreadScheduler threadScheduler,
             InternalHealthConnectMappings internalHealthConnectMappings) {
         mTransactionManager = transactionManager;
         mAppInfoHelper = appInfoHelper;
         mAccessLogsHelper = accessLogsHelper;
+        mRecordDateHelper = recordDateHelper;
+        mThreadScheduler = threadScheduler;
         mHealthConnectMappings = internalHealthConnectMappings.getExternalMappings();
         mInternalHealthConnectMappings = internalHealthConnectMappings;
     }
@@ -104,11 +112,31 @@ public final class FitnessRecordDeleteHelper {
             request.setPackageNameFilters(singletonList(callingPackageName));
         }
 
+        int recordsDeleted;
         if (request.usesIdFilters()) {
-            return deleteByIdFilter(
-                    callingPackageName, request, enforceSelfDelete, shouldRecordAccessLog);
+            recordsDeleted =
+                    deleteByIdFilter(
+                            callingPackageName, request, enforceSelfDelete, shouldRecordAccessLog);
         } else {
-            return deleteByNonIdFilter(callingPackageName, request, shouldRecordAccessLog);
+            recordsDeleted =
+                    deleteByNonIdFilter(callingPackageName, request, shouldRecordAccessLog);
+        }
+
+        if (recordsDeleted > 0) {
+            mThreadScheduler.scheduleInternalTask(() -> postDeleteTasks(request));
+        }
+        return recordsDeleted;
+    }
+
+    private void postDeleteTasks(DeleteUsingFiltersRequestParcel request) {
+        if (request.getRecordTypeFilters().isEmpty()) {
+            // Resync for all records in case a record filter is not specified.
+            mAppInfoHelper.syncAppInfoRecordTypesUsed();
+            mRecordDateHelper.reSyncForAllRecords();
+        } else {
+            List<Integer> recordTypeFilters = request.getRecordTypeFilters();
+            mAppInfoHelper.syncAppInfoRecordTypesUsed(new HashSet<>(recordTypeFilters));
+            mRecordDateHelper.reSyncByRecordTypeIds(recordTypeFilters);
         }
     }
 
@@ -294,6 +322,9 @@ public final class FitnessRecordDeleteHelper {
 
     /**
      * Delete records for the given deleteTableRequests.
+     *
+     * <p>Note: This method doesn't run post delete tasks. In most cases, they should be run at the
+     * end of the operation (e.g. with d2d transfer, once all the data has been merged).
      *
      * @param deleteTableRequests list of delete requests for a record table.
      */

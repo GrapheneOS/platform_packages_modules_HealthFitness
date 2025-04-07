@@ -220,7 +220,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.D
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.PreferencesManager;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -239,7 +238,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -298,7 +296,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final MedicalDataSourceHelper mMedicalDataSourceHelper;
     private final ExportManager mExportManager;
     private final AccessLogsHelper mAccessLogsHelper;
-    private final RecordDateHelper mActivityDateHelper;
+    private final RecordDateHelper mRecordDateHelper;
     private final ChangeLogsHelper mChangeLogsHelper;
     private final ChangeLogsRequestHelper mChangeLogsRequestHelper;
     private final MigrationEntityHelper mMigrationEntityHelper;
@@ -307,7 +305,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final TimeSource mTimeSource;
     private final DatabaseHelpers mDatabaseHelpers;
     private final PreferencesManager mPreferencesManager;
-    private final ReadAccessLogsHelper mReadAccessLogsHelper;
     private final RateLimiter mRateLimiter;
     // Used if PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE is false.
     @Nullable private FhirResourceValidator mFhirResourceValidator;
@@ -351,7 +348,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             PreferenceHelper preferenceHelper,
             DatabaseHelpers databaseHelpers,
             PreferencesManager preferencesManager,
-            ReadAccessLogsHelper readAccessLogsHelper,
             AppOpsManagerLocal appOpsManagerLocal,
             HealthConnectThreadScheduler threadScheduler,
             RateLimiter rateLimiter,
@@ -390,7 +386,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         mAccessLogsHelper = accessLogsHelper;
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
-        mActivityDateHelper = recordDateHelper;
+        mRecordDateHelper = recordDateHelper;
         mChangeLogsHelper = changeLogsHelper;
         mChangeLogsRequestHelper = changeLogsRequestHelper;
         mPriorityMigrationHelper = priorityMigrationHelper;
@@ -399,7 +395,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mPreferenceHelper = preferenceHelper;
         mDatabaseHelpers = databaseHelpers;
         mPreferencesManager = preferencesManager;
-        mReadAccessLogsHelper = readAccessLogsHelper;
         mThreadScheduler = threadScheduler;
         mRateLimiter = rateLimiter;
 
@@ -590,9 +585,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                             recordInternals, attributionSource));
                     tryAndReturnResult(callback, uuids, logger);
 
-                    mThreadScheduler.scheduleInternalTask(
-                            () -> postInsertTasks(attributionSource, recordsParcel));
-
                     logRecordTypeSpecificUpsertMetrics(
                             recordInternals, attributionSource.getPackageName());
                     logger.setDataTypesFromRecordInternals(recordInternals);
@@ -601,18 +593,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 errorCallback,
                 uid,
                 /* isController= */ false);
-    }
-
-    private void postInsertTasks(AttributionSource attributionSource, RecordsParcel recordsParcel) {
-        mActivityDateHelper.insertRecordDate(recordsParcel.getRecords());
-        Set<Integer> recordsTypesInsertedSet =
-                recordsParcel.getRecords().stream()
-                        .map(RecordInternal::getRecordType)
-                        .collect(toSet());
-        // Update AppInfo table with the record types of records inserted in the request for the
-        // current package.
-        mAppInfoHelper.updateAppInfoRecordTypesUsedOnInsert(
-                recordsTypesInsertedSet, attributionSource.getPackageName());
     }
 
     /**
@@ -952,13 +932,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     logRecordTypeSpecificUpsertMetrics(
                             recordInternals, attributionSource.getPackageName());
                     logger.setDataTypesFromRecordInternals(recordInternals);
-                    // Update activity dates table
-                    mThreadScheduler.scheduleInternalTask(
-                            () ->
-                                    mActivityDateHelper.reSyncByRecordTypeIds(
-                                            recordInternals.stream()
-                                                    .map(RecordInternal::getRecordType)
-                                                    .toList()));
                 },
                 logger,
                 errorCallback,
@@ -1172,8 +1145,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     /* enforceSelfDelete= */ !holdsDataManagementPermission,
                                     /* shouldRecordAccessLog= */ !holdsDataManagementPermission);
                     tryAndReturnResult(callback, logger);
-                    mThreadScheduler.scheduleInternalTask(
-                            () -> postDeleteTasks(recordTypeIdsToDelete));
                     logger.setNumberOfRecords(numberOfRecordsDeleted)
                             .setDataTypesFromRecordTypes(recordTypeIdsToDelete);
                 },
@@ -1478,7 +1449,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
                         throwExceptionIfDataSyncInProgress();
                         List<LocalDate> localDates =
-                                mActivityDateHelper.getRecordDates(
+                                mRecordDateHelper.getRecordDates(
                                         activityDatesRequestParcel.getRecordTypes());
 
                         callback.onResult(new ActivityDatesResponseParcel(localDates));
@@ -3665,13 +3636,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private void throwIllegalStateExceptionIfDataSyncInProgress() {
         if (isDataSyncInProgress()) {
             throw new IllegalStateException("Storage data sync in progress. API calls are blocked");
-        }
-    }
-
-    private void postDeleteTasks(List<Integer> recordTypeIdsToDelete) {
-        if (recordTypeIdsToDelete != null && !recordTypeIdsToDelete.isEmpty()) {
-            mAppInfoHelper.syncAppInfoRecordTypesUsed(new HashSet<>(recordTypeIdsToDelete));
-            mActivityDateHelper.reSyncByRecordTypeIds(recordTypeIdsToDelete);
         }
     }
 
