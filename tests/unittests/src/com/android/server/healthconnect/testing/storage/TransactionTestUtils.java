@@ -37,9 +37,11 @@ import android.health.connect.RecordIdFilter;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.datatypes.BloodPressureRecord;
+import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
 import android.health.connect.internal.datatypes.ExerciseRouteInternal;
+import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
@@ -222,6 +224,17 @@ public final class TransactionTestUtils {
                         .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
     }
 
+    /** Creates an exercise sessions with a route. */
+    public static ExerciseSessionRecordInternal createExerciseSessionRecordWithSegment(
+            Instant startTime) {
+        return (ExerciseSessionRecordInternal)
+                new ExerciseSessionRecordInternal()
+                        .setExerciseType(EXERCISE_SESSION_TYPE_RUNNING)
+                        .setExerciseSegments(List.of(createExerciseSegment(startTime)))
+                        .setStartTime(startTime.toEpochMilli())
+                        .setEndTime(startTime.plus(ofMinutes(10)).toEpochMilli());
+    }
+
     public static SpeedRecordInternal createSpeedRecordInternal(Instant startTime) {
         return (SpeedRecordInternal)
                 new SpeedRecordInternal()
@@ -294,5 +307,13 @@ public final class TransactionTestUtils {
                                                 .setLatitude(latitude + 0.001 * i)
                                                 .setLongitude(longitude + 0.001 * i))
                         .toList());
+    }
+
+    private static ExerciseSegmentInternal createExerciseSegment(Instant startTime) {
+        return new ExerciseSegmentInternal()
+                .setStartTime(startTime.plusSeconds(1).toEpochMilli())
+                .setStartTime(startTime.plusSeconds(2).toEpochMilli())
+                .setSegmentType(ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_ARM_CURL)
+                .setRepetitionsCount(5);
     }
 }
