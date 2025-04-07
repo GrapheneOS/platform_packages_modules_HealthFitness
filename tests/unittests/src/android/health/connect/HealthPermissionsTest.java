@@ -33,7 +33,6 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.HealthPermissions.isValidHealthPermission;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -310,7 +309,7 @@ public class HealthPermissionsTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalPermissions_returnsValidPermissions() {
         Set<String> permissions = HealthPermissions.getAllMedicalPermissions();
         assertThat(permissions)
@@ -331,7 +330,7 @@ public class HealthPermissionsTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalPermissions_returnsAllMedicalPermissions() throws Exception {
         Set<String> permissions = HealthPermissions.getAllMedicalPermissions();
 

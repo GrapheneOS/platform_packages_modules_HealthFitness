@@ -209,7 +209,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun phrFlagOn_intentSkipsGrantedPermissions_includesItInResponse() {
         val startActivityIntent = getPermissionScreenIntent(fitnessPermissions)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
@@ -290,7 +290,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun phrFlagOn_requestAlreadyGrantedPermissions_sendsEmptyResultOk_doesNotModifyPermissions() {
         val startActivityIntent = getPermissionScreenIntent(fitnessPermissions)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
@@ -350,7 +350,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestOnlyWriteMedicalPermission_clickOnAllow_sendsResultOk() {
         val permissions = arrayOf(READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
         val startActivityIntent = getPermissionScreenIntent(permissions)
@@ -384,7 +384,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestOnlyWriteMedicalPermission_clickOnDontAllow_sendsResultOk() {
         val permissions = arrayOf(READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
         val startActivityIntent = getPermissionScreenIntent(permissions)
@@ -418,7 +418,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalPermissions_someGrantedSomeDenied_clickOnAllow_includesAllInResponse() {
         val permissions =
             arrayOf(READ_MEDICAL_DATA_CONDITIONS, READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
@@ -450,7 +450,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalPermissions_someGrantedSomeDenied_clickOnDontAllow_includesAllInResponse() {
         val permissions =
             arrayOf(READ_MEDICAL_DATA_CONDITIONS, READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
@@ -482,7 +482,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalAndFitness_clickOnAllow_grantsMedical_showsFitness() {
         val permissions =
             arrayOf(
@@ -519,7 +519,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalAndFitness_clickOnDontAllow_revokesMedical_showsFitness() {
         val permissions =
             arrayOf(
@@ -554,7 +554,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalAndBackground_clickOnAllow_showsBackground() {
         val permissions =
             arrayOf(
@@ -589,7 +589,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalAndBackground_clickOnDontAllow_doesNotShowBackground() {
         val permissions =
             arrayOf(
@@ -971,7 +971,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestAdditional_clickOnAllow_includesAllInResponse() {
         val permissions = arrayOf(READ_HEALTH_DATA_HISTORY, READ_HEALTH_DATA_IN_BACKGROUND)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
@@ -997,7 +997,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestAdditional_clickOnDontAllow_includesAllInResponse() {
         val permissions = arrayOf(READ_HEALTH_DATA_HISTORY, READ_HEALTH_DATA_IN_BACKGROUND)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
@@ -1075,7 +1075,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Ignore("b/363994647 - flaky rotation test")
     fun requestFitnessAndAdditionalPermissions_userFixSomeFitness_onRotate_showsAdditional() {
         val startActivityIntent =
@@ -1122,7 +1122,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Ignore("b/363994647 - flaky rotation test")
     fun requestMedicalAndFitnessPermissions_userFixSomeMedical_onRotate_showsFitness() {
         val startActivityIntent =

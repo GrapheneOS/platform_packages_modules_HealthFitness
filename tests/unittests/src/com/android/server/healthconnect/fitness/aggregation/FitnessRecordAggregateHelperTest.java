@@ -148,7 +148,6 @@ public class FitnessRecordAggregateHelperTest {
     @EnableFlags({
         Flags.FLAG_ECOSYSTEM_METRICS,
         Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_ACTIVITY_INTENSITY_DB
     })
     public void populateWithAggregation_flagsEnabled_readAccessLogRecorded() {
@@ -196,7 +195,6 @@ public class FitnessRecordAggregateHelperTest {
     @EnableFlags({
         Flags.FLAG_ECOSYSTEM_METRICS,
         Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_ACTIVITY_INTENSITY_DB
     })
     public void populateWithAggregation_accessLogDisabled_readAccessLogNotRecorded() {

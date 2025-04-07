@@ -19,7 +19,6 @@ package com.android.server.healthconnect.common.jobs;
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -50,7 +49,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -70,7 +68,6 @@ import java.util.Set;
 @EnableFlags({
     FLAG_ECOSYSTEM_METRICS,
     FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
     FLAG_ACTIVITY_INTENSITY_DB
 })
 public class DailyCleanupJobTest {

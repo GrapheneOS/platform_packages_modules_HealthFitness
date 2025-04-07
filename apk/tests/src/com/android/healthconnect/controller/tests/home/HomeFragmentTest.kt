@@ -234,7 +234,7 @@ class HomeFragmentTest {
 
     @Test
     @DisableFlags(Flags.FLAG_ONBOARDING)
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun browseMedicalData_navigatesToBrowseMedicalData() {
         whenever(homeViewModel.hasAnyMedicalData).then { MutableLiveData(true) }
         setupFragmentForNavigation()
@@ -756,7 +756,7 @@ class HomeFragmentTest {
 
     @Test
     @DisableFlags(Flags.FLAG_ONBOARDING)
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun browseMedicalData_errorFetchingMedicalDataOrEmptyMedicalData_notDisplayed() {
         whenever(homeViewModel.hasAnyMedicalData).then { MutableLiveData(false) }
 
@@ -769,7 +769,7 @@ class HomeFragmentTest {
 
     @Test
     @DisableFlags(Flags.FLAG_ONBOARDING)
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun browseMedicalData_medicalDataExists_isDisplayed() {
         whenever(homeViewModel.hasAnyMedicalData).then { MutableLiveData(true) }
 
@@ -1254,7 +1254,7 @@ class HomeFragmentTest {
 
     @Test
     @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER)
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun lockScreenBanner_phrFlagOn_bannerFlagOff_bannerNotShown() {
         launchFragment<HomeFragment>(Bundle())
 
@@ -1264,7 +1264,6 @@ class HomeFragmentTest {
     @Test
     @EnableFlags(
         Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
     )
     fun lockScreenBanner_shouldNotShowBanner_bannerNotShown() {
@@ -1280,7 +1279,6 @@ class HomeFragmentTest {
     @Test
     @EnableFlags(
         Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
     )
     fun lockScreenBanner_securityIntentNotHandled_bannerNotShown() {
@@ -1297,7 +1295,6 @@ class HomeFragmentTest {
     @Test
     @EnableFlags(
         Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
     )
     fun lockScreenBanner_bannerShown() {
@@ -1324,7 +1321,6 @@ class HomeFragmentTest {
     @Test
     @EnableFlags(
         Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
     )
     fun lockScreenBanner_whenMedicalAndFitnessData_bannerShown() {
@@ -1347,7 +1343,6 @@ class HomeFragmentTest {
     @DisableFlags(Flags.FLAG_ONBOARDING)
     @EnableFlags(
         Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
     )
     fun lockScreenBanner_startsNewPasswordIntent() {
@@ -1366,7 +1361,6 @@ class HomeFragmentTest {
     @DisableFlags(Flags.FLAG_ONBOARDING)
     @EnableFlags(
         Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
     )
     fun lockScreenBanner_dismissBanner_bannerDisappears() {
@@ -1392,7 +1386,6 @@ class HomeFragmentTest {
     @Test
     @EnableFlags(
         Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
     )
     fun multipleBanners_canExpand_andCollapseGroup() {

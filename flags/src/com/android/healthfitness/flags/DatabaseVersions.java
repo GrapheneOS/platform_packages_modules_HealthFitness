@@ -43,7 +43,7 @@ public final class DatabaseVersions {
 
     // DB version of the last feature that has been fully rolled out to public.
     // See go/hc-mainline-dev/trunk_stable/db-and-aconfig#last-rolled-out-db-version
-    public static final int LAST_ROLLED_OUT_DB_VERSION = DB_VERSION_MINDFULNESS_SESSION;
+    public static final int LAST_ROLLED_OUT_DB_VERSION = DB_VERSION_PERSONAL_HEALTH_RECORD;
 
     private DatabaseVersions() {}
 }

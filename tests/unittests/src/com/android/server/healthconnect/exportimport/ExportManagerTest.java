@@ -192,7 +192,6 @@ public class ExportManagerTest {
     @Test
     @EnableFlags({
         Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT
     })
     public void testWhenPhrExportImportEnableFlagIsEnabled_tableContentIsExported()
@@ -223,7 +222,7 @@ public class ExportManagerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD})
     @DisableFlags({
         Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_EXPORT_IMPORT
@@ -259,7 +258,6 @@ public class ExportManagerTest {
     @Test
     @EnableFlags({
         Flags.FLAG_PERSONAL_HEALTH_RECORD,
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_EXPORT_IMPORT
     })
     @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT})

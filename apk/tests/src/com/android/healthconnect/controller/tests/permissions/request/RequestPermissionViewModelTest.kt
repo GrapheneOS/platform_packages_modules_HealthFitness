@@ -153,7 +153,7 @@ class RequestPermissionViewModelTest {
 
     // PermissionScreenStates
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withMedicalReadAndWritePermissions_loadsPermissionActivityScreenStateShowMedical() =
         runTest {
             val permissions =
@@ -178,7 +178,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withMedicalWritePermissions_loadsPermissionActivityScreenStateShowMedical() = runTest {
         val permissions =
             arrayOf(
@@ -290,7 +290,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withMedicalWritePermissions_loadsMedicalScreenStateShowMedicalWrite() = runTest {
         val permissions =
             arrayOf(
@@ -317,7 +317,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withMedicalReadPermissions_loadsMedicalScreenStateShowMedicalRead() = runTest {
         val permissions =
             arrayOf(
@@ -346,7 +346,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withMedicalReadWritePermissions_loadsMedicalScreenStateShowMedicalReadWrite() =
         runTest {
             val permissions =
@@ -463,7 +463,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withFitnessRead_withMedical_withNoHistory_loadsFitnessScreenStateShowFitnessRead() =
         runTest {
             val permissions =
@@ -493,7 +493,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withFitnessRead_withMedical_withHistory_loadsFitnessScreenStateShowFitnessRead() =
         runTest {
             val permissions =
@@ -557,7 +557,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withFitnessWrite_withMedical_loadsFitnessScreenStateShowFitnessWrite() = runTest {
         val permissions =
             arrayOf(
@@ -670,7 +670,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withFitnessReadWrite_withMedical_withNoHistory_loadsFitnessScreenStateShowFitnessReadWrite() =
         runTest {
             val permissions =
@@ -710,7 +710,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withFitnessReadWrite_withMedical_withHistory_loadsFitnessScreenStateShowFitnessReadWrite() =
         runTest {
             val permissions =
@@ -791,7 +791,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withHistoryRead_withMedical_medicalNotGranted_loadsAdditionalScreenStateShowHistory() =
         runTest {
             val permissions = arrayOf(READ_HEALTH_DATA_HISTORY)
@@ -816,7 +816,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withHistoryRead_withMedical_medicalGranted_loadsAdditionalScreenStateShowHistory() =
         runTest {
             val permissions = arrayOf(READ_HEALTH_DATA_HISTORY)
@@ -864,7 +864,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withBackgroundRead_withMedical_medicalGranted_fitnessNotGranted_loadsAdditionalScreenStateShowBackground() =
         runTest {
             val permissions = arrayOf(READ_HEALTH_DATA_IN_BACKGROUND)
@@ -889,7 +889,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withBackgroundRead_withMedical_medicalNotGranted_fitnessGranted_loadsAdditionalScreenStateShowBackground() =
         runTest {
             val permissions = arrayOf(READ_HEALTH_DATA_IN_BACKGROUND)
@@ -914,7 +914,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withBackgroundRead_withMedical_medicalGranted_fitnessGranted_loadsAdditionalScreenStateShowBackground() =
         runTest {
             val permissions = arrayOf(READ_HEALTH_DATA_IN_BACKGROUND)
@@ -964,7 +964,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withAdditionalPermissions_withMedical_medicalNotGranted_fitnessGranted_loadsAdditionalScreenStateShowCombined() =
         runTest {
             val permissions = arrayOf(READ_HEALTH_DATA_HISTORY, READ_HEALTH_DATA_IN_BACKGROUND)
@@ -990,7 +990,7 @@ class RequestPermissionViewModelTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun init_withAdditionalPermissions_withMedical_medicalGranted_fitnessGranted_loadsAdditionalScreenStateShowCombined() =
         runTest {
             val permissions = arrayOf(READ_HEALTH_DATA_HISTORY, READ_HEALTH_DATA_IN_BACKGROUND)
@@ -1394,7 +1394,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun updateMedicalPermissions_grant_updatesGrantedMedicalPermissions() = runTest {
         val permissions =
             arrayOf(
@@ -1526,7 +1526,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalPermissions_updatesPermissionState() {
         val permissions =
             arrayOf(

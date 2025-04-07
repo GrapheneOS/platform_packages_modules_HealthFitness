@@ -39,7 +39,6 @@ import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellP
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -110,7 +109,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_migrationInProgress_apiBlocked()
             throws InterruptedException {
         startMigrationWithShellPermissionIdentity();
@@ -126,7 +125,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_hasDataManagementPermission_throws()
             throws InterruptedException {
         HealthConnectReceiver<MedicalDataSource> receiver = new HealthConnectReceiver<>();
@@ -144,7 +143,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_writeLimitExceeded_throws() throws Exception {
         MedicalDataSource dataSource =
                 mUtil.createDataSource(getCreateMedicalDataSourceRequest("test-id"));
@@ -172,7 +171,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_invalidEmptyDisplayName_throws()
             throws NoSuchFieldException, IllegalAccessException {
         CreateMedicalDataSourceRequest request = getCreateMedicalDataSourceRequest();
@@ -189,7 +188,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_displayNameExceedsLimit_throws()
             throws NoSuchFieldException, IllegalAccessException {
         CreateMedicalDataSourceRequest request = getCreateMedicalDataSourceRequest();
@@ -207,7 +206,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_invalidEmptyFhirBaseUri_throws()
             throws NoSuchFieldException, IllegalAccessException {
         CreateMedicalDataSourceRequest request = getCreateMedicalDataSourceRequest();
@@ -224,7 +223,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_fhirBaseUriExceedsLimit_throws()
             throws NoSuchFieldException, IllegalAccessException {
         CreateMedicalDataSourceRequest request = getCreateMedicalDataSourceRequest();
@@ -242,7 +241,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_invalidFhirVersion_throws()
             throws NoSuchFieldException, IllegalAccessException {
         CreateMedicalDataSourceRequest request = getCreateMedicalDataSourceRequest();
@@ -259,7 +258,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_succeeds() throws InterruptedException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         HealthConnectReceiver<MedicalDataSource> receiver = new HealthConnectReceiver<>();
@@ -287,7 +286,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_maxNumberOfSources_succeeds()
             throws InterruptedException {
         for (int i = 0; i < MAX_ALLOWED_MEDICAL_DATA_SOURCES - 1; i++) {
@@ -303,7 +302,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_moreThanAllowedMax_throws()
             throws InterruptedException {
         for (int i = 0; i < MAX_ALLOWED_MEDICAL_DATA_SOURCES; i++) {
@@ -320,7 +319,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_duplicateDisplayName_throws()
             throws InterruptedException {
         mUtil.createDataSource(getCreateMedicalDataSourceRequest("ds1"));
@@ -335,7 +334,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_duplicateDisplayNameFromSeparatePackages_succeeds()
             throws Exception {
         CreateMedicalDataSourceRequest request1 =
@@ -371,7 +370,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_inForegroundNoWritePerms_throws() {
         // No write permission has been granted.
         HealthConnectException exception =
@@ -385,7 +384,7 @@ public class CreateMedicalDataSourceCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testCreateMedicalDataSource_inBackgroundNoWritePerms_throws() {
         // No write permission has been granted.
         HealthConnectException exception =

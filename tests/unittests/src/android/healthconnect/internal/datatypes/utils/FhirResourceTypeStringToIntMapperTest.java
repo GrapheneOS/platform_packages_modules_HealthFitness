@@ -18,7 +18,6 @@ package android.healthconnect.internal.datatypes.utils;
 import static android.health.connect.internal.datatypes.utils.FhirResourceTypeStringToIntMapper.getFhirResourceTypeInt;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -47,13 +46,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @DisableFlags(FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
-    public void testDbFlagOff_expectException() {
-        assertThrows(UnsupportedOperationException.class, () -> getFhirResourceTypeInt(""));
-    }
-
-    @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_immunizationType() {
         assertThat(getFhirResourceTypeInt("immunization"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION);
@@ -64,7 +57,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_allergyIntoleranceType() {
         assertThat(getFhirResourceTypeInt("allergyintolerance"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE);
@@ -75,7 +68,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_observationType() {
         assertThat(getFhirResourceTypeInt("observation"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_OBSERVATION);
@@ -86,7 +79,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_conditionType() {
         assertThat(getFhirResourceTypeInt("condition"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_CONDITION);
@@ -97,7 +90,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_procedureType() {
         assertThat(getFhirResourceTypeInt("procedure"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_PROCEDURE);
@@ -108,7 +101,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_medicationType() {
         assertThat(getFhirResourceTypeInt("medication"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_MEDICATION);
@@ -119,7 +112,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_medicationStatementType() {
         assertThat(getFhirResourceTypeInt("medicationstatement"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_MEDICATION_STATEMENT);
@@ -130,7 +123,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_medicationRequestType() {
         assertThat(getFhirResourceTypeInt("medicationrequest"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_MEDICATION_REQUEST);
@@ -141,7 +134,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_patientType() {
         assertThat(getFhirResourceTypeInt("patient"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_PATIENT);
@@ -152,7 +145,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_practitionerType() {
         assertThat(getFhirResourceTypeInt("practitioner"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_PRACTITIONER);
@@ -163,7 +156,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_practitionerRoleType() {
         assertThat(getFhirResourceTypeInt("practitionerRole"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_PRACTITIONER_ROLE);
@@ -174,7 +167,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_encounterType() {
         assertThat(getFhirResourceTypeInt("encounter"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_ENCOUNTER);
@@ -185,7 +178,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_locationType() {
         assertThat(getFhirResourceTypeInt("location"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_LOCATION);
@@ -196,7 +189,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_organizationType() {
         assertThat(getFhirResourceTypeInt("organization"))
                 .isEqualTo(FhirResource.FHIR_RESOURCE_TYPE_ORGANIZATION);
@@ -207,7 +200,7 @@ public class FhirResourceTypeStringToIntMapperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void testFhirResourceTypeInt_unknownType_throws() {
         Throwable thrown =
                 assertThrows(

@@ -30,7 +30,6 @@ import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VITAL_SIGNS;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -51,7 +50,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+@EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
 public class MedicalResourceTypePermissionMapperTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 

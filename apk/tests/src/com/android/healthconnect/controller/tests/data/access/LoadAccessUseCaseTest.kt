@@ -149,7 +149,7 @@ class LoadAccessUseCaseTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun medicalPermissionsEnabled_returnsCorrectApps() = runTest {
         fakeLoadFitnessTypeContributorAppsUseCase.updateList(listOf(TEST_APP, TEST_APP_2))
         val writeSteps =
@@ -176,7 +176,7 @@ class LoadAccessUseCaseTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun medicalData_readImmunization_returnsCorrectApps() = runTest {
         fakeLoadFitnessTypeContributorAppsUseCase.updateList(listOf(TEST_APP_2))
         fakeLoadMedicalTypeContributorAppsUseCase.updateList(listOf(TEST_APP))
@@ -206,7 +206,7 @@ class LoadAccessUseCaseTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun medicalData_immunizationAndAllMedicalData_returnsCorrectApps() = runTest {
         fakeLoadFitnessTypeContributorAppsUseCase.updateList(listOf(TEST_APP_2))
         fakeLoadMedicalTypeContributorAppsUseCase.updateList(listOf(TEST_APP))
@@ -243,7 +243,7 @@ class LoadAccessUseCaseTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun medicalData_writeAllMedicalData_returnsCorrectApps() = runTest {
         fakeLoadFitnessTypeContributorAppsUseCase.updateList(listOf(TEST_APP_2))
         fakeLoadMedicalTypeContributorAppsUseCase.updateList(listOf(TEST_APP))
@@ -273,7 +273,7 @@ class LoadAccessUseCaseTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun medicalData_immunizationInactive_returnsCorrectApps() = runTest {
         fakeLoadFitnessTypeContributorAppsUseCase.updateList(listOf(TEST_APP_2))
         fakeLoadMedicalTypeContributorAppsUseCase.updateList(listOf(TEST_APP))
