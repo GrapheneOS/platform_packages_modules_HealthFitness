@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.migration;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
@@ -25,6 +25,7 @@ import android.content.ContentValues;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 
@@ -66,7 +67,7 @@ public final class MigrationEntityHelper extends DatabaseHelper {
     }
 
     /** Returns a request to insert the provided {@code entityId}. */
-    public UpsertTableRequest getInsertRequest(String entityId) {
+    UpsertTableRequest getInsertRequest(String entityId) {
         final ContentValues values = new ContentValues();
         values.put(COLUMN_ENTITY_ID, entityId);
         return new UpsertTableRequest(

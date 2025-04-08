@@ -35,7 +35,7 @@ import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 import android.util.Slog;
 
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 
 import java.time.Instant;
 
