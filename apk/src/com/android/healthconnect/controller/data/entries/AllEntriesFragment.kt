@@ -340,17 +340,6 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dateNavigationView.setDateChangedListener(
-            object : DateNavigationView.OnDateChangedListener {
-                override fun onDateChanged(
-                    displayedStartDate: Instant,
-                    period: DateNavigationPeriod,
-                ) {
-                    entriesViewModel.loadEntries(permissionType, displayedStartDate, period)
-                }
-            }
-        )
-
         deletionViewModel.entriesReloadNeeded.observe(viewLifecycleOwner) { isReloadNeeded ->
             if (isReloadNeeded) {
                 entriesViewModel.setScreenState(VIEW)
@@ -372,6 +361,21 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
         reloadEntries()
         setLoggerPageId()
         logger.logPageImpression()
+        dateNavigationView.setDateChangedListener(
+            object : DateNavigationView.OnDateChangedListener {
+                override fun onDateChanged(
+                    displayedStartDate: Instant,
+                    period: DateNavigationPeriod,
+                ) {
+                    entriesViewModel.loadEntries(permissionType, displayedStartDate, period)
+                }
+            }
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        dateNavigationView.setDateChangedListener(null)
     }
 
     private fun reloadEntries() {
