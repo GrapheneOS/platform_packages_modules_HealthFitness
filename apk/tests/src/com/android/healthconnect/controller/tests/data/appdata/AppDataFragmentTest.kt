@@ -986,7 +986,9 @@ class AppDataFragmentTest {
             advanceUntilIdle()
             assertCheckboxShown("Select all")
             onView(withText("Select all")).perform(click())
-            onView(withText("Pregnancy")).perform(click())
+            onView(withText("Pregnancy"))
+                .perform(scrollTo())
+                .perform(click())
             scenario.onActivity { activity ->
                 val fragment =
                     activity.supportFragmentManager.findFragmentByTag("") as AppDataFragment
