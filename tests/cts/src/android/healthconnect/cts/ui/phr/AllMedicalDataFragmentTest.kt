@@ -27,16 +27,13 @@ import android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION
 import android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.cts.utils.TestUtils
-import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
-import com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
 class AllMedicalDataFragmentTest : HealthConnectBaseTest() {
 
     @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()

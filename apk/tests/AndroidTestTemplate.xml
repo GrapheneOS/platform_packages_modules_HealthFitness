@@ -32,6 +32,7 @@
     <option name="test-file-name" value="UnsupportedTestApp.apk"/>
     <option name="test-file-name" value="OldPermissionsTestApp.apk"/>
     <option name="test-file-name" value="MedicalPermissionsTestApp.apk"/>
+    <option name="test-file-name" value="NoPermissionsTestApp.apk"/>
     <option name="test-file-name" value="HealthConnectUIBodySensorsTestApp.apk"/>
     <option name="test-file-name" value="HealthConnectUIWearTestApp.apk"/>
     <option name="test-file-name" value="HealthConnectUIBodySensorsAndHealthTestApp.apk"/>

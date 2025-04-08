@@ -21,16 +21,13 @@ import android.healthconnect.cts.lib.UiTestUtils.navigateToAppPermissions
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.cts.utils.TestUtils
-import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
-import com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
-@RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
 class ConnectedAppFragmentTest : HealthConnectBaseTest() {
     @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
