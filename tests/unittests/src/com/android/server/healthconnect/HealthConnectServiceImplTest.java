@@ -486,32 +486,36 @@ public class HealthConnectServiceImplTest {
         File dataDir = mContext.getDataDir();
         File writeOnlyFile = createAndGetNonEmptyFile(dataDir, "testRestoreFile1");
         File readOnlyFile = createAndGetNonEmptyFile(dataDir, "testRestoreFile2");
+        try {
 
-        assertThat(writeOnlyFile.exists()).isTrue();
-        assertThat(readOnlyFile.exists()).isTrue();
+            assertThat(writeOnlyFile.exists()).isTrue();
+            assertThat(readOnlyFile.exists()).isTrue();
 
-        ParcelFileDescriptor writeOnlyFd =
-                ParcelFileDescriptor.open(writeOnlyFile, ParcelFileDescriptor.MODE_WRITE_ONLY);
-        // The MODE_WRITE_ONLY is enough to cause an error when running on device.
-        // But when running under Robolectric this does not error for
-        // ShadowParcelFileDescriptor.
-        // So close the file descriptor as well to force an error in both cases.
-        writeOnlyFd.close();
+            ParcelFileDescriptor writeOnlyFd =
+                    ParcelFileDescriptor.open(writeOnlyFile, ParcelFileDescriptor.MODE_WRITE_ONLY);
+            // The MODE_WRITE_ONLY is enough to cause an error when running on device.
+            // But when running under Robolectric this does not error for
+            // ShadowParcelFileDescriptor. So make the file unreadable.
+            writeOnlyFile.setReadable(false);
 
-        Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
-        pfdsByFileName.put(writeOnlyFile.getName(), writeOnlyFd);
-        pfdsByFileName.put(
-                readOnlyFile.getName(),
-                ParcelFileDescriptor.open(readOnlyFile, ParcelFileDescriptor.MODE_READ_ONLY));
+            Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+            pfdsByFileName.put(writeOnlyFile.getName(), writeOnlyFd);
+            pfdsByFileName.put(
+                    readOnlyFile.getName(),
+                    ParcelFileDescriptor.open(readOnlyFile, ParcelFileDescriptor.MODE_READ_ONLY));
 
-        final IDataStagingFinishedCallback callback = mock(IDataStagingFinishedCallback.class);
-        mHealthConnectService.stageAllHealthConnectRemoteData(
-                new StageRemoteDataRequest(pfdsByFileName), mUserHandle, callback);
+            final IDataStagingFinishedCallback callback = mock(IDataStagingFinishedCallback.class);
+            mHealthConnectService.stageAllHealthConnectRemoteData(
+                    new StageRemoteDataRequest(pfdsByFileName), mUserHandle, callback);
 
-        verify(callback, timeout(5000).times(1)).onError(any());
-        var stagedFileNames = mBackupRestore.getStagedRemoteFileNames(mUserHandle);
-        assertThat(stagedFileNames.size()).isEqualTo(1);
-        assertThat(stagedFileNames.contains(readOnlyFile.getName())).isTrue();
+            verify(callback, timeout(5000).times(1)).onError(any());
+            var stagedFileNames = mBackupRestore.getStagedRemoteFileNames(mUserHandle);
+            assertThat(stagedFileNames.size()).isEqualTo(1);
+            assertThat(stagedFileNames.contains(readOnlyFile.getName())).isTrue();
+        } finally {
+            writeOnlyFile.delete();
+            readOnlyFile.delete();
+        }
     }
 
     // Imitates the state when we are not actively staging but the disk reflects that.
@@ -1009,10 +1013,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testGetMedicalDataSources_byIds_fromBgWithBgReadPermFromSplit_callsHelperWithoutBgRead()
@@ -1320,10 +1321,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testGetMedicalDataSources_byRequest_fromBgWithBgReadPermFromSplit_callsHelperWithoutBgRead()
@@ -1385,10 +1383,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE})
     public void testUpsertMedicalResources_weakReferenceFlagOn_succeeds() throws RemoteException {
         setUpPhrMocksWithIrrelevantResponses();
         setDataManagementPermission(PERMISSION_DENIED);
@@ -1920,10 +1915,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testReadMedicalResources_byIds_fromBgWithBgReadPermFromSplit_callsHelperWithoutBgRead()
@@ -2139,10 +2131,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED
-    })
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     @Test
     public void
             testReadMedicalResources_byRequest_onlyReadPermission_withBgReadFromSplitPermission_enforceSelfRead()
