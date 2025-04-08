@@ -35,9 +35,14 @@
             android:title="@string/import_data"
             android:summary="@string/import_data_description"
             android:order="4" />
+        <com.android.healthconnect.controller.shared.preference.HealthPreference
+            android:key="cloud_backup"
+            android:title="@string/cloud_backup_option"
+            app:isPreferenceVisible="false"
+            android:order="5" />
     </PreferenceCategory>
     <com.android.settingslib.widget.FooterPreference
         android:key="backup_restore_footer"
         android:title="@string/backup_and_restore_footer_body_text"
-        android:order="5" />
+        android:order="6" />
 </PreferenceScreen>

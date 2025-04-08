@@ -63,7 +63,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
 public class DatabaseStatsCollectorTest {
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
