@@ -54,4 +54,6 @@
     <dimen name="tab_width">110dp</dimen>
 
     <dimen name="recyclerview_decorator_expressive_extrasmall">2dp</dimen>
+
+    <dimen name="item_exercise_session_marginEnd">@dimen/spacing_large</dimen>
 </resources>
