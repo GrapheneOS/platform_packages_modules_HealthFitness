@@ -75,4 +75,15 @@ public final class ChangeLogTokenResponse implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(mToken);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ChangeLogTokenResponse that)) return false;
+        return Objects.equals(mToken, that.mToken);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(mToken);
+    }
 }

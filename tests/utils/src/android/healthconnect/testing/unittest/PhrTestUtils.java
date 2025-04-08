@@ -86,6 +86,12 @@ public class PhrTestUtils {
                 .get(0);
     }
 
+    /** Delete the given {@link MedicalResource}. */
+    public void deleteResource(MedicalResource resource) {
+        mMedicalResourceHelper.deleteMedicalResourcesByIdsWithoutPermissionChecks(
+                List.of(resource.getId()));
+    }
+
     /**
      * Upsert {@link MedicalResource}s using the given {@link MedicalResourcesCreator}, the {@code
      * numOfResources} and {@link MedicalDataSource}.

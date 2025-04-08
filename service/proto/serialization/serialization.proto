@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package com.android.server.healthconnect.proto.serialization;
+
+option java_multiple_files = true;
+
+// A list of MedicalResourceId objects to be stored in the change logs table as a byte array.
+message MedicalResourceIdList {
+  repeated MedicalResourceId medical_resource_id = 1;
+}
+
+message MedicalResourceId {
+  // The unique identifier of the existing MedicalDataSource, representing where the data comes
+  // from.
+  string data_source_id = 1;
+  // The FHIR resource type. This is the "resourceType" field from a JSON representation of FHIR
+  // resource data.
+  int32 fhir_resource_type = 2;
+  // The FHIR resource ID. This is the "id" field from a JSON representation of FHIR resource data.
+  string fhir_resource_id = 3;
+}

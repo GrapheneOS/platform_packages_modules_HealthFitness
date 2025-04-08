@@ -24,23 +24,29 @@ import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelpe
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_NON_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorBlob;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.OR;
 
 import static java.lang.Integer.min;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.MedicalResourceId;
 import android.health.connect.accesslog.AccessLog.OperationType;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse.DeletedLog;
+import android.health.connect.changelog.ChangeLogsResponse.DeletedMedicalResource;
+import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.proto.serialization.MedicalResourceIdList;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
@@ -160,14 +166,23 @@ public final class ChangeLogsHelper extends DatabaseHelper {
             ChangeLogsRequestHelper.TokenRequest changeLogTokenRequest,
             ChangeLogsRequest changeLogsRequest,
             ChangeLogsRequestHelper changeLogsRequestHelper) {
-        long token = changeLogTokenRequest.getRowIdChangeLogs();
         WhereClauses whereClause =
                 new WhereClauses(AND)
-                        .addWhereGreaterThanClause(PRIMARY_COLUMN_NAME, String.valueOf(token));
+                        .addWhereGreaterThanClause(
+                                PRIMARY_COLUMN_NAME,
+                                String.valueOf(changeLogTokenRequest.getRowIdChangeLogs()));
+
+        WhereClauses dataTypeClauses = new WhereClauses(OR);
         if (!changeLogTokenRequest.getRecordTypes().isEmpty()) {
-            whereClause.addWhereInIntsClause(
+            dataTypeClauses.addWhereInIntsClause(
                     RECORD_TYPE_COLUMN_NAME, changeLogTokenRequest.getRecordTypes());
         }
+        if (!changeLogTokenRequest.getMedicalResourceTypes().isEmpty()) {
+            dataTypeClauses.addWhereInIntsClause(
+                    MEDICAL_RESOURCE_TYPE_COLUMN_NAME,
+                    changeLogTokenRequest.getMedicalResourceTypes());
+        }
+        whereClause.addNestedWhereClauses(dataTypeClauses);
 
         if (!changeLogTokenRequest.getPackageNamesToFilter().isEmpty()) {
             whereClause.addWhereInLongsClause(
@@ -200,7 +215,7 @@ public final class ChangeLogsHelper extends DatabaseHelper {
                 }
                 var row = ChangeLogsResponse.ChangeLogRow.readFromCursor(cursor);
                 changeLogRows.add(row);
-                count += row.recordIdList().size();
+                count += row.count();
                 nextChangesToken = getCursorInt(cursor, PRIMARY_COLUMN_NAME);
             }
         }
@@ -228,6 +243,8 @@ public final class ChangeLogsHelper extends DatabaseHelper {
      */
     public static final class ChangeLogsTableRequests {
         private final Map<RecordGrouping, List<UUID>> mRecordGroups = new ArrayMap<>();
+        private final Map<MedicalResourceGrouping, List<MedicalResourceId>> mMedicalResourceGroups =
+                new ArrayMap<>();
         @OperationType.OperationTypes private final int mOperationType;
         private final Instant mChangeLogTimeStamp;
 
@@ -262,6 +279,19 @@ public final class ChangeLogsHelper extends DatabaseHelper {
             mRecordGroups.computeIfAbsent(recordGrouping, k -> new ArrayList<>()).add(uuid);
         }
 
+        /** Add a medical resource to the list of changes */
+        public void addMedicalResourceInfo(
+                @MedicalResource.MedicalResourceType int resourceType,
+                long appId,
+                MedicalResourceId medicalResourceId) {
+            var medicalResourceGrouping =
+                    new MedicalResourceGrouping(
+                            resourceType, appId, medicalResourceId.getDataSourceId());
+            mMedicalResourceGroups
+                    .computeIfAbsent(medicalResourceGrouping, k -> new ArrayList<>())
+                    .add(medicalResourceId);
+        }
+
         /**
          * @return List of {@link UpsertTableRequest} for change log table as per {@code
          *     mRecordTypeAndAppIdPairToUUIDMap}
@@ -284,24 +314,57 @@ public final class ChangeLogsHelper extends DatabaseHelper {
                             requests.add(new UpsertTableRequest(TABLE_NAME, contentValues));
                         }
                     });
+            mMedicalResourceGroups.forEach(
+                    (medicalResourceGrouping, medicalResourceIds) -> {
+                        for (int i = 0; i < medicalResourceIds.size(); i += DEFAULT_PAGE_SIZE) {
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(
+                                    MEDICAL_RESOURCE_TYPE_COLUMN_NAME,
+                                    medicalResourceGrouping.resourceType());
+                            contentValues.put(
+                                    MEDICAL_DATA_SOURCE_ID_COLUMN_NAME,
+                                    medicalResourceGrouping.medicalDataSourceId());
+                            contentValues.put(APP_ID_COLUMN_NAME, medicalResourceGrouping.appId());
+                            contentValues.put(OPERATION_TYPE_COLUMN_NAME, mOperationType);
+                            contentValues.put(TIME_COLUMN_NAME, mChangeLogTimeStamp.toEpochMilli());
+                            contentValues.put(
+                                    UUIDS_COLUMN_NAME,
+                                    toByteArray(
+                                            medicalResourceIds.subList(
+                                                    i,
+                                                    min(
+                                                            i + DEFAULT_PAGE_SIZE,
+                                                            medicalResourceIds.size()))));
+                            requests.add(new UpsertTableRequest(TABLE_NAME, contentValues));
+                        }
+                    });
             return requests;
         }
 
         private record RecordGrouping(
                 @RecordTypeIdentifier.RecordType int recordType, long appId) {}
+
+        private record MedicalResourceGrouping(
+                @MedicalResource.MedicalResourceType int resourceType,
+                long appId,
+                String medicalDataSourceId) {}
     }
 
     /** Change logs that are read from the database. */
     public static final class ChangeLogsResponse {
         private final List<DeletedLog> mDeletedLogs;
         private final Map<Integer, List<UUID>> mRecordTypeToUpsertedUuids;
+        private final List<DeletedMedicalResource> mDeletedMedicalResources;
+        private final List<MedicalResourceId> mUpsertedMedicalResourceIds;
         private final String mNextPageToken;
         private final boolean mHasMorePages;
 
-        public ChangeLogsResponse(
+        private ChangeLogsResponse(
                 List<ChangeLogRow> rows, String nextPageToken, boolean hasMorePages) {
             mDeletedLogs = filterDeletedLogs(rows);
             mRecordTypeToUpsertedUuids = toRecordTypeToUpsertedUuids(rows);
+            mDeletedMedicalResources = toDeletedMedicalResources(rows);
+            mUpsertedMedicalResourceIds = toUpsertedMedicalResourceIds(rows);
             mNextPageToken = nextPageToken;
             mHasMorePages = hasMorePages;
         }
@@ -309,6 +372,8 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         private static List<DeletedLog> filterDeletedLogs(List<ChangeLogRow> rows) {
             return rows.stream()
                     .filter(row -> row.operationType() == OperationType.OPERATION_TYPE_DELETE)
+                    .filter(ChangeLogRecordRow.class::isInstance)
+                    .map(ChangeLogRecordRow.class::cast)
                     .flatMap(
                             row ->
                                     row.recordIdList().stream()
@@ -324,12 +389,41 @@ public final class ChangeLogsHelper extends DatabaseHelper {
                 List<ChangeLogRow> rows) {
             return rows.stream()
                     .filter(row -> row.operationType() == OperationType.OPERATION_TYPE_UPSERT)
+                    .filter(ChangeLogRecordRow.class::isInstance)
+                    .map(ChangeLogRecordRow.class::cast)
                     .collect(
                             Collectors.groupingBy(
-                                    ChangeLogRow::recordType,
+                                    ChangeLogRecordRow::recordType,
                                     Collectors.flatMapping(
                                             row -> row.recordIdList().stream(),
                                             Collectors.toList())));
+        }
+
+        private static List<DeletedMedicalResource> toDeletedMedicalResources(
+                List<ChangeLogRow> rows) {
+            return rows.stream()
+                    .filter(row -> row.operationType() == OperationType.OPERATION_TYPE_DELETE)
+                    .filter(ChangeLogMedicalResourceRow.class::isInstance)
+                    .map(ChangeLogMedicalResourceRow.class::cast)
+                    .flatMap(
+                            row ->
+                                    row.medicalResourceIdList().stream()
+                                            .map(
+                                                    medicalResourceId ->
+                                                            new DeletedMedicalResource(
+                                                                    medicalResourceId,
+                                                                    row.timeStamp())))
+                    .toList();
+        }
+
+        private static List<MedicalResourceId> toUpsertedMedicalResourceIds(
+                List<ChangeLogRow> rows) {
+            return rows.stream()
+                    .filter(row -> row.operationType() == OperationType.OPERATION_TYPE_UPSERT)
+                    .filter(ChangeLogMedicalResourceRow.class::isInstance)
+                    .map(ChangeLogMedicalResourceRow.class::cast)
+                    .flatMap(row -> row.medicalResourceIdList().stream())
+                    .toList();
         }
 
         public List<DeletedLog> getDeletedLogs() {
@@ -338,6 +432,14 @@ public final class ChangeLogsHelper extends DatabaseHelper {
 
         public Map<Integer, List<UUID>> getRecordTypeToUpsertedUuids() {
             return mRecordTypeToUpsertedUuids;
+        }
+
+        public List<DeletedMedicalResource> getDeletedMedicalResources() {
+            return mDeletedMedicalResources;
+        }
+
+        public List<MedicalResourceId> getUpsertedMedicalResourceIds() {
+            return mUpsertedMedicalResourceIds;
         }
 
         /** Returns the next page token for the change logs */
@@ -350,21 +452,95 @@ public final class ChangeLogsHelper extends DatabaseHelper {
             return mHasMorePages;
         }
 
-        private record ChangeLogRow(
-                Instant timeStamp,
-                int operationType,
-                @RecordTypeIdentifier.RecordType int recordType,
-                List<UUID> recordIdList) {
+        private sealed interface ChangeLogRow {
+            Instant timeStamp();
+
+            int operationType();
+
+            int count();
 
             private static ChangeLogRow readFromCursor(Cursor cursor) {
                 var timeStamp = Instant.ofEpochMilli(getCursorLong(cursor, TIME_COLUMN_NAME));
                 @OperationType.OperationTypes
                 int operationType = getCursorInt(cursor, OPERATION_TYPE_COLUMN_NAME);
-                @RecordTypeIdentifier.RecordType
-                int recordType = getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME);
-                List<UUID> uuidList = StorageUtils.getCursorUUIDList(cursor, UUIDS_COLUMN_NAME);
-                return new ChangeLogRow(timeStamp, operationType, recordType, uuidList);
+                if (!cursor.isNull(cursor.getColumnIndexOrThrow(RECORD_TYPE_COLUMN_NAME))) {
+                    @RecordTypeIdentifier.RecordType
+                    int recordType = getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME);
+                    List<UUID> recordIdList =
+                            StorageUtils.getCursorUUIDList(cursor, UUIDS_COLUMN_NAME);
+                    return new ChangeLogRecordRow(
+                            timeStamp, operationType, recordType, recordIdList);
+                } else if (!cursor.isNull(
+                        cursor.getColumnIndexOrThrow(MEDICAL_RESOURCE_TYPE_COLUMN_NAME))) {
+                    @MedicalResource.MedicalResourceType
+                    int medicalResourceType =
+                            getCursorInt(cursor, MEDICAL_RESOURCE_TYPE_COLUMN_NAME);
+                    List<MedicalResourceId> medicalResourceIdList =
+                            toMedicalResourceIdList(getCursorBlob(cursor, UUIDS_COLUMN_NAME));
+                    return new ChangeLogMedicalResourceRow(
+                            timeStamp, operationType, medicalResourceType, medicalResourceIdList);
+                }
+                throw new IllegalStateException("Invalid change log row");
             }
+        }
+
+        private record ChangeLogRecordRow(
+                Instant timeStamp,
+                int operationType,
+                @RecordTypeIdentifier.RecordType int recordType,
+                List<UUID> recordIdList)
+                implements ChangeLogRow {
+            @Override
+            public int count() {
+                return recordIdList.size();
+            }
+        }
+
+        private record ChangeLogMedicalResourceRow(
+                Instant timeStamp,
+                int operationType,
+                @MedicalResource.MedicalResourceType int medicalResourceType,
+                List<MedicalResourceId> medicalResourceIdList)
+                implements ChangeLogRow {
+            @Override
+            public int count() {
+                return medicalResourceIdList.size();
+            }
+        }
+    }
+
+    @VisibleForTesting
+    static byte[] toByteArray(List<MedicalResourceId> medicalResourceIdList) {
+        return MedicalResourceIdList.newBuilder()
+                .addAllMedicalResourceId(
+                        medicalResourceIdList.stream()
+                                .map(
+                                        id ->
+                                                com.android.server.healthconnect.proto.serialization
+                                                        .MedicalResourceId.newBuilder()
+                                                        .setDataSourceId(id.getDataSourceId())
+                                                        .setFhirResourceId(id.getFhirResourceId())
+                                                        .setFhirResourceType(
+                                                                id.getFhirResourceType())
+                                                        .build())
+                                .toList())
+                .build()
+                .toByteArray();
+    }
+
+    @VisibleForTesting
+    static List<MedicalResourceId> toMedicalResourceIdList(byte[] byteArray) {
+        try {
+            return MedicalResourceIdList.parseFrom(byteArray).getMedicalResourceIdList().stream()
+                    .map(
+                            id ->
+                                    new MedicalResourceId(
+                                            id.getDataSourceId(),
+                                            id.getFhirResourceType(),
+                                            id.getFhirResourceId()))
+                    .toList();
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
         }
     }
 }
