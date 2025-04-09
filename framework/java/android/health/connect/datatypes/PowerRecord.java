@@ -143,8 +143,7 @@ public final class PowerRecord extends IntervalRecord {
         @Override
         public boolean equals(Object object) {
             if (this == object) return true;
-            if (!(object instanceof PowerRecordSample)) return false;
-            PowerRecordSample that = (PowerRecordSample) object;
+            if (!(object instanceof PowerRecordSample that)) return false;
             return Objects.equals(mPower, that.mPower)
                     && (mTime.toEpochMilli() == that.mTime.toEpochMilli());
         }
@@ -156,7 +155,7 @@ public final class PowerRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), getPower(), getTime());
+            return Objects.hash(getPower(), getTime());
         }
     }
 
@@ -289,19 +288,8 @@ public final class PowerRecord extends IntervalRecord {
      */
     @Override
     public boolean equals(@Nullable Object object) {
-        if (super.equals(object) && object instanceof PowerRecord) {
-            PowerRecord other = (PowerRecord) object;
-            if (getSamples().size() != other.getSamples().size()) return false;
-            for (int idx = 0; idx < getSamples().size(); idx++) {
-                if (!Objects.equals(
-                                getSamples().get(idx).getPower(),
-                                other.getSamples().get(idx).getPower())
-                        || getSamples().get(idx).getTime().toEpochMilli()
-                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
-                    return false;
-                }
-            }
-            return true;
+        if (super.equals(object) && object instanceof PowerRecord other) {
+            return Objects.equals(getSamples(), other.getSamples());
         }
         return false;
     }
