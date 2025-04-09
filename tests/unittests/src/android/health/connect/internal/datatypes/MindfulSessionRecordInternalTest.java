@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,39 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect.internal.datatypes;
 
-import static android.health.connect.Constants.DEFAULT_DOUBLE;
+package android.health.connect.internal.datatypes;
+
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_UNKNOWN;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_ENTRY;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_UNKNOWN;
-import static android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_VAPE;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE;
-
-import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_CONNECT_MAPPINGS;
-import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
-import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
+import static android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_BREATHING;
+import static android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_MEDITATION;
+import static android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_OTHER;
+import static android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_UNKNOWN;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MINDFULNESS_SESSION;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
-import android.health.connect.datatypes.NicotineIntakeRecord;
-import android.health.connect.datatypes.units.Mass;
-import android.health.connect.internal.datatypes.NicotineIntakeRecordInternal;
-import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
+import android.health.connect.datatypes.MindfulnessSessionRecord;
 import android.os.Parcel;
-import android.platform.test.annotations.RequiresFlagsEnabled;
-import android.platform.test.flag.junit.CheckFlagsRule;
-import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -56,27 +47,17 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({FLAG_SMOKING, FLAG_SMOKING_DB, FLAG_HEALTH_CONNECT_MAPPINGS})
-public class NicotineIntakeRecordInternalTest {
-
-    @Rule
-    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
-
-    @Before
-    public void setUp() {
-        HealthConnectMappings.resetInstanceForTesting();
-    }
+public class MindfulSessionRecordInternalTest {
 
     @Test
     public void toExternalRecord_allFieldsSet() {
         UUID uuid = UUID.randomUUID();
-
-        NicotineIntakeRecordInternal internalRecord =
-                (NicotineIntakeRecordInternal)
-                        new NicotineIntakeRecordInternal()
-                                .setNicotineIntakeGrams(0.01)
-                                .setQuantity(20)
-                                .setNicotineIntakeType(NICOTINE_INTAKE_TYPE_VAPE)
+        MindfulnessSessionRecordInternal internalRecord =
+                (MindfulnessSessionRecordInternal)
+                        new MindfulnessSessionRecordInternal()
+                                .setMindfulnessSessionType(MINDFULNESS_SESSION_TYPE_MEDITATION)
+                                .setTitle("title")
+                                .setNotes("notes")
                                 .setStartTime(1357924680)
                                 .setEndTime(2468013579L)
                                 .setStartZoneOffset(-2 * 3600)
@@ -95,13 +76,14 @@ public class NicotineIntakeRecordInternalTest {
                                 .setRowId(468)
                                 .setUuid(uuid);
 
-        NicotineIntakeRecord externalRecord = internalRecord.toExternalRecord();
+        MindfulnessSessionRecord externalRecord = internalRecord.toExternalRecord();
 
         Metadata metadata = externalRecord.getMetadata();
-        assertThat(externalRecord.getRecordType()).isEqualTo(RECORD_TYPE_NICOTINE_INTAKE);
-        assertThat(externalRecord.getNicotineIntake()).isEqualTo(Mass.fromGrams(0.01));
-        assertThat(externalRecord.getNicotineIntakeType()).isEqualTo(NICOTINE_INTAKE_TYPE_VAPE);
-        assertThat(externalRecord.getQuantity()).isEqualTo(20);
+        assertThat(externalRecord.getRecordType()).isEqualTo(RECORD_TYPE_MINDFULNESS_SESSION);
+        assertThat(externalRecord.getMindfulnessSessionType())
+                .isEqualTo(MINDFULNESS_SESSION_TYPE_MEDITATION);
+        assertThat(externalRecord.getTitle()).isEqualTo("title");
+        assertThat(externalRecord.getNotes()).isEqualTo("notes");
         assertThat(externalRecord.getStartTime()).isEqualTo(Instant.ofEpochMilli(1357924680));
         assertThat(externalRecord.getEndTime()).isEqualTo(Instant.ofEpochMilli(2468013579L));
         assertThat(externalRecord.getStartZoneOffset()).isEqualTo(ZoneOffset.ofHours(-2));
@@ -121,23 +103,20 @@ public class NicotineIntakeRecordInternalTest {
     @Test
     public void toExternalRecord_optionalFieldsNotSet() {
         UUID uuid = UUID.randomUUID();
-
-        NicotineIntakeRecordInternal internalRecord =
-                (NicotineIntakeRecordInternal)
-                        new NicotineIntakeRecordInternal()
-                                .setQuantity(20)
-                                .setNicotineIntakeType(NICOTINE_INTAKE_TYPE_VAPE)
+        MindfulnessSessionRecordInternal internalRecord =
+                (MindfulnessSessionRecordInternal)
+                        new MindfulnessSessionRecordInternal()
                                 .setPackageName("package.name")
                                 .setUuid(uuid);
 
-        NicotineIntakeRecord externalRecord = internalRecord.toExternalRecord();
+        MindfulnessSessionRecord externalRecord = internalRecord.toExternalRecord();
 
         Metadata metadata = externalRecord.getMetadata();
-
-        assertThat(externalRecord.getRecordType()).isEqualTo(RECORD_TYPE_NICOTINE_INTAKE);
-        assertThat(externalRecord.getNicotineIntake()).isEqualTo(null);
-        assertThat(externalRecord.getQuantity()).isEqualTo(20);
-        assertThat(externalRecord.getNicotineIntakeType()).isEqualTo(NICOTINE_INTAKE_TYPE_VAPE);
+        assertThat(externalRecord.getRecordType()).isEqualTo(RECORD_TYPE_MINDFULNESS_SESSION);
+        assertThat(externalRecord.getMindfulnessSessionType())
+                .isEqualTo(MINDFULNESS_SESSION_TYPE_UNKNOWN);
+        assertThat(externalRecord.getTitle()).isNull();
+        assertThat(externalRecord.getNotes()).isNull();
         assertThat(externalRecord.getStartTime()).isEqualTo(Instant.EPOCH);
         assertThat(externalRecord.getEndTime()).isEqualTo(Instant.EPOCH);
         assertThat(externalRecord.getStartZoneOffset()).isEqualTo(ZoneOffset.UTC);
@@ -156,13 +135,12 @@ public class NicotineIntakeRecordInternalTest {
     @Test
     public void writeToParcel_populateUsing_allFieldsSet() {
         UUID uuid = UUID.randomUUID();
-
-        NicotineIntakeRecordInternal internalRecord =
-                (NicotineIntakeRecordInternal)
-                        new NicotineIntakeRecordInternal()
-                                .setNicotineIntakeGrams(0.01)
-                                .setQuantity(20)
-                                .setNicotineIntakeType(NICOTINE_INTAKE_TYPE_VAPE)
+        MindfulnessSessionRecordInternal internalRecord =
+                (MindfulnessSessionRecordInternal)
+                        new MindfulnessSessionRecordInternal()
+                                .setMindfulnessSessionType(MINDFULNESS_SESSION_TYPE_BREATHING)
+                                .setTitle("title")
+                                .setNotes("notes")
                                 .setStartTime(1357924680)
                                 .setEndTime(2468013579L)
                                 .setStartZoneOffset(-2 * 3600)
@@ -177,21 +155,21 @@ public class NicotineIntakeRecordInternalTest {
                                 .setManufacturer("manufacturer")
                                 .setModel("model")
                                 .setPackageName("package.name")
-                                .setRecordingMethod(RECORDING_METHOD_AUTOMATICALLY_RECORDED)
+                                .setRecordingMethod(RECORDING_METHOD_MANUAL_ENTRY)
                                 .setRowId(468)
                                 .setUuid(uuid);
 
         Parcel parcel = Parcel.obtain();
         internalRecord.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        NicotineIntakeRecordInternal decodedRecord = new NicotineIntakeRecordInternal();
+        MindfulnessSessionRecordInternal decodedRecord = new MindfulnessSessionRecordInternal();
         decodedRecord.populateUsing(parcel);
         parcel.recycle();
 
-        assertThat(decodedRecord.getRecordType()).isEqualTo(RECORD_TYPE_NICOTINE_INTAKE);
-        assertThat(decodedRecord.getNicotineIntakeGrams()).isEqualTo(0.01);
-        assertThat(decodedRecord.getQuantity()).isEqualTo(20);
-        assertThat(decodedRecord.getNicotineIntakeType()).isEqualTo(NICOTINE_INTAKE_TYPE_VAPE);
+        assertThat(decodedRecord.getMindfulnessSessionType())
+                .isEqualTo(MINDFULNESS_SESSION_TYPE_BREATHING);
+        assertThat(decodedRecord.getTitle()).isEqualTo("title");
+        assertThat(decodedRecord.getNotes()).isEqualTo("notes");
         assertThat(decodedRecord.getStartTimeInMillis()).isEqualTo(1357924680);
         assertThat(decodedRecord.getEndTimeInMillis()).isEqualTo(2468013579L);
         assertThat(decodedRecord.getStartZoneOffsetInSeconds()).isEqualTo(-2 * 3600);
@@ -206,8 +184,7 @@ public class NicotineIntakeRecordInternalTest {
         assertThat(decodedRecord.getManufacturer()).isEqualTo("manufacturer");
         assertThat(decodedRecord.getModel()).isEqualTo("model");
         assertThat(decodedRecord.getPackageName()).isEqualTo("package.name");
-        assertThat(decodedRecord.getRecordingMethod())
-                .isEqualTo(RECORDING_METHOD_AUTOMATICALLY_RECORDED);
+        assertThat(decodedRecord.getRecordingMethod()).isEqualTo(RECORDING_METHOD_MANUAL_ENTRY);
         assertThat(decodedRecord.getRowId()).isEqualTo(-1);
         assertThat(decodedRecord.getUuid()).isEqualTo(uuid);
     }
@@ -215,26 +192,23 @@ public class NicotineIntakeRecordInternalTest {
     @Test
     public void writeToParcel_populateUsing_optionalFieldsNotSet() {
         UUID uuid = UUID.randomUUID();
-
-        NicotineIntakeRecordInternal internalRecord =
-                (NicotineIntakeRecordInternal)
-                        new NicotineIntakeRecordInternal()
-                                .setQuantity(20)
-                                .setNicotineIntakeType(NICOTINE_INTAKE_TYPE_VAPE)
+        MindfulnessSessionRecordInternal internalRecord =
+                (MindfulnessSessionRecordInternal)
+                        new MindfulnessSessionRecordInternal()
                                 .setPackageName("package.name")
                                 .setUuid(uuid);
 
         Parcel parcel = Parcel.obtain();
         internalRecord.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        NicotineIntakeRecordInternal decodedRecord = new NicotineIntakeRecordInternal();
+        MindfulnessSessionRecordInternal decodedRecord = new MindfulnessSessionRecordInternal();
         decodedRecord.populateUsing(parcel);
         parcel.recycle();
 
-        assertThat(decodedRecord.getRecordType()).isEqualTo(RECORD_TYPE_NICOTINE_INTAKE);
-        assertThat(decodedRecord.getNicotineIntakeGrams()).isEqualTo(DEFAULT_DOUBLE);
-        assertThat(decodedRecord.getNicotineIntakeType()).isEqualTo(NICOTINE_INTAKE_TYPE_VAPE);
-        assertThat(decodedRecord.getQuantity()).isEqualTo(20);
+        assertThat(decodedRecord.getMindfulnessSessionType())
+                .isEqualTo(MINDFULNESS_SESSION_TYPE_UNKNOWN);
+        assertThat(decodedRecord.getTitle()).isNull();
+        assertThat(decodedRecord.getNotes()).isNull();
         assertThat(decodedRecord.getStartTimeInMillis()).isEqualTo(0);
         assertThat(decodedRecord.getEndTimeInMillis()).isEqualTo(0);
         assertThat(decodedRecord.getStartZoneOffsetInSeconds()).isEqualTo(0);
@@ -255,7 +229,7 @@ public class NicotineIntakeRecordInternalTest {
     }
 
     @Test
-    public void nicotineIntakeRecord_toInternalRecord_allFieldsSet() {
+    public void mindfulnessSessionRecord_toInternalRecord_allFieldsSet() {
         UUID uuid = UUID.randomUUID();
         Metadata metadata =
                 new Metadata.Builder()
@@ -273,23 +247,24 @@ public class NicotineIntakeRecordInternalTest {
                         .setRecordingMethod(RECORDING_METHOD_MANUAL_ENTRY)
                         .setLastModifiedTime(Instant.ofEpochMilli(9012345))
                         .build();
-        NicotineIntakeRecord externalRecord =
-                new NicotineIntakeRecord.Builder(
+        MindfulnessSessionRecord externalRecord =
+                new MindfulnessSessionRecord.Builder(
                                 metadata,
                                 Instant.ofEpochMilli(1357924680),
                                 Instant.ofEpochMilli(2468013579L),
-                                /* quantity= */ 20,
-                                NICOTINE_INTAKE_TYPE_VAPE)
+                                MINDFULNESS_SESSION_TYPE_OTHER)
+                        .setTitle("title")
+                        .setNotes("notes")
                         .setStartZoneOffset(ZoneOffset.ofHours(-2))
                         .setEndZoneOffset(ZoneOffset.ofHours(3))
-                        .setNicotineIntake(Mass.fromGrams(0.01))
                         .build();
 
-        NicotineIntakeRecordInternal internalRecord = externalRecord.toRecordInternal();
+        MindfulnessSessionRecordInternal internalRecord = externalRecord.toRecordInternal();
 
-        assertThat(internalRecord.getNicotineIntakeGrams()).isEqualTo(0.01);
-        assertThat(internalRecord.getQuantity()).isEqualTo(20);
-        assertThat(internalRecord.getNicotineIntakeType()).isEqualTo(NICOTINE_INTAKE_TYPE_VAPE);
+        assertThat(internalRecord.getMindfulnessSessionType())
+                .isEqualTo(MINDFULNESS_SESSION_TYPE_OTHER);
+        assertThat(internalRecord.getTitle()).isEqualTo("title");
+        assertThat(internalRecord.getNotes()).isEqualTo("notes");
         assertThat(internalRecord.getStartTimeInMillis()).isEqualTo(1357924680);
         assertThat(internalRecord.getEndTimeInMillis()).isEqualTo(2468013579L);
         assertThat(internalRecord.getStartZoneOffsetInSeconds()).isEqualTo(-2 * 3600);
@@ -310,23 +285,23 @@ public class NicotineIntakeRecordInternalTest {
     }
 
     @Test
-    public void nicotineIntakeRecord_toInternalRecord_optionalFieldsNotSet() {
+    public void mindfulnessSessionRecord_toInternalRecord_optionalFieldsNotSet() {
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")));
         Metadata metadata = new Metadata.Builder().build();
-        NicotineIntakeRecord externalRecord =
-                new NicotineIntakeRecord.Builder(
+        MindfulnessSessionRecord externalRecord =
+                new MindfulnessSessionRecord.Builder(
                                 metadata,
                                 Instant.ofEpochMilli(1357924680),
                                 Instant.ofEpochMilli(2468013579L),
-                                /* quantity= */ 20,
-                                NICOTINE_INTAKE_TYPE_VAPE)
+                                MINDFULNESS_SESSION_TYPE_OTHER)
                         .build();
 
-        NicotineIntakeRecordInternal internalRecord = externalRecord.toRecordInternal();
+        MindfulnessSessionRecordInternal internalRecord = externalRecord.toRecordInternal();
 
-        assertThat(internalRecord.getNicotineIntakeGrams()).isEqualTo(DEFAULT_DOUBLE);
-        assertThat(internalRecord.getQuantity()).isEqualTo(20);
-        assertThat(internalRecord.getNicotineIntakeType()).isEqualTo(NICOTINE_INTAKE_TYPE_VAPE);
+        assertThat(internalRecord.getMindfulnessSessionType())
+                .isEqualTo(MINDFULNESS_SESSION_TYPE_OTHER);
+        assertThat(internalRecord.getTitle()).isNull();
+        assertThat(internalRecord.getNotes()).isNull();
         assertThat(internalRecord.getStartTimeInMillis()).isEqualTo(1357924680);
         assertThat(internalRecord.getEndTimeInMillis()).isEqualTo(2468013579L);
         assertThat(internalRecord.getStartZoneOffsetInSeconds()).isEqualTo(0);

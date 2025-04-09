@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package android.healthconnect.backuprestore;
+package android.health.connect.backuprestore;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.health.connect.backuprestore.BackupMetadata;
-import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;

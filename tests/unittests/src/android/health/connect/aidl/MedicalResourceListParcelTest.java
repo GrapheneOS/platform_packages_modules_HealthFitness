@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect.aidl;
+package android.health.connect.aidl;
 
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_ID;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.createAllergyMedicalResource;
@@ -23,7 +23,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
-import android.health.connect.aidl.MedicalResourceListParcel;
 import android.health.connect.datatypes.MedicalResource;
 import android.os.Parcel;
 import android.platform.test.annotations.RequiresFlagsEnabled;

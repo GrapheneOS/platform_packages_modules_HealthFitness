@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes;
+package android.health.connect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -24,17 +24,6 @@ import android.health.connect.datatypes.PlannedExerciseStep;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
-import android.health.connect.internal.datatypes.ExerciseCompletionGoalInternal;
-import android.health.connect.internal.datatypes.ExerciseLapInternal;
-import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal;
-import android.health.connect.internal.datatypes.ExerciseRouteInternal;
-import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
-import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
-import android.health.connect.internal.datatypes.PlannedExerciseBlockInternal;
-import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
-import android.health.connect.internal.datatypes.PlannedExerciseStepInternal;
-import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
-import android.health.connect.internal.datatypes.SleepStageInternal;
 
 import java.time.Instant;
 import java.time.Period;
@@ -90,6 +79,7 @@ public class TestUtils {
                         .setPackageName("android.healthconnect.unittests")
                         .setModel("Pixel4a");
     }
+
     /** Returns an internal planned exercise session instance. */
     public static PlannedExerciseSessionRecordInternal buildPlannedExerciseSessionInternal() {
         return (PlannedExerciseSessionRecordInternal)

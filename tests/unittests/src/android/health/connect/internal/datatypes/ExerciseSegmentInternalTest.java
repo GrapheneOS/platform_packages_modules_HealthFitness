@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes;
+package android.health.connect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSegmentType;
-import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;

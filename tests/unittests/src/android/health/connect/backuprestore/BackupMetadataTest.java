@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package android.healthconnect.backuprestore;
+package android.health.connect.backuprestore;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.health.connect.backuprestore.BackupChange;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -27,35 +26,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class BackupChangeTest {
+public class BackupMetadataTest {
 
     @Test
-    public void upsertionChangeParcel_propertiesAreIdentical() {
-        BackupChange original = BackupChange.ofUpsertion("uid123", new byte[] {1, 2, 3});
+    public void backupMetadataParcel_propertiesAreIdentical() {
+        BackupMetadata original = new BackupMetadata(new byte[] {1, 2, 3});
 
         Parcel parcel = Parcel.obtain();
         original.writeToParcel(parcel, 0);
         parcel.setDataPosition(0);
-        BackupChange restoredParcel = BackupChange.CREATOR.createFromParcel(parcel);
+        BackupMetadata restoredParcel = BackupMetadata.CREATOR.createFromParcel(parcel);
 
-        assertThat(restoredParcel.getChangeId()).isEqualTo("uid123");
-        assertThat(restoredParcel.isDeletion()).isFalse();
         assertThat(restoredParcel.getData()).isEqualTo(new byte[] {1, 2, 3});
-        parcel.recycle();
-    }
-
-    @Test
-    public void deletionChangeParcel_propertiesAreIdentical() {
-        BackupChange original = BackupChange.ofDeletion("uid123");
-
-        Parcel parcel = Parcel.obtain();
-        original.writeToParcel(parcel, 0);
-        parcel.setDataPosition(0);
-        BackupChange restoredParcel = BackupChange.CREATOR.createFromParcel(parcel);
-
-        assertThat(restoredParcel.getChangeId()).isEqualTo("uid123");
-        assertThat(restoredParcel.isDeletion()).isTrue();
-        assertThat(restoredParcel.getData()).isNull();
         parcel.recycle();
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes;
+package android.health.connect.internal.datatypes;
 
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_MODERATE;
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_VIGOROUS;
@@ -35,7 +35,6 @@ import android.health.connect.datatypes.ActivityIntensityRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
-import android.health.connect.internal.datatypes.ActivityIntensityRecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
 import android.platform.test.annotations.RequiresFlagsEnabled;

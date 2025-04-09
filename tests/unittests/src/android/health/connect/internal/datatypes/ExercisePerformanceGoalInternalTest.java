@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes;
+package android.health.connect.internal.datatypes;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.truth.Truth.assertThat;
@@ -22,7 +22,6 @@ import static com.google.common.truth.Truth.assertThat;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Power;
 import android.health.connect.datatypes.units.Velocity;
-import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal;
 import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal.AmrapGoalInternal;
 import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal.CadenceGoalInternal;
 import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal.HeartRateGoalInternal;

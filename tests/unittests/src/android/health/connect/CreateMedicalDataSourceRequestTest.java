@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect;
+package android.health.connect;
 
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_DISPLAY_NAME;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_FHIR_BASE_URI;
@@ -22,7 +22,6 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_FHI
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.health.connect.CreateMedicalDataSourceRequest;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
