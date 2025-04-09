@@ -16,18 +16,28 @@
 
 package android.healthconnect.cts.lib;
 
+import static android.Manifest.permission.FORCE_STOP_PACKAGES;
+import static android.Manifest.permission.GET_RUNTIME_PERMISSIONS;
+import static android.content.pm.PackageManager.FLAG_PERMISSION_ONE_TIME;
 import static android.health.connect.datatypes.FhirVersion.parseFhirVersion;
 import static android.healthconnect.cts.lib.BundleHelper.INTENT_EXCEPTION;
-import static android.healthconnect.cts.lib.BundleHelper.KILL_SELF_REQUEST;
 import static android.healthconnect.cts.lib.BundleHelper.QUERY_TYPE;
 
-import static androidx.test.InstrumentationRegistry.getContext;
+import static com.android.compatibility.common.util.SystemUtil.eventually;
+import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import static java.util.Objects.requireNonNull;
+
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Instrumentation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
@@ -46,7 +56,10 @@ import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.utils.ProxyActivity;
 import android.os.Bundle;
+import android.os.Process;
 import android.util.Log;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -67,10 +80,12 @@ public class TestAppProxy {
     public static final TestAppProxy APP_WRITE_PERMS_ONLY =
             TestAppProxy.forPackageName("android.healthconnect.cts.testapp.writePermsOnly");
 
+    private final Context mContext;
     private final String mPackageName;
     private final boolean mInBackground;
 
     private TestAppProxy(String packageName, boolean inBackground) {
+        mContext = ApplicationProvider.getApplicationContext();
         mPackageName = packageName;
         mInBackground = inBackground;
     }
@@ -258,12 +273,31 @@ public class TestAppProxy {
     public void selfRevokePermission(String permission) throws Exception {
         Bundle requestBundle = BundleHelper.forSelfRevokePermissionRequest(permission);
         getFromTestApp(requestBundle);
+
+        // Self-revoke is async; wait for it to complete by checking for the one-time flag it sets.
+        PackageManager packageManager = mContext.getPackageManager();
+        runWithShellPermissionIdentity(
+                () ->
+                        eventually(
+                                () -> {
+                                    @SuppressLint("MissingPermission")
+                                    int flags =
+                                            packageManager.getPermissionFlags(
+                                                    permission,
+                                                    mPackageName,
+                                                    Process.myUserHandle());
+                                    assertThat(flags & FLAG_PERMISSION_ONE_TIME).isNotEqualTo(0);
+                                }),
+                GET_RUNTIME_PERMISSIONS);
     }
 
-    /** Instructs the app to kill itself. */
+    /** Kills the app. */
+    @SuppressLint("MissingPermission")
     public void kill() throws Exception {
-        Bundle requestBundle = BundleHelper.forKillSelfRequest();
-        getFromTestApp(requestBundle);
+        ActivityManager activityManager =
+                requireNonNull(mContext.getSystemService(ActivityManager.class));
+        runWithShellPermissionIdentity(
+                () -> activityManager.forceStopPackage(mPackageName), FORCE_STOP_PACKAGES);
     }
 
     /** Starts an activity on behalf of the app and returns the result. */
@@ -329,7 +363,7 @@ public class TestAppProxy {
         String action = bundleToCreateIntent.getString(QUERY_TYPE);
         intentFilter.addAction(action);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        getContext().registerReceiver(broadcastReceiver, intentFilter, Context.RECEIVER_EXPORTED);
+        mContext.registerReceiver(broadcastReceiver, intentFilter, Context.RECEIVER_EXPORTED);
 
         // Launch the test app.
         Intent intent;
@@ -350,16 +384,12 @@ public class TestAppProxy {
         Thread.sleep(500);
 
         if (mInBackground) {
-            getContext().sendBroadcast(intent);
+            mContext.sendBroadcast(intent);
         } else {
-            getContext().startActivity(intent);
+            mContext.startActivity(intent);
         }
 
-        // We don't wait for responses to kill requests. These kill the app & there is no easy or
-        // reliable way for the app to return a broadcast before being killed.
-        boolean isKillRequest =
-                bundleToCreateIntent.getString(QUERY_TYPE).equals(KILL_SELF_REQUEST);
-        if (!isKillRequest && !latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
+        if (!latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
             final String errorMessage =
                     "Timed out while waiting to receive "
                             + bundleToCreateIntent.getString(QUERY_TYPE)
@@ -367,6 +397,6 @@ public class TestAppProxy {
                             + mPackageName;
             throw new TimeoutException(errorMessage);
         }
-        getContext().unregisterReceiver(broadcastReceiver);
+        mContext.unregisterReceiver(broadcastReceiver);
     }
 }

@@ -27,6 +27,8 @@ import android.health.connect.internal.datatypes.utils.InternalExternalRecordCon
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Objects;
+
 /**
  * Holds record migration data payload along with any migration-specific overrides.
  *
@@ -68,6 +70,9 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
         mRecordInternal =
                 InternalExternalRecordConverter.getInstance().newInternalRecord(in.readInt());
         mRecordInternal.populateUsing(in);
+        // Only accept parcels that set App name and package name.
+        Objects.requireNonNull(mRecordInternal.getAppName());
+        Objects.requireNonNull(mRecordInternal.getPackageName());
     }
 
     @Override
@@ -87,14 +92,18 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
     @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public String getOriginPackageName() {
-        return mRecordInternal.getPackageName();
+        // NullAway cannot tell this, but the non-nullity is maintained by setting this in the
+        // constructor.
+        return Objects.requireNonNull(mRecordInternal.getPackageName());
     }
 
     /** Returns origin application name associated with this payload. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public String getOriginAppName() {
-        return mRecordInternal.getAppName();
+        // The fact that this is non-null is guaranteed because it is NonNull in one constructor
+        // and in the parcel constructor it is verified after the fact. However, this is not
+        // discoverable by NullAway using static analysis, so guarantee it with a requireNonNull.
+        return Objects.requireNonNull(mRecordInternal.getAppName());
     }
 
     /** Returns {@link Record} associated with this payload. */

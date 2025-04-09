@@ -133,13 +133,15 @@ class PriorityRecordsAggregator {
         // record, we added to the buffer later overlapping records and the first non-overlapping
         // record. It guarantees that the aggregation score can be calculated correctly for any
         // timestamp within the earliest record interval.
-        if (mTimestampsBuffer.first().getType() != AggregationTimestamp.INTERVAL_START) {
+        AggregationTimestamp firstTimestamp = mTimestampsBuffer.first();
+        if (firstTimestamp.getType() != AggregationTimestamp.INTERVAL_START) {
             return;
         }
 
         // Add record timestamps to buffer until latest buffer record do not overlap with earliest
         // buffer record.
-        long expansionBorder = mTimestampsBuffer.first().getParentData().getEndTime();
+        // This must have type INTERVAL_START from check above, and therefore has parent data.
+        long expansionBorder = Objects.requireNonNull(firstTimestamp.getParentData()).getEndTime();
         if (Constants.DEBUG) {
             Slog.d(
                     TAG,

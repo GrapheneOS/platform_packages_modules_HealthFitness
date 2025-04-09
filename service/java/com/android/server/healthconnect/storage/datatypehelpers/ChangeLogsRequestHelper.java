@@ -34,6 +34,7 @@ import android.database.Cursor;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;

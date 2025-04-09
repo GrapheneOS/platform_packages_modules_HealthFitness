@@ -36,7 +36,7 @@ import android.os.PersistableBundle;
 import android.os.UserHandle;
 
 import com.android.server.healthconnect.HealthConnectDailyService;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 
 import java.time.Instant;
 import java.util.List;

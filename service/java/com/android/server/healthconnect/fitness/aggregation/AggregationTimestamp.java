@@ -17,8 +17,10 @@
 package com.android.server.healthconnect.fitness.aggregation;
 
 import android.annotation.IntDef;
+import android.annotation.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class which represents timestamp of the data to aggregate.
@@ -39,9 +41,8 @@ class AggregationTimestamp implements Comparable<AggregationTimestamp> {
 
     @TimestampType private final int mType;
     private final long mTime;
-    private AggregationRecordData mParentRecord;
+    @Nullable private AggregationRecordData mParentRecord;
 
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
     AggregationTimestamp(int type, long time) {
         mTime = time;
         mType = type;
@@ -55,6 +56,7 @@ class AggregationTimestamp implements Comparable<AggregationTimestamp> {
         return mTime;
     }
 
+    @Nullable
     AggregationRecordData getParentData() {
         return mParentRecord;
     }
@@ -81,7 +83,8 @@ class AggregationTimestamp implements Comparable<AggregationTimestamp> {
 
             // Equal type and time can happen only if both are either starts or ends of intervals,
             // hence parentData is not null for both. ParentData is null only for group border.
-            return getParentData().compareTo(o.getParentData());
+            return Objects.requireNonNull(getParentData())
+                    .compareTo(Objects.requireNonNull(o.getParentData()));
         } else if (getTime() < o.getTime()) {
             return -1;
         } else {

@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.testing.fakes;
 
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 
 import java.util.concurrent.ConcurrentHashMap;
 

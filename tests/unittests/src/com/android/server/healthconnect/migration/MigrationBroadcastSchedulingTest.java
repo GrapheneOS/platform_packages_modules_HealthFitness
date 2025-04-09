@@ -39,7 +39,7 @@ import android.os.UserHandle;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 
 import org.junit.Before;
 import org.junit.Rule;

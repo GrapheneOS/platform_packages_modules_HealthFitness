@@ -19,15 +19,11 @@ import android.os.Bundle
 import android.view.View
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
-import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint(HealthSetupFragment::class)
 class MigrationInProgressFragment : Hilt_MigrationInProgressFragment() {
-
-    @Inject lateinit var logger: HealthConnectLogger
 
     init {
         this.setPageName(PageName.MIGRATION_IN_PROGRESS_PAGE)

@@ -26,13 +26,13 @@ import android.health.connect.HealthPermissions;
 import androidx.annotation.Nullable;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
-import com.android.server.healthconnect.storage.utils.PreferencesManager;
 import com.android.server.healthconnect.utils.TimeSource;
 
 import java.time.Instant;

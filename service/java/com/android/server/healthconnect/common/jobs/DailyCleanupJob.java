@@ -18,6 +18,7 @@ package com.android.server.healthconnect.common.jobs;
 
 import android.util.Slog;
 
+import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
@@ -29,7 +30,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
-import com.android.server.healthconnect.storage.utils.PreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
