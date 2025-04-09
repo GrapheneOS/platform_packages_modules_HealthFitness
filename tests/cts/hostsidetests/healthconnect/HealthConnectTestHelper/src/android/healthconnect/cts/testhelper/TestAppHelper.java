@@ -27,7 +27,6 @@ import static android.healthconnect.cts.lib.BundleHelper.GET_MEDICAL_DATA_SOURCE
 import static android.healthconnect.cts.lib.BundleHelper.GET_MEDICAL_DATA_SOURCES_USING_REQUEST_QUERY;
 import static android.healthconnect.cts.lib.BundleHelper.INSERT_RECORDS_QUERY;
 import static android.healthconnect.cts.lib.BundleHelper.INTENT_EXCEPTION;
-import static android.healthconnect.cts.lib.BundleHelper.KILL_SELF_REQUEST;
 import static android.healthconnect.cts.lib.BundleHelper.QUERY_TYPE;
 import static android.healthconnect.cts.lib.BundleHelper.READ_CHANGE_LOGS_QUERY;
 import static android.healthconnect.cts.lib.BundleHelper.READ_MEDICAL_RESOURCES_BY_IDS_QUERY;
@@ -116,7 +115,6 @@ final class TestAppHelper {
             case DELETE_MEDICAL_DATA_SOURCE_WITH_DATA_QUERY ->
                     handleDeleteMedicalDataSourceWithData(context, bundle);
             case SELF_REVOKE_PERMISSION_REQUEST -> handleSelfRevoke(context, bundle);
-            case KILL_SELF_REQUEST -> handleKillSelf();
             default ->
                     throw new IllegalStateException(
                             "Unknown query received from launcher app: " + queryType);
@@ -268,11 +266,6 @@ final class TestAppHelper {
     private static Bundle handleSelfRevoke(Context context, Bundle bundle) throws Exception {
         String permissionToRevoke = BundleHelper.toPermissionToSelfRevoke(bundle);
         context.revokeSelfPermissionOnKill(permissionToRevoke);
-        return new Bundle();
-    }
-
-    private static Bundle handleKillSelf() throws Exception {
-        System.exit(0);
         return new Bundle();
     }
 
