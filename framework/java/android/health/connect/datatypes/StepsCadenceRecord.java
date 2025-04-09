@@ -171,8 +171,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
          */
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object) && object instanceof StepsCadenceRecordSample) {
-                StepsCadenceRecordSample other = (StepsCadenceRecordSample) object;
+            if (object instanceof StepsCadenceRecordSample other) {
                 return getRate() == other.getRate()
                         && getTime().toEpochMilli() == other.getTime().toEpochMilli();
             }
@@ -186,7 +185,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), getRate(), getTime());
+            return Objects.hash(getRate(), getTime());
         }
     }
 
@@ -292,17 +291,8 @@ public final class StepsCadenceRecord extends IntervalRecord {
      */
     @Override
     public boolean equals(@Nullable Object object) {
-        if (super.equals(object) && object instanceof StepsCadenceRecord) {
-            StepsCadenceRecord other = (StepsCadenceRecord) object;
-            if (getSamples().size() != other.getSamples().size()) return false;
-            for (int idx = 0; idx < getSamples().size(); idx++) {
-                if (getSamples().get(idx).getRate() != other.getSamples().get(idx).getRate()
-                        || getSamples().get(idx).getTime().toEpochMilli()
-                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
-                    return false;
-                }
-            }
-            return true;
+        if (super.equals(object) && object instanceof StepsCadenceRecord other) {
+            return Objects.equals(getSamples(), other.getSamples());
         }
         return false;
     }
