@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes.utils;
+package android.health.connect.internal.datatypes.utils;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -22,7 +22,6 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.health.connect.internal.datatypes.utils.InternalExternalRecordConverter;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 

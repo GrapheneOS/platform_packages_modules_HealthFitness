@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package android.health.connect;
+package com.android.server.healthconnect.common;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.os.Binder;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.android.server.healthconnect.common.RequestContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

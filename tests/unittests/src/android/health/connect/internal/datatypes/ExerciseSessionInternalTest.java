@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes;
+package android.health.connect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -22,9 +22,6 @@ import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSessionRecord;
-import android.health.connect.internal.datatypes.ExerciseLapInternal;
-import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
-import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;

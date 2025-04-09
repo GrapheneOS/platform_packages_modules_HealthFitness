@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes.utils;
+package android.health.connect.internal.datatypes.utils;
 
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
@@ -34,11 +34,6 @@ import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.health.connect.internal.datatypes.utils.DataTypeDescriptor;
-import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.health.connect.internal.datatypes.utils.RecordMapper;
-import android.health.connect.internal.datatypes.utils.RecordTypePermissionCategoryMapper;
-import android.health.connect.internal.datatypes.utils.RecordTypeRecordCategoryMapper;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;

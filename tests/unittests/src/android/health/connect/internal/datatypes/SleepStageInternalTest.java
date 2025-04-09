@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes;
+package android.health.connect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.SleepSessionRecord;
-import android.health.connect.internal.datatypes.SleepStageInternal;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;

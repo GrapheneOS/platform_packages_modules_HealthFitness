@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.aidl;
+package android.health.connect.aidl;
 
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_ID;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_ALLERGY;
@@ -26,7 +26,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import android.health.connect.UpsertMedicalResourceRequest;
-import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.os.Parcel;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;

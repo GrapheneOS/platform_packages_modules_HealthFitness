@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect.internal.datatypes;
+package android.health.connect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.units.Power;
-import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal;
-import android.health.connect.internal.datatypes.PlannedExerciseBlockInternal;
-import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
-import android.health.connect.internal.datatypes.PlannedExerciseStepInternal;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;

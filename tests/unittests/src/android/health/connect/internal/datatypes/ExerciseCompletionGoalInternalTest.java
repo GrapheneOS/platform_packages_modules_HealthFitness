@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package android.healthconnect.internal.datatypes;
+package android.health.connect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
-import android.health.connect.internal.datatypes.ExerciseCompletionGoalInternal;
 import android.health.connect.internal.datatypes.ExerciseCompletionGoalInternal.ActiveCaloriesBurnedGoalInternal;
 import android.health.connect.internal.datatypes.ExerciseCompletionGoalInternal.DistanceGoalInternal;
 import android.health.connect.internal.datatypes.ExerciseCompletionGoalInternal.DistanceWithVariableRestGoalInternal;

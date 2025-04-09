@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.healthconnect.aidl;
+package android.health.connect.aidl;
 
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 import static android.health.connect.Constants.MINIMUM_PAGE_SIZE;
@@ -29,7 +29,6 @@ import static org.junit.Assert.assertThrows;
 import android.annotation.Nullable;
 import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.ReadMedicalResourcesPageRequest;
-import android.health.connect.aidl.ReadMedicalResourcesRequestParcel;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
