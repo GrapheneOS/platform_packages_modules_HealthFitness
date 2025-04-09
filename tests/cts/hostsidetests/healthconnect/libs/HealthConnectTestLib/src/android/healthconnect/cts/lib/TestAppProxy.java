@@ -330,6 +330,14 @@ public class TestAppProxy {
     }
 
     private Bundle getFromTestApp(Bundle bundleToCreateIntent) throws Exception {
+        if (mInBackground) {
+            return getFromTestAppReceiver(bundleToCreateIntent);
+        } else {
+            return getFromTestAppActivity(bundleToCreateIntent);
+        }
+    }
+
+    private Bundle getFromTestAppReceiver(Bundle bundleToCreateIntent) throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<Bundle> response = new AtomicReference<>();
         AtomicReference<Exception> exceptionAtomicReference = new AtomicReference<>();
@@ -347,14 +355,14 @@ public class TestAppProxy {
                     }
                 };
 
-        launchTestApp(bundleToCreateIntent, broadcastReceiver, latch);
+        launchTestAppReceiver(bundleToCreateIntent, broadcastReceiver, latch);
         if (exceptionAtomicReference.get() != null) {
             throw exceptionAtomicReference.get();
         }
         return response.get();
     }
 
-    private void launchTestApp(
+    private void launchTestAppReceiver(
             Bundle bundleToCreateIntent, BroadcastReceiver broadcastReceiver, CountDownLatch latch)
             throws Exception {
 
@@ -369,25 +377,12 @@ public class TestAppProxy {
         Intent intent;
 
         Log.d(TAG, "launchTestApp(): action=" + action + " - inBackground=" + mInBackground);
-        if (mInBackground) {
-            intent = new Intent().setClassName(mPackageName, TEST_APP_RECEIVER_CLASS_NAME);
-        } else {
-            intent = new Intent(Intent.ACTION_MAIN);
-            intent.setPackage(mPackageName);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        }
-
+        intent = new Intent().setClassName(mPackageName, TEST_APP_RECEIVER_CLASS_NAME);
         intent.putExtras(bundleToCreateIntent);
 
         Thread.sleep(500);
 
-        if (mInBackground) {
-            mContext.sendBroadcast(intent);
-        } else {
-            mContext.startActivity(intent);
-        }
+        mContext.sendBroadcast(intent);
 
         if (!latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
             final String errorMessage =
@@ -398,5 +393,22 @@ public class TestAppProxy {
             throw new TimeoutException(errorMessage);
         }
         mContext.unregisterReceiver(broadcastReceiver);
+    }
+
+    private Bundle getFromTestAppActivity(Bundle bundleToCreateIntent) throws Exception {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setPackage(mPackageName);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.putExtras(bundleToCreateIntent);
+
+        Instrumentation.ActivityResult activityResult =
+                ProxyActivity.launchActivityForResult(intent);
+
+        Intent resultIntent = requireNonNull(activityResult.getResultData());
+        Exception exception = (Exception) resultIntent.getSerializableExtra(INTENT_EXCEPTION);
+        if (exception != null) {
+            throw exception;
+        }
+        return resultIntent.getExtras();
     }
 }
