@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage.datatypehelpers;
 
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.Constants.DELETE;
+import static android.health.connect.Constants.UPSERT;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
@@ -59,6 +60,7 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.ChangeLogsTableRequests;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
@@ -112,27 +114,27 @@ public class ChangeLogsHelperTest {
 
     @Test
     public void changeLogs_getUpsertTableRequests_listLessThanDefaultPageSize() {
-        ChangeLogsHelper.ChangeLogs changeLogs =
-                new ChangeLogsHelper.ChangeLogs(DELETE, Instant.now().toEpochMilli());
-        UUID uuid = UUID.randomUUID();
-        changeLogs.addUUID(RECORD_TYPE_STEPS, 0, uuid);
-        List<UpsertTableRequest> requests = changeLogs.getUpsertTableRequests();
+        ChangeLogsTableRequests tableRequests = ChangeLogsTableRequests.ofDeletion(Instant.now());
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+        tableRequests.addRecordInfo(RECORD_TYPE_STEPS, 0, uuid1);
+        tableRequests.addRecordInfo(RECORD_TYPE_STEPS, 0, uuid2);
+        List<UpsertTableRequest> requests = tableRequests.getUpsertTableRequests();
 
         assertThat(requests).hasSize(1);
         List<UUID> uuidList =
                 bytesToUuids((byte[]) requests.get(0).getContentValues().get(UUIDS_COLUMN_NAME));
-        assertThat(uuidList).containsExactly(uuid);
+        assertThat(uuidList).containsExactly(uuid1, uuid2);
     }
 
     @Test
     public void changeLogs_getUpsertTableRequests_listMoreThanDefaultPageSize() {
-        ChangeLogsHelper.ChangeLogs changeLogs =
-                new ChangeLogsHelper.ChangeLogs(DELETE, Instant.now().toEpochMilli());
+        ChangeLogsTableRequests tableRequests = ChangeLogsTableRequests.ofDeletion(Instant.now());
         for (int i = 0; i <= DEFAULT_PAGE_SIZE; i++) {
             UUID uuid = UUID.randomUUID();
-            changeLogs.addUUID(RECORD_TYPE_STEPS, 0, uuid);
+            tableRequests.addRecordInfo(RECORD_TYPE_STEPS, 0, uuid);
         }
-        List<UpsertTableRequest> requests = changeLogs.getUpsertTableRequests();
+        List<UpsertTableRequest> requests = tableRequests.getUpsertTableRequests();
 
         assertThat(requests).hasSize(2);
         List<UUID> uuidList1 =
@@ -141,6 +143,46 @@ public class ChangeLogsHelperTest {
         List<UUID> uuidList2 =
                 bytesToUuids((byte[]) requests.get(1).getContentValues().get(UUIDS_COLUMN_NAME));
         assertThat(uuidList2).hasSize(1);
+    }
+
+    @Test
+    public void changeLogs_getUpsertTableRequests_multipleRecordTypes_ofDeletion() {
+        ChangeLogsTableRequests tableRequests = ChangeLogsTableRequests.ofDeletion(Instant.now());
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+        tableRequests.addRecordInfo(RECORD_TYPE_STEPS, 0, uuid1);
+        tableRequests.addRecordInfo(RECORD_TYPE_DISTANCE, 0, uuid2);
+        List<UpsertTableRequest> requests = tableRequests.getUpsertTableRequests();
+
+        assertThat(requests).hasSize(2);
+        var firstContentValues = requests.get(0).getContentValues();
+        List<UUID> uuidList1 = bytesToUuids((byte[]) firstContentValues.get(UUIDS_COLUMN_NAME));
+        assertThat(uuidList1).containsExactly(uuid1);
+        assertThat(firstContentValues.get(OPERATION_TYPE_COLUMN_NAME)).isEqualTo(DELETE);
+        var secondContentValues = requests.get(1).getContentValues();
+        List<UUID> uuidList2 = bytesToUuids((byte[]) secondContentValues.get(UUIDS_COLUMN_NAME));
+        assertThat(uuidList2).containsExactly(uuid2);
+        assertThat(secondContentValues.get(OPERATION_TYPE_COLUMN_NAME)).isEqualTo(DELETE);
+    }
+
+    @Test
+    public void changeLogs_getUpsertTableRequests_multipleRecordTypes_ofUpsertion() {
+        ChangeLogsTableRequests tableRequests = ChangeLogsTableRequests.ofUpsertion(Instant.now());
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+        tableRequests.addRecordInfo(RECORD_TYPE_STEPS, 0, uuid1);
+        tableRequests.addRecordInfo(RECORD_TYPE_DISTANCE, 0, uuid2);
+        List<UpsertTableRequest> requests = tableRequests.getUpsertTableRequests();
+
+        assertThat(requests).hasSize(2);
+        var firstContentValues = requests.get(0).getContentValues();
+        List<UUID> uuidList1 = bytesToUuids((byte[]) firstContentValues.get(UUIDS_COLUMN_NAME));
+        assertThat(uuidList1).containsExactly(uuid1);
+        assertThat(firstContentValues.get(OPERATION_TYPE_COLUMN_NAME)).isEqualTo(UPSERT);
+        var secondContentValues = requests.get(1).getContentValues();
+        List<UUID> uuidList2 = bytesToUuids((byte[]) secondContentValues.get(UUIDS_COLUMN_NAME));
+        assertThat(uuidList2).containsExactly(uuid2);
+        assertThat(secondContentValues.get(OPERATION_TYPE_COLUMN_NAME)).isEqualTo(UPSERT);
     }
 
     @Test
@@ -271,18 +313,19 @@ public class ChangeLogsHelperTest {
                         new ChangeLogsRequest.Builder(token).build(),
                         mChangeLogsRequestHelper);
 
-        var upsertedUuidsMap =
-                ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                        changeLogsResponse.getChangeLogsMap());
-        var deletedLogs = ChangeLogsHelper.getDeletedLogs(changeLogsResponse.getChangeLogsMap());
-        assertThat(upsertedUuidsMap).hasSize(1);
-        assertThat(upsertedUuidsMap.get(RECORD_TYPE_STEPS))
+        assertThat(changeLogsResponse.getRecordTypeToUpsertedUuids()).hasSize(1);
+        assertThat(changeLogsResponse.getRecordTypeToUpsertedUuids().get(RECORD_TYPE_STEPS))
                 .containsExactly(
                         UUID.fromString(insertedRecords.get(0)),
                         UUID.fromString(insertedRecords.get(1)));
-        assertThat(upsertedUuidsMap.containsKey(RECORD_TYPE_BLOOD_PRESSURE)).isFalse();
-        assertThat(deletedLogs).hasSize(1);
-        assertThat(deletedLogs.get(0).getDeletedRecordId()).isEqualTo(insertedRecords.get(0));
+        assertThat(
+                        changeLogsResponse
+                                .getRecordTypeToUpsertedUuids()
+                                .containsKey(RECORD_TYPE_BLOOD_PRESSURE))
+                .isFalse();
+        assertThat(changeLogsResponse.getDeletedLogs()).hasSize(1);
+        assertThat(changeLogsResponse.getDeletedLogs().get(0).getDeletedRecordId())
+                .isEqualTo(insertedRecords.get(0));
     }
 
     @Test
@@ -312,19 +355,19 @@ public class ChangeLogsHelperTest {
                         new ChangeLogsRequest.Builder(token).build(),
                         mChangeLogsRequestHelper);
 
-        var upsertedUuidsMap =
-                ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                        changeLogsResponse.getChangeLogsMap());
-        var deletedLogs = ChangeLogsHelper.getDeletedLogs(changeLogsResponse.getChangeLogsMap());
-        assertThat(upsertedUuidsMap).hasSize(2);
-        assertThat(upsertedUuidsMap.get(RECORD_TYPE_STEPS))
+        assertThat(changeLogsResponse.getRecordTypeToUpsertedUuids()).hasSize(2);
+        assertThat(changeLogsResponse.getRecordTypeToUpsertedUuids().get(RECORD_TYPE_STEPS))
                 .containsExactly(
                         UUID.fromString(insertedRecords.get(0)),
                         UUID.fromString(insertedRecords.get(1)));
-        assertThat(upsertedUuidsMap.get(RECORD_TYPE_BLOOD_PRESSURE))
+        assertThat(
+                        changeLogsResponse
+                                .getRecordTypeToUpsertedUuids()
+                                .get(RECORD_TYPE_BLOOD_PRESSURE))
                 .containsExactly(UUID.fromString(insertedRecords.get(2)));
-        assertThat(deletedLogs).hasSize(1);
-        assertThat(deletedLogs.get(0).getDeletedRecordId()).isEqualTo(insertedRecords.get(0));
+        assertThat(changeLogsResponse.getDeletedLogs()).hasSize(1);
+        assertThat(changeLogsResponse.getDeletedLogs().get(0).getDeletedRecordId())
+                .isEqualTo(insertedRecords.get(0));
     }
 
     @Test
@@ -354,17 +397,12 @@ public class ChangeLogsHelperTest {
                         new ChangeLogsRequest.Builder(token).setPageSize(1).build(),
                         mChangeLogsRequestHelper);
 
-        var firstUpsertedUuidsMap =
-                ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                        firstChangeLogsResponse.getChangeLogsMap());
-        var firstDeletedLogs =
-                ChangeLogsHelper.getDeletedLogs(firstChangeLogsResponse.getChangeLogsMap());
-        assertThat(firstUpsertedUuidsMap).hasSize(1);
-        assertThat(firstUpsertedUuidsMap.get(RECORD_TYPE_STEPS))
+        assertThat(firstChangeLogsResponse.getRecordTypeToUpsertedUuids()).hasSize(1);
+        assertThat(firstChangeLogsResponse.getRecordTypeToUpsertedUuids().get(RECORD_TYPE_STEPS))
                 .containsExactly(
                         UUID.fromString(insertedRecords.get(0)),
                         UUID.fromString(insertedRecords.get(1)));
-        assertThat(firstDeletedLogs).hasSize(0);
+        assertThat(firstChangeLogsResponse.getDeletedLogs()).hasSize(0);
 
         var secondTokenRequest =
                 mChangeLogsRequestHelper.getRequest(
@@ -378,15 +416,13 @@ public class ChangeLogsHelperTest {
                                 .build(),
                         mChangeLogsRequestHelper);
 
-        var secondUpsertedUuidsMap =
-                ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                        secondChangeLogsResponse.getChangeLogsMap());
-        var secondDeletedLogs =
-                ChangeLogsHelper.getDeletedLogs(secondChangeLogsResponse.getChangeLogsMap());
-        assertThat(secondUpsertedUuidsMap).hasSize(1);
-        assertThat(secondUpsertedUuidsMap.get(RECORD_TYPE_BLOOD_PRESSURE))
+        assertThat(secondChangeLogsResponse.getRecordTypeToUpsertedUuids()).hasSize(1);
+        assertThat(
+                        secondChangeLogsResponse
+                                .getRecordTypeToUpsertedUuids()
+                                .get(RECORD_TYPE_BLOOD_PRESSURE))
                 .containsExactly(UUID.fromString(insertedRecords.get(2)));
-        assertThat(secondDeletedLogs).hasSize(0);
+        assertThat(secondChangeLogsResponse.getDeletedLogs()).hasSize(0);
 
         var thirdTokenRequest =
                 mChangeLogsRequestHelper.getRequest(
@@ -400,14 +436,10 @@ public class ChangeLogsHelperTest {
                                 .build(),
                         mChangeLogsRequestHelper);
 
-        var thirdUpsertedUuidsMap =
-                ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                        thirdChangeLogsResponse.getChangeLogsMap());
-        var thirdDeletedLogs =
-                ChangeLogsHelper.getDeletedLogs(thirdChangeLogsResponse.getChangeLogsMap());
-        assertThat(thirdUpsertedUuidsMap).hasSize(0);
-        assertThat(thirdDeletedLogs).hasSize(1);
-        assertThat(thirdDeletedLogs.get(0).getDeletedRecordId()).isEqualTo(insertedRecords.get(0));
+        assertThat(thirdChangeLogsResponse.getRecordTypeToUpsertedUuids()).hasSize(0);
+        assertThat(thirdChangeLogsResponse.getDeletedLogs()).hasSize(1);
+        assertThat(thirdChangeLogsResponse.getDeletedLogs().get(0).getDeletedRecordId())
+                .isEqualTo(insertedRecords.get(0));
     }
 
     private void insertChangeLog(

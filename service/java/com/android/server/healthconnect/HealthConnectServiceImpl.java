@@ -1059,25 +1059,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     request,
                                     mChangeLogsRequestHelper);
 
-                    Map<Integer, List<UUID>> recordTypeToInsertedUuids =
-                            ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                                    changeLogsResponse.getChangeLogsMap());
+                    Map<Integer, List<UUID>> recordTypeToUpsertedUuids =
+                            changeLogsResponse.getRecordTypeToUpsertedUuids();
 
                     Set<String> grantedExtraReadPermissions =
                             mDataPermissionEnforcer.collectGrantedExtraReadPermissions(
-                                    recordTypeToInsertedUuids.keySet(), attributionSource);
+                                    recordTypeToUpsertedUuids.keySet(), attributionSource);
 
                     List<RecordInternal<?>> recordInternals =
                             mFitnessRecordReadHelper.readRecords(
                                     mTransactionManager,
                                     callerPackageName,
-                                    recordTypeToInsertedUuids,
+                                    recordTypeToUpsertedUuids,
                                     grantedExtraReadPermissions,
                                     startDateAccessEpochMilli,
                                     isInForeground,
                                     /* shouldRecordAccessLog= */ true);
-                    List<DeletedLog> deletedLogs =
-                            ChangeLogsHelper.getDeletedLogs(changeLogsResponse.getChangeLogsMap());
+                    List<DeletedLog> deletedLogs = changeLogsResponse.getDeletedLogs();
 
                     callback.onResult(
                             new ChangeLogsResponse(

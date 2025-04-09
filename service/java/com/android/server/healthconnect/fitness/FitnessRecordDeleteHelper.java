@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.fitness;
 
-import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
-import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.UUID_COLUMN_NAME;
@@ -41,7 +39,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.ChangeLogsTableRequests;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 
@@ -234,11 +232,9 @@ public final class FitnessRecordDeleteHelper {
             Objects.requireNonNull(callingPackageName);
         }
 
-        long currentTime = Instant.now().toEpochMilli();
-        ChangeLogsHelper.ChangeLogs deletionChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_DELETE, currentTime);
-        ChangeLogsHelper.ChangeLogs modificationChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_UPSERT, currentTime);
+        var currentTime = Instant.now();
+        var deletionChangeLogs = ChangeLogsTableRequests.ofDeletion(currentTime);
+        var modificationChangeLogs = ChangeLogsTableRequests.ofUpsertion(currentTime);
 
         return mTransactionManager.runAsTransaction(
                 db -> {
@@ -249,7 +245,7 @@ public final class FitnessRecordDeleteHelper {
                                         deleteTableRequest.getRecordType());
 
                         // We first always read the records for:
-                        // (1) generating changelogs
+                        // (1) generating change logs
                         // (2) logging number of records deleted
                         try (Cursor cursor =
                                 db.rawQuery(deleteTableRequest.getReadCommand(), null)) {
@@ -268,25 +264,25 @@ public final class FitnessRecordDeleteHelper {
                                 }
                                 UUID deletedRecordUuid =
                                         StorageUtils.getCursorUUID(cursor, idColumnName);
-                                deletionChangelogs.addUUID(
+                                deletionChangeLogs.addRecordInfo(
                                         deleteTableRequest.getRecordType(),
                                         readDataAppInfoId,
                                         deletedRecordUuid);
 
-                                // Add changelogs for affected records, e.g. a training plan
-                                // being deleted will create changelogs for affected exercise
+                                // Add change logs for affected records, e.g. a training plan
+                                // being deleted will create change logs for affected exercise
                                 // sessions.
-                                for (RecordReadTableRequest additionalChangelogUuidRequest :
+                                for (RecordReadTableRequest additionalChangeLogUuidRequest :
                                         recordHelper.getReadRequestsForRecordsModifiedByDeletion(
                                                 deletedRecordUuid)) {
                                     Cursor cursorAdditionalUuids =
                                             mTransactionManager.read(
-                                                    additionalChangelogUuidRequest
+                                                    additionalChangeLogUuidRequest
                                                             .getReadTableRequest());
                                     while (cursorAdditionalUuids.moveToNext()) {
-                                        modificationChangelogs.addUUID(
+                                        modificationChangeLogs.addRecordInfo(
                                                 requireNonNull(
-                                                                additionalChangelogUuidRequest
+                                                                additionalChangeLogUuidRequest
                                                                         .getRecordHelper())
                                                         .getRecordIdentifier(),
                                                 StorageUtils.getCursorLong(
@@ -303,12 +299,12 @@ public final class FitnessRecordDeleteHelper {
                     }
 
                     for (UpsertTableRequest insertRequestsForChangeLog :
-                            deletionChangelogs.getUpsertTableRequests()) {
+                            deletionChangeLogs.getUpsertTableRequests()) {
                         mTransactionManager.insertOrThrowOnConflict(db, insertRequestsForChangeLog);
                     }
-                    for (UpsertTableRequest modificationChangelog :
-                            modificationChangelogs.getUpsertTableRequests()) {
-                        mTransactionManager.insertOrThrowOnConflict(db, modificationChangelog);
+                    for (UpsertTableRequest modificationChangeLog :
+                            modificationChangeLogs.getUpsertTableRequests()) {
+                        mTransactionManager.insertOrThrowOnConflict(db, modificationChangeLog);
                     }
                     if (Flags.addMissingAccessLogs() && shouldRecordAccessLog) {
                         mAccessLogsHelper.recordDeleteAccessLog(
