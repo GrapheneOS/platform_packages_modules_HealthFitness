@@ -60,6 +60,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.backuprestore.BackupChangeTokenHelper.BackupChangeToken;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -72,7 +73,6 @@ import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
-import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;

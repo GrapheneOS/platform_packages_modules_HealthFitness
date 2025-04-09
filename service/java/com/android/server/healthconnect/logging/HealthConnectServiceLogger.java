@@ -206,7 +206,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.ratelimiter.RateLimiter;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

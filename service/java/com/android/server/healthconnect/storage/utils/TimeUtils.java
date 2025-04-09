@@ -20,15 +20,14 @@ import java.time.Duration;
 import java.time.Instant;
 
 /**
- * Time util class for HC storage
+ * Time util class for HC.
  *
  * @hide
  */
 public class TimeUtils {
     /** Returns duration between start and end time */
     public static long getDurationInMillis(Instant start, Instant end) {
-        long duration = Duration.between(start, end).toMillis();
-        return duration;
+        return Duration.between(start, end).toMillis();
     }
 
     /** Returns the recent time among the time instants */

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.utils;
+package com.android.server.healthconnect.fitness.mappings;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVE_CALORIES_BURNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVITY_INTENSITY;
@@ -100,48 +100,48 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_WHEELCHAIR_PUSHES;
 
 import static com.android.internal.annotations.VisibleForTesting.Visibility.PACKAGE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ACTIVE_CALORIES_BURNED;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BASAL_BODY_TEMPERATURE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BASAL_METABOLIC_RATE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BLOOD_GLUCOSE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BLOOD_PRESSURE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BODY_FAT;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BODY_TEMPERATURE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BODY_WATER_MASS;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BONE_MASS;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CERVICAL_MUCUS;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CYCLING_PEDALING_CADENCE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_DISTANCE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ELEVATION_GAINED;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_EXERCISE_SESSION;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_FLOORS_CLIMBED;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_HEART_RATE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_HEART_RATE_VARIABILITY_RMSSD;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_HEIGHT;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_HYDRATION;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_INTERMENSTRUAL_BLEEDING;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_LEAN_BODY_MASS;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MENSTRUATION_FLOW;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MENSTRUATION_PERIOD;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MINDFULNESS_SESSION;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_NUTRITION;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_OVULATION_TEST;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_OXYGEN_SATURATION;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_PLANNED_EXERCISE_SESSION;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_POWER;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_RESPIRATORY_RATE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_RESTING_HEART_RATE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SEXUAL_ACTIVITY;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SKIN_TEMPERATURE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SLEEP_SESSION;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SPEED;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_STEPS;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_STEPS_CADENCE;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_TOTAL_CALORIES_BURNED;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_VO2_MAX;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_WEIGHT;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_WHEELCHAIR_PUSHES;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ACTIVE_CALORIES_BURNED;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BASAL_BODY_TEMPERATURE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BASAL_METABOLIC_RATE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BLOOD_GLUCOSE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BLOOD_PRESSURE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BODY_FAT;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BODY_TEMPERATURE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BODY_WATER_MASS;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BONE_MASS;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CERVICAL_MUCUS;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CYCLING_PEDALING_CADENCE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_DISTANCE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ELEVATION_GAINED;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_EXERCISE_SESSION;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_FLOORS_CLIMBED;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_HEART_RATE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_HEART_RATE_VARIABILITY_RMSSD;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_HEIGHT;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_HYDRATION;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_INTERMENSTRUAL_BLEEDING;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_LEAN_BODY_MASS;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MENSTRUATION_FLOW;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MENSTRUATION_PERIOD;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MINDFULNESS_SESSION;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_NUTRITION;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_OVULATION_TEST;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_OXYGEN_SATURATION;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_PLANNED_EXERCISE_SESSION;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_POWER;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_RESPIRATORY_RATE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_RESTING_HEART_RATE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SEXUAL_ACTIVITY;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SKIN_TEMPERATURE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SLEEP_SESSION;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_SPEED;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_STEPS;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_STEPS_CADENCE;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_TOTAL_CALORIES_BURNED;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_VO2_MAX;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_WEIGHT;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_WHEELCHAIR_PUSHES;
 
 import android.annotation.Nullable;
 import android.health.HealthFitnessStatsLog;
@@ -208,7 +208,7 @@ public class InternalDataTypeDescriptors {
             HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVITY_INTENSITY;
 
     @VisibleForTesting(visibility = PACKAGE)
-    public static List<InternalDataTypeDescriptor> getAllInternalDataTypeDescriptors() {
+    static List<InternalDataTypeDescriptor> getAllInternalDataTypeDescriptors() {
         if (!Flags.healthConnectMappings()) {
             return List.of();
         }

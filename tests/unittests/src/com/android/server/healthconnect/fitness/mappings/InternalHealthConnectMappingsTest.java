@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.utils;
+package com.android.server.healthconnect.fitness.mappings;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_UNKNOWN;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
-import static com.android.server.healthconnect.storage.utils.InternalDataTypeDescriptors.getAllInternalDataTypeDescriptors;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_UNKNOWN;
+import static com.android.server.healthconnect.fitness.mappings.InternalDataTypeDescriptors.getAllInternalDataTypeDescriptors;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_UNKNOWN;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -37,6 +37,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import org.junit.Rule;
 import org.junit.Test;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.utils;
+package com.android.server.healthconnect.fitness.mappings;
 
 import static java.util.Objects.requireNonNull;
 
@@ -71,7 +71,8 @@ import java.util.Map;
 /**
  * Store for all the record helpers
  *
- * @deprecated Use {@link InternalHealthConnectMappings}.
+ * @deprecated Use {@link
+ *     com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings}.
  * @hide
  */
 public final class RecordHelperProvider {

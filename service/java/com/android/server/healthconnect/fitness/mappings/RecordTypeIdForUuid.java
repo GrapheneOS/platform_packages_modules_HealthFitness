@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.utils;
+package com.android.server.healthconnect.fitness.mappings;
 
 import android.annotation.IntDef;
 

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.utils;
+package com.android.server.healthconnect.fitness.mappings;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_UNKNOWN;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
 import static com.android.internal.util.Preconditions.checkArgument;
-import static com.android.server.healthconnect.storage.utils.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_UNKNOWN;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_UNKNOWN;
 
 import android.annotation.Nullable;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -30,7 +30,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import java.util.Objects;
 
 /** @hide */
-public final class InternalDataTypeDescriptor {
+final class InternalDataTypeDescriptor {
     @RecordTypeIdentifier.RecordType private final int mRecordTypeIdentifier;
     private final RecordHelper<?> mRecordHelper;
     @RecordTypeIdForUuid.Type private final int mRecordTypeIdForUuid;
@@ -51,24 +51,24 @@ public final class InternalDataTypeDescriptor {
     }
 
     @RecordTypeIdentifier.RecordType
-    public int getRecordTypeIdentifier() {
+    int getRecordTypeIdentifier() {
         return mRecordTypeIdentifier;
     }
 
-    public RecordHelper<?> getRecordHelper() {
+    RecordHelper<?> getRecordHelper() {
         return mRecordHelper;
     }
 
     @RecordTypeIdForUuid.Type
-    public int getRecordTypeIdForUuid() {
+    int getRecordTypeIdForUuid() {
         return mRecordTypeIdForUuid;
     }
 
-    public int getLoggingEnum() {
+    int getLoggingEnum() {
         return mLoggingEnum;
     }
 
-    public boolean isDerived() {
+    boolean isDerived() {
         return mIsDerived;
     }
 

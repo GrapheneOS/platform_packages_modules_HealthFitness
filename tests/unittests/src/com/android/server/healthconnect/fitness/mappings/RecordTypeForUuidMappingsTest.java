@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package healthconnect.storage.utils;
+package com.android.server.healthconnect.fitness.mappings;
 
 import android.health.connect.datatypes.RecordTypeIdentifier;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.android.server.healthconnect.storage.utils.RecordTypeForUuidMappings;
 
 import com.google.common.truth.Expect;
 

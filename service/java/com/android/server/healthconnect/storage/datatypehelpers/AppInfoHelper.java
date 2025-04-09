@@ -55,6 +55,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.Slog;
 
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.HealthConnectContext;
@@ -62,7 +63,6 @@ import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.io.ByteArrayOutputStream;

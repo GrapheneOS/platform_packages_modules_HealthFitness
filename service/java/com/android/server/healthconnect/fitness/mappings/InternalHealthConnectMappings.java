@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.utils;
+package com.android.server.healthconnect.fitness.mappings;
 
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.HealthDataCategory.SLEEP;
@@ -33,6 +33,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.logging.HealthConnectServiceLogger;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
