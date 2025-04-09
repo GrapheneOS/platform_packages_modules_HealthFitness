@@ -98,6 +98,7 @@ android_robolectric_test {
         // This is needed give us AppOpsManagerLocal
         "services.core",
         "platform-parametric-runner-lib",
+        "guava-android-testlib", // For EqualsTester
     ],
     java_resources: [
         ":generate-fhir-spec-r4-binarypb",
@@ -151,6 +152,7 @@ android_test {
         "cts-healthconnect-phr-lib",
         "platform-parametric-runner-lib",
         "framework-annotations-lib",
+        "guava-android-testlib", // For EqualsTester
     ],
     jni_libs: [
         // Required for ExtendedMockito

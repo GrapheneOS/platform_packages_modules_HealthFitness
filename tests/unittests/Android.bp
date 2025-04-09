@@ -107,6 +107,7 @@ android_test {
         "cts-healthconnect-phr-lib",
         "platform-parametric-runner-lib",
         "framework-annotations-lib",
+        "guava-android-testlib", // For EqualsTester
     ],
     jni_libs: [
         // Required for ExtendedMockito
