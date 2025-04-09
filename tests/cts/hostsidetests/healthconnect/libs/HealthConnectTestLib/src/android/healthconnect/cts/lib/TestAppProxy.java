@@ -16,11 +16,11 @@
 
 package android.healthconnect.cts.lib;
 
+import static android.Manifest.permission.FORCE_STOP_PACKAGES;
 import static android.Manifest.permission.GET_RUNTIME_PERMISSIONS;
 import static android.content.pm.PackageManager.FLAG_PERMISSION_ONE_TIME;
 import static android.health.connect.datatypes.FhirVersion.parseFhirVersion;
 import static android.healthconnect.cts.lib.BundleHelper.INTENT_EXCEPTION;
-import static android.healthconnect.cts.lib.BundleHelper.KILL_SELF_REQUEST;
 import static android.healthconnect.cts.lib.BundleHelper.QUERY_TYPE;
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
@@ -28,7 +28,10 @@ import static com.android.compatibility.common.util.SystemUtil.runWithShellPermi
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static java.util.Objects.requireNonNull;
+
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Instrumentation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -288,10 +291,13 @@ public class TestAppProxy {
                 GET_RUNTIME_PERMISSIONS);
     }
 
-    /** Instructs the app to kill itself. */
+    /** Kills the app. */
+    @SuppressLint("MissingPermission")
     public void kill() throws Exception {
-        Bundle requestBundle = BundleHelper.forKillSelfRequest();
-        getFromTestApp(requestBundle);
+        ActivityManager activityManager =
+                requireNonNull(mContext.getSystemService(ActivityManager.class));
+        runWithShellPermissionIdentity(
+                () -> activityManager.forceStopPackage(mPackageName), FORCE_STOP_PACKAGES);
     }
 
     /** Starts an activity on behalf of the app and returns the result. */
@@ -383,11 +389,7 @@ public class TestAppProxy {
             mContext.startActivity(intent);
         }
 
-        // We don't wait for responses to kill requests. These kill the app & there is no easy or
-        // reliable way for the app to return a broadcast before being killed.
-        boolean isKillRequest =
-                bundleToCreateIntent.getString(QUERY_TYPE).equals(KILL_SELF_REQUEST);
-        if (!isKillRequest && !latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
+        if (!latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
             final String errorMessage =
                     "Timed out while waiting to receive "
                             + bundleToCreateIntent.getString(QUERY_TYPE)
