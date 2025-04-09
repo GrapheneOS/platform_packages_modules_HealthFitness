@@ -174,8 +174,7 @@ public final class SpeedRecord extends IntervalRecord {
          */
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object) && object instanceof SpeedRecordSample) {
-                SpeedRecordSample other = (SpeedRecordSample) object;
+            if (object instanceof SpeedRecordSample other) {
                 return getSpeed().equals(other.getSpeed())
                         && getTime().toEpochMilli() == other.getTime().toEpochMilli();
             }
@@ -189,7 +188,7 @@ public final class SpeedRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), getSpeed(), getTime());
+            return Objects.hash(getSpeed(), getTime());
         }
     }
 
@@ -295,19 +294,8 @@ public final class SpeedRecord extends IntervalRecord {
      */
     @Override
     public boolean equals(@Nullable Object object) {
-        if (super.equals(object) && object instanceof SpeedRecord) {
-            SpeedRecord other = (SpeedRecord) object;
-            if (getSamples().size() != other.getSamples().size()) return false;
-            for (int idx = 0; idx < getSamples().size(); idx++) {
-                if (!Objects.equals(
-                                getSamples().get(idx).getSpeed(),
-                                other.getSamples().get(idx).getSpeed())
-                        || getSamples().get(idx).getTime().toEpochMilli()
-                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
-                    return false;
-                }
-            }
-            return true;
+        if (super.equals(object) && object instanceof SpeedRecord other) {
+            return Objects.equals(getSamples(), other.getSamples());
         }
         return false;
     }
