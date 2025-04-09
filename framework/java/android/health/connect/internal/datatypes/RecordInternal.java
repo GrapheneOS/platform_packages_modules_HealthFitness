@@ -58,21 +58,15 @@ public abstract class RecordInternal<T extends Record> {
     @Metadata.RecordingMethod private int mRecordingMethod;
 
     RecordInternal() {
-        Identifier annotation = this.getClass().getAnnotation(Identifier.class);
-        Objects.requireNonNull(annotation);
-        mRecordIdentifier = annotation.recordIdentifier();
-    }
-
-    @RecordTypeIdentifier.RecordType
-    public int getRecordType() {
-        return mRecordIdentifier;
+        mRecordIdentifier = constructRecordIdentifier();
     }
 
     /**
      * Populates self with the data present in {@code parcel}. Reads should be in the same order as
-     * write
+     * write. Subclasses should add a constructor which extends this.
      */
-    public final void populateUsing(@NonNull Parcel parcel) {
+    RecordInternal(Parcel parcel) {
+        mRecordIdentifier = constructRecordIdentifier();
         String uuidString = parcel.readString();
         if (uuidString != null && !uuidString.isEmpty()) {
             mUuid = UUID.fromString(uuidString);
@@ -86,8 +80,17 @@ public abstract class RecordInternal<T extends Record> {
         mModel = parcel.readString();
         mDeviceType = parcel.readInt();
         mRecordingMethod = parcel.readInt();
+    }
 
-        populateRecordFrom(parcel);
+    /** Extract the record identifier from the annotations. */
+    private int constructRecordIdentifier() {
+        Identifier annotation = this.getClass().getAnnotation(Identifier.class);
+        return Objects.requireNonNull(annotation).recordIdentifier();
+    }
+
+    @RecordTypeIdentifier.RecordType
+    public int getRecordType() {
+        return mRecordIdentifier;
     }
 
     /**
@@ -271,23 +274,29 @@ public abstract class RecordInternal<T extends Record> {
     /** Child class must implement this method and return an external record for this record */
     public abstract T toExternalRecord();
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     Metadata buildMetaData() {
-        return new Metadata.Builder()
-                .setClientRecordId(getClientRecordId())
-                .setClientRecordVersion(getClientRecordVersion())
-                .setDataOrigin(new DataOrigin.Builder().setPackageName(getPackageName()).build())
-                .setId(getUuid() == null ? null : getUuid().toString())
-                .setLastModifiedTime(Instant.ofEpochMilli(getLastModifiedTime()))
-                .setRecordingMethod(getRecordingMethod())
-                .setDevice(
-                        new Device.Builder()
-                                .setManufacturer(getManufacturer())
-                                .setType(getDeviceType())
-                                .setModel(getModel())
-                                .build())
-                .build();
+        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+        DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(getPackageName()).build();
+
+        Metadata.Builder builder =
+                new Metadata.Builder()
+                        .setClientRecordId(getClientRecordId())
+                        .setClientRecordVersion(getClientRecordVersion())
+                        .setDataOrigin(dataOrigin)
+                        .setLastModifiedTime(Instant.ofEpochMilli(getLastModifiedTime()))
+                        .setRecordingMethod(getRecordingMethod())
+                        .setDevice(
+                                new Device.Builder()
+                                        .setManufacturer(getManufacturer())
+                                        .setType(getDeviceType())
+                                        .setModel(getModel())
+                                        .build());
+        UUID id = getUuid();
+        if (id != null) {
+            builder.setId(id.toString());
+        }
+        return builder.build();
     }
 
     /** Sets the fields for meta data for internal records */
@@ -320,10 +329,4 @@ public abstract class RecordInternal<T extends Record> {
      * transmissions
      */
     abstract void populateRecordTo(@NonNull Parcel bundle);
-
-    /**
-     * Child class must implement this method and populates itself with the data present in {@code
-     * bundle}
-     */
-    abstract void populateRecordFrom(@NonNull Parcel bundle);
 }

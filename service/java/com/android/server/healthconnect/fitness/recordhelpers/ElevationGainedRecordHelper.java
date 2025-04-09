@@ -71,9 +71,9 @@ public final class ElevationGainedRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, ElevationGainedRecordInternal elevationGainedRecord) {
-        elevationGainedRecord.setElevation(getCursorDouble(cursor, ELEVATION_COLUMN_NAME));
+    ElevationGainedRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new ElevationGainedRecordInternal()
+                .setElevation(getCursorDouble(cursor, ELEVATION_COLUMN_NAME));
     }
 
     @Override

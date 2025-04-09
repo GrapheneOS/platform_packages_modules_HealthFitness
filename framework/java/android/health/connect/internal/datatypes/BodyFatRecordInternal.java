@@ -30,6 +30,15 @@ import android.os.Parcel;
 public final class BodyFatRecordInternal extends InstantRecordInternal<BodyFatRecord> {
     private double mPercentage;
 
+    public BodyFatRecordInternal() {
+        super();
+    }
+
+    public BodyFatRecordInternal(Parcel parcel) {
+        super(parcel);
+        mPercentage = parcel.readDouble();
+    }
+
     public double getPercentage() {
         return mPercentage;
     }
@@ -48,11 +57,6 @@ public final class BodyFatRecordInternal extends InstantRecordInternal<BodyFatRe
                         buildMetaData(), getTime(), Percentage.fromValue(getPercentage()))
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mPercentage = parcel.readDouble();
     }
 
     @Override

@@ -45,9 +45,9 @@ public class ActivityIntensityRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, ActivityIntensityRecordInternal recordInternal) {
-        recordInternal.setActivityIntensityType(getCursorInt(cursor, TYPE_COLUMN_NAME));
+    ActivityIntensityRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new ActivityIntensityRecordInternal()
+                .setActivityIntensityType(getCursorInt(cursor, TYPE_COLUMN_NAME));
     }
 
     @Override

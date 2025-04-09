@@ -39,6 +39,15 @@ public final class SleepSessionRecordInternal extends IntervalRecordInternal<Sle
 
     @Nullable private String mTitle;
 
+    public SleepSessionRecordInternal() {}
+
+    public SleepSessionRecordInternal(Parcel parcel) {
+        super(parcel);
+        mNotes = parcel.readString();
+        mTitle = parcel.readString();
+        mStages = SleepStageInternal.populateStagesFromParcel(parcel);
+    }
+
     @Nullable
     public String getNotes() {
         return mNotes;
@@ -92,13 +101,6 @@ public final class SleepSessionRecordInternal extends IntervalRecordInternal<Sle
         parcel.writeString(mNotes);
         parcel.writeString(mTitle);
         SleepStageInternal.writeStagesToParcel(mStages, parcel);
-    }
-
-    @Override
-    public void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mNotes = parcel.readString();
-        mTitle = parcel.readString();
-        mStages = SleepStageInternal.populateStagesFromParcel(parcel);
     }
 
     @NonNull

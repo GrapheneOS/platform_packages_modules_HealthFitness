@@ -70,9 +70,9 @@ public final class FloorsClimbedRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, FloorsClimbedRecordInternal floorsClimbedRecord) {
-        floorsClimbedRecord.setFloors(getCursorDouble(cursor, FLOORS_COLUMN_NAME));
+    FloorsClimbedRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new FloorsClimbedRecordInternal()
+                .setFloors(getCursorDouble(cursor, FLOORS_COLUMN_NAME));
     }
 
     @Override

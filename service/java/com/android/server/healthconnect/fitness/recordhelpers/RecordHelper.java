@@ -51,7 +51,6 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.ArrayMap;
 import android.util.Pair;
 import android.util.Slog;
@@ -79,7 +78,6 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TableColumnPair;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -635,47 +633,34 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return Pair.create(recordInternalList, nextPageToken);
     }
 
-    @SuppressWarnings("unchecked") // uncheck cast to T
     private T getRecord(
             Cursor cursor,
             @Nullable Map<Long, String> packageNamesByAppIds,
             DeviceInfoHelper deviceInfoHelper,
             AppInfoHelper appInfoHelper) {
+        T record = populateRecordValue(cursor);
+        record.setUuid(getCursorUUID(cursor, UUID_COLUMN_NAME));
+        record.setLastModifiedTime(getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME));
+        record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
+        record.setClientRecordVersion(getCursorLong(cursor, CLIENT_RECORD_VERSION_COLUMN_NAME));
+        record.setRecordingMethod(getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME));
+        record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
+        long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
+        deviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
+        long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
         try {
-            @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-            T record =
-                    (T)
-                            HealthConnectMappings.getInstance()
-                                    .getRecordIdToInternalRecordClassMap()
-                                    .get(getRecordIdentifier())
-                                    .getConstructor()
-                                    .newInstance();
-            record.setUuid(getCursorUUID(cursor, UUID_COLUMN_NAME));
-            record.setLastModifiedTime(getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME));
-            record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
-            record.setClientRecordVersion(getCursorLong(cursor, CLIENT_RECORD_VERSION_COLUMN_NAME));
-            record.setRecordingMethod(getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME));
-            record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
-            long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
-            deviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
-            long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
             String packageName =
                     packageNamesByAppIds != null
                             ? packageNamesByAppIds.get(appInfoId)
                             : appInfoHelper.getPackageName(appInfoId);
             record.setPackageName(packageName);
-            populateRecordValue(cursor, record);
-            record.setAppInfoId(appInfoId);
-
-            return record;
-        } catch (InstantiationException
-                | IllegalAccessException
-                | NoSuchMethodException
-                | InvocationTargetException
-                | PackageManager.NameNotFoundException exception) {
+        } catch (PackageManager.NameNotFoundException exception) {
             Slog.e("HealthConnectRecordHelper", "Failed to read", exception);
             throw new IllegalArgumentException(exception);
         }
+        record.setAppInfoId(appInfoId);
+
+        return record;
     }
 
     /** Populate internalRecords fields using extraDataCursor */
@@ -803,7 +788,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * Child classes implementation should populate the values to the {@code record} using the
      * cursor {@code cursor} queried from the DB .
      */
-    abstract void populateRecordValue(Cursor cursor, T recordInternal);
+    abstract T populateRecordValue(Cursor cursor);
 
     List<UpsertTableRequest> getChildTableUpsertRequests(T record) {
         return Collections.emptyList();

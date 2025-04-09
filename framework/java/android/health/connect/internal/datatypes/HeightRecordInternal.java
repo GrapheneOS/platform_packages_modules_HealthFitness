@@ -30,6 +30,15 @@ import android.os.Parcel;
 public final class HeightRecordInternal extends InstantRecordInternal<HeightRecord> {
     private double mHeight;
 
+    public HeightRecordInternal() {
+        super();
+    }
+
+    public HeightRecordInternal(Parcel parcel) {
+        super(parcel);
+        mHeight = parcel.readDouble();
+    }
+
     public double getHeight() {
         return mHeight;
     }
@@ -47,11 +56,6 @@ public final class HeightRecordInternal extends InstantRecordInternal<HeightReco
         return new HeightRecord.Builder(buildMetaData(), getTime(), Length.fromMeters(getHeight()))
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mHeight = parcel.readDouble();
     }
 
     @Override

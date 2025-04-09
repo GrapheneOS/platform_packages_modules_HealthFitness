@@ -48,9 +48,8 @@ public final class MenstruationFlowRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, MenstruationFlowRecordInternal menstruationFlowRecord) {
-        menstruationFlowRecord.setFlow(getCursorInt(cursor, FLOW_COLUMN_NAME));
+    MenstruationFlowRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new MenstruationFlowRecordInternal().setFlow(getCursorInt(cursor, FLOW_COLUMN_NAME));
     }
 
     @Override

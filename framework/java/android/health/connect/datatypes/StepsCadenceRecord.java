@@ -306,9 +306,6 @@ public final class StepsCadenceRecord extends IntervalRecord {
     /** @hide */
     @Override
     public StepsCadenceRecordInternal toRecordInternal() {
-        StepsCadenceRecordInternal recordInternal =
-                (StepsCadenceRecordInternal)
-                        new StepsCadenceRecordInternal().setMetaData(getMetadata());
         Set<StepsCadenceRecordInternal.StepsCadenceRecordSample> samples =
                 new HashSet<>(getSamples().size());
 
@@ -318,7 +315,9 @@ public final class StepsCadenceRecord extends IntervalRecord {
                             stepsCadenceRecordSample.getRate(),
                             stepsCadenceRecordSample.getTime().toEpochMilli()));
         }
-        recordInternal.setSamples(samples);
+        StepsCadenceRecordInternal recordInternal =
+                (StepsCadenceRecordInternal)
+                        new StepsCadenceRecordInternal(samples).setMetaData(getMetadata());
         recordInternal.setTimeInterval(this);
 
         return recordInternal;

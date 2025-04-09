@@ -29,6 +29,15 @@ import android.os.Parcel;
 public final class FloorsClimbedRecordInternal extends IntervalRecordInternal<FloorsClimbedRecord> {
     private double mFloors;
 
+    public FloorsClimbedRecordInternal() {
+        super();
+    }
+
+    public FloorsClimbedRecordInternal(Parcel parcel) {
+        super(parcel);
+        mFloors = parcel.readDouble();
+    }
+
     public double getFloors() {
         return mFloors;
     }
@@ -48,11 +57,6 @@ public final class FloorsClimbedRecordInternal extends IntervalRecordInternal<Fl
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mFloors = parcel.readDouble();
     }
 
     @Override

@@ -25,7 +25,6 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -40,8 +39,22 @@ public class CyclingPedalingCadenceRecordInternal
         extends SeriesRecordInternal<
                 CyclingPedalingCadenceRecord,
                 CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample> {
-    private Set<CyclingPedalingCadenceRecordSample> mCyclingPedalingCadenceRecordSamples =
-            Collections.emptySet();
+    private Set<CyclingPedalingCadenceRecordSample> mCyclingPedalingCadenceRecordSamples;
+
+    public CyclingPedalingCadenceRecordInternal(Set<CyclingPedalingCadenceRecordSample> samples) {
+        super();
+        this.mCyclingPedalingCadenceRecordSamples = samples;
+    }
+
+    public CyclingPedalingCadenceRecordInternal(Parcel parcel) {
+        super(parcel);
+        int size = parcel.readInt();
+        mCyclingPedalingCadenceRecordSamples = new HashSet<>(size);
+        for (int i = 0; i < size; i++) {
+            mCyclingPedalingCadenceRecordSamples.add(
+                    new CyclingPedalingCadenceRecordSample(parcel.readDouble(), parcel.readLong()));
+        }
+    }
 
     @Override
     @NonNull
@@ -66,16 +79,6 @@ public class CyclingPedalingCadenceRecordInternal
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        int size = parcel.readInt();
-        mCyclingPedalingCadenceRecordSamples = new HashSet<>(size);
-        for (int i = 0; i < size; i++) {
-            mCyclingPedalingCadenceRecordSamples.add(
-                    new CyclingPedalingCadenceRecordSample(parcel.readDouble(), parcel.readLong()));
-        }
     }
 
     @Override

@@ -28,8 +28,12 @@ public final class HeartRateVariabilityRmssdRecordInternal
         extends InstantRecordInternal<HeartRateVariabilityRmssdRecord> {
     private double mHeartRateVariabilityMillis = 0.0;
 
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
+    public HeartRateVariabilityRmssdRecordInternal() {
+        super();
+    }
+
+    public HeartRateVariabilityRmssdRecordInternal(Parcel parcel) {
+        super(parcel);
         mHeartRateVariabilityMillis = parcel.readDouble();
     }
 
@@ -42,8 +46,10 @@ public final class HeartRateVariabilityRmssdRecordInternal
         return mHeartRateVariabilityMillis;
     }
 
-    public void setHeartRateVariabilityMillis(double heartRateVariabilityMillis) {
+    public HeartRateVariabilityRmssdRecordInternal setHeartRateVariabilityMillis(
+            double heartRateVariabilityMillis) {
         mHeartRateVariabilityMillis = heartRateVariabilityMillis;
+        return this;
     }
 
     @NonNull

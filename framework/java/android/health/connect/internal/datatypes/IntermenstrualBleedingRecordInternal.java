@@ -26,9 +26,13 @@ import android.os.Parcel;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING)
 public final class IntermenstrualBleedingRecordInternal
         extends InstantRecordInternal<IntermenstrualBleedingRecord> {
+    public IntermenstrualBleedingRecordInternal() {
+        super();
+    }
 
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {}
+    public IntermenstrualBleedingRecordInternal(Parcel parcel) {
+        super(parcel);
+    }
 
     @Override
     void populateInstantRecordTo(@NonNull Parcel parcel) {}

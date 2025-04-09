@@ -25,7 +25,6 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -71,11 +70,24 @@ public class HeartRateRecordInternal
         }
     }
 
-    private Set<HeartRateSample> mHeartRateHeartRateSamples = Collections.emptySet();
+    private Set<HeartRateSample> mHeartRateHeartRateSamples;
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    public HeartRateRecordInternal(Set<HeartRateSample> heartRateHeartRateSamples) {
+        super();
+        this.mHeartRateHeartRateSamples = heartRateHeartRateSamples;
+    }
+
+    public HeartRateRecordInternal(Parcel parcel) {
+        super(parcel);
+        int size = parcel.readInt();
+        mHeartRateHeartRateSamples = new HashSet<>(size);
+        for (int i = 0; i < size; i++) {
+            mHeartRateHeartRateSamples.add(
+                    new HeartRateSample(parcel.readInt(), parcel.readLong()));
+        }
+    }
+
     @Override
-    @Nullable
     public Set<HeartRateSample> getSamples() {
         return mHeartRateHeartRateSamples;
     }
@@ -94,16 +106,6 @@ public class HeartRateRecordInternal
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        int size = parcel.readInt();
-        mHeartRateHeartRateSamples = new HashSet<>(size);
-        for (int i = 0; i < size; i++) {
-            mHeartRateHeartRateSamples.add(
-                    new HeartRateSample(parcel.readInt(), parcel.readLong()));
-        }
     }
 
     @Override

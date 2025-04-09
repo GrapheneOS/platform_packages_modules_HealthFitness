@@ -131,7 +131,7 @@ public class HeartRateRecordHelper
     }
 
     @Override
-    void populateSpecificValues(Cursor seriesTableCursor, HeartRateRecordInternal record) {
+    HeartRateRecordInternal populateSpecificValues(Cursor seriesTableCursor) {
         HashSet<HeartRateRecordInternal.HeartRateSample> heartRateSamplesSet = new HashSet<>();
         UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         do {
@@ -144,7 +144,7 @@ public class HeartRateRecordHelper
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
-        record.setSamples(heartRateSamplesSet);
+        return new HeartRateRecordInternal(heartRateSamplesSet);
     }
 
     @Override

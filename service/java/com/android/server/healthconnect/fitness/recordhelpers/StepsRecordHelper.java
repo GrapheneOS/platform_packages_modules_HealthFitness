@@ -71,8 +71,8 @@ public final class StepsRecordHelper extends IntervalRecordHelper<StepsRecordInt
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, StepsRecordInternal recordInternal) {
-        recordInternal.setCount(getCursorInt(cursor, COUNT_COLUMN_NAME));
+    StepsRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new StepsRecordInternal().setCount(getCursorInt(cursor, COUNT_COLUMN_NAME));
     }
 
     @Override

@@ -71,9 +71,9 @@ public final class WheelchairPushesRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, WheelchairPushesRecordInternal wheelchairPushesRecord) {
-        wheelchairPushesRecord.setCount(getCursorInt(cursor, COUNT_COLUMN_NAME));
+    WheelchairPushesRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new WheelchairPushesRecordInternal()
+                .setCount(getCursorInt(cursor, COUNT_COLUMN_NAME));
     }
 
     @Override

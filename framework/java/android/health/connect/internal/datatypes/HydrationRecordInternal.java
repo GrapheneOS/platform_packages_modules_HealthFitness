@@ -30,6 +30,15 @@ import android.os.Parcel;
 public final class HydrationRecordInternal extends IntervalRecordInternal<HydrationRecord> {
     private double mVolume;
 
+    public HydrationRecordInternal() {
+        super();
+    }
+
+    public HydrationRecordInternal(Parcel parcel) {
+        super(parcel);
+        mVolume = parcel.readDouble();
+    }
+
     public double getVolume() {
         return mVolume;
     }
@@ -52,11 +61,6 @@ public final class HydrationRecordInternal extends IntervalRecordInternal<Hydrat
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mVolume = parcel.readDouble();
     }
 
     @Override

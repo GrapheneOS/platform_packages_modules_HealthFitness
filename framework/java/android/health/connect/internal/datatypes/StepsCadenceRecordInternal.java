@@ -25,7 +25,6 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +38,22 @@ import java.util.Set;
 public class StepsCadenceRecordInternal
         extends SeriesRecordInternal<
                 StepsCadenceRecord, StepsCadenceRecord.StepsCadenceRecordSample> {
-    private Set<StepsCadenceRecordSample> mStepsCadenceRecordSamples = Collections.emptySet();
+    private Set<StepsCadenceRecordSample> mStepsCadenceRecordSamples;
+
+    public StepsCadenceRecordInternal(Set<StepsCadenceRecordSample> mStepsCadenceRecordSamples) {
+        super();
+        this.mStepsCadenceRecordSamples = mStepsCadenceRecordSamples;
+    }
+
+    public StepsCadenceRecordInternal(Parcel parcel) {
+        super(parcel);
+        int size = parcel.readInt();
+        mStepsCadenceRecordSamples = new HashSet<>(size);
+        for (int i = 0; i < size; i++) {
+            mStepsCadenceRecordSamples.add(
+                    new StepsCadenceRecordSample(parcel.readDouble(), parcel.readLong()));
+        }
+    }
 
     @Override
     @NonNull
@@ -63,16 +77,6 @@ public class StepsCadenceRecordInternal
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        int size = parcel.readInt();
-        mStepsCadenceRecordSamples = new HashSet<>(size);
-        for (int i = 0; i < size; i++) {
-            mStepsCadenceRecordSamples.add(
-                    new StepsCadenceRecordSample(parcel.readDouble(), parcel.readLong()));
-        }
     }
 
     private List<StepsCadenceRecord.StepsCadenceRecordSample> getExternalSamples() {

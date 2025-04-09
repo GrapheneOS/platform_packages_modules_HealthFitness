@@ -164,14 +164,14 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
             ContentValues contentValues, T instantRecordInternal);
 
     @Override
-    final void populateRecordValue(Cursor cursor, T instantRecordInternal) {
+    final T populateRecordValue(Cursor cursor) {
+        T instantRecordInternal = populateSpecificRecordValue(cursor);
         instantRecordInternal.setZoneOffset(getCursorInt(cursor, ZONE_OFFSET_COLUMN_NAME));
         instantRecordInternal.setTime(getCursorLong(cursor, TIME_COLUMN_NAME));
-
-        populateSpecificRecordValue(cursor, instantRecordInternal);
+        return instantRecordInternal;
     }
 
-    abstract void populateSpecificRecordValue(Cursor cursor, T recordInternal);
+    abstract T populateSpecificRecordValue(Cursor cursor);
 
     /**
      * This implementation should return the column names with which the table should be created.

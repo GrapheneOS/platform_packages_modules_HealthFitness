@@ -30,6 +30,15 @@ public final class RestingHeartRateRecordInternal
         extends InstantRecordInternal<RestingHeartRateRecord> {
     private int mBeatsPerMinute;
 
+    public RestingHeartRateRecordInternal() {
+        super();
+    }
+
+    public RestingHeartRateRecordInternal(Parcel parcel) {
+        super(parcel);
+        mBeatsPerMinute = parcel.readInt();
+    }
+
     public int getBeatsPerMinute() {
         return mBeatsPerMinute;
     }
@@ -47,11 +56,6 @@ public final class RestingHeartRateRecordInternal
         return new RestingHeartRateRecord.Builder(buildMetaData(), getTime(), getBeatsPerMinute())
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mBeatsPerMinute = parcel.readInt();
     }
 
     @Override

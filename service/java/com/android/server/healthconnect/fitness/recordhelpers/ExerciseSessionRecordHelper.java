@@ -116,8 +116,8 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, ExerciseSessionRecordInternal exerciseSessionRecord) {
+    ExerciseSessionRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        ExerciseSessionRecordInternal exerciseSessionRecord = new ExerciseSessionRecordInternal();
         UUID uuid = getCursorUUID(cursor, UUID_COLUMN_NAME);
         exerciseSessionRecord.setNotes(getCursorString(cursor, NOTES_COLUMN_NAME));
         exerciseSessionRecord.setExerciseType(getCursorInt(cursor, EXERCISE_TYPE_COLUMN_NAME));
@@ -148,6 +148,7 @@ public final class ExerciseSessionRecordHelper
         if (!segmentsSet.isEmpty()) {
             exerciseSessionRecord.setExerciseSegments(segmentsSet.stream().toList());
         }
+        return exerciseSessionRecord;
     }
 
     @Override

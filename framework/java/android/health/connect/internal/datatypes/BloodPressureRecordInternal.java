@@ -35,6 +35,18 @@ public final class BloodPressureRecordInternal extends InstantRecordInternal<Blo
     private double mDiastolic;
     private int mBodyPosition;
 
+    public BloodPressureRecordInternal() {
+        super();
+    }
+
+    public BloodPressureRecordInternal(Parcel parcel) {
+        super(parcel);
+        mMeasurementLocation = parcel.readInt();
+        mSystolic = parcel.readDouble();
+        mDiastolic = parcel.readDouble();
+        mBodyPosition = parcel.readInt();
+    }
+
     @BloodPressureMeasurementLocation.BloodPressureMeasurementLocations
     public int getMeasurementLocation() {
         return mMeasurementLocation;
@@ -93,14 +105,6 @@ public final class BloodPressureRecordInternal extends InstantRecordInternal<Blo
                         getBodyPosition())
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mMeasurementLocation = parcel.readInt();
-        mSystolic = parcel.readDouble();
-        mDiastolic = parcel.readDouble();
-        mBodyPosition = parcel.readInt();
     }
 
     @Override

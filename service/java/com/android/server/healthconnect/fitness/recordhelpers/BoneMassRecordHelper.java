@@ -46,8 +46,8 @@ public final class BoneMassRecordHelper extends InstantRecordHelper<BoneMassReco
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, BoneMassRecordInternal boneMassRecord) {
-        boneMassRecord.setMass(getCursorDouble(cursor, MASS_COLUMN_NAME));
+    BoneMassRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new BoneMassRecordInternal().setMass(getCursorDouble(cursor, MASS_COLUMN_NAME));
     }
 
     @Override

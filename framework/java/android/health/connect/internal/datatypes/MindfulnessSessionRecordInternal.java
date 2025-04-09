@@ -35,8 +35,12 @@ public final class MindfulnessSessionRecordInternal
     @Nullable private String mTitle;
     @Nullable private String mNotes;
 
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
+    public MindfulnessSessionRecordInternal() {
+        super();
+    }
+
+    public MindfulnessSessionRecordInternal(Parcel parcel) {
+        super(parcel);
         mMindfulnessSessionType = parcel.readInt();
         mTitle = parcel.readString();
         mNotes = parcel.readString();

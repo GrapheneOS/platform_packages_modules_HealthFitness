@@ -69,8 +69,9 @@ public final class DistanceRecordHelper extends IntervalRecordHelper<DistanceRec
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, DistanceRecordInternal distanceRecord) {
-        distanceRecord.setDistance(getCursorDouble(cursor, DISTANCE_COLUMN_NAME));
+    DistanceRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new DistanceRecordInternal()
+                .setDistance(getCursorDouble(cursor, DISTANCE_COLUMN_NAME));
     }
 
     @Override

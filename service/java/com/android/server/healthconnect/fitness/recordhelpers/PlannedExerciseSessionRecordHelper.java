@@ -233,8 +233,9 @@ public final class PlannedExerciseSessionRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, PlannedExerciseSessionRecordInternal plannedExerciseSessionRecord) {
+    PlannedExerciseSessionRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        PlannedExerciseSessionRecordInternal plannedExerciseSessionRecord =
+                new PlannedExerciseSessionRecordInternal(extractBlocks(cursor));
         plannedExerciseSessionRecord.setNotes(getCursorString(cursor, NOTES_COLUMN_NAME));
         plannedExerciseSessionRecord.setExerciseType(
                 getCursorInt(cursor, EXERCISE_TYPE_COLUMN_NAME));
@@ -245,8 +246,7 @@ public final class PlannedExerciseSessionRecordHelper
             plannedExerciseSessionRecord.setCompletedExerciseSessionId(
                     getCursorUUID(cursor, COMPLETED_SESSION_ID_COLUMN_NAME));
         }
-
-        plannedExerciseSessionRecord.setExerciseBlocks(extractBlocks(cursor));
+        return plannedExerciseSessionRecord;
     }
 
     private List<PlannedExerciseBlockInternal> extractBlocks(Cursor cursor) {

@@ -183,8 +183,7 @@ public class NicotineIntakeRecordInternalTest {
         Parcel parcel = Parcel.obtain();
         internalRecord.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        NicotineIntakeRecordInternal decodedRecord = new NicotineIntakeRecordInternal();
-        decodedRecord.populateUsing(parcel);
+        NicotineIntakeRecordInternal decodedRecord = new NicotineIntakeRecordInternal(parcel);
         parcel.recycle();
 
         assertThat(decodedRecord.getRecordType()).isEqualTo(RECORD_TYPE_NICOTINE_INTAKE);
@@ -226,8 +225,7 @@ public class NicotineIntakeRecordInternalTest {
         Parcel parcel = Parcel.obtain();
         internalRecord.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        NicotineIntakeRecordInternal decodedRecord = new NicotineIntakeRecordInternal();
-        decodedRecord.populateUsing(parcel);
+        NicotineIntakeRecordInternal decodedRecord = new NicotineIntakeRecordInternal(parcel);
         parcel.recycle();
 
         assertThat(decodedRecord.getRecordType()).isEqualTo(RECORD_TYPE_NICOTINE_INTAKE);

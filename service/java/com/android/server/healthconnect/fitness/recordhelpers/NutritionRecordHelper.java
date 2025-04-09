@@ -428,7 +428,8 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, NutritionRecordInternal nutritionRecord) {
+    NutritionRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        NutritionRecordInternal nutritionRecord = new NutritionRecordInternal();
         nutritionRecord.setUnsaturatedFat(getCursorDouble(cursor, UNSATURATED_FAT_COLUMN_NAME));
         nutritionRecord.setPotassium(getCursorDouble(cursor, POTASSIUM_COLUMN_NAME));
         nutritionRecord.setThiamin(getCursorDouble(cursor, THIAMIN_COLUMN_NAME));
@@ -476,6 +477,7 @@ public final class NutritionRecordHelper extends IntervalRecordHelper<NutritionR
         nutritionRecord.setVitaminA(getCursorDouble(cursor, VITAMIN_A_COLUMN_NAME));
         nutritionRecord.setFolicAcid(getCursorDouble(cursor, FOLIC_ACID_COLUMN_NAME));
         nutritionRecord.setSugar(getCursorDouble(cursor, SUGAR_COLUMN_NAME));
+        return nutritionRecord;
     }
 
     @Override

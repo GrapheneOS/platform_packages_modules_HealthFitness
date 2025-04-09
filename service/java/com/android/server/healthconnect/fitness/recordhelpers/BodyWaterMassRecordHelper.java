@@ -56,10 +56,9 @@ public final class BodyWaterMassRecordHelper
     }
 
     @Override
-    protected void populateSpecificRecordValue(
-            Cursor cursor, BodyWaterMassRecordInternal recordInternal) {
-        recordInternal.setBodyWaterMass(
-                getCursorDouble(cursor, BODY_WATER_MASS_RECORD_COLUMN_NAME));
+    protected BodyWaterMassRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new BodyWaterMassRecordInternal()
+                .setBodyWaterMass(getCursorDouble(cursor, BODY_WATER_MASS_RECORD_COLUMN_NAME));
     }
 
     @Override

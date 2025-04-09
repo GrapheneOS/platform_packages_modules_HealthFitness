@@ -91,11 +91,10 @@ public class CyclingPedalingCadenceRecordHelper
 
     /** Populates the {@code record} with values specific to datatype */
     @Override
-    void populateSpecificValues(
-            Cursor seriesTableCursor, CyclingPedalingCadenceRecordInternal record) {
+    CyclingPedalingCadenceRecordInternal populateSpecificValues(Cursor seriesTableCursor) {
+        UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         HashSet<CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample>
                 cyclingPedalingCadenceRecordSampleSet = new HashSet<>();
-        UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         do {
             cyclingPedalingCadenceRecordSampleSet.add(
                     new CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample(
@@ -106,7 +105,7 @@ public class CyclingPedalingCadenceRecordHelper
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
-        record.setSamples(cyclingPedalingCadenceRecordSampleSet);
+        return new CyclingPedalingCadenceRecordInternal(cyclingPedalingCadenceRecordSampleSet);
     }
 
     @Override

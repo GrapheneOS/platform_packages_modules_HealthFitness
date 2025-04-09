@@ -42,13 +42,18 @@ import java.util.Set;
 public final class SkinTemperatureRecordInternal
         extends SeriesRecordInternal<SkinTemperatureRecord, SkinTemperatureRecord.Delta> {
 
-    @NonNull private Temperature mBaseline = Temperature.fromCelsius(DEFAULT_DOUBLE);
-    @NonNull private Set<SkinTemperatureDeltaSample> mDeltaSamples = new HashSet<>();
+    private Temperature mBaseline = Temperature.fromCelsius(DEFAULT_DOUBLE);
+    private Set<SkinTemperatureDeltaSample> mDeltaSamples;
 
     private int mMeasurementLocation;
 
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
+    public SkinTemperatureRecordInternal(Set<SkinTemperatureDeltaSample> deltaSamples) {
+        super();
+        this.mDeltaSamples = deltaSamples;
+    }
+
+    public SkinTemperatureRecordInternal(Parcel parcel) {
+        super(parcel);
         mMeasurementLocation = parcel.readInt();
         mBaseline = Temperature.fromCelsius(parcel.readDouble());
         int size = parcel.readInt();
@@ -102,7 +107,6 @@ public final class SkinTemperatureRecordInternal
         return this;
     }
 
-    @Nullable
     public Temperature getBaseline() {
         return mBaseline;
     }

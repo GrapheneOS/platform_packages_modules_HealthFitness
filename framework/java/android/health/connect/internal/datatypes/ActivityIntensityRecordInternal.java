@@ -36,8 +36,10 @@ public final class ActivityIntensityRecordInternal
 
     private int mActivityIntensityType;
 
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
+    public ActivityIntensityRecordInternal() {}
+
+    public ActivityIntensityRecordInternal(Parcel parcel) {
+        super(parcel);
         mActivityIntensityType = parcel.readInt();
     }
 

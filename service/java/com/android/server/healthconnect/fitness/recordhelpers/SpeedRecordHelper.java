@@ -90,7 +90,7 @@ public class SpeedRecordHelper
 
     /** Populates the {@code record} with values specific to datatype */
     @Override
-    void populateSpecificValues(Cursor seriesTableCursor, SpeedRecordInternal record) {
+    SpeedRecordInternal populateSpecificValues(Cursor seriesTableCursor) {
         HashSet<SpeedRecordInternal.SpeedRecordSample> speedRecordSampleSet = new HashSet<>();
         UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         do {
@@ -103,7 +103,7 @@ public class SpeedRecordHelper
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
-        record.setSamples(speedRecordSampleSet);
+        return new SpeedRecordInternal(speedRecordSampleSet);
     }
 
     @Override

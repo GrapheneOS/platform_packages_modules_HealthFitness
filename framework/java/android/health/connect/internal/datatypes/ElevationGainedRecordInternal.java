@@ -31,6 +31,15 @@ public final class ElevationGainedRecordInternal
         extends IntervalRecordInternal<ElevationGainedRecord> {
     private double mElevation;
 
+    public ElevationGainedRecordInternal() {
+        super();
+    }
+
+    public ElevationGainedRecordInternal(Parcel parcel) {
+        super(parcel);
+        mElevation = parcel.readDouble();
+    }
+
     public double getElevation() {
         return mElevation;
     }
@@ -53,11 +62,6 @@ public final class ElevationGainedRecordInternal
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mElevation = parcel.readDouble();
     }
 
     @Override

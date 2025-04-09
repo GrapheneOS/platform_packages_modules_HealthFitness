@@ -31,6 +31,15 @@ public final class SexualActivityRecordInternal
         extends InstantRecordInternal<SexualActivityRecord> {
     private int mProtectionUsed;
 
+    public SexualActivityRecordInternal() {
+        super();
+    }
+
+    public SexualActivityRecordInternal(Parcel parcel) {
+        super(parcel);
+        mProtectionUsed = parcel.readInt();
+    }
+
     @SexualActivityProtectionUsed.SexualActivityProtectionUsedTypes
     public int getProtectionUsed() {
         return mProtectionUsed;
@@ -49,11 +58,6 @@ public final class SexualActivityRecordInternal
         return new SexualActivityRecord.Builder(buildMetaData(), getTime(), getProtectionUsed())
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mProtectionUsed = parcel.readInt();
     }
 
     @Override

@@ -30,6 +30,15 @@ import android.os.Parcel;
 public final class DistanceRecordInternal extends IntervalRecordInternal<DistanceRecord> {
     private double mDistance;
 
+    public DistanceRecordInternal() {
+        super();
+    }
+
+    public DistanceRecordInternal(Parcel parcel) {
+        super(parcel);
+        mDistance = parcel.readDouble();
+    }
+
     public double getDistance() {
         return mDistance;
     }
@@ -52,11 +61,6 @@ public final class DistanceRecordInternal extends IntervalRecordInternal<Distanc
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mDistance = parcel.readDouble();
     }
 
     @Override
