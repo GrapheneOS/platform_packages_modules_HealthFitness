@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.backuprestore;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
@@ -61,7 +61,7 @@ public class BackupChangeTokenHelper {
     /**
      * @return the row Id for the backup_change_token_table.
      */
-    public static String getBackupChangeTokenRowId(
+    static String getBackupChangeTokenRowId(
             TransactionManager transactionManager,
             @RecordTypeIdentifier.RecordType int recordType,
             long dataTablePageToken,
@@ -78,7 +78,7 @@ public class BackupChangeTokenHelper {
     }
 
     /** Reads the database and get backup change token. */
-    public static BackupChangeToken getBackupChangeToken(
+    static BackupChangeToken getBackupChangeToken(
             TransactionManager transactionManager, String token) {
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(TABLE_NAME)
@@ -98,7 +98,7 @@ public class BackupChangeTokenHelper {
     }
 
     /** A class to represent the request corresponding to a backup change token. */
-    public static class BackupChangeToken {
+    static class BackupChangeToken {
         private final @RecordTypeIdentifier.RecordType int mRecordType;
         private final long mDataTablePageToken;
         private final @Nullable String mChangeLogsRequestToken;
@@ -109,7 +109,7 @@ public class BackupChangeTokenHelper {
          * @param changeLogsRequestToken row id in change logs request table to get token for change
          *     logs table
          */
-        public BackupChangeToken(
+        BackupChangeToken(
                 @RecordTypeIdentifier.RecordType int recordType,
                 long dataTablePageToken,
                 @Nullable String changeLogsRequestToken) {
@@ -123,7 +123,8 @@ public class BackupChangeTokenHelper {
          *
          * <p>Set to 0 before a complete full backup or for an incremental backup.
          */
-        public @RecordTypeIdentifier.RecordType int getRecordType() {
+        @RecordTypeIdentifier.RecordType
+        int getRecordType() {
             return mRecordType;
         }
 
@@ -133,7 +134,7 @@ public class BackupChangeTokenHelper {
          *
          * <p>If the data type name is 0, returns -1.
          */
-        public long getDataTablePageToken() {
+        long getDataTablePageToken() {
             return mDataTablePageToken;
         }
 
@@ -141,25 +142,22 @@ public class BackupChangeTokenHelper {
          * Returns the row id in the change logs request table to for retrieving the token in the
          * change log table.
          */
-        public @Nullable String getChangeLogsRequestToken() {
+        @Nullable
+        String getChangeLogsRequestToken() {
             return mChangeLogsRequestToken;
         }
-    }
-
-    /** Creates the backup token table. */
-    public static void applyBackupTokenUpgrade(SQLiteDatabase db) {
-        createTable(db, getCreateTableRequest());
     }
 
     /**
      * @return the table name.
      */
-    public static String getTableName() {
+    static String getTableName() {
         return TABLE_NAME;
     }
 
-    protected String getMainTableName() {
-        return TABLE_NAME;
+    /** Creates the backup token table. */
+    public static void applyBackupTokenUpgrade(SQLiteDatabase db) {
+        createTable(db, getCreateTableRequest());
     }
 
     private static CreateTableRequest getCreateTableRequest() {

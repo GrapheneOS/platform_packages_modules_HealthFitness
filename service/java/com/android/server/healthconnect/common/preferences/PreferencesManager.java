@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.utils;
+package com.android.server.healthconnect.common.preferences;
 
 import android.annotation.Nullable;
 import android.health.connect.Constants;
 import android.util.Log;
-
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 
 import java.time.Instant;
 

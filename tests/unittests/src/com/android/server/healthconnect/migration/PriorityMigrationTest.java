@@ -33,14 +33,13 @@ import android.health.connect.migration.PriorityMigrationPayload;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
-import com.android.server.healthconnect.storage.utils.PreferencesManager;
 
 import org.junit.Before;
 import org.junit.Test;

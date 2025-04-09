@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.preferences;
 
 import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NOT_NULL_UNIQUE;
@@ -25,6 +25,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Pair;
 
+import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
@@ -101,6 +102,7 @@ public class PreferenceHelper extends DatabaseHelper {
         return new CreateTableRequest(TABLE_NAME, getColumnInfo());
     }
 
+    /** Get the preference for the given key. */
     @Nullable
     public String getPreference(String key) {
         return getPreferences().get(key);
