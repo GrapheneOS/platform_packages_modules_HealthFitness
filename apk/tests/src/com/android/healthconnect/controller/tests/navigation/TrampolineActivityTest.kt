@@ -29,6 +29,8 @@ import android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_DATA
 import android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS
 import android.health.connect.HealthDataCategory
 import android.os.Build
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
@@ -37,6 +39,7 @@ import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -76,6 +79,7 @@ import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
+import com.android.healthfitness.flags.Flags
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -259,12 +263,24 @@ class TrampolineActivityTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_ONBOARDING)
     fun homeSettingsAction_onboardingNotDone_redirectsToOnboarding() {
         showOnboarding(context, true)
 
         launchActivityForResult<TrampolineActivity>(createStartIntent()).use {
             onIdle()
             onView(withId(R.id.onboarding)).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_ONBOARDING)
+    fun homeSettingsAction_onboardingNotDone_onboardingFlagOn_hidesOnboarding() {
+        showOnboarding(context, true)
+
+        launchActivityForResult<TrampolineActivity>(createStartIntent()).use {
+            onIdle()
+            onView(withId(R.id.onboarding)).check((doesNotExist()))
         }
     }
 
