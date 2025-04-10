@@ -5,7 +5,6 @@ import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInpu
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
-import com.android.healthconnect.controller.permissiontypes.api.ILoadPriorityListUseCase
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
