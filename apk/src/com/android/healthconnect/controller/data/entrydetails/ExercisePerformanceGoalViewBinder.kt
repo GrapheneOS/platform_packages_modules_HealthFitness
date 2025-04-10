@@ -11,14 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.entrydetails
+package com.android.healthconnect.controller.data.entrydetails
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
+import com.android.healthconnect.controller.data.entries.FormattedEntry.ExercisePerformanceGoalEntry
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
@@ -26,7 +26,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 
-class FormattedSectionContentViewBinder : SimpleViewBinder<FormattedSectionContent, View> {
+class ExercisePerformanceGoalViewBinder : SimpleViewBinder<ExercisePerformanceGoalEntry, View> {
     private lateinit var logger: HealthConnectLogger
 
     override fun newView(parent: ViewGroup): View {
@@ -38,21 +38,15 @@ class FormattedSectionContentViewBinder : SimpleViewBinder<FormattedSectionConte
             .inflate(R.layout.item_data_entry_content, parent, false)
     }
 
-    override fun bind(view: View, data: FormattedSectionContent, index: Int) {
+    override fun bind(view: View, data: ExercisePerformanceGoalEntry, index: Int) {
         val title = view.findViewById<TextView>(R.id.item_data_entry_content)
-
-        title.text =
-            if (data.bulleted) {
-                title.setPaddingRelative(
-                    view.context.resources.getDimension(R.dimen.spacing_small).toInt(),
-                    /* top= */ 0,
-                    /* end= */ 0,
-                    /* bottom= */ 0)
-                view.context.getString(R.string.bulleted_content, data.title)
-            } else {
-                data.title
-            }
-        title.contentDescription = data.title
-        logger.logImpression(EntryDetailsElement.FORMATTED_SECTION_CONTENT_VIEW)
+        title.setPaddingRelative(
+            view.context.resources.getDimension(R.dimen.spacing_small).toInt(),
+            /* top= */ 0,
+            /* end= */ 0,
+            /* bottom= */ 0)
+        title.text = view.context.getString(R.string.bulleted_content, data.title)
+        title.contentDescription = data.titleA11y
+        logger.logImpression(EntryDetailsElement.EXERCISE_PERFORMANCE_GOAL_ENTRY_VIEW)
     }
 }

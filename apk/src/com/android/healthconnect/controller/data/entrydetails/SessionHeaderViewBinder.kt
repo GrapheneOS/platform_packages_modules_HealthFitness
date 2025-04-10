@@ -16,14 +16,14 @@
  *
  */
 
-package com.android.healthconnect.controller.entrydetails
+package com.android.healthconnect.controller.data.entrydetails
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSessionDetail
+import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
@@ -31,7 +31,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 
-class SessionDetailViewBinder : SimpleViewBinder<FormattedSessionDetail, View> {
+class SessionHeaderViewBinder : SimpleViewBinder<SessionHeader, View> {
     private lateinit var logger: HealthConnectLogger
 
     override fun newView(parent: ViewGroup): View {
@@ -41,18 +41,12 @@ class SessionDetailViewBinder : SimpleViewBinder<FormattedSessionDetail, View> {
                 context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
         logger = hiltEntryPoint.logger()
         return LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_data_session_detail_entry, parent, false)
+            .inflate(R.layout.item_data_session_header, parent, false)
     }
 
-    override fun bind(view: View, data: FormattedSessionDetail, index: Int) {
+    override fun bind(view: View, data: SessionHeader, index: Int) {
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
-        val title = view.findViewById<TextView>(R.id.item_data_entry_title)
-
-        title.text = data.title
-        title.contentDescription = data.titleA11y
         header.text = data.header
-        header.contentDescription = data.headerA11y
-
-        logger.logImpression(EntryDetailsElement.SESSION_DETAIL_ENTRY_VIEW)
+        logger.logImpression(EntryDetailsElement.SESSION_DETAIL_HEADER_VIEW)
     }
 }

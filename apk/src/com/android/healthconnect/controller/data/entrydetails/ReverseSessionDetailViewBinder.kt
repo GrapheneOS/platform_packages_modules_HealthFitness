@@ -16,38 +16,43 @@
  *
  */
 
-package com.android.healthconnect.controller.entrydetails
+package com.android.healthconnect.controller.data.entrydetails
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionTitle
+import com.android.healthconnect.controller.data.entries.FormattedEntry.ReverseSessionDetail
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
+import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 
-class FormattedSectionTitleViewBinder : SimpleViewBinder<FormattedSectionTitle, View> {
+class ReverseSessionDetailViewBinder : SimpleViewBinder<ReverseSessionDetail, View> {
     private lateinit var logger: HealthConnectLogger
 
     override fun newView(parent: ViewGroup): View {
         val context = parent.context.applicationContext
         val hiltEntryPoint =
             EntryPointAccessors.fromApplication(
-                context.applicationContext,
-                HealthConnectLoggerEntryPoint::class.java,
-            )
+                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
         logger = hiltEntryPoint.logger()
         return LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_entry_details_section_title, parent, false)
+            .inflate(R.layout.reversed_item_data_session_detail_entry, parent, false)
     }
 
-    override fun bind(view: View, data: FormattedSectionTitle, index: Int) {
-        val title = view.findViewById<TextView>(android.R.id.title)
+    override fun bind(view: View, data: ReverseSessionDetail, index: Int) {
+        val header = view.findViewById<TextView>(R.id.item_data_entry_header)
+        val title = view.findViewById<TextView>(R.id.item_data_entry_title)
+
         title.text = data.title
-        logger.logImpression(EntryDetailsElement.FORMATTED_SECTION_TITLE_VIEW)
+        title.contentDescription = data.titleA11y
+        header.text = data.header
+        header.contentDescription = data.headerA11y
+
+        logger.logImpression(EntryDetailsElement.REVERSE_SESSION_DETAIL_ENTRY_VIEW)
     }
 }
