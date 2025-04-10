@@ -89,11 +89,11 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
     }
 
     /** Returns origin package name associated with this payload. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public String getOriginPackageName() {
-        // NullAway cannot tell this, but the non-nullity is maintained by setting this in the
-        // constructor.
+        // The fact that this is non-null is guaranteed because it is NonNull in one constructor
+        // and in the parcel constructor it is verified after the fact. However, this is not
+        // discoverable by NullAway using static analysis, so guarantee it with a requireNonNull.
         return Objects.requireNonNull(mRecordInternal.getPackageName());
     }
 

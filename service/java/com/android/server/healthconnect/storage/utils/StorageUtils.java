@@ -48,6 +48,7 @@ import android.health.connect.internal.datatypes.utils.RecordTypeRecordCategoryM
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
 import java.nio.ByteBuffer;
 import java.time.ZoneOffset;

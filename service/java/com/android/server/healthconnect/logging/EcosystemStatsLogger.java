@@ -19,7 +19,7 @@ package com.android.server.healthconnect.logging;
 import android.health.HealthFitnessStatsLog;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
-import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
 import java.util.Map;
 import java.util.Set;

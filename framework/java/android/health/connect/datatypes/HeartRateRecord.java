@@ -125,18 +125,8 @@ public final class HeartRateRecord extends IntervalRecord {
      */
     @Override
     public boolean equals(@Nullable Object object) {
-        if (super.equals(object) && object instanceof HeartRateRecord) {
-            HeartRateRecord other = (HeartRateRecord) object;
-            if (getSamples().size() != other.getSamples().size()) return false;
-            for (int idx = 0; idx < getSamples().size(); idx++) {
-                if (getSamples().get(idx).getBeatsPerMinute()
-                                != other.getSamples().get(idx).getBeatsPerMinute()
-                        || getSamples().get(idx).getTime().toEpochMilli()
-                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
-                    return false;
-                }
-            }
-            return true;
+        if (super.equals(object) && object instanceof HeartRateRecord other) {
+            return getSamples().equals(other.getSamples());
         }
         return false;
     }
@@ -203,8 +193,7 @@ public final class HeartRateRecord extends IntervalRecord {
          */
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object) && object instanceof HeartRateSample) {
-                HeartRateSample other = (HeartRateSample) object;
+            if (object instanceof HeartRateSample other) {
                 return getBeatsPerMinute() == other.getBeatsPerMinute()
                         && getTime().toEpochMilli() == other.getTime().toEpochMilli();
             }
@@ -218,7 +207,7 @@ public final class HeartRateRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), getBeatsPerMinute(), getTime());
+            return Objects.hash(getBeatsPerMinute(), getTime());
         }
     }
 

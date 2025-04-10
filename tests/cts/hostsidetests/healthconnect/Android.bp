@@ -61,7 +61,7 @@ java_test_host {
         "cts-statsd-atom-host-test-utils",
         "androidx.annotation_annotation",
         "flag-junit-host",
-        "healthfitness-exported-aconfig-flags-lib-host",
+        "healthfitness-aconfig-flags-lib-host",
         "platformprotos",
     ],
     java_resource_dirs: ["host/res"],

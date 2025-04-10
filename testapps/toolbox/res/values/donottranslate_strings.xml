@@ -183,4 +183,9 @@
   <string name="revoke_permissions">Revoke permissions</string>
   <!--endregion-->
 
+  <!-- region Read data screens -->
+  <string name="loading_data">Loading data…</string>
+  <string name="error">Error</string>
+  <!--endregion-->
+
 </resources>

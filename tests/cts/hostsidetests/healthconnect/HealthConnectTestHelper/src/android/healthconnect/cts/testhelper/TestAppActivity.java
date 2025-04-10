@@ -36,9 +36,8 @@ public class TestAppActivity extends Activity {
         Log.d(TAG, TAG + " onCreate(): " + intent + " - extra: " + intent.getExtras());
         Intent returnIntent =
                 TestAppHelper.handleRequest(getApplicationContext(), intent.getExtras());
-        sendBroadcast(returnIntent);
-        // We call finish here to tell the system we've successfully handled the
-        // intent that started this activity.
+        // Return the result to the test.
+        setResult(RESULT_OK, returnIntent);
         finish();
     }
 }
