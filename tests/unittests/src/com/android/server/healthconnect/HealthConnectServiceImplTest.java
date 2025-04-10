@@ -124,7 +124,6 @@ import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
-import android.health.connect.aidl.IMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
@@ -326,7 +325,6 @@ public class HealthConnectServiceImplTest {
     @Mock IMedicalDataSourcesResponseCallback mMedicalDataSourcesResponseCallback;
     @Mock IReadMedicalResourcesResponseCallback mReadMedicalResourcesResponseCallback;
     @Mock IEmptyResponseCallback mEmptyResponseCallback;
-    @Mock IMedicalResourcesResponseCallback mMedicalResourcesResponseCallback;
     @Mock IMedicalResourceListParcelResponseCallback mMedicalResourceListParcelResponseCallback;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
@@ -1292,54 +1290,34 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @DisableFlags({FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE})
-    public void testUpsertMedicalResources_weakReferenceFlagOff_succeeds() throws RemoteException {
+    public void testUpsertMedicalResourcesFromRequestsParcel_weakReferenceFlagOff_succeeds()
+            throws RemoteException {
         setUpPhrMocksWithIrrelevantResponses();
         setDataManagementPermission(PERMISSION_DENIED);
         setDataReadWritePermissionGranted(WRITE_MEDICAL_DATA);
 
-        mHealthConnectService.upsertMedicalResources(
+        mHealthConnectService.upsertMedicalResourcesFromRequestsParcel(
                 mAttributionSource,
-                List.of(getUpsertMedicalResourceRequest()),
-                mMedicalResourcesResponseCallback);
+                new UpsertMedicalResourceRequestsParcel(List.of(getUpsertMedicalResourceRequest())),
+                mMedicalResourceListParcelResponseCallback);
 
-        verify(mMedicalResourcesResponseCallback, timeout(5000)).onResult(any());
+        verify(mMedicalResourceListParcelResponseCallback, timeout(5000)).onResult(any());
     }
 
     @Test
     @EnableFlags({FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE})
-    public void testUpsertMedicalResources_weakReferenceFlagOn_succeeds() throws RemoteException {
+    public void testUpsertMedicalResourcesFromRequestsParcel_weakReferenceFlagOn_succeeds()
+            throws RemoteException {
         setUpPhrMocksWithIrrelevantResponses();
         setDataManagementPermission(PERMISSION_DENIED);
         setDataReadWritePermissionGranted(WRITE_MEDICAL_DATA);
 
-        mHealthConnectService.upsertMedicalResources(
+        mHealthConnectService.upsertMedicalResourcesFromRequestsParcel(
                 mAttributionSource,
-                List.of(getUpsertMedicalResourceRequest()),
-                mMedicalResourcesResponseCallback);
+                new UpsertMedicalResourceRequestsParcel(List.of(getUpsertMedicalResourceRequest())),
+                mMedicalResourceListParcelResponseCallback);
 
-        verify(mMedicalResourcesResponseCallback, timeout(5000)).onResult(any());
-    }
-
-    @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testUpsertMedicalResources_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-
-        mHealthConnectService.upsertMedicalResources(
-                mAttributionSource,
-                List.of(
-                        new UpsertMedicalResourceRequest.Builder(
-                                        DATA_SOURCE_ID, FHIR_VERSION_R4, FHIR_DATA_IMMUNIZATION)
-                                .build()),
-                mMedicalResourcesResponseCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
+        verify(mMedicalResourceListParcelResponseCallback, timeout(5000)).onResult(any());
     }
 
     @Test
@@ -1365,35 +1343,6 @@ public class HealthConnectServiceImplTest {
         awaitAllExecutorsIdle();
         assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
         assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testUpsertMedicalResources_telemetryFlagOn_expectCorrectLogs()
-            throws RemoteException {
-        setUpSuccessfulMocksForPhrTelemetry();
-
-        mHealthConnectService.upsertMedicalResources(
-                mAttributionSource,
-                List.of(
-                        new UpsertMedicalResourceRequest.Builder(
-                                        DATA_SOURCE_ID, FHIR_VERSION_R4, FHIR_DATA_IMMUNIZATION)
-                                .build()),
-                mMedicalResourcesResponseCallback);
-
-        // wait for callback before asserting logs
-        verify(mMedicalResourcesResponseCallback, timeout(TIMEOUT_MILLIS)).onResult(any());
-        assertPhrApiWestWorldWrites(
-                () -> eq(UPSERT_MEDICAL_RESOURCES),
-                () -> eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
-                1);
-        assertPhrApiPrivateWestWorldWrites(
-                () -> eq(UPSERT_MEDICAL_RESOURCES),
-                () -> eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
-                1);
     }
 
     @Test
@@ -1992,25 +1941,6 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testUpsertMedicalResources_hasDataManagementPermission_throws()
-            throws RemoteException {
-        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
-
-        mHealthConnectService.upsertMedicalResources(
-                mAttributionSource,
-                List.of(
-                        new UpsertMedicalResourceRequest.Builder(
-                                        DATA_SOURCE_ID, FHIR_VERSION_R4, FHIR_DATA_IMMUNIZATION)
-                                .build()),
-                mMedicalResourcesResponseCallback);
-
-        verify(mMedicalResourcesResponseCallback, timeout(5000).times(1))
-                .onError(mErrorCaptor.capture());
-        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
-                .isEqualTo(HealthConnectException.ERROR_SECURITY);
-    }
-
-    @Test
     public void testUpsertMedicalResourcesFromRequestsParcel_hasDataManagementPermission_throws()
             throws RemoteException {
         setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
@@ -2028,23 +1958,6 @@ public class HealthConnectServiceImplTest {
 
         verify(mMedicalResourceListParcelResponseCallback, timeout(5000).times(1))
                 .onError(mErrorCaptor.capture());
-        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
-                .isEqualTo(HealthConnectException.ERROR_SECURITY);
-    }
-
-    @Test
-    public void testUpsertMedicalResources_noWriteMedicalDataPermission_throws() throws Exception {
-        IMedicalResourcesResponseCallback callback = mock(IMedicalResourcesResponseCallback.class);
-
-        mHealthConnectService.upsertMedicalResources(
-                mAttributionSource,
-                List.of(
-                        new UpsertMedicalResourceRequest.Builder(
-                                        DATA_SOURCE_ID, FHIR_VERSION_R4, FHIR_DATA_IMMUNIZATION)
-                                .build()),
-                callback);
-
-        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(HealthConnectException.ERROR_SECURITY);
     }

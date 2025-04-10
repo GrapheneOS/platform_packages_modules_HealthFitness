@@ -52,7 +52,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_V
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_UPSERT_FIX_USE_SHARED_MEMORY;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -286,9 +285,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_UPSERT_FIX_USE_SHARED_MEMORY
-    })
     public void testUpsertMedicalResources_insert2mbOfDataTestingSharedMemory_succeeds()
             throws InterruptedException {
         TestUtils.setLowerRateLimitsForTesting(false);
