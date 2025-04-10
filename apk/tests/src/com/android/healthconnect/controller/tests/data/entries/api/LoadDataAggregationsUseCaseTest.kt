@@ -61,31 +61,24 @@ import org.mockito.invocation.InvocationOnMock
 @HiltAndroidTest
 class LoadDataAggregationsUseCaseTest {
 
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
+    @get:Rule val hiltRule = HiltAndroidRule(this)
 
     private lateinit var context: Context
     private val healthConnectManager: HealthConnectManager =
         Mockito.mock(HealthConnectManager::class.java)
     private lateinit var loadDataAggregationsUseCase: LoadDataAggregationsUseCase
 
-    @Inject
-    lateinit var loadEntriesHelper: LoadEntriesHelper
+    @Inject lateinit var loadEntriesHelper: LoadEntriesHelper
 
-    @Inject
-    lateinit var stepsFormatter: StepsFormatter
+    @Inject lateinit var stepsFormatter: StepsFormatter
 
-    @Inject
-    lateinit var totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter
+    @Inject lateinit var totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter
 
-    @Inject
-    lateinit var distanceFormatter: DistanceFormatter
+    @Inject lateinit var distanceFormatter: DistanceFormatter
 
-    @Inject
-    lateinit var sleepSessionFormatter: SleepSessionFormatter
+    @Inject lateinit var sleepSessionFormatter: SleepSessionFormatter
 
-    @Inject
-    lateinit var appInfoReader: AppInfoReader
+    @Inject lateinit var appInfoReader: AppInfoReader
 
     @Before
     fun setup() {
@@ -102,7 +95,7 @@ class LoadDataAggregationsUseCaseTest {
                 sleepSessionFormatter,
                 healthConnectManager,
                 appInfoReader,
-                Dispatchers.Main
+                Dispatchers.Main,
             )
     }
 
@@ -112,7 +105,9 @@ class LoadDataAggregationsUseCaseTest {
             Mockito.doAnswer(prepareStepsAggregationAnswer())
                 .`when`(healthConnectManager)
                 .aggregate<Long>(
-                    ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()
+                    ArgumentMatchers.any(),
+                    ArgumentMatchers.any(),
+                    ArgumentMatchers.any(),
                 )
 
             val input =
@@ -121,7 +116,7 @@ class LoadDataAggregationsUseCaseTest {
                     TEST_APP_PACKAGE_NAME,
                     Instant.now(),
                     DateNavigationPeriod.PERIOD_DAY,
-                    true
+                    true,
                 )
 
             val result = loadDataAggregationsUseCase.invoke(input)
@@ -137,7 +132,9 @@ class LoadDataAggregationsUseCaseTest {
             Mockito.doAnswer(prepareDistanceAggregationAnswer())
                 .`when`(healthConnectManager)
                 .aggregate<Length>(
-                    ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()
+                    ArgumentMatchers.any(),
+                    ArgumentMatchers.any(),
+                    ArgumentMatchers.any(),
                 )
 
             val input =
@@ -146,11 +143,12 @@ class LoadDataAggregationsUseCaseTest {
                     TEST_APP_PACKAGE_NAME,
                     Instant.now(),
                     DateNavigationPeriod.PERIOD_DAY,
-                    true
+                    true,
                 )
 
             val result = loadDataAggregationsUseCase.invoke(input)
-            val expected = FormattedEntry.FormattedAggregation("1 km", "1 kilometer", TEST_APP_NAME)
+            val expected =
+                FormattedEntry.FormattedAggregation("0.621 miles", "0.621 miles", TEST_APP_NAME)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data).isEqualTo(expected)
         }
@@ -161,7 +159,9 @@ class LoadDataAggregationsUseCaseTest {
             Mockito.doAnswer(prepareCaloriesAggregationAnswer())
                 .`when`(healthConnectManager)
                 .aggregate<Energy>(
-                    ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()
+                    ArgumentMatchers.any(),
+                    ArgumentMatchers.any(),
+                    ArgumentMatchers.any(),
                 )
 
             val input =
@@ -170,7 +170,7 @@ class LoadDataAggregationsUseCaseTest {
                     TEST_APP_PACKAGE_NAME,
                     Instant.now(),
                     DateNavigationPeriod.PERIOD_DAY,
-                    true
+                    true,
                 )
 
             val result = loadDataAggregationsUseCase.invoke(input)
@@ -186,7 +186,9 @@ class LoadDataAggregationsUseCaseTest {
             Mockito.doAnswer(prepareSleepAggregationAnswer())
                 .`when`(healthConnectManager)
                 .aggregate<Long>(
-                    ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()
+                    ArgumentMatchers.any(),
+                    ArgumentMatchers.any(),
+                    ArgumentMatchers.any(),
                 )
 
             val input =
@@ -195,7 +197,7 @@ class LoadDataAggregationsUseCaseTest {
                     TEST_APP_PACKAGE_NAME,
                     Instant.now(),
                     Instant.now(),
-                    true
+                    true,
                 )
 
             val result = loadDataAggregationsUseCase.invoke(input)
@@ -206,7 +208,7 @@ class LoadDataAggregationsUseCaseTest {
         }
 
     private fun prepareStepsAggregationAnswer():
-                (InvocationOnMock) -> AggregateRecordsResponse<Long> {
+        (InvocationOnMock) -> AggregateRecordsResponse<Long> {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Long>, *>
             receiver.onResult(getStepsAggregationResponse())
@@ -216,7 +218,7 @@ class LoadDataAggregationsUseCaseTest {
     }
 
     private fun prepareDistanceAggregationAnswer():
-                (InvocationOnMock) -> AggregateRecordsResponse<Length> {
+        (InvocationOnMock) -> AggregateRecordsResponse<Length> {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Length>, *>
             receiver.onResult(getDistanceAggregationResponse())
@@ -226,7 +228,7 @@ class LoadDataAggregationsUseCaseTest {
     }
 
     private fun prepareCaloriesAggregationAnswer():
-                (InvocationOnMock) -> AggregateRecordsResponse<Energy> {
+        (InvocationOnMock) -> AggregateRecordsResponse<Energy> {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Energy>, *>
             receiver.onResult(getCaloriesAggregationResponse())
@@ -236,7 +238,7 @@ class LoadDataAggregationsUseCaseTest {
     }
 
     private fun prepareSleepAggregationAnswer():
-                (InvocationOnMock) -> AggregateRecordsResponse<Long> {
+        (InvocationOnMock) -> AggregateRecordsResponse<Long> {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Long>, *>
             receiver.onResult(getSleepAggregationResponse())
@@ -246,36 +248,42 @@ class LoadDataAggregationsUseCaseTest {
     }
 
     private fun getStepsAggregationResponse(): AggregateRecordsResponse<Long> {
-        val aggregationResult = AggregateResult<Long>(
-            100, null,
-            AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME))
-        )
+        val aggregationResult =
+            AggregateResult<Long>(
+                100,
+                null,
+                AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
+            )
         return AggregateRecordsResponse<Long>(
             mapOf(
                 AggregationType.AggregationTypeIdentifier.STEPS_RECORD_COUNT_TOTAL to
-                        aggregationResult
+                    aggregationResult
             )
         )
     }
 
     private fun getDistanceAggregationResponse(): AggregateRecordsResponse<Length> {
-        val aggregationResult = AggregateResult(
-            Length.fromMeters(1000.0),
-            null, AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME))
-        )
+        val aggregationResult =
+            AggregateResult(
+                Length.fromMeters(1000.0),
+                null,
+                AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
+            )
         return AggregateRecordsResponse<Length>(
             mapOf(
                 AggregationType.AggregationTypeIdentifier.DISTANCE_RECORD_DISTANCE_TOTAL to
-                        aggregationResult
+                    aggregationResult
             )
         )
     }
 
     private fun getCaloriesAggregationResponse(): AggregateRecordsResponse<Energy> {
-        val aggregationResult = AggregateResult(
-            Energy.fromCalories(1500000.0), null,
-            AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME))
-        )
+        val aggregationResult =
+            AggregateResult(
+                Energy.fromCalories(1500000.0),
+                null,
+                AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
+            )
         return AggregateRecordsResponse<Energy>(
             mapOf(
                 AggregationType.AggregationTypeIdentifier
@@ -287,13 +295,14 @@ class LoadDataAggregationsUseCaseTest {
     private fun getSleepAggregationResponse(): AggregateRecordsResponse<Long> {
         val aggregationResult =
             AggregateResult(
-                Duration.ofHours(11).plus(Duration.ofMinutes(5)).toMillis(), null,
-                AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME))
+                Duration.ofHours(11).plus(Duration.ofMinutes(5)).toMillis(),
+                null,
+                AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
             )
         return AggregateRecordsResponse<Long>(
             mapOf(
                 AggregationType.AggregationTypeIdentifier.SLEEP_SESSION_DURATION_TOTAL to
-                        aggregationResult
+                    aggregationResult
             )
         )
     }
