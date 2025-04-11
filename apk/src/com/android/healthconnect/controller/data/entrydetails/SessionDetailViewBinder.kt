@@ -16,14 +16,14 @@
  *
  */
 
-package com.android.healthconnect.controller.entrydetails
+package com.android.healthconnect.controller.data.entrydetails
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.entries.FormattedEntry.ReverseSessionDetail
+import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
@@ -31,7 +31,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 
-class ReverseSessionDetailViewBinder : SimpleViewBinder<ReverseSessionDetail, View> {
+class SessionDetailViewBinder : SimpleViewBinder<FormattedSessionDetail, View> {
     private lateinit var logger: HealthConnectLogger
 
     override fun newView(parent: ViewGroup): View {
@@ -41,10 +41,10 @@ class ReverseSessionDetailViewBinder : SimpleViewBinder<ReverseSessionDetail, Vi
                 context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
         logger = hiltEntryPoint.logger()
         return LayoutInflater.from(parent.context)
-            .inflate(R.layout.reversed_item_data_session_detail_entry, parent, false)
+            .inflate(R.layout.item_data_session_detail_entry, parent, false)
     }
 
-    override fun bind(view: View, data: ReverseSessionDetail, index: Int) {
+    override fun bind(view: View, data: FormattedSessionDetail, index: Int) {
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)
 
@@ -53,6 +53,6 @@ class ReverseSessionDetailViewBinder : SimpleViewBinder<ReverseSessionDetail, Vi
         header.text = data.header
         header.contentDescription = data.headerA11y
 
-        logger.logImpression(EntryDetailsElement.REVERSE_SESSION_DETAIL_ENTRY_VIEW)
+        logger.logImpression(EntryDetailsElement.SESSION_DETAIL_ENTRY_VIEW)
     }
 }

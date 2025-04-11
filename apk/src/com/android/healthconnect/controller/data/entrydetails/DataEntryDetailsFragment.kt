@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.entrydetails
+package com.android.healthconnect.controller.data.entrydetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -46,10 +46,10 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.SleepSes
 import com.android.healthconnect.controller.data.entries.PlannedExerciseSessionItemViewBinder
 import com.android.healthconnect.controller.data.entries.SeriesDataItemViewBinder
 import com.android.healthconnect.controller.data.entries.SleepSessionItemViewBinder
-import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState
-import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.Loading
-import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.LoadingFailed
-import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.WithData
+import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState
+import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.Loading
+import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.LoadingFailed
+import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.WithData
 import com.android.healthconnect.controller.navigation.PERMISSION_TYPE_KEY
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
