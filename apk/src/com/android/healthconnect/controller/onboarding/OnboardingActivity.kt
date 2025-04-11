@@ -36,6 +36,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.OnboardingElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled
+import com.android.healthfitness.flags.Flags.onboarding
 import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,7 +62,8 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
             val sharedPreference =
                 activity.getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
             val previouslyOpened = sharedPreference.getBoolean(ONBOARDING_SHOWN_PREF_KEY, false)
-            return !previouslyOpened
+            // Remove onboarding screen if new feature available
+            return !onboarding() && !previouslyOpened
         }
 
         fun createIntent(context: Context, targetIntent: Intent? = null): Intent {
