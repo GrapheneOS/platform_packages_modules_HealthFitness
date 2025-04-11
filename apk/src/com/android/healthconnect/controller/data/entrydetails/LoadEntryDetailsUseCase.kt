@@ -19,8 +19,8 @@ import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.data.entries.FormattedEntry
-import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryDetailsFormatter
-import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
+import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryDetailsFormatter
+import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.service.IoDispatcher
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper

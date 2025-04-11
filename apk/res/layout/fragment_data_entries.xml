@@ -19,7 +19,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.android.healthconnect.controller.dataentries.DateNavigationView
+    <com.android.healthconnect.controller.data.DateNavigationView
         android:id="@+id/date_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -32,11 +32,11 @@ import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesUseC
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataUseCase
-import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
-import com.android.healthconnect.controller.dataentries.formatters.SleepSessionFormatter
-import com.android.healthconnect.controller.dataentries.formatters.StepsFormatter
-import com.android.healthconnect.controller.dataentries.formatters.TotalCaloriesBurnedFormatter
-import com.android.healthconnect.controller.dataentries.formatters.medical.MedicalEntryFormatter
+import com.android.healthconnect.controller.data.formatters.DistanceFormatter
+import com.android.healthconnect.controller.data.formatters.SleepSessionFormatter
+import com.android.healthconnect.controller.data.formatters.StepsFormatter
+import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
+import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
 import com.android.healthconnect.controller.datasources.api.ILoadLastDateWithPriorityDataUseCase
 import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriorityListUseCase

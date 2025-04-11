@@ -25,9 +25,9 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesUseCase
-import com.android.healthconnect.controller.dataentries.formatters.MenstruationPeriodFormatter
-import com.android.healthconnect.controller.dataentries.formatters.medical.MedicalEntryFormatter
-import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
+import com.android.healthconnect.controller.data.formatters.MenstruationPeriodFormatter
+import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
+import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
