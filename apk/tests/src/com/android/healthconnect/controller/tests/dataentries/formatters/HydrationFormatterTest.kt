@@ -20,10 +20,10 @@ import android.health.connect.datatypes.HydrationRecord
 import android.health.connect.datatypes.units.Volume
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.HydrationFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -86,7 +86,11 @@ class HydrationFormatterTest {
 
     private fun getRecord(liters: Double): HydrationRecord {
         return HydrationRecord.Builder(
-                getMetaData(), NOW, NOW.plusSeconds(2), Volume.fromLiters(liters))
+                getMetaData(),
+                NOW,
+                NOW.plusSeconds(2),
+                Volume.fromLiters(liters),
+            )
             .build()
     }
 }

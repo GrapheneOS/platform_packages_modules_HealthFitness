@@ -18,7 +18,7 @@ import android.health.connect.datatypes.WheelchairPushesRecord
 import android.icu.text.MessageFormat.*
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -30,14 +30,14 @@ constructor(@ApplicationContext private val context: Context) :
 
     override suspend fun formatValue(
         record: WheelchairPushesRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return format(context.getString(R.string.wheelchair_pushes), mapOf("count" to record.count))
     }
 
     override suspend fun formatA11yValue(
         record: WheelchairPushesRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatValue(record, unitPreferences)
     }

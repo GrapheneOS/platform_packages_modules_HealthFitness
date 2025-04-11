@@ -29,10 +29,10 @@ import android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusSensati
 import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.CervicalMucusFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -83,12 +83,14 @@ class CervicalMucusFormatterTest {
 
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("Creamy")
     }
+
     @Test
     fun formatValue_watery_showsAppearance() = runBlocking {
         val record = getRecord(appearance = APPEARANCE_WATERY)
 
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("Watery")
     }
+
     @Test
     fun formatValue_Sticky_showsAppearance() = runBlocking {
         val record = getRecord(appearance = APPEARANCE_EGG_WHITE)
@@ -105,7 +107,7 @@ class CervicalMucusFormatterTest {
 
     private fun getRecord(
         @CervicalMucusSensations sensation: Int = SENSATION_UNKNOWN,
-        @CervicalMucusAppearances appearance: Int = APPEARANCE_UNKNOWN
+        @CervicalMucusAppearances appearance: Int = APPEARANCE_UNKNOWN,
     ): CervicalMucusRecord {
         return CervicalMucusRecord.Builder(getMetaData(), NOW, sensation, appearance).build()
     }

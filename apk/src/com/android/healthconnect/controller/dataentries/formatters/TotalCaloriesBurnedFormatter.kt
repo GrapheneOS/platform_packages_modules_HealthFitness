@@ -22,7 +22,7 @@ import com.android.healthconnect.controller.dataentries.formatters.EnergyFormatt
 import com.android.healthconnect.controller.dataentries.formatters.EnergyFormatter.formatEnergyValue
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.UnitFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,14 +34,14 @@ constructor(@ApplicationContext private val context: Context) :
     EntryFormatter<TotalCaloriesBurnedRecord>(context), UnitFormatter<Energy> {
     override suspend fun formatValue(
         record: TotalCaloriesBurnedRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatEnergyValue(context, record.energy, unitPreferences)
     }
 
     override suspend fun formatA11yValue(
         record: TotalCaloriesBurnedRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatEnergyA11yValue(context, record.energy, unitPreferences)
     }

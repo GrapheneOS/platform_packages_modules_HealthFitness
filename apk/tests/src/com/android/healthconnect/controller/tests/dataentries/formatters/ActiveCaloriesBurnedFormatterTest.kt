@@ -19,11 +19,11 @@ import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import android.health.connect.datatypes.units.Energy
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.ActiveCaloriesBurnedFormatter
-import com.android.healthconnect.controller.dataentries.units.EnergyUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.EnergyUnit
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -84,7 +84,11 @@ class ActiveCaloriesBurnedFormatterTest {
 
     private fun getActiveCaloriesBurnedRecord(calories: Double): ActiveCaloriesBurnedRecord {
         return ActiveCaloriesBurnedRecord.Builder(
-                getMetaData(), NOW, NOW.plusSeconds(1), Energy.fromCalories(calories))
+                getMetaData(),
+                NOW,
+                NOW.plusSeconds(1),
+                Energy.fromCalories(calories),
+            )
             .build()
     }
 }

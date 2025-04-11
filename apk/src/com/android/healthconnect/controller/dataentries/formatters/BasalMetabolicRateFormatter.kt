@@ -21,8 +21,8 @@ import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.PowerConverter.convertCaloriesFromWatts
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.PowerConverter.convertCaloriesFromWatts
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -36,14 +36,14 @@ constructor(@ApplicationContext private val context: Context) :
 
     override suspend fun formatA11yValue(
         record: BasalMetabolicRateRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return format(R.string.calories_long, record)
     }
 
     override suspend fun formatValue(
         record: BasalMetabolicRateRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return format(R.string.calories, record)
     }

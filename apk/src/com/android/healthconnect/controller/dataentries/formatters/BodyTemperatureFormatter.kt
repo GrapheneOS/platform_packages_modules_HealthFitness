@@ -18,7 +18,7 @@ package com.android.healthconnect.controller.dataentries.formatters
 import android.content.Context
 import android.health.connect.datatypes.BodyTemperatureRecord
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,17 +32,25 @@ constructor(@ApplicationContext private val context: Context) :
 
     override suspend fun formatValue(
         record: BodyTemperatureRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return TemperatureFormatter.formatValue(
-            context, record.temperature, record.measurementLocation, unitPreferences)
+            context,
+            record.temperature,
+            record.measurementLocation,
+            unitPreferences,
+        )
     }
 
     override suspend fun formatA11yValue(
         record: BodyTemperatureRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return TemperatureFormatter.formatA11tValue(
-            context, record.temperature, record.measurementLocation, unitPreferences)
+            context,
+            record.temperature,
+            record.measurementLocation,
+            unitPreferences,
+        )
     }
 }

@@ -24,7 +24,7 @@ import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -36,14 +36,14 @@ constructor(@ApplicationContext private val context: Context) :
 
     override suspend fun formatValue(
         record: HeartRateVariabilityRmssdRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatHRV(R.string.milliseconds, record.heartRateVariabilityMillis)
     }
 
     override suspend fun formatA11yValue(
         record: HeartRateVariabilityRmssdRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatHRV(R.string.milliseconds_long, record.heartRateVariabilityMillis)
     }

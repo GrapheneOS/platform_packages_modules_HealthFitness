@@ -32,7 +32,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationLong
 import com.android.healthconnect.controller.dataentries.formatters.DurationFormatter.formatDurationShort
 import com.android.healthconnect.controller.dataentries.formatters.shared.BaseFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration
 import javax.inject.Inject

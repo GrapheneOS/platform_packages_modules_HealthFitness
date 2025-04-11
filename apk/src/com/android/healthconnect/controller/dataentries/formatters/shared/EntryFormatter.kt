@@ -19,7 +19,7 @@ import android.content.Context
 import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 
 /** Abstract formatter for Records to Formatted Entries. */
 abstract class EntryFormatter<T : Record>(context: Context) : BaseFormatter<T>(context) {

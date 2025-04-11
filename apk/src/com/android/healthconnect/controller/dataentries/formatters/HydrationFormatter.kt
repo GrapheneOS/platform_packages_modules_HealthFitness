@@ -22,7 +22,7 @@ import android.icu.text.MessageFormat.*
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -32,14 +32,14 @@ class HydrationFormatter @Inject constructor(@ApplicationContext private val con
 
     override suspend fun formatValue(
         record: HydrationRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatVolume(R.string.liter, record.volume)
     }
 
     override suspend fun formatA11yValue(
         record: HydrationRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatVolume(R.string.liter_long, record.volume)
     }

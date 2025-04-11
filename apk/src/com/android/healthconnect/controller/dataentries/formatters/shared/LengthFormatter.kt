@@ -23,9 +23,9 @@ import android.health.connect.datatypes.units.Length
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit
-import com.android.healthconnect.controller.dataentries.units.LengthConverter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.DistanceUnit
+import com.android.healthconnect.controller.units.LengthConverter
+import com.android.healthconnect.controller.units.UnitPreferences
 
 object LengthFormatter {
 
@@ -44,7 +44,7 @@ object LengthFormatter {
     fun formatA11yValue(
         context: Context,
         length: Length?,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         if (length == null) {
             return ""
@@ -61,11 +61,13 @@ object LengthFormatter {
         context: Context,
         @StringRes res: Int,
         length: Length,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val value =
             LengthConverter.convertDistanceFromMeters(
-                unitPreferences.getDistanceUnit(), length.inMeters)
+                unitPreferences.getDistanceUnit(),
+                length.inMeters,
+            )
         return MessageFormat.format(context.getString(res), mapOf("dist" to value))
     }
 }

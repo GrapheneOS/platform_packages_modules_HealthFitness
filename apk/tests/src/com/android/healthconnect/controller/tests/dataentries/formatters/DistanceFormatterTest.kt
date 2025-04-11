@@ -20,12 +20,12 @@ import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.units.Length
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit.MILES
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.DistanceUnit.KILOMETERS
+import com.android.healthconnect.controller.units.DistanceUnit.MILES
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -89,7 +89,11 @@ class DistanceFormatterTest {
 
     private fun getDistanceRecord(lengthInMeters: Double): DistanceRecord {
         return DistanceRecord.Builder(
-                getMetaData(), NOW, NOW.plusSeconds(1), Length.fromMeters(lengthInMeters))
+                getMetaData(),
+                NOW,
+                NOW.plusSeconds(1),
+                Length.fromMeters(lengthInMeters),
+            )
             .build()
     }
 }

@@ -20,8 +20,8 @@ import android.health.connect.datatypes.units.TemperatureDelta
 import android.icu.number.NumberFormatter
 import android.icu.text.MessageFormat
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.units.TemperatureUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.TemperatureUnit
+import com.android.healthconnect.controller.units.UnitPreferences
 import kotlin.math.round
 
 object TemperatureDeltaFormatter {
@@ -29,7 +29,7 @@ object TemperatureDeltaFormatter {
     fun formatSingleDeltaValue(
         context: Context,
         temperatureDelta: TemperatureDelta,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val res =
             when (unitPreferences.getTemperatureUnit()) {
@@ -43,7 +43,7 @@ object TemperatureDeltaFormatter {
     fun formatAverageDeltaValue(
         context: Context,
         temperatureDelta: TemperatureDelta,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val res =
             when (unitPreferences.getTemperatureUnit()) {
@@ -57,7 +57,7 @@ object TemperatureDeltaFormatter {
     fun formatSingleDeltaA11yValue(
         context: Context,
         temperatureDelta: TemperatureDelta,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val res =
             when (unitPreferences.getTemperatureUnit()) {
@@ -71,7 +71,7 @@ object TemperatureDeltaFormatter {
     fun formatAverageDeltaA11yValue(
         context: Context,
         temperatureDelta: TemperatureDelta,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val res =
             when (unitPreferences.getTemperatureUnit()) {
@@ -86,13 +86,16 @@ object TemperatureDeltaFormatter {
         context: Context,
         res: Int,
         temperatureDelta: TemperatureDelta,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         // when implemented can use TemperatureDelta methods for conversion
         val temp =
             round(
                 convertTemperatureDelta(
-                    temperatureDelta.inCelsius, unitPreferences.getTemperatureUnit()) * 10) / 10
+                    temperatureDelta.inCelsius,
+                    unitPreferences.getTemperatureUnit(),
+                ) * 10
+            ) / 10
         val formattedTemp =
             NumberFormatter.with()
                 .sign(NumberFormatter.SignDisplay.EXCEPT_ZERO)
@@ -101,12 +104,13 @@ object TemperatureDeltaFormatter {
                 .toString()
         return MessageFormat.format(
             context.getString(res),
-            mapOf("value" to (temp * temp), "formattedValue" to formattedTemp))
+            mapOf("value" to (temp * temp), "formattedValue" to formattedTemp),
+        )
     }
 
     private fun convertTemperatureDelta(
         temperatureDelta: Double,
-        unitPreference: TemperatureUnit
+        unitPreference: TemperatureUnit,
     ): Double {
         return when (unitPreference) {
             TemperatureUnit.CELSIUS -> temperatureDelta

@@ -27,7 +27,7 @@ import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -37,14 +37,14 @@ class Vo2MaxFormatter @Inject constructor(@ApplicationContext private val contex
 
     override suspend fun formatValue(
         record: Vo2MaxRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatVo2Max(R.string.vo2_max, record)
     }
 
     override suspend fun formatA11yValue(
         record: Vo2MaxRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatVo2Max(R.string.vo2_max_long, record)
     }
@@ -52,7 +52,9 @@ class Vo2MaxFormatter @Inject constructor(@ApplicationContext private val contex
     private fun formatVo2Max(@StringRes res: Int, record: Vo2MaxRecord): String {
         val vo2max =
             MessageFormat.format(
-                context.getString(res), mapOf("value" to record.vo2MillilitersPerMinuteKilogram))
+                context.getString(res),
+                mapOf("value" to record.vo2MillilitersPerMinuteKilogram),
+            )
 
         return if (record.measurementMethod != MEASUREMENT_METHOD_OTHER) {
             "$vo2max ${getMeasurementMethod(record.measurementMethod)}"

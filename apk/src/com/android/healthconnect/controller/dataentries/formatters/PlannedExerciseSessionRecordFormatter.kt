@@ -25,7 +25,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionH
 import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter.Companion.getExerciseType
 import com.android.healthconnect.controller.dataentries.formatters.shared.BaseFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.RecordDetailsFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

@@ -27,7 +27,7 @@ import com.android.healthconnect.controller.dataentries.formatters.EnergyFormatt
 import com.android.healthconnect.controller.dataentries.formatters.EnergyFormatter.formatEnergyValue
 import com.android.healthconnect.controller.dataentries.formatters.MealFormatter.formatMealType
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
 import javax.inject.Inject
@@ -38,7 +38,7 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
 
     override suspend fun formatValue(
         record: NutritionRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val nutritionData =
             getAggregations(
@@ -47,13 +47,14 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
                     val grams = mass.inGrams
                     format(context.getString(R.string.gram_short_format), mapOf("count" to grams))
                 },
-                { energy -> formatEnergyValue(context, energy, unitPreferences) })
+                { energy -> formatEnergyValue(context, energy, unitPreferences) },
+            )
         return nutritionData.ifEmpty { "-" }
     }
 
     override suspend fun formatA11yValue(
         record: NutritionRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val nutritionData =
             getAggregations(
@@ -62,7 +63,8 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
                     val grams = mass.inGrams
                     format(context.getString(R.string.gram_long_format), mapOf("count" to grams))
                 },
-                { energy -> formatEnergyA11yValue(context, energy, unitPreferences) })
+                { energy -> formatEnergyA11yValue(context, energy, unitPreferences) },
+            )
         return nutritionData.ifEmpty { "-" }
     }
 
@@ -75,7 +77,9 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
         record.mealName?.run { stringJoiner.addAggregation(R.string.meal_name, this) }
         if (record.mealType != MealType.MEAL_TYPE_UNKNOWN) {
             stringJoiner.addAggregation(
-                R.string.mealtype_label, formatMealType(context, record.mealType))
+                R.string.mealtype_label,
+                formatMealType(context, record.mealType),
+            )
         }
         record.biotin?.addAggregation(R.string.biotin, stringJoiner, formatMass)
         record.caffeine?.addAggregation(R.string.caffeine, stringJoiner, formatMass)
@@ -87,7 +91,10 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
         record.dietaryFiber?.addAggregation(R.string.dietary_fiber, stringJoiner, formatMass)
         record.energy?.addAggregation(R.string.energy_consumed_total, stringJoiner, formatEnergy)
         record.energyFromFat?.addAggregation(
-            R.string.energy_consumed_from_fat, stringJoiner, formatEnergy)
+            R.string.energy_consumed_from_fat,
+            stringJoiner,
+            formatEnergy,
+        )
         record.folate?.addAggregation(R.string.folate, stringJoiner, formatMass)
         record.folicAcid?.addAggregation(R.string.folic_acid, stringJoiner, formatMass)
         record.iodine?.addAggregation(R.string.iodine, stringJoiner, formatMass)
@@ -96,12 +103,18 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
         record.manganese?.addAggregation(R.string.manganese, stringJoiner, formatMass)
         record.molybdenum?.addAggregation(R.string.molybdenum, stringJoiner, formatMass)
         record.monounsaturatedFat?.addAggregation(
-            R.string.monounsaturated_fat, stringJoiner, formatMass)
+            R.string.monounsaturated_fat,
+            stringJoiner,
+            formatMass,
+        )
         record.niacin?.addAggregation(R.string.niacin, stringJoiner, formatMass)
         record.pantothenicAcid?.addAggregation(R.string.pantothenic_acid, stringJoiner, formatMass)
         record.phosphorus?.addAggregation(R.string.phosphorus, stringJoiner, formatMass)
         record.polyunsaturatedFat?.addAggregation(
-            R.string.polyunsaturated_fat, stringJoiner, formatMass)
+            R.string.polyunsaturated_fat,
+            stringJoiner,
+            formatMass,
+        )
         record.potassium?.addAggregation(R.string.potassium, stringJoiner, formatMass)
         record.riboflavin?.addAggregation(R.string.riboflavin, stringJoiner, formatMass)
         record.saturatedFat?.addAggregation(R.string.saturated_fat, stringJoiner, formatMass)
@@ -110,7 +123,10 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
         record.sugar?.addAggregation(R.string.sugar, stringJoiner, formatMass)
         record.thiamin?.addAggregation(R.string.thiamin, stringJoiner, formatMass)
         record.totalCarbohydrate?.addAggregation(
-            R.string.total_carbohydrate, stringJoiner, formatMass)
+            R.string.total_carbohydrate,
+            stringJoiner,
+            formatMass,
+        )
         record.totalFat?.addAggregation(R.string.total_fat, stringJoiner, formatMass)
         record.transFat?.addAggregation(R.string.trans_fat, stringJoiner, formatMass)
         record.unsaturatedFat?.addAggregation(R.string.unsaturated_fat, stringJoiner, formatMass)
@@ -134,7 +150,7 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
     private fun Mass.addAggregation(
         @StringRes labelRes: Int,
         stringJoiner: StringJoiner,
-        formatMass: (mass: Mass) -> String
+        formatMass: (mass: Mass) -> String,
     ) {
         stringJoiner.addAggregation(labelRes, formatMass(this))
     }
@@ -142,7 +158,7 @@ class NutritionFormatter @Inject constructor(@ApplicationContext private val con
     private fun Energy.addAggregation(
         @StringRes labelRes: Int,
         stringJoiner: StringJoiner,
-        formatEnergy: (energy: Energy) -> String
+        formatEnergy: (energy: Energy) -> String,
     ) {
         stringJoiner.addAggregation(labelRes, formatEnergy(this))
     }

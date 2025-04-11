@@ -13,19 +13,19 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.tests.dataentries.units
+package com.android.healthconnect.controller.tests.units
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.preference.PreferenceManager.getDefaultSharedPreferencesName
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit
-import com.android.healthconnect.controller.dataentries.units.EnergyUnit
-import com.android.healthconnect.controller.dataentries.units.HeightUnit
-import com.android.healthconnect.controller.dataentries.units.TemperatureUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
-import com.android.healthconnect.controller.dataentries.units.WeightUnit
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.DistanceUnit
+import com.android.healthconnect.controller.units.EnergyUnit
+import com.android.healthconnect.controller.units.HeightUnit
+import com.android.healthconnect.controller.units.TemperatureUnit
+import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.units.WeightUnit
 import com.google.common.truth.Truth.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

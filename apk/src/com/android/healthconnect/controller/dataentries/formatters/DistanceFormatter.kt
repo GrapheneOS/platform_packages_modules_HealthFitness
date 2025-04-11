@@ -21,7 +21,7 @@ import android.health.connect.datatypes.units.Length
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.LengthFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.UnitFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -31,14 +31,14 @@ class DistanceFormatter @Inject constructor(@ApplicationContext private val cont
 
     override suspend fun formatValue(
         record: DistanceRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return LengthFormatter.formatValue(context, record.distance, unitPreferences)
     }
 
     override suspend fun formatA11yValue(
         record: DistanceRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return LengthFormatter.formatA11yValue(context, record.distance, unitPreferences)
     }

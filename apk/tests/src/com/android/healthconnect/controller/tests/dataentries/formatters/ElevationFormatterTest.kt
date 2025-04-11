@@ -20,10 +20,10 @@ import android.health.connect.datatypes.ElevationGainedRecord
 import android.health.connect.datatypes.units.Length
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.ElevationGainedFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -87,7 +87,11 @@ class ElevationFormatterTest {
 
     private fun getRecord(meters: Double): ElevationGainedRecord {
         return ElevationGainedRecord.Builder(
-                getMetaData(), NOW, NOW.plusSeconds(2), Length.fromMeters(meters))
+                getMetaData(),
+                NOW,
+                NOW.plusSeconds(2),
+                Length.fromMeters(meters),
+            )
             .build()
     }
 }

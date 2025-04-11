@@ -20,11 +20,11 @@ import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.units.Power
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.BasalMetabolicRateFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

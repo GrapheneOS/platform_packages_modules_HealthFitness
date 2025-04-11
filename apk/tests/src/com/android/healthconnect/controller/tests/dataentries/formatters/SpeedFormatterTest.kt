@@ -21,14 +21,14 @@ import android.health.connect.datatypes.units.Velocity
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSessionDetail
 import com.android.healthconnect.controller.dataentries.formatters.SpeedFormatter
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit.KILOMETERS
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit.MILES
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.DistanceUnit
+import com.android.healthconnect.controller.units.DistanceUnit.KILOMETERS
+import com.android.healthconnect.controller.units.DistanceUnit.MILES
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -155,7 +155,9 @@ class SpeedFormatterTest {
                     header = "07:06",
                     headerA11y = "07:06",
                     titleA11y = "8.948 miles per hour",
-                    title = "8.948 mph"))
+                    title = "8.948 mph",
+                )
+            )
     }
 
     @Test
@@ -173,7 +175,9 @@ class SpeedFormatterTest {
                     header = "07:06",
                     headerA11y = "07:06",
                     titleA11y = "14.4 kilometres per hour",
-                    title = "14.4 km/h"))
+                    title = "14.4 km/h",
+                )
+            )
     }
 
     private fun getSpeedRecord(samples: List<Double>): SpeedRecord {
@@ -183,8 +187,11 @@ class SpeedFormatterTest {
                 NOW.plusSeconds(samples.size.toLong() + 1),
                 samples.mapIndexed { index, value ->
                     SpeedRecord.SpeedRecordSample(
-                        Velocity.fromMetersPerSecond(value), NOW.plusSeconds(index.toLong()))
-                })
+                        Velocity.fromMetersPerSecond(value),
+                        NOW.plusSeconds(index.toLong()),
+                    )
+                },
+            )
             .build()
     }
 }

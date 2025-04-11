@@ -22,7 +22,7 @@ import android.content.Context
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -34,14 +34,14 @@ constructor(@ApplicationContext private val context: Context) :
 
     override suspend fun formatValue(
         record: IntermenstrualBleedingRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return context.getString(R.string.spotting)
     }
 
     override suspend fun formatA11yValue(
         record: IntermenstrualBleedingRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatValue(record, unitPreferences)
     }

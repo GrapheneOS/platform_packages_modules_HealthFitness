@@ -20,10 +20,10 @@ import android.health.connect.datatypes.Vo2MaxRecord
 import android.health.connect.datatypes.Vo2MaxRecord.Vo2MaxMeasurementMethod.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.Vo2MaxFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -134,7 +134,7 @@ class Vo2MaxFormatterTest {
 
     private fun getRecord(
         value: Double,
-        @Vo2MaxMeasurementMethodTypes method: Int = MEASUREMENT_METHOD_OTHER
+        @Vo2MaxMeasurementMethodTypes method: Int = MEASUREMENT_METHOD_OTHER,
     ): Vo2MaxRecord {
         return Vo2MaxRecord.Builder(getMetaData(), NOW, method, value).build()
     }

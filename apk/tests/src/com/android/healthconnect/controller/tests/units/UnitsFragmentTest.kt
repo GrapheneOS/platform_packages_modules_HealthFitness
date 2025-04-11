@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2022 The Android Open Source Project
+/*
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.tests.dataentries.units
+package com.android.healthconnect.controller.tests.units
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
@@ -26,16 +26,16 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit
-import com.android.healthconnect.controller.dataentries.units.EnergyUnit
-import com.android.healthconnect.controller.dataentries.units.HeightUnit
-import com.android.healthconnect.controller.dataentries.units.TemperatureUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
-import com.android.healthconnect.controller.dataentries.units.UnitPreferencesStrings.getUnitLabel
-import com.android.healthconnect.controller.dataentries.units.UnitsFragment
-import com.android.healthconnect.controller.dataentries.units.WeightUnit
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.DistanceUnit
+import com.android.healthconnect.controller.units.EnergyUnit
+import com.android.healthconnect.controller.units.HeightUnit
+import com.android.healthconnect.controller.units.TemperatureUnit
+import com.android.healthconnect.controller.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferencesStrings.getUnitLabel
+import com.android.healthconnect.controller.units.UnitsFragment
+import com.android.healthconnect.controller.units.WeightUnit
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.UnitsElement

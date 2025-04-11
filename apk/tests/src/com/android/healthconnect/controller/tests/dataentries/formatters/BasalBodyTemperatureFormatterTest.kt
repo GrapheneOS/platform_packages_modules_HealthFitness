@@ -30,11 +30,11 @@ import android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASU
 import android.health.connect.datatypes.units.Temperature
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.BasalBodyTemperatureFormatter
-import com.android.healthconnect.controller.dataentries.units.TemperatureUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.TemperatureUnit
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -67,15 +67,24 @@ class BasalBodyTemperatureFormatterTest {
 
         assertThat(
                 formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
+                    preferences,
+                )
+            )
             .isEqualTo("0℃")
         assertThat(
                 formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
+                    preferences,
+                )
+            )
             .isEqualTo("1℃")
         assertThat(
                 formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
+                    preferences,
+                )
+            )
             .isEqualTo("43.3℃")
     }
 
@@ -85,15 +94,24 @@ class BasalBodyTemperatureFormatterTest {
 
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
+                    preferences,
+                )
+            )
             .isEqualTo("0 degrees Celsius")
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
+                    preferences,
+                )
+            )
             .isEqualTo("1 degree Celsius")
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
+                    preferences,
+                )
+            )
             .isEqualTo("43.3 degrees Celsius")
     }
 
@@ -103,15 +121,24 @@ class BasalBodyTemperatureFormatterTest {
 
         assertThat(
                 formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
+                    preferences,
+                )
+            )
             .isEqualTo("273.15K")
         assertThat(
                 formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
+                    preferences,
+                )
+            )
             .isEqualTo("274.15K")
         assertThat(
                 formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
+                    preferences,
+                )
+            )
             .isEqualTo("316.45K")
     }
 
@@ -121,15 +148,24 @@ class BasalBodyTemperatureFormatterTest {
 
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
+                    preferences,
+                )
+            )
             .isEqualTo("273.15 kelvins")
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
+                    preferences,
+                )
+            )
             .isEqualTo("274.15 kelvins")
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
+                    preferences,
+                )
+            )
             .isEqualTo("316.45 kelvins")
     }
 
@@ -139,15 +175,24 @@ class BasalBodyTemperatureFormatterTest {
 
         assertThat(
                 formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
+                    preferences,
+                )
+            )
             .isEqualTo("32℉")
         assertThat(
                 formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
+                    preferences,
+                )
+            )
             .isEqualTo("33.8℉")
         assertThat(
                 formatter.formatValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
+                    preferences,
+                )
+            )
             .isEqualTo("109.94℉")
     }
 
@@ -157,15 +202,24 @@ class BasalBodyTemperatureFormatterTest {
 
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 0.0),
+                    preferences,
+                )
+            )
             .isEqualTo("32 degrees Fahrenheit")
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 1.0),
+                    preferences,
+                )
+            )
             .isEqualTo("33.8 degrees Fahrenheit")
         assertThat(
                 formatter.formatA11yValue(
-                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3), preferences))
+                    getRecord(location = MEASUREMENT_LOCATION_UNKNOWN, 43.3),
+                    preferences,
+                )
+            )
             .isEqualTo("109.94 degrees Fahrenheit")
     }
 
@@ -178,7 +232,8 @@ class BasalBodyTemperatureFormatterTest {
         assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_ARMPIT, 1.0), preferences))
             .isEqualTo("1℃ Armpit")
         assertThat(
-                formatter.formatValue(getRecord(MEASUREMENT_LOCATION_FOREHEAD, 1.0), preferences))
+                formatter.formatValue(getRecord(MEASUREMENT_LOCATION_FOREHEAD, 1.0), preferences)
+            )
             .isEqualTo("1℃ Forehead")
         assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_MOUTH, 1.0), preferences))
             .isEqualTo("1℃ Mouth")
@@ -188,7 +243,10 @@ class BasalBodyTemperatureFormatterTest {
             .isEqualTo("1℃ Rectum")
         assertThat(
                 formatter.formatValue(
-                    getRecord(MEASUREMENT_LOCATION_TEMPORAL_ARTERY, 1.0), preferences))
+                    getRecord(MEASUREMENT_LOCATION_TEMPORAL_ARTERY, 1.0),
+                    preferences,
+                )
+            )
             .isEqualTo("1℃ Temporal artery")
         assertThat(formatter.formatValue(getRecord(MEASUREMENT_LOCATION_TOE, 1.0), preferences))
             .isEqualTo("1℃ Toe")
@@ -200,7 +258,11 @@ class BasalBodyTemperatureFormatterTest {
 
     private fun getRecord(location: Int, temp: Double): BasalBodyTemperatureRecord {
         return BasalBodyTemperatureRecord.Builder(
-                getMetaData(), NOW, location, Temperature.fromCelsius(temp))
+                getMetaData(),
+                NOW,
+                location,
+                Temperature.fromCelsius(temp),
+            )
             .build()
     }
 }

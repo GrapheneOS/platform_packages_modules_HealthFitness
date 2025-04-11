@@ -26,11 +26,11 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.Exercise
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseBlockEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseStepEntry
 import com.android.healthconnect.controller.dataentries.formatters.PlannedExerciseBlockFormatter
-import com.android.healthconnect.controller.dataentries.units.DistanceUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseBlock
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseStep
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.DistanceUnit
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

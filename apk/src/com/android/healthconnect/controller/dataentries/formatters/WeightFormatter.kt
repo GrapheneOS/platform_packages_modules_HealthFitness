@@ -16,7 +16,7 @@ package com.android.healthconnect.controller.dataentries.formatters
 import android.content.Context
 import android.health.connect.datatypes.WeightRecord
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -26,16 +26,19 @@ class WeightFormatter @Inject constructor(@ApplicationContext private val contex
 
     override suspend fun formatValue(
         record: WeightRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return MassFormatter.formatValue(context, record.weight, unitPreferences.getWeightUnit())
     }
 
     override suspend fun formatA11yValue(
         record: WeightRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return MassFormatter.formatA11yValue(
-            context, record.weight, unitPreferences.getWeightUnit())
+            context,
+            record.weight,
+            unitPreferences.getWeightUnit(),
+        )
     }
 }

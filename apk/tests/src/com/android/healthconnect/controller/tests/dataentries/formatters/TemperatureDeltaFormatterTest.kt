@@ -19,9 +19,9 @@ import android.health.connect.datatypes.SkinTemperatureRecord.Delta
 import android.health.connect.datatypes.units.TemperatureDelta
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.TemperatureDeltaFormatter
-import com.android.healthconnect.controller.dataentries.units.TemperatureUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.TemperatureUnit
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -50,7 +50,8 @@ class TemperatureDeltaFormatterTest {
             Delta(TemperatureDelta.fromCelsius(0.0), testInstant),
             Delta(TemperatureDelta.fromCelsius(1.0), testInstant),
             Delta(TemperatureDelta.fromCelsius(1.32), testInstant),
-            Delta(TemperatureDelta.fromCelsius(2.5), testInstant))
+            Delta(TemperatureDelta.fromCelsius(2.5), testInstant),
+        )
 
     @Before
     fun setup() {
@@ -63,8 +64,7 @@ class TemperatureDeltaFormatterTest {
     @Test
     fun formatSingleValue_celsius() = runBlocking {
         preferences.setTemperatureUnit(TemperatureUnit.CELSIUS)
-        val expectedFormattedTempStrings =
-            listOf("-2.5℃", "-1℃", "0℃", "+1℃", "+1.3℃", "+2.5℃")
+        val expectedFormattedTempStrings = listOf("-2.5℃", "-1℃", "0℃", "+1℃", "+1.3℃", "+2.5℃")
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_singleValue(tempDelta, false)
@@ -75,8 +75,7 @@ class TemperatureDeltaFormatterTest {
     @Test
     fun formatSingleValue_fahrenheit() = runBlocking {
         preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
-        val expectedFormattedTempStrings =
-            listOf("-4.5℉", "-1.8℉", "0℉", "+1.8℉", "+2.4℉", "+4.5℉")
+        val expectedFormattedTempStrings = listOf("-4.5℉", "-1.8℉", "0℉", "+1.8℉", "+2.4℉", "+4.5℉")
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_singleValue(tempDelta, false)
@@ -87,8 +86,7 @@ class TemperatureDeltaFormatterTest {
     @Test
     fun formatSingleValue_kelvin() = runBlocking {
         preferences.setTemperatureUnit(TemperatureUnit.KELVIN)
-        val expectedFormattedTempStrings =
-            listOf("-2.5K", "-1K", "0K", "+1K", "+1.3K", "+2.5K")
+        val expectedFormattedTempStrings = listOf("-2.5K", "-1K", "0K", "+1K", "+1.3K", "+2.5K")
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_singleValue(tempDelta, false)
@@ -106,7 +104,8 @@ class TemperatureDeltaFormatterTest {
                 "0℃ (avg variation)",
                 "+1℃ (avg variation)",
                 "+1.3℃ (avg variation)",
-                "+2.5℃ (avg variation)")
+                "+2.5℃ (avg variation)",
+            )
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_averageValue(tempDelta, false)
@@ -124,7 +123,8 @@ class TemperatureDeltaFormatterTest {
                 "0℉ (avg variation)",
                 "+1.8℉ (avg variation)",
                 "+2.4℉ (avg variation)",
-                "+4.5℉ (avg variation)")
+                "+4.5℉ (avg variation)",
+            )
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_averageValue(tempDelta, false)
@@ -142,7 +142,8 @@ class TemperatureDeltaFormatterTest {
                 "0K (avg variation)",
                 "+1K (avg variation)",
                 "+1.3K (avg variation)",
-                "+2.5K (avg variation)")
+                "+2.5K (avg variation)",
+            )
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_averageValue(tempDelta, false)
@@ -161,7 +162,8 @@ class TemperatureDeltaFormatterTest {
                 "0 degrees Celsius",
                 "+1 degree Celsius",
                 "+1.3 degrees Celsius",
-                "+2.5 degrees Celsius")
+                "+2.5 degrees Celsius",
+            )
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_singleValue(tempDelta, true)
@@ -179,7 +181,8 @@ class TemperatureDeltaFormatterTest {
                 "0 degrees Fahrenheit",
                 "+1.8 degrees Fahrenheit",
                 "+2.4 degrees Fahrenheit",
-                "+4.5 degrees Fahrenheit")
+                "+4.5 degrees Fahrenheit",
+            )
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_singleValue(tempDelta, true)
@@ -197,7 +200,8 @@ class TemperatureDeltaFormatterTest {
                 "0 kelvins",
                 "+1 kelvin",
                 "+1.3 kelvins",
-                "+2.5 kelvins")
+                "+2.5 kelvins",
+            )
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_singleValue(tempDelta, true)
@@ -215,7 +219,8 @@ class TemperatureDeltaFormatterTest {
                 "0 degrees Celsius (average variation)",
                 "+1 degree Celsius (average variation)",
                 "+1.3 degrees Celsius (average variation)",
-                "+2.5 degrees Celsius (average variation)")
+                "+2.5 degrees Celsius (average variation)",
+            )
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_averageValue(tempDelta, true)
@@ -233,7 +238,8 @@ class TemperatureDeltaFormatterTest {
                 "0 degrees Fahrenheit (average variation)",
                 "+1.8 degrees Fahrenheit (average variation)",
                 "+2.4 degrees Fahrenheit (average variation)",
-                "+4.5 degrees Fahrenheit (average variation)")
+                "+4.5 degrees Fahrenheit (average variation)",
+            )
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_averageValue(tempDelta, true)
@@ -251,7 +257,8 @@ class TemperatureDeltaFormatterTest {
                 "0 kelvins (average variation)",
                 "+1 kelvin (average variation)",
                 "+1.3 kelvins (average variation)",
-                "+2.5 kelvins (average variation)")
+                "+2.5 kelvins (average variation)",
+            )
 
         allTestTemps.forEachIndexed { index: Int, tempDelta: Delta ->
             val actual = getFormattedTemperatureDelta_averageValue(tempDelta, true)
@@ -261,35 +268,39 @@ class TemperatureDeltaFormatterTest {
 
     private fun getFormattedTemperatureDelta_singleValue(
         temperatureDelta: Delta,
-        isA11y: Boolean
+        isA11y: Boolean,
     ): String {
         return if (isA11y) {
             TemperatureDeltaFormatter.formatSingleDeltaA11yValue(
                 InstrumentationRegistry.getInstrumentation().context,
                 temperatureDelta.delta,
-                preferences)
+                preferences,
+            )
         } else {
             TemperatureDeltaFormatter.formatSingleDeltaValue(
                 InstrumentationRegistry.getInstrumentation().context,
                 temperatureDelta.delta,
-                preferences)
+                preferences,
+            )
         }
     }
 
     private fun getFormattedTemperatureDelta_averageValue(
         temperatureDelta: Delta,
-        isA11y: Boolean
+        isA11y: Boolean,
     ): String {
         return if (isA11y) {
             TemperatureDeltaFormatter.formatAverageDeltaA11yValue(
                 InstrumentationRegistry.getInstrumentation().context,
                 temperatureDelta.delta,
-                preferences)
+                preferences,
+            )
         } else {
             TemperatureDeltaFormatter.formatAverageDeltaValue(
                 InstrumentationRegistry.getInstrumentation().context,
                 temperatureDelta.delta,
-                preferences)
+                preferences,
+            )
         }
     }
 }

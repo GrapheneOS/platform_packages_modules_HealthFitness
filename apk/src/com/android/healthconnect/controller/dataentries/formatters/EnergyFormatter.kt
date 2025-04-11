@@ -20,11 +20,11 @@ import android.health.connect.datatypes.units.Energy
 import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.units.EnergyConverter.convertToJoules
-import com.android.healthconnect.controller.dataentries.units.EnergyUnit
-import com.android.healthconnect.controller.dataentries.units.EnergyUnit.CALORIE
-import com.android.healthconnect.controller.dataentries.units.EnergyUnit.KILOJOULE
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.EnergyConverter.convertToJoules
+import com.android.healthconnect.controller.units.EnergyUnit
+import com.android.healthconnect.controller.units.EnergyUnit.CALORIE
+import com.android.healthconnect.controller.units.EnergyUnit.KILOJOULE
+import com.android.healthconnect.controller.units.UnitPreferences
 import kotlin.math.roundToInt
 
 /** Format energy strings (calories and kj) */
@@ -32,7 +32,7 @@ object EnergyFormatter {
     fun formatEnergyValue(
         context: Context,
         energy: Energy,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val res =
             when (unitPreferences.getEnergyUnit()) {
@@ -45,7 +45,7 @@ object EnergyFormatter {
     fun formatEnergyA11yValue(
         context: Context,
         energy: Energy,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val res =
             when (unitPreferences.getEnergyUnit()) {
@@ -59,7 +59,7 @@ object EnergyFormatter {
         context: Context,
         @StringRes res: Int,
         energy: Energy,
-        energyUnit: EnergyUnit
+        energyUnit: EnergyUnit,
     ): String {
         val value =
             when (energyUnit) {

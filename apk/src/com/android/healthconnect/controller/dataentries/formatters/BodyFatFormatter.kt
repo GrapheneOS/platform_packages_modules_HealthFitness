@@ -20,7 +20,7 @@ import android.health.connect.datatypes.BodyFatRecord
 import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -30,17 +30,21 @@ class BodyFatFormatter @Inject constructor(@ApplicationContext private val conte
 
     override suspend fun formatValue(
         record: BodyFatRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return format(
-            context.getString(R.string.percent), mapOf("value" to record.percentage.value))
+            context.getString(R.string.percent),
+            mapOf("value" to record.percentage.value),
+        )
     }
 
     override suspend fun formatA11yValue(
         record: BodyFatRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return format(
-            context.getString(R.string.percent_long), mapOf("value" to record.percentage.value))
+            context.getString(R.string.percent_long),
+            mapOf("value" to record.percentage.value),
+        )
     }
 }

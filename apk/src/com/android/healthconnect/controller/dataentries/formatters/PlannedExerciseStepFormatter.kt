@@ -23,7 +23,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseStepEntry
 import com.android.healthconnect.controller.dataentries.formatters.shared.LengthFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -33,19 +33,20 @@ class PlannedExerciseStepFormatter
 constructor(
     @ApplicationContext private val context: Context,
     private val exercisePerformanceGoalFormatter: ExercisePerformanceGoalFormatter,
-    private val exerciseSegmentTypeFormatter: ExerciseSegmentTypeFormatter
+    private val exerciseSegmentTypeFormatter: ExerciseSegmentTypeFormatter,
 ) {
 
     fun formatStep(step: PlannedExerciseStep, unitPreferences: UnitPreferences): FormattedEntry {
         return PlannedExerciseStepEntry(
             step = step,
             title = formatStepTitle(step, unitPreferences),
-            titleA11y = formatStepTitleA11y(step, unitPreferences))
+            titleA11y = formatStepTitleA11y(step, unitPreferences),
+        )
     }
 
     fun formatStepDetails(
         step: PlannedExerciseStep,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): List<FormattedEntry> {
         val performanceGoals = step.performanceGoals
         return buildList {
@@ -57,7 +58,11 @@ constructor(
                 performanceGoals.forEach { performanceGoal ->
                     add(
                         exercisePerformanceGoalFormatter.formatGoal(
-                            performanceGoal, unitPreferences, step.exerciseType))
+                            performanceGoal,
+                            unitPreferences,
+                            step.exerciseType,
+                        )
+                    )
                 }
             }
         }
@@ -65,31 +70,33 @@ constructor(
 
     private fun formatStepTitle(
         step: PlannedExerciseStep,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val completionGoal = step.completionGoal
         val exerciseSegmentType = step.exerciseType
         return context.getString(
             R.string.planned_exercise_step_title,
             formatCompletionGoal(completionGoal, unitPreferences),
-            exerciseSegmentTypeFormatter.getSegmentType(exerciseSegmentType))
+            exerciseSegmentTypeFormatter.getSegmentType(exerciseSegmentType),
+        )
     }
 
     private fun formatStepTitleA11y(
         step: PlannedExerciseStep,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val completionGoal = step.completionGoal
         val exerciseSegmentType = step.exerciseType
         return context.getString(
             R.string.planned_exercise_step_title,
             formatCompletionGoalA11y(completionGoal, unitPreferences),
-            exerciseSegmentTypeFormatter.getSegmentType(exerciseSegmentType))
+            exerciseSegmentTypeFormatter.getSegmentType(exerciseSegmentType),
+        )
     }
 
     private fun formatCompletionGoal(
         completionGoal: ExerciseCompletionGoal,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return when (completionGoal) {
             is ExerciseCompletionGoal.DistanceGoal ->
@@ -103,24 +110,33 @@ constructor(
                 context.getString(
                     R.string.active_calories_burned,
                     EnergyFormatter.formatEnergyValue(
-                        context, completionGoal.activeCalories, unitPreferences))
+                        context,
+                        completionGoal.activeCalories,
+                        unitPreferences,
+                    ),
+                )
             is ExerciseCompletionGoal.DistanceWithVariableRestGoal ->
                 context.getString(
                     R.string.distance_with_variable_rest_goal_formatted,
                     LengthFormatter.formatValue(context, completionGoal.distance, unitPreferences),
-                    DurationFormatter.formatDurationShort(context, completionGoal.duration))
+                    DurationFormatter.formatDurationShort(context, completionGoal.duration),
+                )
             is ExerciseCompletionGoal.TotalCaloriesBurnedGoal ->
                 context.getString(
                     R.string.total_calories_burned,
                     EnergyFormatter.formatEnergyValue(
-                        context, completionGoal.totalCalories, unitPreferences))
+                        context,
+                        completionGoal.totalCalories,
+                        unitPreferences,
+                    ),
+                )
             else -> throw IllegalArgumentException("Unknown completion goal $completionGoal")
         }
     }
 
     private fun formatCompletionGoalA11y(
         completionGoal: ExerciseCompletionGoal,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return when (completionGoal) {
             is ExerciseCompletionGoal.DistanceGoal ->
@@ -134,18 +150,30 @@ constructor(
                 context.getString(
                     R.string.active_calories_burned,
                     EnergyFormatter.formatEnergyA11yValue(
-                        context, completionGoal.activeCalories, unitPreferences))
+                        context,
+                        completionGoal.activeCalories,
+                        unitPreferences,
+                    ),
+                )
             is ExerciseCompletionGoal.DistanceWithVariableRestGoal ->
                 context.getString(
                     R.string.distance_with_variable_rest_goal_formatted,
                     LengthFormatter.formatA11yValue(
-                        context, completionGoal.distance, unitPreferences),
-                    DurationFormatter.formatDurationLong(context, completionGoal.duration))
+                        context,
+                        completionGoal.distance,
+                        unitPreferences,
+                    ),
+                    DurationFormatter.formatDurationLong(context, completionGoal.duration),
+                )
             is ExerciseCompletionGoal.TotalCaloriesBurnedGoal ->
                 context.getString(
                     R.string.total_calories_burned,
                     EnergyFormatter.formatEnergyA11yValue(
-                        context, completionGoal.totalCalories, unitPreferences))
+                        context,
+                        completionGoal.totalCalories,
+                        unitPreferences,
+                    ),
+                )
             else -> throw IllegalArgumentException("Unknown completion goal $completionGoal")
         }
     }

@@ -20,7 +20,6 @@ import android.widget.TextView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseStepEntry
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
-import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint

@@ -22,11 +22,11 @@ import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.HeightUnit
-import com.android.healthconnect.controller.dataentries.units.HeightUnit.CENTIMETERS
-import com.android.healthconnect.controller.dataentries.units.HeightUnit.FEET
-import com.android.healthconnect.controller.dataentries.units.LengthConverter.convertHeightFromMeters
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.HeightUnit
+import com.android.healthconnect.controller.units.HeightUnit.CENTIMETERS
+import com.android.healthconnect.controller.units.HeightUnit.FEET
+import com.android.healthconnect.controller.units.LengthConverter.convertHeightFromMeters
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -41,7 +41,7 @@ class HeightFormatter @Inject constructor(@ApplicationContext private val contex
 
     override suspend fun formatValue(
         record: HeightRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatHeight(
             R.string.height_ft_compacted,
@@ -49,12 +49,13 @@ class HeightFormatter @Inject constructor(@ApplicationContext private val contex
             R.string.height_cm,
             R.string.feet_inches_format,
             unitPreferences.getHeightUnit(),
-            record.height)
+            record.height,
+        )
     }
 
     override suspend fun formatA11yValue(
         record: HeightRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatHeight(
             R.string.height_ft_long,
@@ -62,7 +63,8 @@ class HeightFormatter @Inject constructor(@ApplicationContext private val contex
             R.string.height_cm_long,
             R.string.feet_inches_format_long,
             unitPreferences.getHeightUnit(),
-            record.height)
+            record.height,
+        )
     }
 
     private fun formatHeight(
@@ -71,7 +73,7 @@ class HeightFormatter @Inject constructor(@ApplicationContext private val contex
         @StringRes cmId: Int,
         @StringRes feetInchFormatId: Int,
         heightUnit: HeightUnit,
-        length: Length
+        length: Length,
     ): String {
         return when (heightUnit) {
             CENTIMETERS -> {
@@ -86,7 +88,8 @@ class HeightFormatter @Inject constructor(@ApplicationContext private val contex
                 context.getString(
                     feetInchFormatId,
                     format(context.getString(feetId), mapOf("height" to feet)),
-                    format(context.getString(inchId), mapOf("height" to inches)))
+                    format(context.getString(inchId), mapOf("height" to inches)),
+                )
             }
         }
     }

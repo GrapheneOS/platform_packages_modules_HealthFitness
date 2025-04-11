@@ -19,14 +19,13 @@ import android.content.Context
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.compatibility.common.util.UserSettings
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.CyclingPedalingCadenceFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -116,7 +115,9 @@ class CyclingPedalingCadenceFormatterTest {
                     header = "07:06",
                     headerA11y = "07:06",
                     title = "23 rpm",
-                    titleA11y = "23 revolutions per minute"))
+                    titleA11y = "23 revolutions per minute",
+                )
+            )
     }
 
     private fun getRecord(samples: List<Double>): CyclingPedalingCadenceRecord {
@@ -126,7 +127,8 @@ class CyclingPedalingCadenceFormatterTest {
                 NOW.plusSeconds(100),
                 samples.mapIndexed { index, d ->
                     CyclingPedalingCadenceRecordSample(d, NOW.plusSeconds(index.toLong()))
-                })
+                },
+            )
             .build()
     }
 }

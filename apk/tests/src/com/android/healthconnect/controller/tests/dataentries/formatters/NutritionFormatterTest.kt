@@ -21,11 +21,11 @@ import android.health.connect.datatypes.units.Energy.*
 import android.health.connect.datatypes.units.Mass.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.NutritionFormatter
-import com.android.healthconnect.controller.dataentries.units.EnergyUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.EnergyUnit
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -201,7 +201,8 @@ class NutritionFormatterTest {
                     "Vitamin D: 70 g\n" +
                     "Vitamin E: 80 g\n" +
                     "Vitamin K: 90 g\n" +
-                    "Zinc: 12 g")
+                    "Zinc: 12 g"
+            )
     }
 
     private fun getBuilder(): NutritionRecord.Builder {

@@ -20,12 +20,12 @@ import android.health.connect.datatypes.HeightRecord
 import android.health.connect.datatypes.units.Length
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.HeightFormatter
-import com.android.healthconnect.controller.dataentries.units.HeightUnit.CENTIMETERS
-import com.android.healthconnect.controller.dataentries.units.HeightUnit.FEET
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.HeightUnit.CENTIMETERS
+import com.android.healthconnect.controller.units.HeightUnit.FEET
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

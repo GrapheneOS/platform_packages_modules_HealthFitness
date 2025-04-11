@@ -27,10 +27,10 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.Formatte
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ReverseSessionDetail
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.dataentries.formatters.SkinTemperatureFormatter
-import com.android.healthconnect.controller.dataentries.units.TemperatureUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.TemperatureUnit
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -115,7 +115,9 @@ class SkinTemperatureFormatterTest {
                     "-2.5℃ (avg variation)",
                     "-2.5 degrees Celsius (average variation)",
                     formattedTimeRange,
-                    formattedTimeRangeA11y))
+                    formattedTimeRangeA11y,
+                )
+            )
             .isTrue()
         assertThat(
                 isSeriesDataEntryCorrect(
@@ -123,7 +125,9 @@ class SkinTemperatureFormatterTest {
                     "-2.5℃ (avg variation)",
                     "-2.5 degrees Celsius (average variation)",
                     "$formattedTimeRange • $appNameTestApp",
-                    "$formattedTimeRangeA11y • $appNameTestApp"))
+                    "$formattedTimeRangeA11y • $appNameTestApp",
+                )
+            )
             .isTrue()
     }
 
@@ -148,7 +152,9 @@ class SkinTemperatureFormatterTest {
                     "-0.5℃ (avg variation)",
                     "-0.5 degrees Celsius (average variation)",
                     formattedTimeRange,
-                    formattedTimeRangeA11y))
+                    formattedTimeRangeA11y,
+                )
+            )
             .isTrue()
         assertThat(
                 isSeriesDataEntryCorrect(
@@ -156,7 +162,9 @@ class SkinTemperatureFormatterTest {
                     "-0.5℃ (avg variation)",
                     "-0.5 degrees Celsius (average variation)",
                     "$formattedTimeRange • $appNameTestApp",
-                    "$formattedTimeRangeA11y • $appNameTestApp"))
+                    "$formattedTimeRangeA11y • $appNameTestApp",
+                )
+            )
             .isTrue()
     }
 
@@ -181,7 +189,9 @@ class SkinTemperatureFormatterTest {
                     "-4.5℉ (avg variation)",
                     "-4.5 degrees Fahrenheit (average variation)",
                     formattedTimeRange,
-                    formattedTimeRangeA11y))
+                    formattedTimeRangeA11y,
+                )
+            )
             .isTrue()
         assertThat(
                 isSeriesDataEntryCorrect(
@@ -189,7 +199,9 @@ class SkinTemperatureFormatterTest {
                     "-4.5℉ (avg variation)",
                     "-4.5 degrees Fahrenheit (average variation)",
                     "$formattedTimeRange • $appNameTestApp",
-                    "$formattedTimeRangeA11y • $appNameTestApp"))
+                    "$formattedTimeRangeA11y • $appNameTestApp",
+                )
+            )
             .isTrue()
     }
 
@@ -214,7 +226,9 @@ class SkinTemperatureFormatterTest {
                     "-0.9℉ (avg variation)",
                     "-0.9 degrees Fahrenheit (average variation)",
                     formattedTimeRange,
-                    formattedTimeRangeA11y))
+                    formattedTimeRangeA11y,
+                )
+            )
             .isTrue()
         assertThat(
                 isSeriesDataEntryCorrect(
@@ -222,7 +236,9 @@ class SkinTemperatureFormatterTest {
                     "-0.9℉ (avg variation)",
                     "-0.9 degrees Fahrenheit (average variation)",
                     "$formattedTimeRange • $appNameTestApp",
-                    "$formattedTimeRangeA11y • $appNameTestApp"))
+                    "$formattedTimeRangeA11y • $appNameTestApp",
+                )
+            )
             .isTrue()
     }
 
@@ -247,7 +263,9 @@ class SkinTemperatureFormatterTest {
                     "-2.5K (avg variation)",
                     "-2.5 kelvins (average variation)",
                     formattedTimeRange,
-                    formattedTimeRangeA11y))
+                    formattedTimeRangeA11y,
+                )
+            )
             .isTrue()
         assertThat(
                 isSeriesDataEntryCorrect(
@@ -255,7 +273,9 @@ class SkinTemperatureFormatterTest {
                     "-2.5K (avg variation)",
                     "-2.5 kelvins (average variation)",
                     "$formattedTimeRange • $appNameTestApp",
-                    "$formattedTimeRangeA11y • $appNameTestApp"))
+                    "$formattedTimeRangeA11y • $appNameTestApp",
+                )
+            )
             .isTrue()
     }
 
@@ -280,7 +300,9 @@ class SkinTemperatureFormatterTest {
                     "-0.5K (avg variation)",
                     "-0.5 kelvins (average variation)",
                     formattedTimeRange,
-                    formattedTimeRangeA11y))
+                    formattedTimeRangeA11y,
+                )
+            )
             .isTrue()
         assertThat(
                 isSeriesDataEntryCorrect(
@@ -288,7 +310,9 @@ class SkinTemperatureFormatterTest {
                     "-0.5K (avg variation)",
                     "-0.5 kelvins (average variation)",
                     "$formattedTimeRange • $appNameTestApp",
-                    "$formattedTimeRangeA11y • $appNameTestApp"))
+                    "$formattedTimeRangeA11y • $appNameTestApp",
+                )
+            )
             .isTrue()
     }
 
@@ -304,7 +328,9 @@ class SkinTemperatureFormatterTest {
                 isSessionDetailsOverviewCorrect(
                     formattedEntries[0] as ReverseSessionDetail,
                     formattedEntries[1] as ReverseSessionDetail,
-                    formattedEntries[2] as FormattedSectionTitle))
+                    formattedEntries[2] as FormattedSectionTitle,
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -312,7 +338,9 @@ class SkinTemperatureFormatterTest {
                     "-2.5℃",
                     "-2.5 degrees Celsius",
                     dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
-                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time)))
+                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
+                )
+            )
             .isTrue()
     }
 
@@ -328,7 +356,9 @@ class SkinTemperatureFormatterTest {
                 isSessionDetailsOverviewCorrect(
                     formattedEntries[0] as ReverseSessionDetail,
                     formattedEntries[1] as ReverseSessionDetail,
-                    formattedEntries[2] as FormattedSectionTitle))
+                    formattedEntries[2] as FormattedSectionTitle,
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -336,7 +366,9 @@ class SkinTemperatureFormatterTest {
                     "-2.5℃",
                     "-2.5 degrees Celsius",
                     dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
-                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time)))
+                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -344,7 +376,9 @@ class SkinTemperatureFormatterTest {
                     "0℃",
                     "0 degrees Celsius",
                     dateTimeFormatter.formatTime(deltaZero.time),
-                    dateTimeFormatter.formatTime(deltaZero.time)))
+                    dateTimeFormatter.formatTime(deltaZero.time),
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -352,7 +386,9 @@ class SkinTemperatureFormatterTest {
                     "+1℃",
                     "+1 degree Celsius",
                     dateTimeFormatter.formatTime(deltaPlusOne.time),
-                    dateTimeFormatter.formatTime(deltaPlusOne.time)))
+                    dateTimeFormatter.formatTime(deltaPlusOne.time),
+                )
+            )
             .isTrue()
     }
 
@@ -368,7 +404,9 @@ class SkinTemperatureFormatterTest {
                 isSessionDetailsOverviewCorrect(
                     formattedEntries[0] as ReverseSessionDetail,
                     formattedEntries[1] as ReverseSessionDetail,
-                    formattedEntries[2] as FormattedSectionTitle))
+                    formattedEntries[2] as FormattedSectionTitle,
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -376,7 +414,9 @@ class SkinTemperatureFormatterTest {
                     "-4.5℉",
                     "-4.5 degrees Fahrenheit",
                     dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
-                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time)))
+                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
+                )
+            )
             .isTrue()
     }
 
@@ -392,7 +432,9 @@ class SkinTemperatureFormatterTest {
                 isSessionDetailsOverviewCorrect(
                     formattedEntries[0] as ReverseSessionDetail,
                     formattedEntries[1] as ReverseSessionDetail,
-                    formattedEntries[2] as FormattedSectionTitle))
+                    formattedEntries[2] as FormattedSectionTitle,
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -400,7 +442,9 @@ class SkinTemperatureFormatterTest {
                     "-4.5℉",
                     "-4.5 degrees Fahrenheit",
                     dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
-                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time)))
+                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -408,7 +452,9 @@ class SkinTemperatureFormatterTest {
                     "0℉",
                     "0 degrees Fahrenheit",
                     dateTimeFormatter.formatTime(deltaZero.time),
-                    dateTimeFormatter.formatTime(deltaZero.time)))
+                    dateTimeFormatter.formatTime(deltaZero.time),
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -416,7 +462,9 @@ class SkinTemperatureFormatterTest {
                     "+1.8℉",
                     "+1.8 degrees Fahrenheit",
                     dateTimeFormatter.formatTime(deltaPlusOne.time),
-                    dateTimeFormatter.formatTime(deltaPlusOne.time)))
+                    dateTimeFormatter.formatTime(deltaPlusOne.time),
+                )
+            )
             .isTrue()
     }
 
@@ -432,7 +480,9 @@ class SkinTemperatureFormatterTest {
                 isSessionDetailsOverviewCorrect(
                     formattedEntries[0] as ReverseSessionDetail,
                     formattedEntries[1] as ReverseSessionDetail,
-                    formattedEntries[2] as FormattedSectionTitle))
+                    formattedEntries[2] as FormattedSectionTitle,
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -440,7 +490,9 @@ class SkinTemperatureFormatterTest {
                     "-2.5K",
                     "-2.5 kelvins",
                     dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
-                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time)))
+                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
+                )
+            )
             .isTrue()
     }
 
@@ -456,7 +508,9 @@ class SkinTemperatureFormatterTest {
                 isSessionDetailsOverviewCorrect(
                     formattedEntries[0] as ReverseSessionDetail,
                     formattedEntries[1] as ReverseSessionDetail,
-                    formattedEntries[2] as FormattedSectionTitle))
+                    formattedEntries[2] as FormattedSectionTitle,
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -464,7 +518,9 @@ class SkinTemperatureFormatterTest {
                     "-2.5K",
                     "-2.5 kelvins",
                     dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
-                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time)))
+                    dateTimeFormatter.formatTime(deltaMinusTwoAndHalf.time),
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -472,7 +528,9 @@ class SkinTemperatureFormatterTest {
                     "0K",
                     "0 kelvins",
                     dateTimeFormatter.formatTime(deltaZero.time),
-                    dateTimeFormatter.formatTime(deltaZero.time)))
+                    dateTimeFormatter.formatTime(deltaZero.time),
+                )
+            )
             .isTrue()
         assertThat(
                 isFormattedSessionDetailCorrect(
@@ -480,20 +538,22 @@ class SkinTemperatureFormatterTest {
                     "+1K",
                     "+1 kelvin",
                     dateTimeFormatter.formatTime(deltaPlusOne.time),
-                    dateTimeFormatter.formatTime(deltaPlusOne.time)))
+                    dateTimeFormatter.formatTime(deltaPlusOne.time),
+                )
+            )
             .isTrue()
     }
 
     private enum class ReverseEntryType(val title: String) {
         BASELINE_TEMP("Baseline"),
-        MEASUREMENT_LOCATION("Measurement location")
+        MEASUREMENT_LOCATION("Measurement location"),
     }
 
     private fun isReverseSessionDetailCorrect(
         entryToCheck: ReverseSessionDetail,
         header: String,
         headerA11y: String,
-        entryType: ReverseEntryType
+        entryType: ReverseEntryType,
     ): Boolean {
         return when (entryType) {
             ReverseEntryType.MEASUREMENT_LOCATION ->
@@ -514,7 +574,7 @@ class SkinTemperatureFormatterTest {
         title: String,
         titleA11y: String,
         header: String,
-        headerA11y: String
+        headerA11y: String,
     ): Boolean {
         return (entryToCheck.title == title) &&
             (entryToCheck.titleA11y == titleA11y) &&
@@ -527,7 +587,7 @@ class SkinTemperatureFormatterTest {
         title: String,
         titleA11y: String,
         header: String,
-        headerA11y: String
+        headerA11y: String,
     ): Boolean {
         return (entryToCheck.title == title) &&
             (entryToCheck.titleA11y == titleA11y) &&
@@ -538,23 +598,36 @@ class SkinTemperatureFormatterTest {
     private fun isSessionDetailsOverviewCorrect(
         locationEntry: ReverseSessionDetail,
         baselineEntry: ReverseSessionDetail,
-        titleEntry: FormattedSectionTitle
+        titleEntry: FormattedSectionTitle,
     ): Boolean {
         return isReverseSessionDetailCorrect(
-            locationEntry, "Toe", "Toe", ReverseEntryType.MEASUREMENT_LOCATION) &&
+            locationEntry,
+            "Toe",
+            "Toe",
+            ReverseEntryType.MEASUREMENT_LOCATION,
+        ) &&
             when (preferences.getTemperatureUnit()) {
                 TemperatureUnit.CELSIUS ->
                     isReverseSessionDetailCorrect(
-                        baselineEntry, "25℃", "25 degrees Celsius", ReverseEntryType.BASELINE_TEMP)
+                        baselineEntry,
+                        "25℃",
+                        "25 degrees Celsius",
+                        ReverseEntryType.BASELINE_TEMP,
+                    )
                 TemperatureUnit.FAHRENHEIT ->
                     isReverseSessionDetailCorrect(
                         baselineEntry,
                         "77℉",
                         "77 degrees Fahrenheit",
-                        ReverseEntryType.BASELINE_TEMP)
+                        ReverseEntryType.BASELINE_TEMP,
+                    )
                 TemperatureUnit.KELVIN ->
                     isReverseSessionDetailCorrect(
-                        baselineEntry, "298.15K", "298.15 kelvins", ReverseEntryType.BASELINE_TEMP)
+                        baselineEntry,
+                        "298.15K",
+                        "298.15 kelvins",
+                        ReverseEntryType.BASELINE_TEMP,
+                    )
             } &&
             (titleEntry.title == "Variation from baseline")
     }

@@ -26,10 +26,10 @@ import android.health.connect.datatypes.BloodPressureRecord.BodyPosition.BodyPos
 import android.health.connect.datatypes.units.Pressure
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.BloodPressureFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -98,7 +98,8 @@ class BloodPressureFormatterTest {
             getRecord(
                 systolic = 123.1,
                 diastolic = 81.7,
-                location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM)
+                location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
+            )
 
         assertThat(formatter.formatValue(record, preferences))
             .isEqualTo("123/82 mmHg Left upper arm")
@@ -110,7 +111,8 @@ class BloodPressureFormatterTest {
             getRecord(
                 systolic = 123.1,
                 diastolic = 81.7,
-                location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM)
+                location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
+            )
 
         assertThat(formatter.formatA11yValue(record, preferences))
             .isEqualTo("123/82 millimetre of mercury Left upper arm")
@@ -123,7 +125,8 @@ class BloodPressureFormatterTest {
                 systolic = 123.1,
                 diastolic = 81.7,
                 position = BODY_POSITION_STANDING_UP,
-                location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM)
+                location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
+            )
 
         assertThat(formatter.formatValue(record, preferences))
             .isEqualTo("123/82 mmHg Left upper arm Standing up")
@@ -136,7 +139,8 @@ class BloodPressureFormatterTest {
                 systolic = 123.1,
                 diastolic = 81.7,
                 position = BODY_POSITION_STANDING_UP,
-                location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM)
+                location = BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
+            )
 
         assertThat(formatter.formatA11yValue(record, preferences))
             .isEqualTo("123/82 millimetre of mercury Left upper arm Standing up")
@@ -147,7 +151,7 @@ class BloodPressureFormatterTest {
         location: Int = BLOOD_PRESSURE_MEASUREMENT_LOCATION_UNKNOWN,
         @BodyPositionType position: Int = BODY_POSITION_UNKNOWN,
         systolic: Double,
-        diastolic: Double
+        diastolic: Double,
     ): BloodPressureRecord {
         return BloodPressureRecord.Builder(
                 getMetaData(),
@@ -155,7 +159,8 @@ class BloodPressureFormatterTest {
                 location,
                 Pressure.fromMillimetersOfMercury(systolic),
                 Pressure.fromMillimetersOfMercury(diastolic),
-                position)
+                position,
+            )
             .build()
     }
 }

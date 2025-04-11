@@ -23,10 +23,10 @@ import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.
 import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_POSITIVE
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.OvulationTestFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -78,9 +78,7 @@ class OvulationTestFormatterTest {
         assertThat(formatter.formatValue(record, preferences)).isEqualTo("High")
     }
 
-    private fun getRecord(
-        @OvulationTestResults result: Int,
-    ): OvulationTestRecord {
+    private fun getRecord(@OvulationTestResults result: Int): OvulationTestRecord {
         return OvulationTestRecord.Builder(getMetaData(), NOW, result).build()
     }
 }

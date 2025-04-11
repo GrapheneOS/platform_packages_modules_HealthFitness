@@ -20,7 +20,7 @@ import android.health.connect.datatypes.OxygenSaturationRecord
 import android.icu.text.MessageFormat
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -32,17 +32,21 @@ constructor(@ApplicationContext private val context: Context) :
 
     override suspend fun formatValue(
         record: OxygenSaturationRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return MessageFormat.format(
-            context.getString(R.string.percent), mapOf("value" to record.percentage.value))
+            context.getString(R.string.percent),
+            mapOf("value" to record.percentage.value),
+        )
     }
 
     override suspend fun formatA11yValue(
         record: OxygenSaturationRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return MessageFormat.format(
-            context.getString(R.string.percent_long), mapOf("value" to record.percentage.value))
+            context.getString(R.string.percent_long),
+            mapOf("value" to record.percentage.value),
+        )
     }
 }

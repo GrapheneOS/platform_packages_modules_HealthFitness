@@ -34,7 +34,7 @@ import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
 import javax.inject.Inject
@@ -45,14 +45,14 @@ class BloodGlucoseFormatter @Inject constructor(@ApplicationContext private val 
 
     override suspend fun formatValue(
         record: BloodGlucoseRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return format(R.string.millimoles_per_liter, record)
     }
 
     override suspend fun formatA11yValue(
         record: BloodGlucoseRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return format(R.string.millimoles_per_liter_long, record)
     }
@@ -60,7 +60,8 @@ class BloodGlucoseFormatter @Inject constructor(@ApplicationContext private val 
     private fun format(@StringRes res: Int, record: BloodGlucoseRecord): String {
         val stringJoiner = StringJoiner(" ")
         stringJoiner.add(
-            format(context.getString(res), mapOf("count" to record.level.inMillimolesPerLiter)))
+            format(context.getString(res), mapOf("count" to record.level.inMillimolesPerLiter))
+        )
 
         if (record.specimenSource != SpecimenSource.SPECIMEN_SOURCE_UNKNOWN) {
             stringJoiner.add(getSpecimenSource(record.specimenSource))

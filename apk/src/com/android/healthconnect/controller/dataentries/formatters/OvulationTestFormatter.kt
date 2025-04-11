@@ -23,7 +23,7 @@ import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.
 import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_POSITIVE
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -33,7 +33,7 @@ class OvulationTestFormatter @Inject constructor(@ApplicationContext private val
 
     override suspend fun formatValue(
         record: OvulationTestRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return when (record.result) {
             RESULT_POSITIVE -> context.getString(R.string.ovulation_positive)
@@ -48,7 +48,7 @@ class OvulationTestFormatter @Inject constructor(@ApplicationContext private val
 
     override suspend fun formatA11yValue(
         record: OvulationTestRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatValue(record, unitPreferences)
     }

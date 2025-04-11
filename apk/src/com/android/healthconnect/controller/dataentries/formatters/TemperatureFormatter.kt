@@ -6,16 +6,16 @@ import android.health.connect.datatypes.units.Temperature
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.units.TemperatureConverter
-import com.android.healthconnect.controller.dataentries.units.TemperatureUnit
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.TemperatureConverter
+import com.android.healthconnect.controller.units.TemperatureUnit
+import com.android.healthconnect.controller.units.UnitPreferences
 
 object TemperatureFormatter {
     fun formatValue(
         context: Context,
         temperature: Temperature,
         measurementLocation: Int,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val res =
             when (unitPreferences.getTemperatureUnit()) {
@@ -37,7 +37,7 @@ object TemperatureFormatter {
         context: Context,
         temperature: Temperature,
         measurementLocation: Int,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val res =
             when (unitPreferences.getTemperatureUnit()) {
@@ -71,7 +71,8 @@ object TemperatureFormatter {
             MEASUREMENT_LOCATION_VAGINA -> context.getString(R.string.temperature_location_vagina)
             else -> {
                 throw IllegalArgumentException(
-                    "Unrecognised body temperature measurement location: $location")
+                    "Unrecognised body temperature measurement location: $location"
+                )
             }
         }
     }
@@ -80,11 +81,13 @@ object TemperatureFormatter {
         context: Context,
         @StringRes res: Int,
         temperature: Temperature,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val temp =
             TemperatureConverter.convertFromCelsius(
-                temperature.inCelsius, unitPreferences.getTemperatureUnit())
+                temperature.inCelsius,
+                unitPreferences.getTemperatureUnit(),
+            )
         return MessageFormat.format(context.getString(res), mapOf("value" to temp))
     }
 }

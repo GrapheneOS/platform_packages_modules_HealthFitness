@@ -5,10 +5,10 @@ import android.health.connect.datatypes.units.Mass
 import android.icu.text.MessageFormat.format
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.units.WeightConverter
-import com.android.healthconnect.controller.dataentries.units.WeightConverter.stonePoundsFromPounds
-import com.android.healthconnect.controller.dataentries.units.WeightUnit
-import com.android.healthconnect.controller.dataentries.units.WeightUnit.POUND
+import com.android.healthconnect.controller.units.WeightConverter
+import com.android.healthconnect.controller.units.WeightConverter.stonePoundsFromPounds
+import com.android.healthconnect.controller.units.WeightUnit
+import com.android.healthconnect.controller.units.WeightUnit.POUND
 
 /** Formats mass (bone mass, body weight etc). */
 object MassFormatter {
@@ -22,7 +22,8 @@ object MassFormatter {
             R.string.kilograms_short_label,
             R.string.pounds_short_label,
             R.string.stone_short_label,
-            R.string.stone_pound_short_label)
+            R.string.stone_pound_short_label,
+        )
     }
 
     /** Returns formatted weight in the user's current unit with default long unit strings. */
@@ -34,7 +35,8 @@ object MassFormatter {
             R.string.kilograms_long_label,
             R.string.pounds_long_label,
             R.string.stone_long_label,
-            R.string.stone_pound_long_label)
+            R.string.stone_pound_long_label,
+        )
     }
 
     private fun getMassString(
@@ -44,7 +46,7 @@ object MassFormatter {
         @StringRes kilogramStringId: Int,
         @StringRes poundStringId: Int,
         @StringRes stoneStringId: Int,
-        @StringRes stonePoundStringId: Int
+        @StringRes stonePoundStringId: Int,
     ): String {
         return when (weightUnit) {
             POUND -> {
@@ -58,14 +60,18 @@ object MassFormatter {
                 if (stonePounds.pounds > 0) {
                     val part1 =
                         format(
-                            context.getString(stoneStringId), mapOf("count" to stonePounds.stone))
+                            context.getString(stoneStringId),
+                            mapOf("count" to stonePounds.stone),
+                        )
                     val part2 =
                         format(
                             context.getString(poundStringId),
-                            mapOf("count" to stonePounds.pounds, "delta_symbol" to ""))
+                            mapOf("count" to stonePounds.pounds, "delta_symbol" to ""),
+                        )
                     format(
                         context.getString(stonePoundStringId),
-                        mapOf("stone_part" to part1, "pound_part" to part2))
+                        mapOf("stone_part" to part1, "pound_part" to part2),
+                    )
                 } else {
                     format(context.getString(stoneStringId), mapOf("count" to stonePounds.stone))
                 }

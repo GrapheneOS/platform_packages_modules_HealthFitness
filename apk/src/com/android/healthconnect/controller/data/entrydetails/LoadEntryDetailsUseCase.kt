@@ -35,7 +35,7 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val entryFormatter: HealthDataEntryFormatter,
     private val entryDetailsFormatter: HealthDataEntryDetailsFormatter,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<LoadDataEntryInput, List<FormattedEntry>>(dispatcher) {
 
     override suspend fun execute(input: LoadDataEntryInput): List<FormattedEntry> {
@@ -55,7 +55,10 @@ constructor(
         val response =
             suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
                 healthConnectManager.readRecords(
-                    filter, Runnable::run, continuation.asOutcomeReceiver())
+                    filter,
+                    Runnable::run,
+                    continuation.asOutcomeReceiver(),
+                )
             }
         return response.records.orEmpty()
     }
@@ -73,5 +76,5 @@ constructor(
 data class LoadDataEntryInput(
     val permissionType: FitnessPermissionType,
     val entryId: String,
-    val showDataOrigin: Boolean
+    val showDataOrigin: Boolean,
 )

@@ -20,7 +20,7 @@ import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -32,14 +32,14 @@ constructor(@ApplicationContext private val context: Context) :
 
     override suspend fun formatValue(
         record: ElevationGainedRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatSample(R.string.elevation_meters, record.elevation)
     }
 
     override suspend fun formatA11yValue(
         record: ElevationGainedRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatSample(R.string.elevation_meters_long, record.elevation)
     }

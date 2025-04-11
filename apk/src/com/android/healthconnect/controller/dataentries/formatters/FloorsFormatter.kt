@@ -18,7 +18,7 @@ import android.health.connect.datatypes.FloorsClimbedRecord
 import android.icu.text.MessageFormat.format
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -28,14 +28,14 @@ class FloorsFormatter @Inject constructor(@ApplicationContext private val contex
 
     override suspend fun formatValue(
         record: FloorsClimbedRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return format(context.getString(R.string.floors_climbed), mapOf("count" to record.floors))
     }
 
     override suspend fun formatA11yValue(
         record: FloorsClimbedRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatValue(record, unitPreferences)
     }

@@ -56,10 +56,10 @@ import android.health.connect.datatypes.units.Volume
 import android.net.Uri
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import com.android.healthconnect.controller.dataentries.units.PowerConverter
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.units.PowerConverter
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.randomInstant
 import com.android.healthconnect.controller.utils.toInstant
@@ -518,7 +518,8 @@ const val OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME = "android.healthconnect.control
 const val MEDICAL_PERMISSIONS_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app5"
 const val BODY_SENSORS_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app6"
 const val WEAR_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app7"
-const val BODY_SENSORS_AND_HEALTH_TEST_APP_PACKAGE_NAME = "android.healthconnect.controller.test.app8"
+const val BODY_SENSORS_AND_HEALTH_TEST_APP_PACKAGE_NAME =
+    "android.healthconnect.controller.test.app8"
 const val TEST_APP_NAME = "Health Connect test app"
 const val TEST_APP_NAME_2 = "Health Connect test app 2"
 const val TEST_APP_NAME_3 = "Health Connect test app 3"

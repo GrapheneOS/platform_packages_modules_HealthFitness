@@ -94,7 +94,7 @@ import com.android.healthconnect.controller.dataentries.formatters.DurationForma
 import com.android.healthconnect.controller.dataentries.formatters.shared.BaseFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.LengthFormatter
 import com.android.healthconnect.controller.dataentries.formatters.shared.RecordDetailsFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration

@@ -21,7 +21,7 @@ import android.icu.text.MessageFormat
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseBlockEntry
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

@@ -35,10 +35,10 @@ import android.health.connect.datatypes.MealType.MealTypes
 import android.health.connect.datatypes.units.BloodGlucose
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.BloodGlucoseFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -233,7 +233,8 @@ class BloodGlucoseFormatterTest {
                 level = 25.0,
                 source = SPECIMEN_SOURCE_INTERSTITIAL_FLUID,
                 relationToMeal = RELATION_TO_MEAL_FASTING,
-                mealType = MEAL_TYPE_LUNCH)
+                mealType = MEAL_TYPE_LUNCH,
+            )
 
         assertThat(formatter.formatA11yValue(record, preferences))
             .isEqualTo("25 millimoles per liter Interstitial fluid Lunch Fasting")
@@ -243,7 +244,7 @@ class BloodGlucoseFormatterTest {
         level: Double,
         @SpecimenSourceType source: Int = SPECIMEN_SOURCE_UNKNOWN,
         @RelationToMealTypes relationToMeal: Int = RELATION_TO_MEAL_UNKNOWN,
-        @MealTypes mealType: Int = MealType.MEAL_TYPE_UNKNOWN
+        @MealTypes mealType: Int = MealType.MEAL_TYPE_UNKNOWN,
     ): BloodGlucoseRecord {
         return BloodGlucoseRecord.Builder(
                 getMetaData(),
@@ -251,7 +252,8 @@ class BloodGlucoseFormatterTest {
                 source,
                 BloodGlucose.fromMillimolesPerLiter(level),
                 relationToMeal,
-                mealType)
+                mealType,
+            )
             .build()
     }
 }

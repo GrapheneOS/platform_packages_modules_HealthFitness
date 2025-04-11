@@ -19,7 +19,7 @@ import android.health.connect.datatypes.IntervalRecord
 import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import java.time.Instant
 

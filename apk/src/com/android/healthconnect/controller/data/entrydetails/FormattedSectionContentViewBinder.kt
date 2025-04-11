@@ -20,7 +20,6 @@ import android.widget.TextView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedSectionContent
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
-import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
@@ -47,7 +46,8 @@ class FormattedSectionContentViewBinder : SimpleViewBinder<FormattedSectionConte
                     view.context.resources.getDimension(R.dimen.spacing_small).toInt(),
                     /* top= */ 0,
                     /* end= */ 0,
-                    /* bottom= */ 0)
+                    /* bottom= */ 0,
+                )
                 view.context.getString(R.string.bulleted_content, data.title)
             } else {
                 data.title

@@ -20,11 +20,11 @@ import android.health.connect.datatypes.StepsCadenceRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.StepsCadenceFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -112,7 +112,9 @@ class StepsCadenceFormatterTest {
                     header = "07:06",
                     headerA11y = "07:06",
                     titleA11y = "10.3 steps per minute",
-                    title = "10.3 steps/min"))
+                    title = "10.3 steps/min",
+                )
+            )
     }
 
     private fun getStepsCadence(samples: List<Double>): StepsCadenceRecord {
@@ -122,7 +124,8 @@ class StepsCadenceFormatterTest {
                 NOW.plusSeconds(samples.size.toLong() + 1),
                 samples.map { rate ->
                     StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
-                })
+                },
+            )
             .build()
     }
 }

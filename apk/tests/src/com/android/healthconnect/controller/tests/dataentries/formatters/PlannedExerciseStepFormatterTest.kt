@@ -30,8 +30,8 @@ import android.health.connect.datatypes.units.Velocity
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.PlannedExerciseStepFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -71,9 +71,14 @@ class PlannedExerciseStepFormatterTest {
                                 HeartRateGoal(100, 150),
                                 ExercisePerformanceGoal.SpeedGoal(
                                     Velocity.fromMetersPerSecond(15.0),
-                                    Velocity.fromMetersPerSecond(25.0))))
+                                    Velocity.fromMetersPerSecond(25.0),
+                                ),
+                            )
+                        )
                         .build(),
-                    unitPreferences))
+                    unitPreferences,
+                )
+            )
             .isEqualTo(
                 FormattedEntry.PlannedExerciseStepEntry(
                     step =
@@ -83,10 +88,15 @@ class PlannedExerciseStepFormatterTest {
                                     HeartRateGoal(100, 150),
                                     ExercisePerformanceGoal.SpeedGoal(
                                         Velocity.fromMetersPerSecond(15.0),
-                                        Velocity.fromMetersPerSecond(25.0))))
+                                        Velocity.fromMetersPerSecond(25.0),
+                                    ),
+                                )
+                            )
                             .build(),
                     title = "1 km Running",
-                    titleA11y = "1 kilometre Running"))
+                    titleA11y = "1 kilometre Running",
+                )
+            )
     }
 
     @Test
@@ -99,27 +109,38 @@ class PlannedExerciseStepFormatterTest {
                                 HeartRateGoal(100, 150),
                                 ExercisePerformanceGoal.SpeedGoal(
                                     Velocity.fromMetersPerSecond(15.0),
-                                    Velocity.fromMetersPerSecond(25.0))))
+                                    Velocity.fromMetersPerSecond(25.0),
+                                ),
+                            )
+                        )
                         .build(),
-                    unitPreferences))
+                    unitPreferences,
+                )
+            )
             .isEqualTo(
                 listOf(
                     FormattedEntry.ExercisePerformanceGoalEntry(
                         HeartRateGoal(100, 150),
                         title = "100 bpm - 150 bpm",
-                        titleA11y = "100 beats per minute - 150 beats per minute"),
+                        titleA11y = "100 beats per minute - 150 beats per minute",
+                    ),
                     FormattedEntry.ExercisePerformanceGoalEntry(
                         ExercisePerformanceGoal.SpeedGoal(
-                            Velocity.fromMetersPerSecond(15.0), Velocity.fromMetersPerSecond(25.0)),
+                            Velocity.fromMetersPerSecond(15.0),
+                            Velocity.fromMetersPerSecond(25.0),
+                        ),
                         title = "00:40 min/km - 01:06 min/km",
-                        titleA11y = "00:40 minute per kilometre - 01:06 minute per kilometre"),
-                ))
+                        titleA11y = "00:40 minute per kilometre - 01:06 minute per kilometre",
+                    ),
+                )
+            )
     }
 
     private fun getPlannedExerciseStepBuilder(): PlannedExerciseStep.Builder {
         return PlannedExerciseStep.Builder(
             EXERCISE_SEGMENT_TYPE_RUNNING,
             EXERCISE_CATEGORY_ACTIVE,
-            DistanceGoal(Length.fromMeters(1000.0)))
+            DistanceGoal(Length.fromMeters(1000.0)),
+        )
     }
 }

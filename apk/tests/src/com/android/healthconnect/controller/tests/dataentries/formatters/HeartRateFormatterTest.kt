@@ -20,10 +20,10 @@ import android.health.connect.datatypes.HeartRateRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -43,8 +43,7 @@ class HeartRateFormatterTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val clearTimeFormatRule = ClearTimeFormatRule()
 
-    @Inject @ApplicationContext
-    lateinit var applicationContext: Context
+    @Inject @ApplicationContext lateinit var applicationContext: Context
     @Inject lateinit var formatter: HeartRateFormatter
     @Inject lateinit var preferences: UnitPreferences
     private lateinit var context: Context
@@ -103,6 +102,8 @@ class HeartRateFormatterTest {
                     header = "07:06",
                     headerA11y = "07:06",
                     titleA11y = "80 beats per minute",
-                    title = "80 bpm"))
+                    title = "80 bpm",
+                )
+            )
     }
 }

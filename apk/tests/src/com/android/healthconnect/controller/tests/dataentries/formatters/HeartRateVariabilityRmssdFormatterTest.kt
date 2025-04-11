@@ -22,10 +22,10 @@ import android.content.Context
 import android.health.connect.datatypes.HeartRateVariabilityRmssdRecord
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.dataentries.formatters.HeartRateVariabilityRmssdFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -62,8 +62,7 @@ class HeartRateVariabilityRmssdFormatterTest {
 
     @Test
     fun formatA11yValue() = runBlocking {
-        assertThat(formatter.formatA11yValue(getRecord(), preferences))
-            .isEqualTo("1 millisecond")
+        assertThat(formatter.formatA11yValue(getRecord(), preferences)).isEqualTo("1 millisecond")
     }
 
     private fun getRecord(): HeartRateVariabilityRmssdRecord {

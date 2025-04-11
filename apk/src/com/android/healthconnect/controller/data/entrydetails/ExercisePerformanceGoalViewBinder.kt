@@ -20,7 +20,6 @@ import android.widget.TextView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExercisePerformanceGoalEntry
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
-import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
@@ -44,7 +43,8 @@ class ExercisePerformanceGoalViewBinder : SimpleViewBinder<ExercisePerformanceGo
             view.context.resources.getDimension(R.dimen.spacing_small).toInt(),
             /* top= */ 0,
             /* end= */ 0,
-            /* bottom= */ 0)
+            /* bottom= */ 0,
+        )
         title.text = view.context.getString(R.string.bulleted_content, data.title)
         title.contentDescription = data.titleA11y
         logger.logImpression(EntryDetailsElement.EXERCISE_PERFORMANCE_GOAL_ENTRY_VIEW)

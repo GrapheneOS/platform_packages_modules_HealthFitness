@@ -23,7 +23,7 @@ import android.health.connect.datatypes.BodyWaterMassRecord
 import com.android.healthconnect.controller.dataentries.formatters.MassFormatter.formatA11yValue
 import com.android.healthconnect.controller.dataentries.formatters.MassFormatter.formatValue
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -33,14 +33,14 @@ class BodyWaterMassFormatter @Inject constructor(@ApplicationContext private val
 
     override suspend fun formatValue(
         record: BodyWaterMassRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatValue(context, record.bodyWaterMass, unitPreferences.getWeightUnit())
     }
 
     override suspend fun formatA11yValue(
         record: BodyWaterMassRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatA11yValue(context, record.bodyWaterMass, unitPreferences.getWeightUnit())
     }

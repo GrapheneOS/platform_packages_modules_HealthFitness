@@ -16,7 +16,7 @@ package com.android.healthconnect.controller.dataentries.formatters
 import android.content.Context
 import android.health.connect.datatypes.BoneMassRecord
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -26,14 +26,14 @@ class BoneMassFormatter @Inject constructor(@ApplicationContext private val cont
 
     override suspend fun formatValue(
         record: BoneMassRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return MassFormatter.formatValue(context, record.mass, unitPreferences.getWeightUnit())
     }
 
     override suspend fun formatA11yValue(
         record: BoneMassRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return MassFormatter.formatA11yValue(context, record.mass, unitPreferences.getWeightUnit())
     }

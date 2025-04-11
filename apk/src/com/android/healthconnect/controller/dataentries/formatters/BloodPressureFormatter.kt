@@ -26,7 +26,7 @@ import android.health.connect.datatypes.BloodPressureRecord.BodyPosition
 import androidx.annotation.StringRes
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Locale
 import java.util.StringJoiner
@@ -38,14 +38,14 @@ class BloodPressureFormatter @Inject constructor(@ApplicationContext private val
 
     override suspend fun formatValue(
         record: BloodPressureRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatBloodPressure(R.string.blood_pressure, record)
     }
 
     override suspend fun formatA11yValue(
         record: BloodPressureRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatBloodPressure(R.string.blood_pressure_long, record)
     }
@@ -83,7 +83,8 @@ class BloodPressureFormatter @Inject constructor(@ApplicationContext private val
                 context.getString(R.string.body_position_reclining)
             else -> {
                 throw java.lang.IllegalArgumentException(
-                    "Unrecognised blood pressure measurement position: $bodyPosition")
+                    "Unrecognised blood pressure measurement position: $bodyPosition"
+                )
             }
         }
     }
@@ -100,7 +101,8 @@ class BloodPressureFormatter @Inject constructor(@ApplicationContext private val
                 context.getString(R.string.blood_pressure_right_arm)
             else -> {
                 throw IllegalArgumentException(
-                    "Unrecognised blood pressure measurement location: $location")
+                    "Unrecognised blood pressure measurement location: $location"
+                )
             }
         }
     }

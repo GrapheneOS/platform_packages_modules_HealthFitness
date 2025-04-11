@@ -30,7 +30,7 @@ import android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusSensati
 import android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusSensation.SENSATION_UNKNOWN
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.dataentries.formatters.shared.EntryFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
+import com.android.healthconnect.controller.units.UnitPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.StringJoiner
 import javax.inject.Inject
@@ -41,7 +41,7 @@ class CervicalMucusFormatter @Inject constructor(@ApplicationContext private val
 
     override suspend fun formatValue(
         record: CervicalMucusRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         val stringJoiner = StringJoiner(" ")
         if (record.appearance != APPEARANCE_UNKNOWN) {
@@ -70,7 +70,7 @@ class CervicalMucusFormatter @Inject constructor(@ApplicationContext private val
 
     override suspend fun formatA11yValue(
         record: CervicalMucusRecord,
-        unitPreferences: UnitPreferences
+        unitPreferences: UnitPreferences,
     ): String {
         return formatValue(record, unitPreferences)
     }

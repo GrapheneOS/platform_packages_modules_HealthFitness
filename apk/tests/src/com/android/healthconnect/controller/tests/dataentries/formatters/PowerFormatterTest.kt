@@ -21,11 +21,11 @@ import android.health.connect.datatypes.units.Power
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.dataentries.formatters.PowerFormatter
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences
 import com.android.healthconnect.controller.tests.utils.ClearTimeFormatRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.units.UnitPreferences
 import com.google.common.truth.Truth.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -105,7 +105,9 @@ class PowerFormatterTest {
                         header = "07:06",
                         headerA11y = "07:06",
                         title = "2 W",
-                        titleA11y = "2 watts"))
+                        titleA11y = "2 watts",
+                    )
+                )
         }
     }
 
@@ -114,7 +116,8 @@ class PowerFormatterTest {
                 getMetaData(),
                 NOW,
                 NOW.plusSeconds(samples.size.toLong()),
-                samples.map { PowerRecord.PowerRecordSample(Power.fromWatts(it), NOW) })
+                samples.map { PowerRecord.PowerRecordSample(Power.fromWatts(it), NOW) },
+            )
             .build()
     }
 }
