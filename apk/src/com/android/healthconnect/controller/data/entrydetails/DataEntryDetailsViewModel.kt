@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.entrydetails
+package com.android.healthconnect.controller.data.entrydetails
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -46,7 +46,8 @@ constructor(private val loadEntryDetailsUseCase: LoadEntryDetailsUseCase) : View
         viewModelScope.launch {
             val response =
                 loadEntryDetailsUseCase.invoke(
-                    LoadDataEntryInput(permissionType, entryId, showDataOrigin))
+                    LoadDataEntryInput(permissionType, entryId, showDataOrigin)
+                )
             when (response) {
                 is UseCaseResults.Success -> {
                     _sessionData.postValue(DateEntryFragmentState.WithData(response.data))

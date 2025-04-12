@@ -43,8 +43,7 @@ public final class AggregateParams {
 
     // Additional column used for time filtering. End time for interval records,
     // null for other records.
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-    private String mExtraTimeColumnName = null;
+    @Nullable private String mExtraTimeColumnName = null;
 
     private String mTimeOffsetColumnName;
 
@@ -79,6 +78,11 @@ public final class AggregateParams {
         return mTimeColumnName;
     }
 
+    /**
+     * Additional column used for time filtering. End time for interval records, null for other
+     * records.
+     */
+    @Nullable
     public String getExtraTimeColumnName() {
         return mExtraTimeColumnName;
     }

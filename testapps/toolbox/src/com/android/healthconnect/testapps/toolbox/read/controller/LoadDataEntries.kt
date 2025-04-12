@@ -33,7 +33,7 @@ class LoadDataEntries(private val healthConnectManager: HealthConnectManager): D
         return GeneralUtils.readRecords(
             recordType =  input.dataType.recordClass!!.java,
             timeFilterRange =  timeFilter,
-            numberOfRecordsPerBatch = 10L,
+            numberOfRecordsPerBatch = 1000L,
             manager = healthConnectManager
         )
     }

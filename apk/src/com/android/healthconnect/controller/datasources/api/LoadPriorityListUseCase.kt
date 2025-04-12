@@ -13,7 +13,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.permissiontypes.api
+package com.android.healthconnect.controller.datasources.api
 
 import android.health.connect.FetchDataOriginsPriorityOrderResponse
 import android.health.connect.HealthConnectManager
@@ -38,7 +38,8 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-) : BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher), ILoadPriorityListUseCase {
+) : BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher),
+    ILoadPriorityListUseCase {
 
     /** Returns list of [AppMetadata]s for given [HealthDataCategory] in priority order. */
     override suspend fun execute(input: @HealthDataCategoryInt Int): List<AppMetadata> {

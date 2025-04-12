@@ -107,7 +107,7 @@ public class ExportImportNotificationFactoryTest {
     }
 
     @Test
-    public void successfulImport_notificationDisplayedCorrectly() {
+    public void importCompletesSuccessfully_notificationDisplayedCorrectly() {
         Notification result = mFactory.createNotification(NOTIFICATION_TYPE_IMPORT_COMPLETE);
         Intent expectedIntent = new Intent(HealthConnectManager.ACTION_MANAGE_HEALTH_DATA);
         PendingIntent expectedPendingIntent =
@@ -130,28 +130,8 @@ public class ExportImportNotificationFactoryTest {
                 .isEqualTo(expectedPendingIntent.getCreatorPackage());
     }
 
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
     @Test
-    public void successfulImport_newNotificationFormatDisplayedCorrectly() {
-        Notification result = mFactory.createNotification(NOTIFICATION_TYPE_IMPORT_COMPLETE);
-        Intent expectedIntent = new Intent(HealthConnectManager.ACTION_MANAGE_HEALTH_DATA);
-        PendingIntent expectedPendingIntent =
-                PendingIntent.getActivity(
-                        mContext, 0, expectedIntent, PendingIntent.FLAG_IMMUTABLE);
-
-        String failMessage = "Notification could not be created";
-        assertWithMessage(failMessage).that(result).isNotNull();
-
-        assertThat(result.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
-        assertThat(result.extras.getString(Notification.EXTRA_TITLE)).isNotNull();
-
-        PendingIntent pendingIntent = result.contentIntent;
-        assertThat(pendingIntent.getCreatorPackage())
-                .isEqualTo(expectedPendingIntent.getCreatorPackage());
-    }
-
-    @Test
-    public void unsuccessfulImport_invalidFile_notificationDisplayedCorrectly() {
+    public void importCompletesUnsuccessfully_invalidFile_notificationDisplayedCorrectly() {
         Notification result =
                 mFactory.createNotification(NOTIFICATION_TYPE_IMPORT_UNSUCCESSFUL_INVALID_FILE);
         Intent expectedIntent = new Intent(HEALTH_CONNECT_RESTART_IMPORT_ACTION);
@@ -176,28 +156,8 @@ public class ExportImportNotificationFactoryTest {
                 .isEqualTo(expectedPendingIntent.getCreatorPackage());
     }
 
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
     @Test
-    public void unsuccessfulImport_invalidFile_newNotificationFormatDisplayedCorrectly() {
-        Notification result =
-                mFactory.createNotification(NOTIFICATION_TYPE_IMPORT_UNSUCCESSFUL_INVALID_FILE);
-        Intent expectedIntent = new Intent(HEALTH_CONNECT_RESTART_IMPORT_ACTION);
-        PendingIntent expectedPendingIntent =
-                PendingIntent.getActivity(
-                        mContext, 0, expectedIntent, PendingIntent.FLAG_IMMUTABLE);
-
-        String failMessage = "Notification could not be created";
-        assertWithMessage(failMessage).that(result).isNotNull();
-        assertThat(result.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
-        assertThat(result.extras.getString(Notification.EXTRA_TITLE)).isNotNull();
-
-        PendingIntent pendingIntent = result.contentIntent;
-        assertThat(pendingIntent.getCreatorPackage())
-                .isEqualTo(expectedPendingIntent.getCreatorPackage());
-    }
-
-    @Test
-    public void unsuccessfulImport_versionMismatch_notificationDisplayedCorrectly() {
+    public void importCompletesUnsuccessfully_versionMismatch_notificationDisplayedCorrectly() {
         Notification result =
                 mFactory.createNotification(NOTIFICATION_TYPE_IMPORT_UNSUCCESSFUL_VERSION_MISMATCH);
         Intent expectedIntent = new Intent(HEALTH_CONNECT_UPDATE_ACTION);
@@ -222,29 +182,8 @@ public class ExportImportNotificationFactoryTest {
                 .isEqualTo(expectedPendingIntent.getCreatorPackage());
     }
 
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
     @Test
-    public void unsuccessfulImport_versionMismatch_newNotificationFormatDisplayedCorrectly() {
-        Notification result =
-                mFactory.createNotification(NOTIFICATION_TYPE_IMPORT_UNSUCCESSFUL_VERSION_MISMATCH);
-        Intent expectedIntent = new Intent(HEALTH_CONNECT_UPDATE_ACTION);
-        PendingIntent expectedPendingIntent =
-                PendingIntent.getActivity(
-                        mContext, 0, expectedIntent, PendingIntent.FLAG_IMMUTABLE);
-
-        String failMessage = "Notification could not be created";
-        assertWithMessage(failMessage).that(result).isNotNull();
-
-        assertThat(result.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
-        assertThat(result.extras.getString(Notification.EXTRA_TITLE)).isNotNull();
-
-        PendingIntent pendingIntent = result.contentIntent;
-        assertThat(pendingIntent.getCreatorPackage())
-                .isEqualTo(expectedPendingIntent.getCreatorPackage());
-    }
-
-    @Test
-    public void unsuccessfulImport_unknownError_notificationDisplayedCorrectly() {
+    public void importCompletesUnsuccessfully_unknownError_notificationDisplayedCorrectly() {
         Notification result =
                 mFactory.createNotification(NOTIFICATION_TYPE_IMPORT_UNSUCCESSFUL_GENERIC_ERROR);
         Intent expectedIntent = new Intent(HEALTH_CONNECT_RESTART_IMPORT_ACTION);
@@ -270,31 +209,9 @@ public class ExportImportNotificationFactoryTest {
                 .isEqualTo(expectedPendingIntent.getCreatorPackage());
     }
 
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
-    @Test
-    public void unsuccessfulImport_unknownError_newNotificationFormatDisplayedCorrectly() {
-        Notification result =
-                mFactory.createNotification(NOTIFICATION_TYPE_IMPORT_UNSUCCESSFUL_GENERIC_ERROR);
-        Intent expectedIntent = new Intent(HEALTH_CONNECT_RESTART_IMPORT_ACTION);
-        PendingIntent expectedPendingIntent =
-                PendingIntent.getActivity(
-                        mContext, 0, expectedIntent, PendingIntent.FLAG_IMMUTABLE);
-
-        String failMessage = "Notification could not be created";
-        assertWithMessage(failMessage).that(result).isNotNull();
-
-        assertThat(result.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
-        assertThat(result.extras.getString(Notification.EXTRA_TITLE)).isNotNull();
-
-        PendingIntent pendingIntent = result.contentIntent;
-
-        assertThat(pendingIntent.getCreatorPackage())
-                .isEqualTo(expectedPendingIntent.getCreatorPackage());
-    }
-
     @Test
     @EnableFlags(Flags.FLAG_EXPORT_IMPORT_FAST_FOLLOW)
-    public void unsuccessfulExport_unknownError_notificationDisplayedCorrectly() {
+    public void exportCompletesUnsuccessfully_unknownError_notificationDisplayedCorrectly() {
         Notification result =
                 mFactory.createNotification(NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_GENERIC_ERROR);
         Intent expectedIntent = new Intent(HEALTH_CONNECT_RESTART_EXPORT_SETUP);
@@ -314,28 +231,6 @@ public class ExportImportNotificationFactoryTest {
         assertThat(action.title.toString()).isEqualTo("export_notification_set_up_intent_button");
 
         PendingIntent pendingIntent = action.actionIntent;
-
-        assertThat(pendingIntent.getCreatorPackage())
-                .isEqualTo(expectedPendingIntent.getCreatorPackage());
-    }
-
-    @EnableFlags(Flags.FLAG_EXPORT_IMPORT_NICE_TO_HAVE)
-    @Test
-    public void unsuccessfulExport_unknownError_newNotificationFormatDisplayedCorrectly() {
-        Notification result =
-                mFactory.createNotification(NOTIFICATION_TYPE_EXPORT_UNSUCCESSFUL_GENERIC_ERROR);
-        Intent expectedIntent = new Intent(HEALTH_CONNECT_RESTART_EXPORT_SETUP);
-        PendingIntent expectedPendingIntent =
-                PendingIntent.getActivity(
-                        mContext, 0, expectedIntent, PendingIntent.FLAG_IMMUTABLE);
-
-        String failMessage = "Notification could not be created";
-        assertWithMessage(failMessage).that(result).isNotNull();
-
-        assertThat(result.getChannelId()).isEqualTo(NOTIFICATION_CHANNEL_ID);
-        assertThat(result.extras.getString(Notification.EXTRA_TITLE)).isNotNull();
-
-        PendingIntent pendingIntent = result.contentIntent;
 
         assertThat(pendingIntent.getCreatorPackage())
                 .isEqualTo(expectedPendingIntent.getCreatorPackage());

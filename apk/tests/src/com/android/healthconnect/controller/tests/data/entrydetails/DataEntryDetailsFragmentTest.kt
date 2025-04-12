@@ -29,7 +29,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.tests.entrydetails
+package com.android.healthconnect.controller.tests.data.entrydetails
 
 import android.content.Context
 import android.health.connect.datatypes.ExerciseCompletionGoal
@@ -63,11 +63,11 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedE
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SleepSessionEntry
-import com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment
-import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel
-import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.Loading
-import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.LoadingFailed
-import com.android.healthconnect.controller.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.WithData
+import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsFragment
+import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel
+import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.Loading
+import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.LoadingFailed
+import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.WithData
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.EXERCISE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.PLANNED_EXERCISE

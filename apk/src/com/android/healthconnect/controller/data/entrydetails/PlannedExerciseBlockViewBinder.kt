@@ -11,14 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.entrydetails
+package com.android.healthconnect.controller.data.entrydetails
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseStepEntry
+import com.android.healthconnect.controller.data.entries.FormattedEntry.PlannedExerciseBlockEntry
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
@@ -26,7 +26,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 
-class PlannedExerciseStepViewBinder : SimpleViewBinder<PlannedExerciseStepEntry, View> {
+class PlannedExerciseBlockViewBinder : SimpleViewBinder<PlannedExerciseBlockEntry, View> {
     private lateinit var logger: HealthConnectLogger
 
     override fun newView(parent: ViewGroup): View {
@@ -35,14 +35,14 @@ class PlannedExerciseStepViewBinder : SimpleViewBinder<PlannedExerciseStepEntry,
             EntryPointAccessors.fromApplication(context, HealthConnectLoggerEntryPoint::class.java)
         logger = hiltEntryPoint.logger()
         return LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_data_entry_content, parent, false)
+            .inflate(R.layout.item_planned_exercise_block_entry, parent, false)
     }
 
-    override fun bind(view: View, data: PlannedExerciseStepEntry, index: Int) {
-        val title = view.findViewById<TextView>(R.id.item_data_entry_content)
+    override fun bind(view: View, data: PlannedExerciseBlockEntry, index: Int) {
+        val title = view.findViewById<TextView>(R.id.planned_exercise_block_title)
 
         title.text = data.title
         title.contentDescription = data.titleA11y
-        logger.logImpression(EntryDetailsElement.PLANNED_EXERCISE_STEP_ENTRY_VIEW)
+        logger.logImpression(EntryDetailsElement.PLANNED_EXERCISE_BLOCK_ENTRY_VIEW)
     }
 }
