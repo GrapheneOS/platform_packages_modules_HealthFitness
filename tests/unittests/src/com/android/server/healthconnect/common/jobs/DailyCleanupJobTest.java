@@ -19,7 +19,6 @@ package com.android.server.healthconnect.common.jobs;
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -33,6 +32,7 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
@@ -48,9 +48,7 @@ import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -70,7 +68,6 @@ import java.util.Set;
 @EnableFlags({
     FLAG_ECOSYSTEM_METRICS,
     FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-    FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
     FLAG_ACTIVITY_INTENSITY_DB
 })
 public class DailyCleanupJobTest {
@@ -144,7 +141,6 @@ public class DailyCleanupJobTest {
         verify(mHealthDataCategoryPriorityHelper).reSyncHealthDataPriorityTable();
         verify(mActivityDateHelper, times(1)).reSyncForAllRecords();
     }
-
 
     private boolean checkTableNamesDeleteRecords(List<RecordDeleteTableRequest> list) {
         Set<String> tableNames = new HashSet<>();

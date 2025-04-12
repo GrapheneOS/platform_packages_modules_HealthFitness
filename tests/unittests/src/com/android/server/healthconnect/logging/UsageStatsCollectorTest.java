@@ -21,7 +21,6 @@ import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 import static com.android.server.healthconnect.logging.UsageStatsCollector.EXPORT_PERIOD_PREFERENCE_KEY;
 import static com.android.server.healthconnect.logging.UsageStatsCollector.USER_MOST_RECENT_ACCESS_LOG_TIME;
 
@@ -48,6 +47,8 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -55,8 +56,6 @@ import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
-import com.android.server.healthconnect.storage.utils.PreferencesManager;
 import com.android.server.healthconnect.testing.HealthPermissionsMocker;
 
 import org.junit.Before;
@@ -202,13 +201,13 @@ public class UsageStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void flagEnabled_testConnectedPhrAppsCount() {
         assertThat(mUsageStatsCollector.getGrantedPhrAppsCount()).isEqualTo(1);
     }
 
     @Test
-    @DisableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @DisableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void flagDisabled_testConnectedPhrAppsCount() {
         assertThat(mUsageStatsCollector.getGrantedPhrAppsCount()).isEqualTo(0);
     }

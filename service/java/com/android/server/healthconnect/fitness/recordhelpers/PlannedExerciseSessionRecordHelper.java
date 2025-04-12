@@ -71,11 +71,12 @@ import android.health.connect.internal.datatypes.PlannedExerciseStepInternal;
 import android.util.ArrayMap;
 import android.util.Pair;
 
+import com.android.server.healthconnect.fitness.RecordReadTableRequest;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TableColumnPair;
@@ -586,7 +587,7 @@ public final class PlannedExerciseSessionRecordHelper
     }
 
     @Override
-    public List<ReadTableRequest> getReadRequestsForRecordsModifiedByDeletion(
+    public List<RecordReadTableRequest> getReadRequestsForRecordsModifiedByDeletion(
             UUID deletedRecordUuid) {
         ReadTableRequest affectedExerciseSessionsReadRequest =
                 new ReadTableRequest(EXERCISE_SESSION_RECORD_TABLE_NAME);
@@ -600,9 +601,10 @@ public final class PlannedExerciseSessionRecordHelper
                 PLANNED_EXERCISE_SESSION_ID_COLUMN_NAME,
                 StorageUtils.getHexString(deletedRecordUuid));
         affectedExerciseSessionsReadRequest.setWhereClause(whereStatement);
-        affectedExerciseSessionsReadRequest.setRecordHelper(
-                InternalHealthConnectMappings.getInstance()
-                        .getRecordHelper(RECORD_TYPE_EXERCISE_SESSION));
-        return Collections.singletonList(affectedExerciseSessionsReadRequest);
+        return Collections.singletonList(
+                new RecordReadTableRequest(
+                        affectedExerciseSessionsReadRequest,
+                        InternalHealthConnectMappings.getInstance()
+                                .getRecordHelper(RECORD_TYPE_EXERCISE_SESSION)));
     }
 }

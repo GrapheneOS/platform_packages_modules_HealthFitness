@@ -31,15 +31,11 @@ import com.android.healthconnect.controller.dataentries.units.EnergyUnit
 import com.android.healthconnect.controller.dataentries.units.HeightUnit
 import com.android.healthconnect.controller.dataentries.units.TemperatureUnit
 import com.android.healthconnect.controller.dataentries.units.UnitPreferences
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences.Companion.DEFAULT_DISTANCE_UNIT
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences.Companion.DEFAULT_ENERGY_UNIT
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences.Companion.DEFAULT_HEIGHT_UNIT
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences.Companion.DEFAULT_TEMPERATURE_UNIT
-import com.android.healthconnect.controller.dataentries.units.UnitPreferences.Companion.DEFAULT_WEIGHT_UNIT
 import com.android.healthconnect.controller.dataentries.units.UnitPreferencesStrings.getUnitLabel
 import com.android.healthconnect.controller.dataentries.units.UnitsFragment
 import com.android.healthconnect.controller.dataentries.units.WeightUnit
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.UnitsElement
@@ -47,6 +43,7 @@ import com.google.common.truth.Truth.*
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.util.Locale
 import javax.inject.Inject
 import org.junit.After
 import org.junit.Before
@@ -55,7 +52,6 @@ import org.junit.Test
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 @HiltAndroidTest
@@ -70,6 +66,10 @@ class UnitsFragmentTest {
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
         hiltRule.inject()
+        context.setLocale(Locale.US)
+        val pref =
+            context.getSharedPreferences(getDefaultSharedPreferencesName(context), MODE_PRIVATE)
+        pref.edit().clear().apply()
     }
 
     @After
@@ -101,24 +101,22 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_showsDefaultSettings() {
-        setUnitsDefault()
-
         launchFragment<UnitsFragment>(bundleOf())
 
-        onView(withText(getUnitLabel(DEFAULT_HEIGHT_UNIT))).check(matches(isDisplayed()))
-        onView(withText(getUnitLabel(DEFAULT_DISTANCE_UNIT))).check(matches(isDisplayed()))
-        onView(withText(getUnitLabel(DEFAULT_ENERGY_UNIT))).check(matches(isDisplayed()))
-        onView(withText(getUnitLabel(DEFAULT_TEMPERATURE_UNIT))).check(matches(isDisplayed()))
-        onView(withText(getUnitLabel(DEFAULT_WEIGHT_UNIT))).check(matches(isDisplayed()))
+        onView(withText(getUnitLabel(HeightUnit.FEET))).check(matches(isDisplayed()))
+        onView(withText(getUnitLabel(DistanceUnit.MILES))).check(matches(isDisplayed()))
+        onView(withText(getUnitLabel(EnergyUnit.CALORIE))).check(matches(isDisplayed()))
+        onView(withText(getUnitLabel(TemperatureUnit.FAHRENHEIT))).check(matches(isDisplayed()))
+        onView(withText(getUnitLabel(WeightUnit.POUND))).check(matches(isDisplayed()))
     }
 
     @Test
     fun unitsScreen_setHeightUnit_updatesValue() {
-        unitPreferences.setHeightUnit(HeightUnit.FEET)
+        unitPreferences.setHeightUnit(HeightUnit.CENTIMETERS)
 
         launchFragment<UnitsFragment>(bundleOf())
 
-        onView(withText(getUnitLabel(HeightUnit.FEET))).check(matches(isDisplayed()))
+        onView(withText(getUnitLabel(HeightUnit.CENTIMETERS))).check(matches(isDisplayed()))
     }
 
     @Test
@@ -141,11 +139,11 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_setDistanceUnit_updatesValue() {
-        unitPreferences.setDistanceUnit(DistanceUnit.MILES)
+        unitPreferences.setDistanceUnit(DistanceUnit.KILOMETERS)
 
         launchFragment<UnitsFragment>(bundleOf())
 
-        onView(withText(getUnitLabel(DistanceUnit.MILES))).check(matches(isDisplayed()))
+        onView(withText(getUnitLabel(DistanceUnit.KILOMETERS))).check(matches(isDisplayed()))
     }
 
     @Test
@@ -162,9 +160,9 @@ class UnitsFragmentTest {
         launchFragment<UnitsFragment>(bundleOf())
 
         onView(withText(R.string.height_uppercase_label)).perform(click())
-        onView(withText(R.string.height_unit_feet_label)).perform(click())
+        onView(withText(R.string.height_unit_centimeters_label)).perform(click())
 
-        assertThat(unitPreferences.getHeightUnit()).isEqualTo(HeightUnit.FEET)
+        assertThat(unitPreferences.getHeightUnit()).isEqualTo(HeightUnit.CENTIMETERS)
     }
 
     @Test
@@ -172,9 +170,9 @@ class UnitsFragmentTest {
         launchFragment<UnitsFragment>(bundleOf())
 
         onView(withText(R.string.distance_uppercase_label)).perform(click())
-        onView(withText(R.string.distance_unit_miles_label)).perform(click())
+        onView(withText(R.string.distance_unit_kilometers_label)).perform(click())
 
-        assertThat(unitPreferences.getDistanceUnit()).isEqualTo(DistanceUnit.MILES)
+        assertThat(unitPreferences.getDistanceUnit()).isEqualTo(DistanceUnit.KILOMETERS)
     }
 
     @Test
@@ -205,13 +203,5 @@ class UnitsFragmentTest {
         onView(withText(R.string.temperature_unit_kelvin_label)).perform(click())
 
         assertThat(unitPreferences.getTemperatureUnit()).isEqualTo(TemperatureUnit.KELVIN)
-    }
-
-    private fun setUnitsDefault() {
-        unitPreferences.setEnergyUnit(DEFAULT_ENERGY_UNIT)
-        unitPreferences.setTemperatureUnit(DEFAULT_TEMPERATURE_UNIT)
-        unitPreferences.setWeightUnit(DEFAULT_WEIGHT_UNIT)
-        unitPreferences.setHeightUnit(DEFAULT_HEIGHT_UNIT)
-        unitPreferences.setDistanceUnit(DEFAULT_DISTANCE_UNIT)
     }
 }

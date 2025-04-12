@@ -73,7 +73,7 @@ class DeleteAppDataUseCaseTest {
             )
     }
 
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun invoke_deleteAppData_callsHealthManager() = runTest {
         doAnswer(prepareAnswer())

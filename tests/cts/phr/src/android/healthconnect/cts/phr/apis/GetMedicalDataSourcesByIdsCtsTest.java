@@ -41,7 +41,6 @@ import static android.healthconnect.cts.utils.TestUtils.finishMigrationWithShell
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -115,7 +114,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_migrationInProgress_apiBlocked() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalDataSource>> receiver = new HealthConnectReceiver<>();
@@ -130,7 +129,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_readLimitExceeded_throws()
             throws InterruptedException {
         MedicalDataSource dataSource =
@@ -189,7 +188,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_invalidId_throws() throws Exception {
         HealthConnectReceiver<List<MedicalDataSource>> callback = new HealthConnectReceiver<>();
 
@@ -201,7 +200,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_someValidAndInvalidIds_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalDataSource>> receiver = new HealthConnectReceiver<>();
@@ -215,7 +214,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_withManagePerm_notPresent_returnsEmptyList()
             throws Exception {
         HealthConnectReceiver<List<MedicalDataSource>> receiver = new HealthConnectReceiver<>();
@@ -231,7 +230,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_withoutManagePerm_notPresent_returnsEmptyList()
             throws Exception {
         mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -246,7 +245,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_withManageHealthDataPerm_getsAll() throws Exception {
         // Data written by a different app.
         grantHealthPermission(PHR_FOREGROUND_APP_PKG, WRITE_MEDICAL_DATA);
@@ -269,7 +268,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_onePresentWithoutData_returnsItAndNullUpdateTime()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -283,7 +282,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_onePresentWithData_returnsCorrectLastDataUpdateTime()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -301,7 +300,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_dataUpdated_returnsCorrectLastDataUpdateTime()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -320,7 +319,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalResourcesByIds_deletedResource_notCountedInLastDataUpdateTime()
             throws InterruptedException {
         Instant beforeUpsertTime = Instant.now();
@@ -362,7 +361,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inForegroundWithNoPerms_throws() {
         // App has not been granted any permissions.
         HealthConnectException exception =
@@ -373,7 +372,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inForegroundWithReadPermNoWritePerm()
             throws Exception {
         // To write data from two different apps.
@@ -411,7 +410,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inForegroundHasWritePermNoReadPerms()
             throws Exception {
         // To write data from two different apps.
@@ -448,7 +447,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inForegroundHasWriteAndReadPerms() throws Exception {
         // To write data from two different apps.
         grantHealthPermission(PHR_BACKGROUND_APP_PKG, WRITE_MEDICAL_DATA);
@@ -491,7 +490,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inBgWithoutBgPermHasWritePermNoReadPerms()
             throws Exception {
         // The app under test.
@@ -514,7 +513,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inBgWithNoPerms_throws() throws Exception {
         // App has not been granted any permissions.
         HealthConnectException exception =
@@ -525,7 +524,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inBgWithoutBgPermNoWritePermOnlyReadPerm()
             throws Exception {
         grantHealthPermission(PHR_FOREGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
@@ -563,7 +562,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inBgWithBgReadPermNoWritePermHasReadPerm()
             throws Exception {
         // To write data from two different apps.
@@ -604,7 +603,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inBgWithBgReadPermHasWritePermNoReadPerms()
             throws Exception {
         // To write data from two different apps.
@@ -637,7 +636,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetMedicalDataSourcesById_inBgWithBgPermHasWriteAndReadPerm() throws Exception {
         // To write data from two different apps.
         grantHealthPermissions(

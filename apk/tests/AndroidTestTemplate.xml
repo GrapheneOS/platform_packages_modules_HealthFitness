@@ -43,6 +43,8 @@
     <option name="run-command" value="wm size reset" />
     <!-- disable DeprecatedAbi warning -->
     <option name="run-command" value="setprop debug.wm.disable_deprecated_abi_dialog 1" />
+    <!-- Disable KeyguardSliceProvider b/397607594 -->
+    <option name="run-command" value="pm disable com.android.systemui/.keyguard.KeyguardSliceProvider" />
   </target_preparer>
   <test class="com.android.tradefed.testtype.AndroidJUnitTest">
     <option name="runner" value="com.android.healthconnect.controller.tests.HiltTestRunner"/>

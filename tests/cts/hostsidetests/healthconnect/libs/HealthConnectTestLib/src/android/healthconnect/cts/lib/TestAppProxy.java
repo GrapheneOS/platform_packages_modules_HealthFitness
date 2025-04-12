@@ -16,18 +16,27 @@
 
 package android.healthconnect.cts.lib;
 
+import static android.Manifest.permission.FORCE_STOP_PACKAGES;
+import static android.Manifest.permission.GET_RUNTIME_PERMISSIONS;
+import static android.app.Activity.RESULT_OK;
+import static android.content.pm.PackageManager.FLAG_PERMISSION_ONE_TIME;
 import static android.health.connect.datatypes.FhirVersion.parseFhirVersion;
 import static android.healthconnect.cts.lib.BundleHelper.INTENT_EXCEPTION;
-import static android.healthconnect.cts.lib.BundleHelper.KILL_SELF_REQUEST;
-import static android.healthconnect.cts.lib.BundleHelper.QUERY_TYPE;
 
-import static androidx.test.InstrumentationRegistry.getContext;
+import static com.android.compatibility.common.util.SystemUtil.eventually;
+import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import static java.util.Objects.requireNonNull;
+
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Instrumentation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMedicalDataSourcesRequest;
@@ -46,16 +55,18 @@ import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
 import android.healthconnect.cts.utils.ProxyActivity;
 import android.os.Bundle;
+import android.os.Process;
 import android.util.Log;
+
+import androidx.test.core.app.ApplicationProvider;
 
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicReference;
 
 /** Performs API calls to HC on behalf of test apps. */
 public class TestAppProxy {
@@ -67,10 +78,12 @@ public class TestAppProxy {
     public static final TestAppProxy APP_WRITE_PERMS_ONLY =
             TestAppProxy.forPackageName("android.healthconnect.cts.testapp.writePermsOnly");
 
+    private final Context mContext;
     private final String mPackageName;
     private final boolean mInBackground;
 
     private TestAppProxy(String packageName, boolean inBackground) {
+        mContext = ApplicationProvider.getApplicationContext();
         mPackageName = packageName;
         mInBackground = inBackground;
     }
@@ -258,12 +271,31 @@ public class TestAppProxy {
     public void selfRevokePermission(String permission) throws Exception {
         Bundle requestBundle = BundleHelper.forSelfRevokePermissionRequest(permission);
         getFromTestApp(requestBundle);
+
+        // Self-revoke is async; wait for it to complete by checking for the one-time flag it sets.
+        PackageManager packageManager = mContext.getPackageManager();
+        runWithShellPermissionIdentity(
+                () ->
+                        eventually(
+                                () -> {
+                                    @SuppressLint("MissingPermission")
+                                    int flags =
+                                            packageManager.getPermissionFlags(
+                                                    permission,
+                                                    mPackageName,
+                                                    Process.myUserHandle());
+                                    assertThat(flags & FLAG_PERMISSION_ONE_TIME).isNotEqualTo(0);
+                                }),
+                GET_RUNTIME_PERMISSIONS);
     }
 
-    /** Instructs the app to kill itself. */
+    /** Kills the app. */
+    @SuppressLint("MissingPermission")
     public void kill() throws Exception {
-        Bundle requestBundle = BundleHelper.forKillSelfRequest();
-        getFromTestApp(requestBundle);
+        ActivityManager activityManager =
+                requireNonNull(mContext.getSystemService(ActivityManager.class));
+        runWithShellPermissionIdentity(
+                () -> activityManager.forceStopPackage(mPackageName), FORCE_STOP_PACKAGES);
     }
 
     /** Starts an activity on behalf of the app and returns the result. */
@@ -296,77 +328,77 @@ public class TestAppProxy {
     }
 
     private Bundle getFromTestApp(Bundle bundleToCreateIntent) throws Exception {
-        final CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<Bundle> response = new AtomicReference<>();
-        AtomicReference<Exception> exceptionAtomicReference = new AtomicReference<>();
-        BroadcastReceiver broadcastReceiver =
+        if (mInBackground) {
+            return getFromTestAppReceiver(bundleToCreateIntent);
+        } else {
+            return getFromTestAppActivity(bundleToCreateIntent);
+        }
+    }
+
+    private Bundle getFromTestAppReceiver(Bundle bundleToCreateIntent) throws Exception {
+        ArrayBlockingQueue<Bundle> resultQueue = new ArrayBlockingQueue<>(1);
+        BroadcastReceiver resultReceiver =
                 new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
-                        if (intent.hasExtra(INTENT_EXCEPTION)) {
-                            exceptionAtomicReference.set(
-                                    (Exception) (intent.getSerializableExtra(INTENT_EXCEPTION)));
-                        } else {
-                            response.set(intent.getExtras());
-                        }
-                        latch.countDown();
+                        Bundle resultExtras = getResultExtras(/* makeMap= */ true);
+                        Log.d(
+                                TAG,
+                                "Got broadcast result code: "
+                                        + getResultCode()
+                                        + " with extras: "
+                                        + resultExtras);
+                        resultQueue.add(resultExtras);
                     }
                 };
 
-        launchTestApp(bundleToCreateIntent, broadcastReceiver, latch);
-        if (exceptionAtomicReference.get() != null) {
-            throw exceptionAtomicReference.get();
-        }
-        return response.get();
-    }
-
-    private void launchTestApp(
-            Bundle bundleToCreateIntent, BroadcastReceiver broadcastReceiver, CountDownLatch latch)
-            throws Exception {
-
-        // Register broadcast receiver
-        final IntentFilter intentFilter = new IntentFilter();
-        String action = bundleToCreateIntent.getString(QUERY_TYPE);
-        intentFilter.addAction(action);
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        getContext().registerReceiver(broadcastReceiver, intentFilter, Context.RECEIVER_EXPORTED);
-
-        // Launch the test app.
-        Intent intent;
-
-        Log.d(TAG, "launchTestApp(): action=" + action + " - inBackground=" + mInBackground);
-        if (mInBackground) {
-            intent = new Intent().setClassName(mPackageName, TEST_APP_RECEIVER_CLASS_NAME);
-        } else {
-            intent = new Intent(Intent.ACTION_MAIN);
-            intent.setPackage(mPackageName);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        }
-
+        Intent intent = new Intent();
+        intent.setClassName(mPackageName, TEST_APP_RECEIVER_CLASS_NAME);
         intent.putExtras(bundleToCreateIntent);
 
-        Thread.sleep(500);
+        Log.d(TAG, "Sending broadcast: " + intent);
+        mContext.sendOrderedBroadcast(
+                intent,
+                /* receiverPermission= */ null,
+                resultReceiver,
+                /* scheduler= */ null,
+                /* initialResult= */ RESULT_OK,
+                /* initialData= */ null,
+                /* initialExtras= */ null);
 
-        if (mInBackground) {
-            getContext().sendBroadcast(intent);
-        } else {
-            getContext().startActivity(intent);
+        Bundle resultExtras = resultQueue.poll(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        if (resultExtras == null) {
+            throw new TimeoutException("Timed out waiting to get broadcast result for " + intent);
         }
+        throwExceptionIfPresent(resultExtras);
+        return resultExtras;
+    }
 
-        // We don't wait for responses to kill requests. These kill the app & there is no easy or
-        // reliable way for the app to return a broadcast before being killed.
-        boolean isKillRequest =
-                bundleToCreateIntent.getString(QUERY_TYPE).equals(KILL_SELF_REQUEST);
-        if (!isKillRequest && !latch.await(POLLING_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
-            final String errorMessage =
-                    "Timed out while waiting to receive "
-                            + bundleToCreateIntent.getString(QUERY_TYPE)
-                            + " intent from "
-                            + mPackageName;
-            throw new TimeoutException(errorMessage);
+    private Bundle getFromTestAppActivity(Bundle bundleToCreateIntent) throws Exception {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setPackage(mPackageName);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.putExtras(bundleToCreateIntent);
+
+        Log.d(TAG, "Starting activity: " + intent);
+        Instrumentation.ActivityResult activityResult =
+                ProxyActivity.launchActivityForResult(intent);
+        Log.d(
+                TAG,
+                "Got activity result code: "
+                        + activityResult.getResultCode()
+                        + " with data: "
+                        + activityResult.getResultData());
+
+        Bundle resultExtras = requireNonNull(activityResult.getResultData().getExtras());
+        throwExceptionIfPresent(resultExtras);
+        return resultExtras;
+    }
+
+    private void throwExceptionIfPresent(Bundle resultExtras) throws Exception {
+        Exception exception = (Exception) resultExtras.getSerializable(INTENT_EXCEPTION);
+        if (exception != null) {
+            throw exception;
         }
-        getContext().unregisterReceiver(broadcastReceiver);
     }
 }

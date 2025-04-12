@@ -32,19 +32,12 @@ public class TestAppActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // We call finish here to tell the system we've successfully handled the
-        // intent that started this activity. This must be done before carrying
-        // out the action requested by the intent, as that action may involve
-        // killing the app. See b/348171256 for background. Note: in the case of
-        // a request to self-kill, sending the return broadcast is not required.
-        Log.i(TAG, TAG + " onCreate() - before finish()");
-        finish();
-        Log.i(TAG, TAG + " onCreate() - after finish()");
         Intent intent = getIntent();
-        Log.i(TAG, TAG + " onCreate(): " + intent + " - extra: " + intent.getExtras());
+        Log.d(TAG, TAG + " onCreate(): " + intent + " - extra: " + intent.getExtras());
         Intent returnIntent =
                 TestAppHelper.handleRequest(getApplicationContext(), intent.getExtras());
-
-        sendBroadcast(returnIntent);
+        // Return the result to the test.
+        setResult(RESULT_OK, returnIntent);
+        finish();
     }
 }

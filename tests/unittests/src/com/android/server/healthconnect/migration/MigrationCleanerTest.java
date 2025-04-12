@@ -32,7 +32,6 @@ import com.android.server.healthconnect.migration.MigrationStateManager.StateCha
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -19,6 +19,7 @@ package android.health.connect.internal.datatypes.utils;
 import static android.health.connect.datatypes.validation.ValidationUtils.INTDEF_VALIDATION_ERROR_PREFIX;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
@@ -35,7 +36,7 @@ import java.util.Objects;
  * @hide
  */
 public final class InternalExternalRecordConverter {
-    @SuppressWarnings("NullAway.Init") // TODO(b/317029272): fix this suppression
+    @Nullable
     private static volatile InternalExternalRecordConverter sInternalExternalRecordConverter;
 
     private final Map<Integer, Class<? extends RecordInternal<?>>>
@@ -76,7 +77,6 @@ public final class InternalExternalRecordConverter {
     }
 
     /** Returns a record for {@param record} */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     @NonNull
     public List<Record> getExternalRecords(@NonNull List<RecordInternal<?>> recordInternals) {
         List<Record> externalRecordList = new ArrayList<>(recordInternals.size());
@@ -85,9 +85,8 @@ public final class InternalExternalRecordConverter {
             try {
                 externalRecordList.add(recordInternal.toExternalRecord());
             } catch (IllegalArgumentException illegalArgumentException) {
-                if (!illegalArgumentException
-                        .getMessage()
-                        .contains(INTDEF_VALIDATION_ERROR_PREFIX)) {
+                String message = illegalArgumentException.getMessage();
+                if (message == null || !message.contains(INTDEF_VALIDATION_ERROR_PREFIX)) {
                     throw illegalArgumentException;
                 }
             }

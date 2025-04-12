@@ -63,6 +63,7 @@ import com.android.healthconnect.controller.utils.withinOneHourAfter
 import com.android.healthconnect.controller.utils.withinOneMinuteAfter
 import com.android.healthconnect.controller.utils.withinOneYearAfter
 import com.android.healthfitness.flags.Flags.exportImportFastFollow
+import com.android.healthfitness.flags.Flags.cloudBackupAndRestoreHcUi
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -79,6 +80,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     companion object {
         const val SCHEDULED_EXPORT_PREFERENCE_KEY = "scheduled_export"
         const val IMPORT_DATA_PREFERENCE_KEY = "import_data"
+        const val CLOUD_BACKUP_PREFERENCE_KEY = "cloud_backup"
         const val EXPORT_IMPORT_SETTINGS_CATEGORY_PREFERENCE_KEY = "settings_category"
         const val IMPORT_ERROR_BANNER_KEY = "import_error_banner"
         const val PREVIOUS_EXPORT_STATUS_ORDER = 2
@@ -109,6 +111,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     private val scheduledExportPreference: HealthPreference by pref(SCHEDULED_EXPORT_PREFERENCE_KEY)
 
     private val importDataPreference: HealthPreference by pref(IMPORT_DATA_PREFERENCE_KEY)
+    private val backupDataPreference: HealthPreference by pref(CLOUD_BACKUP_PREFERENCE_KEY)
     private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
     private val settingsCategory: PreferenceGroup by
         pref(EXPORT_IMPORT_SETTINGS_CATEGORY_PREFERENCE_KEY)
@@ -134,6 +137,13 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
         importDataPreference.setOnPreferenceClickListener {
             triggerImport()
             true
+        }
+
+        if (cloudBackupAndRestoreHcUi()) {
+            backupDataPreference.setOnPreferenceClickListener() {
+                openBackupRestoreSettings()
+                true
+            }
         }
     }
 
@@ -199,6 +209,12 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
                     Toast.makeText(activity, R.string.default_error, Toast.LENGTH_LONG).show()
                 else -> {}
             }
+        }
+
+        if (cloudBackupAndRestoreHcUi()) {
+            // TODO: b/400646604 Overhaul UI, test rotation etc when specification are complete.
+            //  This is a temporary hook for development.
+            backupDataPreference.setVisible(true)
         }
     }
 
@@ -416,6 +432,10 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     private fun triggerImport() {
         val importRequestIntent = Intent(requireActivity(), ImportFlowActivity::class.java)
         triggerImportLauncher.launch(importRequestIntent)
+    }
+
+    private fun openBackupRestoreSettings() {
+        // TODO: b/358032341 Click through to B&R setup
     }
 
     private fun onRequestImport(result: ActivityResult) {

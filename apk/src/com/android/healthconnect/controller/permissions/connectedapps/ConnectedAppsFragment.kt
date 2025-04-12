@@ -1,17 +1,17 @@
-/**
- * Copyright (C) 2022 The Android Open Source Project
+/*
+ * Copyright (C) 2025 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.android.healthconnect.controller.permissions.connectedapps
 
@@ -34,6 +34,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
+import androidx.preference.PreferenceScreen
+import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel.DisconnectAllState
 import com.android.healthconnect.controller.permissions.shared.HelpAndFeedbackFragment.Companion.APP_INTEGRATION_REQUEST_BUCKET_ID
@@ -110,6 +112,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private val deletionViewModel: DeletionViewModel by activityViewModels()
     private lateinit var searchMenuItem: MenuItem
     private lateinit var removeAllAppsDialog: AlertDialog
+    private lateinit var adapter: RecyclerView.Adapter<*>
 
     private val topIntroPreference: TopIntroPreference by pref(TOP_INTRO)
     private val allowedAppsCategory: PreferenceGroup by pref(ALLOWED_APPS_CATEGORY)
@@ -120,74 +123,6 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     private val thingsToTryCategory: PreferenceGroup by pref(THINGS_TO_TRY)
     private val settingsAndHelpCategory: PreferenceGroup by pref(SETTINGS_AND_HELP)
     private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
-
-    private fun createRemoveAllAppsAccessDialog(apps: List<ConnectedAppMetadata>) {
-        val body =
-            layoutInflater.inflate(
-                if (SettingsThemeHelper.isExpressiveTheme(requireContext()))
-                    R.layout.dialog_message_with_checkbox_expressive
-                else R.layout.dialog_message_with_checkbox_legacy,
-                null,
-            )
-        body.findViewById<TextView>(R.id.dialog_message).apply {
-            text = getString(R.string.permissions_disconnect_all_dialog_message)
-        }
-        body.findViewById<TextView>(R.id.dialog_title).apply {
-            text = getString(R.string.permissions_disconnect_all_dialog_title)
-        }
-
-        val imageIcon = body.findViewById(R.id.dialog_icon) as ImageView
-        imageIcon.setImageDrawable(
-            AttributeResolver.getNullableDrawable(requireContext(), R.attr.disconnectAllIcon)
-        )
-        imageIcon.visibility = View.VISIBLE
-
-        val checkBox =
-            body.findViewById<CheckBox>(R.id.dialog_checkbox).apply {
-                text = getString(R.string.disconnect_all_app_permissions_dialog_checkbox)
-            }
-
-        removeAllAppsDialog =
-            AlertDialogBuilder(
-                    this,
-                    DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_CONTAINER,
-                )
-                .setView(body)
-                .setCancelable(false)
-                .setNeutralButton(
-                    android.R.string.cancel,
-                    DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_CANCEL_BUTTON,
-                ) { _, _ ->
-                    viewModel.setAlertDialogStatus(false)
-                    viewModel.setAlertDialogCheckBoxChecked(false)
-                }
-                .setPositiveButton(
-                    R.string.permissions_disconnect_all_dialog_disconnect,
-                    DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_REMOVE_ALL_BUTTON,
-                ) { _, _ ->
-                    if (!viewModel.disconnectAllApps(apps)) {
-                        Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    if (checkBox.isChecked) {
-                        viewModel.deleteAllData()
-                    }
-                }
-                .create()
-                .apply {
-                    setOnShowListener {
-                        checkBox.setOnCheckedChangeListener(null)
-                        checkBox.isChecked = viewModel.alertDialogCheckBoxChecked.value ?: false
-                        checkBox.setOnCheckedChangeListener { _, isChecked ->
-                            viewModel.setAlertDialogCheckBoxChecked(isChecked)
-                            logger.logInteraction(
-                                DisconnectAllAppsDialogElement
-                                    .DISCONNECT_ALL_APPS_DIALOG_DELETE_CHECKBOX
-                            )
-                        }
-                    }
-                }
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -201,6 +136,11 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.loadConnectedApps()
+    }
+
+    override fun onCreateAdapter(preferenceScreen: PreferenceScreen): RecyclerView.Adapter<*> {
+        adapter = super.onCreateAdapter(preferenceScreen)
+        return adapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -302,6 +242,8 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                     }
                 }
             }
+            // TODO(b/408544815)
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -607,5 +549,73 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         needUpdateAppsCategory.removeAll()
         inactiveAppsCategory.removeAll()
         settingsAndHelpCategory.removeAll()
+    }
+
+    private fun createRemoveAllAppsAccessDialog(apps: List<ConnectedAppMetadata>) {
+        val body =
+            layoutInflater.inflate(
+                if (SettingsThemeHelper.isExpressiveTheme(requireContext()))
+                    R.layout.dialog_message_with_checkbox_expressive
+                else R.layout.dialog_message_with_checkbox_legacy,
+                null,
+            )
+        body.findViewById<TextView>(R.id.dialog_message).apply {
+            text = getString(R.string.permissions_disconnect_all_dialog_message)
+        }
+        body.findViewById<TextView>(R.id.dialog_title).apply {
+            text = getString(R.string.permissions_disconnect_all_dialog_title)
+        }
+
+        val imageIcon = body.findViewById(R.id.dialog_icon) as ImageView
+        imageIcon.setImageDrawable(
+            AttributeResolver.getNullableDrawable(requireContext(), R.attr.disconnectAllIcon)
+        )
+        imageIcon.visibility = View.VISIBLE
+
+        val checkBox =
+            body.findViewById<CheckBox>(R.id.dialog_checkbox).apply {
+                text = getString(R.string.disconnect_all_app_permissions_dialog_checkbox)
+            }
+
+        removeAllAppsDialog =
+            AlertDialogBuilder(
+                    this,
+                    DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_CONTAINER,
+                )
+                .setView(body)
+                .setCancelable(false)
+                .setNeutralButton(
+                    android.R.string.cancel,
+                    DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_CANCEL_BUTTON,
+                ) { _, _ ->
+                    viewModel.setAlertDialogStatus(false)
+                    viewModel.setAlertDialogCheckBoxChecked(false)
+                }
+                .setPositiveButton(
+                    R.string.permissions_disconnect_all_dialog_disconnect,
+                    DisconnectAllAppsDialogElement.DISCONNECT_ALL_APPS_DIALOG_REMOVE_ALL_BUTTON,
+                ) { _, _ ->
+                    if (!viewModel.disconnectAllApps(apps)) {
+                        Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    if (checkBox.isChecked) {
+                        viewModel.deleteAllData()
+                    }
+                }
+                .create()
+                .apply {
+                    setOnShowListener {
+                        checkBox.setOnCheckedChangeListener(null)
+                        checkBox.isChecked = viewModel.alertDialogCheckBoxChecked.value ?: false
+                        checkBox.setOnCheckedChangeListener { _, isChecked ->
+                            viewModel.setAlertDialogCheckBoxChecked(isChecked)
+                            logger.logInteraction(
+                                DisconnectAllAppsDialogElement
+                                    .DISCONNECT_ALL_APPS_DIALOG_DELETE_CHECKBOX
+                            )
+                        }
+                    }
+                }
     }
 }

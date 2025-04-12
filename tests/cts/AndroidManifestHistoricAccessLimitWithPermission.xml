@@ -29,6 +29,7 @@
               <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
           </intent-filter>
       </activity>
+      <activity android:name="android.healthconnect.cts.utils.ProxyActivity" />
     </application>
 
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"

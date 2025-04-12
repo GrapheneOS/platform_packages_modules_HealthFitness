@@ -38,6 +38,7 @@ import android.util.Slog;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
+import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;

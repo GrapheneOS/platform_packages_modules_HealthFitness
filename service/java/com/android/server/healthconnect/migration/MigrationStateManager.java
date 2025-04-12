@@ -56,7 +56,7 @@ import android.util.Slog;
 
 import com.android.internal.annotations.GuardedBy;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 
 import java.time.Instant;
 import java.time.LocalDate;

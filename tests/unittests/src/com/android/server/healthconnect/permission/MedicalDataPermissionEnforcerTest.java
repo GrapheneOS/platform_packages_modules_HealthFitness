@@ -34,7 +34,6 @@ import static android.permission.PermissionManager.PERMISSION_GRANTED;
 import static android.permission.PermissionManager.PERMISSION_HARD_DENIED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -60,7 +59,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE})
+@EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
 public class MedicalDataPermissionEnforcerTest {
     @Mock private PermissionManager mPermissionManager;
 

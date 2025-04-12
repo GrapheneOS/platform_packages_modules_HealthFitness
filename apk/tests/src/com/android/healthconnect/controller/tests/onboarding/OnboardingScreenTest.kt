@@ -107,7 +107,7 @@ class OnboardingScreenTest {
         onView(withText("Go back")).check(matches(isDisplayed()))
     }
 
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun onboardingScreen_withHealthRecords_isDisplayedCorrectly() {
         startOnboardingActivity()
@@ -176,7 +176,7 @@ class OnboardingScreenTest {
         onView(withText("Get started")).check(matches(isClickable()))
     }
 
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun onboardingScreen_withHealthRecords_actions_isClickable() {
         startOnboardingActivity()

@@ -31,6 +31,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
 import android.util.Pair;
@@ -43,6 +44,7 @@ import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Helper class for BloodPressureRecord.
@@ -92,7 +94,7 @@ public final class BloodPressureRecordHelper
     @Override
     @Nullable
     public AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         double aggregateValue;
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case BLOOD_PRESSURE_RECORD_DIASTOLIC_AVG:
@@ -108,7 +110,7 @@ public final class BloodPressureRecordHelper
             default:
                 return null;
         }
-        return new AggregateResult<>(aggregateValue).setZoneOffset(getZoneOffset(results));
+        return new AggregateResult<>(aggregateValue, getZoneOffset(results), dataOrigins);
     }
 
     @Override

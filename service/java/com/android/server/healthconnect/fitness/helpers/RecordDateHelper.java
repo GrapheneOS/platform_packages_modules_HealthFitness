@@ -28,14 +28,14 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Pair;
 
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
+import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.time.LocalDate;
@@ -84,7 +84,7 @@ public final class RecordDateHelper extends DatabaseHelper {
     }
 
     /** Insert a new activity dates for the given records */
-    public void insertRecordDate(List<RecordInternal<?>> recordInternals) {
+    public void insertRecordDate(List<? extends RecordInternal<?>> recordInternals) {
         List<UpsertTableRequest> upsertTableRequests = new ArrayList<>();
         recordInternals.forEach(
                 (recordInternal) -> upsertTableRequests.add(getUpsertTableRequest(recordInternal)));

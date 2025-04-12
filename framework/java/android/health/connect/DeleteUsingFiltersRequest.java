@@ -115,7 +115,6 @@ public final class DeleteUsingFiltersRequest {
          * @param timeRangeFilter Time range b/w which the delete operation is to be performed
          * @return Same {@link Builder} with the timeRangeFilter field set
          */
-        @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
         @NonNull
         public Builder setTimeRangeFilter(@Nullable TimeRangeFilter timeRangeFilter) {
             mTimeRangeFilter = timeRangeFilter;

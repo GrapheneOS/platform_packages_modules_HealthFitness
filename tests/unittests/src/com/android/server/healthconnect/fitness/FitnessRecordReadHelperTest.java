@@ -25,9 +25,9 @@ import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createExerciseSessionRecordWithRoute;
+import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createExerciseSessionRecordWithSegment;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -172,6 +172,40 @@ public class FitnessRecordReadHelperTest {
                         .first;
         assertThat(records).hasSize(1);
         assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uuid));
+    }
+
+    @Test
+    public void readRecords_sessionWithChild_readsChild() {
+        long timeMillis = 456;
+        String uuid =
+                mTransactionTestUtils
+                        .insertRecords(
+                                TEST_PACKAGE_NAME,
+                                createExerciseSessionRecordWithSegment(
+                                        Instant.ofEpochSecond(timeMillis)))
+                        .get(0);
+
+        ReadRecordsRequestUsingIds<ExerciseSessionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
+                        .addId(uuid)
+                        .build();
+
+        List<RecordInternal<?>> records =
+                mFitnessRecordReadHelper.readRecords(
+                                mTransactionManager,
+                                TEST_PACKAGE_NAME,
+                                request.toReadRecordsRequestParcel(),
+                                /* grantedExtraReadPermissions= */ Set.of(),
+                                /* startDateAccessMillis= */ 0,
+                                /* isInForeground= */ false,
+                                /* shouldRecordAccessLogs= */ false,
+                                /* enforceSelfRead */ false,
+                                /* packageNamesByAppIds= */ null)
+                        .first;
+        assertThat(records).hasSize(1);
+        ExerciseSessionRecordInternal readRecord = (ExerciseSessionRecordInternal) records.get(0);
+        assertThat(readRecord.getUuid()).isEqualTo(UUID.fromString(uuid));
+        assertThat(readRecord.getSegments()).hasSize(1);
     }
 
     @Test
@@ -359,7 +393,6 @@ public class FitnessRecordReadHelperTest {
     @EnableFlags({
         FLAG_ECOSYSTEM_METRICS,
         FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB
     })
     public void flagsEnabled_readRecordsById_addReadAccessLog() {
@@ -399,7 +432,6 @@ public class FitnessRecordReadHelperTest {
     @EnableFlags({
         FLAG_ECOSYSTEM_METRICS,
         FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB,
         FLAG_CLOUD_BACKUP_AND_RESTORE_DB
     })
@@ -440,7 +472,6 @@ public class FitnessRecordReadHelperTest {
     @EnableFlags({
         FLAG_ECOSYSTEM_METRICS,
         FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB
     })
     public void flagsEnabled_readRecordsById_shouldNotRecordAccessLogs_doNotAddReadAccessLog() {
@@ -477,7 +508,6 @@ public class FitnessRecordReadHelperTest {
     @DisableFlags({
         FLAG_ECOSYSTEM_METRICS,
         FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB
     })
     public void flagsDisabled_readRecordsById_doNotAddReadAccessLog() {
@@ -514,7 +544,6 @@ public class FitnessRecordReadHelperTest {
     @EnableFlags({
         FLAG_ECOSYSTEM_METRICS,
         FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB
     })
     public void flagsEnabled_readRecordsAndPageToken_addReadAccessLog() {
@@ -561,7 +590,6 @@ public class FitnessRecordReadHelperTest {
     @EnableFlags({
         FLAG_ECOSYSTEM_METRICS,
         FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB
     })
     public void flagsEnabled_doNotRecordAccessLogs_readRecordsAndPageToken_doNotReadAccessLog() {
@@ -605,7 +633,6 @@ public class FitnessRecordReadHelperTest {
     @DisableFlags({
         FLAG_ECOSYSTEM_METRICS,
         FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB
     })
     public void flagsDisabled_readRecordsAndPageToken_doNotReadAccessLog() {
@@ -649,7 +676,6 @@ public class FitnessRecordReadHelperTest {
     @EnableFlags({
         FLAG_ECOSYSTEM_METRICS,
         FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_ACTIVITY_INTENSITY_DB
     })
     public void flagsEnabled_readSelfData_readRecordsAndPageToken_doNotAddReadAccessLog() {

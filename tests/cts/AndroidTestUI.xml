@@ -29,6 +29,8 @@
         <option name="test-file-name" value="CtsHealthConnectTestAppBWithNormalReadWritePermission.apk"/>
     </target_preparer>
     <target_preparer class="com.android.tradefed.targetprep.RunCommandTargetPreparer">
+        <!-- Disable KeyguardSliceProvider b/397607594 -->
+        <option name="run-command" value="pm disable com.android.systemui/.keyguard.KeyguardSliceProvider" />
         <!-- Reset display and font and disable animations -->
         <option name="run-command" value="settings put system font_scale 0.85" />
         <option name="run-command" value="wm density reset" />
@@ -36,7 +38,6 @@
 
         <!-- Skip health connect onboarding! -->
         <option name="run-command" value="am start -a android.health.connect.action.SKIP_HEALTH_CONNECT_ONBOARDING" />
-       
         <!-- Dimiss keyguard -->
         <option name="run-command" value="input keyevent KEYCODE_WAKEUP" />
         <option name="run-command" value="wm dismiss-keyguard" />

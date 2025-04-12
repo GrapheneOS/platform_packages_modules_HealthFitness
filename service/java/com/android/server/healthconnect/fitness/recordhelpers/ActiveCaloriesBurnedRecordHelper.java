@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.ActiveCaloriesBurnedRecordInternal;
 import android.util.Pair;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Helper class for ActiveCaloriesBurnedRecord.
@@ -63,7 +65,10 @@ public final class ActiveCaloriesBurnedRecordHelper
     @Override
     @Nullable
     public AggregateResult<?> getDerivedAggregateResult(
-            Cursor results, AggregationType<?> aggregationType, double aggregation) {
+            Cursor results,
+            AggregationType<?> aggregationType,
+            double aggregation,
+            Set<DataOrigin> dataOrigins) {
         if (Flags.refactorAggregations()) {
             throw new UnsupportedOperationException("Not a derived data type.");
         }
@@ -72,7 +77,7 @@ public final class ActiveCaloriesBurnedRecordHelper
             case ACTIVE_CALORIES_BURNED_RECORD_ACTIVE_CALORIES_TOTAL:
                 results.moveToFirst();
                 ZoneOffset zoneOffset = getZoneOffset(results);
-                return new AggregateResult<>(aggregation).setZoneOffset(zoneOffset);
+                return new AggregateResult<>(aggregation, zoneOffset, dataOrigins);
             default:
                 return null;
         }

@@ -16,32 +16,25 @@
 package com.android.healthconnect.controller.migration
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
 import com.android.healthconnect.controller.utils.logging.PageName
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint(Fragment::class)
+@AndroidEntryPoint(HealthSetupFragment::class)
 class MigrationInProgressFragment : Hilt_MigrationInProgressFragment() {
 
-    @Inject lateinit var logger: HealthConnectLogger
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        logger.setPageId(PageName.MIGRATION_IN_PROGRESS_PAGE)
-        return inflater.inflate(R.layout.migration_in_progress_screen, container, false)
+    init {
+        this.setPageName(PageName.MIGRATION_IN_PROGRESS_PAGE)
     }
 
-    override fun onResume() {
-        super.onResume()
-        logger.logPageImpression()
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.migration_in_progress_screen, rootKey)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        this.hideButtons()
     }
 }

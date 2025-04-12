@@ -1088,7 +1088,7 @@
     <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"Health Connect နှင့် စင့်ခ်ဆက်လုပ်ရန် <xliff:g id="APP_NAME">%1$s</xliff:g> ကို အပ်ဒိတ်လုပ်ရပါမည်။ အပ်ဒိတ်များကို အက်ပ်အားလုံးအတွက် မရနိုင်ပါ။"</string>
     <string name="app_update_needed_banner_description_multiple" msgid="6021498912770754575">"Health Connect နှင့် စင့်ခ်ဆက်လုပ်ရန် အက်ပ်အချို့ကို အပ်ဒိတ်လုပ်ရပါမည်။ အပ်ဒိတ်များကို အက်ပ်အားလုံးအတွက် မရနိုင်ပါ။"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"အပ်ဒိတ်များ ရှာရန်"</string>
-    <string name="app_update_needed_banner_learn_more_button" msgid="7269232067819258160">"ပိုမိုလေ့လာရန်"</string>
+    <string name="app_update_needed_banner_learn_more_button" msgid="7269232067819258160">"ပိုလေ့လာရန်"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect ပေါင်းစည်းမှု"</string>
     <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"Health Connect ကို Android စနစ်နှင့် ပေါင်းစည်းရန် အသင့်ဖြစ်ပါပြီ။ <xliff:g id="APP_NAME">%1$s</xliff:g> အား ယခုသုံးခွင့်ပေးပါက ပေါင်းစည်းမှုမပြီးစီးမီ တူးလ်အချို့ အလုပ်လုပ်မည်မဟုတ်ပါ။"</string>
     <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"Health Connect ကို Android စနစ်နှင့် ပေါင်းစည်းရန် အသင့်ဖြစ်ပါပြီ။ အက်ပ်များအား ယခုသုံးခွင့်ပေးပါက ပေါင်းစည်းမှုမပြီးစီးမီ တူးလ်အချို့ အလုပ်လုပ်မည်မဟုတ်ပါ။"</string>

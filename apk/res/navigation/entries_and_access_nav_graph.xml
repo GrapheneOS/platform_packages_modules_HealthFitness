@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/dataEntryDetailsFragment"
-        android:name="com.android.healthconnect.controller.entrydetails.DataEntryDetailsFragment"
+        android:name="com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsFragment"
         android:label="@string/entry_details_title" />
 
     <fragment

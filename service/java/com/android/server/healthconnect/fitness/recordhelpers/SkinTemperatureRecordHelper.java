@@ -36,6 +36,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.units.Temperature;
 import android.health.connect.internal.datatypes.SkinTemperatureRecordInternal;
@@ -50,6 +51,7 @@ import com.android.server.healthconnect.storage.utils.SqlJoin;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -204,15 +206,16 @@ public final class SkinTemperatureRecordHelper
     @Override
     @Nullable
     public AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case SKIN_TEMPERATURE_RECORD_DELTA_AVG:
             case SKIN_TEMPERATURE_RECORD_DELTA_MIN:
             case SKIN_TEMPERATURE_RECORD_DELTA_MAX:
                 return new AggregateResult<>(
-                                results.getDouble(
-                                        results.getColumnIndex(SKIN_TEMPERATURE_DELTA_COLUMN_NAME)))
-                        .setZoneOffset(getZoneOffset(results));
+                        results.getDouble(
+                                results.getColumnIndex(SKIN_TEMPERATURE_DELTA_COLUMN_NAME)),
+                        getZoneOffset(results),
+                        dataOrigins);
             default:
                 return null;
         }

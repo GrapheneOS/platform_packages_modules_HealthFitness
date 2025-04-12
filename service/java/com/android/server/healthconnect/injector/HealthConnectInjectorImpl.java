@@ -31,6 +31,8 @@ import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationSender;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
@@ -40,12 +42,14 @@ import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.logging.ExportImportLogger;
 import com.android.server.healthconnect.logging.UsageStatsCollector;
 import com.android.server.healthconnect.migration.MigrationBroadcastScheduler;
 import com.android.server.healthconnect.migration.MigrationCleaner;
+import com.android.server.healthconnect.migration.MigrationEntityHelper;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.MigrationUtils;
@@ -63,6 +67,7 @@ import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.permission.PermissionPackageChangesOrchestrator;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
+import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
@@ -70,13 +75,8 @@ import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppOpLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
-import com.android.server.healthconnect.storage.utils.PreferencesManager;
 import com.android.server.healthconnect.tracker.TrackerManager;
 import com.android.server.healthconnect.tracker.TrackerManagerImpl;
 import com.android.server.healthconnect.utils.TimeSource;
@@ -108,7 +108,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final AppInfoHelper mAppInfoHelper;
     private final AppOpLogsHelper mAppOpLogsHelper;
     private final AccessLogsHelper mAccessLogsHelper;
-    private final RecordDateHelper mActivityDateHelper;
+    private final RecordDateHelper mRecordDateHelper;
     private final HealthConnectMappings mHealthConnectMappings;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
     private final ChangeLogsHelper mChangeLogsHelper;
@@ -286,7 +286,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         ? new ReadAccessLogsHelper(
                                 mAppInfoHelper, mTransactionManager, mDatabaseHelpers)
                         : builder.mReadAccessLogsHelper;
-        mActivityDateHelper =
+        mRecordDateHelper =
                 builder.mActivityDateHelper == null
                         ? new RecordDateHelper(
                                 mTransactionManager,
@@ -357,6 +357,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
                                 mAccessLogsHelper,
+                                mRecordDateHelper,
+                                mThreadScheduler,
                                 mInternalHealthConnectMappings)
                         : builder.mFitnessRecordUpsertHelper;
         mFitnessRecordReadHelper =
@@ -374,6 +376,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mTransactionManager,
                                 mAppInfoHelper,
                                 mAccessLogsHelper,
+                                mRecordDateHelper,
+                                mThreadScheduler,
                                 mInternalHealthConnectMappings)
                         : builder.mFitnessRecordDeleteHelper;
         mFitnessRecordAggregateHelper =
@@ -498,8 +502,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
-    public RecordDateHelper getActivityDateHelper() {
-        return mActivityDateHelper;
+    public RecordDateHelper getRecordDateHelper() {
+        return mRecordDateHelper;
     }
 
     @Override
@@ -625,7 +629,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 getAppInfoHelper(),
                 getTransactionManager(),
                 getFitnessRecordDeleteHelper(),
-                getActivityDateHelper());
+                getRecordDateHelper());
     }
 
     @Override

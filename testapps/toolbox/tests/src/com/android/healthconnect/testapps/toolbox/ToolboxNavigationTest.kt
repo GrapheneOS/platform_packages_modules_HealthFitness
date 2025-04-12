@@ -19,9 +19,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -51,13 +50,13 @@ class ToolboxNavigationTest {
 
         // Click on steps to navigate to next screen
         composeTestRule
-            .onNode(hasText("Steps"))
+            .onNodeWithText("Steps")
             .performClick()
 
         composeTestRule.waitForIdle()
 
         composeTestRule
-            .onNode(hasText("Steps") and hasTestTag("dataTypeTitle"))
+            .onNodeWithText("Steps")
             .assertIsDisplayed()
     }
 }

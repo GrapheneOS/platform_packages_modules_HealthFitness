@@ -20,6 +20,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.migration.MigrationEntityHelper;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

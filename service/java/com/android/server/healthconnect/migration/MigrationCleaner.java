@@ -20,7 +20,6 @@ import android.health.connect.HealthConnectDataState;
 import android.util.Slog;
 
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.MigrationEntityHelper;
 
 /**
  * Deletes temporary data after migration is complete.

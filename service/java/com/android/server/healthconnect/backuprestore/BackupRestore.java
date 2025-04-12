@@ -61,9 +61,9 @@ import android.util.ArraySet;
 import android.util.Log;
 import android.util.Slog;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.exportimport.DatabaseMerger;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
@@ -72,15 +72,11 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
 import com.android.server.healthconnect.permission.UserGrantTimeState;
-import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
-import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
-import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.PreferenceHelper;
 import com.android.server.healthconnect.utils.FilesUtil;
 import com.android.server.healthconnect.utils.RunnableWithThrowable;
 
@@ -96,7 +92,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -184,13 +179,7 @@ public final class BackupRestore {
 
     @VisibleForTesting static final String STAGED_DATABASE_NAME = "healthconnect_staged.db";
 
-    private static final String DATABASE_BACKUP_FILE_NAME = "healthconnect_backup.db";
     private static final String BACKUP_DIR = "backup";
-    private static final List<String> PHR_TABLES_TO_CLEAR =
-            List.of(
-                    MedicalDataSourceHelper.getMainTableName(),
-                    MedicalResourceHelper.getMainTableName(),
-                    MedicalResourceIndicesHelper.getTableName());
 
     private static final String TAG = "HealthConnectBackupRestore";
     private final ReentrantReadWriteLock mStatesLock = new ReentrantReadWriteLock(true);
@@ -428,25 +417,6 @@ public final class BackupRestore {
                 HealthConnectContext.create(
                         mContext, userHandle, BACKUP_DIR, mEnvironmentDataDirectory);
         File backupDataDir = dbContext.getDataDir();
-        if (Flags.personalHealthRecordDisableD2d()) {
-            databasePath = new File(backupDataDir, DATABASE_BACKUP_FILE_NAME);
-            try {
-                // Copies the HC database to the temp file.
-                copyDatabase(databasePath);
-            } catch (Exception e) {
-                Slog.e(TAG, "Failed to create local file for backup", e);
-                return;
-            }
-
-            try {
-                // Deletes the PHR tables content from the temp file.
-                deletePhrTablesContent(dbContext);
-            } catch (Exception e) {
-                Slog.e(TAG, "Failed to clear PHR tables.", e);
-                return;
-            }
-        }
-
         var backupFilesByFileNames =
                 getBackupFilesByFileNames(userHandle, backupDataDir, databasePath);
         pfdsByFileName.forEach(
@@ -481,35 +451,6 @@ public final class BackupRestore {
         return new BackupFileNamesSet(backupFileNames);
     }
 
-    private void copyDatabase(File destination) throws IOException {
-        Slog.i(TAG, "Database copying started.");
-
-        if (!destination.exists() && !destination.mkdirs()) {
-            throw new IOException("Unable to create directory for the database copy.");
-        }
-
-        Files.copy(
-                mTransactionManager.getDatabasePath().toPath(),
-                destination.toPath(),
-                StandardCopyOption.REPLACE_EXISTING);
-
-        Slog.i(TAG, "Database copying completed: " + destination.toPath().toAbsolutePath());
-    }
-
-    private void deletePhrTablesContent(HealthConnectContext dbContext) {
-        // Throwing a exception when calling this method implies that it was not possible to
-        // create a HC database from the file and, therefore, most probably the database was
-        // corrupted during the file copy.
-        try (HealthConnectDatabase exportDatabase =
-                new HealthConnectDatabase(dbContext, DATABASE_BACKUP_FILE_NAME)) {
-            SQLiteDatabase db = exportDatabase.getReadableDatabase();
-            for (String tableName : PHR_TABLES_TO_CLEAR) {
-                db.execSQL("DELETE FROM " + tableName + ";");
-            }
-        }
-        Slog.i(TAG, "Drop PHR tables completed.");
-    }
-
     /** Updates the download state of the remote data. */
     public void updateDataDownloadState(@DataDownloadState int downloadState) {
         setDataDownloadState(downloadState, false /* force */);
@@ -523,7 +464,6 @@ public final class BackupRestore {
     }
 
     /** Deletes all the staged data and resets all the states. */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
     public void deleteAndResetEverything(UserHandle userHandle) {
         HealthConnectContext dbContext =
                 HealthConnectContext.create(
@@ -785,10 +725,6 @@ public final class BackupRestore {
     }
 
     private void deleteBackupFiles(File backupDataDir) {
-        if (Flags.personalHealthRecordDisableD2d()) {
-            File databaseBackupFile = new File(backupDataDir, DATABASE_BACKUP_FILE_NAME);
-            databaseBackupFile.delete();
-        }
         // We only create a backup copy for grant times. DB is copied from source.
         File grantTimeFile = new File(backupDataDir, GRANT_TIME_FILE_NAME);
         grantTimeFile.delete();

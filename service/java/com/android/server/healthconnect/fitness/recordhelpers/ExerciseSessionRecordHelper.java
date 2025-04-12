@@ -58,8 +58,10 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger.Operations;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
@@ -67,7 +69,6 @@ import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
-import com.android.server.healthconnect.storage.utils.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TableColumnPair;
@@ -452,11 +453,14 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
-    public List<ReadTableRequest> getReadRequestsForRecordsModifiedByUpsertion(
+    public List<RecordReadTableRequest> getReadRequestsForRecordsModifiedByUpsertion(
             UUID upsertedRecordId, RecordUpsertTableRequest upsertTableRequest, long appId) {
-        List<ReadTableRequest> result = new ArrayList<>();
+        List<RecordReadTableRequest> result = new ArrayList<>();
         ExerciseSessionRecordInternal session =
                 (ExerciseSessionRecordInternal) upsertTableRequest.getRecordInternal();
+        RecordHelper plannedExerciseSessionRecordHelper =
+                InternalHealthConnectMappings.getInstance()
+                        .getRecordHelper(RECORD_TYPE_PLANNED_EXERCISE_SESSION);
         // When an exercise session is inserted, we want to check if it references a planned
         // exercise session. If it does, we should generate a changelog for it, as it now
         // contains a reference back to this exercise session.
@@ -482,10 +486,7 @@ public final class ExerciseSessionRecordHelper
                                     + "))";
                         }
                     };
-            readRequest.setRecordHelper(
-                    InternalHealthConnectMappings.getInstance()
-                            .getRecordHelper(RECORD_TYPE_PLANNED_EXERCISE_SESSION));
-            result.add(readRequest);
+            result.add(new RecordReadTableRequest(readRequest, plannedExerciseSessionRecordHelper));
         }
         // There may have been a previous reference to this exercise, search for those references.
         // This may be the case due to either the reference being nullified, or, it being changed to
@@ -501,16 +502,18 @@ public final class ExerciseSessionRecordHelper
         whereStatement.addWhereEqualsClause(
                 COMPLETED_SESSION_ID_COLUMN_NAME, StorageUtils.getHexString(upsertedRecordId));
         affectedTrainingPlanReadRequest.setWhereClause(whereStatement);
-        affectedTrainingPlanReadRequest.setRecordHelper(
-                InternalHealthConnectMappings.getInstance()
-                        .getRecordHelper(RECORD_TYPE_PLANNED_EXERCISE_SESSION));
-        result.add(affectedTrainingPlanReadRequest);
+        result.add(
+                new RecordReadTableRequest(
+                        affectedTrainingPlanReadRequest, plannedExerciseSessionRecordHelper));
         return result;
     }
 
     @Override
-    public List<ReadTableRequest> getReadRequestsForRecordsModifiedByDeletion(
+    public List<RecordReadTableRequest> getReadRequestsForRecordsModifiedByDeletion(
             UUID deletedRecordUuid) {
+        RecordHelper plannedExerciseSessionRecordHelper =
+                InternalHealthConnectMappings.getInstance()
+                        .getRecordHelper(RECORD_TYPE_PLANNED_EXERCISE_SESSION);
         ReadTableRequest affectedTrainingPlanReadRequest =
                 new ReadTableRequest(PLANNED_EXERCISE_SESSION_RECORD_TABLE_NAME);
         affectedTrainingPlanReadRequest.setColumnNames(
@@ -522,10 +525,9 @@ public final class ExerciseSessionRecordHelper
         whereStatement.addWhereEqualsClause(
                 COMPLETED_SESSION_ID_COLUMN_NAME, StorageUtils.getHexString(deletedRecordUuid));
         affectedTrainingPlanReadRequest.setWhereClause(whereStatement);
-        affectedTrainingPlanReadRequest.setRecordHelper(
-                InternalHealthConnectMappings.getInstance()
-                        .getRecordHelper(RECORD_TYPE_PLANNED_EXERCISE_SESSION));
-        return Collections.singletonList(affectedTrainingPlanReadRequest);
+        return Collections.singletonList(
+                new RecordReadTableRequest(
+                        affectedTrainingPlanReadRequest, plannedExerciseSessionRecordHelper));
     }
 
     private boolean canWriteExerciseRoute(

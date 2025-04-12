@@ -533,7 +533,7 @@ class MockedPermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun whenPermissionUserFixed_noFlowConcluded_sendsResultOk() {
         whenever(viewModel.isAnyPermissionUserFixed(anyString(), anyArray())).thenReturn(true)
         whenever(viewModel.isFitnessPermissionRequestConcluded()).thenReturn(false)
@@ -560,7 +560,7 @@ class MockedPermissionsActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD, Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun whenPermissionUserFixed_flowConcluded_showsRequest() {
         whenever(viewModel.isAnyPermissionUserFixed(anyString(), anyArray())).thenReturn(true)
         whenever(viewModel.isFitnessPermissionRequestConcluded()).thenReturn(false)

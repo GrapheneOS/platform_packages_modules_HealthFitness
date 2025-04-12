@@ -26,15 +26,6 @@ flag {
 }
 
 flag {
-    name: "personal_health_record_database"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for guarding DB schema changes for PHR features."
-    bug: "340809376"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "personal_health_record_telemetry"
     namespace: "health_fitness_aconfig"
     description: "Flag for guarding telemetry for PHR MVP APIs. This is for normal WW"
@@ -85,18 +76,6 @@ flag {
     description: "Flag for merging PHR data in both device to device transfer and export/import flows."
     bug: "369809932"
     is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "personal_health_record_disable_d2d"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for excluding PHR tables from device to device transfer flow."
-    bug: "369809932"
-    is_fixed_read_only: true
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
     is_exported: true
 }
 
@@ -348,7 +327,6 @@ flag {
     description: "Enables the UI for cloud B&R in Health Connect settings."
     bug: "400640806"
     is_fixed_read_only: true
-    is_exported: false
 }
 
 flag {
@@ -510,21 +488,21 @@ flag {
 }
 
 flag {
-    name: "exercise_segment_weight"
+    name: "exercise_segment_improvements"
     namespace: "health_fitness_aconfig"
-    description: "Enables changes to add optional weight data to exercise segments APIs"
+    description: "Enables changes to add new optional fields, weight, set index and RPE to exercise segments APIs"
     bug: "396405077"
     is_fixed_read_only: true
-    is_exported: true
+    is_exported: false
 }
 
 flag {
-    name: "exercise_segment_weight_db"
+    name: "exercise_segment_improvements_db"
     namespace: "health_fitness_aconfig"
-    description: "Enables database changes to add optional weight data to exercise segments APIs"
+    description: "Enables database changes to add new optional fields, weight, set index and to exercise segments APIs"
     bug: "396405077"
     is_fixed_read_only: true
-    is_exported: true
+    is_exported: false
 }
 
 flag {

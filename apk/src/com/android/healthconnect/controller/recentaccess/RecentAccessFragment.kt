@@ -31,7 +31,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
 import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -193,19 +192,10 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
 
                 if (recentApp.isToday) {
                     mRecentAccessTodayPreferenceGroup.addPreference(newPreference)
-                    if (!isLastUsage) {
-                        mRecentAccessTodayPreferenceGroup.addPreference(
-                            DividerPreference(requireContext())
-                        )
-                    }
                 } else {
                     mRecentAccessYesterdayPreferenceGroup.addPreference(newPreference)
-                    if (!isLastUsage) {
-                        mRecentAccessYesterdayPreferenceGroup.addPreference(
-                            DividerPreference(requireContext())
-                        )
-                    }
                 }
+                newPreference.setShowDivider(!isLastUsage)
             }
         }
     }
@@ -222,7 +212,13 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
                     R.id.action_recentAccessFragment_to_combinedPermissionsFragment
             }
 
-        if (recentApp.shouldLaunchAppOnboardingIfAvailable && tryLaunchAppOnboardingActivity(healthPermissionReader, recentApp.metadata.packageName)) {
+        if (
+            recentApp.shouldLaunchAppOnboardingIfAvailable &&
+                tryLaunchAppOnboardingActivity(
+                    healthPermissionReader,
+                    recentApp.metadata.packageName,
+                )
+        ) {
             // return early as we no longer need to navigate to the permissions management
             // screen since the client app makes a permission request as part of their
             // onboarding activity.

@@ -27,7 +27,6 @@ import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
 import static android.healthconnect.tests.exportimport.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -173,7 +172,6 @@ public class ExportImportApiTest {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PERSONAL_HEALTH_RECORD_DATABASE,
         FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT
     })
     public void phr_exportDeleteDataAndThenImport_dataIsRestored() throws Exception {

@@ -31,17 +31,17 @@ import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD
-import com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE
 import com.google.common.truth.Truth
 import org.junit.Rule
 import org.junit.Test
 
 class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
 
-    @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+    @get:Rule
+    val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalWrite_allow_grantsPermission() {
         revokePermissionViaPackageManager(
             context,
@@ -63,7 +63,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalWrite_dontAllow_doesNotGrantPermission() {
         revokePermissionViaPackageManager(
             context,
@@ -88,7 +88,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalReadAndWrite_showsRequestedPermissions() {
         revokePermissionViaPackageManager(
             context,
@@ -124,7 +124,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalReadAndWrite_doesNotShowGrantedPermissions() {
         revokePermissionViaPackageManager(
             context,
@@ -162,7 +162,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalReadAndWrite_grantsOnlyRequestedPermissions() {
         revokePermissionViaPackageManager(
             context,
@@ -214,7 +214,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalReadAndWrite_allowAll_grantsAllRequestedPermissions() {
         revokePermissionViaPackageManager(
             context,
@@ -259,7 +259,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     fun requestMedicalReadAndWrite_dontAllow_doesNotGrantPermissions() {
         revokePermissionViaPackageManager(
             context,

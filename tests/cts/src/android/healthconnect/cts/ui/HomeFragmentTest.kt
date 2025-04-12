@@ -33,7 +33,6 @@ import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD
-import com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_DATABASE
 import com.android.settingslib.widget.theme.flags.Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -151,7 +150,7 @@ class HomeFragmentTest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD, FLAG_PERSONAL_HEALTH_RECORD_DATABASE)
+    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     fun homeFragment_withMedicalData_opensBrowseMedicalRecords() {
         val dataSource =
             APP_A_WITH_READ_WRITE_PERMS.createMedicalDataSource(getCreateMedicalDataSourceRequest())

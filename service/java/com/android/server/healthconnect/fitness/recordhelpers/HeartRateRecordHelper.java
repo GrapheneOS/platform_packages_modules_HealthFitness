@@ -30,6 +30,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.AggregateResult;
 import android.health.connect.datatypes.AggregationType;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.HeartRateRecordInternal;
 import android.util.Pair;
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -68,16 +70,16 @@ public class HeartRateRecordHelper
     @Override
     @Nullable
     public final AggregateResult<?> getNoPriorityAggregateResult(
-            Cursor results, AggregationType<?> aggregationType) {
+            Cursor results, AggregationType<?> aggregationType, Set<DataOrigin> dataOrigins) {
         switch (aggregationType.getAggregationTypeIdentifier()) {
             case HEART_RATE_RECORD_BPM_MAX:
             case HEART_RATE_RECORD_BPM_MIN:
             case HEART_RATE_RECORD_BPM_AVG:
             case HEART_RATE_RECORD_MEASUREMENTS_COUNT:
                 return new AggregateResult<>(
-                                results.getLong(
-                                        results.getColumnIndex(BEATS_PER_MINUTE_COLUMN_NAME)))
-                        .setZoneOffset(getZoneOffset(results));
+                        results.getLong(results.getColumnIndex(BEATS_PER_MINUTE_COLUMN_NAME)),
+                        getZoneOffset(results),
+                        dataOrigins);
             default:
                 return null;
         }

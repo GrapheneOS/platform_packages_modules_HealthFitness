@@ -463,13 +463,6 @@ public final class BundleHelper {
         return bundle;
     }
 
-    /** Creates a bundle representing a kill-self request. */
-    public static Bundle forKillSelfRequest() {
-        Bundle bundle = new Bundle();
-        bundle.putString(QUERY_TYPE, KILL_SELF_REQUEST);
-        return bundle;
-    }
-
     /** Converts a bundle to a self-revoke permission request. */
     public static String toPermissionToSelfRevoke(Bundle bundle) {
         return bundle.getString(PERMISSION_NAME);

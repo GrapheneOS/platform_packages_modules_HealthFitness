@@ -133,13 +133,15 @@ class PriorityRecordsAggregator {
         // record, we added to the buffer later overlapping records and the first non-overlapping
         // record. It guarantees that the aggregation score can be calculated correctly for any
         // timestamp within the earliest record interval.
-        if (mTimestampsBuffer.first().getType() != AggregationTimestamp.INTERVAL_START) {
+        AggregationTimestamp firstTimestamp = mTimestampsBuffer.first();
+        if (firstTimestamp.getType() != AggregationTimestamp.INTERVAL_START) {
             return;
         }
 
         // Add record timestamps to buffer until latest buffer record do not overlap with earliest
         // buffer record.
-        long expansionBorder = mTimestampsBuffer.first().getParentData().getEndTime();
+        // This must have type INTERVAL_START from check above, and therefore has parent data.
+        long expansionBorder = Objects.requireNonNull(firstTimestamp.getParentData()).getEndTime();
         if (Constants.DEBUG) {
             Slog.d(
                     TAG,
@@ -210,14 +212,17 @@ class PriorityRecordsAggregator {
         return data;
     }
 
-    /** Returns result for the given group */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    /** Returns result for the given group, or null if there is no result for the group. */
+    @Nullable
     public Double getResultForGroup(Integer groupNumber) {
         return mGroupToAggregationResult.get(groupNumber);
     }
 
-    /** Returns start time zone offset for the given group */
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    /**
+     * Returns start time zone offset for the given group, or null if the group is not known or has
+     * no zone offset.
+     */
+    @Nullable
     public ZoneOffset getZoneOffsetForGroup(Integer groupNumber) {
         return mGroupToFirstZoneOffset.get(groupNumber);
     }

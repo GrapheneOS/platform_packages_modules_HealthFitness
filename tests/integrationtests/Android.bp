@@ -115,7 +115,7 @@ android_test {
         "cts-healthconnect-utils",
         "cts-healthconnect-phr-lib",
         "healthconnect-documentprovider-utils",
-        "healthfitness-exported-aconfig-flags-lib",
+        "healthfitness-aconfig-flags-lib",
     ],
     srcs: [
         "src/android/healthconnect/tests/exportimport/*.java",
