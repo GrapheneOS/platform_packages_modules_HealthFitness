@@ -1656,6 +1656,13 @@
     <string name="menu_hide_system">Hide system</string>
     <!-- endregion -->
 
+    <!-- region Warning dialog when revoking system app permissions -->
+    <!-- [CHAR LIMIT=NONE] Warning message when turning off permission for system apps -->
+    <string name="system_warning">If you deny this permission, basic features of your device may no longer function as intended.</string>
+    <!-- Title for the dialog button to deny a permission grant despite a warning of implications. [CHAR LIMIT=30] -->
+    <string name="grant_dialog_button_deny_anyway">Don\u2019t allow anyway</string>
+    <!-- endregion -->
+
     <!-- region Wear -->
 
     <!-- region Necessary strings to use wear SystemUI copy. -->

@@ -67,6 +67,7 @@ android_test {
     data: [
         ":HealthFitnessCtsTestApp",
         ":HealthFitnessCtsTestApp2",
+        ":HealthFitnessCtsSystemTestApp",
         ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
         ":CtsHealthConnectTestAppWithWritePermissionsOnly",
     ],
@@ -203,6 +204,7 @@ android_test {
     srcs: [
         ":healthfitness-cts-testapp-srcs",
         ":healthfitness-cts-testapp2-srcs",
+        ":healthfitness-cts-systemtestapp-srcs",
         "src/android/healthconnect/cts/ui/**/*.kt",
         "src/com/android/cts/install/lib/*.java",
     ],
@@ -236,6 +238,7 @@ android_test {
     data: [
         ":HealthFitnessCtsTestApp",
         ":HealthFitnessCtsTestApp2",
+        ":HealthFitnessCtsSystemTestApp",
         ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
         ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
     ],
