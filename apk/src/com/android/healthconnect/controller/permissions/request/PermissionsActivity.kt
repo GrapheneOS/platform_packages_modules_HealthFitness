@@ -47,7 +47,6 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
-import com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled
 import com.android.healthfitness.flags.Flags
 import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -148,22 +147,16 @@ class PermissionsActivity : Hilt_PermissionsActivity() {
                 getPermissionStrings(),
             )
         ) {
-            if (isPersonalHealthRecordEnabled()) {
-                // First check if we are already in a permission request flow.
-                // Without this check, if any permissions from the previous screen
-                // were USER_FIXED, we would terminate the request without showing
-                // the subsequent screens.
-                if (
-                    !requestPermissionsViewModel.isFitnessPermissionRequestConcluded() &&
-                        !requestPermissionsViewModel.isMedicalPermissionRequestConcluded()
-                ) {
-                    Log.e(TAG, "App has at least one USER_FIXED permission, finishing!")
-                    requestPermissionsViewModel.updatePermissionGrants()
-                    handlePermissionResults()
-                }
-            } else {
+            // First check if we are already in a permission request flow.
+            // Without this check, if any permissions from the previous screen
+            // were USER_FIXED, we would terminate the request without showing
+            // the subsequent screens.
+            if (
+                !requestPermissionsViewModel.isFitnessPermissionRequestConcluded() &&
+                    !requestPermissionsViewModel.isMedicalPermissionRequestConcluded()
+            ) {
                 Log.e(TAG, "App has at least one USER_FIXED permission, finishing!")
-                requestPermissionsViewModel.requestHealthPermissions(getPackageNameExtra())
+                requestPermissionsViewModel.updatePermissionGrants()
                 handlePermissionResults()
             }
         }

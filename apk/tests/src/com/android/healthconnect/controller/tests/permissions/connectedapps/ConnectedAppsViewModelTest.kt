@@ -178,7 +178,6 @@ class ConnectedAppsViewModelTest {
             .isTrue()
     }
 
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun deleteAllData_invokesDeletion() = runTest {
         viewModel.deleteAllData()

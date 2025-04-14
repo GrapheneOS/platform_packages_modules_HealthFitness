@@ -208,9 +208,8 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
         context.launchMainActivity {
             navigateToNewPage("App permissions")
             navigateToNewPage(APP_WITH_READ_WRITE_PERMISSIONS_LABEL)
-            if (AconfigFlagHelper.isPersonalHealthRecordEnabled()) {
-                navigateToNewPage("Fitness and wellness")
-            }
+            navigateToNewPage("Fitness and wellness")
+
             findTextAndClick("Allow all")
         }
 

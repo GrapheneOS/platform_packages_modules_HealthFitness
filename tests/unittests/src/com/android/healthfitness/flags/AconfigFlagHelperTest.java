@@ -20,7 +20,6 @@ import static com.android.healthfitness.flags.AconfigFlagHelper.DB_VERSION_TO_DB
 import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersion;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isEcosystemMetricsEnabled;
-import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -139,18 +138,6 @@ public class AconfigFlagHelperTest {
                         dbVersion > LAST_ROLLED_OUT_DB_VERSION);
             }
         }
-    }
-
-    @Test
-    @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD})
-    public void phr_featureFlagTrue_expectTrue() {
-        assertThat(isPersonalHealthRecordEnabled()).isTrue();
-    }
-
-    @Test
-    @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD})
-    public void phr_featureFlagFalse_expectFalse() {
-        assertThat(isPersonalHealthRecordEnabled()).isFalse();
     }
 
     @Test

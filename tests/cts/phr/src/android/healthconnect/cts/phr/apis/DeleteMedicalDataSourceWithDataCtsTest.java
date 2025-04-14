@@ -33,7 +33,6 @@ import static android.healthconnect.cts.utils.TestUtils.finishMigrationWithShell
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -51,7 +50,6 @@ import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
@@ -102,7 +100,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_migrationInProgress_apiBlocked()
             throws InterruptedException {
         startMigrationWithShellPermissionIdentity();
@@ -118,7 +115,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_writeLimitExceeded_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         // Make the maximum number of delete medical resources calls just to use up the WRITE quota,
@@ -143,7 +139,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_existsWithoutData_succeedsAndDeletes()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -166,7 +161,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_existsWithData_succeedsAndDeletes() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         mUtil.upsertMedicalData(dataSource.getId(), FHIR_DATA_IMMUNIZATION);
@@ -199,7 +193,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_doesntExist_throws() throws Exception {
         HealthConnectReceiver<Void> callback = new HealthConnectReceiver<>();
 
@@ -211,7 +204,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_withManagePerm_existsWithoutData_succeedsAndDeletes()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -238,7 +230,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_withManagePerm_existsWithData_succeedsAndDeletes()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -276,7 +267,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_withManagePerm_doesntExist_throws() throws Exception {
         HealthConnectReceiver<Void> callback = new HealthConnectReceiver<>();
 
@@ -291,7 +281,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_emptyId_throws() throws Exception {
         HealthConnectReceiver<Void> callback = new HealthConnectReceiver<>();
 
@@ -303,7 +292,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_invalidId_throws() throws Exception {
         HealthConnectReceiver<Void> callback = new HealthConnectReceiver<>();
 
@@ -315,7 +303,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_differentPackage_throws() throws Exception {
         grantHealthPermission(PHR_BACKGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
         MedicalDataSource dataSource =
@@ -353,7 +340,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_inForegroundNoPermission_throws() {
         // App has not been granted any permissions.
         HealthConnectException exception =
@@ -364,7 +350,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_inForegroundOnlyReadPerm_throws() {
         grantHealthPermission(PHR_FOREGROUND_APP.getPackageName(), READ_MEDICAL_DATA_VACCINES);
 
@@ -376,7 +361,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_inBackgroundNoPermission_throws() {
         // App has not been granted any permissions.
         HealthConnectException exception =
@@ -387,7 +371,6 @@ public class DeleteMedicalDataSourceWithDataCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalDataSource_withManagePerm_differentPackage_succeedsAndDeletes()
             throws Exception {
         grantHealthPermission(PHR_BACKGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);

@@ -41,7 +41,7 @@ constructor(private val loadEntryDetailsUseCase: LoadEntryDetailsUseCase) : View
     fun loadEntryData(
         permissionType: FitnessPermissionType,
         entryId: String,
-        showDataOrigin: Boolean
+        showDataOrigin: Boolean,
     ) {
         viewModelScope.launch {
             val response =

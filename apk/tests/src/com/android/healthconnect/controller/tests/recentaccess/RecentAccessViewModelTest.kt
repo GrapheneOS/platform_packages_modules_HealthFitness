@@ -808,7 +808,6 @@ class RecentAccessViewModelTest {
         assertRecentAccessEquality(actual, expected)
     }
 
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun loadRecentAccessApps_healthRecords_read() = runTest {
         val packageName = TEST_APP_PACKAGE_NAME
@@ -850,7 +849,6 @@ class RecentAccessViewModelTest {
         assertRecentAccessEquality(actual, expected)
     }
 
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun loadRecentAccessApps_healthRecords_upsert() = runTest {
         val packageName = TEST_APP_PACKAGE_NAME

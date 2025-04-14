@@ -36,7 +36,6 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Co
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.isMedicalReadPermission
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthfitness.flags.AconfigFlagHelper
-import com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled
 import com.android.healthfitness.flags.Flags
 import com.google.common.annotations.VisibleForTesting
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -378,11 +377,7 @@ constructor(
     ): List<String> {
         val unfilteredPermissions = declaredPermissions.mapNotNull { parsePermission(it) }
         val filteredPermissions =
-            if (isPersonalHealthRecordEnabled()) {
-                maybeFilterOutAdditionalIfNotValid(unfilteredPermissions)
-            } else {
-                unfilteredPermissions
-            }
+            maybeFilterOutAdditionalIfNotValid(unfilteredPermissions)
         return filteredPermissions.map { it.toString() }
     }
 
@@ -460,21 +455,13 @@ constructor(
     }
 
     /**
-     * When PHR flag is on, returns valid additional permissions that we can display in our UI. An
+     * Returns valid additional permissions that we can display in our UI. An
      * additional permission is valid if the correct read permissions are declared.
-     *
-     * When PHR flag is off, returns additional permissions that are declared.
      */
     fun getAdditionalPermissions(packageName: String): List<String> {
-        return if (isPersonalHealthRecordEnabled()) {
-            getValidHealthPermissions(packageName)
+        return getValidHealthPermissions(packageName)
                 .map { it.toString() }
                 .filter { perm -> isAdditionalPermission(perm) && !shouldHidePermission(perm) }
-        } else {
-            getDeclaredHealthPermissions(packageName).filter { perm ->
-                isAdditionalPermission(perm) && !shouldHidePermission(perm)
-            }
-        }
     }
 
     fun isRationaleIntentDeclared(packageName: String): Boolean {
@@ -532,7 +519,6 @@ constructor(
 
     fun shouldHidePermission(permission: String): Boolean {
         return when (permission) {
-            in medicalPermissions -> !isPersonalHealthRecordEnabled()
             HealthPermissions.READ_ACTIVITY_INTENSITY,
             HealthPermissions.WRITE_ACTIVITY_INTENSITY ->
                 !AconfigFlagHelper.isActivityIntensityEnabled()

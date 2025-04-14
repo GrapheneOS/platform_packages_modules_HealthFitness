@@ -47,7 +47,7 @@ constructor(
     private val healthPermissionReader: HealthPermissionReader,
     private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
     private val loadPriorityListUseCase: LoadPriorityListUseCase,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadPotentialPriorityListUseCase {
 
     private val TAG = "LoadAppSourcesUseCase"
@@ -97,7 +97,9 @@ constructor(
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
                     suspendCancellableCoroutine { continuation ->
                         healthConnectManager.queryAllRecordTypesInfo(
-                            Runnable::run, continuation.asOutcomeReceiver())
+                            Runnable::run,
+                            continuation.asOutcomeReceiver(),
+                        )
                     }
                 val packages =
                     recordTypeInfoMap.values

@@ -147,7 +147,7 @@
 
     <fragment
         android:id="@+id/setUnitsFragment"
-        android:name="com.android.healthconnect.controller.dataentries.units.UnitsFragment"
+        android:name="com.android.healthconnect.controller.units.UnitsFragment"
         android:label="@string/units_title"/>
 
     <fragment

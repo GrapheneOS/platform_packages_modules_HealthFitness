@@ -74,42 +74,8 @@ class OnboardingScreenTest {
         return ActivityScenario.launchActivityForResult(startOnboardingActivityIntent)
     }
 
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun onboardingScreen_isDisplayedCorrectly() {
-        startOnboardingActivity()
-
-        onView(withText("Get started with Health\u00A0Connect")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health\u00A0Connect stores your health and fitness data, giving you a simple way to sync the different apps on your device"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(withId(R.id.onboarding_image)).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Share data with your apps\n" +
-                        "Choose the data each app can read or write to Health\u00A0Connect"
-                )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Manage your settings and privacy\n" +
-                        "Change app permissions and manage your data at any time"
-                )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Get started")).check(matches(isDisplayed()))
-        onView(withText("Go back")).check(matches(isDisplayed()))
-    }
-
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
-    @Test
-    fun onboardingScreen_withHealthRecords_isDisplayedCorrectly() {
         startOnboardingActivity()
 
         onView(withText("Get started with Health\u00A0Connect")).check(matches(isDisplayed()))
@@ -143,22 +109,8 @@ class OnboardingScreenTest {
         onView(withText("Go back")).check(matches(isDisplayed()))
     }
 
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun correctLogging() {
-        startOnboardingActivity()
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ONBOARDING_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(OnboardingElement.ONBOARDING_GO_BACK_BUTTON)
-        verify(healthConnectLogger).logImpression(OnboardingElement.ONBOARDING_COMPLETED_BUTTON)
-        verify(healthConnectLogger, times(0))
-            .logImpression(OnboardingElement.ONBOARDING_MESSAGE_WITH_PHR)
-    }
-
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
-    @Test
-    fun correctLogging_withHealthRecords() {
         startOnboardingActivity()
 
         verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ONBOARDING_PAGE)
@@ -168,17 +120,8 @@ class OnboardingScreenTest {
         verify(healthConnectLogger).logImpression(OnboardingElement.ONBOARDING_MESSAGE_WITH_PHR)
     }
 
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun onboardingScreen_actions_isClickable() {
-        startOnboardingActivity()
-        onView(withText("Go back")).check(matches(isClickable()))
-        onView(withText("Get started")).check(matches(isClickable()))
-    }
-
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
-    @Test
-    fun onboardingScreen_withHealthRecords_actions_isClickable() {
         startOnboardingActivity()
         onView(withText("Go back")).check(matches(isClickable()))
         onView(withText("Get started")).check(matches(isClickable()))

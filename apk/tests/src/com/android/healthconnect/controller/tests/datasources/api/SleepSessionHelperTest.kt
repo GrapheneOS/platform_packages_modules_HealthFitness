@@ -90,7 +90,10 @@ class SleepSessionHelperTest {
                 listOf(
                     Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
                     Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
-                    Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE))))
+                    Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
+                )
+            ),
+        )
 
         val result = sleepSessionHelper.clusterSleepSessions(sleepDate)
         assertThat(result is UseCaseResults.Success).isTrue()
@@ -133,12 +136,16 @@ class SleepSessionHelperTest {
                         Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
                         Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
                         Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
-                    )))
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 pastSleepDate,
                 getSleepSessionRecords(
-                    listOf(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))))
+                    listOf(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))
+                ),
+            )
 
             val result = sleepSessionHelper.clusterSleepSessions(sleepDate)
             assertThat(result is UseCaseResults.Success).isTrue()
@@ -181,12 +188,16 @@ class SleepSessionHelperTest {
                         Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
                         Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
                         Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
-                    )))
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 pastSleepSessionStartDate,
                 getSleepSessionRecords(
-                    listOf(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))))
+                    listOf(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))
+                ),
+            )
 
             val result = sleepSessionHelper.clusterSleepSessions(sleepDate)
             assertThat(result is UseCaseResults.Success).isTrue()
@@ -228,7 +239,10 @@ class SleepSessionHelperTest {
                 getSleepSessionRecords(
                     listOf(
                         Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
-                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE))))
+                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 secondToLastDateWithData,
@@ -236,7 +250,10 @@ class SleepSessionHelperTest {
                     listOf(
                         Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
                         Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE),
-                        Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))))
+                        Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE),
+                    )
+                ),
+            )
 
             // minStartTime = SLEEP_SESSION_3_START_DATE
             // maxEndTime = SLEEP_SESSION_2_END_DATE
@@ -278,14 +295,20 @@ class SleepSessionHelperTest {
                 getSleepSessionRecords(
                     listOf(
                         Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
-                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE))))
+                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 secondToLastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
                         Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
-                        Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))))
+                        Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE),
+                    )
+                ),
+            )
 
             // minStartTime = SLEEP_SESSION_3_START_DATE
             // maxEndTime = SLEEP_SESSION_1_END_DATE
@@ -334,7 +357,10 @@ class SleepSessionHelperTest {
                 getSleepSessionRecords(
                     listOf(
                         Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
-                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE))))
+                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 secondToLastDateWithSleepData,
@@ -342,12 +368,16 @@ class SleepSessionHelperTest {
                     listOf(
                         Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
                         Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE),
-                    )))
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 pastDateWithSleepData,
                 getSleepSessionRecords(
-                    listOf(Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))))
+                    listOf(Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))
+                ),
+            )
 
             // minStartTime = SLEEP_SESSION_3_START_DATE
             // maxEndTime = SLEEP_SESSION_2_END_DATE
@@ -398,7 +428,10 @@ class SleepSessionHelperTest {
                 getSleepSessionRecords(
                     listOf(
                         Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
-                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE))))
+                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 secondToLastDateWithSleepData,
@@ -406,7 +439,10 @@ class SleepSessionHelperTest {
                     listOf(
                         Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
                         Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE),
-                        Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))))
+                        Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE),
+                    )
+                ),
+            )
 
             // minStartTime = SLEEP_SESSION_5_START_DATE
             // maxEndTime = 2023-02-14T00:00
@@ -450,17 +486,24 @@ class SleepSessionHelperTest {
                 getSleepSessionRecords(
                     listOf(
                         Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
-                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE))))
+                        Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 secondToLastDateWithSleepData,
                 getSleepSessionRecords(
-                    listOf(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE))))
+                    listOf(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE))
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 pastDateWithSleepData,
                 getSleepSessionRecords(
-                    listOf(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))))
+                    listOf(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))
+                ),
+            )
 
             // minStartTime = SLEEP_SESSION_3_START_DATE
             // maxEndTime = SLEEP_SESSION_1_END_DATE
@@ -501,7 +544,10 @@ class SleepSessionHelperTest {
                     Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
                     Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
                     Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
-                    Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))))
+                    Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE),
+                )
+            ),
+        )
 
         // minStartTime = SLEEP_SESSION_4_START_DATE
         // maxEndTime = SLEEP_SESSION_2_END_DATE
@@ -550,12 +596,17 @@ class SleepSessionHelperTest {
                         Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
                         Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
                         Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
-                        Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))))
+                        Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE),
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 pastDateWithSleepData,
                 getSleepSessionRecords(
-                    listOf(Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))))
+                    listOf(Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))
+                ),
+            )
 
             // minStartTime = SLEEP_SESSION_4_START_DATE
             // maxEndTime = SLEEP_SESSION_2_END_DATE
@@ -606,7 +657,10 @@ class SleepSessionHelperTest {
                         Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
                         Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
                         Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE),
-                        Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))))
+                        Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE),
+                    )
+                ),
+            )
 
             // minStartTime = SLEEP_SESSION_4_START_DATE
             // maxEndTime = 15 Feb 00:00
@@ -654,12 +708,17 @@ class SleepSessionHelperTest {
                         Pair(SLEEP_SESSION_1_START_DATE, SLEEP_SESSION_1_END_DATE),
                         Pair(SLEEP_SESSION_2_START_DATE, SLEEP_SESSION_2_END_DATE),
                         Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE),
-                        Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))))
+                        Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE),
+                    )
+                ),
+            )
 
             loadPriorityEntriesUseCase.setEntriesList(
                 pastDateWithSleepData,
                 getSleepSessionRecords(
-                    listOf(Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))))
+                    listOf(Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))
+                ),
+            )
 
             // minStartTime = SLEEP_SESSION_4_START_DATE
             // maxEndTime = SLEEP_SESSION_2_END_DATE

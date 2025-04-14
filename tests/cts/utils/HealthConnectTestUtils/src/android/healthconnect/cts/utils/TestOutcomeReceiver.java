@@ -54,6 +54,9 @@ public class TestOutcomeReceiver<T, E extends RuntimeException> implements Outco
     private final AtomicReference<T> mResponse = new AtomicReference<>();
     private final AtomicReference<E> mException = new AtomicReference<>();
 
+    /** The caller of this receiver. This is for debugging purposes. */
+    protected String mCaller = "CALLER_NOT_SET";
+
     /**
      * Returns the response received. Fails if no response received within the default timeout.
      *
@@ -107,13 +110,14 @@ public class TestOutcomeReceiver<T, E extends RuntimeException> implements Outco
     @Override
     public void onResult(T result) {
         mResponse.set(result);
+        Log.d(TAG, mCaller + " => onResult: " + result);
         mLatch.countDown();
     }
 
     @Override
     public void onError(@NonNull E error) {
         mException.set(error);
-        Log.e(TAG, "onError", error);
+        Log.e(TAG, mCaller + " => onError", error);
         mLatch.countDown();
     }
 

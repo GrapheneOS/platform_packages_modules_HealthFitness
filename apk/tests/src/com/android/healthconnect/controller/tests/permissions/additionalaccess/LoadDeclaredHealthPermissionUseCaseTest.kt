@@ -56,15 +56,6 @@ class LoadDeclaredHealthPermissionUseCaseTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
-    fun execute_callsGetDeclaredHealthPermissions() {
-        useCase.invoke(TEST_APP_PACKAGE_NAME)
-
-        verify(healthPermissionReader).getDeclaredHealthPermissions(eq(TEST_APP_PACKAGE_NAME))
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     fun execute_callsGetValidHealthPermissions() {
         useCase.invoke(TEST_APP_PACKAGE_NAME)
 

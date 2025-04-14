@@ -15,8 +15,6 @@
  */
 package android.health.connect.internal.datatypes.utils;
 
-import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
-
 import android.annotation.NonNull;
 import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.FhirResource.FhirResourceType;
@@ -52,10 +50,6 @@ public final class FhirResourceTypeStringToIntMapper {
      */
     @FhirResourceType
     public static int getFhirResourceTypeInt(@NonNull String fhirResourceType) {
-        if (!isPersonalHealthRecordEnabled()) {
-            throw new UnsupportedOperationException("getFhirResourceTypeInt is not supported");
-        }
-
         populateFhirResourceTypeStringToIntMap();
 
         Integer fhirResourceTypeInt =
@@ -70,11 +64,6 @@ public final class FhirResourceTypeStringToIntMapper {
 
     @SuppressWarnings("FlaggedApi") // Initial if statement checks flag, but lint can't know that
     private static void populateFhirResourceTypeStringToIntMap() {
-        if (!isPersonalHealthRecordEnabled()) {
-            throw new UnsupportedOperationException(
-                    "populateFhirResourceTypeStringToIntMap is not supported");
-        }
-
         if (!sFhirResourceTypeStringToIntMap.isEmpty()) {
             return;
         }

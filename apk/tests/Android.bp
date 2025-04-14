@@ -101,6 +101,7 @@ java_defaults {
         ":UnsupportedTestApp",
         ":OldPermissionsTestApp",
         ":MedicalPermissionsTestApp",
+        ":NoPermissionsTestApp",
         ":HealthConnectUIBodySensorsTestApp",
         ":HealthConnectUIBodySensorsAndHealthTestApp",
         ":HealthConnectUIWearTestApp",

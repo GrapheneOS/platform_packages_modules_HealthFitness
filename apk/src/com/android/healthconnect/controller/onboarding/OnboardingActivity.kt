@@ -35,7 +35,6 @@ import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACK
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.OnboardingElement
 import com.android.healthconnect.controller.utils.logging.PageName
-import com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled
 import com.android.healthfitness.flags.Flags.onboarding
 import com.android.settingslib.collapsingtoolbar.EdgeToEdgeUtils
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -112,14 +111,9 @@ class OnboardingActivity : Hilt_OnboardingActivity() {
         val onboardingDescription = findViewById<TextView>(R.id.onboarding_description)
         val withHealthConnectTitle =
             findViewById<TextView>(R.id.onboarding_description_with_health_connect)
-        if (isPersonalHealthRecordEnabled()) {
-            onboardingDescription.setText(R.string.onboarding_description_health_records)
-            withHealthConnectTitle.visibility = View.VISIBLE
-            logger.logImpression(OnboardingElement.ONBOARDING_MESSAGE_WITH_PHR)
-        } else {
-            onboardingDescription.setText(R.string.onboarding_description)
-            withHealthConnectTitle.visibility = View.GONE
-        }
+        onboardingDescription.setText(R.string.onboarding_description_health_records)
+        withHealthConnectTitle.visibility = View.VISIBLE
+        logger.logImpression(OnboardingElement.ONBOARDING_MESSAGE_WITH_PHR)
 
         setupButtonArea()
     }

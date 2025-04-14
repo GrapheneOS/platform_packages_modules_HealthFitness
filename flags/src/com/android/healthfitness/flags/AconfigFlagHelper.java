@@ -128,11 +128,6 @@ public final class AconfigFlagHelper {
         return DB_VERSION_TO_DB_FLAG_MAP;
     }
 
-    /** Returns a boolean indicating whether PHR feature is enabled. */
-    public static synchronized boolean isPersonalHealthRecordEnabled() {
-        return Flags.personalHealthRecord();
-    }
-
     /** Returns a boolean indicating whether Activity Intensity data type is enabled. */
     public static boolean isActivityIntensityEnabled() {
         return Flags.activityIntensity()

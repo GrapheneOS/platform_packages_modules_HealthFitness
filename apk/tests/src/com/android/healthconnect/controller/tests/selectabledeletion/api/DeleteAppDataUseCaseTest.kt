@@ -73,7 +73,6 @@ class DeleteAppDataUseCaseTest {
             )
     }
 
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun invoke_deleteAppData_callsHealthManager() = runTest {
         doAnswer(prepareAnswer())
@@ -95,29 +94,6 @@ class DeleteAppDataUseCaseTest {
         verify(dataManager, times(2))
             .deleteMedicalDataSourceWithData(dataSourceIdCaptor.capture(), any(), any())
         assertThat(dataSourceIdCaptor.value).isEqualTo(TEST_MEDICAL_DATA_SOURCE_2.id)
-    }
-
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
-    @Test
-    fun invoke_deleteAppData_phrFlagDisabled_callsHealthManager() = runTest {
-        doAnswer(prepareAnswer())
-            .`when`(dataManager)
-            .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
-        doAnswer(prepareAnswer(listOf(TEST_MEDICAL_DATA_SOURCE, TEST_MEDICAL_DATA_SOURCE_2)))
-            .`when`(dataManager)
-            .getMedicalDataSources(any(GetMedicalDataSourcesRequest::class.java), any(), any())
-
-        val deleteAppData = DeleteAppData(packageName = "package.name", appName = "App Name")
-
-        useCase.invoke(deleteAppData)
-
-        verify(dataManager).deleteRecords(filtersCaptor.capture(), any(), any())
-        assertThat(filtersCaptor.value.timeRangeFilter).isNull()
-        assertThat(filtersCaptor.value.dataOrigins)
-            .containsExactly(DataOrigin.Builder().setPackageName("package.name").build())
-        assertThat(filtersCaptor.value.recordTypes).isEmpty()
-        verify(dataManager, times(0))
-            .deleteMedicalDataSourceWithData(dataSourceIdCaptor.capture(), any(), any())
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {

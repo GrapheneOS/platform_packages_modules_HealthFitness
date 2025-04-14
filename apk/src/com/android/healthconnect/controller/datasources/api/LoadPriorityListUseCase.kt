@@ -30,15 +30,15 @@ import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-@Deprecated("This won't be used once the NEW_INFORMATION_ARCHITECTURE feature is enabled.")
 @Singleton
 class LoadPriorityListUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
-) : BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher),
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) :
+    BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher),
     ILoadPriorityListUseCase {
 
     /** Returns list of [AppMetadata]s for given [HealthDataCategory] in priority order. */
@@ -46,7 +46,10 @@ constructor(
         val dataOriginPriorityOrderResponse: FetchDataOriginsPriorityOrderResponse =
             suspendCancellableCoroutine { continuation ->
                 healthConnectManager.fetchDataOriginsPriorityOrder(
-                    input, Runnable::run, continuation.asOutcomeReceiver())
+                    input,
+                    Runnable::run,
+                    continuation.asOutcomeReceiver(),
+                )
             }
         return dataOriginPriorityOrderResponse.dataOriginsPriorityOrder.map { dataOrigin ->
             appInfoReader.getAppMetadata(dataOrigin.packageName)
@@ -55,7 +58,7 @@ constructor(
 }
 
 interface ILoadPriorityListUseCase {
-    suspend fun invoke(input: @HealthDataCategoryInt Int) : UseCaseResults<List<AppMetadata>>
+    suspend fun invoke(input: @HealthDataCategoryInt Int): UseCaseResults<List<AppMetadata>>
 
-    suspend fun execute(input: @HealthDataCategoryInt Int) : List<AppMetadata>
+    suspend fun execute(input: @HealthDataCategoryInt Int): List<AppMetadata>
 }
