@@ -52,7 +52,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_V
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_UPSERT_FIX_USE_SHARED_MEMORY;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -202,9 +201,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION
-    })
     public void testUpsertMedicalResources_underMemoryChunkSizeLimit_succeeds()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -231,9 +227,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION
-    })
     public void testUpsertMedicalResources_memoryChunkSizeLimitExceeded_throws()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -264,9 +257,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION
-    })
     public void testUpsertMedicalResources_insert500kbOfData_succeeds()
             throws InterruptedException {
         TestUtils.setLowerRateLimitsForTesting(false);
@@ -297,7 +287,6 @@ public class UpsertMedicalResourcesCtsTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION,
         FLAG_PHR_UPSERT_FIX_USE_SHARED_MEMORY
     })
     public void testUpsertMedicalResources_insert2mbOfDataTestingSharedMemory_succeeds()
