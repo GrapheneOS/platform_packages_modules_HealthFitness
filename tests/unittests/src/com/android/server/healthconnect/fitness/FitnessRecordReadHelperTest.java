@@ -390,6 +390,39 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
+    public void readRecordsById_missingRecords_returnsExistingRecords() {
+        long startTimeMillis = 123;
+        long endTimeMillis = 456;
+        List<String> uuids =
+                mTransactionTestUtils.insertRecords(
+                        TEST_PACKAGE_NAME,
+                        createStepsRecord(startTimeMillis, endTimeMillis, 100),
+                        createBloodPressureRecord(endTimeMillis, 120.0, 80.0));
+
+        List<UUID> stepsUuids = ImmutableList.of(UUID.fromString(uuids.get(0)));
+        // Add an extra non-existent id.
+        List<UUID> bloodPressureUuids =
+                ImmutableList.of(UUID.fromString(uuids.get(1)), UUID.randomUUID());
+        List<RecordInternal<?>> records =
+                mFitnessRecordReadHelper.readRecords(
+                        mTransactionManager,
+                        TEST_PACKAGE_NAME,
+                        ImmutableMap.of(
+                                RECORD_TYPE_STEPS,
+                                stepsUuids,
+                                RecordTypeIdentifier.RECORD_TYPE_BLOOD_PRESSURE,
+                                bloodPressureUuids),
+                        /* grantedExtraReadPermissions= */ Set.of(),
+                        /* startDateAccessMillis= */ 0,
+                        /* isInForeground= */ false,
+                        /* shouldRecordAccessLogs= */ false);
+
+        assertThat(records).hasSize(2);
+        assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uuids.get(0)));
+        assertThat(records.get(1).getUuid()).isEqualTo(UUID.fromString(uuids.get(1)));
+    }
+
+    @Test
     @EnableFlags({
         FLAG_ECOSYSTEM_METRICS,
         FLAG_ECOSYSTEM_METRICS_DB_CHANGES,
