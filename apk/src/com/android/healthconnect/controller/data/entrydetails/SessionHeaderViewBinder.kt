@@ -25,7 +25,6 @@ import android.widget.TextView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
-import com.android.healthconnect.controller.shared.recyclerview.ViewBinder
 import com.android.healthconnect.controller.utils.logging.EntryDetailsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
@@ -38,7 +37,9 @@ class SessionHeaderViewBinder : SimpleViewBinder<SessionHeader, View> {
         val context = parent.context.applicationContext
         val hiltEntryPoint =
             EntryPointAccessors.fromApplication(
-                context.applicationContext, HealthConnectLoggerEntryPoint::class.java)
+                context.applicationContext,
+                HealthConnectLoggerEntryPoint::class.java,
+            )
         logger = hiltEntryPoint.logger()
         return LayoutInflater.from(parent.context)
             .inflate(R.layout.item_data_session_header, parent, false)

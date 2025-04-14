@@ -29,10 +29,10 @@ import com.android.healthconnect.controller.data.entries.api.LoadAggregationInpu
 import com.android.healthconnect.controller.data.entries.api.LoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
-import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
-import com.android.healthconnect.controller.dataentries.formatters.SleepSessionFormatter
-import com.android.healthconnect.controller.dataentries.formatters.StepsFormatter
-import com.android.healthconnect.controller.dataentries.formatters.TotalCaloriesBurnedFormatter
+import com.android.healthconnect.controller.data.formatters.DistanceFormatter
+import com.android.healthconnect.controller.data.formatters.SleepSessionFormatter
+import com.android.healthconnect.controller.data.formatters.StepsFormatter
+import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults

@@ -26,8 +26,8 @@ import android.os.OutcomeReceiver
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
-import com.android.healthconnect.controller.dataentries.formatters.MenstruationPeriodFormatter
-import com.android.healthconnect.controller.dataentries.formatters.shared.HealthDataEntryFormatter
+import com.android.healthconnect.controller.data.formatters.MenstruationPeriodFormatter
+import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.datasources.api.LoadPriorityEntriesUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper

@@ -31,7 +31,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.dataentries.formatters.ExerciseSessionFormatter
+import com.android.healthconnect.controller.data.formatters.ExerciseSessionFormatter
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showDataRestoreInProgressDialog
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.showMigrationInProgressDialog
