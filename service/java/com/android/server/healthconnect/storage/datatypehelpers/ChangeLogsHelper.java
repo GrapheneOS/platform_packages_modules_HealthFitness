@@ -50,6 +50,7 @@ import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
+import com.android.server.healthconnect.storage.utils.OrderByClause;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
@@ -162,7 +163,13 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         // next read.
         int pageSize = changeLogsRequest.getPageSize();
         final ReadTableRequest readTableRequest =
-                new ReadTableRequest(TABLE_NAME).setWhereClause(whereClause).setLimit(pageSize + 1);
+                new ReadTableRequest(TABLE_NAME)
+                        .setWhereClause(whereClause)
+                        .setLimit(pageSize + 1)
+                        .setOrderBy(
+                                new OrderByClause()
+                                        .addOrderByClause(
+                                                PRIMARY_COLUMN_NAME, /* isAscending= */ true));
 
         Map<Integer, ChangeLogs> operationToChangeLogMap = new ArrayMap<>();
         long nextChangesToken = DEFAULT_LONG;

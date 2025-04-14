@@ -31,6 +31,8 @@ import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLog
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.UUIDS_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.bytesToUuids;
+import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
+import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -38,8 +40,13 @@ import static org.mockito.Mockito.mock;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.accesslog.AccessLog;
+import android.health.connect.changelog.ChangeLogTokenRequest;
+import android.health.connect.changelog.ChangeLogsRequest;
+import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.datatypes.StepsRecord;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -54,6 +61,7 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
+import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -72,12 +80,17 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class ChangeLogsHelperTest {
 
+    private static final String PACKAGE_NAME = "package.name";
+
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private ChangeLogsHelper mChangeLogsHelper;
+    private ChangeLogsRequestHelper mChangeLogsRequestHelper;
     private TransactionManager mTransactionManager;
+    private AppInfoHelper mAppInfoHelper;
+    private TransactionTestUtils mTransactionTestUtils;
 
     @Before
     public void setup() {
@@ -90,7 +103,11 @@ public class ChangeLogsHelperTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mChangeLogsHelper = healthConnectInjector.getChangeLogsHelper();
+        mChangeLogsRequestHelper = healthConnectInjector.getChangeLogsRequestHelper();
         mTransactionManager = healthConnectInjector.getTransactionManager();
+        mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
+        mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
+        mTransactionTestUtils.insertApp(PACKAGE_NAME);
     }
 
     @Test
@@ -226,6 +243,171 @@ public class ChangeLogsHelperTest {
         mTransactionManager.deleteAll(List.of(ChangeLogsHelper.getDeleteRequestForAutoDelete()));
 
         assertThat(mChangeLogsHelper.getLatestRowId()).isEqualTo(0);
+    }
+
+    @Test
+    public void getChangeLogs_skipsNotRequestedDataTypes() {
+        var token =
+                mChangeLogsRequestHelper.getToken(
+                        -1,
+                        PACKAGE_NAME,
+                        new ChangeLogTokenRequest.Builder()
+                                .addRecordType(StepsRecord.class)
+                                .build());
+        var insertedRecords =
+                mTransactionTestUtils.insertRecords(
+                        PACKAGE_NAME,
+                        createStepsRecord(12345, 54321, 100),
+                        createStepsRecord(123456, 654321, 100),
+                        createBloodPressureRecord(12345678, 100, 100));
+        mTransactionTestUtils.deleteRecords(
+                PACKAGE_NAME, RecordIdFilter.fromId(StepsRecord.class, insertedRecords.get(0)));
+
+        var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
+        var changeLogsResponse =
+                mChangeLogsHelper.getChangeLogs(
+                        mAppInfoHelper,
+                        tokenRequest,
+                        new ChangeLogsRequest.Builder(token).build(),
+                        mChangeLogsRequestHelper);
+
+        var upsertedUuidsMap =
+                ChangeLogsHelper.getRecordTypeToInsertedUuids(
+                        changeLogsResponse.getChangeLogsMap());
+        var deletedLogs = ChangeLogsHelper.getDeletedLogs(changeLogsResponse.getChangeLogsMap());
+        assertThat(upsertedUuidsMap).hasSize(1);
+        assertThat(upsertedUuidsMap.get(RECORD_TYPE_STEPS))
+                .containsExactly(
+                        UUID.fromString(insertedRecords.get(0)),
+                        UUID.fromString(insertedRecords.get(1)));
+        assertThat(upsertedUuidsMap.containsKey(RECORD_TYPE_BLOOD_PRESSURE)).isFalse();
+        assertThat(deletedLogs).hasSize(1);
+        assertThat(deletedLogs.get(0).getDeletedRecordId()).isEqualTo(insertedRecords.get(0));
+    }
+
+    @Test
+    public void getChangeLogs_returnsChangeLogs() {
+        var token =
+                mChangeLogsRequestHelper.getToken(
+                        -1,
+                        PACKAGE_NAME,
+                        new ChangeLogTokenRequest.Builder()
+                                .addRecordType(StepsRecord.class)
+                                .addRecordType(BloodPressureRecord.class)
+                                .build());
+        var insertedRecords =
+                mTransactionTestUtils.insertRecords(
+                        PACKAGE_NAME,
+                        createStepsRecord(12345, 54321, 100),
+                        createStepsRecord(123456, 654321, 100),
+                        createBloodPressureRecord(12345678, 100, 100));
+        mTransactionTestUtils.deleteRecords(
+                PACKAGE_NAME, RecordIdFilter.fromId(StepsRecord.class, insertedRecords.get(0)));
+
+        var tokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
+        var changeLogsResponse =
+                mChangeLogsHelper.getChangeLogs(
+                        mAppInfoHelper,
+                        tokenRequest,
+                        new ChangeLogsRequest.Builder(token).build(),
+                        mChangeLogsRequestHelper);
+
+        var upsertedUuidsMap =
+                ChangeLogsHelper.getRecordTypeToInsertedUuids(
+                        changeLogsResponse.getChangeLogsMap());
+        var deletedLogs = ChangeLogsHelper.getDeletedLogs(changeLogsResponse.getChangeLogsMap());
+        assertThat(upsertedUuidsMap).hasSize(2);
+        assertThat(upsertedUuidsMap.get(RECORD_TYPE_STEPS))
+                .containsExactly(
+                        UUID.fromString(insertedRecords.get(0)),
+                        UUID.fromString(insertedRecords.get(1)));
+        assertThat(upsertedUuidsMap.get(RECORD_TYPE_BLOOD_PRESSURE))
+                .containsExactly(UUID.fromString(insertedRecords.get(2)));
+        assertThat(deletedLogs).hasSize(1);
+        assertThat(deletedLogs.get(0).getDeletedRecordId()).isEqualTo(insertedRecords.get(0));
+    }
+
+    @Test
+    public void getChangeLogs_withPageSize_returnsChangeLogs() {
+        var token =
+                mChangeLogsRequestHelper.getToken(
+                        -1,
+                        PACKAGE_NAME,
+                        new ChangeLogTokenRequest.Builder()
+                                .addRecordType(StepsRecord.class)
+                                .addRecordType(BloodPressureRecord.class)
+                                .build());
+        var insertedRecords =
+                mTransactionTestUtils.insertRecords(
+                        PACKAGE_NAME,
+                        createStepsRecord(12345, 54321, 100),
+                        createStepsRecord(123456, 654321, 100),
+                        createBloodPressureRecord(12345678, 100, 100));
+        mTransactionTestUtils.deleteRecords(
+                PACKAGE_NAME, RecordIdFilter.fromId(StepsRecord.class, insertedRecords.get(0)));
+
+        var firstTokenRequest = mChangeLogsRequestHelper.getRequest(PACKAGE_NAME, token);
+        var firstChangeLogsResponse =
+                mChangeLogsHelper.getChangeLogs(
+                        mAppInfoHelper,
+                        firstTokenRequest,
+                        new ChangeLogsRequest.Builder(token).setPageSize(1).build(),
+                        mChangeLogsRequestHelper);
+
+        var firstUpsertedUuidsMap =
+                ChangeLogsHelper.getRecordTypeToInsertedUuids(
+                        firstChangeLogsResponse.getChangeLogsMap());
+        var firstDeletedLogs =
+                ChangeLogsHelper.getDeletedLogs(firstChangeLogsResponse.getChangeLogsMap());
+        assertThat(firstUpsertedUuidsMap).hasSize(1);
+        assertThat(firstUpsertedUuidsMap.get(RECORD_TYPE_STEPS))
+                .containsExactly(
+                        UUID.fromString(insertedRecords.get(0)),
+                        UUID.fromString(insertedRecords.get(1)));
+        assertThat(firstDeletedLogs).hasSize(0);
+
+        var secondTokenRequest =
+                mChangeLogsRequestHelper.getRequest(
+                        PACKAGE_NAME, firstChangeLogsResponse.getNextPageToken());
+        var secondChangeLogsResponse =
+                mChangeLogsHelper.getChangeLogs(
+                        mAppInfoHelper,
+                        secondTokenRequest,
+                        new ChangeLogsRequest.Builder(firstChangeLogsResponse.getNextPageToken())
+                                .setPageSize(1)
+                                .build(),
+                        mChangeLogsRequestHelper);
+
+        var secondUpsertedUuidsMap =
+                ChangeLogsHelper.getRecordTypeToInsertedUuids(
+                        secondChangeLogsResponse.getChangeLogsMap());
+        var secondDeletedLogs =
+                ChangeLogsHelper.getDeletedLogs(secondChangeLogsResponse.getChangeLogsMap());
+        assertThat(secondUpsertedUuidsMap).hasSize(1);
+        assertThat(secondUpsertedUuidsMap.get(RECORD_TYPE_BLOOD_PRESSURE))
+                .containsExactly(UUID.fromString(insertedRecords.get(2)));
+        assertThat(secondDeletedLogs).hasSize(0);
+
+        var thirdTokenRequest =
+                mChangeLogsRequestHelper.getRequest(
+                        PACKAGE_NAME, secondChangeLogsResponse.getNextPageToken());
+        var thirdChangeLogsResponse =
+                mChangeLogsHelper.getChangeLogs(
+                        mAppInfoHelper,
+                        thirdTokenRequest,
+                        new ChangeLogsRequest.Builder(secondChangeLogsResponse.getNextPageToken())
+                                .setPageSize(1)
+                                .build(),
+                        mChangeLogsRequestHelper);
+
+        var thirdUpsertedUuidsMap =
+                ChangeLogsHelper.getRecordTypeToInsertedUuids(
+                        thirdChangeLogsResponse.getChangeLogsMap());
+        var thirdDeletedLogs =
+                ChangeLogsHelper.getDeletedLogs(thirdChangeLogsResponse.getChangeLogsMap());
+        assertThat(thirdUpsertedUuidsMap).hasSize(0);
+        assertThat(thirdDeletedLogs).hasSize(1);
+        assertThat(thirdDeletedLogs.get(0).getDeletedRecordId()).isEqualTo(insertedRecords.get(0));
     }
 
     private void insertChangeLog(
