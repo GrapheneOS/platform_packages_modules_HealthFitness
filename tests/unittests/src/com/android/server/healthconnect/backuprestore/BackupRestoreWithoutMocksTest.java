@@ -139,7 +139,64 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
+    @EnableFlags({
+        Flags.FLAG_PERSONAL_HEALTH_RECORD,
+        Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_D2D
+    })
+    public void testGetAllDataForBackup_disableD2dFlagEnabled_copiesAllDataExceptPhr()
+            throws Exception {
+        // Insert a MedicalDataSource and MedicalResource.
+        MedicalDataSource dataSource =
+                mPhrTestUtils.insertR4MedicalDataSource("ds", TEST_PACKAGE_NAME);
+        mPhrTestUtils.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource);
+        // Insert a Step record.
+        mTransactionTestUtils.insertRecords(TEST_PACKAGE_NAME, createStepsRecord(123, 456, 7));
+        // Ensure the original database contains the inserted data above.
+        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(1);
+        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(1);
+        assertThat(mTransactionTestUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
+
+        // Create the files where the database and the grant time files will be backed up to.
+        HealthConnectContext dbContext =
+                HealthConnectContext.create(
+                        mContext,
+                        mContext.getUser(),
+                        /* databaseDirName= */ null,
+                        mEnvironmentDataDirectory.getRoot());
+        File dbFileBacked = createAndGetEmptyFile(dbContext.getDataDir(), STAGED_DATABASE_NAME);
+        File grantTimeFileBacked =
+                createAndGetEmptyFile(dbContext.getDataDir(), GRANT_TIME_FILE_NAME);
+        UserGrantTimeState userGrantTimeState =
+                new UserGrantTimeState(Map.of("package", Instant.now()), Map.of(), 1);
+        when(mFirstGrantTimeManager.getGrantTimeStateForUser(mContext.getUser()))
+                .thenReturn(userGrantTimeState);
+        // Prepare the pfds where the database and the grant time files are backed up to.
+        Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
+        pfdsByFileName.put(
+                dbFileBacked.getName(),
+                ParcelFileDescriptor.open(dbFileBacked, ParcelFileDescriptor.MODE_READ_WRITE));
+        pfdsByFileName.put(
+                grantTimeFileBacked.getName(),
+                ParcelFileDescriptor.open(
+                        grantTimeFileBacked, ParcelFileDescriptor.MODE_READ_WRITE));
+
+        mBackupRestore.getAllDataForBackup(
+                new StageRemoteDataRequest(pfdsByFileName), mContext.getUser());
+
+        // Ensure the backed up database does not contain PHR data but includes everything else.
+        try (HealthConnectDatabase backupDatabase =
+                new HealthConnectDatabase(dbContext, dbFileBacked.getName())) {
+            assertThat(queryNumEntries(backupDatabase, "medical_data_source_table")).isEqualTo(0);
+            assertThat(queryNumEntries(backupDatabase, "medical_resource_table")).isEqualTo(0);
+            assertThat(queryNumEntries(backupDatabase, "steps_record_table")).isEqualTo(1);
+        }
+        assertThat(mGrantTimeXmlHelper.parseGrantTime(grantTimeFileBacked).toString())
+                .isEqualTo(userGrantTimeState.toString());
+    }
+
+    @Test
     @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD})
+    @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_DISABLE_D2D})
     public void testGetAllDataForBackup_disableD2dFlagDisabled_copiesAllDataIncludingPhr()
             throws Exception {
         // Insert a MedicalDataSource and MedicalResource.
