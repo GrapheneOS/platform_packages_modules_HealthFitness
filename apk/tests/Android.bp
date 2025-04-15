@@ -153,7 +153,9 @@ android_test {
     name: "HealthConnectControllerDataScreensNewTests",
     srcs: [":data-screens-new-tests-srcs"],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.data.screens.new",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.data.screens.new",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.data.screens.new",
 }
 
@@ -178,7 +180,9 @@ android_test {
     name: "HealthConnectControllerDataScreensOldTests",
     srcs: [":data-screens-old-tests-srcs"],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.data.screens.old",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.data.screens.old",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.data.screens.old",
 }
 
@@ -199,7 +203,9 @@ android_test {
     name: "HealthConnectControllerDeletionTests",
     srcs: [":deletion-tests-srcs"],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.deletion",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.deletion",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.deletion",
 }
 
@@ -216,7 +222,9 @@ android_test {
     name: "HealthConnectControllerExerciseRouteTests",
     srcs: [":exercise-route-tests-srcs"],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.exercise.routes",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.exercise.routes",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.exercise.routes",
 }
 
@@ -236,7 +244,9 @@ android_test {
         "HealthConnectExportApis",
     ],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.exportimport",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.exportimport",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.exportimport",
 }
 
@@ -257,7 +267,9 @@ android_test {
     name: "HealthConnectControllerHomePageAndOnboardingTests",
     srcs: [":home-and-onboarding-tests-srcs"],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.home.and.onboarding",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.home.and.onboarding",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.home.and.onboarding",
 }
 
@@ -276,7 +288,9 @@ android_test {
     name: "HealthConnectControllerManageDataTests",
     srcs: [":manage-data-tests-srcs"],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.manage.data",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.manage.data",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.manage.data",
 }
 
@@ -296,7 +310,9 @@ android_test {
         "HealthConnectMigrationApis",
     ],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.migration",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.migration",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.migration",
 }
 
@@ -313,7 +329,9 @@ android_test {
     name: "HealthConnectControllerNavigationTests",
     srcs: [":navigation-tests-srcs"],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.navigation",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.navigation",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.navigation",
 }
 
@@ -332,7 +350,9 @@ android_test {
     name: "HealthConnectControllerPermissionTests",
     srcs: [":permission-tests-srcs"],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.permissions",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.permissions",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.permissions",
 }
 
@@ -362,7 +382,9 @@ android_test {
     name: "HealthConnectControllerExtraTests",
     srcs: [":extra-tests-srcs"],
     defaults: ["health-connect-controller-tests-default"],
-    package_name: "com.android.healthconnect.controller.tests.extras",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests.extras",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests.extras",
 }
 
@@ -385,6 +407,8 @@ android_test {
     test_suites: [
         "general-tests",
     ],
-    package_name: "com.android.healthconnect.controller.tests",
+    manifest_values: {
+        applicationId: "com.android.healthconnect.controller.tests",
+    },
     instrumentation_target_package: "com.android.healthconnect.controller.tests",
 }

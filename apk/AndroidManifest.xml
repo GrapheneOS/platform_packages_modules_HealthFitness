@@ -191,7 +191,7 @@
 
         <provider
             android:name=".searchindexables.HealthConnectSearchIndexablesProvider"
-            android:authorities="${packageName}"
+            android:authorities="${applicationId}"
             android:exported="true"
             android:grantUriPermissions="true"
             android:multiprocess="false"
