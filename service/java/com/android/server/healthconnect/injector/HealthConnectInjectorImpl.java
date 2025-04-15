@@ -23,6 +23,7 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Environment;
 import android.os.UserHandle;
+import android.os.UserManager;
 
 import androidx.annotation.Nullable;
 
@@ -226,7 +227,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mPackageInfoUtils,
                                 mHealthConnectMappings,
                                 mDatabaseHelpers,
-                                mThreadScheduler)
+                                mThreadScheduler,
+                                builder.mUserManager == null
+                                        ? hcContext.getSystemService(UserManager.class)
+                                        : builder.mUserManager)
                         : builder.mHealthDataCategoryPriorityHelper;
         mPriorityMigrationHelper =
                 builder.mPriorityMigrationHelper == null
@@ -779,6 +783,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private TrackerManager mTrackerManager;
         @Nullable private MigrationUtils mMigrationUtils;
         @Nullable private HealthConnectResourcesContext mResourcesContext;
+        @Nullable private UserManager mUserManager;
 
         private Builder(Context context) {
             mContext = context;
@@ -1087,6 +1092,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setHealthConnectResourcesContext(
                 HealthConnectResourcesContext resourcesContext) {
             mResourcesContext = Objects.requireNonNull(resourcesContext);
+            return this;
+        }
+
+        /** Set fake or custom {@link UserManager}. */
+        public Builder setUserManager(UserManager userManager) {
+            mUserManager = Objects.requireNonNull(userManager);
             return this;
         }
 
