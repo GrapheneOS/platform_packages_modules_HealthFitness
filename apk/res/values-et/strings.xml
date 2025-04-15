@@ -382,8 +382,8 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Valige andmed, mida soovite lubada sellel rakendusel Health Connecti kirjutada."</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Valige andmed, mida soovite lubada rakendusel Health Connectis lugeda või kirjutada"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Valige andmed, mida soovite lubada sellel rakendusel Health Connectist lugeda."</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Kui annate lugemisõiguse, võib rakendus lugeda uusi andmeid ja viimase 30 päeva andmeid"</string>
-    <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Kui annate lugemisõiguse, võib rakendus lugeda uusi ja varasemaid andmeid"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Kui annate lugemisõiguse, võib rakendus lugeda uusi andmeid ja viimase 30 päeva andmeid."</string>
+    <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Kui annate lugemisõiguse, võib rakendus lugeda uusi ja varasemaid andmeid."</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Kas lubate rakendusel <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectile juurde pääseda?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Kas lubada rakendusele <xliff:g id="APP_NAME">%1$s</xliff:g> juurdepääs treeningu- ja heaoluandmetele?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Teavet selle kohta, kuidas <xliff:g id="APP_NAME">%1$s</xliff:g> teie andmeid töötleb, leiate <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>."</string>
@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Kuupäeva <xliff:g id="DATE">%1$s</xliff:g> eksportimisel ilmnes probleem. Seadistage uus ajastatud eksportimine ja proovige uuesti."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Järgmine eksportimine: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Järgmine eksportimine algab peagi"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Varundamine"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Varundamine ja taastamine"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Viimane eksportimine: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Viimane eksportimine: praegu"</string>

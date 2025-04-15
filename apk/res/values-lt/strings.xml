@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Kilo su eksportavimu (<xliff:g id="DATE">%1$s</xliff:g>) susijusi problema. Nustatykite naują suplanuotą eksportavimą ir bandykite dar kartą."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Kitas eksportavimas: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Netrukus bus pradėtas kitas eksportavimas"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Atsarginė kopija"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Atsarginė kopija ir atkūrimas"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Paskutinis eksportavimas: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Paskutinis eksportavimas: dabar"</string>

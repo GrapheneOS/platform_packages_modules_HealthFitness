@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"<xliff:g id="DATE">%1$s</xliff:g>న ఎగుమతి చేయడంలో సమస్య ఏర్పడింది. దయచేసి కొత్త ఎగుమతి షెడ్యూల్‌ను సెటప్ చేసి, మళ్లీ ట్రై చేయండి."</string>
     <string name="next_export_time" msgid="3138247220014510213">"తదుపరి ఎగుమతి తేదీ: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"తర్వాతి ఎగుమతి త్వరలో ప్రారంభం అవుతుంది"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"బ్యాకప్"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"బ్యాకప్, రీస్టోర్"</string>
     <string name="last_export_time" msgid="9205875050823594041">"చివరగా ఎగుమతి చేసిన తేదీ: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"చివరిగా ఎగుమతి చేసినది: ఇప్పుడే"</string>

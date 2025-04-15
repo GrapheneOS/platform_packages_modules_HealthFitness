@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"הייתה בעיה בייצוא ב-<xliff:g id="DATE">%1$s</xliff:g>. עליך להגדיר ייצוא מתוזמן חדש ולנסות שוב."</string>
     <string name="next_export_time" msgid="3138247220014510213">"הייצוא הבא: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"פעולת הייצוא הבאה תתחיל בקרוב"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"גיבוי"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"גיבוי ושחזור"</string>
     <string name="last_export_time" msgid="9205875050823594041">"הייצוא האחרון: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"הייצוא האחרון: עכשיו"</string>

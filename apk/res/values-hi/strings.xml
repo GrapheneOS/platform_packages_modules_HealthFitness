@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"<xliff:g id="DATE">%1$s</xliff:g> को एक्सपोर्ट करने में समस्या हुई. एक्सपोर्ट के लिए तय किया गया नया शेड्यूल सेट अप करें और फिर से कोशिश करें."</string>
     <string name="next_export_time" msgid="3138247220014510213">"अगला एक्सपोर्ट किया जाएगा: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"अगला एक्सपोर्ट जल्द ही शुरू होने वाला है"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"बैकअप"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"डेटा का बैकअप लेना और उसे वापस पाना"</string>
     <string name="last_export_time" msgid="9205875050823594041">"आखिरी बार एक्सपोर्ट किया गया: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"पिछली बार एक्सपोर्ट किया गया: अभी"</string>

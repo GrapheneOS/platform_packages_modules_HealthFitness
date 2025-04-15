@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"<xliff:g id="DATE">%1$s</xliff:g> ਦੇ ਨਿਰਯਾਤ ਵਿੱਚ ਕੋਈ ਸਮੱਸਿਆ ਆਈ ਸੀ। ਕਿਰਪਾ ਕਰਕੇ ਨਵੇਂ ਨਿਯਤ ਨਿਰਯਾਤ ਦਾ ਸੈੱਟਅੱਪ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"</string>
     <string name="next_export_time" msgid="3138247220014510213">"ਅਗਲਾ ਨਿਰਯਾਤ: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"ਅਗਲਾ ਨਿਰਯਾਤ ਜਲਦ ਹੀ ਸ਼ੁਰੂ ਹੋ ਰਿਹਾ ਹੈ"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"ਬੈਕਅੱਪ ਲਓ"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"ਬੈਕਅੱਪ ਲਓ ਅਤੇ ਮੁੜ-ਬਹਾਲ ਕਰੋ"</string>
     <string name="last_export_time" msgid="9205875050823594041">"ਆਖਰੀ ਵਾਰ ਨਿਰਯਾਤ ਕੀਤਾ: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"ਆਖਰੀ ਵਾਰ ਨਿਰਯਾਤ ਕੀਤਾ ਗਿਆ: ਹੁਣੇ"</string>
