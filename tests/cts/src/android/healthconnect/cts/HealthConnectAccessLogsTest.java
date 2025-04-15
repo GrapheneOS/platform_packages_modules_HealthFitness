@@ -46,6 +46,7 @@ import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecordsWithManagePermission;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
 
+import static com.android.compatibility.common.util.SystemUtil.getEventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 import static com.android.healthfitness.flags.Flags.FLAG_ADD_MISSING_ACCESS_LOGS;
 
@@ -78,7 +79,6 @@ import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
 import android.os.Build;
-import android.os.SystemClock;
 import android.platform.test.annotations.AppModeFull;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
@@ -98,7 +98,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 /** CTS test for {@link HealthConnectManager#queryAccessLogs} API. */
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -134,18 +133,14 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    public void testAccessLogs_read_singleRecordType() throws InterruptedException {
+    public void testAccessLogs_read_singleRecordType() throws Exception {
         List<AccessLog> oldAccessLogsResponse = queryAccessLogs();
         List<Record> testRecord = Collections.singletonList(getStepsRecord());
         insertRecords(testRecord);
         readRecords(new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
 
         List<AccessLog> newAccessLogsResponse =
-                waitForNewAccessLogsWithExpectedMinSize(
-                        HealthConnectAccessLogsTest::queryAccessLogsWithoutThrow,
-                        oldAccessLogsResponse.size() + 2,
-                        1000,
-                        200);
+                waitForNewAccessLogsWithExpectedMinSize(oldAccessLogsResponse.size() + 2);
 
         assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(2);
         AccessLog accessLog = newAccessLogsResponse.get(newAccessLogsResponse.size() - 1);
@@ -156,7 +151,7 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    public void testAccessLogs_read_multipleRecordTypes() throws InterruptedException {
+    public void testAccessLogs_read_multipleRecordTypes() throws Exception {
         List<AccessLog> oldAccessLogsResponse = queryAccessLogs();
         List<Record> testRecord = getTestRecords();
         insertRecords(testRecord);
@@ -167,17 +162,13 @@ public class HealthConnectAccessLogsTest {
                         .build());
 
         List<AccessLog> newAccessLogsResponse =
-                waitForNewAccessLogsWithExpectedMinSize(
-                        HealthConnectAccessLogsTest::queryAccessLogsWithoutThrow,
-                        oldAccessLogsResponse.size() + 4,
-                        1000,
-                        200);
+                waitForNewAccessLogsWithExpectedMinSize(oldAccessLogsResponse.size() + 4);
 
         assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(4);
     }
 
     @Test
-    public void testAccessLogs_update_singleRecordType() throws InterruptedException {
+    public void testAccessLogs_update_singleRecordType() throws Exception {
         List<AccessLog> oldAccessLogsResponse = queryAccessLogs();
         Record record = getStepsRecord();
         insertRecords(Collections.singletonList(record));
@@ -190,11 +181,7 @@ public class HealthConnectAccessLogsTest {
         TestUtils.updateRecords(updatedTestRecord);
 
         List<AccessLog> newAccessLogsResponse =
-                waitForNewAccessLogsWithExpectedMinSize(
-                        HealthConnectAccessLogsTest::queryAccessLogsWithoutThrow,
-                        oldAccessLogsResponse.size() + 2,
-                        1000,
-                        200);
+                waitForNewAccessLogsWithExpectedMinSize(oldAccessLogsResponse.size() + 2);
 
         assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(2);
         AccessLog accessLog = newAccessLogsResponse.get(newAccessLogsResponse.size() - 1);
@@ -205,7 +192,7 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    public void testAccessLogs_update_multipleRecordTypes() throws InterruptedException {
+    public void testAccessLogs_update_multipleRecordTypes() throws Exception {
         List<AccessLog> oldAccessLogsResponse = queryAccessLogs();
         Record stepsRecord = getStepsRecord();
         Record heartRateRecord = getHeartRateRecord();
@@ -223,11 +210,7 @@ public class HealthConnectAccessLogsTest {
         TestUtils.updateRecords(Arrays.asList(updatedStepsRecord, updatedHeartRateRecord));
 
         List<AccessLog> newAccessLogsResponse =
-                waitForNewAccessLogsWithExpectedMinSize(
-                        HealthConnectAccessLogsTest::queryAccessLogsWithoutThrow,
-                        oldAccessLogsResponse.size() + 2,
-                        1000,
-                        200);
+                waitForNewAccessLogsWithExpectedMinSize(oldAccessLogsResponse.size() + 2);
 
         assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(2);
         AccessLog accessLog = newAccessLogsResponse.get(newAccessLogsResponse.size() - 1);
@@ -239,17 +222,13 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    public void testAccessLogs_insert_singleRecordType() throws InterruptedException {
+    public void testAccessLogs_insert_singleRecordType() throws Exception {
         List<AccessLog> oldAccessLogsResponse = queryAccessLogs();
         List<Record> testRecord = Collections.singletonList(getStepsRecord());
         insertRecords(testRecord);
 
         List<AccessLog> newAccessLogsResponse =
-                waitForNewAccessLogsWithExpectedMinSize(
-                        HealthConnectAccessLogsTest::queryAccessLogsWithoutThrow,
-                        oldAccessLogsResponse.size() + 1,
-                        1000,
-                        200);
+                waitForNewAccessLogsWithExpectedMinSize(oldAccessLogsResponse.size() + 1);
 
         assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(1);
         AccessLog accessLog = newAccessLogsResponse.get(newAccessLogsResponse.size() - 1);
@@ -260,17 +239,13 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    public void testAccessLogs_insert_multipleRecordTypes() throws InterruptedException {
+    public void testAccessLogs_insert_multipleRecordTypes() throws Exception {
         List<AccessLog> oldAccessLogsResponse = queryAccessLogs();
         List<Record> testRecord = getTestRecords();
         insertRecords(testRecord);
 
         List<AccessLog> newAccessLogsResponse =
-                waitForNewAccessLogsWithExpectedMinSize(
-                        HealthConnectAccessLogsTest::queryAccessLogsWithoutThrow,
-                        oldAccessLogsResponse.size() + 1,
-                        1000,
-                        200);
+                waitForNewAccessLogsWithExpectedMinSize(oldAccessLogsResponse.size() + 1);
 
         assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(1);
         AccessLog accessLog = newAccessLogsResponse.get(newAccessLogsResponse.size() - 1);
@@ -476,7 +451,7 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    public void testAccessLogs_phrFlagOn() throws InterruptedException {
+    public void testAccessLogs_phrFlagOn() throws Exception {
         List<AccessLog> oldAccessLogsResponse = queryAccessLogs();
         // TODO(b/337018927): Change below to upsert and read MedicalResources once we actually
         // create access logs in serviceImpl.
@@ -485,11 +460,7 @@ public class HealthConnectAccessLogsTest {
         readRecords(new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
 
         List<AccessLog> newAccessLogsResponse =
-                waitForNewAccessLogsWithExpectedMinSize(
-                        HealthConnectAccessLogsTest::queryAccessLogsWithoutThrow,
-                        oldAccessLogsResponse.size() + 2,
-                        1000,
-                        200);
+                waitForNewAccessLogsWithExpectedMinSize(oldAccessLogsResponse.size() + 2);
 
         assertThat(newAccessLogsResponse.size() - oldAccessLogsResponse.size()).isEqualTo(2);
         AccessLog accessLog = newAccessLogsResponse.get(newAccessLogsResponse.size() - 1);
@@ -557,37 +528,15 @@ public class HealthConnectAccessLogsTest {
     /**
      * Wait for some time before fetching new access logs as they are updated in the background.
      *
-     * @param newAccessLogsSupplier The supplier to get new AccessLogs.
      * @param expectedMinSize The expected minimum size of the new AccessLogs.
-     * @param waitMillis The wait time before each attempt to fetch the new AccessLogs.
-     * @param timeoutMillis The hard timeout even if the new AccessLogs cannot be fetched.
      */
-    private static List<AccessLog> waitForNewAccessLogsWithExpectedMinSize(
-            Supplier<List<AccessLog>> newAccessLogsSupplier,
-            int expectedMinSize,
-            long waitMillis,
-            long timeoutMillis)
-            throws InterruptedException {
-        long timeoutTimestamp = SystemClock.uptimeMillis() + timeoutMillis;
-        List<AccessLog> newAccessLogsResponse;
-        do {
-            // Wait for some time before fetching access logs as they are updated in the background.
-            Thread.sleep(waitMillis);
-            newAccessLogsResponse = newAccessLogsSupplier.get();
-        } while (newAccessLogsResponse.size() < expectedMinSize
-                && SystemClock.uptimeMillis() < timeoutTimestamp);
-        return newAccessLogsResponse;
-    }
-
-    /**
-     * A helper function to just wrap TestUtils.queryAccessLogs and catch the exception, which makes
-     * it easier to use as a supplier.
-     */
-    private static List<AccessLog> queryAccessLogsWithoutThrow() {
-        try {
-            return queryAccessLogs();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    private static List<AccessLog> waitForNewAccessLogsWithExpectedMinSize(int expectedMinSize)
+            throws Exception {
+        return getEventually(
+                () -> {
+                    List<AccessLog> accessLogs = queryAccessLogs();
+                    assertThat(accessLogs.size()).isAtLeast(expectedMinSize);
+                    return accessLogs;
+                });
     }
 }
