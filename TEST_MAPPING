@@ -229,9 +229,8 @@
        "name": "CtsHealthFitnessDeviceTestCasesNotAllPermissionsAreGranted"
     }
   ],
-  // Run our bivalent tests in postsubmit.
-  // TODO: b/403335385 - Move these to presubmit once they are stable.
-  "postsubmit": [
+  // Run our bivalent tests.
+  "healthfitness-robo-presubmit": [
     {
       "name": "HealthFitnessRoboUnitTests"
     }
