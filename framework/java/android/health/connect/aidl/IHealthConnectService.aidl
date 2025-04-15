@@ -23,6 +23,7 @@ import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
+import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
@@ -568,4 +569,16 @@ interface IHealthConnectService {
      * @param callback Callback to receive result of performing this operation.
      */
      void restoreChanges(in List<RestoreChange> changes, in IEmptyResponseCallback callback);
+
+
+    /**
+     * Asynchronously returns the current onboarding state of the Health Connect user.
+     *
+     * <p>See also {@link HealthConnectOnboardingState} object describing the HealthConnect state.
+     *
+     * @param callback The callback which will receive the current {@link HealthConnectOnboardingState}.
+     *
+     * @hide
+     */
+    void getHealthConnectOnboardingState(in IGetHealthConnectOnboardingStateCallback callback);
 }

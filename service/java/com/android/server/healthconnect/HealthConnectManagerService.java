@@ -71,6 +71,7 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getMigrationStateManager(),
                         mHealthConnectInjector.getMigrationUiStateManager(),
                         mHealthConnectInjector.getMigrationCleaner(),
+                        mHealthConnectInjector.getOnboardingStateManager(),
                         mHealthConnectInjector.getFitnessRecordUpsertHelper(),
                         mHealthConnectInjector.getFitnessRecordReadHelper(),
                         mHealthConnectInjector.getFitnessRecordDeleteHelper(),
@@ -180,6 +181,9 @@ public class HealthConnectManagerService extends SystemService {
                 .getMigrationBroadcastScheduler()
                 .setupForUser(mCurrentForegroundUser);
         mHealthConnectInjector.getMigrationUiStateManager().setupForUser(mCurrentForegroundUser);
+        if (mHealthConnectInjector.getOnboardingStateManager() != null) {
+            mHealthConnectInjector.getOnboardingStateManager().setupForUser(mCurrentForegroundUser);
+        }
         mHealthConnectInjector
                 .getPermissionPackageChangesOrchestrator()
                 .setupForUser(mCurrentForegroundUser);

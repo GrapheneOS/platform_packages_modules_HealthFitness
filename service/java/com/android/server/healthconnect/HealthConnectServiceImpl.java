@@ -55,6 +55,7 @@ import static com.android.server.healthconnect.logging.HealthConnectServiceLogge
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.UPSERT_MEDICAL_RESOURCES;
 
 import static java.util.Collections.singletonList;
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
@@ -77,6 +78,7 @@ import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthConnectManager.DataDownloadState;
+import android.health.connect.HealthConnectOnboardingState;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.MedicalResourceTypeInfo;
@@ -104,6 +106,7 @@ import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
+import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
@@ -161,6 +164,7 @@ import android.health.connect.restore.StageRemoteDataRequest;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
+import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;
 import android.os.Process;
 import android.os.RemoteException;
@@ -202,6 +206,7 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
+import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
@@ -244,6 +249,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 /**
@@ -272,6 +278,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private final BackupRestore mBackupRestore;
     private final MigrationStateManager mMigrationStateManager;
+    private @Nullable final OnboardingStateManager mOnboardingStateManager;
 
     private final DataPermissionEnforcer mDataPermissionEnforcer;
 
@@ -326,6 +333,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MigrationStateManager migrationStateManager,
             MigrationUiStateManager migrationUiStateManager,
             MigrationCleaner migrationCleaner,
+            @Nullable OnboardingStateManager onboardingStateManager,
             FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper,
             FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
@@ -371,6 +379,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mMigrationUiStateManager = migrationUiStateManager;
         mMigrationUiStateManager.attachTo(migrationStateManager);
         migrationCleaner.attachTo(migrationStateManager);
+
+        mOnboardingStateManager = onboardingStateManager;
 
         mFitnessRecordUpsertHelper = fitnessRecordUpsertHelper;
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
@@ -578,7 +588,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             recordInternals, attributionSource);
                     List<String> uuids =
                             mFitnessRecordUpsertHelper.insertRecords(
-                                    Objects.requireNonNull(attributionSource.getPackageName()),
+                                    requireNonNull(attributionSource.getPackageName()),
                                     recordInternals,
                                     mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
                                             recordInternals, attributionSource));
@@ -716,8 +726,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callingPackageName =
-                Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(holdsDataManagementPermission, READ_DATA)
                         .setHealthFitnessStatsLog(mStatsLog)
@@ -923,7 +932,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     mDataPermissionEnforcer.enforceRecordsWritePermissions(
                             recordInternals, attributionSource);
                     mFitnessRecordUpsertHelper.updateRecords(
-                            Objects.requireNonNull(attributionSource.getPackageName()),
+                            requireNonNull(attributionSource.getPackageName()),
                             recordInternals,
                             mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
                                     recordInternals, attributionSource));
@@ -1002,7 +1011,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        final String callerPackageName = Objects.requireNonNull(attributionSource.getPackageName());
+        final String callerPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES)
                         .setHealthFitnessStatsLog(mStatsLog)
@@ -1137,7 +1146,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
                     int numberOfRecordsDeleted =
                             mFitnessRecordDeleteHelper.deleteRecords(
-                                    Objects.requireNonNull(attributionSource.getPackageName()),
+                                    requireNonNull(attributionSource.getPackageName()),
                                     request,
                                     /* enforceSelfDelete= */ !holdsDataManagementPermission,
                                     /* shouldRecordAccessLog= */ !holdsDataManagementPermission);
@@ -2193,8 +2202,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callingPackageName =
-                Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, GET_MEDICAL_DATA_SOURCES_BY_IDS)
@@ -2300,8 +2308,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callingPackageName =
-                Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, GET_MEDICAL_DATA_SOURCES_BY_REQUESTS)
@@ -2385,8 +2392,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callingPackageName =
-                Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, DELETE_MEDICAL_DATA_SOURCE_WITH_DATA)
@@ -2475,8 +2481,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callingPackageName =
-                Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, UPSERT_MEDICAL_RESOURCES)
@@ -2587,8 +2592,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callingPackageName =
-                Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, READ_MEDICAL_RESOURCES_BY_IDS)
@@ -2702,8 +2706,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callingPackageName =
-                Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, READ_MEDICAL_RESOURCES_BY_REQUESTS)
@@ -2813,8 +2816,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callingPackageName =
-                Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, DELETE_MEDICAL_RESOURCES_BY_IDS)
@@ -2872,8 +2874,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        final String callingPackageName =
-                Objects.requireNonNull(attributionSource.getPackageName());
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 holdsDataManagementPermission, DELETE_MEDICAL_RESOURCES_BY_REQUESTS)
@@ -3231,6 +3232,46 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 });
     }
 
+    /**
+     * @see HealthConnectManager#getHealthConnectOnboardingState
+     */
+    @Override
+    public void getHealthConnectOnboardingState(IGetHealthConnectOnboardingStateCallback callback) {
+        checkParamsNonNull(callback);
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        final ErrorCallback errorCallback = callback::onError;
+        mThreadScheduler.scheduleControllerTask(
+                () -> {
+                    try {
+                        if (!Flags.onboarding()) {
+                            throw new UnsupportedOperationException(
+                                    "Getting health connect onboarding state is not supported");
+                        }
+                        enforceIsForegroundUser(userHandle);
+                        mContext.enforcePermission(
+                                MANAGE_HEALTH_DATA_PERMISSION,
+                                pid,
+                                uid,
+                                "Caller does not have " + MANAGE_HEALTH_DATA_PERMISSION);
+                        callback.onResult(
+                                new HealthConnectOnboardingState(
+                                        requireNonNull(mOnboardingStateManager)
+                                                .getOnboardingState()));
+                    } catch (SecurityException e) {
+                        Log.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
+                        tryAndThrowException(errorCallback, e, ERROR_SECURITY);
+                    } catch (UnsupportedOperationException e) {
+                        Log.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
+                        tryAndThrowException(errorCallback, e, ERROR_UNSUPPORTED_OPERATION);
+                    } catch (Exception e) {
+                        Log.e(TAG, "getHealthConnectOnboardingState: Exception encountered", e);
+                        tryAndThrowException(errorCallback, e, ERROR_INTERNAL);
+                    }
+                });
+    }
+
     // Cancel BR timeouts - this might be needed when a user is going into background.
     void cancelBackupRestoreTimeouts() {
         mBackupRestore.cancelAllJobs();
@@ -3336,8 +3377,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         // Obtain the user where the client is running in.
         UserHandle callingUserHandle = UserHandle.getUserHandleForUid(callingUid);
         Context callingUserContext = mContext.createContextAsUser(callingUserHandle, 0);
-        String callingPackageName =
-                Objects.requireNonNull(callerAttributionSource.getPackageName());
+        String callingPackageName = requireNonNull(callerAttributionSource.getPackageName());
         verifyCallingPackage(callingUserContext, callingUid, callingPackageName);
     }
 
@@ -3668,7 +3708,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private static void checkParamsNonNull(Object... params) {
         for (Object param : params) {
-            Objects.requireNonNull(param);
+            requireNonNull(param);
         }
     }
 
