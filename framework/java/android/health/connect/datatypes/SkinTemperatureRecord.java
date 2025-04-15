@@ -204,14 +204,7 @@ public final class SkinTemperatureRecord extends IntervalRecord {
     /** @hide */
     @Override
     public SkinTemperatureRecordInternal toRecordInternal() {
-        SkinTemperatureRecordInternal recordInternal =
-                (SkinTemperatureRecordInternal)
-                        new SkinTemperatureRecordInternal().setMetaData(getMetadata());
-        if (getBaseline() != null) {
-            recordInternal.setBaseline(getBaseline());
-        }
-
-        recordInternal.setSamples(
+        Set<SkinTemperatureRecordInternal.SkinTemperatureDeltaSample> deltaSamples =
                 getDeltas().stream()
                         .map(
                                 delta ->
@@ -219,8 +212,16 @@ public final class SkinTemperatureRecord extends IntervalRecord {
                                                 .SkinTemperatureDeltaSample(
                                                 delta.getDelta().getInCelsius(),
                                                 delta.getTime().toEpochMilli()))
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toSet());
+        SkinTemperatureRecordInternal recordInternal =
+                (SkinTemperatureRecordInternal)
+                        new SkinTemperatureRecordInternal(deltaSamples).setMetaData(getMetadata());
         recordInternal.setMeasurementLocation(getMeasurementLocation());
+
+        Temperature baseline = getBaseline();
+        if (baseline != null) {
+            recordInternal.setBaseline(baseline);
+        }
         recordInternal.setTimeInterval(this);
 
         return recordInternal;

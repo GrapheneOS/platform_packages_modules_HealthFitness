@@ -28,8 +28,12 @@ import android.os.Parcel;
 public final class BodyWaterMassRecordInternal extends InstantRecordInternal<BodyWaterMassRecord> {
     private double mBodyWaterMass = 0.0;
 
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
+    public BodyWaterMassRecordInternal() {
+        super();
+    }
+
+    public BodyWaterMassRecordInternal(Parcel parcel) {
+        super(parcel);
         mBodyWaterMass = parcel.readDouble();
     }
 
@@ -42,8 +46,9 @@ public final class BodyWaterMassRecordInternal extends InstantRecordInternal<Bod
         return mBodyWaterMass;
     }
 
-    public void setBodyWaterMass(double bodyWaterMass) {
+    public BodyWaterMassRecordInternal setBodyWaterMass(double bodyWaterMass) {
         mBodyWaterMass = bodyWaterMass;
+        return this;
     }
 
     @NonNull

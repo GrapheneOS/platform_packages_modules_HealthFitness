@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"ເກີດບັນຫາກ່ຽວກັບການສົ່ງອອກຂອງວັນທີ <xliff:g id="DATE">%1$s</xliff:g>. ກະລຸນາຕັ້ງຄ່າການສົ່ງອອກທີ່ກຳນົດເວລາໃໝ່ແລ້ວລອງອີກຄັ້ງ."</string>
     <string name="next_export_time" msgid="3138247220014510213">"ການສົ່ງອອກເທື່ອຕໍ່ໄປ: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"ການສົ່ງອອກເທື່ອຕໍ່ໄປຈະເລີ່ມຕົ້ນໄວໆນີ້"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"ການສຳຮອງຂໍ້ມູນ"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"ການສຳຮອງຂໍ້ມູນ ແລະ ກູ້ຄືນ"</string>
     <string name="last_export_time" msgid="9205875050823594041">"ການສົ່ງອອກເທື່ອຫຼ້າສຸດ: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"ການສົ່ງອອກເທື່ອຫຼ້າສຸດ: ຕອນນີ້"</string>

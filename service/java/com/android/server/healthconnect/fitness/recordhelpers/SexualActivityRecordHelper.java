@@ -47,9 +47,9 @@ public final class SexualActivityRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, SexualActivityRecordInternal sexualActivityRecord) {
-        sexualActivityRecord.setProtectionUsed(getCursorInt(cursor, PROTECTION_USED_COLUMN_NAME));
+    SexualActivityRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new SexualActivityRecordInternal()
+                .setProtectionUsed(getCursorInt(cursor, PROTECTION_USED_COLUMN_NAME));
     }
 
     @Override

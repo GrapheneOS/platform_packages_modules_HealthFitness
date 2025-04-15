@@ -72,13 +72,12 @@ public final class BloodPressureRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, BloodPressureRecordInternal bloodPressureRecord) {
-        bloodPressureRecord.setMeasurementLocation(
-                getCursorInt(cursor, MEASUREMENT_LOCATION_COLUMN_NAME));
-        bloodPressureRecord.setSystolic(getCursorDouble(cursor, SYSTOLIC_COLUMN_NAME));
-        bloodPressureRecord.setDiastolic(getCursorDouble(cursor, DIASTOLIC_COLUMN_NAME));
-        bloodPressureRecord.setBodyPosition(getCursorInt(cursor, BODY_POSITION_COLUMN_NAME));
+    BloodPressureRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new BloodPressureRecordInternal()
+                .setMeasurementLocation(getCursorInt(cursor, MEASUREMENT_LOCATION_COLUMN_NAME))
+                .setSystolic(getCursorDouble(cursor, SYSTOLIC_COLUMN_NAME))
+                .setDiastolic(getCursorDouble(cursor, DIASTOLIC_COLUMN_NAME))
+                .setBodyPosition(getCursorInt(cursor, BODY_POSITION_COLUMN_NAME));
     }
 
     @Override

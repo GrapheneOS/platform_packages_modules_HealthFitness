@@ -24,7 +24,6 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,9 +44,14 @@ public final class PlannedExerciseSessionRecordInternal
 
     private boolean mHasExplicitTime;
 
-    private List<PlannedExerciseBlockInternal> mExerciseBlocks = Collections.emptyList();
+    private List<PlannedExerciseBlockInternal> mExerciseBlocks;
 
     @Nullable private UUID mCompletedExerciseSessionId;
+
+    public PlannedExerciseSessionRecordInternal(List<PlannedExerciseBlockInternal> exerciseBlocks) {
+        super();
+        this.mExerciseBlocks = exerciseBlocks;
+    }
 
     @Nullable
     public String getNotes() {
@@ -126,8 +130,8 @@ public final class PlannedExerciseSessionRecordInternal
         return this;
     }
 
-    @Override
-    void populateIntervalRecordFrom(Parcel parcel) {
+    public PlannedExerciseSessionRecordInternal(Parcel parcel) {
+        super(parcel);
         mNotes = parcel.readString();
         mExerciseType = parcel.readInt();
         mTitle = parcel.readString();

@@ -31,6 +31,16 @@ public final class Vo2MaxRecordInternal extends InstantRecordInternal<Vo2MaxReco
     private int mMeasurementMethod;
     private double mVo2MillilitersPerMinuteKilogram;
 
+    public Vo2MaxRecordInternal() {
+        super();
+    }
+
+    public Vo2MaxRecordInternal(Parcel parcel) {
+        super(parcel);
+        mMeasurementMethod = parcel.readInt();
+        mVo2MillilitersPerMinuteKilogram = parcel.readDouble();
+    }
+
     @Vo2MaxMeasurementMethod.Vo2MaxMeasurementMethodTypes
     public int getMeasurementMethod() {
         return mMeasurementMethod;
@@ -65,12 +75,6 @@ public final class Vo2MaxRecordInternal extends InstantRecordInternal<Vo2MaxReco
                         getVo2MillilitersPerMinuteKilogram())
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mMeasurementMethod = parcel.readInt();
-        mVo2MillilitersPerMinuteKilogram = parcel.readDouble();
     }
 
     @Override

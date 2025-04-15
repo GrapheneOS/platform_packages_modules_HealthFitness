@@ -35,6 +35,15 @@ public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecor
         return mCount;
     }
 
+    public StepsRecordInternal() {
+        super();
+    }
+
+    public StepsRecordInternal(Parcel parcel) {
+        super(parcel);
+        mCount = parcel.readInt();
+    }
+
     /** returns this object with the specified count */
     @NonNull
     public StepsRecordInternal setCount(int count) {
@@ -49,11 +58,6 @@ public final class StepsRecordInternal extends IntervalRecordInternal<StepsRecor
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mCount = parcel.readInt();
     }
 
     @Override

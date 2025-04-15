@@ -32,6 +32,15 @@ public final class BasalMetabolicRateRecordInternal
         extends InstantRecordInternal<BasalMetabolicRateRecord> {
     private double mBasalMetabolicRate;
 
+    public BasalMetabolicRateRecordInternal() {
+        super();
+    }
+
+    public BasalMetabolicRateRecordInternal(Parcel parcel) {
+        super(parcel);
+        mBasalMetabolicRate = parcel.readDouble();
+    }
+
     public double getBasalMetabolicRate() {
         return mBasalMetabolicRate;
     }
@@ -50,11 +59,6 @@ public final class BasalMetabolicRateRecordInternal
                         buildMetaData(), getTime(), Power.fromWatts(getBasalMetabolicRate()))
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mBasalMetabolicRate = parcel.readDouble();
     }
 
     @Override

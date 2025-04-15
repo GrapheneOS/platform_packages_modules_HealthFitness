@@ -186,16 +186,17 @@ public abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>>
     }
 
     @Override
-    final void populateRecordValue(Cursor cursor, T recordInternal) {
+    final T populateRecordValue(Cursor cursor) {
+        T recordInternal = populateSpecificRecordValue(cursor);
         recordInternal.setStartTime(getCursorLong(cursor, START_TIME_COLUMN_NAME));
         recordInternal.setStartZoneOffset(getCursorInt(cursor, START_ZONE_OFFSET_COLUMN_NAME));
         recordInternal.setEndTime(getCursorLong(cursor, END_TIME_COLUMN_NAME));
         recordInternal.setEndZoneOffset(getCursorInt(cursor, END_ZONE_OFFSET_COLUMN_NAME));
-        populateSpecificRecordValue(cursor, recordInternal);
+        return recordInternal;
     }
 
     /** This implementation should populate record with datatype specific values from the table. */
-    abstract void populateSpecificRecordValue(Cursor cursor, T recordInternal);
+    abstract T populateSpecificRecordValue(Cursor cursor);
 
     @Override
     final String getZoneOffsetColumnName() {

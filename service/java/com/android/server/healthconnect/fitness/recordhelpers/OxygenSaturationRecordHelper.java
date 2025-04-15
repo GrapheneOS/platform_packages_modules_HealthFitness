@@ -48,9 +48,9 @@ public final class OxygenSaturationRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, OxygenSaturationRecordInternal oxygenSaturationRecord) {
-        oxygenSaturationRecord.setPercentage(getCursorDouble(cursor, PERCENTAGE_COLUMN_NAME));
+    OxygenSaturationRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new OxygenSaturationRecordInternal()
+                .setPercentage(getCursorDouble(cursor, PERCENTAGE_COLUMN_NAME));
     }
 
     @Override

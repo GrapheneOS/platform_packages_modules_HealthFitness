@@ -309,17 +309,15 @@ public final class SpeedRecord extends IntervalRecord {
     /** @hide */
     @Override
     public SpeedRecordInternal toRecordInternal() {
-        SpeedRecordInternal recordInternal =
-                (SpeedRecordInternal) new SpeedRecordInternal().setMetaData(getMetadata());
         Set<SpeedRecordInternal.SpeedRecordSample> samples = new HashSet<>(getSamples().size());
-
         for (SpeedRecord.SpeedRecordSample speedRecordSample : getSamples()) {
             samples.add(
                     new SpeedRecordInternal.SpeedRecordSample(
                             speedRecordSample.getSpeed().getInMetersPerSecond(),
                             speedRecordSample.getTime().toEpochMilli()));
         }
-        recordInternal.setSamples(samples);
+        SpeedRecordInternal recordInternal =
+                (SpeedRecordInternal) new SpeedRecordInternal(samples).setMetaData(getMetadata());
         recordInternal.setTimeInterval(this);
 
         return recordInternal;

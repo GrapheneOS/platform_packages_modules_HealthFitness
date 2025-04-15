@@ -31,6 +31,15 @@ public final class OxygenSaturationRecordInternal
         extends InstantRecordInternal<OxygenSaturationRecord> {
     private double mPercentage;
 
+    public OxygenSaturationRecordInternal() {
+        super();
+    }
+
+    public OxygenSaturationRecordInternal(Parcel parcel) {
+        super(parcel);
+        mPercentage = parcel.readDouble();
+    }
+
     public double getPercentage() {
         return mPercentage;
     }
@@ -49,11 +58,6 @@ public final class OxygenSaturationRecordInternal
                         buildMetaData(), getTime(), Percentage.fromValue(getPercentage()))
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mPercentage = parcel.readDouble();
     }
 
     @Override

@@ -93,8 +93,8 @@ public final class HeightRecordHelper extends InstantRecordHelper<HeightRecordIn
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, HeightRecordInternal heightRecord) {
-        heightRecord.setHeight(getCursorDouble(cursor, HEIGHT_COLUMN_NAME));
+    HeightRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new HeightRecordInternal().setHeight(getCursorDouble(cursor, HEIGHT_COLUMN_NAME));
     }
 
     @Override

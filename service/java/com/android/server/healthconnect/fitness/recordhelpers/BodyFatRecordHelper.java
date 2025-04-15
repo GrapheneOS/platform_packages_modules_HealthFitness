@@ -46,8 +46,9 @@ public final class BodyFatRecordHelper extends InstantRecordHelper<BodyFatRecord
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, BodyFatRecordInternal bodyFatRecord) {
-        bodyFatRecord.setPercentage(getCursorDouble(cursor, PERCENTAGE_COLUMN_NAME));
+    BodyFatRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new BodyFatRecordInternal()
+                .setPercentage(getCursorDouble(cursor, PERCENTAGE_COLUMN_NAME));
     }
 
     @Override

@@ -30,6 +30,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
+import com.android.compatibility.common.util.SystemUtil.eventually
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
@@ -134,8 +135,7 @@ class SettingsActivityTest {
         }
 
         launch<SettingsActivity>(intent).use { scenario ->
-            Thread.sleep(4_000) // Need to wait for Activity to close before checking state
-            Assert.assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+            eventually { Assert.assertEquals(Lifecycle.State.DESTROYED, scenario.state) }
         }
     }
 

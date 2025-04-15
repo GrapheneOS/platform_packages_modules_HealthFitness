@@ -32,6 +32,16 @@ public final class CervicalMucusRecordInternal extends InstantRecordInternal<Cer
     private int mSensation;
     private int mAppearance;
 
+    public CervicalMucusRecordInternal() {
+        super();
+    }
+
+    public CervicalMucusRecordInternal(Parcel parcel) {
+        super(parcel);
+        mSensation = parcel.readInt();
+        mAppearance = parcel.readInt();
+    }
+
     @CervicalMucusSensation.CervicalMucusSensations
     public int getSensation() {
         return mSensation;
@@ -63,12 +73,6 @@ public final class CervicalMucusRecordInternal extends InstantRecordInternal<Cer
                         buildMetaData(), getTime(), getSensation(), getAppearance())
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mSensation = parcel.readInt();
-        mAppearance = parcel.readInt();
     }
 
     @Override

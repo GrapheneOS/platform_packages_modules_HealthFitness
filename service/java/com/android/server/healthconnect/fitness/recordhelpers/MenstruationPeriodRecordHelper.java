@@ -44,8 +44,9 @@ public final class MenstruationPeriodRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, MenstruationPeriodRecordInternal menstruationPeriodRecord) {}
+    MenstruationPeriodRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new MenstruationPeriodRecordInternal();
+    }
 
     @Override
     void populateSpecificContentValues(

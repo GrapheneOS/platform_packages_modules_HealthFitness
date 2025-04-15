@@ -18,6 +18,7 @@ package android.health.connect.internal.datatypes;
 
 import android.annotation.NonNull;
 import android.health.connect.datatypes.IntervalRecord;
+import android.os.Parcel;
 
 import java.util.Set;
 
@@ -30,7 +31,14 @@ import java.util.Set;
  */
 public abstract class SeriesRecordInternal<T extends IntervalRecord, U>
         extends IntervalRecordInternal<T> {
-    @NonNull
+    public SeriesRecordInternal() {
+        super();
+    }
+
+    public SeriesRecordInternal(Parcel parcel) {
+        super(parcel);
+    }
+
     public abstract Set<? extends Sample> getSamples();
 
     @NonNull

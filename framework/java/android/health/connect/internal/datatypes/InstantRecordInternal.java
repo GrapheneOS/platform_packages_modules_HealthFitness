@@ -42,6 +42,20 @@ public abstract class InstantRecordInternal<T extends InstantRecord> extends Rec
         return mZoneOffset;
     }
 
+    InstantRecordInternal() {
+        super();
+    }
+
+    /**
+     * Child class must add a constructor inheriting from this and populates itself with the data
+     * present in {@code parcel}. Reads should be in the same order as write.
+     */
+    InstantRecordInternal(Parcel parcel) {
+        super(parcel);
+        mTime = parcel.readLong();
+        mZoneOffset = parcel.readInt();
+    }
+
     /**
      * @return the {@link LocalDate} object of this activity time.
      */
@@ -49,14 +63,6 @@ public abstract class InstantRecordInternal<T extends InstantRecord> extends Rec
     @NonNull
     public LocalDate getLocalDate() {
         return LocalDate.ofInstant(this.getTime(), this.getZoneOffset());
-    }
-
-    @Override
-    void populateRecordFrom(@NonNull Parcel parcel) {
-        mTime = parcel.readLong();
-        mZoneOffset = parcel.readInt();
-
-        populateInstantRecordFrom(parcel);
     }
 
     @Override
@@ -99,12 +105,6 @@ public abstract class InstantRecordInternal<T extends InstantRecord> extends Rec
         mZoneOffset = zoneOffset;
         return this;
     }
-
-    /**
-     * Child class must implement this method and populates itself with the data present in {@code
-     * bundle}. Reads should be in the same order as write
-     */
-    abstract void populateInstantRecordFrom(@NonNull Parcel parcel);
 
     /**
      * Populate {@code bundle} with the data required to un-bundle self. This is used during IPC

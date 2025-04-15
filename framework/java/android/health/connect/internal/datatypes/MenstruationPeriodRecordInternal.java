@@ -29,6 +29,14 @@ import android.os.Parcel;
 public final class MenstruationPeriodRecordInternal
         extends IntervalRecordInternal<MenstruationPeriodRecord> {
 
+    public MenstruationPeriodRecordInternal() {
+        super();
+    }
+
+    public MenstruationPeriodRecordInternal(Parcel parcel) {
+        super(parcel);
+    }
+
     @NonNull
     @Override
     public MenstruationPeriodRecord toExternalRecord() {
@@ -37,9 +45,6 @@ public final class MenstruationPeriodRecordInternal
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
     }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {}
 
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {}

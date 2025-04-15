@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Kube nenkinga ngokuthumela ngomhla ka-<xliff:g id="DATE">%1$s</xliff:g>. Sicela usethe ukuthunyelwa okusha okuhleliwe bese uzama futhi."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Ukuthunyelwa okulandelayo: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Ukuhanjiswa okulandelayo kuqala maduze"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Yenza isipele"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Yenza isipele futhi ubuyisele"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Ukuthunyelwa kokugcina: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Ukuthunyelwa kokugcina: manje"</string>

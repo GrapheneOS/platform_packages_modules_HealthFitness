@@ -162,8 +162,8 @@ public class MindfulSessionRecordInternalTest {
         Parcel parcel = Parcel.obtain();
         internalRecord.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        MindfulnessSessionRecordInternal decodedRecord = new MindfulnessSessionRecordInternal();
-        decodedRecord.populateUsing(parcel);
+        MindfulnessSessionRecordInternal decodedRecord =
+                new MindfulnessSessionRecordInternal(parcel);
         parcel.recycle();
 
         assertThat(decodedRecord.getMindfulnessSessionType())
@@ -201,8 +201,8 @@ public class MindfulSessionRecordInternalTest {
         Parcel parcel = Parcel.obtain();
         internalRecord.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        MindfulnessSessionRecordInternal decodedRecord = new MindfulnessSessionRecordInternal();
-        decodedRecord.populateUsing(parcel);
+        MindfulnessSessionRecordInternal decodedRecord =
+                new MindfulnessSessionRecordInternal(parcel);
         parcel.recycle();
 
         assertThat(decodedRecord.getMindfulnessSessionType())

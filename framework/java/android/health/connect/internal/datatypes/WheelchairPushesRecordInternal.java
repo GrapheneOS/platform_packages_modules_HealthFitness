@@ -30,6 +30,15 @@ public final class WheelchairPushesRecordInternal
         extends IntervalRecordInternal<WheelchairPushesRecord> {
     private int mCount;
 
+    public WheelchairPushesRecordInternal() {
+        super();
+    }
+
+    public WheelchairPushesRecordInternal(Parcel parcel) {
+        super(parcel);
+        mCount = parcel.readInt();
+    }
+
     public long getCount() {
         return mCount;
     }
@@ -49,11 +58,6 @@ public final class WheelchairPushesRecordInternal
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mCount = parcel.readInt();
     }
 
     @Override

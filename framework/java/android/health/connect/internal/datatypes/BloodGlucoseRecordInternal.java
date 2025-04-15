@@ -34,6 +34,10 @@ public final class BloodGlucoseRecordInternal extends InstantRecordInternal<Bloo
     private int mRelationToMeal;
     private int mMealType;
 
+    public BloodGlucoseRecordInternal() {
+        super();
+    }
+
     @BloodGlucoseRecord.SpecimenSource.SpecimenSourceType
     public int getSpecimenSource() {
         return mSpecimenSource;
@@ -81,6 +85,14 @@ public final class BloodGlucoseRecordInternal extends InstantRecordInternal<Bloo
         return this;
     }
 
+    public BloodGlucoseRecordInternal(Parcel parcel) {
+        super(parcel);
+        mSpecimenSource = parcel.readInt();
+        mLevel = parcel.readDouble();
+        mRelationToMeal = parcel.readInt();
+        mMealType = parcel.readInt();
+    }
+
     @NonNull
     @Override
     public BloodGlucoseRecord toExternalRecord() {
@@ -93,14 +105,6 @@ public final class BloodGlucoseRecordInternal extends InstantRecordInternal<Bloo
                         getMealType())
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mSpecimenSource = parcel.readInt();
-        mLevel = parcel.readDouble();
-        mRelationToMeal = parcel.readInt();
-        mMealType = parcel.readInt();
     }
 
     @Override

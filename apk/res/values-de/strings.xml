@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Beim Export für den <xliff:g id="DATE">%1$s</xliff:g> ist ein Problem aufgetreten. Bitte leg ein neues Datum für den Export fest und versuch es noch mal."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Nächster Export: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Nächster Export startet bald"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Sichern"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Backup &amp; Wiederherstellung"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Letzter Export: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Letzter Export: jetzt"</string>

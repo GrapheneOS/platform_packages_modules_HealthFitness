@@ -26,7 +26,6 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -39,10 +38,15 @@ import java.util.Set;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_POWER)
 public class PowerRecordInternal
         extends SeriesRecordInternal<PowerRecord, PowerRecord.PowerRecordSample> {
-    private Set<PowerRecordSample> mPowerRecordSamples = Collections.emptySet();
+    private Set<PowerRecordSample> mPowerRecordSamples;
 
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
+    public PowerRecordInternal(Set<PowerRecordSample> powerRecordSamples) {
+        super();
+        this.mPowerRecordSamples = powerRecordSamples;
+    }
+
+    public PowerRecordInternal(Parcel parcel) {
+        super(parcel);
         int size = parcel.readInt();
         mPowerRecordSamples = new HashSet<>(size);
         for (int i = 0; i < size; i++) {

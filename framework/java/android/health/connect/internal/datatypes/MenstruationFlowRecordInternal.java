@@ -31,6 +31,15 @@ public final class MenstruationFlowRecordInternal
         extends InstantRecordInternal<MenstruationFlowRecord> {
     private int mFlow;
 
+    public MenstruationFlowRecordInternal() {
+        super();
+    }
+
+    public MenstruationFlowRecordInternal(Parcel parcel) {
+        super(parcel);
+        mFlow = parcel.readInt();
+    }
+
     @MenstruationFlowType.MenstruationFlowTypes
     public int getFlow() {
         return mFlow;
@@ -49,11 +58,6 @@ public final class MenstruationFlowRecordInternal
         return new MenstruationFlowRecord.Builder(buildMetaData(), getTime(), getFlow())
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mFlow = parcel.readInt();
     }
 
     @Override

@@ -52,11 +52,12 @@ public final class BloodGlucoseRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, BloodGlucoseRecordInternal bloodGlucoseRecord) {
-        bloodGlucoseRecord.setSpecimenSource(getCursorInt(cursor, SPECIMEN_SOURCE_COLUMN_NAME));
-        bloodGlucoseRecord.setLevel(getCursorDouble(cursor, LEVEL_COLUMN_NAME));
-        bloodGlucoseRecord.setRelationToMeal(getCursorInt(cursor, RELATION_TO_MEAL_COLUMN_NAME));
-        bloodGlucoseRecord.setMealType(getCursorInt(cursor, MEAL_TYPE_COLUMN_NAME));
+    BloodGlucoseRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new BloodGlucoseRecordInternal()
+                .setSpecimenSource(getCursorInt(cursor, SPECIMEN_SOURCE_COLUMN_NAME))
+                .setLevel(getCursorDouble(cursor, LEVEL_COLUMN_NAME))
+                .setRelationToMeal(getCursorInt(cursor, RELATION_TO_MEAL_COLUMN_NAME))
+                .setMealType(getCursorInt(cursor, MEAL_TYPE_COLUMN_NAME));
     }
 
     @Override

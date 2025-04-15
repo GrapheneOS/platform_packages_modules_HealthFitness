@@ -54,6 +54,7 @@ public final class BoneMassRecord extends InstantRecord {
         }
         mMass = mass;
     }
+
     /**
      * @return mass in {@link Mass} unit.
      */

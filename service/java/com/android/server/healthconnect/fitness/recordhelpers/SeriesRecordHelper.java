@@ -88,8 +88,8 @@ public abstract class SeriesRecordHelper<
 
     /** Populates record with datatype specific details */
     @Override
-    final void populateSpecificRecordValue(Cursor cursor, T record) {
-        populateSpecificValues(cursor, record);
+    final T populateSpecificRecordValue(Cursor cursor) {
+        return populateSpecificValues(cursor);
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class SeriesRecordHelper<
     abstract String getSeriesDataTableName();
 
     /** Populates the {@code record} with values specific to dataytpe */
-    abstract void populateSpecificValues(Cursor cursor, T record);
+    abstract T populateSpecificValues(Cursor cursor);
 
     /** Puts the {@code sample} to the {@code contentValues} */
     abstract void populateSampleTo(ContentValues contentValues, U sample);

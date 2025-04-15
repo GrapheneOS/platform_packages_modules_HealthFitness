@@ -52,7 +52,7 @@ public class InternalRecordParcelTest {
         for (Class<? extends RecordInternal<?>> clazz : internalClasses) {
             // Check for a constructor that takes no arguments. If it fails throws
             // NoSuchMethodException.
-            assertThat(clazz.getConstructor()).isNotNull();
+            assertThat(clazz.getConstructor(Parcel.class)).isNotNull();
         }
     }
 
@@ -102,9 +102,8 @@ public class InternalRecordParcelTest {
 
             // Make sure we can bring back from a parcel via a constructor
             Constructor<? extends RecordInternal> parcelConstructor =
-                    internalRecord.getClass().getConstructor();
-            RecordInternal<?> internalRecordCopy = parcelConstructor.newInstance();
-            internalRecordCopy.populateUsing(parcel);
+                    internalRecord.getClass().getConstructor(Parcel.class);
+            RecordInternal<?> internalRecordCopy = parcelConstructor.newInstance(parcel);
             parcel.recycle();
 
             // Unfortunately do a hack to normalize the sample order.

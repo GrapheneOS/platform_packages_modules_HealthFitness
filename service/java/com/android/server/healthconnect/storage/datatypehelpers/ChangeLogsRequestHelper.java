@@ -43,9 +43,8 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,9 +58,9 @@ import java.util.List;
  */
 public final class ChangeLogsRequestHelper extends DatabaseHelper {
     public static final String TABLE_NAME = "change_log_request_table";
-    static final int DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS = 32;
-    static final int NEW_CHANGE_LOG_TIME_PERIOD_IN_DAYS = 90;
-    private static final String PACKAGES_TO_FILTERS_COLUMN_NAME = "packages_to_filter";
+    private static final Duration DEFAULT_CHANGE_LOG_RETENTION = Duration.ofDays(32);
+    private static final Duration NEW_CHANGE_LOG_RETENTION = Duration.ofDays(90);
+    private static final String PACKAGES_TO_FILTER_COLUMN_NAME = "packages_to_filter";
     private static final String RECORD_TYPES_COLUMN_NAME = "record_types";
     private static final String PACKAGE_NAME_COLUMN_NAME = "package_name";
     private static final String ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME = "row_id_change_logs_table";
@@ -81,20 +80,32 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
     }
 
     public static CreateTableRequest getCreateTableRequest() {
-        return new CreateTableRequest(TABLE_NAME, getColumnInfo());
+        var columns =
+                List.of(
+                        new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY),
+                        new Pair<>(PACKAGES_TO_FILTER_COLUMN_NAME, TEXT_NOT_NULL),
+                        new Pair<>(PACKAGE_NAME_COLUMN_NAME, TEXT_NOT_NULL),
+                        new Pair<>(RECORD_TYPES_COLUMN_NAME, TEXT_NULL),
+                        new Pair<>(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, INTEGER),
+                        new Pair<>(TIME_COLUMN_NAME, INTEGER));
+        return new CreateTableRequest(TABLE_NAME, columns);
+    }
+
+    public static Duration getChangeLogRetentionDuration() {
+        return isCloudBackupRestoreEnabled()
+                ? NEW_CHANGE_LOG_RETENTION
+                : DEFAULT_CHANGE_LOG_RETENTION;
     }
 
     public String getToken(
             long latestChangeLogRowId, String packageName, ChangeLogTokenRequest request) {
         ContentValues contentValues = new ContentValues();
 
-        /**
-         * Store package names here as a package name and not as {@link AppInfoHelper.AppInfo#mId}
-         * as ID might not be available right now but might become available when the actual request
-         * for this token comes
-         */
+        // Store package names here as a package name and not as {@link AppInfoHelper.AppInfo#mId}
+        // as ID might not be available right now but might become available when the actual request
+        // for this token comes
         contentValues.put(
-                PACKAGES_TO_FILTERS_COLUMN_NAME,
+                PACKAGES_TO_FILTER_COLUMN_NAME,
                 String.join(DELIMITER, request.getPackageNamesToFilter()));
         contentValues.put(
                 RECORD_TYPES_COLUMN_NAME,
@@ -122,7 +133,7 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
             }
 
             return new TokenRequest(
-                    getCursorStringList(cursor, PACKAGES_TO_FILTERS_COLUMN_NAME, DELIMITER),
+                    getCursorStringList(cursor, PACKAGES_TO_FILTER_COLUMN_NAME, DELIMITER),
                     getCursorIntegerList(cursor, RECORD_TYPES_COLUMN_NAME, DELIMITER),
                     getCursorString(cursor, PACKAGE_NAME_COLUMN_NAME),
                     getCursorInt(cursor, ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME));
@@ -132,7 +143,7 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
     public String getNextPageToken(TokenRequest changeLogTokenRequest, long nextRowId) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(
-                PACKAGES_TO_FILTERS_COLUMN_NAME,
+                PACKAGES_TO_FILTER_COLUMN_NAME,
                 String.join(DELIMITER, changeLogTokenRequest.getPackageNamesToFilter()));
         contentValues.put(
                 RECORD_TYPES_COLUMN_NAME,
@@ -147,27 +158,11 @@ public final class ChangeLogsRequestHelper extends DatabaseHelper {
     }
 
     public static DeleteTableRequest getDeleteRequestForAutoDelete() {
-        int changeLogTimePeriod =
-                isCloudBackupRestoreEnabled()
-                        ? NEW_CHANGE_LOG_TIME_PERIOD_IN_DAYS
-                        : DEFAULT_CHANGE_LOG_TIME_PERIOD_IN_DAYS;
         return new DeleteTableRequest(TABLE_NAME)
                 .setTimeFilter(
                         TIME_COLUMN_NAME,
                         Instant.EPOCH.toEpochMilli(),
-                        Instant.now().minus(changeLogTimePeriod, ChronoUnit.DAYS).toEpochMilli());
-    }
-
-    private static List<Pair<String, String>> getColumnInfo() {
-        List<Pair<String, String>> columnInfo = new ArrayList<>();
-        columnInfo.add(new Pair<>(PRIMARY_COLUMN_NAME, PRIMARY));
-        columnInfo.add(new Pair<>(PACKAGES_TO_FILTERS_COLUMN_NAME, TEXT_NOT_NULL));
-        columnInfo.add(new Pair<>(PACKAGE_NAME_COLUMN_NAME, TEXT_NOT_NULL));
-        columnInfo.add(new Pair<>(RECORD_TYPES_COLUMN_NAME, TEXT_NULL));
-        columnInfo.add(new Pair<>(ROW_ID_CHANGE_LOGS_TABLE_COLUMN_NAME, INTEGER));
-        columnInfo.add(new Pair<>(TIME_COLUMN_NAME, INTEGER));
-
-        return columnInfo;
+                        Instant.now().minus(getChangeLogRetentionDuration()).toEpochMilli());
     }
 
     /** A class to represent the request corresponding to a token */

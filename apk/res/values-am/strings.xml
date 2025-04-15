@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"የ<xliff:g id="DATE">%1$s</xliff:g> ወደ ውጭ መላክ ላይ ችግር ነበር። እባክዎ አዲስ መርሐግብር የተያዘለት ወደ ውጭ መላክን ያዋቅሩ እና እንደገና ይሞክሩ።"</string>
     <string name="next_export_time" msgid="3138247220014510213">"ቀጣይ ወደ ውጭ የሚላክበት፦ <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"ቀጣይ ወደ ውጭ መላክ በቅርቡ ይጀምራል"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"ምትኬ"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"ምትኬን ማስቀመጥ እና ወደነበረበት መመለስ"</string>
     <string name="last_export_time" msgid="9205875050823594041">"ለመጨረሻ ጊዜ ወደ ውጭ የተላከው፦ <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"የመጨረሻ ወደ ውጭ መላክ፦ አሁን"</string>

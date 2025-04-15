@@ -86,8 +86,9 @@ public final class SleepSessionRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, SleepSessionRecordInternal sleepSessionRecord) {
+    SleepSessionRecordInternal populateSpecificRecordValue(Cursor cursor) {
         UUID uuid = getCursorUUID(cursor, UUID_COLUMN_NAME);
+        SleepSessionRecordInternal sleepSessionRecord = new SleepSessionRecordInternal();
         sleepSessionRecord.setNotes(getCursorString(cursor, NOTES_COLUMN_NAME));
         sleepSessionRecord.setTitle(getCursorString(cursor, TITLE_COLUMN_NAME));
 
@@ -99,6 +100,7 @@ public final class SleepSessionRecordHelper
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         cursor.moveToPrevious();
+        return sleepSessionRecord;
     }
 
     @Override

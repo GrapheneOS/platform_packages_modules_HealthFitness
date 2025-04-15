@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Radās problēma ar eksportēšanu šajā datumā: <xliff:g id="DATE">%1$s</xliff:g>. Lūdzu, no jauna iestatiet ieplānoto eksportēšanu un mēģiniet vēlreiz."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Nākamā eksportēšanas reize: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Drīz sāksies nākamā eksportēšana"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Dublēšana"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Dublēšana un atjaunošana"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Pēdējā eksportēšanas reize: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Pēdējā eksportēšanas reize: tikko"</string>

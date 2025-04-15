@@ -101,9 +101,9 @@ public final class TotalCaloriesBurnedRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, TotalCaloriesBurnedRecordInternal totalCaloriesBurnedRecord) {
-        totalCaloriesBurnedRecord.setEnergy(getCursorDouble(cursor, ENERGY_COLUMN_NAME));
+    TotalCaloriesBurnedRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new TotalCaloriesBurnedRecordInternal()
+                .setEnergy(getCursorDouble(cursor, ENERGY_COLUMN_NAME));
     }
 
     @Override

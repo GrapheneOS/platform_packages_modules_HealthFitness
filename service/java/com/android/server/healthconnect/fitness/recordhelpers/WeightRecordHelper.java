@@ -92,8 +92,8 @@ public final class WeightRecordHelper extends InstantRecordHelper<WeightRecordIn
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, WeightRecordInternal weightRecord) {
-        weightRecord.setWeight(getCursorDouble(cursor, WEIGHT_COLUMN_NAME));
+    WeightRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new WeightRecordInternal().setWeight(getCursorDouble(cursor, WEIGHT_COLUMN_NAME));
     }
 
     @Override

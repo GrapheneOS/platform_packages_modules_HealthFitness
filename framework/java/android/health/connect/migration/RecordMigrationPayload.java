@@ -67,9 +67,7 @@ public final class RecordMigrationPayload extends MigrationPayload implements Pa
     }
 
     RecordMigrationPayload(@NonNull Parcel in) {
-        mRecordInternal =
-                InternalExternalRecordConverter.getInstance().newInternalRecord(in.readInt());
-        mRecordInternal.populateUsing(in);
+        mRecordInternal = InternalExternalRecordConverter.getInstance().newInternalRecord(in);
         // Only accept parcels that set App name and package name.
         Objects.requireNonNull(mRecordInternal.getAppName());
         Objects.requireNonNull(mRecordInternal.getPackageName());
