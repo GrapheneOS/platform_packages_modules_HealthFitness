@@ -26,6 +26,7 @@ import android.os.UserHandle;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
@@ -57,6 +58,7 @@ import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.migration.notification.MigrationNotificationSender;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
+import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastoreXmlPersistence;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -104,6 +106,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final ExportImportSettingsStorage mExportImportSettingsStorage;
     private final ExportManager mExportManager;
     private final MigrationStateManager mMigrationStateManager;
+    private @Nullable final OnboardingStateManager mOnboardingStateManager;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final AppOpLogsHelper mAppOpLogsHelper;
@@ -439,6 +442,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mTrackerManager == null
                         ? new TrackerManagerImpl()
                         : builder.mTrackerManager;
+        mOnboardingStateManager =
+                builder.mOnboardingStateManager == null && Flags.onboarding()
+                        ? new OnboardingStateManager(getPreferenceHelper(), userHandle)
+                        : builder.mOnboardingStateManager;
     }
 
     @Override
@@ -484,6 +491,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public MigrationStateManager getMigrationStateManager() {
         return mMigrationStateManager;
+    }
+
+    @Nullable
+    @Override
+    public OnboardingStateManager getOnboardingStateManager() {
+        return mOnboardingStateManager;
     }
 
     @Override
@@ -754,6 +767,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private MigrationBroadcastScheduler mMigrationBroadcastScheduler;
         @Nullable private MigrationUiStateManager mMigrationUiStateManager;
         @Nullable private MigrationEntityHelper mMigrationEntityHelper;
+        @Nullable private OnboardingStateManager mOnboardingStateManager;
         @Nullable private PreferencesManager mPreferencesManager;
         @Nullable private DatabaseStatsCollector mDatabaseStatsCollector;
         @Nullable private UsageStatsCollector mUsageStatsCollector;
