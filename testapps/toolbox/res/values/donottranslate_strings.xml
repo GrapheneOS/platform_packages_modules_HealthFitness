@@ -161,6 +161,12 @@
     <string name="phr_options_seed_x_fhir_jsons">Seed selected number of FHIR resources</string>
     <string name="phr_options_request_immunization">Request read immunization permission</string>
     <string name="phr_options_request_medical">Request all medical permissions</string>
+    <string name="phr_options_change_logs">Change Logs</string>
+    <string name="phr_options_get_change_log_token_description">Request a change log token with all medical resource types:</string>
+    <string name="phr_options_get_change_log_token_button">Get Change Log Token</string>
+    <string name="phr_options_change_token">Change Log Token</string>
+    <string name="phr_options_get_changes_description">Get changes using the change token above:</string>
+    <string name="phr_options_get_changes_button">Get Changes</string>
     <string name="all_medical_permissions_success">All medical permissions were successfully granted</string>
     <string name="number_of_medical_permissions_not_granted">%1$d medical permissions still not granted</string>
     <string name="data_source_spinner_default_message">SELECT A DATA SOURCE</string>
