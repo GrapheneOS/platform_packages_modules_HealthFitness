@@ -71,11 +71,6 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
     }
 
     @Override
-    public final String getDurationGroupByColumnName() {
-        return TIME_COLUMN_NAME;
-    }
-
-    @Override
     public final String getPeriodGroupByColumnName() {
         return LOCAL_DATE_COLUMN_NAME;
     }
