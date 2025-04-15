@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"S\'ha produït un problema amb l\'exportació del dia <xliff:g id="DATE">%1$s</xliff:g>. Configura una exportació programada nova i torna-ho a provar."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Pròxima exportació: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"La pròxima exportació començarà aviat"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Còpia de seguretat"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Còpia de seguretat i restauració"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Darrera exportació: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Darrera exportació: ara"</string>

@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"เกิดปัญหาเกี่ยวกับการส่งออกของวันที่ <xliff:g id="DATE">%1$s</xliff:g> โปรดตั้งค่าการส่งออกที่กำหนดเวลาใหม่แล้วลองอีกครั้ง"</string>
     <string name="next_export_time" msgid="3138247220014510213">"การส่งออกครั้งถัดไป: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"การส่งออกครั้งถัดไปจะเริ่มในอีกไม่ช้า"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"การสำรองข้อมูล"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"การสำรองและกู้คืนข้อมูล"</string>
     <string name="last_export_time" msgid="9205875050823594041">"การส่งออกครั้งล่าสุด: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"การส่งออกครั้งล่าสุด: ตอนนี้"</string>

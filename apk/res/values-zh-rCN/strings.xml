@@ -377,10 +377,10 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"允许"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"全部允许"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"不允许"</string>
-    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"选择您希望允许此应用从“健康数据共享”读取或向其中写入的数据"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"选择此应用可从“健康数据共享”读取或向其中写入的数据"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"选择您希望允许此应用从“健康数据共享”读取的数据"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"选择您希望允许此应用写入到“健康数据共享”的数据"</string>
-    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"选择您希望允许此应用从“健康数据共享”读取或向其中写入的数据"</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"选择此应用可从“健康数据共享”读取或向其中写入的数据"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"选择您希望允许此应用从“健康数据共享”读取的数据"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果您授予读取权限，该应用可以读取新数据和过去 30 天的数据"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果您授予读取权限，该应用可以读取新数据和过往数据"</string>
@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"<xliff:g id="DATE">%1$s</xliff:g>的导出任务出现问题。请设置新的定期导出任务并重试。"</string>
     <string name="next_export_time" msgid="3138247220014510213">"下次导出日期：<xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"下一次导出即将开始"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"备份"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"备份和恢复"</string>
     <string name="last_export_time" msgid="9205875050823594041">"上次导出日期：<xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"上次导出时间：刚刚"</string>

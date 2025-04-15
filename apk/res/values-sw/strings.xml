@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Hitilafu fulani ilitokea kwenye uhamishaji uliofanywa tarehe <xliff:g id="DATE">%1$s</xliff:g>. Tafadhali panga ratiba mpya ya uhamishaji kisha ujaribu tena."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Uhamishaji unaofuata: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Uhamishaji unaofuata utaanza hivi karibuni"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Hifadhi nakala"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Kuhifadhi nakala na kurejesha data"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Uhamishaji wa mwisho: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Uhamishaji wa mwisho: sasa hivi"</string>

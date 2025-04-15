@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Pati një problem me eksportimin për datën <xliff:g id="DATE">%1$s</xliff:g>. Konfiguro një eksportim të ri të planifikuar dhe provo përsëri."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Eksportimi i radhës: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Eksportimi i radhës do të fillojë së shpejti"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Rezervo"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Rezervo dhe restauro"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Eksportimi i fundit: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Eksportimi i fundit: tani"</string>

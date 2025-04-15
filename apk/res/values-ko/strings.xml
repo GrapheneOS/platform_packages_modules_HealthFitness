@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"<xliff:g id="DATE">%1$s</xliff:g>에 예약된 내보내기에 문제가 발생했습니다. 내보내기 일정을 새로 설정하고 다시 시도해 보세요."</string>
     <string name="next_export_time" msgid="3138247220014510213">"다음 내보낼 날짜: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"다음 내보내기가 곧 시작됩니다."</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"백업"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"백업 및 복원"</string>
     <string name="last_export_time" msgid="9205875050823594041">"마지막으로 내보낸 날짜: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"마지막 내보내기: 지금"</string>

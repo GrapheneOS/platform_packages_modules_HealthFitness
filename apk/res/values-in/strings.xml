@@ -372,21 +372,21 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"asupan nikotin"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Baca asupan nikotin"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Tulis asupan nikotin"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"Izinkan “<xliff:g id="APP_NAME">%1$s</xliff:g>” untuk membaca"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Izinkan “<xliff:g id="APP_NAME">%1$s</xliff:g>” membaca"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Izinkan “<xliff:g id="APP_NAME">%1$s</xliff:g>” untuk menulis"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Izinkan"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Izinkan semua"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Jangan izinkan"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Pilih data yang dapat dibaca atau ditulis oleh aplikasi ini ke Health Connect"</string>
-    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Pilih data yang dapat dibaca oleh aplikasi ini dari Health Connect"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Pilih data yang boleh dibaca aplikasi ini dari Health Connect"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Pilih data yang dapat ditulis oleh aplikasi ini ke Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Pilih data yang dapat dibaca atau ditulis oleh aplikasi ini ke Health Connect"</string>
-    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Pilih data yang dapat dibaca oleh aplikasi ini dari Health Connect"</string>
+    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Pilih data yang boleh dibaca aplikasi ini dari Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Jika Anda memberikan akses baca, aplikasi dapat membaca data baru dan data dari 30 hari terakhir"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Jika Anda memberikan akses baca, aplikasi dapat membaca data baru dan data lama"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Izinkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Izinkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses data kebugaran dan kesehatan?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Anda dapat mempelajari cara <xliff:g id="APP_NAME">%1$s</xliff:g> menangani data Anda di <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>-nya"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Anda dapat mempelajari cara <xliff:g id="APP_NAME">%1$s</xliff:g> menangani data Anda di <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> aplikasi tersebut"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"kebijakan privasi"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"Izinkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses catatan kesehatan Anda?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Jika Anda memberikan akses, aplikasi dapat membaca dan menulis data seperti alergi, hasil lab, vaksin, dan lainnya\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Terjadi masalah dengan proses ekspor pada <xliff:g id="DATE">%1$s</xliff:g>. Siapkan jadwal ekspor yang baru dan coba lagi."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Ekspor selanjutnya: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Ekspor selanjutnya segera dimulai"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Cadangkan"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Pencadangan dan pemulihan"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Ekspor terakhir: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Ekspor terakhir: sekarang"</string>
