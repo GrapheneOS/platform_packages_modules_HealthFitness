@@ -33,6 +33,7 @@ import android.database.Cursor;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.UserHandle;
+import android.os.UserManager;
 import android.util.Pair;
 import android.util.Slog;
 
@@ -87,6 +88,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     private final PreferenceHelper mPreferenceHelper;
     private final HealthConnectMappings mHealthConnectMappings;
     private final HealthConnectThreadScheduler mThreadScheduler;
+    private final UserManager mUserManager;
 
     /**
      * map of {@link HealthDataCategory} to list of app ids from {@link AppInfoHelper}, in the order
@@ -103,7 +105,8 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
             PackageInfoUtils packageInfoUtils,
             HealthConnectMappings healthConnectMappings,
             DatabaseHelpers databaseHelpers,
-            HealthConnectThreadScheduler threadScheduler) {
+            HealthConnectThreadScheduler threadScheduler,
+            UserManager userManager) {
         super(databaseHelpers);
         mUserContext = userContext;
         mAppInfoHelper = appInfoHelper;
@@ -112,6 +115,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
         mPreferenceHelper = preferenceHelper;
         mHealthConnectMappings = healthConnectMappings;
         mThreadScheduler = threadScheduler;
+        mUserManager = userManager;
     }
 
     /**
@@ -149,7 +153,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     /** See appendToPriorityList below */
     public synchronized void appendToPriorityList(
             String packageName, @HealthDataCategory.Type int dataCategory, UserHandle user) {
-        if (!mUserContext.getUser().equals(user)) {
+        if (!mUserContext.getUser().equals(user) || !mUserManager.isUserUnlocked(user)) {
             // We are currently limited to be able to update the priority list for the foreground
             // user only. User will need to manually add the app to the priority list later.
             return;
@@ -160,7 +164,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     /** See maybeRemoveAppFromPriorityList below */
     public synchronized void maybeRemoveAppFromPriorityList(
             String packageName, @HealthDataCategory.Type int dataCategory, UserHandle user) {
-        if (!mUserContext.getUser().equals(user)) {
+        if (!mUserContext.getUser().equals(user) || !mUserManager.isUserUnlocked(user)) {
             // We are currently limited to be able to update the priority list for the foreground
             // user only. Apps will be removed from the priority list when the device switches to
             // this user  if they no longer have permissions.
@@ -171,7 +175,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
 
     /** See maybeRemoveAppFromPriorityList below */
     public synchronized void maybeRemoveAppFromPriorityList(String packageName, UserHandle user) {
-        if (!mUserContext.getUser().equals(user)) {
+        if (!mUserContext.getUser().equals(user) || !mUserManager.isUserUnlocked(user)) {
             // We are currently limited to be able to update the priority list for the foreground
             // user only. Apps will be removed from the priority list when the device switches to
             // this user  if they no longer have permissions.
