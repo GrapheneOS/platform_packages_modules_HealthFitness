@@ -491,6 +491,15 @@ flag {
 }
 
 flag {
+    name: "step_tracking_enabled_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables database changes required for native step tracking within Health Connect"
+    bug: "397419824"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
     name: "phr_change_logs"
     namespace: "health_fitness_aconfig"
     description: "Enables PHR support in change logs API"
