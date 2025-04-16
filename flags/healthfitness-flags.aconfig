@@ -507,3 +507,11 @@ flag {
     is_fixed_read_only: true
     is_exported: true
 }
+
+flag {
+    name: "sample_time_ordering"
+    namespace: "health_fitness_aconfig"
+    description: "Enables forced ordering by time for samples in some records"
+    bug: "411069279"
+    is_fixed_read_only: true
+}
