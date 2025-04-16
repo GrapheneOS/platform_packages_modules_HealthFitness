@@ -185,6 +185,7 @@ android_library {
         "SettingsLibActivityEmbedding",
         "SettingsLibSelectorWithWidgetPreference",
         "SettingsLibSettingsSpinner",
+        "SettingsLibValuePreference",
         "SettingsLibZeroStatePreference",
         "androidx.paging_paging-common",
         "androidx.paging_paging-common-ktx",
