@@ -22,8 +22,12 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.testing.RecordFactory;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.android.healthfitness.flags.Flags;
 
 import com.google.common.base.Preconditions;
 import com.google.common.truth.Expect;
@@ -35,12 +39,12 @@ import org.junit.runner.RunWith;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Map;
-import java.util.TreeSet;
 
 /** This is a test across all internal records, rather than across any particular record. */
 @RunWith(AndroidJUnit4.class)
 public class InternalRecordParcelTest {
     @Rule public final Expect expect = Expect.create();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     /** Test that all internal records have a constructor for the parcel path. */
     @Test
@@ -77,6 +81,7 @@ public class InternalRecordParcelTest {
      * instance.
      */
     @Test
+    @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
     public void testAllInternalRecords_serializeToAndFromParcels() throws Exception {
         HealthConnectMappings mappings = HealthConnectMappings.getInstance();
         Map<Integer, Class<? extends RecordInternal<?>>> recordIdToInternalRecord =
@@ -105,9 +110,8 @@ public class InternalRecordParcelTest {
                     internalRecord.getClass().getConstructor(Parcel.class);
             RecordInternal<?> internalRecordCopy = parcelConstructor.newInstance(parcel);
             parcel.recycle();
-
-            // Unfortunately do a hack to normalize the sample order.
-            normalizeSampleOrder(internalRecordCopy);
+            // It would be nice to check equality for the internal record here, but most internal
+            // records don't have equals() and hashcode() implementations.
 
             // Convert the deserialized RecordInternal back to a record
             Record recordCopy = internalRecordCopy.toExternalRecord();
@@ -116,103 +120,6 @@ public class InternalRecordParcelTest {
             expect.withMessage("Failed parcel conversion for %s, %s", record.getClass(), recordType)
                     .that(recordCopy)
                     .isEqualTo(record);
-        }
-    }
-
-    /**
-     * Sort the samples if appropriate.
-     *
-     * <p>At the moment for the following 4 data types, the ordering of the samples affects
-     * .equals(), but read then write doesn't guarantee preservation of this. So before doing the
-     * comparison, normalize the order.
-     *
-     * <p>At the moment this method makes a number of assumptions which happen to be true at the
-     * moment but need not be in future:
-     *
-     * <ul>
-     *   <li>RecordFactory returns the samples in time order.
-     *   <li>The various RecordInternals are mutable
-     *   <li>When calling setSamples() the set passed is kept rather than copied
-     *   <li>The iteration order for the set is used when creating the list for the Record
-     * </ul>
-     */
-    private static void normalizeSampleOrder(RecordInternal<?> internalRecordCopy) {
-        switch (internalRecordCopy) {
-            case HeartRateRecordInternal heartRateRecordInternal -> {
-                TreeSet<HeartRateRecordInternal.HeartRateSample> sortedSamples =
-                        new TreeSet<>(
-                                (sample1, sample2) -> {
-                                    int result1 =
-                                            Long.compare(
-                                                    sample1.getEpochMillis(),
-                                                    sample2.getEpochMillis());
-                                    if (result1 != 0) {
-                                        return result1;
-                                    } else {
-                                        return Integer.compare(
-                                                sample1.getBeatsPerMinute(),
-                                                sample2.getBeatsPerMinute());
-                                    }
-                                });
-                sortedSamples.addAll(heartRateRecordInternal.getSamples());
-                heartRateRecordInternal.setSamples(sortedSamples);
-            }
-            case PowerRecordInternal powerRecordInternal -> {
-                TreeSet<PowerRecordInternal.PowerRecordSample> sortedSamples =
-                        new TreeSet<>(
-                                (sample1, sample2) -> {
-                                    int result1 =
-                                            Long.compare(
-                                                    sample1.getEpochMillis(),
-                                                    sample2.getEpochMillis());
-                                    if (result1 != 0) {
-                                        return result1;
-                                    } else {
-                                        return Double.compare(
-                                                sample1.getPower(), sample2.getPower());
-                                    }
-                                });
-                sortedSamples.addAll(powerRecordInternal.getSamples());
-                powerRecordInternal.setSamples(sortedSamples);
-            }
-            case SpeedRecordInternal speedRecordInternal -> {
-                TreeSet<SpeedRecordInternal.SpeedRecordSample> sortedSamples =
-                        new TreeSet<>(
-                                (sample1, sample2) -> {
-                                    int result1 =
-                                            Long.compare(
-                                                    sample1.getEpochMillis(),
-                                                    sample2.getEpochMillis());
-                                    if (result1 != 0) {
-                                        return result1;
-                                    } else {
-                                        return Double.compare(
-                                                sample1.getSpeed(), sample2.getSpeed());
-                                    }
-                                });
-                sortedSamples.addAll(speedRecordInternal.getSamples());
-                speedRecordInternal.setSamples(sortedSamples);
-            }
-            case StepsCadenceRecordInternal stepsCadenceRecordInternal -> {
-                TreeSet<StepsCadenceRecordInternal.StepsCadenceRecordSample> sortedSamples =
-                        new TreeSet<>(
-                                (sample1, sample2) -> {
-                                    int result1 =
-                                            Long.compare(
-                                                    sample1.getEpochMillis(),
-                                                    sample2.getEpochMillis());
-                                    if (result1 != 0) {
-                                        return result1;
-                                    } else {
-                                        return Double.compare(sample1.getRate(), sample2.getRate());
-                                    }
-                                });
-                sortedSamples.addAll(stepsCadenceRecordInternal.getSamples());
-                stepsCadenceRecordInternal.setSamples(sortedSamples);
-            }
-            default -> {
-                // All other cases leave unchanged.
-            }
         }
     }
 }

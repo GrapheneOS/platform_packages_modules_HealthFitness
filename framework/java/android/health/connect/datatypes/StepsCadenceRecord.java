@@ -21,12 +21,16 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.StepsCadenceRecordInternal;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /** Captures the user's steps cadence. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE)
@@ -68,7 +72,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
                     RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE,
                     Double.class);
 
-    private final List<StepsCadenceRecordSample> mStepsCadenceRecordSamples;
+    private final List<StepsCadenceRecordSample> mSamples;
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -76,7 +80,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
      * @param startZoneOffset Zone offset of the user when the activity started
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
-     * @param stepsCadenceRecordSamples Samples of recorded StepsCadenceRecord
+     * @param samples Samples of recorded StepsCadenceRecord, sorted by time
      * @param skipValidation Boolean flag to skip validation of record values.
      */
     private StepsCadenceRecord(
@@ -85,7 +89,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<StepsCadenceRecordSample> stepsCadenceRecordSamples,
+            @NonNull List<StepsCadenceRecordSample> samples,
             boolean skipValidation) {
         super(
                 metadata,
@@ -95,24 +99,22 @@ public final class StepsCadenceRecord extends IntervalRecord {
                 endZoneOffset,
                 skipValidation,
                 /* enforceFutureTimeRestrictions= */ true);
-        Objects.requireNonNull(stepsCadenceRecordSamples);
+        Objects.requireNonNull(samples);
         if (!skipValidation) {
             ValidationUtils.validateSampleStartAndEndTime(
                     startTime,
                     endTime,
-                    stepsCadenceRecordSamples.stream()
-                            .map(StepsCadenceRecordSample::getTime)
-                            .toList());
+                    samples.stream().map(StepsCadenceRecordSample::getTime).toList());
         }
-        mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
+        mSamples = samples;
     }
 
     /**
-     * @return StepsCadenceRecord samples corresponding to this record
+     * @return StepsCadenceRecord samples corresponding to this record, in ascending time order
      */
     @NonNull
     public List<StepsCadenceRecordSample> getSamples() {
-        return mStepsCadenceRecordSamples;
+        return mSamples;
     }
 
     /** Represents a single measurement of the steps cadence. */
@@ -194,7 +196,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
         private final Metadata mMetadata;
         private final Instant mStartTime;
         private final Instant mEndTime;
-        private final List<StepsCadenceRecordSample> mStepsCadenceRecordSamples;
+        private final List<StepsCadenceRecordSample> mSamples;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
 
@@ -202,21 +204,29 @@ public final class StepsCadenceRecord extends IntervalRecord {
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
          * @param endTime End time of this activity
-         * @param stepsCadenceRecordSamples Samples of recorded StepsCadenceRecord
+         * @param samples Samples of recorded StepsCadenceRecord. Only a single sample with a given
+         *     time is accepted and samples with duplicate times will be silently dropped.
          */
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull Instant startTime,
                 @NonNull Instant endTime,
-                @NonNull List<StepsCadenceRecordSample> stepsCadenceRecordSamples) {
+                @NonNull List<StepsCadenceRecordSample> samples) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
-            Objects.requireNonNull(stepsCadenceRecordSamples);
+            Objects.requireNonNull(samples);
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
+            if (Flags.sampleTimeOrdering()) {
+                TreeSet<StepsCadenceRecordSample> sampleSet =
+                        new TreeSet<>(Comparator.comparing(StepsCadenceRecordSample::getTime));
+                sampleSet.addAll(samples);
+                mSamples = sampleSet.stream().toList();
+            } else {
+                mSamples = samples;
+            }
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
@@ -263,7 +273,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mStepsCadenceRecordSamples,
+                    mSamples,
                     true);
         }
 
@@ -278,7 +288,7 @@ public final class StepsCadenceRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mStepsCadenceRecordSamples,
+                    mSamples,
                     false);
         }
     }

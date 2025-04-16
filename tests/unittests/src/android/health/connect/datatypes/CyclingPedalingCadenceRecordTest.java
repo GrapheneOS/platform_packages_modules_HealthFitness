@@ -21,7 +21,7 @@ import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.health.connect.datatypes.HeartRateRecord.HeartRateSample;
+import android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -44,10 +44,11 @@ import java.util.List;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
-public class HeartRateRecordTest {
+public class CyclingPedalingCadenceRecordTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Test
+    @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
     public void testEqualsHashcode() {
         Metadata emptyMetadata = new Metadata.Builder().build();
         Metadata fullMetadata = makeFullMetadata();
@@ -58,67 +59,92 @@ public class HeartRateRecordTest {
         // Use strange offsets so they don't match the local offset for the test runner by accident.
         ZoneOffset startOffset = ZoneOffset.ofHoursMinutes(1, 23);
         ZoneOffset endOffset = ZoneOffset.ofHoursMinutes(-2, -49);
-        List<HeartRateSample> oneSample = List.of(new HeartRateSample(60, midTime));
+        List<CyclingPedalingCadenceRecordSample> oneSample =
+                List.of(new CyclingPedalingCadenceRecordSample(60, midTime));
         new EqualsTester()
                 .addEqualityGroup(
-                        new HeartRateRecord.Builder(emptyMetadata, start, end, oneSample).build(),
-                        new HeartRateRecord.Builder(emptyMetadata, start, end, oneSample).build())
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        emptyMetadata, start, end, oneSample)
+                                .build(),
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        emptyMetadata, start, end, oneSample)
+                                .build())
                 .addEqualityGroup(
-                        new HeartRateRecord.Builder(emptyMetadata, start, end, oneSample)
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        emptyMetadata, start, end, oneSample)
                                 .setStartZoneOffset(startOffset)
                                 .build(),
-                        new HeartRateRecord.Builder(emptyMetadata, start, end, oneSample)
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        emptyMetadata, start, end, oneSample)
                                 .setStartZoneOffset(startOffset)
                                 .build())
                 .addEqualityGroup(
-                        new HeartRateRecord.Builder(emptyMetadata, start, end, oneSample)
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        emptyMetadata, start, end, oneSample)
                                 .setStartZoneOffset(startOffset)
                                 .setEndZoneOffset(endOffset)
                                 .build(),
-                        new HeartRateRecord.Builder(emptyMetadata, start, end, oneSample)
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        emptyMetadata, start, end, oneSample)
                                 .setStartZoneOffset(startOffset)
                                 .setEndZoneOffset(endOffset)
                                 .build())
                 .addEqualityGroup(
-                        new HeartRateRecord.Builder(fullMetadata, start, end, oneSample).build(),
-                        new HeartRateRecord.Builder(fullMetadata, start, end, oneSample).build())
-                .addEqualityGroup(
-                        new HeartRateRecord.Builder(fullMetadata, midTime, end, oneSample).build(),
-                        new HeartRateRecord.Builder(fullMetadata, midTime, end, oneSample).build())
-                .addEqualityGroup(
-                        new HeartRateRecord.Builder(fullMetadata, start, midTime, oneSample)
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        fullMetadata, start, end, oneSample)
                                 .build(),
-                        new HeartRateRecord.Builder(fullMetadata, start, midTime, oneSample)
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        fullMetadata, start, end, oneSample)
                                 .build())
                 .addEqualityGroup(
-                        new HeartRateRecord.Builder(
-                                        fullMetadata,
-                                        start,
-                                        end,
-                                        List.of(new HeartRateSample(70L, midTime)))
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        fullMetadata, midTime, end, oneSample)
                                 .build(),
-                        new HeartRateRecord.Builder(
-                                        fullMetadata,
-                                        start,
-                                        end,
-                                        List.of(new HeartRateSample(70L, midTime)))
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        fullMetadata, midTime, end, oneSample)
                                 .build())
                 .addEqualityGroup(
-                        new HeartRateRecord.Builder(
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        fullMetadata, start, midTime, oneSample)
+                                .build(),
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        fullMetadata, start, midTime, oneSample)
+                                .build())
+                .addEqualityGroup(
+                        new CyclingPedalingCadenceRecord.Builder(
                                         fullMetadata,
                                         start,
                                         end,
                                         List.of(
-                                                new HeartRateSample(70, start),
-                                                new HeartRateSample(80, midTime)))
+                                                new CyclingPedalingCadenceRecordSample(
+                                                        70L, midTime)))
                                 .build(),
-                        new HeartRateRecord.Builder(
+                        new CyclingPedalingCadenceRecord.Builder(
                                         fullMetadata,
                                         start,
                                         end,
                                         List.of(
-                                                new HeartRateSample(70, start),
-                                                new HeartRateSample(80, midTime)))
+                                                new CyclingPedalingCadenceRecordSample(
+                                                        70L, midTime)))
+                                .build())
+                .addEqualityGroup(
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        fullMetadata,
+                                        start,
+                                        end,
+                                        List.of(
+                                                new CyclingPedalingCadenceRecordSample(70, start),
+                                                new CyclingPedalingCadenceRecordSample(
+                                                        80, midTime)))
+                                .build(),
+                        new CyclingPedalingCadenceRecord.Builder(
+                                        fullMetadata,
+                                        start,
+                                        end,
+                                        List.of(
+                                                new CyclingPedalingCadenceRecordSample(70, start),
+                                                new CyclingPedalingCadenceRecordSample(
+                                                        80, midTime)))
                                 .build())
                 .testEquals();
     }
@@ -143,13 +169,20 @@ public class HeartRateRecordTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
     public void testSampleEqualsHashcode() {
         Instant time1 = Instant.ofEpochMilli(1_000_000_000);
         Instant time2 = Instant.ofEpochMilli(1_500_000_000);
         new EqualsTester()
-                .addEqualityGroup(new HeartRateSample(60, time2), new HeartRateSample(60, time2))
-                .addEqualityGroup(new HeartRateSample(60, time1), new HeartRateSample(60, time1))
-                .addEqualityGroup(new HeartRateSample(70, time1), new HeartRateSample(70, time1))
+                .addEqualityGroup(
+                        new CyclingPedalingCadenceRecordSample(60, time2),
+                        new CyclingPedalingCadenceRecordSample(60, time2))
+                .addEqualityGroup(
+                        new CyclingPedalingCadenceRecordSample(60, time1),
+                        new CyclingPedalingCadenceRecordSample(60, time1))
+                .addEqualityGroup(
+                        new CyclingPedalingCadenceRecordSample(70, time1),
+                        new CyclingPedalingCadenceRecordSample(70, time1))
                 .testEquals();
     }
 
@@ -157,26 +190,29 @@ public class HeartRateRecordTest {
     @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
     public void testSamplesConstructedInTimeOrder() {
         // Construct a set of samples such that they are unlikely to be sorted by chance.
-        ArrayList<HeartRateSample> samples = new ArrayList<>();
+        ArrayList<CyclingPedalingCadenceRecordSample> samples = new ArrayList<>();
         for (long i = 20L; i < 25L; i++) {
-            samples.add(new HeartRateSample(100, Instant.ofEpochMilli(i)));
+            samples.add(new CyclingPedalingCadenceRecordSample(100, Instant.ofEpochMilli(i)));
         }
         for (long i = 0L; i < 5L; i++) {
-            samples.add(new HeartRateSample(100, Instant.ofEpochMilli(i)));
+            samples.add(new CyclingPedalingCadenceRecordSample(100, Instant.ofEpochMilli(i)));
         }
         for (long i = 1000L; i < 1005L; i++) {
-            samples.add(new HeartRateSample(100, Instant.ofEpochMilli(i)));
+            samples.add(new CyclingPedalingCadenceRecordSample(100, Instant.ofEpochMilli(i)));
         }
         Metadata emptyMetadata = new Metadata.Builder().build();
         Instant start = Instant.ofEpochMilli(0);
         Instant end = Instant.ofEpochMilli(2_000_000_000);
 
-        HeartRateRecord record =
-                new HeartRateRecord.Builder(emptyMetadata, start, end, samples).build();
-        List<HeartRateSample> resultSamples = record.getSamples();
+        CyclingPedalingCadenceRecord record =
+                new CyclingPedalingCadenceRecord.Builder(emptyMetadata, start, end, samples)
+                        .build();
+        List<CyclingPedalingCadenceRecordSample> resultSamples = record.getSamples();
 
-        List<HeartRateSample> expected =
-                samples.stream().sorted(Comparator.comparing(HeartRateSample::getTime)).toList();
+        List<CyclingPedalingCadenceRecordSample> expected =
+                samples.stream()
+                        .sorted(Comparator.comparing(CyclingPedalingCadenceRecordSample::getTime))
+                        .toList();
         assertThat(resultSamples).isEqualTo(expected);
     }
 
@@ -184,16 +220,17 @@ public class HeartRateRecordTest {
     @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
     public void testSamplesWithDuplicateTimes_dropsDuplicates() {
         // Construct a set of samples such that they are unlikely to be sorted by chance.
-        List<HeartRateSample> samples = new ArrayList<>();
+        List<CyclingPedalingCadenceRecordSample> samples = new ArrayList<>();
         for (int bpm = 70; bpm < 100; bpm++) {
-            samples.add(new HeartRateSample(bpm, Instant.ofEpochMilli(20)));
+            samples.add(new CyclingPedalingCadenceRecordSample(bpm, Instant.ofEpochMilli(20)));
         }
         Metadata emptyMetadata = new Metadata.Builder().build();
         Instant start = Instant.ofEpochMilli(0);
         Instant end = Instant.ofEpochMilli(2_000_000_000);
-        HeartRateRecord record =
-                new HeartRateRecord.Builder(emptyMetadata, start, end, samples).build();
-        List<HeartRateSample> resultSamples = record.getSamples();
+        CyclingPedalingCadenceRecord record =
+                new CyclingPedalingCadenceRecord.Builder(emptyMetadata, start, end, samples)
+                        .build();
+        List<CyclingPedalingCadenceRecordSample> resultSamples = record.getSamples();
 
         assertThat(resultSamples).hasSize(1);
     }

@@ -24,12 +24,16 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.HeartRateRecordInternal;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /** Captures the user's heart rate. Each record represents a series of measurements. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE)
@@ -81,7 +85,7 @@ public final class HeartRateRecord extends IntervalRecord {
                     RECORD_TYPE_HEART_RATE,
                     Long.class);
 
-    private final List<HeartRateSample> mHeartRateSamples;
+    private final List<HeartRateSample> mSamples;
 
     private HeartRateRecord(
             @NonNull Metadata metadata,
@@ -89,7 +93,7 @@ public final class HeartRateRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<HeartRateSample> heartRateSamples,
+            @NonNull List<HeartRateSample> samples,
             boolean skipValidation) {
         super(
                 metadata,
@@ -99,22 +103,20 @@ public final class HeartRateRecord extends IntervalRecord {
                 endZoneOffset,
                 skipValidation,
                 /* enforceFutureTimeRestrictions= */ true);
-        Objects.requireNonNull(heartRateSamples);
+        Objects.requireNonNull(samples);
         if (!skipValidation) {
             ValidationUtils.validateSampleStartAndEndTime(
-                    startTime,
-                    endTime,
-                    heartRateSamples.stream().map(HeartRateSample::getTime).toList());
+                    startTime, endTime, samples.stream().map(HeartRateSample::getTime).toList());
         }
-        mHeartRateSamples = heartRateSamples;
+        mSamples = samples;
     }
 
     /**
-     * @return heart rate samples corresponding to this record
+     * @return heart rate samples corresponding to this record, in ascending time order
      */
     @NonNull
     public List<HeartRateSample> getSamples() {
-        return mHeartRateSamples;
+        return mSamples;
     }
 
     /**
@@ -220,15 +222,18 @@ public final class HeartRateRecord extends IntervalRecord {
         private final Metadata mMetadata;
         private final Instant mStartTime;
         private final Instant mEndTime;
-        private final List<HeartRateSample> mHeartRateSamples;
+        private final List<HeartRateSample> mSamples;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
 
         /**
+         * Make a builder for {@link HeartRateRecord} initialized with the given data.
+         *
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
          * @param endTime End time of this activity
-         * @param heartRateSamples Samples of recorded heart rate
+         * @param heartRateSamples Samples of recorded heart rate. Only a single sample with a given
+         *     time is accepted and samples with duplicate times will be silently dropped.
          * @throws IllegalArgumentException if {@code heartRateSamples} is empty
          */
         public Builder(
@@ -247,7 +252,14 @@ public final class HeartRateRecord extends IntervalRecord {
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mHeartRateSamples = heartRateSamples;
+            if (Flags.sampleTimeOrdering()) {
+                TreeSet<HeartRateSample> sampleSet =
+                        new TreeSet<>(Comparator.comparing(HeartRateSample::getTime));
+                sampleSet.addAll(heartRateSamples);
+                mSamples = sampleSet.stream().toList();
+            } else {
+                mSamples = heartRateSamples;
+            }
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
@@ -302,7 +314,7 @@ public final class HeartRateRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mHeartRateSamples,
+                    mSamples,
                     true);
         }
 
@@ -317,7 +329,7 @@ public final class HeartRateRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mHeartRateSamples,
+                    mSamples,
                     false);
         }
     }

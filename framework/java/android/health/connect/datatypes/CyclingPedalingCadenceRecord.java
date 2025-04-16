@@ -21,12 +21,16 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /** Captures the user's cycling pedaling cadence. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE)
@@ -113,7 +117,8 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
     }
 
     /**
-     * @return CyclingPedalingCadenceRecord samples corresponding to this record
+     * {@return CyclingPedalingCadenceRecord samples corresponding to this record, in ascending time
+     * order}
      */
     @NonNull
     public List<CyclingPedalingCadenceRecordSample> getSamples() {
@@ -178,11 +183,18 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
          */
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object) && object instanceof CyclingPedalingCadenceRecordSample) {
-                CyclingPedalingCadenceRecordSample other =
-                        (CyclingPedalingCadenceRecordSample) object;
-                return getRevolutionsPerMinute() == other.getRevolutionsPerMinute()
-                        && getTime().toEpochMilli() == other.getTime().toEpochMilli();
+            if (Flags.sampleTimeOrdering()) {
+                if (object instanceof CyclingPedalingCadenceRecordSample other) {
+                    return getRevolutionsPerMinute() == other.getRevolutionsPerMinute()
+                            && getTime().toEpochMilli() == other.getTime().toEpochMilli();
+                }
+            } else {
+                if (super.equals(object) && object instanceof CyclingPedalingCadenceRecordSample) {
+                    CyclingPedalingCadenceRecordSample other =
+                            (CyclingPedalingCadenceRecordSample) object;
+                    return getRevolutionsPerMinute() == other.getRevolutionsPerMinute()
+                            && getTime().toEpochMilli() == other.getTime().toEpochMilli();
+                }
             }
             return false;
         }
@@ -194,7 +206,11 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), getRevolutionsPerMinute(), getTime());
+            if (Flags.sampleTimeOrdering()) {
+                return Objects.hash(getRevolutionsPerMinute(), getTime());
+            } else {
+                return Objects.hash(super.hashCode(), getRevolutionsPerMinute(), getTime());
+            }
         }
     }
 
@@ -203,7 +219,7 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
         private final Metadata mMetadata;
         private final Instant mStartTime;
         private final Instant mEndTime;
-        private final List<CyclingPedalingCadenceRecordSample> mCyclingPedalingCadenceRecordSamples;
+        private final List<CyclingPedalingCadenceRecordSample> mSamples;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
 
@@ -211,24 +227,31 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
          * @param endTime End time of this activity
-         * @param cyclingPedalingCadenceRecordSamples Samples of recorded
-         *     CyclingPedalingCadenceRecord
+         * @param samples Samples of recorded CyclingPedalingCadenceRecord. Only a single sample
+         *     with a given time is accepted and samples with duplicate times will be silently
+         *     dropped.
          */
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull Instant startTime,
                 @NonNull Instant endTime,
-                @NonNull
-                        List<CyclingPedalingCadenceRecordSample>
-                                cyclingPedalingCadenceRecordSamples) {
+                @NonNull List<CyclingPedalingCadenceRecordSample> samples) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
-            Objects.requireNonNull(cyclingPedalingCadenceRecordSamples);
+            Objects.requireNonNull(samples);
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mCyclingPedalingCadenceRecordSamples = cyclingPedalingCadenceRecordSamples;
+            if (Flags.sampleTimeOrdering()) {
+                TreeSet<CyclingPedalingCadenceRecordSample> sampleSet =
+                        new TreeSet<>(
+                                Comparator.comparing(CyclingPedalingCadenceRecordSample::getTime));
+                sampleSet.addAll(samples);
+                mSamples = sampleSet.stream().toList();
+            } else {
+                mSamples = samples;
+            }
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
@@ -275,7 +298,7 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mCyclingPedalingCadenceRecordSamples,
+                    mSamples,
                     true);
         }
 
@@ -290,7 +313,7 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mCyclingPedalingCadenceRecordSamples,
+                    mSamples,
                     false);
         }
     }
@@ -305,13 +328,17 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
     public boolean equals(@Nullable Object object) {
         if (super.equals(object)) {
             if (!(object instanceof CyclingPedalingCadenceRecord other)) return false;
-            if (getSamples().size() != other.getSamples().size()) return false;
-            for (int idx = 0; idx < getSamples().size(); idx++) {
-                if (getSamples().get(idx).getRevolutionsPerMinute()
-                                != other.getSamples().get(idx).getRevolutionsPerMinute()
-                        || getSamples().get(idx).getTime().toEpochMilli()
-                                != other.getSamples().get(idx).getTime().toEpochMilli()) {
-                    return false;
+            if (Flags.sampleTimeOrdering()) {
+                return getSamples().equals(other.getSamples());
+            } else {
+                if (getSamples().size() != other.getSamples().size()) return false;
+                for (int idx = 0; idx < getSamples().size(); idx++) {
+                    if (getSamples().get(idx).getRevolutionsPerMinute()
+                                    != other.getSamples().get(idx).getRevolutionsPerMinute()
+                            || getSamples().get(idx).getTime().toEpochMilli()
+                                    != other.getSamples().get(idx).getTime().toEpochMilli()) {
+                        return false;
+                    }
                 }
             }
             return true;
