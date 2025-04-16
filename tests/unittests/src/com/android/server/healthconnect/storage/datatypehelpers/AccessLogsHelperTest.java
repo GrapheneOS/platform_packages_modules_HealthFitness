@@ -128,8 +128,7 @@ public class AccessLogsHelperTest {
 
         AlterTableRequest result = getAlterTableRequestForPhrAccessLogs();
 
-        assertThat(result.getAlterTableAddColumnsCommands())
-                .isEqualTo(expected.getAlterTableAddColumnsCommands());
+        assertThat(result.getAddColumnsCommands()).isEqualTo(expected.getAddColumnsCommands());
     }
 
     @Test
