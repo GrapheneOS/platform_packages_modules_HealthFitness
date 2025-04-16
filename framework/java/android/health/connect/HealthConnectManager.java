@@ -80,7 +80,6 @@ import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
 import android.health.connect.aidl.IMedicalResourceTypeInfosCallback;
-import android.health.connect.aidl.IMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IReadRecordsResponseCallback;
@@ -131,7 +130,6 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.Log;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.lang.annotation.Retention;
@@ -2210,41 +2208,23 @@ public class HealthConnectManager {
         }
 
         try {
-            if (Flags.phrUpsertFixUseSharedMemory()) {
-                mService.upsertMedicalResourcesFromRequestsParcel(
-                        mContext.getAttributionSource(),
-                        new UpsertMedicalResourceRequestsParcel(requests),
-                        new IMedicalResourceListParcelResponseCallback.Stub() {
-                            @Override
-                            public void onResult(
-                                    MedicalResourceListParcel medicalResourceListParcel) {
-                                returnResult(
-                                        executor,
-                                        medicalResourceListParcel.getMedicalResources(),
-                                        callback);
-                            }
+            mService.upsertMedicalResourcesFromRequestsParcel(
+                    mContext.getAttributionSource(),
+                    new UpsertMedicalResourceRequestsParcel(requests),
+                    new IMedicalResourceListParcelResponseCallback.Stub() {
+                        @Override
+                        public void onResult(MedicalResourceListParcel medicalResourceListParcel) {
+                            returnResult(
+                                    executor,
+                                    medicalResourceListParcel.getMedicalResources(),
+                                    callback);
+                        }
 
-                            @Override
-                            public void onError(HealthConnectExceptionParcel exception) {
-                                returnError(executor, exception, callback);
-                            }
-                        });
-            } else {
-                mService.upsertMedicalResources(
-                        mContext.getAttributionSource(),
-                        requests,
-                        new IMedicalResourcesResponseCallback.Stub() {
-                            @Override
-                            public void onResult(List<MedicalResource> medicalResources) {
-                                returnResult(executor, medicalResources, callback);
-                            }
-
-                            @Override
-                            public void onError(HealthConnectExceptionParcel exception) {
-                                returnError(executor, exception, callback);
-                            }
-                        });
-            }
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
