@@ -105,6 +105,13 @@ public final class FitnessRecordAggregateHelper {
             recordTypeIds.add(recordTypeId);
             RecordHelper<?> recordHelper =
                     mInternalHealthConnectMappings.getRecordHelper(recordTypeId);
+            TimeSplits timeSplits =
+                    TimeSplits.makeTimeSplitsFromParcelData(
+                            request.getStartTime(),
+                            request.getEndTime(),
+                            request.getDuration(),
+                            request.getPeriod(),
+                            request.getTimeRangeFilter());
             AggregateRecordRequest aggregateRecordRequest =
                     recordHelper.getAggregateRecordRequest(
                             aggregationType,
@@ -114,18 +121,9 @@ public final class FitnessRecordAggregateHelper {
                             mInternalHealthConnectMappings,
                             mAppInfoHelper,
                             mTransactionManager,
-                            request.getStartTime(),
-                            request.getEndTime(),
+                            timeSplits,
                             startDateAccess,
                             request.useLocalTimeFilter());
-
-            if (request.getDuration() != null || request.getPeriod() != null) {
-                aggregateRecordRequest.setGroupBy(
-                        recordHelper.getDurationGroupByColumnName(),
-                        request.getPeriod(),
-                        request.getDuration(),
-                        request.getTimeRangeFilter());
-            }
             mAggregateRecordRequests.add(aggregateRecordRequest);
         }
 

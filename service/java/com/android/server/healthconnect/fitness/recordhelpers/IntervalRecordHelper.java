@@ -123,11 +123,6 @@ public abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>>
     }
 
     @Override
-    public final String getDurationGroupByColumnName() {
-        return START_TIME_COLUMN_NAME;
-    }
-
-    @Override
     public final String getPeriodGroupByColumnName() {
         return LOCAL_DATE_COLUMN_NAME;
     }

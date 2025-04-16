@@ -48,6 +48,7 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
+import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
@@ -116,6 +117,13 @@ public abstract class HealthConnectInjector {
      * Getter for {@link MigrationStateManager} instance initialised by the Health Connect Injector.
      */
     public abstract MigrationStateManager getMigrationStateManager();
+
+    /**
+     * Getter for {@link OnboardingStateManager} instance initialised by the Health Connect
+     * Injector.
+     */
+    @Nullable
+    public abstract OnboardingStateManager getOnboardingStateManager();
 
     /** Getter for {@link DeviceInfoHelper} instance initialised by the Health Connect Injector. */
     public abstract DeviceInfoHelper getDeviceInfoHelper();

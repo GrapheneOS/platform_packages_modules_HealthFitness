@@ -23,12 +23,12 @@ import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
+import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.ReadMedicalResourcesRequestParcel;
-import android.health.connect.aidl.IMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
 import android.health.connect.aidl.IMedicalResourceTypeInfosCallback;
 import android.health.connect.aidl.IMigrationCallback;
@@ -449,19 +449,6 @@ interface IHealthConnectService {
             in IEmptyResponseCallback callback);
 
     /**
-     * Upserts {@link MedicalResource}s in HealthConnect based on a list of {@link
-     * UpsertMedicalResourceRequest}s.
-     *
-     * @param attributionSource attribution source for the data.
-     * @param requests A list of upsert requests.
-     * @param callback Callback to receive result of performing this operation.
-     */
-    void upsertMedicalResources(
-        in AttributionSource attributionSource,
-        in List<UpsertMedicalResourceRequest> requests,
-        in IMedicalResourcesResponseCallback callback);
-
-    /**
      * Upserts {@link MedicalResource}s in HealthConnect based on a {@link
      * UpsertMedicalResourceRequestsParcel}.
      *
@@ -568,4 +555,16 @@ interface IHealthConnectService {
      * @param callback Callback to receive result of performing this operation.
      */
      void restoreChanges(in List<RestoreChange> changes, in IEmptyResponseCallback callback);
+
+
+    /**
+     * Asynchronously returns the current onboarding state of the Health Connect user.
+     *
+     * <p>See also {@link HealthConnectOnboardingState} object describing the HealthConnect state.
+     *
+     * @param callback The callback which will receive the current {@link HealthConnectOnboardingState}.
+     *
+     * @hide
+     */
+    void getHealthConnectOnboardingState(in IGetHealthConnectOnboardingStateCallback callback);
 }

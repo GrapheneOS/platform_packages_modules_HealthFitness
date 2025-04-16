@@ -63,6 +63,7 @@ import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
+import com.android.server.healthconnect.fitness.aggregation.TimeSplits;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -133,8 +134,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             InternalHealthConnectMappings internalHealthConnectMappings,
             AppInfoHelper appInfoHelper,
             TransactionManager transactionManager,
-            long startTime,
-            long endTime,
+            TimeSplits timeSplits,
             long startDateAccess,
             boolean useLocalTime) {
         AggregateParams params = getAggregateParams(aggregationType);
@@ -189,27 +189,29 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 getFilterByStartAccessDateWhereClauses(
                         appInfoHelper.getAppInfoId(callingPackage), startDateAccess));
         // data start time < filter end time
-        whereClauses.addWhereLessThanClause(startTimeColumnName, endTime);
+        whereClauses.addWhereLessThanClause(startTimeColumnName, timeSplits.getEndTime());
         if (endTimeColumnName != null) {
             // for IntervalRecord, filters by overlapping
             // data end time >= filter start time
-            whereClauses.addWhereGreaterThanOrEqualClause(endTimeColumnName, startTime);
+            whereClauses.addWhereGreaterThanOrEqualClause(
+                    endTimeColumnName, timeSplits.getStartTime());
         } else {
             // for InstantRecord, filters by whether time falls into [startTime, endTime)
-            whereClauses.addWhereGreaterThanOrEqualClause(startTimeColumnName, startTime);
+            whereClauses.addWhereGreaterThanOrEqualClause(
+                    startTimeColumnName, timeSplits.getStartTime());
         }
 
         return new AggregateRecordRequest(
-                        params,
-                        aggregationType,
-                        this,
-                        whereClauses,
-                        healthDataCategoryPriorityHelper,
-                        internalHealthConnectMappings,
-                        appInfoHelper,
-                        transactionManager,
-                        useLocalTime)
-                .setTimeFilter(startTime, endTime);
+                params,
+                aggregationType,
+                this,
+                whereClauses,
+                healthDataCategoryPriorityHelper,
+                internalHealthConnectMappings,
+                appInfoHelper,
+                transactionManager,
+                useLocalTime,
+                timeSplits);
     }
 
     /**
@@ -713,8 +715,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         .setIdColumnName(UUID_COLUMN_NAME);
         return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
-
-    public abstract String getDurationGroupByColumnName();
 
     public abstract String getPeriodGroupByColumnName();
 
