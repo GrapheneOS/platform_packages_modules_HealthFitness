@@ -23,46 +23,50 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils
 
-class LoadAggregation: ILoadAggregation{
+class LoadAggregation : ILoadAggregation {
 
     override suspend fun invoke(
         input: LoadEntriesInput,
-        healthConnectManager: HealthConnectManager
+        healthConnectManager: HealthConnectManager,
     ): AggregatedData {
 
-        val timeFilter = TimeInstantRangeFilter.Builder()
-            .setStartTime(input.startTime)
-            .setEndTime(input.endTime)
-            .build()
+        val timeFilter =
+            TimeInstantRangeFilter.Builder()
+                .setStartTime(input.startTime)
+                .setEndTime(input.endTime)
+                .build()
 
         val dataType = input.dataType
         when (dataType) {
-
             HealthPermissionType.STEPS -> {
-                val totalSteps = GeneralUtils.aggregate(
-                    manager = healthConnectManager,
-                    metrics = setOf(StepsRecord.STEPS_COUNT_TOTAL),
-                    timeRangeFilter = timeFilter
-                ).get(StepsRecord.STEPS_COUNT_TOTAL)
-                return AggregatedData(totalSteps.toString(),dataType)
+                val totalSteps =
+                    GeneralUtils.aggregate(
+                            manager = healthConnectManager,
+                            metrics = setOf(StepsRecord.STEPS_COUNT_TOTAL),
+                            timeRangeFilter = timeFilter,
+                        )
+                        .get(StepsRecord.STEPS_COUNT_TOTAL)
+                return AggregatedData(totalSteps.toString(), dataType)
             }
 
             HealthPermissionType.DISTANCE -> {
-                val totalDistance = GeneralUtils.aggregate(
-                    manager = healthConnectManager,
-                    metrics = setOf(DistanceRecord.DISTANCE_TOTAL),
-                    timeRangeFilter = timeFilter
-                )
-                return AggregatedData(totalDistance.toString(),dataType)
+                val totalDistance =
+                    GeneralUtils.aggregate(
+                        manager = healthConnectManager,
+                        metrics = setOf(DistanceRecord.DISTANCE_TOTAL),
+                        timeRangeFilter = timeFilter,
+                    )
+                return AggregatedData(totalDistance.toString(), dataType)
             }
 
             HealthPermissionType.TOTAL_CALORIES_BURNED -> {
-                val totalCaloriesBurned = GeneralUtils.aggregate(
-                    manager = healthConnectManager,
-                    metrics = setOf(TotalCaloriesBurnedRecord.ENERGY_TOTAL),
-                    timeRangeFilter = timeFilter
-                )
-                return AggregatedData(totalCaloriesBurned.toString(),dataType)
+                val totalCaloriesBurned =
+                    GeneralUtils.aggregate(
+                        manager = healthConnectManager,
+                        metrics = setOf(TotalCaloriesBurnedRecord.ENERGY_TOTAL),
+                        timeRangeFilter = timeFilter,
+                    )
+                return AggregatedData(totalCaloriesBurned.toString(), dataType)
             }
 
             else -> {
@@ -72,12 +76,11 @@ class LoadAggregation: ILoadAggregation{
     }
 }
 
-data class AggregatedData(
-    val aggregation: String,
-    val dataType: HealthPermissionType
-)
+data class AggregatedData(val aggregation: String, val dataType: HealthPermissionType)
 
-interface ILoadAggregation{
-    suspend fun invoke(input: LoadEntriesInput, healthConnectManager: HealthConnectManager):
-            AggregatedData
+interface ILoadAggregation {
+    suspend fun invoke(
+        input: LoadEntriesInput,
+        healthConnectManager: HealthConnectManager,
+    ): AggregatedData
 }

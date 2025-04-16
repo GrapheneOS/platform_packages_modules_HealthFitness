@@ -28,11 +28,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.mock
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stub
-
 
 @RunWith(AndroidJUnit4::class)
 class DataTypeDetailsScreenTest {
@@ -40,17 +38,13 @@ class DataTypeDetailsScreenTest {
     @get:Rule val composeTestRule = createComposeRule()
 
     @Test
-    fun checkTitle_isDisplayed(){
+    fun checkTitle_isDisplayed() {
         val dataType = Constants.HealthPermissionType.STEPS
         val dataTypeDetails = Screen.DataTypeDetails(dataType = dataType)
 
-        composeTestRule.setContent {
-            DataTypeDetailsScreen(dataTypeDetails = dataTypeDetails)
-        }
+        composeTestRule.setContent { DataTypeDetailsScreen(dataTypeDetails = dataTypeDetails) }
 
-        composeTestRule
-            .onNodeWithText("Steps")
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("Steps").assertIsDisplayed()
     }
 
     @Test
@@ -59,14 +53,12 @@ class DataTypeDetailsScreenTest {
         val mockViewModel = mock<LoadEntriesViewModel>()
         val dataType = Constants.HealthPermissionType.STEPS
         val screenState = MutableStateFlow<DataState>(DataState.Loading)
-        mockViewModel.stub{
-            on { entriesState } doReturn screenState
-        }
+        mockViewModel.stub { on { entriesState } doReturn screenState }
 
         composeTestRule.setContent {
             DataTypeDetailsScreen(
                 dataTypeDetails = Screen.DataTypeDetails(dataType),
-                viewModel = mockViewModel
+                viewModel = mockViewModel,
             )
         }
 
@@ -82,14 +74,12 @@ class DataTypeDetailsScreenTest {
         val dataType = Constants.HealthPermissionType.STEPS
         val errorMessage = "Test exception"
         val screenState = MutableStateFlow<DataState>(DataState.Error(Exception(errorMessage)))
-        mockViewModel.stub{
-            on { entriesState } doReturn screenState
-        }
+        mockViewModel.stub { on { entriesState } doReturn screenState }
 
         composeTestRule.setContent {
             DataTypeDetailsScreen(
                 dataTypeDetails = Screen.DataTypeDetails(dataType),
-                viewModel = mockViewModel
+                viewModel = mockViewModel,
             )
         }
 
@@ -105,14 +95,12 @@ class DataTypeDetailsScreenTest {
         val mockViewModel = mock<LoadEntriesViewModel>()
         val dataType = Constants.HealthPermissionType.STEPS
         val screenState = MutableStateFlow<DataState>(DataState.Success(emptyList()))
-        mockViewModel.stub{
-            on { entriesState } doReturn screenState
-        }
+        mockViewModel.stub { on { entriesState } doReturn screenState }
 
         composeTestRule.setContent {
             DataTypeDetailsScreen(
                 dataTypeDetails = Screen.DataTypeDetails(dataType),
-                viewModel = mockViewModel
+                viewModel = mockViewModel,
             )
         }
 

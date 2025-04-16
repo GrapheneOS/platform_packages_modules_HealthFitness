@@ -28,27 +28,24 @@ import com.android.healthconnect.testapps.toolbox.read.components.DataTypeDetail
 import com.android.healthconnect.testapps.toolbox.read.components.DataTypeListScreen
 
 @Composable
-fun ToolboxNavigation(navController: NavHostController,
-                      scaffoldPadding: PaddingValues){
+fun ToolboxNavigation(navController: NavHostController, scaffoldPadding: PaddingValues) {
 
-    NavHost(navController = navController, startDestination = Screen.DataTypeList){
-
-        composable<Screen.DataTypeDetails>{ backStackEntry ->
-
+    NavHost(navController = navController, startDestination = Screen.DataTypeList) {
+        composable<Screen.DataTypeDetails> { backStackEntry ->
             val dataTypeDetails: Screen.DataTypeDetails = backStackEntry.toRoute()
 
             DataTypeDetailsScreen(
                 modifier = Modifier.padding(scaffoldPadding),
-                dataTypeDetails = dataTypeDetails
+                dataTypeDetails = dataTypeDetails,
             )
         }
 
-        composable<Screen.DataTypeList>{
+        composable<Screen.DataTypeList> {
             DataTypeListScreen(
                 modifier = Modifier.padding(scaffoldPadding),
                 onNavigateToDataTypeDetailsScreen = { dataType ->
                     navController.navigate(route = Screen.DataTypeDetails(dataType = dataType))
-                }
+                },
             )
         }
     }

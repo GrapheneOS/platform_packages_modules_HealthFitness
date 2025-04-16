@@ -18,7 +18,6 @@ package com.android.healthconnect.testapps.toolbox.viewmodels
 import android.app.Application
 import android.content.Context
 import android.health.connect.HealthConnectManager
-import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.Record
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -33,22 +32,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoadEntriesViewModel(
-    private val loadDataEntries: DataEntriesLoader
-) : ViewModel() {
+class LoadEntriesViewModel(private val loadDataEntries: DataEntriesLoader) : ViewModel() {
 
-    private val _entriesState =
-        MutableStateFlow<DataState>(DataState.Loading)
+    private val _entriesState = MutableStateFlow<DataState>(DataState.Loading)
     val entriesState: StateFlow<DataState> = _entriesState
 
-    fun loadEntries(input: LoadEntriesInput){
+    fun loadEntries(input: LoadEntriesInput) {
 
-        viewModelScope.launch{
-            try{
+        viewModelScope.launch {
+            try {
                 val response = loadDataEntries.load(input)
                 _entriesState.value = DataState.Success(response)
-            }
-            catch (e: Exception){
+            } catch (e: Exception) {
                 _entriesState.value = DataState.Error(e)
             }
         }
@@ -58,18 +53,19 @@ class LoadEntriesViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = this[APPLICATION_KEY] as Application
-                val healthConnectManager = application.getSystemService(Context.HEALTHCONNECT_SERVICE) as HealthConnectManager
-                LoadEntriesViewModel(
-                    loadDataEntries = LoadDataEntries(healthConnectManager)
-                )
+                val healthConnectManager =
+                    application.getSystemService(Context.HEALTHCONNECT_SERVICE)
+                        as HealthConnectManager
+                LoadEntriesViewModel(loadDataEntries = LoadDataEntries(healthConnectManager))
             }
         }
     }
 }
 
-sealed class DataState{
-    data class Success(val records: List<Record>): DataState()
-    data class Error(val exception: java.lang.Exception): DataState()
-    data object Loading: DataState()
-}
+sealed class DataState {
+    data class Success(val records: List<Record>) : DataState()
 
+    data class Error(val exception: java.lang.Exception) : DataState()
+
+    data object Loading : DataState()
+}

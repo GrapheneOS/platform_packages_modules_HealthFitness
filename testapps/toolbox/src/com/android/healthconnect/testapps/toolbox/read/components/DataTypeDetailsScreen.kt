@@ -18,7 +18,6 @@ package com.android.healthconnect.testapps.toolbox.read.components
 
 import android.health.connect.datatypes.Record
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,26 +26,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.healthconnect.testapps.toolbox.read.components.states.ErrorMessage
 import com.android.healthconnect.testapps.toolbox.read.components.states.LoadingBar
+import com.android.healthconnect.testapps.toolbox.read.controller.LoadEntriesInput
 import com.android.healthconnect.testapps.toolbox.read.navigation.Screen
 import com.android.healthconnect.testapps.toolbox.viewmodels.DataState
 import com.android.healthconnect.testapps.toolbox.viewmodels.LoadEntriesViewModel
-import com.android.healthconnect.testapps.toolbox.read.controller.LoadEntriesInput
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-
-/**
- * Screen that displays details of selected data type
- */
+/** Screen that displays details of selected data type */
 @Composable
-fun DataTypeDetailsScreen(modifier: Modifier = Modifier,
-                          dataTypeDetails: Screen.DataTypeDetails,
-                          viewModel: LoadEntriesViewModel = viewModel(factory = LoadEntriesViewModel.Factory)
-){
+fun DataTypeDetailsScreen(
+    modifier: Modifier = Modifier,
+    dataTypeDetails: Screen.DataTypeDetails,
+    viewModel: LoadEntriesViewModel = viewModel(factory = LoadEntriesViewModel.Factory),
+) {
     LaunchedEffect(Unit) {
         val startTime = Instant.now().truncatedTo(ChronoUnit.DAYS)
         val endTime = Instant.now()
@@ -54,7 +50,7 @@ fun DataTypeDetailsScreen(modifier: Modifier = Modifier,
             LoadEntriesInput(
                 dataType = dataTypeDetails.dataType,
                 startTime = startTime,
-                endTime = endTime
+                endTime = endTime,
             )
         )
     }
@@ -68,7 +64,7 @@ fun DataTypeDetailsScreen(modifier: Modifier = Modifier,
 
         // Body
         val entriesState = viewModel.entriesState.collectAsState().value
-        return when(entriesState){
+        return when (entriesState) {
             is DataState.Loading -> LoadingBar()
             is DataState.Success -> RecordList(entriesState.records)
             is DataState.Error -> ErrorMessage(entriesState.exception)
@@ -77,10 +73,6 @@ fun DataTypeDetailsScreen(modifier: Modifier = Modifier,
 }
 
 @Composable
-fun RecordList(
-    records: List<Record>
-){
-    Column(modifier = Modifier.testTag("recordList")) {
-
-    }
+fun RecordList(records: List<Record>) {
+    Column(modifier = Modifier.testTag("recordList")) {}
 }

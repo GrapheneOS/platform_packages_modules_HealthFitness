@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package com.android.healthconnect.testapps.toolbox.read.components.states
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -23,18 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
-
 /** Composable used to display error messages */
 @Composable
-fun ErrorMessage(e: Exception){
+fun ErrorMessage(e: Exception) {
     Column(modifier = Modifier.testTag("errorMessage")) {
-        Text(
-            text = "Error",
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            text = e.localizedMessage!!,
-            modifier = Modifier.padding(start = 16.dp)
-        )
+        Text(text = "Error", style = MaterialTheme.typography.titleMedium)
+        Text(text = e.localizedMessage!!, modifier = Modifier.padding(start = 16.dp))
     }
 }

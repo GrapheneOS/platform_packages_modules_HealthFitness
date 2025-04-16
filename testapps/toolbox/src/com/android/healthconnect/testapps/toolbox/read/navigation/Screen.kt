@@ -25,13 +25,10 @@ import kotlinx.serialization.Serializable
  * [DataTypeList]: Displays a list of data types.
  *
  * [DataTypeDetails]: Displays the data for a selected data type.
- *
  */
-sealed class Screen{
+sealed class Screen {
 
-    @Serializable
-    @Suppress("PROVIDED_RUNTIME_TOO_LOW")
-    data object DataTypeList : Screen()
+    @Serializable @Suppress("PROVIDED_RUNTIME_TOO_LOW") data object DataTypeList : Screen()
 
     @Serializable
     @Suppress("PROVIDED_RUNTIME_TOO_LOW")

@@ -26,10 +26,7 @@ import androidx.compose.ui.platform.testTag
 /** Indeterminate Loading bar animation */
 @Composable
 fun LoadingBar(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         LinearProgressIndicator(modifier = Modifier.testTag("loadingBar"))
     }
 }
