@@ -22,6 +22,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.pm.PackageManager.FLAG_PERMISSION_ONE_TIME;
 import static android.health.connect.datatypes.FhirVersion.parseFhirVersion;
 import static android.healthconnect.cts.lib.BundleHelper.INTENT_EXCEPTION;
+import static android.healthconnect.cts.lib.BundleHelper.QUERY_TYPE;
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
@@ -356,7 +357,12 @@ public class TestAppProxy {
         intent.setClassName(mPackageName, TEST_APP_RECEIVER_CLASS_NAME);
         intent.putExtras(bundleToCreateIntent);
 
-        Log.d(TAG, "Sending broadcast: " + intent);
+        Log.d(
+                TAG,
+                "Sending broadcast: "
+                        + intent
+                        + " with QUERY_TYPE="
+                        + intent.getStringExtra(QUERY_TYPE));
         mContext.sendOrderedBroadcast(
                 intent,
                 /* receiverPermission= */ null,
@@ -380,7 +386,12 @@ public class TestAppProxy {
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.putExtras(bundleToCreateIntent);
 
-        Log.d(TAG, "Starting activity: " + intent);
+        Log.d(
+                TAG,
+                "Starting activity: "
+                        + intent
+                        + " with QUERY_TYPE="
+                        + intent.getStringExtra(QUERY_TYPE));
         Instrumentation.ActivityResult activityResult =
                 ProxyActivity.launchActivityForResult(intent);
         Log.d(
