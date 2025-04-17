@@ -209,13 +209,13 @@ final class DatabaseUpgradeHelper {
                 db,
                 recordHelper
                         .getAlterTableRequestForPlannedExerciseFeature()
-                        .getAlterTableAddColumnsCommands());
+                        .getAddColumnsCommands());
         ExerciseSessionRecordHelper exerciseRecordHelper = new ExerciseSessionRecordHelper();
         executeSqlStatements(
                 db,
                 exerciseRecordHelper
                         .getAlterTableRequestForPlannedExerciseFeature()
-                        .getAlterTableAddColumnsCommands());
+                        .getAddColumnsCommands());
     }
 
     private static void applyPersonalHealthRecordDatabaseUpgrade(SQLiteDatabase db) {
@@ -229,7 +229,7 @@ final class DatabaseUpgradeHelper {
         MedicalDataSourceHelper.onInitialUpgrade(db);
         MedicalResourceHelper.onInitialUpgrade(db);
         DatabaseUpgradeHelper.executeSqlStatements(
-                db, getAlterTableRequestForPhrAccessLogs().getAlterTableAddColumnsCommands());
+                db, getAlterTableRequestForPhrAccessLogs().getAddColumnsCommands());
     }
 
     /** Executes a list of SQL statements one after another, in a transaction. */

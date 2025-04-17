@@ -79,7 +79,7 @@ public abstract class InstantRecordHelper<T extends InstantRecordInternal<?>>
     public void applyGeneratedLocalTimeUpgrade(SQLiteDatabase db) {
         try {
             db.execSQL(
-                    AlterTableRequest.getAlterTableCommandToAddGeneratedColumn(
+                    AlterTableRequest.getAddGeneratedColumnsCommands(
                             getMainTableName(),
                             new CreateTableRequest.GeneratedColumnInfo(
                                     LOCAL_DATE_TIME_COLUMN_NAME,

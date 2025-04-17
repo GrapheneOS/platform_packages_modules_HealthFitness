@@ -90,14 +90,14 @@ public abstract class IntervalRecordHelper<T extends IntervalRecordInternal<?>>
     public final void applyGeneratedLocalTimeUpgrade(SQLiteDatabase db) {
         try {
             db.execSQL(
-                    AlterTableRequest.getAlterTableCommandToAddGeneratedColumn(
+                    AlterTableRequest.getAddGeneratedColumnsCommands(
                             getMainTableName(),
                             new CreateTableRequest.GeneratedColumnInfo(
                                     LOCAL_DATE_TIME_START_TIME_COLUMN_NAME,
                                     INTEGER,
                                     START_LOCAL_DATE_TIME_EXPRESSION)));
             db.execSQL(
-                    AlterTableRequest.getAlterTableCommandToAddGeneratedColumn(
+                    AlterTableRequest.getAddGeneratedColumnsCommands(
                             getMainTableName(),
                             new CreateTableRequest.GeneratedColumnInfo(
                                     LOCAL_DATE_TIME_END_TIME_COLUMN_NAME,
