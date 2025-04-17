@@ -18,25 +18,24 @@ package com.android.healthconnect.controller.migration
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.Constants.MODULE_UPDATE_NEEDED_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
+import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
+import com.android.healthconnect.controller.shared.preference.HealthSetupHeaderPreference
 import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.pref
+import com.android.settingslib.widget.FooterPreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint(Fragment::class)
+@AndroidEntryPoint(HealthSetupFragment::class)
 class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
@@ -44,36 +43,39 @@ class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
 
     companion object {
         private const val TAG = "ModuleUpdateRequiredFragment"
+        private const val HEADER = "header_pref"
+        private const val FOOTER = "footer_pref"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val header: HealthSetupHeaderPreference by pref(HEADER)
+    private val footer: FooterPreference by pref(FOOTER)
 
-        val onBackPressedCallback =
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController()
-                        .navigate(R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen)
-                    requireActivity().finish()
-                }
-            }
-        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    init {
+        this.setPageName(PageName.MIGRATION_MODULE_UPDATE_NEEDED_PAGE)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        logger.setPageId(PageName.MIGRATION_MODULE_UPDATE_NEEDED_PAGE)
-        return inflater.inflate(R.layout.migration_module_update_needed, container, false)
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.migration_update_screen, rootKey)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val updateButton = view.findViewById<Button>(R.id.update_button)
-        val cancelButton = view.findViewById<Button>(R.id.cancel_button)
+        header.setSummary(
+            getString(
+                R.string.migration_update_needed_header,
+                getString(R.string.migration_module_update_needed_action),
+            )
+        )
+
+        footer.isVisible = true
+
+        val updateButton: Button = getPrimaryButtonFull()
+        val cancelButton: Button = getSecondaryButton()
+
+        updateButton.text = getString(R.string.update_button)
+        cancelButton.text = getString(R.string.export_cancel_button)
+
         logger.logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
         logger.logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
 
@@ -81,7 +83,9 @@ class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
             logger.logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
             try {
                 navigationUtils.navigate(
-                    this, R.id.action_migrationModuleUpdateNeededFragment_to_systemUpdateActivity)
+                    this,
+                    R.id.action_migrationModuleUpdateNeededFragment_to_systemUpdateActivity,
+                )
             } catch (exception: Exception) {
                 Log.e(TAG, "System update activity does not exist", exception)
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
@@ -100,15 +104,12 @@ class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
                     apply()
                 }
                 navigationUtils.navigate(
-                    this, R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen)
+                    this,
+                    R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen,
+                )
             }
 
             requireActivity().finish()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        logger.logPageImpression()
     }
 }
