@@ -90,7 +90,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
     private PhrCtsTestUtils mUtil;
 
     @Before
-    public void before() throws InterruptedException {
+    public void before() throws Exception {
         // To make sure we don't leave any state behind after running each test.
         revokeAllHealthPermissions(PHR_BACKGROUND_APP_PKG, "to test specific permissions");
         revokeAllHealthPermissions(PHR_FOREGROUND_APP_PKG, "to test specific permissions");

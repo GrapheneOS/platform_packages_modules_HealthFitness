@@ -113,7 +113,7 @@ public class UpsertMedicalResourcesCtsTest {
     private PhrCtsTestUtils mUtil;
 
     @Before
-    public void before() throws InterruptedException {
+    public void before() throws Exception {
         // To make sure we don't leave any state behind after running each test.
         revokeAllHealthPermissions(
                 PHR_BACKGROUND_APP.getPackageName(), "to test specific permissions");
@@ -520,9 +520,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_primitiveTypeExtensionIsNull_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -541,9 +539,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_primitiveTypeIsNull_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -562,9 +558,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_complexTypeIsNull_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -583,9 +577,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_primitiveTypeIsJsonObjectNotPrimitive_throws()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -607,9 +599,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_primitiveTypeExtensionNotJsonObject_throws()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -631,9 +621,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_complexTypeNotJsonObject_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -684,9 +672,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayFieldIsNotArray_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -707,9 +693,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayOfPrimitiveTypeExtensions_succeeds()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -730,9 +714,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayOfPrimitiveTypeExtensionsWithNulls_succeeds()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -753,9 +735,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayOfPrimitiveTypeArrayWithNulls_throws()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -775,9 +755,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayOfComplexTypeNotObject_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();

@@ -99,7 +99,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
     private HealthConnectManager mManager;
 
     @Before
-    public void setUp() throws InterruptedException {
+    public void setUp() throws Exception {
         // To make sure we don't leave any state behind after running each test.
         revokeAllHealthPermissions(
                 PHR_BACKGROUND_APP.getPackageName(), "to test specific permissions");
@@ -540,9 +540,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_READ_MEDICAL_RESOURCES_FIX_QUERY_LIMIT
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_READ_MEDICAL_RESOURCES_FIX_QUERY_LIMIT})
     public void
             testReadMedicalResourcesByRequest_moreTotalResourcesThanPageSize_returnsAllRequested()
                     throws InterruptedException {
