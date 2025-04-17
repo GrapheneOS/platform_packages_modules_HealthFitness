@@ -139,7 +139,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    public void testGetAllDataForBackup_disableD2dFlagDisabled_copiesAllDataIncludingPhr()
+    public void testGetAllDataForBackup_copiesAllDataIncludingPhr()
             throws Exception {
         // Insert a MedicalDataSource and MedicalResource.
         MedicalDataSource dataSource =
@@ -191,10 +191,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
-    })
-    public void testMerge_withPhrMergeEnabled_over5000Resources_copiesAllPhrData()
+    public void testMerge_over5000Resources_copiesAllPhrData()
             throws Exception {
         HealthConnectContext dbContext =
                 HealthConnectContext.create(
@@ -248,10 +245,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
-    })
-    public void testMerge_withPhrMergeEnabled_copiesAllPhrData() throws Exception {
+    public void testMerge_copiesAllPhrData() throws Exception {
         HealthConnectContext dbContext =
                 HealthConnectContext.create(
                         mContext,
@@ -306,10 +300,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
-    })
-    public void testMerge_withPhrMergeEnabled_doesNotCopyMedicalDataSourceDuplicates()
+    public void testMerge_doesNotCopyMedicalDataSourceDuplicates()
             throws Exception {
         // TODO(b/376645901): Improve the test to assert on the exact data in the two databases
         // rather than just the database size.
@@ -371,10 +362,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
-    })
-    public void testMerge_withPhrMergeEnabled_doesNotCopyMedicalResourceDuplicates()
+    public void testMerge_doesNotCopyMedicalResourceDuplicates()
             throws Exception {
         // Insert a dataSource with display name using DATA_SOURCE_SUFFIX and TEST_PACKAGE_NAME.
         MedicalDataSource dataSource =
@@ -432,45 +420,6 @@ public class BackupRestoreWithoutMocksTest {
         assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(2);
         assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
                 .isEqualTo(2);
-    }
-
-    @Test
-    @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT})
-    public void testMerge_withPhrMergeDisabled_doesNotCopyPhrData() throws Exception {
-        HealthConnectContext dbContext =
-                HealthConnectContext.create(
-                        mContext,
-                        mContext.getUser(),
-                        STAGED_DATABASE_DIR,
-                        mEnvironmentDataDirectory.getRoot());
-        createAndGetEmptyFile(dbContext.getDataDir(), STAGED_DATABASE_NAME);
-        HealthConnectDatabase stagedDb = new HealthConnectDatabase(dbContext, STAGED_DATABASE_NAME);
-        mTransactionTestUtils.insertApp(stagedDb, TEST_PACKAGE_NAME);
-        Pair<Long, String> rowIdUuidPair =
-                mPhrTestUtils.insertMedicalDataSource(
-                        stagedDb, dbContext, "ds1", TEST_PACKAGE_NAME, INSTANT_NOW);
-        mPhrTestUtils.insertMedicalResource(
-                stagedDb,
-                PhrDataFactory::createVaccineMedicalResource,
-                rowIdUuidPair.second,
-                rowIdUuidPair.first,
-                INSTANT_NOW_PLUS_TEN_SEC);
-        mPhrTestUtils.insertMedicalResource(
-                stagedDb,
-                PhrDataFactory::createDifferentVaccineMedicalResource,
-                rowIdUuidPair.second,
-                rowIdUuidPair.first,
-                INSTANT_NOW_PLUS_TWENTY_SEC);
-        assertThat(queryNumEntries(stagedDb, "medical_data_source_table")).isEqualTo(1);
-        assertThat(queryNumEntries(stagedDb, "medical_resource_table")).isEqualTo(2);
-        assertThat(queryNumEntries(stagedDb, "medical_resource_indices_table")).isEqualTo(2);
-
-        mBackupRestore.merge();
-
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_data_source_table")).isEqualTo(0);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_table")).isEqualTo(0);
-        assertThat(mTransactionTestUtils.queryNumEntries("medical_resource_indices_table"))
-                .isEqualTo(0);
     }
 
     private static File createAndGetEmptyFile(File dir, String fileName) throws IOException {
