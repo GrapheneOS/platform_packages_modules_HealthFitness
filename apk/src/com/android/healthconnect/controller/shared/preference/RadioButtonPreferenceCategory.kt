@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.fragment.app.FragmentManager
 import androidx.preference.PreferenceCategory
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.settingslib.widget.SelectorWithWidgetPreference
@@ -61,6 +62,7 @@ constructor(
             if (preferenceTitleResId != null) {
                 context.getString(preferenceTitleResId)
             } else {
+                layoutResource = R.layout.widget_empty_preference_category
                 ""
             }
     }

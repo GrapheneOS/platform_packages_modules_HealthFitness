@@ -19,11 +19,6 @@
         android:key="scheduled_export_control_preference"
         android:title="@string/automatic_export_switch_text"
         android:order="0"/>
-    <PreferenceCategory
-        android:key="choose_frequency"
-        android:title="@string/choose_frequency_category"
-        android:order="2">
-    </PreferenceCategory>
     <com.android.settingslib.widget.FooterPreference
         android:key="scheduled_export_settings_footer"
         android:title="@string/scheduled_export_settings_footer_text"
