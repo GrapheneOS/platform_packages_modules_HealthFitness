@@ -24,6 +24,7 @@ import android.text.format.DateUtils
 import com.android.healthconnect.controller.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -192,5 +193,35 @@ class LocalDateTimeFormatter @Inject constructor(@ApplicationContext private val
             time.toEpochMilli(),
             MONTH_FORMAT_FLAGS_WITHOUT_YEAR,
         )
+    }
+
+    /** Formats the given start date, or a date range (start/end dates) (e.g. "Mar 15, 2024"). */
+    fun formatDate(startDate: Instant, endDate: Instant?, timeSource: TimeSource): String {
+        val dateFormatter = LocalDateTimeFormatter(context)
+        return if (endDate != null) {
+            var localEndDate: Instant = endDate
+
+            // If endDate is midnight, add one millisecond so that DateUtils
+            // correctly formats it as a separate date.
+            if (endDate.toLocalTime() == LocalTime.MIDNIGHT) {
+                localEndDate = endDate.plusMillis(1)
+            }
+            // display date range
+            if (
+                startDate.isLessThanOneYearAgo(timeSource) &&
+                    startDate.isLessThanOneYearAgo(timeSource)
+            ) {
+                dateFormatter.formatDateRangeWithoutYear(startDate, localEndDate)
+            } else {
+                dateFormatter.formatDateRangeWithYear(startDate, localEndDate)
+            }
+        } else {
+            // display only one date
+            if (startDate.isLessThanOneYearAgo(timeSource)) {
+                dateFormatter.formatShortDate(startDate)
+            } else {
+                dateFormatter.formatLongDate(startDate)
+            }
+        }
     }
 }
