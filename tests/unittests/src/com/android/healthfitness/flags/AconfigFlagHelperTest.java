@@ -16,8 +16,7 @@
 
 package com.android.healthfitness.flags;
 
-import static com.android.healthfitness.flags.AconfigFlagHelper.DB_VERSION_TO_DB_FLAG_MAP;
-import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersion;
+import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersionToDbFlagMap;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isEcosystemMetricsEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
@@ -46,66 +45,14 @@ public class AconfigFlagHelperTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Test
-    @DisableFlags(Flags.FLAG_ACTIVITY_INTENSITY_DB)
-    public void infraToGuardDbChangesEnabled() {
-        // clear the map to setup a hypothetical test case
-        DB_VERSION_TO_DB_FLAG_MAP.clear();
-        assertThat(getDbVersion()).isEqualTo(LAST_ROLLED_OUT_DB_VERSION);
-    }
-
-    @Test
-    public void readDbVersionToDbFlagMap_expectNoDbVersionSmallerThanBaseline() {
-        // clear the map to setup a hypothetical test case
-        DB_VERSION_TO_DB_FLAG_MAP.clear();
+    public void getDbVersionToDbFlagMap_expectNoDbVersionSmallerThanBaseline() {
         // The baseline is the DB version when go/hc-aconfig-and-db is first introduced, which is
         // LAST_ROLLED_OUT_DB_VERSION.
         int baseline = LAST_ROLLED_OUT_DB_VERSION;
 
-        // Initialize the map, it won't be empty after this method is called.
-        getDbVersion();
-
-        for (int version : DB_VERSION_TO_DB_FLAG_MAP.keySet()) {
+        for (int version : getDbVersionToDbFlagMap().keySet()) {
             assertThat(version).isGreaterThan(baseline);
         }
-    }
-
-    @Test
-    public void testGetDbVersion_true_true_true() {
-        // clear the map to setup a hypothetical test case
-        DB_VERSION_TO_DB_FLAG_MAP.clear();
-        // initialize DB_VERSION_TO_DB_FLAG_MAP, so it won't be empty when getDbVersion() is called,
-        // so the entries created in this test will be used.
-        DB_VERSION_TO_DB_FLAG_MAP.put(1, () -> true);
-        DB_VERSION_TO_DB_FLAG_MAP.put(2, () -> true);
-        DB_VERSION_TO_DB_FLAG_MAP.put(3, () -> true);
-
-        assertThat(getDbVersion()).isEqualTo(3);
-    }
-
-    @Test
-    public void testGetDbVersion_true_false_true() {
-        // clear the map to setup a hypothetical test case
-        DB_VERSION_TO_DB_FLAG_MAP.clear();
-        // initialize DB_VERSION_TO_DB_FLAG_MAP, so it won't be empty when getDbVersion() is called,
-        // so the entries created in this test will be used.
-        DB_VERSION_TO_DB_FLAG_MAP.put(1, () -> true);
-        DB_VERSION_TO_DB_FLAG_MAP.put(2, () -> false);
-        DB_VERSION_TO_DB_FLAG_MAP.put(3, () -> true);
-
-        assertThat(getDbVersion()).isEqualTo(1);
-    }
-
-    @Test
-    public void testGetDbVersion_true_false_false() {
-        // clear the map to setup a hypothetical test case
-        DB_VERSION_TO_DB_FLAG_MAP.clear();
-        // initialize DB_VERSION_TO_DB_FLAG_MAP, so it won't be empty when getDbVersion() is called,
-        // so the entries created in this test will be used.
-        DB_VERSION_TO_DB_FLAG_MAP.put(1, () -> true);
-        DB_VERSION_TO_DB_FLAG_MAP.put(2, () -> false);
-        DB_VERSION_TO_DB_FLAG_MAP.put(3, () -> false);
-
-        assertThat(getDbVersion()).isEqualTo(1);
     }
 
     @Test
@@ -120,7 +67,7 @@ public class AconfigFlagHelperTest {
         // - DB_VERSION_TO_DB_FLAG_MAP contains a single entry of 15 => false
         // Now, if a version X = 16 is added to DatabaseVersions.java, and X is assigned to
         // LAST_ROLLED_OUT_DB_VERSION, then this test would fail.
-        for (Map.Entry<Integer, BooleanSupplier> entry : DB_VERSION_TO_DB_FLAG_MAP.entrySet()) {
+        for (Map.Entry<Integer, BooleanSupplier> entry : getDbVersionToDbFlagMap().entrySet()) {
             int dbVersion = entry.getKey();
             boolean flagValue = entry.getValue().getAsBoolean();
             if (!flagValue) { // flagValue being `false` means the feature hasn't been rolled out
