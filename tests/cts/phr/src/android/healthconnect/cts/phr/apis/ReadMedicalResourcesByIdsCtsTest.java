@@ -115,7 +115,7 @@ public class ReadMedicalResourcesByIdsCtsTest {
     private HealthConnectManager mManager;
 
     @Before
-    public void setUp() throws InterruptedException {
+    public void setUp() throws Exception {
         // To make sure we don't leave any state behind after running each test.
         revokeAllHealthPermissions(
                 PHR_BACKGROUND_APP.getPackageName(), "to test specific permissions");

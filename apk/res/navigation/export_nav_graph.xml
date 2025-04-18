@@ -30,9 +30,6 @@
         android:id="@+id/exportDestinationFragment"
         android:name="com.android.healthconnect.controller.exportimport.ExportDestinationFragment">
         <action
-            android:id="@+id/action_exportDestinationFragment_to_exportFrequencyFragment"
-            app:destination="@id/exportFrequencyFragment" />
-        <action
             android:id="@+id/action_exportDestinationFragment_to_playStore"
             app:destination="@id/play_store_activity" />
     </fragment>

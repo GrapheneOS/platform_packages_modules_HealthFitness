@@ -15,6 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.migration.AppUpdateRequiredFragment
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.AppStoreUtils
 import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -55,12 +56,14 @@ class AppUpdateRequiredFragmentTest {
     fun setup() {
         hiltRule.inject()
         Intents.init()
+        toggleAnimation(false)
     }
 
     @After
     fun tearDown() {
         Intents.release()
         reset(healthConnectLogger)
+        toggleAnimation(true)
     }
 
     @Test
@@ -71,11 +74,10 @@ class AppUpdateRequiredFragmentTest {
         onView(
                 withText(
                     "Health Connect is being integrated with the Android system so " +
-                        "you can access it directly from your settings."
+                        "you can access it directly from your settings.\n\n" +
+                        "Before continuing, update the Health Connect app to the latest version."
                 )
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Before continuing, update the Health Connect app to the latest version."))
             .check(matches(isDisplayed()))
         onView(withText("Cancel")).check(matches(isDisplayed()))
         onView(withText("Update")).check(matches(isDisplayed()))
@@ -114,7 +116,13 @@ class AppUpdateRequiredFragmentTest {
         onView(withText("Update")).perform(click())
 
         // Check we are still on the same page
-        onView(withText("Before continuing, update the Health Connect app to the latest version."))
+        onView(
+                withText(
+                    "Health Connect is being integrated with the Android system so " +
+                        "you can access it directly from your settings.\n\n" +
+                        "Before continuing, update the Health Connect app to the latest version."
+                )
+            )
             .check(matches(isDisplayed()))
 
         verify(navigationUtils, never()).startActivity(any(), any())

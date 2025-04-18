@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,68 +18,56 @@ package com.android.healthconnect.controller.migration
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.Constants.APP_UPDATE_NEEDED_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
+import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
+import com.android.healthconnect.controller.shared.preference.HealthSetupHeaderPreference
 import com.android.healthconnect.controller.utils.AppStoreUtils
 import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.pref
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint(Fragment::class)
+@AndroidEntryPoint(HealthSetupFragment::class)
 class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
     @Inject lateinit var appStoreUtils: AppStoreUtils
     @Inject lateinit var navigationUtils: NavigationUtils
 
-    companion object {
-        private const val TAG = "AppUpdateFragment"
-        const val HC_PACKAGE_NAME_CONFIG_NAME =
-            "android:string/config_healthConnectMigratorPackageName"
+    private val header: HealthSetupHeaderPreference by pref(HEADER)
+
+    init {
+        this.setPageName(PageName.MIGRATION_APP_UPDATE_NEEDED_PAGE)
     }
 
-    private lateinit var onBackPressedCallback: OnBackPressedCallback
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        onBackPressedCallback =
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController()
-                        .navigate(R.id.action_migrationAppUpdateNeededFragment_to_homeScreen)
-                    requireActivity().finish()
-                }
-            }
-        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        logger.setPageId(PageName.MIGRATION_APP_UPDATE_NEEDED_PAGE)
-        return inflater.inflate(R.layout.migration_app_update_needed, container, false)
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.migration_update_screen, rootKey)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val updateButton = view.findViewById<Button>(R.id.update_button)
-        val cancelButton = view.findViewById<Button>(R.id.cancel_button)
+        header.setSummary(
+            getString(
+                R.string.migration_update_needed_header,
+                getString(R.string.migration_app_update_needed_action),
+            )
+        )
+
+        val updateButton: Button = getPrimaryButtonFull()
+        val cancelButton: Button = getSecondaryButton()
+
+        updateButton.text = getString(R.string.update_button)
+        cancelButton.text = getString(R.string.export_cancel_button)
+
         logger.logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
         logger.logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
 
@@ -107,14 +95,18 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
                     apply()
                 }
                 navigationUtils.navigate(
-                    this, R.id.action_migrationAppUpdateNeededFragment_to_homeScreen)
+                    this,
+                    R.id.action_migrationAppUpdateNeededFragment_to_homeScreen,
+                )
             }
             requireActivity().finish()
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        logger.logPageImpression()
+    companion object {
+        private const val TAG = "AppUpdateFragment"
+        const val HC_PACKAGE_NAME_CONFIG_NAME =
+            "android:string/config_healthConnectMigratorPackageName"
+        private const val HEADER = "header_pref"
     }
 }

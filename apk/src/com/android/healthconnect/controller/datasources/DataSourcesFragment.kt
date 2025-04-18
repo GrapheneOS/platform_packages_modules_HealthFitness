@@ -40,6 +40,7 @@ import com.android.healthconnect.controller.shared.preference.buttonPreference
 import com.android.healthconnect.controller.shared.preference.topIntroPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsImpl
+import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.logging.DataSourcesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -49,8 +50,10 @@ import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsSpinnerAdapter
 import com.android.settingslib.widget.SettingsSpinnerPreference
 import com.android.settingslib.widget.SettingsThemeHelper
+import com.android.settingslib.widget.ValuePreference
 import com.android.settingslib.widget.ZeroStatePreference
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Instant
 import javax.inject.Inject
 
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -59,7 +62,9 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
     companion object {
         private const val DATA_TYPE_SPINNER_PREFERENCE_GROUP = "data_type_spinner_group"
         private const val DATA_TOTALS_PREFERENCE_GROUP = "data_totals_group"
-        private const val DATA_TOTALS_PREFERENCE_KEY = "data_totals_preference"
+        private const val DATA_TOTALS_PREFERENCE_LEGACY_KEY = "data_totals_preference_legacy"
+        private const val DATA_TOTALS_PREFERENCE_ONE_KEY = "data_totals_preference_one"
+        private const val DATA_TOTALS_PREFERENCE_TWO_KEY = "data_totals_preference_two"
         private const val APP_SOURCES_PREFERENCE_GROUP = "app_sources_group"
         private const val APP_SOURCES_PREFERENCE_KEY = "app_sources"
         private const val ZERO_STATE_PREFERENCE_KEY = "zero_state"
@@ -238,29 +243,109 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
 
     /** Populates the data totals section with aggregation cards if needed. */
     private fun updateDataTotalsSection(cardInfos: List<AggregationCardInfo>) {
-        dataTotalsPreferenceGroup.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_KEY)
+        dataTotalsPreferenceGroup.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_LEGACY_KEY)
+        dataTotalsPreferenceGroup.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_ONE_KEY)
+        dataTotalsPreferenceGroup.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_TWO_KEY)
         // Do not show data cards when there are no apps on the priority list
         if (!appSourcesPreferenceGroup.isVisible) {
-            return
+            dataTotalsPreferenceGroup.isVisible = false
         }
 
         if (cardInfos.isEmpty()) {
             dataTotalsPreferenceGroup.isVisible = false
         } else {
             dataTotalsPreferenceGroup.isVisible = true
-            cardContainerPreference =
-                CardContainerPreference(requireContext(), timeSource).also {
-                    it.setAggregationCardInfo(cardInfos)
-                    it.key = DATA_TOTALS_PREFERENCE_KEY
-                }
-            dataTotalsPreferenceGroup.addPreference(
-                (cardContainerPreference as CardContainerPreference)
-            )
+            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+                addValuePreferences(cardInfos)
+            } else {
+                addLegacyCardContainer(cardInfos)
+            }
         }
+    }
+
+    private fun addValuePreferences(cardInfos: List<AggregationCardInfo>) {
+        if (cardInfos.isEmpty()) {
+            return
+        }
+        logger.logImpression(DataSourcesElement.DATA_TOTALS_CARD)
+        addValuePreference(cardInfos.getOrNull(0), DATA_TOTALS_PREFERENCE_ONE_KEY)
+        addValuePreference(cardInfos.getOrNull(1), DATA_TOTALS_PREFERENCE_TWO_KEY)
+    }
+
+    private fun addValuePreference(cardInfo: AggregationCardInfo?, key: String) {
+        if (cardInfo == null) {
+            return
+        }
+        dataTotalsPreferenceGroup.addPreference(
+            ValuePreference(requireContext()).also {
+                it.key = key
+                it.title = cardInfo.aggregation.aggregation
+                it.summary = formatDateText(cardInfo.startDate, cardInfo.endDate)
+                it.isSelectable = false
+            }
+        )
+    }
+
+    private fun addLegacyCardContainer(cardInfos: List<AggregationCardInfo>) {
+        cardContainerPreference =
+            CardContainerPreference(requireContext(), timeSource).also {
+                it.setAggregationCardInfo(cardInfos)
+                it.key = DATA_TOTALS_PREFERENCE_LEGACY_KEY
+            }
+        dataTotalsPreferenceGroup.addPreference(
+            (cardContainerPreference as CardContainerPreference)
+        )
     }
 
     /** Updates the aggregation cards after a priority list change. */
     private fun updateAggregations(cardInfos: List<AggregationCardInfo>, isLoading: Boolean) {
+        if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
+            updateValuePreferenceAggregations(isLoading, cardInfos)
+        } else {
+            updateLegacyAggregations(isLoading, cardInfos)
+        }
+    }
+
+    private fun updateValuePreferenceAggregations(
+        isLoading: Boolean,
+        cardInfos: List<AggregationCardInfo>,
+    ) {
+        if (isLoading) {
+            updateValuePreferenceToLoading(DATA_TOTALS_PREFERENCE_ONE_KEY)
+            updateValuePreferenceToLoading(DATA_TOTALS_PREFERENCE_TWO_KEY)
+        } else {
+            if (cardInfos.isEmpty()) {
+                dataTotalsPreferenceGroup.isVisible = false
+            } else {
+                dataTotalsPreferenceGroup.isVisible = true
+                updateValuePreference(DATA_TOTALS_PREFERENCE_ONE_KEY, cardInfos.getOrNull(0))
+                updateValuePreference(DATA_TOTALS_PREFERENCE_TWO_KEY, cardInfos.getOrNull(1))
+            }
+        }
+    }
+
+    private fun updateValuePreference(key: String, cardInfo: AggregationCardInfo?) {
+        val preference = dataTotalsPreferenceGroup.findPreference<ValuePreference>(key)
+        preference?.also {
+            if (cardInfo == null) {
+                it.isVisible = false
+            } else {
+                it.isVisible = true
+                it.title = cardInfo.aggregation.aggregation
+                it.summary = formatDateText(cardInfo.startDate, cardInfo.endDate)
+            }
+        }
+    }
+
+    private fun updateValuePreferenceToLoading(key: String) {
+        val preference = dataTotalsPreferenceGroup.findPreference<ValuePreference>(key)
+        preference?.also {
+            it.title = " "
+            it.summary = getString(R.string.loading)
+        }
+    }
+
+    private fun updateLegacyAggregations(isLoading: Boolean, cardInfos: List<AggregationCardInfo>) {
         if (isLoading) {
             cardContainerPreference?.setLoading(true)
         } else {
@@ -304,7 +389,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
     private fun removeNonEmptyState() {
         preferenceScreen.removePreferenceRecursively(APP_SOURCES_PREFERENCE_KEY)
         preferenceScreen.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
-        preferenceScreen.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_KEY)
+        preferenceScreen.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_LEGACY_KEY)
 
         // We hide the preference group headers and footer instead of removing them
         appSourcesPreferenceGroup.isVisible = false
@@ -368,5 +453,10 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
         dataTypeSpinnerPreferenceGroup.isVisible = true
         dataTypeSpinnerPreferenceGroup.addPreference(spinnerPreference)
         logger.logImpression(DataSourcesElement.DATA_TYPE_SPINNER)
+    }
+
+    private fun formatDateText(startDate: Instant, endDate: Instant?): String {
+        val dateFormatter = LocalDateTimeFormatter(requireContext())
+        return dateFormatter.formatDate(startDate, endDate, timeSource)
     }
 }

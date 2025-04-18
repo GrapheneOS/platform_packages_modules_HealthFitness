@@ -159,7 +159,6 @@ android_library {
     static_libs: [
         "com.google.android.material_material",
         "healthfitness-aconfig-flags-lib",
-        "healthfitness-aconfig-flags-helper",
         "HealthConnectPermissionsApis",
         "HealthConnectMigrationApis",
         "HealthConnectExportApis",
@@ -185,6 +184,7 @@ android_library {
         "SettingsLibActivityEmbedding",
         "SettingsLibSelectorWithWidgetPreference",
         "SettingsLibSettingsSpinner",
+        "SettingsLibValuePreference",
         "SettingsLibZeroStatePreference",
         "androidx.paging_paging-common",
         "androidx.paging_paging-common-ktx",
@@ -192,7 +192,6 @@ android_library {
         "androidx.core_core",
         "hilt_android",
         "healthfitness-ui-statsd",
-        "healthfitness-aconfig-flags-helper",
         "androidx.activity_activity-compose",
         "androidx.compose.foundation_foundation",
         "androidx.compose.runtime_runtime",

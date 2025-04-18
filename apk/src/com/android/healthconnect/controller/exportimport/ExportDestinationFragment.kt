@@ -85,8 +85,7 @@ class ExportDestinationFragment : Hilt_ExportDestinationFragment() {
 
         backButton.setOnClickListener {
             logger.logInteraction(ExportDestinationElement.EXPORT_DESTINATION_BACK_BUTTON)
-            findNavController()
-                .navigate(R.id.action_exportDestinationFragment_to_exportFrequencyFragment)
+            findNavController().navigateUp()
         }
 
         val documentHelper =

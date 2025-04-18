@@ -57,7 +57,7 @@ public final class AlterTableRequest {
     }
 
     /** Returns a list of alter table SQL statements to add new columns */
-    public List<String> getAlterTableAddColumnsCommands() {
+    public List<String> getAddColumnsCommands() {
         List<String> statements = new ArrayList<>();
         for (int i = 0; i < mColumnInfo.size(); i++) {
             StringBuilder statement = new StringBuilder(ALTER_TABLE_COMMAND);
@@ -86,7 +86,8 @@ public final class AlterTableRequest {
         return statements;
     }
 
-    public static String getAlterTableCommandToAddGeneratedColumn(
+    /** Returns a list of alter table SQL statements to add generated columns */
+    public static String getAddGeneratedColumnsCommands(
             String tableName, CreateTableRequest.GeneratedColumnInfo generatedColumnInfo) {
         String request =
                 ALTER_TABLE_COMMAND
