@@ -42,7 +42,7 @@ constructor(
     private val loadEntriesHelper: LoadEntriesHelper,
     private val loadPriorityListUseCase: ILoadPriorityListUseCase,
     private val timeSource: TimeSource,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadLastDateWithPriorityDataUseCase {
 
     /**
@@ -55,16 +55,21 @@ constructor(
         withContext(dispatcher) {
             var latestDateWithData: LocalDate? = null
             try {
-                when (val priorityAppsResult =
-                    loadPriorityListUseCase.invoke(
-                        fromFitnessPermissionType(fitnessPermissionType))) {
+                when (
+                    val priorityAppsResult =
+                        loadPriorityListUseCase.invoke(
+                            fromFitnessPermissionType(fitnessPermissionType)
+                        )
+                ) {
                     is UseCaseResults.Success -> {
                         val priorityApps = priorityAppsResult.data
 
                         priorityApps.forEach { priorityApp ->
                             val lastDateWithDataForApp =
                                 loadLastDateWithDataForApp(
-                                    fitnessPermissionType, priorityApp.packageName)
+                                    fitnessPermissionType,
+                                    priorityApp.packageName,
+                                )
 
                             latestDateWithData =
                                 maxDateOrNull(latestDateWithData, lastDateWithDataForApp)
@@ -91,14 +96,17 @@ constructor(
      */
     private suspend fun loadLastDateWithDataForApp(
         fitnessPermissionType: FitnessPermissionType,
-        packageName: String
+        packageName: String,
     ): LocalDate? {
 
         val recordTypes = HealthPermissionToDatatypeMapper.getDataTypes(fitnessPermissionType)
 
         val datesWithData = suspendCancellableCoroutine { continuation ->
             healthConnectManager.queryActivityDates(
-                recordTypes, Runnable::run, continuation.asOutcomeReceiver())
+                recordTypes,
+                Runnable::run,
+                continuation.asOutcomeReceiver(),
+            )
         }
 
         val today = timeSource.currentLocalDateTime().toLocalDate()
@@ -125,7 +133,8 @@ constructor(
                 packageName = packageName,
                 displayedStartTime = minDate.toInstantAtStartOfDay(),
                 period = DateNavigationPeriod.PERIOD_MONTH,
-                showDataOrigin = false)
+                showDataOrigin = false,
+            )
 
         val entryRecords = loadEntriesHelper.readLastRecord(input)
 

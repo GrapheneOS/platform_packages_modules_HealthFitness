@@ -55,10 +55,11 @@ public final class Vo2MaxRecordHelper extends InstantRecordHelper<Vo2MaxRecordIn
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, Vo2MaxRecordInternal vo2MaxRecord) {
-        vo2MaxRecord.setMeasurementMethod(getCursorInt(cursor, MEASUREMENT_METHOD_COLUMN_NAME));
-        vo2MaxRecord.setVo2MillilitersPerMinuteKilogram(
-                getCursorDouble(cursor, VO2_MILLILITERS_PER_MINUTE_KILOGRAM_COLUMN_NAME));
+    Vo2MaxRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new Vo2MaxRecordInternal()
+                .setMeasurementMethod(getCursorInt(cursor, MEASUREMENT_METHOD_COLUMN_NAME))
+                .setVo2MillilitersPerMinuteKilogram(
+                        getCursorDouble(cursor, VO2_MILLILITERS_PER_MINUTE_KILOGRAM_COLUMN_NAME));
     }
 
     @Override

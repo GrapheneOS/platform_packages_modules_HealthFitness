@@ -81,7 +81,7 @@ public final class PlannedExerciseSessionRecord extends IntervalRecord {
             @NonNull Boolean hasExplicitTime,
             @Nullable CharSequence title,
             @Nullable CharSequence notes,
-            @NonNull @ExerciseSessionType.ExerciseSessionTypes int exerciseType,
+            @ExerciseSessionType.ExerciseSessionTypes int exerciseType,
             @NonNull List<PlannedExerciseBlock> blocks,
             @Nullable String completedExerciseSessionId,
             boolean skipValidation) {
@@ -426,25 +426,29 @@ public final class PlannedExerciseSessionRecord extends IntervalRecord {
     public PlannedExerciseSessionRecordInternal toRecordInternal() {
         PlannedExerciseSessionRecordInternal recordInternal =
                 (PlannedExerciseSessionRecordInternal)
-                        new PlannedExerciseSessionRecordInternal().setMetaData(getMetadata());
+                        new PlannedExerciseSessionRecordInternal(
+                                        getBlocks().stream()
+                                                .map(it -> it.toInternalObject())
+                                                .collect(Collectors.toList()))
+                                .setMetaData(getMetadata());
         recordInternal.setTimeInterval(this);
-        if (getNotes() != null) {
-            recordInternal.setNotes(getNotes().toString());
+        CharSequence notes = getNotes();
+        if (notes != null) {
+            recordInternal.setNotes(notes.toString());
         }
-        if (getTitle() != null) {
-            recordInternal.setTitle(getTitle().toString());
+        CharSequence title = getTitle();
+        if (title != null) {
+            recordInternal.setTitle(title.toString());
         }
         recordInternal.setExerciseType(getExerciseType());
         recordInternal.setHasExplicitTime(hasExplicitTime());
         // Although not possible to set this via public API, internally we may convert from internal
         // representation to external, then back to internal. Thus, we need to preserve this value
         // during a round trip.
-        if (getCompletedExerciseSessionId() != null) {
-            recordInternal.setCompletedExerciseSessionId(
-                    UUID.fromString(getCompletedExerciseSessionId()));
+        String completedSessionId = getCompletedExerciseSessionId();
+        if (completedSessionId != null) {
+            recordInternal.setCompletedExerciseSessionId(UUID.fromString(completedSessionId));
         }
-        recordInternal.setExerciseBlocks(
-                getBlocks().stream().map(it -> it.toInternalObject()).collect(Collectors.toList()));
         return recordInternal;
     }
 }

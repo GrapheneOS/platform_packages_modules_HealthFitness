@@ -30,6 +30,15 @@ import android.os.Parcel;
 public final class WeightRecordInternal extends InstantRecordInternal<WeightRecord> {
     private double mWeight;
 
+    public WeightRecordInternal() {
+        super();
+    }
+
+    public WeightRecordInternal(Parcel parcel) {
+        super(parcel);
+        mWeight = parcel.readDouble();
+    }
+
     public double getWeight() {
         return mWeight;
     }
@@ -47,11 +56,6 @@ public final class WeightRecordInternal extends InstantRecordInternal<WeightReco
         return new WeightRecord.Builder(buildMetaData(), getTime(), Mass.fromGrams(getWeight()))
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mWeight = parcel.readDouble();
     }
 
     @Override

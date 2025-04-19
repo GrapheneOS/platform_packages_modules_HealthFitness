@@ -72,8 +72,8 @@ public final class HydrationRecordHelper extends IntervalRecordHelper<HydrationR
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, HydrationRecordInternal hydrationRecord) {
-        hydrationRecord.setVolume(getCursorDouble(cursor, VOLUME_COLUMN_NAME));
+    HydrationRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new HydrationRecordInternal().setVolume(getCursorDouble(cursor, VOLUME_COLUMN_NAME));
     }
 
     @Override

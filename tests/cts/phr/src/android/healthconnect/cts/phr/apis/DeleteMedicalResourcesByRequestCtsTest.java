@@ -35,7 +35,6 @@ import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflec
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -52,7 +51,6 @@ import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
@@ -107,7 +105,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_migrationInProgress_apiBlocked()
             throws InterruptedException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -124,7 +121,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_writeLimitExceeded_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         DeleteMedicalResourcesRequest deleteRequest =
@@ -149,7 +145,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_badDataSourceIdUsingReflection_doesntDeleteAll()
             throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         // Create the datasource
@@ -184,7 +179,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_badResourceType_throwsAndDoesntDeleteAll()
             throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         MedicalDataSource dataSource =
@@ -213,7 +207,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_emptyRequestNoFilters_throwsAndDoesntDeleteAll()
             throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         MedicalDataSource dataSource =
@@ -241,7 +234,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_nothingPresent_succeeds() throws Exception {
         // Insert a data source to ensure we have an appInfoId.
         mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -257,7 +249,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_resourceTypesMismatch_noDelete()
             throws InterruptedException {
         // Create the datasource
@@ -287,7 +278,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_deleteByType_succeeds()
             throws InterruptedException {
         // Create the datasource
@@ -320,7 +310,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_deleteByTypes_succeeds()
             throws InterruptedException {
         MedicalDataSource dataSource =
@@ -348,7 +337,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_deleteByDataSource_succeeds()
             throws InterruptedException {
         // Create the datasource
@@ -380,7 +368,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_deleteDataSources_succeeds()
             throws InterruptedException {
         // Create the datasource
@@ -417,7 +404,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_deleteByDataSourceAndResourceType_succeeds()
             throws InterruptedException {
         MedicalDataSource dataSource1 =
@@ -464,7 +450,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_managementPermissionCreate2Delete1_succeeds()
             throws InterruptedException {
         // Create the datasource
@@ -501,7 +486,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_managementPermTypeMismatch_noDelete()
             throws InterruptedException {
         MedicalDataSource dataSource =
@@ -530,7 +514,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_managementPerm_canDeleteDataOwnedByAllApps()
             throws Exception {
         grantHealthPermission(PHR_BACKGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
@@ -576,7 +559,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByIds_inForegroundNoPermission_expectError() {
         // App has not been granted any permissions.
         DeleteMedicalResourcesRequest request =
@@ -590,7 +572,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByIds_inForegroundOnlyReadPerm_expectError() {
         grantHealthPermission(PHR_FOREGROUND_APP.getPackageName(), READ_MEDICAL_DATA_VACCINES);
         DeleteMedicalResourcesRequest request =
@@ -604,7 +585,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByIds_inBackgroundNoPermission_expectError() {
         // App has not been granted any permissions.
         DeleteMedicalResourcesRequest request =
@@ -618,7 +598,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_byDataSourceOwnedByDiffApp_noDelete()
             throws Exception {
         grantHealthPermission(PHR_BACKGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
@@ -648,7 +627,6 @@ public class DeleteMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testDeleteMedicalResourcesByRequest_byResourceTypeByDiffApp_noDelete()
             throws Exception {
         grantHealthPermission(PHR_BACKGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);

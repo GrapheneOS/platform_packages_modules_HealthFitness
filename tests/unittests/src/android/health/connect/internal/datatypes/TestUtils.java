@@ -83,7 +83,7 @@ public class TestUtils {
     /** Returns an internal planned exercise session instance. */
     public static PlannedExerciseSessionRecordInternal buildPlannedExerciseSessionInternal() {
         return (PlannedExerciseSessionRecordInternal)
-                new PlannedExerciseSessionRecordInternal()
+                new PlannedExerciseSessionRecordInternal(Collections.emptyList())
                         .setTitle("Sunday easy run")
                         .setNotes("Don't push yourself too hard for this one.")
                         .setExerciseType(ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_RUNNING)

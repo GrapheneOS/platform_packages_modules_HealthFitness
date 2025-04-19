@@ -246,13 +246,12 @@ public class CloudBackupDatabaseHelper {
                         mAppInfoHelper, changeLogsTokenRequest, request, mChangeLogsRequestHelper);
 
         // Only UUIDs for upsert requests are returned.
-        Map<Integer, List<UUID>> recordTypeToInsertedUuids =
-                ChangeLogsHelper.getRecordTypeToInsertedUuids(
-                        changeLogsResponse.getChangeLogsMap());
+        Map<Integer, List<UUID>> recordTypeToUpsertedUuids =
+                changeLogsResponse.getRecordTypeToUpsertedUuids();
 
         List<RecordInternal<?>> internalRecords =
                 mFitnessRecordReadHelper.readRecordsUnrestricted(
-                        mTransactionManager, recordTypeToInsertedUuids);
+                        mTransactionManager, recordTypeToUpsertedUuids);
 
         // Read the exercise sessions that refer to any training plans included in the changes and
         // append them to the list of changes. This is to always have exercise sessions restore
@@ -276,8 +275,7 @@ public class CloudBackupDatabaseHelper {
                 new ArrayList<>(convertRecordsToBackupChange(internalRecords));
 
         // Include UUIDs for all deleted records.
-        List<ChangeLogsResponse.DeletedLog> deletedLogs =
-                ChangeLogsHelper.getDeletedLogs(changeLogsResponse.getChangeLogsMap());
+        List<ChangeLogsResponse.DeletedLog> deletedLogs = changeLogsResponse.getDeletedLogs();
         backupChanges.addAll(convertDeletedLogsToBackupChange(deletedLogs));
 
         String backupChangeTokenRowId =

@@ -48,10 +48,10 @@ public final class CervicalMucusRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, CervicalMucusRecordInternal cervicalMucusRecord) {
-        cervicalMucusRecord.setSensation(getCursorInt(cursor, SENSATION_COLUMN_NAME));
-        cervicalMucusRecord.setAppearance(getCursorInt(cursor, APPEARANCE_COLUMN_NAME));
+    CervicalMucusRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new CervicalMucusRecordInternal()
+                .setSensation(getCursorInt(cursor, SENSATION_COLUMN_NAME))
+                .setAppearance(getCursorInt(cursor, APPEARANCE_COLUMN_NAME));
     }
 
     @Override

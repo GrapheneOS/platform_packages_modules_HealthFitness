@@ -21,7 +21,7 @@ class LoadPriorityEntriesUseCase
 constructor(
     private val loadEntriesHelper: LoadEntriesHelper,
     private val loadPriorityListUseCase: ILoadPriorityListUseCase,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadPriorityEntriesUseCase {
 
     /**
@@ -30,17 +30,21 @@ constructor(
      */
     override suspend fun invoke(
         fitnessPermissionType: FitnessPermissionType,
-        localDate: LocalDate
+        localDate: LocalDate,
     ): UseCaseResults<List<Record>> =
         withContext(dispatcher) {
             try {
                 val localDateInstant = localDate.toInstantAtStartOfDay()
                 val records = mutableListOf<Record>()
 
-                when (val priorityAppsResult =
-                    loadPriorityListUseCase.invoke(
-                        HealthDataCategoryExtensions.fromFitnessPermissionType(
-                            fitnessPermissionType))) {
+                when (
+                    val priorityAppsResult =
+                        loadPriorityListUseCase.invoke(
+                            HealthDataCategoryExtensions.fromFitnessPermissionType(
+                                fitnessPermissionType
+                            )
+                        )
+                ) {
                     is UseCaseResults.Success -> {
                         val priorityApps = priorityAppsResult.data
 
@@ -51,7 +55,8 @@ constructor(
                                     packageName = priorityApp.packageName,
                                     displayedStartTime = localDateInstant,
                                     period = DateNavigationPeriod.PERIOD_DAY,
-                                    showDataOrigin = false)
+                                    showDataOrigin = false,
+                                )
                             val entryRecords = loadEntriesHelper.readRecords(input)
 
                             records.addAll(entryRecords)
@@ -64,7 +69,8 @@ constructor(
 
                 // Sorted for testing
                 UseCaseResults.Success(
-                    records.sortedByDescending { loadEntriesHelper.getStartTime(it) })
+                    records.sortedByDescending { loadEntriesHelper.getStartTime(it) }
+                )
             } catch (e: Exception) {
                 UseCaseResults.Failed(e)
             }
@@ -74,6 +80,6 @@ constructor(
 interface ILoadPriorityEntriesUseCase {
     suspend fun invoke(
         fitnessPermissionType: FitnessPermissionType,
-        localDate: LocalDate
+        localDate: LocalDate,
     ): UseCaseResults<List<Record>>
 }

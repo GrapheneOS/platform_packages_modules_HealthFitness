@@ -16,7 +16,7 @@
 package android.health.connect.internal.datatypes;
 
 import static android.health.connect.Constants.DEFAULT_DOUBLE;
-import static android.health.connect.Constants.DEFAULT_INT;
+import static android.health.connect.datatypes.MealType.MEAL_TYPE_UNKNOWN;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -37,7 +37,7 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
     private double mUnsaturatedFat = DEFAULT_DOUBLE;
     private double mPotassium = DEFAULT_DOUBLE;
     private double mThiamin = DEFAULT_DOUBLE;
-    private int mMealType = DEFAULT_INT;
+    @MealType.MealTypes private int mMealType = MEAL_TYPE_UNKNOWN;
     private double mTransFat = DEFAULT_DOUBLE;
     private double mManganese = DEFAULT_DOUBLE;
     private double mEnergyFromFat = DEFAULT_DOUBLE;
@@ -81,6 +81,58 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
     private double mFolicAcid = DEFAULT_DOUBLE;
     private double mSugar = DEFAULT_DOUBLE;
 
+    public NutritionRecordInternal() {
+        super();
+    }
+
+    public NutritionRecordInternal(Parcel parcel) {
+        super(parcel);
+        mUnsaturatedFat = parcel.readDouble();
+        mPotassium = parcel.readDouble();
+        mThiamin = parcel.readDouble();
+        mMealType = parcel.readInt();
+        mTransFat = parcel.readDouble();
+        mManganese = parcel.readDouble();
+        mEnergyFromFat = parcel.readDouble();
+        mCaffeine = parcel.readDouble();
+        mDietaryFiber = parcel.readDouble();
+        mSelenium = parcel.readDouble();
+        mVitaminB6 = parcel.readDouble();
+        mProtein = parcel.readDouble();
+        mChloride = parcel.readDouble();
+        mCholesterol = parcel.readDouble();
+        mCopper = parcel.readDouble();
+        mIodine = parcel.readDouble();
+        mVitaminB12 = parcel.readDouble();
+        mZinc = parcel.readDouble();
+        mRiboflavin = parcel.readDouble();
+        mEnergy = parcel.readDouble();
+        mMolybdenum = parcel.readDouble();
+        mPhosphorus = parcel.readDouble();
+        mChromium = parcel.readDouble();
+        mTotalFat = parcel.readDouble();
+        mCalcium = parcel.readDouble();
+        mVitaminC = parcel.readDouble();
+        mVitaminE = parcel.readDouble();
+        mBiotin = parcel.readDouble();
+        mVitaminD = parcel.readDouble();
+        mNiacin = parcel.readDouble();
+        mMagnesium = parcel.readDouble();
+        mTotalCarbohydrate = parcel.readDouble();
+        mVitaminK = parcel.readDouble();
+        mPolyunsaturatedFat = parcel.readDouble();
+        mSaturatedFat = parcel.readDouble();
+        mSodium = parcel.readDouble();
+        mFolate = parcel.readDouble();
+        mMonounsaturatedFat = parcel.readDouble();
+        mPantothenicAcid = parcel.readDouble();
+        mMealName = parcel.readString();
+        mIron = parcel.readDouble();
+        mVitaminA = parcel.readDouble();
+        mFolicAcid = parcel.readDouble();
+        mSugar = parcel.readDouble();
+    }
+
     public double getUnsaturatedFat() {
         return mUnsaturatedFat;
     }
@@ -121,7 +173,7 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
 
     /** returns this object with the specified mealType */
     @NonNull
-    public NutritionRecordInternal setMealType(int mealType) {
+    public NutritionRecordInternal setMealType(@MealType.MealTypes int mealType) {
         this.mMealType = mealType;
         return this;
     }
@@ -624,54 +676,6 @@ public final class NutritionRecordInternal extends IntervalRecordInternal<Nutrit
             builder.setMealName(mealName);
         }
         return builder.buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mUnsaturatedFat = parcel.readDouble();
-        mPotassium = parcel.readDouble();
-        mThiamin = parcel.readDouble();
-        mMealType = parcel.readInt();
-        mTransFat = parcel.readDouble();
-        mManganese = parcel.readDouble();
-        mEnergyFromFat = parcel.readDouble();
-        mCaffeine = parcel.readDouble();
-        mDietaryFiber = parcel.readDouble();
-        mSelenium = parcel.readDouble();
-        mVitaminB6 = parcel.readDouble();
-        mProtein = parcel.readDouble();
-        mChloride = parcel.readDouble();
-        mCholesterol = parcel.readDouble();
-        mCopper = parcel.readDouble();
-        mIodine = parcel.readDouble();
-        mVitaminB12 = parcel.readDouble();
-        mZinc = parcel.readDouble();
-        mRiboflavin = parcel.readDouble();
-        mEnergy = parcel.readDouble();
-        mMolybdenum = parcel.readDouble();
-        mPhosphorus = parcel.readDouble();
-        mChromium = parcel.readDouble();
-        mTotalFat = parcel.readDouble();
-        mCalcium = parcel.readDouble();
-        mVitaminC = parcel.readDouble();
-        mVitaminE = parcel.readDouble();
-        mBiotin = parcel.readDouble();
-        mVitaminD = parcel.readDouble();
-        mNiacin = parcel.readDouble();
-        mMagnesium = parcel.readDouble();
-        mTotalCarbohydrate = parcel.readDouble();
-        mVitaminK = parcel.readDouble();
-        mPolyunsaturatedFat = parcel.readDouble();
-        mSaturatedFat = parcel.readDouble();
-        mSodium = parcel.readDouble();
-        mFolate = parcel.readDouble();
-        mMonounsaturatedFat = parcel.readDouble();
-        mPantothenicAcid = parcel.readDouble();
-        mMealName = parcel.readString();
-        mIron = parcel.readDouble();
-        mVitaminA = parcel.readDouble();
-        mFolicAcid = parcel.readDouble();
-        mSugar = parcel.readDouble();
     }
 
     @Override

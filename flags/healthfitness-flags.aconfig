@@ -164,30 +164,6 @@ flag {
 }
 
 flag {
-    name: "phr_upsert_fix_parcel_size_calculation"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for fixing the UpsertMedicalResourceRequest parcel size calculation."
-    bug: "379819662"
-    is_fixed_read_only: true
-    is_exported: true
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
-}
-
-flag {
-    name: "phr_upsert_fix_use_shared_memory"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for fixing upsertMedicalResources to use shared memory."
-    bug: "380022133"
-    is_fixed_read_only: true
-    is_exported: true
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
-}
-
-flag {
     name: "phr_read_medical_resources_fix_query_limit"
     namespace: "health_fitness_aconfig"
     description: "Flag for fixing the readMedicalResources query."
@@ -515,6 +491,15 @@ flag {
 }
 
 flag {
+    name: "step_tracking_enabled_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables database changes required for native step tracking within Health Connect"
+    bug: "397419824"
+    is_fixed_read_only: true
+    is_exported: false
+}
+
+flag {
     name: "phr_change_logs"
     namespace: "health_fitness_aconfig"
     description: "Enables PHR support in change logs API"
@@ -530,4 +515,12 @@ flag {
     bug: "362968743"
     is_fixed_read_only: true
     is_exported: true
+}
+
+flag {
+    name: "sample_time_ordering"
+    namespace: "health_fitness_aconfig"
+    description: "Enables forced ordering by time for samples in some records"
+    bug: "411069279"
+    is_fixed_read_only: true
 }

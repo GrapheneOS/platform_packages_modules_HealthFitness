@@ -76,8 +76,7 @@ public class ExerciseSessionInternalTest {
         Parcel parcel = Parcel.obtain();
         session.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        ExerciseSessionRecordInternal restoredSession = new ExerciseSessionRecordInternal();
-        restoredSession.populateUsing(parcel);
+        ExerciseSessionRecordInternal restoredSession = new ExerciseSessionRecordInternal(parcel);
         parcel.recycle();
         return restoredSession;
     }

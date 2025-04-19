@@ -51,8 +51,9 @@ public final class IntermenstrualBleedingRecordHelper
             IntermenstrualBleedingRecordInternal intermenstrualBleedingRecordInternal) {}
 
     @Override
-    protected void populateSpecificRecordValue(
-            Cursor cursor, IntermenstrualBleedingRecordInternal recordInternal) {}
+    protected IntermenstrualBleedingRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new IntermenstrualBleedingRecordInternal();
+    }
 
     @Override
     protected List<Pair<String, String>> getInstantRecordColumnInfo() {

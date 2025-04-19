@@ -20,7 +20,6 @@ import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_CONDITI
 import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
 
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 import static com.android.server.healthconnect.logging.UsageStatsCollector.EXPORT_PERIOD_PREFERENCE_KEY;
 import static com.android.server.healthconnect.logging.UsageStatsCollector.USER_MOST_RECENT_ACCESS_LOG_TIME;
 
@@ -40,8 +39,6 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.UserHandle;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -201,15 +198,8 @@ public class UsageStatsCollectorTest {
     }
 
     @Test
-    @EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
     public void flagEnabled_testConnectedPhrAppsCount() {
         assertThat(mUsageStatsCollector.getGrantedPhrAppsCount()).isEqualTo(1);
-    }
-
-    @Test
-    @DisableFlags({FLAG_PERSONAL_HEALTH_RECORD})
-    public void flagDisabled_testConnectedPhrAppsCount() {
-        assertThat(mUsageStatsCollector.getGrantedPhrAppsCount()).isEqualTo(0);
     }
 
     @Test

@@ -30,6 +30,15 @@ public final class RespiratoryRateRecordInternal
         extends InstantRecordInternal<RespiratoryRateRecord> {
     private double mRate;
 
+    public RespiratoryRateRecordInternal() {
+        super();
+    }
+
+    public RespiratoryRateRecordInternal(Parcel parcel) {
+        super(parcel);
+        mRate = parcel.readDouble();
+    }
+
     public double getRate() {
         return mRate;
     }
@@ -47,11 +56,6 @@ public final class RespiratoryRateRecordInternal
         return new RespiratoryRateRecord.Builder(buildMetaData(), getTime(), getRate())
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mRate = parcel.readDouble();
     }
 
     @Override

@@ -328,12 +328,8 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
     /** @hide */
     @Override
     public CyclingPedalingCadenceRecordInternal toRecordInternal() {
-        CyclingPedalingCadenceRecordInternal recordInternal =
-                (CyclingPedalingCadenceRecordInternal)
-                        new CyclingPedalingCadenceRecordInternal().setMetaData(getMetadata());
         Set<CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample> samples =
                 new HashSet<>(getSamples().size());
-
         for (CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
                 cyclingPedalingCadenceRecordSample : getSamples()) {
             samples.add(
@@ -341,9 +337,11 @@ public final class CyclingPedalingCadenceRecord extends IntervalRecord {
                             cyclingPedalingCadenceRecordSample.getRevolutionsPerMinute(),
                             cyclingPedalingCadenceRecordSample.getTime().toEpochMilli()));
         }
-        recordInternal.setSamples(samples);
-        recordInternal.setTimeInterval(this);
 
+        CyclingPedalingCadenceRecordInternal recordInternal =
+                new CyclingPedalingCadenceRecordInternal(samples);
+        recordInternal.setTimeInterval(this);
+        recordInternal.setMetaData(getMetadata());
         return recordInternal;
     }
 }

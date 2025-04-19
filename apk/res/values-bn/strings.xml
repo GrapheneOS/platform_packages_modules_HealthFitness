@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"<xliff:g id="DATE">%1$s</xliff:g> তারিখের জন্য এক্সপোর্ট করার ক্ষেত্রে কোনও সমস্যা হয়েছে। একটি নতুন শিডিউল করা এক্সপোর্ট সেট-আপ করে আবার চেষ্টা করুন।"</string>
     <string name="next_export_time" msgid="3138247220014510213">"পরবর্তী এক্সপোর্ট: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"পরের এক্সপোর্ট শীঘ্রই শুরু হবে"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"ব্যাক-আপ নিন"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"ব্যাক-আপ নিন ও ফিরিয়ে আনুন"</string>
     <string name="last_export_time" msgid="9205875050823594041">"গতবারের এক্সপোর্ট: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"শেষবার এক্সপোর্ট করা হয়েছে: এখনই"</string>

@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Đã xảy ra vấn đề khi xuất dữ liệu cho ngày <xliff:g id="DATE">%1$s</xliff:g>. Vui lòng thiết lập để lên lịch cho lần xuất dữ liệu mới rồi thử lại."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Lần xuất kế tiếp: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Lần xuất dữ liệu tiếp theo sẽ sớm bắt đầu"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Sao lưu"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Sao lưu và khôi phục"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Lần xuất gần đây nhất: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Lần xuất gần đây nhất: vừa xong"</string>

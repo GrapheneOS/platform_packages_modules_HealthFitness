@@ -33,12 +33,11 @@ import androidx.compose.ui.unit.dp
 import com.android.healthconnect.testapps.toolbox.Constants.HealthDataCategory
 import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
 
-
 @Composable
 fun DataTypeListScreen(
     modifier: Modifier = Modifier,
-    onNavigateToDataTypeDetailsScreen: (HealthPermissionType) -> Unit
-){
+    onNavigateToDataTypeDetailsScreen: (HealthPermissionType) -> Unit,
+) {
 
     val categories = HealthDataCategory.entries
     val categoriesAndDataTypes = mutableListOf<Any>()
@@ -47,24 +46,22 @@ fun DataTypeListScreen(
         categoriesAndDataTypes.addAll(category.healthPermissionTypes)
     }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(all = 8.dp)
-        .verticalScroll(rememberScrollState())){
+    Column(
+        modifier = Modifier.fillMaxSize().padding(all = 8.dp).verticalScroll(rememberScrollState())
+    ) {
+        for (categoryAndDataType in categoriesAndDataTypes) {
 
-        for (categoryAndDataType in categoriesAndDataTypes){
-
-            when(categoryAndDataType){
+            when (categoryAndDataType) {
                 is HealthPermissionType -> {
                     Text(
                         text = stringResource(id = categoryAndDataType.title),
-                        modifier = Modifier
-                            .padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
-                            .testTag("dataType")
-                            .clickable {
-                                onNavigateToDataTypeDetailsScreen(categoryAndDataType)
-                            }
-                            .fillMaxWidth()
+                        modifier =
+                            Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
+                                .testTag("dataType")
+                                .clickable {
+                                    onNavigateToDataTypeDetailsScreen(categoryAndDataType)
+                                }
+                                .fillMaxWidth(),
                     )
                 }
                 is HealthDataCategory -> {
@@ -72,9 +69,7 @@ fun DataTypeListScreen(
                         text = stringResource(id = categoryAndDataType.title),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .padding(top = 8.dp, bottom = 8.dp)
-                            .testTag("category")
+                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp).testTag("category"),
                     )
                 }
             }

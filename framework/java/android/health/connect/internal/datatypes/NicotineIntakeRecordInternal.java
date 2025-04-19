@@ -39,8 +39,12 @@ public class NicotineIntakeRecordInternal extends IntervalRecordInternal<Nicotin
     private int mQuantity;
     private int mNicotineIntakeType;
 
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
+    public NicotineIntakeRecordInternal() {
+        super();
+    }
+
+    public NicotineIntakeRecordInternal(Parcel parcel) {
+        super(parcel);
         mNicotineIntakeGrams = parcel.readDouble();
         mQuantity = parcel.readInt();
         mNicotineIntakeType = parcel.readInt();

@@ -60,8 +60,7 @@ public class PlannedExerciseSessionInternalTest {
         plan.writeToParcel(parcel);
         parcel.setDataPosition(0);
         PlannedExerciseSessionRecordInternal restoredSession =
-                new PlannedExerciseSessionRecordInternal();
-        restoredSession.populateUsing(parcel);
+                new PlannedExerciseSessionRecordInternal(parcel);
         parcel.recycle();
         return restoredSession;
     }

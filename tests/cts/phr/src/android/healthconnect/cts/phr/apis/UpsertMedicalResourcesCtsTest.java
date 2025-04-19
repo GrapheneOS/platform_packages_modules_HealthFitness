@@ -47,14 +47,11 @@ import static android.healthconnect.cts.utils.TestUtils.finishMigrationWithShell
 import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflection;
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
 
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_UPSERT_FIX_USE_SHARED_MEMORY;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -116,7 +113,7 @@ public class UpsertMedicalResourcesCtsTest {
     private PhrCtsTestUtils mUtil;
 
     @Before
-    public void before() throws InterruptedException {
+    public void before() throws Exception {
         // To make sure we don't leave any state behind after running each test.
         revokeAllHealthPermissions(
                 PHR_BACKGROUND_APP.getPackageName(), "to test specific permissions");
@@ -139,7 +136,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_migrationInProgress_apiBlocked()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -157,7 +153,6 @@ public class UpsertMedicalResourcesCtsTest {
     // TODO(b/370731291): Investigate and add tests against rolling memory limit
     // QUOTA_BUCKET_DATA_PUSH_LIMIT_PER_APP_15M and QUOTA_BUCKET_DATA_PUSH_LIMIT_ACROSS_APPS_15M.
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_writeLimitExceeded_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         // Make the maximum number of calls allowed by quota. Minus 1 because of the above call.
@@ -184,7 +179,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_singleRequestSizeLimitExceeded_throws()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -206,10 +200,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION
-    })
     public void testUpsertMedicalResources_underMemoryChunkSizeLimit_succeeds()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -236,10 +226,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION
-    })
     public void testUpsertMedicalResources_memoryChunkSizeLimitExceeded_throws()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -270,10 +256,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION
-    })
     public void testUpsertMedicalResources_insert500kbOfData_succeeds()
             throws InterruptedException {
         TestUtils.setLowerRateLimitsForTesting(false);
@@ -303,11 +285,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_UPSERT_FIX_PARCEL_SIZE_CALCULATION,
-        FLAG_PHR_UPSERT_FIX_USE_SHARED_MEMORY
-    })
     public void testUpsertMedicalResources_insert2mbOfDataTestingSharedMemory_succeeds()
             throws InterruptedException {
         TestUtils.setLowerRateLimitsForTesting(false);
@@ -335,7 +312,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_forOwnDataSource_succeedsAndInserts()
             throws InterruptedException {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -365,7 +341,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_forOwnDataSourceAndExistingData_succeedsAndUpdates()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -408,7 +383,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_validationEnabledUnknownField_throws() throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         String immunizationResource =
@@ -426,7 +400,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_nonPrimitiveFieldWithUnderscore_throws()
             throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -450,7 +423,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_missingRequiredField_throws() throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         String immunizationResource = new ImmunizationBuilder().removeField("vaccineCode").toJson();
@@ -467,7 +439,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_missingRequiredMultiTypeField_throws() throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         String immunizationResource =
@@ -488,7 +459,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_multipleMultiTypeFieldsSet_throws() throws Exception {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         String immunizationResource =
@@ -509,7 +479,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_onlyPrimitiveTypeExtensionPresentForRequired_succeeds()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -531,7 +500,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_resourceWithPrimitiveTypeExtension_succeeds()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -552,10 +520,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_primitiveTypeExtensionIsNull_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -574,10 +539,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_primitiveTypeIsNull_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -596,10 +558,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_complexTypeIsNull_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -618,10 +577,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_primitiveTypeIsJsonObjectNotPrimitive_throws()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -643,10 +599,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_primitiveTypeExtensionNotJsonObject_throws()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -668,10 +621,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_complexTypeNotJsonObject_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -693,7 +643,6 @@ public class UpsertMedicalResourcesCtsTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION
     })
@@ -723,10 +672,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayFieldIsNotArray_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -747,10 +693,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayOfPrimitiveTypeExtensions_succeeds()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -771,10 +714,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayOfPrimitiveTypeExtensionsWithNulls_succeeds()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -795,10 +735,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayOfPrimitiveTypeArrayWithNulls_throws()
             throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -818,10 +755,7 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     public void testUpsertMedicalResources_arrayOfComplexTypeNotObject_throws() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -842,7 +776,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_r4BResourceNewExtensionField_succeeds()
             throws Exception {
         MedicalDataSource dataSource =
@@ -879,7 +812,6 @@ public class UpsertMedicalResourcesCtsTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_EXTENSION_VALIDATION
@@ -923,7 +855,6 @@ public class UpsertMedicalResourcesCtsTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION,
     })
@@ -955,7 +886,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_dataSourceOwnedByOtherApp_throws() throws Exception {
         // Create data source with different package name
         grantHealthPermission(PHR_FOREGROUND_APP_PKG, WRITE_MEDICAL_DATA);
@@ -975,7 +905,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_dataSourceDoesNotExist_throws()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -989,7 +918,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     public void testUpsertMedicalResources_emptyList_returnsEmptyList()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -1000,7 +928,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_invalidDataSourceIdByReflection_throws()
             throws Exception {
         UpsertMedicalResourceRequest request =
@@ -1020,7 +947,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     public void testUpsertMedicalResources_invalidJson_throws() throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         UpsertMedicalResourceRequest upsertRequest =
@@ -1038,7 +964,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_missingResourceId_throws() throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         UpsertMedicalResourceRequest upsertRequest =
@@ -1056,7 +981,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_nullResourceId_throws() throws InterruptedException {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -1074,7 +998,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_nullStringResourceId_succeeds()
             throws InterruptedException {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -1093,7 +1016,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_resourceHasTextNarrativeSet_succeeds()
             throws InterruptedException {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -1111,7 +1033,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_nonStringResourceId_throws()
             throws InterruptedException {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
@@ -1130,7 +1051,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     public void testUpsertMedicalResources_emptyResourceId_throws() throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         UpsertMedicalResourceRequest upsertRequest =
@@ -1146,7 +1066,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     public void testUpsertMedicalResources_missingResourceType_throws()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -1165,7 +1084,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_multipleIdenticalUpsertRequests_throws()
             throws InterruptedException {
         String dataSourceId = mUtil.createDataSource(getCreateMedicalDataSourceRequest()).getId();
@@ -1185,7 +1103,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_identicalUpsertRequestsButDifferentFhirVersion_throws()
             throws InterruptedException {
         String dataSourceId = mUtil.createDataSource(getCreateMedicalDataSourceRequest()).getId();
@@ -1209,7 +1126,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void
             testUpsertMedicalResources_identicalUpsertRequestsButDifferentResourceType_succeeds()
                     throws InterruptedException {
@@ -1239,7 +1155,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_identicalUpsertRequestsButDifferentDataSource_succeeds()
             throws InterruptedException {
         String dataSourceId1 =
@@ -1266,7 +1181,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     public void testUpsertMedicalResources_unsupportedResourceType_throws()
             throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
@@ -1285,7 +1199,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_resourceIncludesContainedResource_throws()
             throws InterruptedException {
         String medicationStatementWithContainedResource =
@@ -1308,7 +1221,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_containedFieldIsNotArray_throws()
             throws InterruptedException, JSONException {
         String medicationStatementWithContainedResource =
@@ -1332,7 +1244,6 @@ public class UpsertMedicalResourcesCtsTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION,
     })
@@ -1356,7 +1267,6 @@ public class UpsertMedicalResourcesCtsTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS,
     })
@@ -1379,7 +1289,6 @@ public class UpsertMedicalResourcesCtsTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
         FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS,
     })
@@ -1401,7 +1310,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     public void testUpsertMedicalResources_unsupportedVersion_throws() throws InterruptedException {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         UpsertMedicalResourceRequest upsertRequest =
@@ -1417,7 +1325,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_hasDataManagementPermission_throws() {
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
 
@@ -1434,7 +1341,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_fhirVersionNotMatchingDataSource_throws()
             throws InterruptedException {
         MedicalDataSource dataSource =
@@ -1458,7 +1364,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_inForegroundNoWritePerms_throws() throws Exception {
         grantHealthPermission(PHR_FOREGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
         MedicalDataSource dataSource =
@@ -1476,7 +1381,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testUpsertMedicalResources_inBackgroundNoWritePerms_throws() throws Exception {
         grantHealthPermission(PHR_BACKGROUND_APP.getPackageName(), WRITE_MEDICAL_DATA);
         MedicalDataSource dataSource =

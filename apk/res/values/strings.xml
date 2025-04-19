@@ -1463,6 +1463,7 @@
     <string name="migration_update_needed_screen_details" description="Detail information shown when migration is pending and an update is needed.">Health&#160;Connect is being integrated with the Android system so you can access it directly from your settings.</string>
     <string name="update_button" description="Text of a button prompting the user to update an app or their phone system [CHAR_LIMIT=40]">Update</string>
     <string name="migration_update_needed_notification_content" description="Content of notification sent when migration is pending and an app or module update is needed.">Start this update so that Health&#160;Connect can continue integrating with your system settings</string>
+    <string name="migration_update_needed_header" description="Description of screen shown when migration is pending an update [CHAR_LIMIT=NONE]">Health&#160;Connect is being integrated with the Android system so you can access it directly from your settings.\n\n<xliff:g example="Before continuing, do this action" id="migration_action">%1$s</xliff:g></string>
     <!--  endregion -->
 
     <!-- region Module Update needed -->

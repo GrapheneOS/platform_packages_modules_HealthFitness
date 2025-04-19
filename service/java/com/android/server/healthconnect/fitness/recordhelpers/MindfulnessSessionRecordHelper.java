@@ -56,11 +56,11 @@ public class MindfulnessSessionRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, MindfulnessSessionRecordInternal recordInternal) {
-        recordInternal.setMindfulnessSessionType(getCursorInt(cursor, TYPE_COLUMN_NAME));
-        recordInternal.setTitle(getCursorString(cursor, TITLE_COLUMN_NAME));
-        recordInternal.setNotes(getCursorString(cursor, NOTES_COLUMN_NAME));
+    MindfulnessSessionRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new MindfulnessSessionRecordInternal()
+                .setMindfulnessSessionType(getCursorInt(cursor, TYPE_COLUMN_NAME))
+                .setTitle(getCursorString(cursor, TITLE_COLUMN_NAME))
+                .setNotes(getCursorString(cursor, NOTES_COLUMN_NAME));
     }
 
     @Override

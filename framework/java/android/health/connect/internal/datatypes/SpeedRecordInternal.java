@@ -26,7 +26,6 @@ import android.os.Parcel;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -39,10 +38,15 @@ import java.util.Set;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
 public class SpeedRecordInternal
         extends SeriesRecordInternal<SpeedRecord, SpeedRecord.SpeedRecordSample> {
-    private Set<SpeedRecordSample> mSpeedRecordSamples = Collections.emptySet();
+    private Set<SpeedRecordSample> mSpeedRecordSamples;
 
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
+    public SpeedRecordInternal(Set<SpeedRecordSample> mSpeedRecordSamples) {
+        super();
+        this.mSpeedRecordSamples = mSpeedRecordSamples;
+    }
+
+    public SpeedRecordInternal(Parcel parcel) {
+        super(parcel);
         int size = parcel.readInt();
         mSpeedRecordSamples = new HashSet<>(size);
         for (int i = 0; i < size; i++) {

@@ -31,6 +31,15 @@ public final class TotalCaloriesBurnedRecordInternal
         extends IntervalRecordInternal<TotalCaloriesBurnedRecord> {
     private double mEnergy;
 
+    public TotalCaloriesBurnedRecordInternal() {
+        super();
+    }
+
+    public TotalCaloriesBurnedRecordInternal(Parcel parcel) {
+        super(parcel);
+        mEnergy = parcel.readDouble();
+    }
+
     public double getEnergy() {
         return mEnergy;
     }
@@ -53,11 +62,6 @@ public final class TotalCaloriesBurnedRecordInternal
                 .setStartZoneOffset(getStartZoneOffset())
                 .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mEnergy = parcel.readDouble();
     }
 
     @Override

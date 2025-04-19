@@ -164,12 +164,7 @@ public final class RecordProtoConverter {
                     InvocationTargetException,
                     InstantiationException,
                     IllegalAccessException {
-        int recordTypeId = getRecordTypeId(recordProto);
-        Class<? extends RecordInternal<?>> recordClass = mDataTypeClassMap.get(recordTypeId);
-        Objects.requireNonNull(recordClass);
-        RecordInternal<?> recordInternal = recordClass.getConstructor().newInstance();
-        populateRecordInternal(recordProto, recordInternal);
-        return recordInternal;
+        return populateRecordInternal(recordProto);
     }
 
     /** Creates a {@link Record} from the {@link RecordInternal} */
@@ -1051,8 +1046,29 @@ public final class RecordProtoConverter {
     }
 
     @SuppressLint("WrongConstant") // Proto doesn't know about the device type & rec method IntDefs
-    private static void populateRecordInternal(
-            Record recordProto, RecordInternal<?> recordInternal) {
+    private RecordInternal<?> populateRecordInternal(Record recordProto)
+            throws NoSuchMethodException,
+                    InvocationTargetException,
+                    InstantiationException,
+                    IllegalAccessException {
+        RecordInternal<?> recordInternal;
+        switch (recordProto.getSubRecordCase()) {
+            case INTERVAL_RECORD ->
+                    recordInternal =
+                            populateIntervalRecordInternal(recordProto.getIntervalRecord());
+            case INSTANT_RECORD -> {
+                int recordTypeId = getRecordTypeId(recordProto);
+                Class<? extends RecordInternal<?>> recordClass =
+                        mDataTypeClassMap.get(recordTypeId);
+                Objects.requireNonNull(recordClass);
+                recordInternal = recordClass.getConstructor().newInstance();
+                populateInstantRecordInternal(
+                        recordProto.getInstantRecord(), (InstantRecordInternal<?>) recordInternal);
+            }
+            default ->
+                    throw new IllegalArgumentException(
+                            "Unknown record type " + recordProto.getSubRecordCase());
+        }
         String uuidString = recordProto.getUuid();
         if (!uuidString.isEmpty()) {
             recordInternal.setUuid(UUID.fromString(uuidString));
@@ -1073,137 +1089,118 @@ public final class RecordProtoConverter {
         }
         recordInternal.setDeviceType(recordProto.getDeviceType());
         recordInternal.setRecordingMethod(recordProto.getRecordingMethod());
-
-        switch (recordProto.getSubRecordCase()) {
-            case INTERVAL_RECORD ->
-                    populateIntervalRecordInternal(
-                            recordProto.getIntervalRecord(),
-                            (IntervalRecordInternal<?>) recordInternal);
-            case INSTANT_RECORD ->
-                    populateInstantRecordInternal(
-                            recordProto.getInstantRecord(),
-                            (InstantRecordInternal<?>) recordInternal);
-            default ->
-                    throw new IllegalArgumentException(
-                            "Unknown record type " + recordProto.getSubRecordCase());
-        }
+        return recordInternal;
     }
 
-    private static void populateIntervalRecordInternal(
-            IntervalRecord intervalRecordProto, IntervalRecordInternal<?> intervalRecordInternal) {
+    private static IntervalRecordInternal<?> populateIntervalRecordInternal(
+            IntervalRecord intervalRecordProto) {
+        IntervalRecordInternal<?> intervalRecordInternal;
+
+        switch (intervalRecordProto.getDataCase()) {
+            case ACTIVE_CALORIES_BURNED ->
+                    intervalRecordInternal =
+                            populateActiveCaloriesBurnedRecordInternal(
+                                    intervalRecordProto.getActiveCaloriesBurned());
+            case ACTIVITY_INTENSITY ->
+                    intervalRecordInternal =
+                            populateActivityIntensityRecordInternal(
+                                    intervalRecordProto.getActivityIntensity());
+            case CYCLING_PEDALING_CADENCE ->
+                    intervalRecordInternal =
+                            populateCyclingPedalingCadenceRecordInternal(
+                                    intervalRecordProto.getCyclingPedalingCadence());
+            case DISTANCE ->
+                    intervalRecordInternal =
+                            populateDistanceRecordInternal(intervalRecordProto.getDistance());
+            case ELEVATION_GAINED ->
+                    intervalRecordInternal =
+                            populateElevationGainedRecordInternal(
+                                    intervalRecordProto.getElevationGained());
+            case EXERCISE_SESSION ->
+                    intervalRecordInternal =
+                            populateExerciseSessionRecordInternal(
+                                    intervalRecordProto.getExerciseSession());
+            case FLOORS_CLIMBED ->
+                    intervalRecordInternal =
+                            populateFloorsClimbedRecordInternal(
+                                    intervalRecordProto.getFloorsClimbed());
+            case HEART_RATE ->
+                    intervalRecordInternal =
+                            populateHeartRateRecordInternal(intervalRecordProto.getHeartRate());
+            case HYDRATION ->
+                    intervalRecordInternal =
+                            populateHydrationRecordInternal(intervalRecordProto.getHydration());
+            case MENSTRUATION_PERIOD -> {
+                intervalRecordInternal = new MenstruationPeriodRecordInternal();
+            }
+            case MINDFULNESS_SESSION ->
+                    intervalRecordInternal =
+                            populateMindfulnessSessionRecordInternal(
+                                    intervalRecordProto.getMindfulnessSession());
+            case NUTRITION ->
+                    intervalRecordInternal =
+                            populateNutritionRecordInternal(intervalRecordProto.getNutrition());
+            case PLANNED_EXERCISE_SESSION ->
+                    intervalRecordInternal =
+                            populatePlannedExerciseSessionRecordInternal(
+                                    intervalRecordProto.getPlannedExerciseSession());
+            case POWER ->
+                    intervalRecordInternal =
+                            populatePowerRecordInternal(intervalRecordProto.getPower());
+            case SKIN_TEMPERATURE ->
+                    intervalRecordInternal =
+                            populateSkinTemperatureRecordInternal(
+                                    intervalRecordProto.getSkinTemperature());
+            case SLEEP_SESSION ->
+                    intervalRecordInternal =
+                            populateSleepSessionRecordInternal(
+                                    intervalRecordProto.getSleepSession());
+            case SPEED ->
+                    intervalRecordInternal =
+                            populateSpeedRecordInternal(intervalRecordProto.getSpeed());
+            case STEPS ->
+                    intervalRecordInternal =
+                            populateStepsRecordInternal(intervalRecordProto.getSteps());
+            case STEPS_CADENCE ->
+                    intervalRecordInternal =
+                            populateStepsCadenceRecordInternal(
+                                    intervalRecordProto.getStepsCadence());
+            case TOTAL_CALORIES_BURNED ->
+                    intervalRecordInternal =
+                            populateTotalCaloriesBurnedRecordInternal(
+                                    intervalRecordProto.getTotalCaloriesBurned());
+            case WHEELCHAIR_PUSHES ->
+                    intervalRecordInternal =
+                            populateWheelchairPushesRecordInternal(
+                                    intervalRecordProto.getWheelchairPushes());
+            default ->
+                    throw new IllegalArgumentException(
+                            "Unknown record type " + intervalRecordProto.getDataCase());
+        }
         intervalRecordInternal
                 .setStartTime(intervalRecordProto.getStartTime())
                 .setStartZoneOffset(intervalRecordProto.getStartZoneOffset())
                 .setEndTime(intervalRecordProto.getEndTime())
                 .setEndZoneOffset(intervalRecordProto.getEndZoneOffset());
-
-        switch (intervalRecordProto.getDataCase()) {
-            case ACTIVE_CALORIES_BURNED ->
-                    populateActiveCaloriesBurnedRecordInternal(
-                            intervalRecordProto.getActiveCaloriesBurned(),
-                            (ActiveCaloriesBurnedRecordInternal) intervalRecordInternal);
-            case ACTIVITY_INTENSITY ->
-                    populateActivityIntensityRecordInternal(
-                            intervalRecordProto.getActivityIntensity(),
-                            (ActivityIntensityRecordInternal) intervalRecordInternal);
-            case CYCLING_PEDALING_CADENCE ->
-                    populateCyclingPedalingCadenceRecordInternal(
-                            intervalRecordProto.getCyclingPedalingCadence(),
-                            (CyclingPedalingCadenceRecordInternal) intervalRecordInternal);
-            case DISTANCE ->
-                    populateDistanceRecordInternal(
-                            intervalRecordProto.getDistance(),
-                            (DistanceRecordInternal) intervalRecordInternal);
-            case ELEVATION_GAINED ->
-                    populateElevationGainedRecordInternal(
-                            intervalRecordProto.getElevationGained(),
-                            (ElevationGainedRecordInternal) intervalRecordInternal);
-            case EXERCISE_SESSION ->
-                    populateExerciseSessionRecordInternal(
-                            intervalRecordProto.getExerciseSession(),
-                            (ExerciseSessionRecordInternal) intervalRecordInternal);
-            case FLOORS_CLIMBED ->
-                    populateFloorsClimbedRecordInternal(
-                            intervalRecordProto.getFloorsClimbed(),
-                            (FloorsClimbedRecordInternal) intervalRecordInternal);
-            case HEART_RATE ->
-                    populateHeartRateRecordInternal(
-                            intervalRecordProto.getHeartRate(),
-                            (HeartRateRecordInternal) intervalRecordInternal);
-            case HYDRATION ->
-                    populateHydrationRecordInternal(
-                            intervalRecordProto.getHydration(),
-                            (HydrationRecordInternal) intervalRecordInternal);
-            case MENSTRUATION_PERIOD -> {
-                // No data to populate.
-            }
-            case MINDFULNESS_SESSION ->
-                    populateMindfulnessSessionRecordInternal(
-                            intervalRecordProto.getMindfulnessSession(),
-                            (MindfulnessSessionRecordInternal) intervalRecordInternal);
-            case NUTRITION ->
-                    populateNutritionRecordInternal(
-                            intervalRecordProto.getNutrition(),
-                            (NutritionRecordInternal) intervalRecordInternal);
-            case PLANNED_EXERCISE_SESSION ->
-                    populatePlannedExerciseSessionRecordInternal(
-                            intervalRecordProto.getPlannedExerciseSession(),
-                            (PlannedExerciseSessionRecordInternal) intervalRecordInternal);
-            case POWER ->
-                    populatePowerRecordInternal(
-                            intervalRecordProto.getPower(),
-                            (PowerRecordInternal) intervalRecordInternal);
-            case SKIN_TEMPERATURE ->
-                    populateSkinTemperatureRecordInternal(
-                            intervalRecordProto.getSkinTemperature(),
-                            (SkinTemperatureRecordInternal) intervalRecordInternal);
-            case SLEEP_SESSION ->
-                    populateSleepSessionRecordInternal(
-                            intervalRecordProto.getSleepSession(),
-                            (SleepSessionRecordInternal) intervalRecordInternal);
-            case SPEED ->
-                    populateSpeedRecordInternal(
-                            intervalRecordProto.getSpeed(),
-                            (SpeedRecordInternal) intervalRecordInternal);
-            case STEPS ->
-                    populateStepsRecordInternal(
-                            intervalRecordProto.getSteps(),
-                            (StepsRecordInternal) intervalRecordInternal);
-            case STEPS_CADENCE ->
-                    populateStepsCadenceRecordInternal(
-                            intervalRecordProto.getStepsCadence(),
-                            (StepsCadenceRecordInternal) intervalRecordInternal);
-            case TOTAL_CALORIES_BURNED ->
-                    populateTotalCaloriesBurnedRecordInternal(
-                            intervalRecordProto.getTotalCaloriesBurned(),
-                            (TotalCaloriesBurnedRecordInternal) intervalRecordInternal);
-            case WHEELCHAIR_PUSHES ->
-                    populateWheelchairPushesRecordInternal(
-                            intervalRecordProto.getWheelchairPushes(),
-                            (WheelchairPushesRecordInternal) intervalRecordInternal);
-            default ->
-                    throw new IllegalArgumentException(
-                            "Unknown record type " + intervalRecordProto.getDataCase());
-        }
+        return intervalRecordInternal;
     }
 
-    private static void populateActiveCaloriesBurnedRecordInternal(
-            ActiveCaloriesBurned activeCaloriesBurnedProto,
-            ActiveCaloriesBurnedRecordInternal activeCaloriesBurnedRecordInternal) {
-        activeCaloriesBurnedRecordInternal.setEnergy(activeCaloriesBurnedProto.getEnergy());
+    private static ActiveCaloriesBurnedRecordInternal populateActiveCaloriesBurnedRecordInternal(
+            ActiveCaloriesBurned activeCaloriesBurnedProto) {
+        return new ActiveCaloriesBurnedRecordInternal()
+                .setEnergy(activeCaloriesBurnedProto.getEnergy());
     }
 
-    private static void populateActivityIntensityRecordInternal(
-            ActivityIntensity activityIntensityProto,
-            ActivityIntensityRecordInternal activityIntensityRecordInternal) {
-        activityIntensityRecordInternal.setActivityIntensityType(
-                activityIntensityProto.getActivityIntensityType());
+    private static ActivityIntensityRecordInternal populateActivityIntensityRecordInternal(
+            ActivityIntensity activityIntensityProto) {
+        return new ActivityIntensityRecordInternal()
+                .setActivityIntensityType(activityIntensityProto.getActivityIntensityType());
     }
 
-    private static void populateCyclingPedalingCadenceRecordInternal(
-            CyclingPedalingCadence cyclingPedalingCadenceProto,
-            CyclingPedalingCadenceRecordInternal cyclingPedalingCadenceRecordInternal) {
-        cyclingPedalingCadenceRecordInternal.setSamples(
+    private static CyclingPedalingCadenceRecordInternal
+            populateCyclingPedalingCadenceRecordInternal(
+                    CyclingPedalingCadence cyclingPedalingCadenceProto) {
+        return new CyclingPedalingCadenceRecordInternal(
                 cyclingPedalingCadenceProto.getSampleList().stream()
                         .map(
                                 sample ->
@@ -1214,20 +1211,20 @@ public final class RecordProtoConverter {
                         .collect(toSet()));
     }
 
-    private static void populateDistanceRecordInternal(
-            Distance distanceProto, DistanceRecordInternal distanceRecordInternal) {
-        distanceRecordInternal.setDistance(distanceProto.getDistance());
+    private static DistanceRecordInternal populateDistanceRecordInternal(Distance distanceProto) {
+        return new DistanceRecordInternal().setDistance(distanceProto.getDistance());
     }
 
-    private static void populateElevationGainedRecordInternal(
-            ElevationGained elevationGainedProto,
-            ElevationGainedRecordInternal elevationGainedRecordInternal) {
-        elevationGainedRecordInternal.setElevation(elevationGainedProto.getElevation());
+    private static ElevationGainedRecordInternal populateElevationGainedRecordInternal(
+            ElevationGained elevationGainedProto) {
+        return new ElevationGainedRecordInternal()
+                .setElevation(elevationGainedProto.getElevation());
     }
 
-    private static void populateExerciseSessionRecordInternal(
-            ExerciseSession exerciseSessionProto,
-            ExerciseSessionRecordInternal exerciseSessionRecordInternal) {
+    private static ExerciseSessionRecordInternal populateExerciseSessionRecordInternal(
+            ExerciseSession exerciseSessionProto) {
+        ExerciseSessionRecordInternal exerciseSessionRecordInternal =
+                new ExerciseSessionRecordInternal();
         if (exerciseSessionProto.hasNotes()) {
             exerciseSessionRecordInternal.setNotes(exerciseSessionProto.getNotes());
         }
@@ -1276,17 +1273,17 @@ public final class RecordProtoConverter {
             exerciseSessionRecordInternal.setPlannedExerciseSessionId(
                     UUID.fromString(exerciseSessionProto.getPlannedExerciseSessionId()));
         }
+        return exerciseSessionRecordInternal;
     }
 
-    private static void populateFloorsClimbedRecordInternal(
-            FloorsClimbed floorsClimbedProto,
-            FloorsClimbedRecordInternal floorsClimbedRecordInternal) {
-        floorsClimbedRecordInternal.setFloors(floorsClimbedProto.getFloors());
+    private static FloorsClimbedRecordInternal populateFloorsClimbedRecordInternal(
+            FloorsClimbed floorsClimbedProto) {
+        return new FloorsClimbedRecordInternal().setFloors(floorsClimbedProto.getFloors());
     }
 
-    private static void populateHeartRateRecordInternal(
-            HeartRate heartRateProto, HeartRateRecordInternal heartRateRecordInternal) {
-        heartRateRecordInternal.setSamples(
+    private static HeartRateRecordInternal populateHeartRateRecordInternal(
+            HeartRate heartRateProto) {
+        return new HeartRateRecordInternal(
                 heartRateProto.getSampleList().stream()
                         .map(
                                 sample ->
@@ -1296,14 +1293,15 @@ public final class RecordProtoConverter {
                         .collect(toSet()));
     }
 
-    private static void populateHydrationRecordInternal(
-            Hydration hydrationProto, HydrationRecordInternal hydrationRecordInternal) {
-        hydrationRecordInternal.setVolume(hydrationProto.getVolume());
+    private static HydrationRecordInternal populateHydrationRecordInternal(
+            Hydration hydrationProto) {
+        return new HydrationRecordInternal().setVolume(hydrationProto.getVolume());
     }
 
-    private static void populateMindfulnessSessionRecordInternal(
-            MindfulnessSession mindfulnessSessionProto,
-            MindfulnessSessionRecordInternal mindfulnessSessionRecordInternal) {
+    private static MindfulnessSessionRecordInternal populateMindfulnessSessionRecordInternal(
+            MindfulnessSession mindfulnessSessionProto) {
+        MindfulnessSessionRecordInternal mindfulnessSessionRecordInternal =
+                new MindfulnessSessionRecordInternal();
         mindfulnessSessionRecordInternal.setMindfulnessSessionType(
                 mindfulnessSessionProto.getMindfulnessSessionType());
         if (mindfulnessSessionProto.hasTitle()) {
@@ -1312,10 +1310,12 @@ public final class RecordProtoConverter {
         if (mindfulnessSessionProto.hasNotes()) {
             mindfulnessSessionRecordInternal.setNotes(mindfulnessSessionProto.getNotes());
         }
+        return mindfulnessSessionRecordInternal;
     }
 
-    private static void populateNutritionRecordInternal(
-            Nutrition nutritionProto, NutritionRecordInternal nutritionRecordInternal) {
+    private static NutritionRecordInternal populateNutritionRecordInternal(
+            Nutrition nutritionProto) {
+        NutritionRecordInternal nutritionRecordInternal = new NutritionRecordInternal();
         nutritionRecordInternal
                 .setUnsaturatedFat(nutritionProto.getUnsaturatedFat())
                 .setPotassium(nutritionProto.getPotassium())
@@ -1364,25 +1364,26 @@ public final class RecordProtoConverter {
         if (nutritionProto.hasMealName()) {
             nutritionRecordInternal.setMealName(nutritionProto.getMealName());
         }
+        return nutritionRecordInternal;
     }
 
-    private static void populatePlannedExerciseSessionRecordInternal(
-            PlannedExerciseSession plannedExerciseSessionProto,
-            PlannedExerciseSessionRecordInternal plannedExerciseSessionRecordInternal) {
+    private static PlannedExerciseSessionRecordInternal
+            populatePlannedExerciseSessionRecordInternal(
+                    PlannedExerciseSession plannedExerciseSessionProto) {
+        PlannedExerciseSessionRecordInternal result =
+                new PlannedExerciseSessionRecordInternal(
+                        plannedExerciseSessionProto.getExerciseBlockList().stream()
+                                .map(RecordProtoConverter::convertToPlannedExerciseBlockInternal)
+                                .toList());
         if (plannedExerciseSessionProto.hasNotes()) {
-            plannedExerciseSessionRecordInternal.setNotes(plannedExerciseSessionProto.getNotes());
+            result.setNotes(plannedExerciseSessionProto.getNotes());
         }
-        plannedExerciseSessionRecordInternal.setExerciseType(
-                plannedExerciseSessionProto.getExerciseType());
+        result.setExerciseType(plannedExerciseSessionProto.getExerciseType());
         if (plannedExerciseSessionProto.hasTitle()) {
-            plannedExerciseSessionRecordInternal.setTitle(plannedExerciseSessionProto.getTitle());
+            result.setTitle(plannedExerciseSessionProto.getTitle());
         }
-        plannedExerciseSessionRecordInternal.setHasExplicitTime(
-                plannedExerciseSessionProto.getHasExplicitTime());
-        plannedExerciseSessionRecordInternal.setExerciseBlocks(
-                plannedExerciseSessionProto.getExerciseBlockList().stream()
-                        .map(RecordProtoConverter::convertToPlannedExerciseBlockInternal)
-                        .toList());
+        result.setHasExplicitTime(plannedExerciseSessionProto.getHasExplicitTime());
+        return result;
     }
 
     private static PlannedExerciseBlockInternal convertToPlannedExerciseBlockInternal(
@@ -1502,11 +1503,10 @@ public final class RecordProtoConverter {
         };
     }
 
-    private static void populatePowerRecordInternal(
+    private static PowerRecordInternal populatePowerRecordInternal(
             com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Power
-                    powerProto,
-            PowerRecordInternal powerRecordInternal) {
-        powerRecordInternal.setSamples(
+                    powerProto) {
+        return new PowerRecordInternal(
                 powerProto.getSampleList().stream()
                         .map(
                                 sample ->
@@ -1515,13 +1515,9 @@ public final class RecordProtoConverter {
                         .collect(toSet()));
     }
 
-    private static void populateSkinTemperatureRecordInternal(
-            SkinTemperature skinTemperatureProto,
-            SkinTemperatureRecordInternal skinTemperatureRecordInternal) {
-        skinTemperatureRecordInternal
-                .setMeasurementLocation(skinTemperatureProto.getMeasurementLocation())
-                .setBaseline(fromCelsius(skinTemperatureProto.getBaseline()))
-                .setSamples(
+    private static SkinTemperatureRecordInternal populateSkinTemperatureRecordInternal(
+            SkinTemperature skinTemperatureProto) {
+        return new SkinTemperatureRecordInternal(
                         skinTemperatureProto.getSampleList().stream()
                                 .map(
                                         sample ->
@@ -1529,12 +1525,15 @@ public final class RecordProtoConverter {
                                                         .SkinTemperatureDeltaSample(
                                                         sample.getTemperatureDeltaInCelsius(),
                                                         sample.getEpochMillis()))
-                                .collect(toSet()));
+                                .collect(toSet()))
+                .setMeasurementLocation(skinTemperatureProto.getMeasurementLocation())
+                .setBaseline(fromCelsius(skinTemperatureProto.getBaseline()));
     }
 
     @SuppressLint("WrongConstant")
-    private static void populateSleepSessionRecordInternal(
-            SleepSession sleepSessionProto, SleepSessionRecordInternal sleepSessionRecordInternal) {
+    private static SleepSessionRecordInternal populateSleepSessionRecordInternal(
+            SleepSession sleepSessionProto) {
+        SleepSessionRecordInternal sleepSessionRecordInternal = new SleepSessionRecordInternal();
         if (sleepSessionProto.hasNotes()) {
             sleepSessionRecordInternal.setNotes(sleepSessionProto.getNotes());
         }
@@ -1552,11 +1551,11 @@ public final class RecordProtoConverter {
                                                     .setStageType(sleepStage.getStageType()))
                             .toList());
         }
+        return sleepSessionRecordInternal;
     }
 
-    private static void populateSpeedRecordInternal(
-            Speed speedProto, SpeedRecordInternal speedRecordInternal) {
-        speedRecordInternal.setSamples(
+    private static SpeedRecordInternal populateSpeedRecordInternal(Speed speedProto) {
+        return new SpeedRecordInternal(
                 speedProto.getSampleList().stream()
                         .map(
                                 sample ->
@@ -1565,20 +1564,19 @@ public final class RecordProtoConverter {
                         .collect(toSet()));
     }
 
-    private static void populateStepsRecordInternal(
-            Steps stepsProto, StepsRecordInternal stepsRecordInternal) {
-        stepsRecordInternal.setCount(stepsProto.getCount());
+    private static StepsRecordInternal populateStepsRecordInternal(Steps stepsProto) {
+        return new StepsRecordInternal().setCount(stepsProto.getCount());
     }
 
-    private static void populateTotalCaloriesBurnedRecordInternal(
-            TotalCaloriesBurned totalCaloriesBurnedProto,
-            TotalCaloriesBurnedRecordInternal totalCaloriesBurnedRecordInternal) {
-        totalCaloriesBurnedRecordInternal.setEnergy(totalCaloriesBurnedProto.getEnergy());
+    private static TotalCaloriesBurnedRecordInternal populateTotalCaloriesBurnedRecordInternal(
+            TotalCaloriesBurned totalCaloriesBurnedProto) {
+        return new TotalCaloriesBurnedRecordInternal()
+                .setEnergy(totalCaloriesBurnedProto.getEnergy());
     }
 
-    private static void populateStepsCadenceRecordInternal(
-            StepsCadence stepsCadenceProto, StepsCadenceRecordInternal stepsCadenceRecordInternal) {
-        stepsCadenceRecordInternal.setSamples(
+    private static StepsCadenceRecordInternal populateStepsCadenceRecordInternal(
+            StepsCadence stepsCadenceProto) {
+        return new StepsCadenceRecordInternal(
                 stepsCadenceProto.getSampleList().stream()
                         .map(
                                 sample ->
@@ -1587,10 +1585,9 @@ public final class RecordProtoConverter {
                         .collect(toSet()));
     }
 
-    private static void populateWheelchairPushesRecordInternal(
-            WheelchairPushes wheelchairPushesProto,
-            WheelchairPushesRecordInternal wheelchairPushesRecordInternal) {
-        wheelchairPushesRecordInternal.setCount(wheelchairPushesProto.getCount());
+    private static WheelchairPushesRecordInternal populateWheelchairPushesRecordInternal(
+            WheelchairPushes wheelchairPushesProto) {
+        return new WheelchairPushesRecordInternal().setCount(wheelchairPushesProto.getCount());
     }
 
     private static void populateInstantRecordInternal(

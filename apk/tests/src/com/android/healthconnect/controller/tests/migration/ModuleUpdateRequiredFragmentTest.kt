@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.ModuleUpdateRequiredFragment
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.toggleAnimation
 import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
@@ -49,12 +50,14 @@ class ModuleUpdateRequiredFragmentTest {
     fun setup() {
         hiltRule.inject()
         Intents.init()
+        toggleAnimation(false)
     }
 
     @After
     fun tearDown() {
         Intents.release()
         reset(healthConnectLogger)
+        toggleAnimation(true)
     }
 
     @Test
@@ -65,11 +68,10 @@ class ModuleUpdateRequiredFragmentTest {
         onView(
                 withText(
                     "Health Connect is being integrated with the Android system so " +
-                        "you can access it directly from your settings."
+                        "you can access it directly from your settings.\n\n" +
+                        "Before continuing, update your phone system."
                 )
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Before continuing, update your phone system."))
             .check(matches(isDisplayed()))
         onView(
                 withText(
@@ -136,11 +138,10 @@ class ModuleUpdateRequiredFragmentTest {
         onView(
                 withText(
                     "Health Connect is being integrated with the Android system so " +
-                        "you can access it directly from your settings."
+                        "you can access it directly from your settings.\n\n" +
+                        "Before continuing, update your phone system."
                 )
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Before continuing, update your phone system."))
             .check(matches(isDisplayed()))
         onView(
                 withText(

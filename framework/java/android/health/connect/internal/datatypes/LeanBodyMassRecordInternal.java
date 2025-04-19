@@ -30,6 +30,15 @@ import android.os.Parcel;
 public final class LeanBodyMassRecordInternal extends InstantRecordInternal<LeanBodyMassRecord> {
     private double mMass;
 
+    public LeanBodyMassRecordInternal() {
+        super();
+    }
+
+    public LeanBodyMassRecordInternal(Parcel parcel) {
+        super(parcel);
+        mMass = parcel.readDouble();
+    }
+
     public double getMass() {
         return mMass;
     }
@@ -47,11 +56,6 @@ public final class LeanBodyMassRecordInternal extends InstantRecordInternal<Lean
         return new LeanBodyMassRecord.Builder(buildMetaData(), getTime(), Mass.fromGrams(getMass()))
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mMass = parcel.readDouble();
     }
 
     @Override

@@ -90,7 +90,7 @@ public class StepsCadenceRecordHelper
 
     /** Populates the {@code record} with values specific to datatype */
     @Override
-    void populateSpecificValues(Cursor seriesTableCursor, StepsCadenceRecordInternal record) {
+    StepsCadenceRecordInternal populateSpecificValues(Cursor seriesTableCursor) {
         HashSet<StepsCadenceRecordInternal.StepsCadenceRecordSample> stepsCadenceRecordSampleSet =
                 new HashSet<>();
         UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
@@ -104,7 +104,7 @@ public class StepsCadenceRecordHelper
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
-        record.setSamples(stepsCadenceRecordSampleSet);
+        return new StepsCadenceRecordInternal(stepsCadenceRecordSampleSet);
     }
 
     @Override

@@ -23,6 +23,7 @@ import android.annotation.Nullable;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.os.Parcel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -57,23 +58,21 @@ public final class InternalExternalRecordConverter {
         return sInternalExternalRecordConverter;
     }
 
-    /** Returns a new instance of {@link RecordInternal} for the provided {@code type }. */
+    /** Returns a new instance of {@link RecordInternal} read from the provided parcel. */
     @NonNull
-    public RecordInternal<?> newInternalRecord(@RecordTypeIdentifier.RecordType int type) {
+    public RecordInternal<?> newInternalRecord(Parcel in) {
+        @RecordTypeIdentifier.RecordType int type = in.readInt();
         Class<? extends RecordInternal<?>> recordClass =
                 mRecordIdToInternalRecordClassMap.get(type);
         Objects.requireNonNull(recordClass);
-        RecordInternal<?> recordInternal;
         try {
-            recordInternal = recordClass.getConstructor().newInstance();
+            return recordClass.getConstructor(Parcel.class).newInstance(in);
         } catch (InstantiationException
                 | IllegalAccessException
                 | InvocationTargetException
                 | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-
-        return recordInternal;
     }
 
     /** Returns a record for {@param record} */

@@ -85,7 +85,6 @@ class DeleteAllDataUseCaseTest {
             )
     }
 
-    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
     @Test
     fun invoke_deleteAllData_callsHealthManager() = runTest {
         doAnswer(prepareAnswer())
@@ -106,28 +105,6 @@ class DeleteAllDataUseCaseTest {
         verify(manager, times(2))
             .deleteMedicalDataSourceWithData(dataSourceIdCaptor.capture(), any(), any())
         assertThat(dataSourceIdCaptor.value).isEqualTo(TEST_MEDICAL_DATA_SOURCE_2.id)
-    }
-
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD)
-    @Test
-    fun invoke_deleteAllData_phrFlagDisabled_callsHealthManager() = runTest {
-        doAnswer(prepareAnswer())
-            .`when`(manager)
-            .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
-        doAnswer(prepareAnswer(listOf(TEST_MEDICAL_DATA_SOURCE, TEST_MEDICAL_DATA_SOURCE_2)))
-            .`when`(manager)
-            .getMedicalDataSources(any(GetMedicalDataSourcesRequest::class.java), any(), any())
-        whenever(healthPermissionReader.getAppsWithMedicalPermissions())
-            .thenReturn(listOf(TEST_MEDICAL_DATA_SOURCE.packageName))
-
-        useCase.invoke()
-
-        verify(manager).deleteRecords(filtersCaptor.capture(), any(), any())
-        assertThat(filtersCaptor.value.timeRangeFilter).isNull()
-        assertThat(filtersCaptor.value.dataOrigins).isEmpty()
-        assertThat(filtersCaptor.value.recordTypes).isEmpty()
-        verify(manager, times(0))
-            .deleteMedicalDataSourceWithData(dataSourceIdCaptor.capture(), any(), any())
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {

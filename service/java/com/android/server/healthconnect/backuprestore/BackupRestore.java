@@ -408,10 +408,6 @@ public final class BackupRestore {
         Map<String, ParcelFileDescriptor> pfdsByFileName =
                 stageRemoteDataRequest.getPfdsByFileName();
 
-        // If PERSONAL_HEALTH_RECORD_DISABLE_D2D is enabled, create a temporary copy of the
-        // HC database and delete all the PHR tables content.
-        // Set the default to the original database path, if the PERSONAL_HEALTH_RECORD_DISABLE_D2D
-        // is enabled, it will be updated to be database copy path.
         File databasePath = mTransactionManager.getDatabasePath();
         HealthConnectContext dbContext =
                 HealthConnectContext.create(

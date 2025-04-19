@@ -26,6 +26,12 @@ import android.health.connect.HealthConnectException;
  * @param <T> the type of object being received,
  */
 public final class HealthConnectReceiver<T> extends TestOutcomeReceiver<T, HealthConnectException> {
+    public HealthConnectReceiver() {}
+
+    /** Use this constructor to set the caller of this receiver. This is for debugging purposes. */
+    public HealthConnectReceiver(String caller) {
+        this.mCaller = caller;
+    }
 
     /**
      * Helper for calling an API method that returns its response via an {@link

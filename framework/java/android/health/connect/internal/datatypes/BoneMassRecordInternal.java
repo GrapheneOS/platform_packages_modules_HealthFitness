@@ -30,6 +30,15 @@ import android.os.Parcel;
 public final class BoneMassRecordInternal extends InstantRecordInternal<BoneMassRecord> {
     private double mMass;
 
+    public BoneMassRecordInternal() {
+        super();
+    }
+
+    public BoneMassRecordInternal(Parcel parcel) {
+        super(parcel);
+        mMass = parcel.readDouble();
+    }
+
     public double getMass() {
         return mMass;
     }
@@ -47,11 +56,6 @@ public final class BoneMassRecordInternal extends InstantRecordInternal<BoneMass
         return new BoneMassRecord.Builder(buildMetaData(), getTime(), Mass.fromGrams(getMass()))
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mMass = parcel.readDouble();
     }
 
     @Override

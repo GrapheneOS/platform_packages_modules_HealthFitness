@@ -60,10 +60,10 @@ public final class HeartRateVariabilityRmssdHelper
     }
 
     @Override
-    protected void populateSpecificRecordValue(
-            Cursor cursor, HeartRateVariabilityRmssdRecordInternal recordInternal) {
-        recordInternal.setHeartRateVariabilityMillis(
-                getCursorDouble(cursor, HEART_RATE_VARIABILITY_RMSSD_RECORD_COLUMN_NAME));
+    protected HeartRateVariabilityRmssdRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new HeartRateVariabilityRmssdRecordInternal()
+                .setHeartRateVariabilityMillis(
+                        getCursorDouble(cursor, HEART_RATE_VARIABILITY_RMSSD_RECORD_COLUMN_NAME));
     }
 
     @Override

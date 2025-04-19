@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.android.healthconnect.controller.shared.preference.HealthSetupHeaderPreference
+        android:order="0"
+        android:key="header_pref"
+        android:title="@string/migration_update_needed_screen_title"
+        android:summary="@string/migration_update_needed_screen_details"
+        android:icon="?attr/healthConnectIcon"/>
+    <com.android.settingslib.widget.FooterPreference
+        android:order="1"
+        android:key="footer_pref"
+        app:isPreferenceVisible="false"
+        android:title="@string/migration_module_update_needed_restart"/>
+
+</androidx.preference.PreferenceScreen>

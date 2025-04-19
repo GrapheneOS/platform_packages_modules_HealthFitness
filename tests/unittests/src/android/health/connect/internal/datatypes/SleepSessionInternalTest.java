@@ -64,8 +64,7 @@ public class SleepSessionInternalTest {
         Parcel parcel = Parcel.obtain();
         session.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        SleepSessionRecordInternal restoredSession = new SleepSessionRecordInternal();
-        restoredSession.populateUsing(parcel);
+        SleepSessionRecordInternal restoredSession = new SleepSessionRecordInternal(parcel);
         parcel.recycle();
         return restoredSession;
     }

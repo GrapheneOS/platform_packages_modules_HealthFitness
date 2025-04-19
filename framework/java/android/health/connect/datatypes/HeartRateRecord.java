@@ -325,17 +325,16 @@ public final class HeartRateRecord extends IntervalRecord {
     /** @hide */
     @Override
     public HeartRateRecordInternal toRecordInternal() {
-        HeartRateRecordInternal recordInternal =
-                (HeartRateRecordInternal) new HeartRateRecordInternal().setMetaData(getMetadata());
         Set<HeartRateRecordInternal.HeartRateSample> samples = new HashSet<>(getSamples().size());
-
         for (HeartRateRecord.HeartRateSample heartRateSample : getSamples()) {
             samples.add(
                     new HeartRateRecordInternal.HeartRateSample(
                             (int) heartRateSample.getBeatsPerMinute(),
                             heartRateSample.getTime().toEpochMilli()));
         }
-        recordInternal.setSamples(samples);
+        HeartRateRecordInternal recordInternal =
+                (HeartRateRecordInternal)
+                        new HeartRateRecordInternal(samples).setMetaData(getMetadata());
         recordInternal.setTimeInterval(this);
 
         return recordInternal;

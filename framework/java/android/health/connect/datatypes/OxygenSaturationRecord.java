@@ -58,6 +58,7 @@ public final class OxygenSaturationRecord extends InstantRecord {
         }
         mPercentage = percentage;
     }
+
     /**
      * @return percentage
      */

@@ -175,8 +175,7 @@ public class ActivityIntensityRecordInternalTest {
         Parcel parcel = Parcel.obtain();
         internalRecord.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        ActivityIntensityRecordInternal decodedRecord = new ActivityIntensityRecordInternal();
-        decodedRecord.populateUsing(parcel);
+        ActivityIntensityRecordInternal decodedRecord = new ActivityIntensityRecordInternal(parcel);
         parcel.recycle();
 
         assertThat(decodedRecord.getActivityIntensityType())
@@ -212,8 +211,7 @@ public class ActivityIntensityRecordInternalTest {
         Parcel parcel = Parcel.obtain();
         internalRecord.writeToParcel(parcel);
         parcel.setDataPosition(0);
-        ActivityIntensityRecordInternal decodedRecord = new ActivityIntensityRecordInternal();
-        decodedRecord.populateUsing(parcel);
+        ActivityIntensityRecordInternal decodedRecord = new ActivityIntensityRecordInternal(parcel);
         parcel.recycle();
 
         assertThat(decodedRecord.getActivityIntensityType())

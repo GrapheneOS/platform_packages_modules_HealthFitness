@@ -47,8 +47,6 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_UN
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getUpsertMedicalResourceRequest;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getUpsertMedicalResourceRequestBuilder;
 
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
@@ -65,7 +63,6 @@ import android.healthconnect.cts.phr.utils.ObservationBuilder.QuantityUnits;
 import android.healthconnect.cts.phr.utils.PatientBuilder;
 import android.healthconnect.cts.phr.utils.PractitionerBuilder;
 import android.healthconnect.cts.phr.utils.ProcedureBuilder;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
@@ -82,7 +79,6 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-@EnableFlags({FLAG_PERSONAL_HEALTH_RECORD})
 @RunWith(TestParameterInjector.class)
 public class MedicalResourceValidatorTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();

@@ -33,6 +33,16 @@ public final class BodyTemperatureRecordInternal
     private int mMeasurementLocation;
     private double mTemperature;
 
+    public BodyTemperatureRecordInternal() {
+        super();
+    }
+
+    public BodyTemperatureRecordInternal(Parcel parcel) {
+        super(parcel);
+        mMeasurementLocation = parcel.readInt();
+        mTemperature = parcel.readDouble();
+    }
+
     @BodyTemperatureMeasurementLocation.BodyTemperatureMeasurementLocations
     public int getMeasurementLocation() {
         return mMeasurementLocation;
@@ -66,12 +76,6 @@ public final class BodyTemperatureRecordInternal
                         Temperature.fromCelsius(getTemperature()))
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mMeasurementLocation = parcel.readInt();
-        mTemperature = parcel.readDouble();
     }
 
     @Override

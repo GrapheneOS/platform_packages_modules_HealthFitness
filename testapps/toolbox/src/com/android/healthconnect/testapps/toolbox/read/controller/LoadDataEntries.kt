@@ -22,19 +22,20 @@ import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils
 import java.time.Instant
 
-class LoadDataEntries(private val healthConnectManager: HealthConnectManager): DataEntriesLoader {
+class LoadDataEntries(private val healthConnectManager: HealthConnectManager) : DataEntriesLoader {
 
     override suspend fun load(input: LoadEntriesInput): List<Record> {
 
-        val timeFilter = TimeInstantRangeFilter.Builder()
-            .setStartTime(input.startTime)
-            .setEndTime(input.endTime)
-            .build()
+        val timeFilter =
+            TimeInstantRangeFilter.Builder()
+                .setStartTime(input.startTime)
+                .setEndTime(input.endTime)
+                .build()
         return GeneralUtils.readRecords(
-            recordType =  input.dataType.recordClass!!.java,
-            timeFilterRange =  timeFilter,
+            recordType = input.dataType.recordClass!!.java,
+            timeFilterRange = timeFilter,
             numberOfRecordsPerBatch = 1000L,
-            manager = healthConnectManager
+            manager = healthConnectManager,
         )
     }
 }
@@ -42,9 +43,9 @@ class LoadDataEntries(private val healthConnectManager: HealthConnectManager): D
 data class LoadEntriesInput(
     val dataType: HealthPermissionType,
     val startTime: Instant,
-    val endTime: Instant
+    val endTime: Instant,
 )
 
-interface DataEntriesLoader{
+interface DataEntriesLoader {
     suspend fun load(input: LoadEntriesInput): List<Record>
 }

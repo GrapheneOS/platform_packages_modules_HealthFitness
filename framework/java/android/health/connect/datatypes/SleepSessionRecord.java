@@ -422,12 +422,14 @@ public final class SleepSessionRecord extends IntervalRecord {
         recordInternal.setSleepStages(
                 getStages().stream().map(Stage::toInternalStage).collect(Collectors.toList()));
 
-        if (getNotes() != null) {
-            recordInternal.setNotes(getNotes().toString());
+        CharSequence notes = getNotes();
+        if (notes != null) {
+            recordInternal.setNotes(notes.toString());
         }
 
-        if (getTitle() != null) {
-            recordInternal.setTitle(getTitle().toString());
+        CharSequence title = getTitle();
+        if (title != null) {
+            recordInternal.setTitle(title.toString());
         }
         return recordInternal;
     }

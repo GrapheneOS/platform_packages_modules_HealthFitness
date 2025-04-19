@@ -34,6 +34,7 @@ import android.content.pm.PackageManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.os.UserManager;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -86,6 +87,7 @@ public class HealthDataCategoryPriorityHelperTest {
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private PackageManager mPackageManager;
+    @Mock private UserManager mUserManager;
 
     private long mAppPackageId;
     private long mAppPackageId2;
@@ -95,21 +97,25 @@ public class HealthDataCategoryPriorityHelperTest {
     private AppInfoHelper mAppInfoHelper;
     private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private HealthConnectThreadScheduler mThreadScheduler;
+    private Context mContext;
 
     @Before
     public void setUp() throws Exception {
-        Context context = spy(InstrumentationRegistry.getInstrumentation().getContext());
+        mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         Context applicationContext = spy(ApplicationProvider.getApplicationContext());
         doReturn(mPackageManager).when(applicationContext).getPackageManager();
-        doReturn(applicationContext).when(context).getApplicationContext();
+        doReturn(applicationContext).when(mContext).getApplicationContext();
+        when(mUserManager.isUserUnlocked(any())).thenReturn(true);
         HealthPermissionsMocker.mockPackageManagerPermissions(mPackageManager);
+
         HealthConnectInjector healthConnectInjector =
-                HealthConnectInjectorImpl.newBuilderForTest(context)
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setPreferenceHelper(mPreferenceHelper)
                         .setPackageInfoUtils(mPackageInfoUtils)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .setUserManager(mUserManager)
                         .build();
 
         TransactionTestUtils transactionTestUtils = new TransactionTestUtils(healthConnectInjector);
@@ -1139,6 +1145,62 @@ public class HealthDataCategoryPriorityHelperTest {
         expectedResult.put(HealthDataCategory.VITALS, Set.of(APP_PACKAGE_NAME, APP_PACKAGE_NAME_3));
         assertThat(mHealthDataCategoryPriorityHelper.getAllContributorApps())
                 .containsExactlyEntriesIn(expectedResult);
+    }
+
+    @Test
+    public void currentUserForegroundUser_userNotUnlocked_doNotRemoveFromPriorityList() {
+        mHealthDataCategoryPriorityHelper.setPriorityOrder(
+                HealthDataCategory.BODY_MEASUREMENTS,
+                List.of(
+                        APP_PACKAGE_NAME,
+                        APP_PACKAGE_NAME_2,
+                        APP_PACKAGE_NAME_3,
+                        APP_PACKAGE_NAME_4));
+        when(mUserManager.isUserUnlocked(mContext.getUser())).thenReturn(false);
+
+        mHealthDataCategoryPriorityHelper.maybeRemoveAppFromPriorityList(
+                APP_PACKAGE_NAME, mContext.getUser());
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.BODY_MEASUREMENTS))
+                .containsExactly(mAppPackageId, mAppPackageId2, mAppPackageId3, mAppPackageId4);
+    }
+
+    @Test
+    public void currentUserForegroundUser_userNotUnlocked_doNotRemoveFromPriorityListForDataType() {
+        mHealthDataCategoryPriorityHelper.setPriorityOrder(
+                HealthDataCategory.BODY_MEASUREMENTS,
+                List.of(
+                        APP_PACKAGE_NAME,
+                        APP_PACKAGE_NAME_2,
+                        APP_PACKAGE_NAME_3,
+                        APP_PACKAGE_NAME_4));
+        when(mUserManager.isUserUnlocked(mContext.getUser())).thenReturn(false);
+
+        mHealthDataCategoryPriorityHelper.maybeRemoveAppFromPriorityList(
+                APP_PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS, mContext.getUser());
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.BODY_MEASUREMENTS))
+                .containsExactly(mAppPackageId, mAppPackageId2, mAppPackageId3, mAppPackageId4);
+    }
+
+    @Test
+    public void currentUserForegroundUser_userNotUnlocked_doNotAddToPriorityListForDataType() {
+        mHealthDataCategoryPriorityHelper.setPriorityOrder(
+                HealthDataCategory.BODY_MEASUREMENTS,
+                List.of(APP_PACKAGE_NAME_2, APP_PACKAGE_NAME_3, APP_PACKAGE_NAME_4));
+        when(mUserManager.isUserUnlocked(mContext.getUser())).thenReturn(false);
+
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                APP_PACKAGE_NAME, HealthDataCategory.BODY_MEASUREMENTS, mContext.getUser());
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.BODY_MEASUREMENTS))
+                .containsExactly(mAppPackageId2, mAppPackageId3, mAppPackageId4);
     }
 
     @Test

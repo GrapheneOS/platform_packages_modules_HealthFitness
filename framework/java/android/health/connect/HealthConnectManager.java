@@ -27,6 +27,7 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
+import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
 import android.Manifest;
@@ -70,6 +71,7 @@ import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
+import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
@@ -78,7 +80,6 @@ import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
 import android.health.connect.aidl.IMedicalResourceTypeInfosCallback;
-import android.health.connect.aidl.IMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IReadRecordsResponseCallback;
@@ -129,7 +130,6 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.Log;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.lang.annotation.Retention;
@@ -2208,41 +2208,23 @@ public class HealthConnectManager {
         }
 
         try {
-            if (Flags.phrUpsertFixUseSharedMemory()) {
-                mService.upsertMedicalResourcesFromRequestsParcel(
-                        mContext.getAttributionSource(),
-                        new UpsertMedicalResourceRequestsParcel(requests),
-                        new IMedicalResourceListParcelResponseCallback.Stub() {
-                            @Override
-                            public void onResult(
-                                    MedicalResourceListParcel medicalResourceListParcel) {
-                                returnResult(
-                                        executor,
-                                        medicalResourceListParcel.getMedicalResources(),
-                                        callback);
-                            }
+            mService.upsertMedicalResourcesFromRequestsParcel(
+                    mContext.getAttributionSource(),
+                    new UpsertMedicalResourceRequestsParcel(requests),
+                    new IMedicalResourceListParcelResponseCallback.Stub() {
+                        @Override
+                        public void onResult(MedicalResourceListParcel medicalResourceListParcel) {
+                            returnResult(
+                                    executor,
+                                    medicalResourceListParcel.getMedicalResources(),
+                                    callback);
+                        }
 
-                            @Override
-                            public void onError(HealthConnectExceptionParcel exception) {
-                                returnError(executor, exception, callback);
-                            }
-                        });
-            } else {
-                mService.upsertMedicalResources(
-                        mContext.getAttributionSource(),
-                        requests,
-                        new IMedicalResourcesResponseCallback.Stub() {
-                            @Override
-                            public void onResult(List<MedicalResource> medicalResources) {
-                                returnResult(executor, medicalResources, callback);
-                            }
-
-                            @Override
-                            public void onError(HealthConnectExceptionParcel exception) {
-                                returnError(executor, exception, callback);
-                            }
-                        });
-            }
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3064,6 +3046,48 @@ public class HealthConnectManager {
                         @Override
                         public void onError(HealthConnectExceptionParcel exception) {
                             returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns the current onboarding state of the Health Connect user.
+     *
+     * <p>See also {@link HealthConnectOnboardingState} object describing the HealthConnect state.
+     *
+     * @param executor The {@link Executor} on which to invoke the callback.
+     * @param callback The callback which will receive the current {@link
+     *     HealthConnectOnboardingState} or the {@link HealthConnectException}.
+     * @hide
+     */
+    @FlaggedApi(FLAG_ONBOARDING)
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    @UserHandleAware
+    public void getHealthConnectOnboardingState(
+            @NonNull Executor executor,
+            @NonNull
+                    OutcomeReceiver<HealthConnectOnboardingState, HealthConnectException>
+                            callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            mService.getHealthConnectOnboardingState(
+                    new IGetHealthConnectOnboardingStateCallback.Stub() {
+                        @Override
+                        public void onResult(
+                                HealthConnectOnboardingState healthConnectOnboardingState) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(healthConnectOnboardingState));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
                         }
                     });
         } catch (RemoteException e) {

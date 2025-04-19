@@ -51,7 +51,6 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.ArrayMap;
 import android.util.Pair;
 import android.util.Slog;
@@ -64,6 +63,7 @@ import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
+import com.android.server.healthconnect.fitness.aggregation.TimeSplits;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -79,7 +79,6 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.TableColumnPair;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -135,8 +134,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             InternalHealthConnectMappings internalHealthConnectMappings,
             AppInfoHelper appInfoHelper,
             TransactionManager transactionManager,
-            long startTime,
-            long endTime,
+            TimeSplits timeSplits,
             long startDateAccess,
             boolean useLocalTime) {
         AggregateParams params = getAggregateParams(aggregationType);
@@ -191,27 +189,29 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 getFilterByStartAccessDateWhereClauses(
                         appInfoHelper.getAppInfoId(callingPackage), startDateAccess));
         // data start time < filter end time
-        whereClauses.addWhereLessThanClause(startTimeColumnName, endTime);
+        whereClauses.addWhereLessThanClause(startTimeColumnName, timeSplits.getEndTime());
         if (endTimeColumnName != null) {
             // for IntervalRecord, filters by overlapping
             // data end time >= filter start time
-            whereClauses.addWhereGreaterThanOrEqualClause(endTimeColumnName, startTime);
+            whereClauses.addWhereGreaterThanOrEqualClause(
+                    endTimeColumnName, timeSplits.getStartTime());
         } else {
             // for InstantRecord, filters by whether time falls into [startTime, endTime)
-            whereClauses.addWhereGreaterThanOrEqualClause(startTimeColumnName, startTime);
+            whereClauses.addWhereGreaterThanOrEqualClause(
+                    startTimeColumnName, timeSplits.getStartTime());
         }
 
         return new AggregateRecordRequest(
-                        params,
-                        aggregationType,
-                        this,
-                        whereClauses,
-                        healthDataCategoryPriorityHelper,
-                        internalHealthConnectMappings,
-                        appInfoHelper,
-                        transactionManager,
-                        useLocalTime)
-                .setTimeFilter(startTime, endTime);
+                params,
+                aggregationType,
+                this,
+                whereClauses,
+                healthDataCategoryPriorityHelper,
+                internalHealthConnectMappings,
+                appInfoHelper,
+                transactionManager,
+                useLocalTime,
+                timeSplits);
     }
 
     /**
@@ -635,47 +635,34 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return Pair.create(recordInternalList, nextPageToken);
     }
 
-    @SuppressWarnings("unchecked") // uncheck cast to T
     private T getRecord(
             Cursor cursor,
             @Nullable Map<Long, String> packageNamesByAppIds,
             DeviceInfoHelper deviceInfoHelper,
             AppInfoHelper appInfoHelper) {
+        T record = populateRecordValue(cursor);
+        record.setUuid(getCursorUUID(cursor, UUID_COLUMN_NAME));
+        record.setLastModifiedTime(getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME));
+        record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
+        record.setClientRecordVersion(getCursorLong(cursor, CLIENT_RECORD_VERSION_COLUMN_NAME));
+        record.setRecordingMethod(getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME));
+        record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
+        long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
+        deviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
+        long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
         try {
-            @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
-            T record =
-                    (T)
-                            HealthConnectMappings.getInstance()
-                                    .getRecordIdToInternalRecordClassMap()
-                                    .get(getRecordIdentifier())
-                                    .getConstructor()
-                                    .newInstance();
-            record.setUuid(getCursorUUID(cursor, UUID_COLUMN_NAME));
-            record.setLastModifiedTime(getCursorLong(cursor, LAST_MODIFIED_TIME_COLUMN_NAME));
-            record.setClientRecordId(getCursorString(cursor, CLIENT_RECORD_ID_COLUMN_NAME));
-            record.setClientRecordVersion(getCursorLong(cursor, CLIENT_RECORD_VERSION_COLUMN_NAME));
-            record.setRecordingMethod(getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME));
-            record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
-            long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
-            deviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
-            long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
             String packageName =
                     packageNamesByAppIds != null
                             ? packageNamesByAppIds.get(appInfoId)
                             : appInfoHelper.getPackageName(appInfoId);
             record.setPackageName(packageName);
-            populateRecordValue(cursor, record);
-            record.setAppInfoId(appInfoId);
-
-            return record;
-        } catch (InstantiationException
-                | IllegalAccessException
-                | NoSuchMethodException
-                | InvocationTargetException
-                | PackageManager.NameNotFoundException exception) {
+        } catch (PackageManager.NameNotFoundException exception) {
             Slog.e("HealthConnectRecordHelper", "Failed to read", exception);
             throw new IllegalArgumentException(exception);
         }
+        record.setAppInfoId(appInfoId);
+
+        return record;
     }
 
     /** Populate internalRecords fields using extraDataCursor */
@@ -728,8 +715,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         .setIdColumnName(UUID_COLUMN_NAME);
         return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
-
-    public abstract String getDurationGroupByColumnName();
 
     public abstract String getPeriodGroupByColumnName();
 
@@ -803,7 +788,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * Child classes implementation should populate the values to the {@code record} using the
      * cursor {@code cursor} queried from the DB .
      */
-    abstract void populateRecordValue(Cursor cursor, T recordInternal);
+    abstract T populateRecordValue(Cursor cursor);
 
     List<UpsertTableRequest> getChildTableUpsertRequests(T record) {
         return Collections.emptyList();

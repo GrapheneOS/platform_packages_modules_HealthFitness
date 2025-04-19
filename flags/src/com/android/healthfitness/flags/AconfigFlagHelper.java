@@ -24,7 +24,7 @@ import static com.android.internal.annotations.VisibleForTesting.Visibility.PRIV
 
 import com.android.internal.annotations.VisibleForTesting;
 
-import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BooleanSupplier;
 
@@ -35,31 +35,16 @@ import java.util.function.BooleanSupplier;
  * @hide
  */
 public final class AconfigFlagHelper {
-    private static final String TAG = "HC" + AconfigFlagHelper.class.getSimpleName();
 
-    // For testing purposes, this field needs to be made public instead of package-private so the
-    // unit tests can access it. This is due to tests don't run in the same classloader as the
-    // framework. See
-    // https://groups.google.com/a/google.com/g/android-chatty-eng/c/TymmRzs3UcY/m/_JeFcynRBwAJ.
-    @VisibleForTesting(visibility = PRIVATE)
-    // Using BooleanSupplier instead of Boolean due to b/370447278#comment2
-    public static final TreeMap<Integer, BooleanSupplier> DB_VERSION_TO_DB_FLAG_MAP =
-            new TreeMap<>();
+    private static final DatabaseVersionSupplier sDatabaseVersionSupplier =
+            new DatabaseVersionSupplier(LAST_ROLLED_OUT_DB_VERSION, getDbVersionToDbFlagMap());
 
     /**
      * Returns the DB version based on DB flag values, this DB version is used to initialize {@link
      * android.database.sqlite.SQLiteOpenHelper} to dictate which DB upgrades will be executed.
      */
-    public static synchronized int getDbVersion() {
-        int dbVersion = LAST_ROLLED_OUT_DB_VERSION;
-        for (Map.Entry<Integer, BooleanSupplier> entry : getDbVersionToDbFlagMap().entrySet()) {
-            if (!entry.getValue().getAsBoolean()) {
-                break;
-            }
-            dbVersion = entry.getKey();
-        }
-
-        return dbVersion;
+    public static int getDbVersion() {
+        return sDatabaseVersionSupplier.get();
     }
 
     /**
@@ -93,7 +78,7 @@ public final class AconfigFlagHelper {
      * @see #getDbVersion()
      * @see ag/28760234 for example of how to use this method
      */
-    private static synchronized boolean isDbFlagEnabled(int dbVersion) {
+    private static boolean isDbFlagEnabled(int dbVersion) {
         return getDbVersion() >= dbVersion;
     }
 
@@ -109,28 +94,20 @@ public final class AconfigFlagHelper {
     /**
      * Returns a map of DB version => DB flag with the DB versions being keys and ordered.
      *
-     * <p>Note: Because the map is initialized with aconfig flag values, hence it needs to be
-     * initialized at run time via a method call rather than static block or static field, otherwise
-     * the <code>@EnableFlags</code> annotations won't work in unit tests due to its evaluation
-     * being done after the map has already been initialized.
+     * <p>Flags values are intentionally not memoized to ensure that tests can change the flag
+     * values, for example via the {@code @EnableFlags} annotation.
      */
-    private static Map<Integer, BooleanSupplier> getDbVersionToDbFlagMap() {
-        if (!DB_VERSION_TO_DB_FLAG_MAP.isEmpty()) {
-            return DB_VERSION_TO_DB_FLAG_MAP;
-        }
-
-        DB_VERSION_TO_DB_FLAG_MAP.put(DB_VERSION_ACTIVITY_INTENSITY, Flags::activityIntensityDb);
-        DB_VERSION_TO_DB_FLAG_MAP.put(
-                DB_VERSION_ECOSYSTEM_METRICS, Flags::ecosystemMetricsDbChanges);
-        DB_VERSION_TO_DB_FLAG_MAP.put(
-                DB_VERSION_CLOUD_BACKUP_AND_RESTORE, Flags::cloudBackupAndRestoreDb);
-
-        return DB_VERSION_TO_DB_FLAG_MAP;
-    }
-
-    /** Returns a boolean indicating whether PHR feature is enabled. */
-    public static synchronized boolean isPersonalHealthRecordEnabled() {
-        return Flags.personalHealthRecord();
+    // For testing purposes, this field needs to be made public instead of package-private so the
+    // unit tests can access it. This is because tests don't run in the same classloader as the
+    // framework. See
+    // https://groups.google.com/a/google.com/g/android-chatty-eng/c/TymmRzs3UcY/m/_JeFcynRBwAJ.
+    @VisibleForTesting(visibility = PRIVATE)
+    public static SortedMap<Integer, BooleanSupplier> getDbVersionToDbFlagMap() {
+        TreeMap<Integer, BooleanSupplier> map = new TreeMap<>();
+        map.put(DB_VERSION_ACTIVITY_INTENSITY, Flags::activityIntensityDb);
+        map.put(DB_VERSION_ECOSYSTEM_METRICS, Flags::ecosystemMetricsDbChanges);
+        map.put(DB_VERSION_CLOUD_BACKUP_AND_RESTORE, Flags::cloudBackupAndRestoreDb);
+        return map;
     }
 
     /** Returns a boolean indicating whether Activity Intensity data type is enabled. */

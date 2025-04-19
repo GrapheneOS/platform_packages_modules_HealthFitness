@@ -42,7 +42,6 @@ import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflec
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_READ_MEDICAL_RESOURCES_FIX_QUERY_LIMIT;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -100,7 +99,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
     private HealthConnectManager mManager;
 
     @Before
-    public void setUp() throws InterruptedException {
+    public void setUp() throws Exception {
         // To make sure we don't leave any state behind after running each test.
         revokeAllHealthPermissions(
                 PHR_BACKGROUND_APP.getPackageName(), "to test specific permissions");
@@ -122,7 +121,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_migrationInProgress_apiBlocked()
             throws InterruptedException {
         startMigrationWithShellPermissionIdentity();
@@ -142,7 +140,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_readLimitExceeded_throws()
             throws InterruptedException {
         MedicalDataSource dataSource =
@@ -173,7 +170,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_unknownTypeInPageRequest_throws()
             throws InterruptedException {
         HealthConnectReceiver<ReadMedicalResourcesResponse> receiver =
@@ -193,7 +189,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_emptyPageTokenInPageRequest_throws()
             throws InterruptedException {
         HealthConnectReceiver<ReadMedicalResourcesResponse> receiver =
@@ -208,7 +203,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_invalidDataSourceIdsByReflection_throws()
             throws NoSuchFieldException, IllegalAccessException {
         ReadMedicalResourcesInitialRequest request =
@@ -227,7 +221,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_invalidResourceTypeByReflection_throws()
             throws NoSuchFieldException, IllegalAccessException {
         ReadMedicalResourcesInitialRequest request =
@@ -246,7 +239,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_invalidPageSizeByReflection_throws()
             throws NoSuchFieldException, IllegalAccessException {
         ReadMedicalResourcesPageRequest request =
@@ -264,7 +256,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_nullPageTokenInPageRequestByReflection_throws()
             throws NoSuchFieldException, IllegalAccessException {
         ReadMedicalResourcesPageRequest request =
@@ -282,7 +273,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_noData_returnsEmptyList()
             throws InterruptedException {
         HealthConnectReceiver<ReadMedicalResourcesResponse> receiver =
@@ -300,7 +290,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_noDataForResourceTypeAndDataSource_ReturnsEmpty()
             throws InterruptedException {
         HealthConnectReceiver<ReadMedicalResourcesResponse> receiver =
@@ -319,7 +308,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_filtersByMedicalResourceType()
             throws InterruptedException {
         // Given we have three vaccines and one Allergy in two data sources
@@ -368,7 +356,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_filtersByMedicalResourceTypeAndOneDataSource()
             throws InterruptedException {
         // Given we have three vaccines in two data sources
@@ -414,7 +401,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_filtersByMedicalResourceTypeAndBothDataSources()
             throws InterruptedException {
         // Given we have two vaccines and one Allergy in two data sources
@@ -462,7 +448,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_hasManagementPermission_succeeds()
             throws InterruptedException {
         // Given we have two vaccines in one data source
@@ -509,7 +494,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_setPageSizeOnPageRequest_succeeds()
             throws InterruptedException {
         // Given we have six vaccines in three data source
@@ -556,10 +540,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD,
-        FLAG_PHR_READ_MEDICAL_RESOURCES_FIX_QUERY_LIMIT
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_READ_MEDICAL_RESOURCES_FIX_QUERY_LIMIT})
     public void
             testReadMedicalResourcesByRequest_moreTotalResourcesThanPageSize_returnsAllRequested()
                     throws InterruptedException {
@@ -588,7 +569,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_dataDeletedAfterInitialRequest_correctRemaining()
             throws InterruptedException {
         // Given we have three vaccines in two data source
@@ -635,7 +615,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadMedicalResourcesByRequest_dataAddedAfterInitialRequest_correctRemaining()
             throws InterruptedException {
         // Given we have two vaccines in two data source
@@ -679,7 +658,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inForegroundWithNoPerms_throws() {
         // App has not been granted any permissions.
         ReadMedicalResourcesInitialRequest request =
@@ -700,7 +678,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inForegroundWithReadPermNoWritePerm_canReadResourcesWithReadPerms()
             throws Exception {
         // Given that we have two data sources from two apps with one vaccine each and the
@@ -735,7 +712,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inForegroundWithReadPermNoWritePerm_throwsForResourcesWithoutReadPerms() {
         grantHealthPermission(PHR_FOREGROUND_APP.getPackageName(), READ_MEDICAL_DATA_VACCINES);
         ReadMedicalResourcesInitialRequest request =
@@ -757,7 +733,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inForegroundHasWritePermNoReadPerms_canReadDataFromOwnDataSources()
             throws Exception {
         // Given that we have two data sources from two apps with one vaccine each and the
@@ -786,7 +761,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inForegroundHasWriteAndReadPerms_canReadSelfDataAndOtherDataWithReadPerms()
             throws Exception {
         // Given that we have two data sources from two apps with one vaccine and one allergy
@@ -835,7 +809,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inBgWithBgReadNoOtherPerms_throws() {
         // App has background read permissions, but no other permissions.
         grantHealthPermission(PHR_BACKGROUND_APP.getPackageName(), READ_HEALTH_DATA_IN_BACKGROUND);
@@ -857,7 +830,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inBgWithBgReadHasReadPermNoWritePerm_canReadResourcesWithReadPerms()
             throws Exception {
         // Given that we have two data sources from two apps with one vaccine each and the
@@ -896,7 +868,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inBgWithBgReadHasReadPermNoWritePerm_throwsForResourceWithoutReadPerms() {
         grantHealthPermissions(
                 PHR_BACKGROUND_APP.getPackageName(),
@@ -920,7 +891,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inBgWithBgReadHasWritePermNoReadPerms_canReadDataFromOwnDataSources()
             throws Exception {
         // Given that we have two data sources from two apps with one vaccine each and the
@@ -951,7 +921,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void
             testRead_inBgWithBgReadHasWriteAndReadPerms_canReadSelfDataAndOtherDataWithReadPerms()
                     throws Exception {
@@ -1004,7 +973,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inBackgoundWithNoPerms_throws() {
         // App has not been granted any permissions.
         ReadMedicalResourcesInitialRequest request =
@@ -1025,7 +993,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inBgWithoutBgReadOnlyWritePerm_canReadDataFromOwnDataSources()
             throws Exception {
         // Given that we have two data sources from two apps with one vaccine each and the
@@ -1054,7 +1021,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inBgWithoutBgReadOnlyReadPerm_canReadOwnDataWithReadPerms()
             throws Exception {
         // Given that we have two data sources from two apps with one vaccine each and the
@@ -1087,7 +1053,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_inBgWithoutBgReadOnlyReadPerm_throwsForResourcesWithoutReadPerms() {
         grantHealthPermission(PHR_BACKGROUND_APP.getPackageName(), READ_MEDICAL_DATA_VACCINES);
         ReadMedicalResourcesInitialRequest request =
@@ -1109,7 +1074,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testRead_readPermRemovedBeforePageRequest_throws() throws Exception {
         // Given that we have two data sources from two apps with one vaccine each and the
         // and the calling app has READ_MEDICAL_DATA_VACCINES permissions
@@ -1161,7 +1125,6 @@ public class ReadMedicalResourcesByRequestCtsTest {
     // in one test leads to presubmit test timeout. The full list of read permission mappings is
     // tested in the ReadMedicalResourcesByIdsCtsTest.
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testReadPermissionMapping_permission_onlyGivesAccessToSpecificData()
             throws Exception {
         mUtil.insertSourceAndOneResourcePerPermissionCategory(PHR_BACKGROUND_APP);

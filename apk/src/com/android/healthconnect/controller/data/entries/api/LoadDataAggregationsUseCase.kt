@@ -33,10 +33,10 @@ import android.health.connect.datatypes.units.Length
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
-import com.android.healthconnect.controller.dataentries.formatters.DistanceFormatter
-import com.android.healthconnect.controller.dataentries.formatters.SleepSessionFormatter
-import com.android.healthconnect.controller.dataentries.formatters.StepsFormatter
-import com.android.healthconnect.controller.dataentries.formatters.TotalCaloriesBurnedFormatter
+import com.android.healthconnect.controller.data.formatters.DistanceFormatter
+import com.android.healthconnect.controller.data.formatters.SleepSessionFormatter
+import com.android.healthconnect.controller.data.formatters.StepsFormatter
+import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.SLEEP
@@ -64,7 +64,7 @@ constructor(
     private val sleepSessionFormatter: SleepSessionFormatter,
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) :
     BaseUseCase<LoadAggregationInput, FormattedAggregation>(dispatcher),
     ILoadDataAggregationsUseCase {
@@ -74,7 +74,10 @@ constructor(
             when (input) {
                 is LoadAggregationInput.PeriodAggregation -> {
                     loadEntriesHelper.getTimeFilter(
-                        input.displayedStartTime, input.period, endTimeExclusive = false)
+                        input.displayedStartTime,
+                        input.period,
+                        endTimeExclusive = false,
+                    )
                 }
                 is LoadAggregationInput.CustomAggregation -> {
                     loadEntriesHelper.getTimeFilter(input.startTime, input.endTime)
@@ -89,7 +92,8 @@ constructor(
                         StepsRecord.STEPS_COUNT_TOTAL,
                         input.packageName,
                         showDataOrigin,
-                        input.permissionType)
+                        input.permissionType,
+                    )
                 }
                 DISTANCE -> {
                     readAggregations<Length>(
@@ -97,7 +101,8 @@ constructor(
                         DistanceRecord.DISTANCE_TOTAL,
                         input.packageName,
                         showDataOrigin,
-                        input.permissionType)
+                        input.permissionType,
+                    )
                 }
                 TOTAL_CALORIES_BURNED -> {
                     readAggregations<Energy>(
@@ -105,7 +110,8 @@ constructor(
                         TotalCaloriesBurnedRecord.ENERGY_TOTAL,
                         input.packageName,
                         showDataOrigin,
-                        input.permissionType)
+                        input.permissionType,
+                    )
                 }
                 SLEEP -> {
                     readAggregations<Long>(
@@ -113,11 +119,13 @@ constructor(
                         SleepSessionRecord.SLEEP_DURATION_TOTAL,
                         input.packageName,
                         showDataOrigin,
-                        input.permissionType)
+                        input.permissionType,
+                    )
                 }
                 else ->
                     throw IllegalArgumentException(
-                        "${input.permissionType} is not supported for aggregations!")
+                        "${input.permissionType} is not supported for aggregations!"
+                    )
             }
 
         return results
@@ -128,7 +136,7 @@ constructor(
         aggregationType: AggregationType<T>,
         packageName: String?,
         showDataOrigin: Boolean,
-        fitnessPermissionType: FitnessPermissionType
+        fitnessPermissionType: FitnessPermissionType,
     ): FormattedAggregation {
         val request =
             AggregateRecordsRequest.Builder<T>(timeFilterRange).addAggregationType(aggregationType)
@@ -139,7 +147,10 @@ constructor(
         val response =
             suspendCancellableCoroutine<AggregateRecordsResponse<T>> { continuation ->
                 healthConnectManager.aggregate(
-                    request.build(), Runnable::run, continuation.asOutcomeReceiver())
+                    request.build(),
+                    Runnable::run,
+                    continuation.asOutcomeReceiver(),
+                )
             }
         val aggregationResult: T = requireNotNull(response.get(aggregationType))
         val apps = response.getDataOrigins(aggregationType)
@@ -150,7 +161,7 @@ constructor(
         aggregationResult: T,
         apps: Set<DataOrigin>,
         showDataOrigin: Boolean,
-        fitnessPermissionType: FitnessPermissionType
+        fitnessPermissionType: FitnessPermissionType,
     ): FormattedAggregation {
         val contributingApps = getContributingApps(apps, showDataOrigin)
         return when (aggregationResult) {
@@ -160,13 +171,15 @@ constructor(
                         FormattedAggregation(
                             aggregation = stepsFormatter.formatUnit(aggregationResult),
                             aggregationA11y = stepsFormatter.formatA11yUnit(aggregationResult),
-                            contributingApps = contributingApps)
+                            contributingApps = contributingApps,
+                        )
                     SLEEP ->
                         FormattedAggregation(
                             aggregation = sleepSessionFormatter.formatUnit(aggregationResult),
                             aggregationA11y =
                                 sleepSessionFormatter.formatA11yUnit(aggregationResult),
-                            contributingApps = contributingApps)
+                            contributingApps = contributingApps,
+                        )
                     else -> {
                         throw IllegalArgumentException("Unsupported aggregation type!")
                     }
@@ -177,12 +190,14 @@ constructor(
                     aggregation = totalCaloriesBurnedFormatter.formatUnit(aggregationResult),
                     aggregationA11y =
                         totalCaloriesBurnedFormatter.formatA11yUnit(aggregationResult),
-                    contributingApps = contributingApps)
+                    contributingApps = contributingApps,
+                )
             is Length ->
                 FormattedAggregation(
                     aggregation = distanceFormatter.formatUnit(aggregationResult),
                     aggregationA11y = distanceFormatter.formatA11yUnit(aggregationResult),
-                    contributingApps = contributingApps)
+                    contributingApps = contributingApps,
+                )
             else -> {
                 throw IllegalArgumentException("Unsupported aggregation type!")
             }
@@ -191,7 +206,7 @@ constructor(
 
     private suspend fun getContributingApps(
         apps: Set<DataOrigin>,
-        showDataOrigin: Boolean
+        showDataOrigin: Boolean,
     ): String {
         if (!showDataOrigin) {
             return ""
@@ -205,7 +220,7 @@ constructor(
 sealed class LoadAggregationInput(
     open val permissionType: FitnessPermissionType,
     open val packageName: String?,
-    open val showDataOrigin: Boolean
+    open val showDataOrigin: Boolean,
 ) {
     /** Aggregation input which uses a [DateNavigationPeriod] to calculate start and end times */
     data class PeriodAggregation(
@@ -213,7 +228,7 @@ sealed class LoadAggregationInput(
         override val packageName: String?,
         val displayedStartTime: Instant,
         val period: DateNavigationPeriod,
-        override val showDataOrigin: Boolean
+        override val showDataOrigin: Boolean,
     ) : LoadAggregationInput(permissionType, packageName, showDataOrigin)
 
     /** Aggregation input with custom start and end times */
@@ -222,7 +237,7 @@ sealed class LoadAggregationInput(
         override val packageName: String?,
         val startTime: Instant,
         val endTime: Instant,
-        override val showDataOrigin: Boolean
+        override val showDataOrigin: Boolean,
     ) : LoadAggregationInput(permissionType, packageName, showDataOrigin)
 }
 

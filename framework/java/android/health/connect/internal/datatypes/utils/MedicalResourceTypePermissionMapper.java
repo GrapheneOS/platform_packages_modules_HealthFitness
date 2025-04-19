@@ -29,8 +29,6 @@ import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VISITS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VITAL_SIGNS;
 
-import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
-
 import android.annotation.NonNull;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.MedicalResource.MedicalResourceType;
@@ -49,11 +47,6 @@ public final class MedicalResourceTypePermissionMapper {
     private MedicalResourceTypePermissionMapper() {}
 
     private static synchronized void populateMedicalResourceTypeAndReadPermissionMaps() {
-        if (!isPersonalHealthRecordEnabled()) {
-            throw new UnsupportedOperationException(
-                    "populateMedicalResourceTypeToPermissionMap is not supported");
-        }
-
         if (!sMedicalResourceTypeToReadPermissionMap.isEmpty()) {
             return;
         }

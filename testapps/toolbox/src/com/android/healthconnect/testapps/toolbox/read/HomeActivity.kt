@@ -34,25 +34,17 @@ class HomeActivity : ComponentActivity() {
         setContent {
             HealthFitnessGradleProjectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
                     val navController = rememberNavController()
 
-                    ToolboxNavigation(
-                        navController = navController,
-                        scaffoldPadding = innerPadding
-                    )
+                    ToolboxNavigation(navController = navController, scaffoldPadding = innerPadding)
                 }
             }
         }
     }
 }
 
-
 @Preview(showBackground = true, apiLevel = 34)
 @Composable
 fun HomeActivityPreview() {
-    HealthFitnessGradleProjectTheme {
-
-    }
+    HealthFitnessGradleProjectTheme {}
 }
-

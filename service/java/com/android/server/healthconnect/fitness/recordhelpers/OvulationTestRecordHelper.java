@@ -47,9 +47,9 @@ public final class OvulationTestRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, OvulationTestRecordInternal ovulationTestRecord) {
-        ovulationTestRecord.setResult(getCursorInt(cursor, RESULT_COLUMN_NAME));
+    OvulationTestRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new OvulationTestRecordInternal()
+                .setResult(getCursorInt(cursor, RESULT_COLUMN_NAME));
     }
 
     @Override

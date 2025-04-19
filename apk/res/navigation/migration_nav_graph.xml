@@ -53,6 +53,7 @@
             app:destination="@id/updateAppActivity"/>
         <action
             android:id="@+id/action_migrationAppUpdateNeededFragment_to_homeScreen"
+            app:popUpToInclusive="true"
             app:destination="@id/healthConnectHomeActivity"/>
         <action
             android:id="@+id/action_migrationAppUpdateNeededFragment_to_migrationNavigationFragment"
@@ -69,6 +70,7 @@
             app:destination="@id/systemUpdateActivity"/>
         <action
             android:id="@+id/action_migrationModuleUpdateNeededFragment_to_homeScreen"
+            app:popUpToInclusive="true"
             app:destination="@id/healthConnectHomeActivity"/>
     </fragment>
 

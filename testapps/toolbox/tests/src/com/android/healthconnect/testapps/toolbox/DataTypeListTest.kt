@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.testapps.toolbox
 
-
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.filterToOne
@@ -33,26 +32,20 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class DataTypeListTest {
 
     @get:Rule val composeTestRule = createComposeRule()
 
     @Before
-    fun setUp(){
-        composeTestRule.setContent {
-            DataTypeListScreen(
-                onNavigateToDataTypeDetailsScreen = {}
-            )
-        }
+    fun setUp() {
+        composeTestRule.setContent { DataTypeListScreen(onNavigateToDataTypeDetailsScreen = {}) }
     }
 
     @Test
-    fun allCategoriesDisplayed(){
+    fun allCategoriesDisplayed() {
         val context: Context = ApplicationProvider.getApplicationContext()
         val categoryNodes = composeTestRule.onAllNodesWithTag("category")
-
 
         categoryNodes
             .filterToOne(hasText(context.getString(R.string.activity_category)))
@@ -85,53 +78,53 @@ class DataTypeListTest {
     }
 
     @Test
-    fun allDataTypesDisplayed_activity(){
+    fun allDataTypesDisplayed_activity() {
 
         assertDataTypesDisplayed(HealthDataCategory.ACTIVITY)
     }
 
     @Test
-    fun allDataTypesDisplayed_bodyMeasurements(){
+    fun allDataTypesDisplayed_bodyMeasurements() {
 
         assertDataTypesDisplayed(HealthDataCategory.BODY_MEASUREMENTS)
     }
 
     @Test
-    fun allDataTypesDisplayed_sleep(){
+    fun allDataTypesDisplayed_sleep() {
 
         assertDataTypesDisplayed(HealthDataCategory.SLEEP)
     }
 
     @Test
-    fun allDataTypesDisplayed_vitals(){
+    fun allDataTypesDisplayed_vitals() {
 
         assertDataTypesDisplayed(HealthDataCategory.VITALS)
     }
 
     @Test
-    fun allDataTypesDisplayed_cycleTracking(){
+    fun allDataTypesDisplayed_cycleTracking() {
 
         assertDataTypesDisplayed(HealthDataCategory.CYCLE_TRACKING)
     }
 
     @Test
-    fun allDataTypesDisplayed_nutrition(){
+    fun allDataTypesDisplayed_nutrition() {
 
         assertDataTypesDisplayed(HealthDataCategory.NUTRITION)
     }
 
     @Test
-    fun allDataTypesDisplayed_wellness(){
+    fun allDataTypesDisplayed_wellness() {
 
         assertDataTypesDisplayed(HealthDataCategory.WELLNESS)
     }
 
-    private fun assertDataTypesDisplayed(category: HealthDataCategory){
+    private fun assertDataTypesDisplayed(category: HealthDataCategory) {
 
         val context: Context = ApplicationProvider.getApplicationContext()
         val dataTypes = category.healthPermissionTypes
 
-        for(dataType in dataTypes){
+        for (dataType in dataTypes) {
             val dataTypeLabel = dataType.title
 
             composeTestRule

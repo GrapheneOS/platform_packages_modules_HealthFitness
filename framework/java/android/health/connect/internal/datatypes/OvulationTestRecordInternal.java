@@ -30,6 +30,15 @@ import android.os.Parcel;
 public final class OvulationTestRecordInternal extends InstantRecordInternal<OvulationTestRecord> {
     private int mResult;
 
+    public OvulationTestRecordInternal() {
+        super();
+    }
+
+    public OvulationTestRecordInternal(Parcel parcel) {
+        super(parcel);
+        mResult = parcel.readInt();
+    }
+
     @OvulationTestResult.OvulationTestResults
     public int getResult() {
         return mResult;
@@ -48,11 +57,6 @@ public final class OvulationTestRecordInternal extends InstantRecordInternal<Ovu
         return new OvulationTestRecord.Builder(buildMetaData(), getTime(), getResult())
                 .setZoneOffset(getZoneOffset())
                 .buildWithoutValidation();
-    }
-
-    @Override
-    void populateInstantRecordFrom(@NonNull Parcel parcel) {
-        mResult = parcel.readInt();
     }
 
     @Override

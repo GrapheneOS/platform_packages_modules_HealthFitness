@@ -18,8 +18,6 @@ package com.android.server.healthconnect.logging;
 
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 
-import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
-
 import android.content.pm.PackageInfo;
 import android.health.connect.HealthPermissions;
 
@@ -143,13 +141,6 @@ public final class UsageStatsCollector {
     public long getGrantedPhrAppsCount() {
         Map<String, List<String>> packageNameToPermissionsGranted =
                 getPackagesHoldingHealthPermissions();
-        // isPersonalHealthRecordEnabled() should be enabled when PHR telemetry flag is enabled,
-        // however, without this check, getAllMedicalPermissions() might throw an exception. 0
-        // should be returned instead of an exception.
-        if (!isPersonalHealthRecordEnabled()) {
-            return 0;
-        }
-
         // note that this set includes WRITE_MEDICAL_DATA
         Set<String> medicalPermissions = HealthPermissions.getAllMedicalPermissions();
 

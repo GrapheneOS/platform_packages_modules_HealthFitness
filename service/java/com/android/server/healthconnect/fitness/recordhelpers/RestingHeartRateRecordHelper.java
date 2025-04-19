@@ -95,10 +95,9 @@ public final class RestingHeartRateRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, RestingHeartRateRecordInternal restingHeartRateRecord) {
-        restingHeartRateRecord.setBeatsPerMinute(
-                getCursorInt(cursor, BEATS_PER_MINUTE_COLUMN_NAME));
+    RestingHeartRateRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new RestingHeartRateRecordInternal()
+                .setBeatsPerMinute(getCursorInt(cursor, BEATS_PER_MINUTE_COLUMN_NAME));
     }
 
     @Override

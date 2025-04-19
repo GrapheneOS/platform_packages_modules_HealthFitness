@@ -53,6 +53,24 @@ public final class ExerciseSessionRecordInternal
 
     @Nullable private UUID mPlannedExerciseSessionId;
 
+    public ExerciseSessionRecordInternal() {
+        super();
+        this.mHasRoute = false;
+    }
+
+    public ExerciseSessionRecordInternal(Parcel parcel) {
+        super(parcel);
+        mNotes = parcel.readString();
+        mExerciseType = parcel.readInt();
+        mTitle = parcel.readString();
+        mHasRoute = parcel.readBoolean();
+        mExerciseRoute = ExerciseRouteInternal.readFromParcel(parcel);
+        mExerciseLaps = ExerciseLapInternal.populateLapsFromParcel(parcel);
+        mExerciseSegments = ExerciseSegmentInternal.populateSegmentsFromParcel(parcel);
+        String uuid = parcel.readString();
+        mPlannedExerciseSessionId = uuid == null ? null : UUID.fromString(uuid);
+    }
+
     @Nullable
     public String getNotes() {
         return mNotes;
@@ -100,10 +118,8 @@ public final class ExerciseSessionRecordInternal
     /** returns this object with the specified route */
     @NonNull
     public ExerciseSessionRecordInternal setRoute(ExerciseRouteInternal route) {
-        this.mExerciseRoute = route;
-        if (route != null) {
-            this.mHasRoute = true;
-        }
+        mExerciseRoute = route;
+        mHasRoute = route != null;
         return this;
     }
 
@@ -223,19 +239,6 @@ public final class ExerciseSessionRecordInternal
         ExerciseSegmentInternal.writeSegmentsToParcel(mExerciseSegments, parcel);
         parcel.writeString(
                 mPlannedExerciseSessionId == null ? null : mPlannedExerciseSessionId.toString());
-    }
-
-    @Override
-    public void populateIntervalRecordFrom(@NonNull Parcel parcel) {
-        mNotes = parcel.readString();
-        mExerciseType = parcel.readInt();
-        mTitle = parcel.readString();
-        mHasRoute = parcel.readBoolean();
-        mExerciseRoute = ExerciseRouteInternal.readFromParcel(parcel);
-        mExerciseLaps = ExerciseLapInternal.populateLapsFromParcel(parcel);
-        mExerciseSegments = ExerciseSegmentInternal.populateSegmentsFromParcel(parcel);
-        String uuid = parcel.readString();
-        mPlannedExerciseSessionId = uuid == null ? null : UUID.fromString(uuid);
     }
 
     /** Add route location to the session */

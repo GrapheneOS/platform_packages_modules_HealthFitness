@@ -21,8 +21,6 @@ import android.healthconnect.cts.lib.TestAppProxy
 import android.healthconnect.cts.lib.UiTestUtils.navigateToNewPage
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindTextContains
-import android.healthconnect.cts.lib.UiTestUtils.scrollToEnd
-import android.healthconnect.cts.lib.UiTestUtils.verifyTextNotFound
 import android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION
 import android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest
 import android.healthconnect.cts.utils.DataFactory.getEmptyMetadata
@@ -32,7 +30,6 @@ import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
-import com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD
 import com.android.settingslib.widget.theme.flags.Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -150,7 +147,6 @@ class HomeFragmentTest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsEnabled(FLAG_PERSONAL_HEALTH_RECORD)
     fun homeFragment_withMedicalData_opensBrowseMedicalRecords() {
         val dataSource =
             APP_A_WITH_READ_WRITE_PERMS.createMedicalDataSource(getCreateMedicalDataSourceRequest())
@@ -159,15 +155,6 @@ class HomeFragmentTest : HealthConnectBaseTest() {
             navigateToNewPage("Browse health records")
 
             scrollDownToAndFindText("Vaccines")
-        }
-    }
-
-    @Test
-    @RequiresFlagsDisabled(FLAG_PERSONAL_HEALTH_RECORD)
-    fun homeFragment_withMedicalData_flagOff_hidesBrowseMedicalRecords() {
-        context.launchMainActivity {
-            scrollToEnd()
-            verifyTextNotFound("Browse health records")
         }
     }
 }

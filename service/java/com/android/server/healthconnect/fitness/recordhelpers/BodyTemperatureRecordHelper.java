@@ -51,11 +51,10 @@ public final class BodyTemperatureRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, BodyTemperatureRecordInternal bodyTemperatureRecord) {
-        bodyTemperatureRecord.setMeasurementLocation(
-                getCursorInt(cursor, MEASUREMENT_LOCATION_COLUMN_NAME));
-        bodyTemperatureRecord.setTemperature(getCursorDouble(cursor, TEMPERATURE_COLUMN_NAME));
+    BodyTemperatureRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new BodyTemperatureRecordInternal()
+                .setMeasurementLocation(getCursorInt(cursor, MEASUREMENT_LOCATION_COLUMN_NAME))
+                .setTemperature(getCursorDouble(cursor, TEMPERATURE_COLUMN_NAME));
     }
 
     @Override

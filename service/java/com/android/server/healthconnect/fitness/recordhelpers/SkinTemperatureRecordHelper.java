@@ -123,13 +123,9 @@ public final class SkinTemperatureRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, SkinTemperatureRecordInternal recordInternal) {
+    SkinTemperatureRecordInternal populateSpecificRecordValue(Cursor cursor) {
         int measurementLocation =
                 getCursorInt(cursor, SKIN_TEMPERATURE_MEASUREMENT_LOCATION_COLUMN_NAME);
-        double baseline = getCursorDouble(cursor, SKIN_TEMPERATURE_BASELINE_COLUMN_NAME);
-
-        recordInternal.setMeasurementLocation(measurementLocation);
-        recordInternal.setBaseline(Temperature.fromCelsius(baseline));
 
         HashSet<SkinTemperatureRecordInternal.SkinTemperatureDeltaSample>
                 skinTemperatureDeltaSamples = new HashSet<>();
@@ -143,7 +139,13 @@ public final class SkinTemperatureRecordHelper
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         cursor.moveToPrevious();
-        recordInternal.setSamples(skinTemperatureDeltaSamples);
+        SkinTemperatureRecordInternal recordInternal =
+                new SkinTemperatureRecordInternal(skinTemperatureDeltaSamples);
+        double baseline = getCursorDouble(cursor, SKIN_TEMPERATURE_BASELINE_COLUMN_NAME);
+
+        recordInternal.setMeasurementLocation(measurementLocation);
+        recordInternal.setBaseline(Temperature.fromCelsius(baseline));
+        return recordInternal;
     }
 
     @Override

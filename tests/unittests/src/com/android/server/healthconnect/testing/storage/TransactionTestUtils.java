@@ -237,8 +237,7 @@ public final class TransactionTestUtils {
 
     public static SpeedRecordInternal createSpeedRecordInternal(Instant startTime) {
         return (SpeedRecordInternal)
-                new SpeedRecordInternal()
-                        .setSamples(
+                new SpeedRecordInternal(
                                 Set.of(
                                         new SpeedRecordInternal.SpeedRecordSample(
                                                 100, startTime.plus(ofMinutes(1)).toEpochMilli())))

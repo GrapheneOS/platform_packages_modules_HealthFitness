@@ -48,8 +48,6 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedica
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermission;
 
-import static com.android.healthfitness.flags.AconfigFlagHelper.isPersonalHealthRecordEnabled;
-
 import static com.google.common.base.Preconditions.checkState;
 
 import static java.util.stream.Collectors.toSet;
@@ -68,6 +66,7 @@ import android.health.connect.datatypes.MedicalResource;
 import android.healthconnect.cts.lib.TestAppProxy;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.os.OutcomeReceiver;
+import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -83,7 +82,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class PhrCtsTestUtils {
-
+    private static final String TAG = "PhrCtsTestUtils";
     public static final int MAX_FOREGROUND_READ_CALL_15M = 2000;
     public static final int MAX_FOREGROUND_WRITE_CALL_15M = 1000;
     public static final int RECORD_SIZE_LIMIT_IN_BYTES = 1000000;
@@ -127,7 +126,10 @@ public class PhrCtsTestUtils {
      */
     public MedicalDataSource createDataSource(CreateMedicalDataSourceRequest createRequest)
             throws InterruptedException {
-        HealthConnectReceiver<MedicalDataSource> createReceiver = new HealthConnectReceiver<>();
+        Log.d(TAG, TAG + "#createDataSource(CreateMedicalDataSourceRequest createRequest)");
+        HealthConnectReceiver<MedicalDataSource> createReceiver =
+                new HealthConnectReceiver<>(
+                        TAG + "#createDataSource(CreateMedicalDataSourceRequest createRequest)");
         mManager.createMedicalDataSource(
                 createRequest, Executors.newSingleThreadExecutor(), createReceiver);
         return createReceiver.getResponse();
@@ -139,8 +141,9 @@ public class PhrCtsTestUtils {
      */
     public List<MedicalDataSource> getMedicalDataSourcesByIds(List<String> ids)
             throws InterruptedException {
+        Log.d(TAG, TAG + "#getMedicalDataSourcesByIds(List<String> ids)");
         HealthConnectReceiver<List<MedicalDataSource>> createReceiver =
-                new HealthConnectReceiver<>();
+                new HealthConnectReceiver<>(TAG + "#getMedicalDataSourcesByIds(List<String> ids)");
         mManager.getMedicalDataSources(ids, Executors.newSingleThreadExecutor(), createReceiver);
         return createReceiver.getResponse();
     }
@@ -152,8 +155,12 @@ public class PhrCtsTestUtils {
      */
     public List<MedicalDataSource> getMedicalDataSourcesByRequest(
             GetMedicalDataSourcesRequest request) throws InterruptedException {
+        Log.d(TAG, TAG + "#getMedicalDataSourcesByRequest(GetMedicalDataSourcesRequest request)");
         HealthConnectReceiver<List<MedicalDataSource>> createReceiver =
-                new HealthConnectReceiver<>();
+                new HealthConnectReceiver<>(
+                        TAG
+                                + "#getMedicalDataSourcesByRequest(GetMedicalDataSourcesRequest"
+                                + " request)");
         mManager.getMedicalDataSources(
                 request, Executors.newSingleThreadExecutor(), createReceiver);
         return createReceiver.getResponse();
@@ -165,6 +172,7 @@ public class PhrCtsTestUtils {
      */
     public List<MedicalResource> upsertVaccineMedicalResources(
             String dataSourceId, int numOfResources) throws InterruptedException {
+        Log.d(TAG, TAG + "#upsertVaccineMedicalResources(String dataSourceId, int numOfResources)");
         List<MedicalResource> medicalResources =
                 createVaccineMedicalResources(numOfResources, dataSourceId);
         return upsertMedicalData(medicalResources);
@@ -180,7 +188,8 @@ public class PhrCtsTestUtils {
                 chunk++) {
             List<UpsertMedicalResourceRequest> requests = new ArrayList<>();
             HealthConnectReceiver<List<MedicalResource>> dataReceiver =
-                    new HealthConnectReceiver<>();
+                    new HealthConnectReceiver<>(
+                            TAG + "#upsertMedicalData(List<MedicalResource> medicalResources)");
             for (int indexWithinChunk = 0;
                     indexWithinChunk < MAX_NUMBER_OF_MEDICAL_RESOURCES_PER_INSERT_REQUEST;
                     indexWithinChunk++) {
@@ -212,7 +221,10 @@ public class PhrCtsTestUtils {
      */
     public MedicalResource upsertMedicalData(String dataSourceId, String data)
             throws InterruptedException {
-        HealthConnectReceiver<List<MedicalResource>> dataReceiver = new HealthConnectReceiver<>();
+        Log.d(TAG, TAG + "#upsertMedicalData(String dataSourceId, String data)");
+        HealthConnectReceiver<List<MedicalResource>> dataReceiver =
+                new HealthConnectReceiver<>(
+                        TAG + "#upsertMedicalData(String dataSourceId, String data)");
         UpsertMedicalResourceRequest request =
                 new UpsertMedicalResourceRequest.Builder(dataSourceId, FHIR_VERSION_R4, data)
                         .build();
@@ -224,7 +236,10 @@ public class PhrCtsTestUtils {
 
     /** Makes a call to {@link HealthConnectManager#deleteMedicalResources}. */
     public void deleteResources(List<MedicalResourceId> resourceIds) throws InterruptedException {
-        HealthConnectReceiver<Void> deleteReceiver = new HealthConnectReceiver<>();
+        Log.d(TAG, TAG + "#deleteResources(List<MedicalResourceId> resourceIds)");
+        HealthConnectReceiver<Void> deleteReceiver =
+                new HealthConnectReceiver<>(
+                        TAG + "#deleteResources(List<MedicalResourceId> resourceIds)");
         mManager.deleteMedicalResources(
                 resourceIds, Executors.newSingleThreadExecutor(), deleteReceiver);
         deleteReceiver.verifyNoExceptionOrThrow();
@@ -236,7 +251,10 @@ public class PhrCtsTestUtils {
      */
     public List<MedicalResource> readMedicalResourcesByIds(List<MedicalResourceId> ids)
             throws InterruptedException {
-        HealthConnectReceiver<List<MedicalResource>> dataReceiver = new HealthConnectReceiver<>();
+        Log.d(TAG, TAG + "#readMedicalResourcesByIds(List<MedicalResourceId> ids)");
+        HealthConnectReceiver<List<MedicalResource>> dataReceiver =
+                new HealthConnectReceiver<>(
+                        TAG + "#readMedicalResourcesByIds(List<MedicalResourceId> ids)");
         mManager.readMedicalResources(ids, Executors.newSingleThreadExecutor(), dataReceiver);
         return dataReceiver.getResponse();
     }
@@ -248,8 +266,12 @@ public class PhrCtsTestUtils {
      */
     public ReadMedicalResourcesResponse readMedicalResourcesByRequest(
             ReadMedicalResourcesRequest request) throws InterruptedException {
+        Log.d(TAG, TAG + "#readMedicalResourcesByRequest(ReadMedicalResourcesRequest request)");
         HealthConnectReceiver<ReadMedicalResourcesResponse> dataReceiver =
-                new HealthConnectReceiver<>();
+                new HealthConnectReceiver<>(
+                        TAG
+                                + "#readMedicalResourcesByRequest(ReadMedicalResourcesRequest"
+                                + " request)");
         mManager.readMedicalResources(request, Executors.newSingleThreadExecutor(), dataReceiver);
         return dataReceiver.getResponse();
     }
@@ -260,7 +282,10 @@ public class PhrCtsTestUtils {
      */
     public void deleteMedicalResourcesByIds(List<MedicalResourceId> ids)
             throws InterruptedException {
-        HealthConnectReceiver<Void> dataReceiver = new HealthConnectReceiver<>();
+        Log.d(TAG, TAG + "#deleteMedicalResourcesByIds(List<MedicalResourceId> ids)");
+        HealthConnectReceiver<Void> dataReceiver =
+                new HealthConnectReceiver<>(
+                        TAG + "#deleteMedicalResourcesByIds(List<MedicalResourceId> ids)");
         mManager.deleteMedicalResources(ids, Executors.newSingleThreadExecutor(), dataReceiver);
         dataReceiver.getResponse();
     }
@@ -272,7 +297,12 @@ public class PhrCtsTestUtils {
      */
     public void deleteMedicalResourcesByRequest(DeleteMedicalResourcesRequest request)
             throws InterruptedException {
-        HealthConnectReceiver<Void> dataReceiver = new HealthConnectReceiver<>();
+        Log.d(TAG, TAG + "#deleteMedicalResourcesByRequest(DeleteMedicalResourcesRequest request)");
+        HealthConnectReceiver<Void> dataReceiver =
+                new HealthConnectReceiver<>(
+                        TAG
+                                + "#deleteMedicalResourcesByRequest(DeleteMedicalResourcesRequest"
+                                + " request)");
         mManager.deleteMedicalResources(request, Executors.newSingleThreadExecutor(), dataReceiver);
         dataReceiver.getResponse();
     }
@@ -284,7 +314,12 @@ public class PhrCtsTestUtils {
      */
     public void readMedicalResourcesByRequest(DeleteMedicalResourcesRequest request)
             throws InterruptedException {
-        HealthConnectReceiver<Void> dataReceiver = new HealthConnectReceiver<>();
+        Log.d(TAG, TAG + "#deleteMedicalResourcesByRequest(DeleteMedicalResourcesRequest request)");
+        HealthConnectReceiver<Void> dataReceiver =
+                new HealthConnectReceiver<>(
+                        TAG
+                                + "#deleteMedicalResourcesByRequest(DeleteMedicalResourcesRequest"
+                                + " request)");
         mManager.deleteMedicalResources(request, Executors.newSingleThreadExecutor(), dataReceiver);
         dataReceiver.getResponse();
     }
@@ -294,19 +329,18 @@ public class PhrCtsTestUtils {
      * database.
      */
     public void deleteAllMedicalData() throws InterruptedException {
-        if (!isPersonalHealthRecordEnabled()) {
-            return;
-        }
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
         uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
         try {
-            HealthConnectReceiver<List<MedicalDataSource>> receiver = new HealthConnectReceiver<>();
+            HealthConnectReceiver<List<MedicalDataSource>> receiver =
+                    new HealthConnectReceiver<>(TAG + "#getMedicalDataSources");
             ExecutorService executor = Executors.newSingleThreadExecutor();
             mManager.getMedicalDataSources(
                     new GetMedicalDataSourcesRequest.Builder().build(), executor, receiver);
             List<MedicalDataSource> dataSources = receiver.getResponse();
             for (MedicalDataSource dataSource : dataSources) {
-                HealthConnectReceiver<Void> callback = new HealthConnectReceiver<>();
+                HealthConnectReceiver<Void> callback =
+                        new HealthConnectReceiver<>(TAG + "#deleteMedicalDataSourceWithData");
                 mManager.deleteMedicalDataSourceWithData(dataSource.getId(), executor, callback);
                 callback.verifyNoExceptionOrThrow();
             }
@@ -321,6 +355,7 @@ public class PhrCtsTestUtils {
      */
     public List<MedicalResource> readMedicalResources(List<MedicalResource> medicalResources)
             throws InterruptedException {
+        Log.d(TAG, TAG + "#readMedicalResources(List<MedicalResource> medicalResources)");
         List<MedicalResourceId> ids =
                 medicalResources.stream()
                         .map(
@@ -335,7 +370,11 @@ public class PhrCtsTestUtils {
         for (int chunk = 0; chunk <= ids.size() / MAXIMUM_PAGE_SIZE; chunk++) {
             List<MedicalResourceId> resourceIds = new ArrayList<>();
             HealthConnectReceiver<List<MedicalResource>> dataReceiver =
-                    new HealthConnectReceiver<>();
+                    new HealthConnectReceiver<>(
+                            TAG
+                                    + "#readMedicalResources(List<MedicalResource>"
+                                    + " medicalResources) - chunk #"
+                                    + chunk);
             for (int indexWithinChunk = 0;
                     indexWithinChunk < MAXIMUM_PAGE_SIZE;
                     indexWithinChunk++) {
@@ -358,7 +397,9 @@ public class PhrCtsTestUtils {
      * {@link MedicalResource}s.
      */
     public void deleteMedicalDataSourceWithData(String dataSourceId) throws InterruptedException {
-        HealthConnectReceiver<Void> callback = new HealthConnectReceiver<>();
+        Log.d(TAG, TAG + "#deleteMedicalDataSourceWithData(String dataSourceId)");
+        HealthConnectReceiver<Void> callback =
+                new HealthConnectReceiver<>(TAG + "#deleteMedicalDataSourceWithData");
         mManager.deleteMedicalDataSourceWithData(
                 dataSourceId, Executors.newSingleThreadExecutor(), callback);
         callback.verifyNoExceptionOrThrow();
@@ -370,6 +411,7 @@ public class PhrCtsTestUtils {
      */
     public List<MedicalResourceId> insertSourceAndOneResourcePerPermissionCategory(
             TestAppProxy appProxy) throws Exception {
+        Log.d(TAG, TAG + "#insertSourceAndOneResourcePerPermissionCategory(TestAppProxy appProxy)");
         grantHealthPermission(appProxy.getPackageName(), WRITE_MEDICAL_DATA);
         String dataSourceId =
                 appProxy.createMedicalDataSource(getCreateMedicalDataSourceRequest()).getId();

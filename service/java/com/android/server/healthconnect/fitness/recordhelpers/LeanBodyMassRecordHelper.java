@@ -47,8 +47,8 @@ public final class LeanBodyMassRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(Cursor cursor, LeanBodyMassRecordInternal leanBodyMassRecord) {
-        leanBodyMassRecord.setMass(getCursorDouble(cursor, MASS_COLUMN_NAME));
+    LeanBodyMassRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new LeanBodyMassRecordInternal().setMass(getCursorDouble(cursor, MASS_COLUMN_NAME));
     }
 
     @Override

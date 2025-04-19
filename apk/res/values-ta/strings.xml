@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"<xliff:g id="DATE">%1$s</xliff:g> தேதிக்கான பதிவிறக்கத்தில் சிக்கல் ஏற்பட்டுள்ளது. ஒரு புதிய திட்டமிடப்பட்ட பதிவிறக்கத்தை அமைத்து மீண்டும் முயலவும்."</string>
     <string name="next_export_time" msgid="3138247220014510213">"அடுத்த பதிவிறக்கம்: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"அடுத்த பதிவிறக்கம் விரைவில் தொடங்கும்"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"காப்புப் பிரதி எடு"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"காப்புப் பிரதி மற்றும் மீட்டெடுத்தல்"</string>
     <string name="last_export_time" msgid="9205875050823594041">"கடைசியாகப் பதிவிறக்கம் செய்தது: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"கடைசிப் பதிவிறக்கம்: இப்போது"</string>

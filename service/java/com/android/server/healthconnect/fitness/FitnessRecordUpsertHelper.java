@@ -16,7 +16,6 @@
 
 package com.android.server.healthconnect.fitness;
 
-import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.UUID_COLUMN_NAME;
@@ -42,7 +41,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
 import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
+import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.ChangeLogsTableRequests;
 import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -196,7 +195,7 @@ public class FitnessRecordUpsertHelper {
      * end of the operation (e.g. with d2d transfer, once all the data has been merged).
      *
      * @param recordInternals The list of records to be inserted.
-     * @param shouldGenerateChangeLog Whether changelogs should be generated for these inserts.
+     * @param shouldGenerateChangeLog Whether change logs should be generated for these inserts.
      * @return List of uuids of the inserted records.
      */
     public List<String> insertRecordsUnrestricted(
@@ -252,25 +251,23 @@ public class FitnessRecordUpsertHelper {
                             + recordInternals.size());
         }
 
-        long currentTime = Instant.now().toEpochMilli();
-        ChangeLogsHelper.ChangeLogs upsertionChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_UPSERT, currentTime);
-        ChangeLogsHelper.ChangeLogs otherModifiedRecordsChangelogs =
-                new ChangeLogsHelper.ChangeLogs(OPERATION_TYPE_UPSERT, currentTime);
+        var currentTime = Instant.now();
+        var upsertionChangeLogs = ChangeLogsTableRequests.ofUpsertion(currentTime);
+        var otherModifiedRecordsChangeLogs = ChangeLogsTableRequests.ofUpsertion(currentTime);
 
         return mTransactionManager.runAsTransaction(
                 db -> {
                     for (RecordUpsertTableRequest upsertRequest : upsertRequests) {
                         if (shouldGenerateChangeLog) {
-                            upsertionChangelogs.addUUID(
+                            upsertionChangeLogs.addRecordInfo(
                                     upsertRequest.getRecordInternal().getRecordType(),
                                     upsertRequest.getRecordInternal().getAppInfoId(),
                                     upsertRequest.getRecordInternal().getUuid());
-                            addChangelogsForOtherModifiedRecords(
+                            addChangeLogsForOtherModifiedRecords(
                                     mAppInfoHelper.getAppInfoId(
                                             upsertRequest.getRecordInternal().getPackageName()),
                                     upsertRequest,
-                                    otherModifiedRecordsChangelogs);
+                                    otherModifiedRecordsChangeLogs);
                         }
                         if (isInsertRequest) {
                             if (shouldPreferNewRecord) {
@@ -286,13 +283,13 @@ public class FitnessRecordUpsertHelper {
                     }
                     if (shouldGenerateChangeLog) {
                         for (UpsertTableRequest upsertRequestsForChangeLog :
-                                upsertionChangelogs.getUpsertTableRequests()) {
+                                upsertionChangeLogs.getUpsertTableRequests()) {
                             mTransactionManager.insertOrThrowOnConflict(
                                     db, upsertRequestsForChangeLog);
                         }
-                        for (UpsertTableRequest modificationChangelog :
-                                otherModifiedRecordsChangelogs.getUpsertTableRequests()) {
-                            mTransactionManager.insertOrThrowOnConflict(db, modificationChangelog);
+                        for (UpsertTableRequest modificationChangeLog :
+                                otherModifiedRecordsChangeLogs.getUpsertTableRequests()) {
+                            mTransactionManager.insertOrThrowOnConflict(db, modificationChangeLog);
                         }
                     }
 
@@ -339,26 +336,26 @@ public class FitnessRecordUpsertHelper {
         return request;
     }
 
-    private void addChangelogsForOtherModifiedRecords(
+    private void addChangeLogsForOtherModifiedRecords(
             long callingPackageAppInfoId,
             RecordUpsertTableRequest upsertRequest,
-            ChangeLogsHelper.ChangeLogs modificationChangelogs) {
+            ChangeLogsTableRequests modificationChangeLogs) {
         // Carries out read requests provided by the record helper and uses the results to add
-        // changelogs to the transaction.
+        // change logs to the transaction.
         final RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(
                         upsertRequest.getRecordInternal().getRecordType());
-        for (RecordReadTableRequest additionalChangelogUuidRequest :
+        for (RecordReadTableRequest additionalChangeLogUuidRequest :
                 recordHelper.getReadRequestsForRecordsModifiedByUpsertion(
                         upsertRequest.getRecordInternal().getUuid(),
                         upsertRequest,
                         callingPackageAppInfoId)) {
             Cursor cursorAdditionalUuids =
-                    mTransactionManager.read(additionalChangelogUuidRequest.getReadTableRequest());
+                    mTransactionManager.read(additionalChangeLogUuidRequest.getReadTableRequest());
             while (cursorAdditionalUuids.moveToNext()) {
                 RecordHelper<?> extraRecordHelper =
-                        requireNonNull(additionalChangelogUuidRequest.getRecordHelper());
-                modificationChangelogs.addUUID(
+                        requireNonNull(additionalChangeLogUuidRequest.getRecordHelper());
+                modificationChangeLogs.addRecordInfo(
                         extraRecordHelper.getRecordIdentifier(),
                         StorageUtils.getCursorLong(cursorAdditionalUuids, APP_INFO_ID_COLUMN_NAME),
                         StorageUtils.getCursorUUID(cursorAdditionalUuids, UUID_COLUMN_NAME));

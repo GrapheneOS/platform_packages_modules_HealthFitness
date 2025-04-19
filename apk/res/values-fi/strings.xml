@@ -372,7 +372,7 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"nikotiinin saanti"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Lukee nikotiinin saannin dataa"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Kirjoittaa dataa nikotiinin saannista"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"Salli sovelluksen “<xliff:g id="APP_NAME">%1$s</xliff:g>” lukea"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Salli <xliff:g id="APP_NAME">%1$s</xliff:g>-sovelluksen lukea"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Salli sovelluksen “<xliff:g id="APP_NAME">%1$s</xliff:g>” kirjoittaa"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Salli"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Salli kaikki"</string>
@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Viennissä (<xliff:g id="DATE">%1$s</xliff:g>) oli ongelma. Ota käyttöön uusi ajoitettu vienti ja yritä uudelleen."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Seuraava vienti: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Seuraava vienti alkaa pian"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Varmuuskopioi"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Varmuuskopioiminen ja palauttaminen"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Edellinen vienti: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Edellinen vienti: nyt"</string>

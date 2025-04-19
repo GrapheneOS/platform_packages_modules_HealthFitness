@@ -34,8 +34,14 @@ public abstract class IntervalRecordInternal<T extends IntervalRecord> extends R
     private long mEndTime;
     private int mEndZoneOffset;
 
-    IntervalRecordInternal() {
-        super();
+    public IntervalRecordInternal() {}
+
+    IntervalRecordInternal(Parcel parcel) {
+        super(parcel);
+        mStartTime = parcel.readLong();
+        mStartZoneOffset = parcel.readInt();
+        mEndTime = parcel.readLong();
+        mEndZoneOffset = parcel.readInt();
     }
 
     public long getStartTimeInMillis() {
@@ -62,16 +68,6 @@ public abstract class IntervalRecordInternal<T extends IntervalRecord> extends R
         parcel.writeInt(mEndZoneOffset);
 
         populateIntervalRecordTo(parcel);
-    }
-
-    @Override
-    void populateRecordFrom(@NonNull Parcel parcel) {
-        mStartTime = parcel.readLong();
-        mStartZoneOffset = parcel.readInt();
-        mEndTime = parcel.readLong();
-        mEndZoneOffset = parcel.readInt();
-
-        populateIntervalRecordFrom(parcel);
     }
 
     Instant getStartTime() {
@@ -136,12 +132,6 @@ public abstract class IntervalRecordInternal<T extends IntervalRecord> extends R
     public long getRecordTime() {
         return getEndTimeInMillis();
     }
-
-    /**
-     * Child class must implement this method and populates itself with the data present in {@param
-     * bundle}. Reads should be in the same order as write
-     */
-    abstract void populateIntervalRecordFrom(@NonNull Parcel parcel);
 
     /**
      * Populate {@param bundle} with the data required to un-bundle self. This is used during IPC

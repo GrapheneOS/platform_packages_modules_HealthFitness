@@ -17,14 +17,20 @@ package com.android.healthconnect.testapps.toolbox
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.testapps.toolbox.read.components.DataTypeDetailsScreen
 import com.android.healthconnect.testapps.toolbox.read.navigation.Screen
+import com.android.healthconnect.testapps.toolbox.viewmodels.DataState
+import com.android.healthconnect.testapps.toolbox.viewmodels.LoadEntriesViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 
 @RunWith(AndroidJUnit4::class)
 class DataTypeDetailsScreenTest {
@@ -32,16 +38,74 @@ class DataTypeDetailsScreenTest {
     @get:Rule val composeTestRule = createComposeRule()
 
     @Test
-    fun checkTitle_isDisplayed(){
+    fun checkTitle_isDisplayed() {
         val dataType = Constants.HealthPermissionType.STEPS
         val dataTypeDetails = Screen.DataTypeDetails(dataType = dataType)
 
+        composeTestRule.setContent { DataTypeDetailsScreen(dataTypeDetails = dataTypeDetails) }
+
+        composeTestRule.onNodeWithText("Steps").assertIsDisplayed()
+    }
+
+    @Test
+    fun onLoadingState_loadingBarIsDisplayed() {
+
+        val mockViewModel = mock<LoadEntriesViewModel>()
+        val dataType = Constants.HealthPermissionType.STEPS
+        val screenState = MutableStateFlow<DataState>(DataState.Loading)
+        mockViewModel.stub { on { entriesState } doReturn screenState }
+
         composeTestRule.setContent {
-            DataTypeDetailsScreen(dataTypeDetails = dataTypeDetails)
+            DataTypeDetailsScreen(
+                dataTypeDetails = Screen.DataTypeDetails(dataType),
+                viewModel = mockViewModel,
+            )
         }
 
-        composeTestRule
-            .onNodeWithText("Steps")
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag("loadingBar").assertExists()
+        composeTestRule.onNodeWithTag("errorMessage").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("recordList").assertDoesNotExist()
+    }
+
+    @Test
+    fun onErrorState_errorMessageIsDisplayed() {
+
+        val mockViewModel = mock<LoadEntriesViewModel>()
+        val dataType = Constants.HealthPermissionType.STEPS
+        val errorMessage = "Test exception"
+        val screenState = MutableStateFlow<DataState>(DataState.Error(Exception(errorMessage)))
+        mockViewModel.stub { on { entriesState } doReturn screenState }
+
+        composeTestRule.setContent {
+            DataTypeDetailsScreen(
+                dataTypeDetails = Screen.DataTypeDetails(dataType),
+                viewModel = mockViewModel,
+            )
+        }
+
+        composeTestRule.onNodeWithTag("loadingBar").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("errorMessage").assertExists()
+        composeTestRule.onNodeWithTag("recordList").assertDoesNotExist()
+        composeTestRule.onNodeWithText(errorMessage).assertExists()
+    }
+
+    @Test
+    fun onSuccessState_recordListIsDisplayed() {
+
+        val mockViewModel = mock<LoadEntriesViewModel>()
+        val dataType = Constants.HealthPermissionType.STEPS
+        val screenState = MutableStateFlow<DataState>(DataState.Success(emptyList()))
+        mockViewModel.stub { on { entriesState } doReturn screenState }
+
+        composeTestRule.setContent {
+            DataTypeDetailsScreen(
+                dataTypeDetails = Screen.DataTypeDetails(dataType),
+                viewModel = mockViewModel,
+            )
+        }
+
+        composeTestRule.onNodeWithTag("loadingBar").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("errorMessage").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("recordList").assertExists()
     }
 }

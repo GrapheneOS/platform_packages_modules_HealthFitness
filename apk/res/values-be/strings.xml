@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Узнікла праблема з экспартам, запланаваным на <xliff:g id="DATE">%1$s</xliff:g>. Наладзьце новы запланаваны экспарт і паўтарыце спробу."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Наступны экспарт запланаваны на <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Наступны экспарт хутка пачнецца"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Рэзервовае капіраванне"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Рэзервовыя копіі і аднаўленне"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Мінулы экспарт выкананы <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Апошняе экспартаванне: толькі што"</string>

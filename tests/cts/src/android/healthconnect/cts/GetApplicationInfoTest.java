@@ -28,7 +28,6 @@ import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
 
 import static com.android.compatibility.common.util.SystemUtil.getEventually;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -48,7 +47,6 @@ import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.platform.test.annotations.AppModeFull;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
@@ -147,7 +145,6 @@ public class GetApplicationInfoTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetApplicationInfo_appCreatesMedicalDataSourceOnly_isInContributingApps()
             throws Exception {
         // Create health fitness data.
@@ -177,7 +174,6 @@ public class GetApplicationInfoTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_PERSONAL_HEALTH_RECORD})
     public void testGetApplicationInfo_appCreatesMedicalDataSourceWithData_isInContributingApps()
             throws Exception {
         // Create health fitness data.

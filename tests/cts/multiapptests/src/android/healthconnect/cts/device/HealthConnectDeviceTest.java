@@ -688,7 +688,7 @@ public class HealthConnectDeviceTest {
     }
 
     @Test
-    public void testGrantingCorrectPermsPutsTheAppInPriorityList() {
+    public void testGrantingCorrectPermsPutsTheAppInPriorityList() throws Exception {
         List<String> oldPriorityList =
                 runWithShellPermissionIdentity(
                         () ->
@@ -717,7 +717,8 @@ public class HealthConnectDeviceTest {
     }
 
     @Test
-    public void testRevokingOnlyOneCorrectPermissionDoesntRemoveAppFromPriorityList() {
+    public void testRevokingOnlyOneCorrectPermissionDoesntRemoveAppFromPriorityList()
+            throws Exception {
         revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
         grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
 
@@ -750,7 +751,7 @@ public class HealthConnectDeviceTest {
     }
 
     @Test
-    public void testRevokingAllCorrectPermissionsRemovesAppFromPriorityList() {
+    public void testRevokingAllCorrectPermissionsRemovesAppFromPriorityList() throws Exception {
         revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
         grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
 
@@ -806,7 +807,7 @@ public class HealthConnectDeviceTest {
     }
 
     @Test
-    public void testAppWithManageHealthDataPermissionCanUpdatePriority() {
+    public void testAppWithManageHealthDataPermissionCanUpdatePriority() throws Exception {
         revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
         revokeHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
 

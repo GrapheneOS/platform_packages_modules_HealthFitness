@@ -47,7 +47,7 @@ public class AlterTableRequestTest {
 
         AlterTableRequest alterTableRequest = new AlterTableRequest(TABLE_NAME, columnInfo);
 
-        assertThat(alterTableRequest.getAlterTableAddColumnsCommands())
+        assertThat(alterTableRequest.getAddColumnsCommands())
                 .containsExactly("ALTER TABLE sample_table ADD COLUMN sample_column_1 INTEGER;");
     }
 
@@ -60,7 +60,7 @@ public class AlterTableRequestTest {
 
         AlterTableRequest alterTableRequest = new AlterTableRequest(TABLE_NAME, columnInfo);
 
-        assertThat(alterTableRequest.getAlterTableAddColumnsCommands())
+        assertThat(alterTableRequest.getAddColumnsCommands())
                 .containsExactly(
                         "ALTER TABLE sample_table ADD COLUMN sample_column_1 INTEGER;",
                         "ALTER TABLE sample_table ADD COLUMN sample_column_2 INTEGER;");
@@ -71,6 +71,6 @@ public class AlterTableRequestTest {
         List<Pair<String, String>> columnInfo = List.of(Pair.create(COLUMN_NAME_1, TEXT_NOT_NULL));
         AlterTableRequest alterTableRequest = new AlterTableRequest(TABLE_NAME, columnInfo);
 
-        assertThrows(SQLException.class, alterTableRequest::getAlterTableAddColumnsCommands);
+        assertThrows(SQLException.class, alterTableRequest::getAddColumnsCommands);
     }
 }

@@ -63,8 +63,6 @@ public final class ParcelRecordConverter {
                     InvocationTargetException {
         Class<? extends RecordInternal<?>> recordClass = mDataTypeClassMap.get(type);
         Objects.requireNonNull(recordClass);
-        RecordInternal<?> recordInternal = recordClass.getConstructor().newInstance();
-        recordInternal.populateUsing(parcel);
-        return recordInternal;
+        return recordClass.getConstructor(Parcel.class).newInstance(parcel);
     }
 }

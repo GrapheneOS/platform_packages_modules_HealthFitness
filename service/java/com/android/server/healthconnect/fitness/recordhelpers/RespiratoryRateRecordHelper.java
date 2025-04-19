@@ -48,9 +48,9 @@ public final class RespiratoryRateRecordHelper
     }
 
     @Override
-    void populateSpecificRecordValue(
-            Cursor cursor, RespiratoryRateRecordInternal respiratoryRateRecord) {
-        respiratoryRateRecord.setRate(getCursorDouble(cursor, RATE_COLUMN_NAME));
+    RespiratoryRateRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new RespiratoryRateRecordInternal()
+                .setRate(getCursorDouble(cursor, RATE_COLUMN_NAME));
     }
 
     @Override

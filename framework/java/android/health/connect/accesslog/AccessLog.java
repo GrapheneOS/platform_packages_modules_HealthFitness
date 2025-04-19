@@ -20,7 +20,6 @@ import static android.health.connect.datatypes.MedicalResource.validateMedicalRe
 import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
-import static com.android.healthfitness.flags.Flags.personalHealthRecord;
 
 import static java.util.Objects.requireNonNull;
 
@@ -105,10 +104,6 @@ public final class AccessLog implements Parcelable {
             @OperationType.OperationTypes int operationType,
             @NonNull @MedicalResourceType Set<Integer> medicalResourceTypes,
             boolean isMedicalDataSourceAccessed) {
-        if (!personalHealthRecord()) {
-            throw new UnsupportedOperationException(
-                    "Constructing AccessLog for medical data is not supported");
-        }
         requireNonNull(packageName);
         OperationType.validateOperationType(operationType);
         requireNonNull(medicalResourceTypes);
@@ -133,13 +128,11 @@ public final class AccessLog implements Parcelable {
         mPackageName = requireNonNull(in.readString());
         mAccessTime = Instant.ofEpochMilli(in.readLong());
         mOperationType = in.readInt();
-        if (personalHealthRecord()) {
-            int[] medicalResourceTypes = requireNonNull(in.createIntArray());
-            for (@MedicalResourceType int medicalResourceType : medicalResourceTypes) {
-                mMedicalResourceTypes.add(medicalResourceType);
-            }
-            mIsMedicalDataSourceAccessed = in.readBoolean();
+        int[] medicalResourceTypes = requireNonNull(in.createIntArray());
+        for (@MedicalResourceType int medicalResourceType : medicalResourceTypes) {
+            mMedicalResourceTypes.add(medicalResourceType);
         }
+        mIsMedicalDataSourceAccessed = in.readBoolean();
     }
 
     @NonNull
@@ -250,10 +243,7 @@ public final class AccessLog implements Parcelable {
         dest.writeString(mPackageName);
         dest.writeLong(mAccessTime.toEpochMilli());
         dest.writeInt(mOperationType);
-        if (personalHealthRecord()) {
-            dest.writeIntArray(
-                    mMedicalResourceTypes.stream().mapToInt(Integer::intValue).toArray());
-            dest.writeBoolean(mIsMedicalDataSourceAccessed);
-        }
+        dest.writeIntArray(mMedicalResourceTypes.stream().mapToInt(Integer::intValue).toArray());
+        dest.writeBoolean(mIsMedicalDataSourceAccessed);
     }
 }

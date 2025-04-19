@@ -114,10 +114,9 @@ public final class BasalMetabolicRateRecordHelper
     }
 
     @Override
-    protected void populateSpecificRecordValue(
-            Cursor cursor, BasalMetabolicRateRecordInternal recordInternal) {
-        recordInternal.setBasalMetabolicRate(
-                getCursorDouble(cursor, BASAL_METABOLIC_RATE_COLUMN_NAME));
+    protected BasalMetabolicRateRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        return new BasalMetabolicRateRecordInternal()
+                .setBasalMetabolicRate(getCursorDouble(cursor, BASAL_METABOLIC_RATE_COLUMN_NAME));
     }
 
     @Override

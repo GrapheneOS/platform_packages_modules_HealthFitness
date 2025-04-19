@@ -386,7 +386,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se o app tiver permissão de leitura, ele poderá acessar dados novos e antigos"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse a plataforma Conexão Saúde?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse dados de fitness e bem-estar?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Leia a <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> do app <xliff:g id="APP_NAME">%1$s</xliff:g> para saber como ele trata seus dados"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Leia a <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> do <xliff:g id="APP_NAME">%1$s</xliff:g> para saber como esse app trata seus dados"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"política de privacidade"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse seus históricos de saúde?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Se você conceder acesso, o app poderá ler e gravar dados, como alergias, resultados de laboratório, vacinas e muito mais\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Ocorreu um problema na exportação de <xliff:g id="DATE">%1$s</xliff:g>. Defina uma nova exportação agendada e tente de novo."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Próxima exportação: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"A próxima exportação vai começar em breve"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Backup"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Backup e restauração"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Última exportação: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Última exportação: agora"</string>

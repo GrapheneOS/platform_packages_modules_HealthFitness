@@ -480,6 +480,7 @@
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Nagkaproblema sa pag-export para sa <xliff:g id="DATE">%1$s</xliff:g>. Mag-set up ng bagong nakaiskedyul na pag-export at subukan ulit."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Susunod na pag-export: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Malapit nang magsimula ang susunod na pag-export"</string>
+    <string name="cloud_backup_option" msgid="2602990573804189525">"Backup"</string>
     <string name="backup_and_restore_settings_screen_title" msgid="5391086732955348809">"Pag-back up at pag-restore"</string>
     <string name="last_export_time" msgid="9205875050823594041">"Huling pag-export: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="last_export_time_now" msgid="31498024135933750">"Huling pag-export: ngayon"</string>

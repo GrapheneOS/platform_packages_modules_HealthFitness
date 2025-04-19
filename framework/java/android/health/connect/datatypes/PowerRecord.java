@@ -303,17 +303,15 @@ public final class PowerRecord extends IntervalRecord {
     /** @hide */
     @Override
     public PowerRecordInternal toRecordInternal() {
-        PowerRecordInternal recordInternal =
-                (PowerRecordInternal) new PowerRecordInternal().setMetaData(getMetadata());
         Set<PowerRecordInternal.PowerRecordSample> samples = new HashSet<>(getSamples().size());
-
         for (PowerRecord.PowerRecordSample powerRecordSample : getSamples()) {
             samples.add(
                     new PowerRecordInternal.PowerRecordSample(
                             powerRecordSample.getPower().getInWatts(),
                             powerRecordSample.getTime().toEpochMilli()));
         }
-        recordInternal.setSamples(samples);
+        PowerRecordInternal recordInternal =
+                (PowerRecordInternal) new PowerRecordInternal(samples).setMetaData(getMetadata());
         recordInternal.setTimeInterval(this);
 
         return recordInternal;

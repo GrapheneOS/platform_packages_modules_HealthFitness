@@ -48,7 +48,6 @@ import android.os.UserHandle;
 import android.util.Pair;
 import android.util.Slog;
 
-import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -137,23 +136,20 @@ public final class AccessLogsHelper extends DatabaseHelper {
                     accessLogsList.add(
                             new AccessLog(packageName, recordTypes, accessTime, operationType));
                 }
-                if (AconfigFlagHelper.isPersonalHealthRecordEnabled()) {
-                    @MedicalResourceType
-                    List<Integer> medicalResourceTypes =
-                            getCursorIntegerList(
-                                    cursor, MEDICAL_RESOURCE_TYPE_COLUMN_NAME, DELIMITER);
-                    boolean isMedicalDataSource =
-                            getCursorInt(cursor, MEDICAL_DATA_SOURCE_ACCESSED_COLUMN_NAME)
-                                    == BOOLEAN_TRUE_VALUE;
-                    if (!medicalResourceTypes.isEmpty() || isMedicalDataSource) {
-                        accessLogsList.add(
-                                new AccessLog(
-                                        packageName,
-                                        accessTime,
-                                        operationType,
-                                        new HashSet<>(medicalResourceTypes),
-                                        isMedicalDataSource));
-                    }
+                @MedicalResourceType
+                List<Integer> medicalResourceTypes =
+                        getCursorIntegerList(cursor, MEDICAL_RESOURCE_TYPE_COLUMN_NAME, DELIMITER);
+                boolean isMedicalDataSource =
+                        getCursorInt(cursor, MEDICAL_DATA_SOURCE_ACCESSED_COLUMN_NAME)
+                                == BOOLEAN_TRUE_VALUE;
+                if (!medicalResourceTypes.isEmpty() || isMedicalDataSource) {
+                    accessLogsList.add(
+                            new AccessLog(
+                                    packageName,
+                                    accessTime,
+                                    operationType,
+                                    new HashSet<>(medicalResourceTypes),
+                                    isMedicalDataSource));
                 }
             }
         }
