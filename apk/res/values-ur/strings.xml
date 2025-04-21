@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"آف ہے"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"جب آپ ان ترتیبات کو تبدیل کرتے ہیں تو Health Connect ایپ آپ کی نئی ترجیحات کی عکاسی کرنے کے لیے موجودہ ڈیٹا کو حذف کر دیتی ہے"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# ماہ بعد ڈیٹا کو خودکار طور پر حذف کریں؟}other{# ماہ بعد ڈیٹا کو خودکار طور پر حذف کریں؟}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{اس سے # ماہ سے زیادہ پرانا ڈیٹا Health Connect سے حذف ہو جاتا ہے۔\n\nاگر آپ اپنے منسلک ایپس سے مکمل طور پر ڈیٹا حذف کرنا چاہتے ہیں تو ہر ایپ کو جہاں بھی آپ کا ڈیٹا محفوظ ہو سکتا ہے چیک کریں۔}other{اس سے # ماہ سے زیادہ پرانا ڈیٹا Health Connect سے حذف ہو جاتا ہے۔\n\nاگر آپ اپنے منسلک ایپس سے مکمل طور پر ڈیٹا حذف کرنا چاہتے ہیں تو ہر ایپ کو جہاں بھی آپ کا ڈیٹا محفوظ ہو سکتا ہے چیک کریں۔}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{اس سے # ماہ سے زیادہ پرانا ڈیٹا Health Connect سے حذف ہو جاتا ہے۔\n\nاگر آپ اپنی منسلک ایپس سے مکمل طور پر ڈیٹا حذف کرنا چاہتے ہیں تو ہر ایپ کو جہاں بھی آپ کا ڈیٹا محفوظ ہو سکتا ہے چیک کریں۔}other{اس سے # ماہ سے زیادہ پرانا ڈیٹا Health Connect سے حذف ہو جاتا ہے۔\n\nاگر آپ اپنی منسلک ایپس سے مکمل طور پر ڈیٹا حذف کرنا چاہتے ہیں تو ہر ایپ کو جہاں بھی آپ کا ڈیٹا محفوظ ہو سکتا ہے چیک کریں۔}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"خودکار طور پر حذف کرنا سیٹ کریں"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"موجودہ ڈیٹا حذف کر دیا جائے گا"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{‫Health Connect ایپ # ماہ سے زیادہ پرانا سبھی ڈیٹا حذف کر دے گی۔ آپ کی منسلک ایپس میں ان تبدیلیوں کے ظاہر ہونے میں ایک دن لگ سکتا ہے۔}other{‫Health Connect ایپ # ماہ سے زیادہ پرانا سبھی ڈیٹا حذف کر دے گی۔ آپ کی منسلک ایپس میں ان تبدیلیوں کے ظاہر ہونے میں ایک دن لگ سکتا ہے۔}}"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"‫Health Connect کو Android سسٹم کے ساتھ ضم کیا جا رہا ہے تاکہ آپ اسے اپنی ترتیبات سے براہ راست رسائی حاصل کر سکیں۔"</string>
     <string name="update_button" msgid="4544529019832009496">"اپ ڈیٹ کریں"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"اس اپ ڈیٹ کو شروع کریں تاکہ Health Connect کا آپ کے سسٹم کی ترتیبات کے ساتھ ضم ہونا جاری رہے"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"سسٹم اپ ڈیٹ درکار ہے"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"جاری رکھنے سے پہلے، اپنے فون سسٹم کو اپ ڈیٹ کریں۔"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"اگر آپ پہلے ہی اپنے فون سسٹم کو اپ ڈیٹ کر چکے ہیں تو انضمام جاری رکھنے کے لیے اپنے فون کو ری سٹارٹ کرنے کی کوشش کریں"</string>

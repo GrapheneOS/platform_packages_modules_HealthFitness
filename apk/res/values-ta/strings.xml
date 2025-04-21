@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Android சிஸ்டத்துடன் Health Connect ஒருங்கிணைக்கப்படுவதால், உங்கள் அமைப்புகளில் இருந்து அதை நேரடியாக அணுகலாம்."</string>
     <string name="update_button" msgid="4544529019832009496">"புதுப்பி"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"இந்தப் புதுப்பிப்பைத் தொடங்குங்கள். இதனால், உங்கள் சிஸ்டம் அமைப்புகளுடன் Health Connect ஆப்ஸால் தொடர்ந்து ஒருங்கிணைக்க முடியும்"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"சிஸ்டம் புதுப்பிப்பு தேவை"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"தொடர்வதற்கு முன்பு, உங்கள் மொபைல் சிஸ்டத்தைப் புதுப்பியுங்கள்."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"உங்கள் மொபைல் சிஸ்டத்தை ஏற்கெனவே புதுப்பித்திருந்தால், ஒருங்கிணைப்பைத் தொடர உங்கள் மொபைலை மீண்டும் தொடங்கிப் பாருங்கள்"</string>

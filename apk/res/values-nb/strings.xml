@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect integreres med Android-systemet, slik at du kan gå til den direkte fra innstillingene."</string>
     <string name="update_button" msgid="4544529019832009496">"Oppdater"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Start denne oppdateringen, slik at Health Connect kan fortsette integreringen med systeminnstilingene dine"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Systemet må oppdateres"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Du må oppdatere telefonsystemet før du fortsetter."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Hvis du har oppdatert systemet på telefonen allerede, bør du prøve å starte telefonen på nytt for å fortsette integreringen"</string>

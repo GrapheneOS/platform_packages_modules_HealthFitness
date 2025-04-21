@@ -375,7 +375,7 @@
     <string name="read_permission_category" msgid="6002099618259628632">"Παροχή στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” του δικαιώματος ανάγνωσης"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Να επιτρέπεται στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” να γράφει"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Αποδοχή"</string>
-    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Να επιτρέπονται όλες"</string>
+    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Αποδοχή όλων"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Να μην επιτρέπεται"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Επιλέξτε τα δεδομένα που θέλετε να διαβάζει ή να γράφει αυτή η εφαρμογή στο Health Connect"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Επιλέξτε τα δεδομένα που θέλετε να διαβάζει αυτή η εφαρμογή από το Health Connect"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Γίνεται ενσωμάτωση του Health Connect με το σύστημα Android, έτσι ώστε να μπορείτε να αποκτήσετε πρόσβαση σε αυτό απευθείας από τις ρυθμίσεις σας."</string>
     <string name="update_button" msgid="4544529019832009496">"Ενημέρωση"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Ξεκινήστε αυτή την ενημέρωση, έτσι ώστε το Health Connect να συνεχίσει την ενσωμάτωση με τις ρυθμίσεις συστήματός σας"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Απαιτείται ενημέρωση συστήματος"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Πριν συνεχίσετε, ενημερώστε το σύστημα του τηλεφώνου σας."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Αν έχετε ενημερώσει ήδη το σύστημα του τηλεφώνου σας, δοκιμάστε να επανεκκινήσετε το τηλέφωνό σας για να συνεχίσει την ενσωμάτωση"</string>

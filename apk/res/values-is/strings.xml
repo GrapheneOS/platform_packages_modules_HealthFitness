@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Verið er að samþætta Heilsutengingu og Android-kerfið svo þú getir opnað forritið beint úr stillingunum."</string>
     <string name="update_button" msgid="4544529019832009496">"Uppfæra"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Uppfærðu núna svo samþætting Heilsutengingar og kerfisstillinga geti haldið áfram"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Kerfisuppfærslu krafist"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Uppfærðu kerfi símans áður en þú heldur áfram."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ef þú hefur þegar uppfært kerfi símans skaltu prófa að endurræsa símann til að halda samþættingunni áfram"</string>

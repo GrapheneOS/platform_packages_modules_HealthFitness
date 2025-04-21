@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect Android sisteman integratzen ari da, ezarpenetatik zuzenean erabili ahal izan dezazun."</string>
     <string name="update_button" msgid="4544529019832009496">"Eguneratu"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Hasi eguneratzen, Health Connect-ek zure sistemaren ezarpenekin integratzen jarrai dezan"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Sistema eguneratu egin behar da"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Aurrera egin aurretik, eguneratu telefonoak darabilen sistema."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Telefonoak darabilen sistema dagoeneko eguneratu baduzu, berrabiarazi telefonoa integrazio-prozesuari berrekiteko"</string>

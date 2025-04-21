@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Trwa integracja Health Connect z systemem Android, więc możesz korzystać z tej aplikacji bezpośrednio przez ustawienia."</string>
     <string name="update_button" msgid="4544529019832009496">"Zaktualizuj"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Rozpocznij aktualizację, aby kontynuować integrowanie Health Connect z ustawieniami systemu"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Wymagana aktualizacja systemu"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Zanim przejdziesz dalej, zaktualizuj system telefonu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jeśli system telefonu został już zaktualizowany, uruchom telefon ponownie, aby kontynuować integrację"</string>
@@ -1114,7 +1116,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Aktualizuj teraz"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Suma danych"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Źródła aplikacji"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Dodawaj źródła aplikacji do listy, aby widzieć, jak zmieniają się sumy danych. Usunięcie aplikacji z tej listy zatrzyma jej podliczanie w sumie danych, ale wciąż będzie mieć uprawnienia do zapisu."</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Dodawaj źródła aplikacji do listy, aby widzieć, jak zmieniają się sumy danych. Usunięcie aplikacji z tej listy zatrzyma jej podliczanie w sumie danych, ale wciąż będzie ona mieć uprawnienia do zapisu."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Brak źródeł aplikacji"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kiedy nadasz aplikacji uprawnienia do zapisywania danych z kategorii <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, źródła pojawią się tutaj."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Jak działają priorytety źródeł"</string>

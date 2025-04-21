@@ -48,7 +48,7 @@
     <string name="settings_medical_permissions" msgid="4621535972501674863">"Повезивање здравља"</string>
     <string name="backup_title" msgid="211503191266235085">"Резервна копија"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Извори података и приоритет"</string>
-    <string name="set_units_title" msgid="2657822539603758029">"Подеси јединице"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Подешавање јединица"</string>
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"Подешавања"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"Управљајте подацима"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Извоз и увоз података"</string>
@@ -556,7 +556,7 @@
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Нема доступних апликација. Инсталирајте апликације за простор у клауду да бисте их видели овде"</string>
     <string name="export_import_install_apps_text" msgid="5026922993254770904">"Ако желите додатне опције, инсталирајте апликације за простор у клауду да бисте их видели овде"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Иди у Play продавницу"</string>
-    <string name="onboarding_title" msgid="8550656211291180188">"Започните са Пове­­­U+00ADзивањем здравља"</string>
+    <string name="onboarding_title" msgid="8550656211291180188">"Започните са Пове­­­зивањем здравља"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Повезивање здравља чува ваше податке о здрављу и фитнесу и пружа вам једноставан начин да синхронизујете различите апликације на уређају"</string>
     <string name="onboarding_description_health_records" msgid="6586657048844511252">"Повезивање здравља чува и синхронизује податке о здрављу и фитнесу из различитих апликација.\n\n"<b>"Подаци о фитнесу и здрављу,"</b>" укључујући сесије вежбања, број корака, исхрану, спавање и друго\n\n"<b>"Здравствена евиденција,"</b>" укључујући вакцинације, лабораторијске резултате и друго"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Помоћу Повезивања здравља:"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Повезивање здравља се интегрише са Android системом да бисте могли директно да му приступате из подешавања."</string>
     <string name="update_button" msgid="4544529019832009496">"Ажурирај"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Започните ово ажурирање да би Повезивање здравља могло да настави интеграцију са подешавањима система"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Потребно је ажурирање система"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Пре него што наставите, ажурирајте систем телефона."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ако сте већ ажурирали систем телефона, пробајте да рестартујете телефон како бисте наставили интеграцију"</string>

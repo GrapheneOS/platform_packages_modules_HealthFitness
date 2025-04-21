@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"يتم دمج تطبيق Health Connect حاليًا مع نظام Android لتتمكّن من الوصول إليه مباشرةً من خلال الإعدادات."</string>
     <string name="update_button" msgid="4544529019832009496">"تحديث"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"يُرجى بدء تنزيل هذا التحديث ليتمكّن تطبيق Health Connect من مواصلة عملية الدمج مع إعدادات النظام."</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"يجب تحديث النظام"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"قبل المتابعة، يُرجى تحديث نظام الهاتف."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"إذا سبق لك تحديث نظام الهاتف، جرِّب إعادة تشغيل الهاتف لمواصلة عملية الدمج."</string>

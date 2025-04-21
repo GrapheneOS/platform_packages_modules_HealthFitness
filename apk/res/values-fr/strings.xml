@@ -378,15 +378,15 @@
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Tout autoriser"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Ne pas autoriser"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Sélectionnez les données que cette appli pourra lire ou écrire dans Santé Connect"</string>
-    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Sélectionnez les données que vous voulez autoriser cette appli à lire dans Santé Connect."</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Sélectionnez les données que vous voulez autoriser cette appli à lire dans Santé Connect"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Sélectionnez les données que vous voulez autoriser cette appli à écrire dans Santé Connect."</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Sélectionnez les données que cette appli pourra lire ou écrire dans Santé Connect"</string>
-    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Sélectionnez les données que vous voulez autoriser cette appli à lire dans Santé Connect."</string>
+    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Sélectionnez les données que vous voulez autoriser cette appli à lire dans Santé Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Si vous lui donnez accès en lecture, l\'appli pourra lire les nouvelles données et celles des 30 derniers jours"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Si vous lui donnez accès en lecture, l\'appli pourra lire les anciennes et les nouvelles données"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à Santé Connect ?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à vos données de fitness et de bien-être ?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Consultez les <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> de l\'application <xliff:g id="APP_NAME">%1$s</xliff:g> pour découvrir comment elle gère vos données"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Découvrez comment <xliff:g id="APP_NAME">%1$s</xliff:g> traite vos données en consultant les <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"règles de confidentialité"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à votre dossier médical ?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Si vous lui accordez l\'accès, l\'application pourra consulter et ajouter des données sur les allergies, les résultats d\'analyses, les vaccins, etc.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -430,7 +430,7 @@
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g> : <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Code source détaillé : <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Les applis ayant cette autorisation peuvent lire et écrire vos données de santé et de remise en forme."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Contrôlez les applis autorisées à accéder aux données stockées dans Santé Connect. Appuyez sur une appli pour consulter les données qu\'elle peut lire ou modifier."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Contrôlez les applis autorisées à accéder aux données stockées dans Santé Connect. Appuyez sur une appli pour consulter les données qu\'elle peut lire ou consigner."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Accès autorisé"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Accès non autorisé"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Mise à jour nécessaire"</string>
@@ -558,9 +558,9 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Accéder au Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Premiers pas avec Santé Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Santé Connect stocke vos données de santé et de remise en forme, et vous permet de synchroniser facilement les différentes applis de votre appareil"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Santé Connect stocke et synchronise vos données de santé et de remise en forme issues de différentes applications.\n\n"<b>"Les données de fitness et bien-être,"</b>" y compris les séances d\'exercice, le nombre de pas, les informations sur la nutrition et le sommeil, etc.\n\n"<b>"Les dossiers médicaux,"</b>" y compris les vaccins, les résultats d\'analyses et plus encore."</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Santé Connect stocke et synchronise vos données de santé et de remise en forme issues de différentes applications.\n\n"<b>"Les données de fitness et bien-être"</b>" incluent les séances d\'exercice, le nombre de pas, les informations sur la nutrition et le sommeil, etc.\n\n"<b>"Les dossiers médicaux"</b>"incluent les vaccins, les résultats d\'analyses et plus encore."</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Avec Santé Connect, vous pouvez :"</string>
-    <string name="share_data_text" msgid="6898398345784931678"><b>"Partager des données avec vos applis"</b>\n"Choisissez quels données chaque appli peut consulter ou modifier dans Santé Connect"</string>
+    <string name="share_data_text" msgid="6898398345784931678"><b>"Partager des données avec vos applis"</b>\n"Choisissez les données que chaque appli peut consulter ou consigner dans Santé Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gérer vos paramètres et votre confidentialité"</b>\n"Modifiez les autorisations de l\'application et gérez vos données à tout moment"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Retour"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Commencer"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Santé Connect est en cours d\'intégration au système Android afin que vous puissiez y accéder directement depuis les paramètres."</string>
     <string name="update_button" msgid="4544529019832009496">"Mettre à jour"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Lancez cette mise à jour pour continuer l\'intégration de Santé Connect à vos paramètres système"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Mise à jour du système nécessaire"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Mettez à jour le système de votre téléphone avant de continuer."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si vous avez déjà mis à jour le système du téléphone, essayez de le redémarrer pour continuer l\'intégration"</string>
@@ -1116,8 +1118,8 @@
     <string name="app_sources_header" msgid="6343062519512947665">"Sources d\'applications"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Ajoutez des sources d\'applications à la liste pour voir comment les totaux de données peuvent changer. Supprimer une application de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours d\'autorisations d\'écriture."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Aucune source d\'application"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Une fois que vous aurez autorisé des applications à écrire des données <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, des sources s\'afficheront ici."</string>
-    <string name="data_sources_help_link" msgid="7740264923634947915">"Fonctionnement de la priorisation des sources"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Une fois que vous aurez autorisé des applications à consigner des données <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, les sources s\'afficheront ici."</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Fonctionnement des sources et des priorités"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Ajouter une application"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Modifier les sources d\'application"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Paramètre par défaut"</string>

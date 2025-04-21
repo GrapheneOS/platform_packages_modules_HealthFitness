@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect, Android sistemiyle entegre edildiği için bu uygulamaya doğrudan ayarlarınızdan erişebilirsiniz."</string>
     <string name="update_button" msgid="4544529019832009496">"Güncelle"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Health Connect\'in sistem ayarlarınızla entegre edilmeye devam etmesi için bu güncellemeyi başlatın"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Sistem güncellemesi gerekli"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Devam etmeden önce telefon sisteminizi güncelleyin."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Telefon sisteminizi daha önce güncellediyseniz entegrasyona devam etmek için telefonunuzu yeniden başlatmayı deneyin"</string>

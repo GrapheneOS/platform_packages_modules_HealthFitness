@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"È in corso l\'integrazione di Connessione Salute nel sistema Android, così potrai accedere all\'app direttamente dalle tue impostazioni."</string>
     <string name="update_button" msgid="4544529019832009496">"Aggiorna"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Avvia questo aggiornamento, in modo che l\'integrazione nelle tue impostazioni di sistema di Connessione Salute possa continuare"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Aggiornamento di sistema richiesto"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prima di continuare, aggiorna il sistema del tuo telefono."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Se hai già aggiornato il sistema del tuo telefono, prova a riavviare il dispositivo per continuare con l\'integrazione"</string>

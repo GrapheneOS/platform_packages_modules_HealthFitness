@@ -53,7 +53,7 @@
     <string name="manage_data_category_title" msgid="6328886061582616519">"Gegevens beheren"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Gegevens exporteren en importeren"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Recente toegang"</string>
-    <string name="no_recent_access" msgid="4724297929902441784">"Er zijn geen apps die recent toegang tot Health Connect hebben gehad"</string>
+    <string name="no_recent_access" msgid="4724297929902441784">"Geen apps hebben recent toegang gehad tot Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Alle recente toegangsacties bekijken"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Bekijk welke apps in de afgelopen 24 uur toegang hebben gehad tot je gegevens"</string>
     <string name="today_header" msgid="1006837293203834373">"Vandaag"</string>
@@ -386,7 +386,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Als je leestoegang geeft, kan de app nieuwe en eerdere gegevens lezen"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot eerdere fitness- en welzijnsgegevens?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"In het <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> van <xliff:g id="APP_NAME">%1$s</xliff:g> staat de app omgaat met je gegevens."</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"In het <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> van <xliff:g id="APP_NAME">%1$s</xliff:g> staat hoe de app omgaat met je gegevens"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privacybeleid"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot je medische dossiers?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Als je toegang geeft, kan de app gegevens lezen en schrijven, zoals allergieën, labresultaten en vaccinaties\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -490,7 +490,7 @@
     <string name="last_export_file_location" msgid="4069435932524304633">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
     <string name="scheduled_export" msgid="8737660963687364370">"Geplande export"</string>
     <string name="import_data" msgid="404502315533233094">"Gegevens importeren"</string>
-    <string name="import_data_description" msgid="4040178599441724296">"Herstel gegevens uit een eerder geëxporteerd bestand"</string>
+    <string name="import_data_description" msgid="4040178599441724296">"Herstel gegevens vanaf een eerder geëxporteerd bestand"</string>
     <string name="import_error_banner_title" msgid="1480977889067027790">"Kan gegevens niet herstellen"</string>
     <string name="import_wrong_file_error_banner_button" msgid="1518043363477255045">"Bestand kiezen"</string>
     <string name="import_wrong_file_error_banner_summary" msgid="4857514343099050126">"Het geselecteerde bestand is niet compatibel voor herstellen. Selecteer het juiste geëxporteerde bestand."</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect wordt geïntegreerd met het Android-systeem zodat je er direct vanuit je instellingen toegang toe hebt."</string>
     <string name="update_button" msgid="4544529019832009496">"Updaten"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Start deze update zodat de integratie van Health Connect met je systeeminstellingen kan worden voortgezet"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Systeemupdate nodig"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Update je telefoonsysteem voordat je doorgaat."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Heb je je telefoonsysteem al geüpdatet, start je telefoon dan opnieuw op om door te gaan met de integratie"</string>
