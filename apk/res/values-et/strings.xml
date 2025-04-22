@@ -53,7 +53,7 @@
     <string name="manage_data_category_title" msgid="6328886061582616519">"Andmete haldamine"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Andmete eksportimine ja importimine"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Hiljutine juurdepääs"</string>
-    <string name="no_recent_access" msgid="4724297929902441784">"Rakendusele Health Connect pole hiljuti ükski rakendus juurde pääsenud"</string>
+    <string name="no_recent_access" msgid="4724297929902441784">"Rakendusele Health Connect pole hiljuti ükski rakendus juurde pääsenud."</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Kuva kõik hiljutised juurdepääsemised"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Vaadake, millised rakendused on teie andmetele viimase 24 tunni jooksul juurde pääsenud."</string>
     <string name="today_header" msgid="1006837293203834373">"Täna"</string>
@@ -456,7 +456,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Lugege privaatsuseeskirju"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Pääseti juurde viimase 24 tunni jooksul"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Rakenduste juurdepääs"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Ühilduvaid rakendusi pole installitud"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Ühilduvaid rakendusi pole installitud."</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Täiendav juurdepääs"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Varasemad andmed, taustaandmed"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Selle rakenduse lisaload eemaldati"</string>
@@ -498,7 +498,7 @@
     <string name="import_version_mismatch_error_banner_summary" msgid="6165550114170534795">"Värskendage oma süsteemi, et Health Connect saaks teie andmed taastada, seejärel proovige uuesti."</string>
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"Proovige uuesti"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"Teie ekspordist andmete taastamisel ilmnes probleem."</string>
-    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Eksportimine võimaldab teil andmeid salvestada, et saaksite need uude telefoni üle viia"</string>
+    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Eksportimine võimaldab teil andmeid salvestada, et saaksite need uude telefoni üle viia."</string>
     <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"Varundamise ja taastamise teave"</string>
     <string name="automatic_export_status" msgid="4407131306281440230">"<xliff:g id="EXPORT_ON_OR_OFF">%1$s</xliff:g> • <xliff:g id="EXPORT_FREQUENCY">%2$s</xliff:g>"</string>
     <string name="automatic_export_on" msgid="6972389773963624315">"Sees"</string>
@@ -508,16 +508,16 @@
     <string name="choose_frequency_category" msgid="9094154407387676553">"Sageduse muutmine"</string>
     <string name="scheduled_export_settings_footer_text" msgid="8488483803782086291">"Kui lülitate ajastatud eskportimise välja, ei kustutata varem eksporditud andmeid kohtadest, kuhu need salvestati"</string>
     <string name="choose_frequency" msgid="8119085390857180221">"Ajastatud eksportimise seadistamine"</string>
-    <string name="choose_frequency_description" msgid="7698155810053504157">"Valige, kui tihti soovite oma andmeid eksportida"</string>
+    <string name="choose_frequency_description" msgid="7698155810053504157">"Valige, kui tihti soovite oma andmeid eksportida."</string>
     <string name="frequency_daily" msgid="3596412357416125727">"Iga päev"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"Iga nädal"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"Iga kuu"</string>
-    <string name="export_destination_title" msgid="8352929396306002479">"Valige ajast. eksportimise salvestuskoht"</string>
+    <string name="export_destination_title" msgid="8352929396306002479">"Valige ajastatud eksportimise salvestuskoht"</string>
     <string name="export_invalid_storage" msgid="1459055934301871321">"Valige oma andmete eksportimiseks pilvepõhise salvestusruumi rakendus"</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
     <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"Kas importida see fail?"</string>
-    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> imporditakse rakendusse Health Connect"</string>
+    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> imporditakse rakendusse Health Connect."</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"Tühista"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"Impordi"</string>
     <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"Health Connecti taastamine on pooleli"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect integreeritakse Androidi süsteemiga ning saate juurdepääsu Health Connectile otse seadete kaudu."</string>
     <string name="update_button" msgid="4544529019832009496">"Värskenda"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Alustage värskendusega, et Health Connect integreeruks teie süsteemiseadetega"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Vajalik on süsteemivärskendus"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Enne jätkamist värskendage oma telefonisüsteemi."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Kui olete oma telefonile juba süsteemivärskenduse teinud, proovige integratsiooni jätkamiseks oma telefon taaskäivitada."</string>
@@ -1113,8 +1115,8 @@
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Enne andmete taastamise jätkamist värskendage oma telefonisüsteemi."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Värskenda kohe"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Koguandmed"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Rakendusallikad"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Lisage loendisse rakendusallikad, et vaadata, kuidas andmete koguväärtused muutuda võivad. Kui eemaldate rakenduse sellest loendist, ei lisa see enam oma andmeid koguandmete hulka, kuid selle kirjutusload võivad säilida."</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Rakenduseallikad"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Lisage loendisse rakenduseallikad, et vaadata, kuidas andmete koguväärtused muutuda võivad. Kui eemaldate rakenduse sellest loendist, ei lisa see enam oma andmeid koguandmete hulka, kuid selle kirjutusload võivad säilida."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Rakendusallikaid ei ole"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Kui annate rakendusele loa kirjutada kategooria <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> andmeid, kuvatakse siin allikad."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Kuidas toimivad allikad ja prioriteetsus?"</string>
@@ -1126,7 +1128,7 @@
     <string name="remove" msgid="1340423400489007362">"Eemalda"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Rakenduse andmed"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Rakenduse <xliff:g id="APP_NAME">%1$s</xliff:g> andmed kuvatakse siin"</string>
-    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Nende rakenduste andmed, millel on juurdepääs teenusele Health Connect, kuvatakse siin"</string>
+    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Nende rakenduste andmed, millel on juurdepääs teenusele Health Connect, kuvatakse siin."</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Päev"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Nädal"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"Kuu"</string>

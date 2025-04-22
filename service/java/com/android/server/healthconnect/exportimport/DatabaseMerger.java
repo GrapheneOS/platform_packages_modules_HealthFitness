@@ -155,14 +155,12 @@ public final class DatabaseMerger {
         // stagedDatabase exists on the targetDatabase, we ignore the one in stagedDatabase.
         // TODO(b/376645901): Verify that there's no timeout with large datasets on actual
         // devices.
-        if (Flags.personalHealthRecordEnableD2dAndExportImport()) {
-            Slog.i(TAG, "Merging PHR data");
-            try {
-                mergePhrContent(stagedDatabase.getReadableDatabase());
-            } catch (Exception e) {
-                Slog.e(TAG, "Failed to transfer PHR data from staged database", e);
+        Slog.i(TAG, "Merging PHR data");
+        try {
+            mergePhrContent(stagedDatabase.getReadableDatabase());
+        } catch (Exception e) {
+            Slog.e(TAG, "Failed to transfer PHR data from staged database", e);
             }
-        }
 
         Slog.i(TAG, "Merging records");
 

@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect қолданбасы Android жүйесімен біріктіріліп жатыр, сондықтан қолданбаны тікелей параметрлерден пайдалана аласыз."</string>
     <string name="update_button" msgid="4544529019832009496">"Жаңарту"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Жаңартуды бастасаңыз, Health Connect қолданбасын жүйе параметрлерімен біріктіру процесін жалғастыра аласыз."</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Жүйені жаңарту қажет"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Жалғастырмас бұрын, телефондағы операциялық жүйені жаңартыңыз."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Телефондағы операциялық жүйені жаңартып қойсаңыз, біріктіру процесін жалғастыру үшін телефонды өшіріп, сосын қосып көріңіз."</string>

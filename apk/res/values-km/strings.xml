@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect កំពុងត្រូវបានរួមបញ្ចូល​ជាមួយប្រព័ន្ធ Android ដើម្បីឱ្យអ្នកអាច​ចូលប្រើកម្មវិធីនេះ​ដោយផ្ទាល់​ពីការកំណត់របស់អ្នក។"</string>
     <string name="update_button" msgid="4544529019832009496">"ដំឡើងកំណែ"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ចាប់ផ្ដើម​ការដំឡើងកំណែនេះ ដើម្បីឱ្យ Health Connect អាចបន្តរួមបញ្ចូល​ជាមួយការកំណត់​ប្រព័ន្ធរបស់អ្នក"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ចាំបាច់ត្រូវមាន​បច្ចុប្បន្នភាព​ប្រព័ន្ធ"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"មុនពេលបន្ត សូមធ្វើបច្ចុប្បន្នភាព​ប្រព័ន្ធទូរសព្ទរបស់អ្នក។"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ប្រសិនបើអ្នក​បានធ្វើបច្ចុប្បន្នភាព​ប្រព័ន្ធទូរសព្ទ​របស់អ្នករួចហើយ សូមសាកល្បង​ចាប់ផ្ដើមទូរសព្ទ​របស់អ្នកឡើងវិញ ដើម្បីបន្តការរួមបញ្ចូល"</string>

@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect Android সিস্টেমের মাধ্যমে ইন্টিগ্রেট করা হচ্ছে যাতে আপনি নিজের সেটিংস থেকে এটি সরাসরি অ্যাক্সেস করতে পারেন।"</string>
     <string name="update_button" msgid="4544529019832009496">"আপডেট করুন"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"এই আপডেট চালু করুন যাতে Health Connect আপনার সিস্টেমের সেটিংসের মাধ্যমে ইন্টিগ্রেশন চালিয়ে যেতে পারে"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"সিস্টেম আপডেট করা প্রয়োজন"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"চালিয়ে যাওয়ার আগে, আপনার ফোনের সিস্টেম আপডেট করুন।"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"আপনি আগেই নিজের ফোনের সিস্টেম আপডেট করে থাকলে, ইন্টিগ্রেশন চালিয়ে যেতে ফোন রিস্টার্ট করে দেখুন"</string>

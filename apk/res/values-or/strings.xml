@@ -490,7 +490,7 @@
     <string name="last_export_file_location" msgid="4069435932524304633">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
     <string name="scheduled_export" msgid="8737660963687364370">"ସିଡୁଲ କରାଯାଇଥିବା ଏକ୍ସପୋର୍ଟ"</string>
     <string name="import_data" msgid="404502315533233094">"ଡାଟା ଇମ୍ପୋର୍ଟ କରନ୍ତୁ"</string>
-    <string name="import_data_description" msgid="4040178599441724296">"ପୂର୍ବରୁ ଏକ୍ସପୋର୍ଟ କରାଯାଇଥିବା ଏକ ଫାଇଲରୁ ଡାଟା ରିଷ୍ଟୋର କରେ"</string>
+    <string name="import_data_description" msgid="4040178599441724296">"ପୂର୍ବରୁ ଏକ୍ସପୋର୍ଟ କରାଯାଇଥିବା ଏକ ଫାଇଲରୁ ଡାଟା ରିଷ୍ଟୋର କରନ୍ତୁ"</string>
     <string name="import_error_banner_title" msgid="1480977889067027790">"ଡାଟା ରିଷ୍ଟୋର କରାଯାଇପାରିଲା ନାହିଁ"</string>
     <string name="import_wrong_file_error_banner_button" msgid="1518043363477255045">"ଫାଇଲ ବାଛନ୍ତୁ"</string>
     <string name="import_wrong_file_error_banner_summary" msgid="4857514343099050126">"ରିଷ୍ଟୋର କରିବା ପାଇଁ ଆପଣ ଚୟନ କରିଥିବା ଫାଇଲ କମ୍ପାଟିବଲ ନୁହେଁ। ଏକ୍ସପୋର୍ଟ କରାଯାଇଥିବା ସଠିକ ଫାଇଲକୁ ଚୟନ କରିବା ପାଇଁ ସୁନିଶ୍ଚିତ କରନ୍ତୁ।"</string>
@@ -1001,7 +1001,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"ଅଟୋ-ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ଅଟୋ-ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"ସେଟ ହୋଇଥିବା ଏକ ସମୟ ପରେ ଆପଣଙ୍କ ଡାଟାକୁ ଡିଲିଟ କରିବା ପାଇଁ ସିଡୁଲ କରି Health Connectରେ ଏହାକୁ କେତେ ସମୟ ଷ୍ଟୋର କରାଯାଏ ତାହା ନିୟନ୍ତ୍ରଣ କରନ୍ତୁ"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"ସ୍ୱତଃ-ଡିଲିଟ ବିଷୟରେ ଅଧିକ ଜାଣନ୍ତୁ"</string>
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"ଅଟୋ-ଡିଲିଟ ବିଷୟରେ ଅଧିକ ଜାଣନ୍ତୁ"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"ଡାଟାକୁ ଅଟୋ-ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# ମାସ ପରେ}other{# ମାସ ପରେ}}"</string>
     <string name="range_never" msgid="4429478261788361233">"କେବେ ବି ନୁହେଁ"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରାଯାଉଛି ଯାହା ଫଳରେ ଆପଣ ସିଧାସଳଖ ଆପଣଙ୍କ ସେଟିଂସରୁ ଏହାକୁ ଆକ୍ସେସ କରିପାରିବେ।"</string>
     <string name="update_button" msgid="4544529019832009496">"ଅପଡେଟ କରନ୍ତୁ"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ଏହି ଅପଡେଟକୁ ଆରମ୍ଭ କରନ୍ତୁ ଯାହା ଫଳରେ Health Connect ଆପଣଙ୍କ ସିଷ୍ଟମ ସେଟିଂସ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରିବା ଜାରି ରଖିପାରିବ"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ସିଷ୍ଟମ୍ ଅପଡେଟ୍ ଆବଶ୍ୟକ ଅଟେ"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ଜାରି ରଖିବା ପୂର୍ବରୁ, ଆପଣଙ୍କ ଫୋନ ସିଷ୍ଟମକୁ ଅପଡେଟ କରନ୍ତୁ।"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ଯଦି ଆପଣ ପୂର୍ବରୁ ଆପଣଙ୍କ ଫୋନ ସିଷ୍ଟମକୁ ଅପଡେଟ କରିଛନ୍ତି, ତେବେ ଇଣ୍ଟିଗ୍ରେସନ ଜାରି ରଖିବା ପାଇଁ ଆପଣଙ୍କ ଫୋନକୁ ରିଷ୍ଟାର୍ଟ କରିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ"</string>

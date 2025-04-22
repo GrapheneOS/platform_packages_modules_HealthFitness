@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Đang tích hợp Health Connect với hệ thống Android để bạn có thể truy cập Health Connect ngay trong phần cài đặt"</string>
     <string name="update_button" msgid="4544529019832009496">"Cập nhật"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Hãy bắt đầu cập nhật để Health Connect có thể tiếp tục tích hợp với các chế độ cài đặt của hệ thống"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Cần cập nhật hệ thống"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Trước khi tiếp tục, hãy cập nhật hệ thống cho điện thoại của bạn."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Nếu đã cập nhật hệ thống cho điện thoại của bạn, hãy thử khởi động lại điện thoại để tiếp tục tích hợp"</string>

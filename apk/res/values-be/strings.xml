@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Праграма \"Здароўе і спорт\" інтэгруецца з сістэмай Android, таму ў вас ёсць доступ да яе непасрэдна з налад."</string>
     <string name="update_button" msgid="4544529019832009496">"Абнавіць"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Запусціце гэтае абнаўленне, каб праграма \"Здароўе і спорт\" працягнула абнаўленне з наладамі вашай сістэмы"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Патрабуецца абнаўленне сістэмы"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Спачатку абнавіце сістэму свайго тэлефона."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Калі вы ўжо абнавілі сістэму свайго тэлефона, паспрабуйце перазапусціць тэлефон, каб працягнуць інтэграцыю"</string>

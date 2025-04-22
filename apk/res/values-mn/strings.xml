@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect-г Android системтэй нэгтгэж байгаа тул та үүнд тохиргооноосоо шууд хандах боломжтой."</string>
     <string name="update_button" msgid="4544529019832009496">"Шинэчлэх"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Энэ шинэчлэлтийг эхлүүлснээр Health Connect-г таны системийн тохиргоотой үргэлжлүүлэн нэгтгэх боломжтой"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Системийн шинэчлэлт шаардлагатай"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Үргэлжлүүлэхээсээ өмнө утасныхаа системийг шинэчилнэ үү."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Хэрэв та утасныхаа системийг аль хэдийн шинэчилсэн бол нэгтгэлийг үргэлжлүүлэхийн тулд утсаа дахин эхлүүлж үзнэ үү"</string>

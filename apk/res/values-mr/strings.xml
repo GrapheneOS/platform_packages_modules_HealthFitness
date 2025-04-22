@@ -982,7 +982,7 @@
     <string name="height_unit_feet_label" msgid="3311723678628261399">"फूट आणि इंच"</string>
     <string name="weight_unit_pound_label" msgid="8210663393844989211">"पाउंड"</string>
     <string name="weight_unit_kilogram_label" msgid="6623938920860887238">"किलोग्रॅम"</string>
-    <string name="weight_unit_stone_label" msgid="3063787243474847180">"पाउंड"</string>
+    <string name="weight_unit_stone_label" msgid="3063787243474847180">"स्टोन"</string>
     <string name="energy_unit_calorie_label" msgid="3412965811470957296">"कॅलरी"</string>
     <string name="energy_unit_kilojoule_label" msgid="6481196724083455110">"किलोज्यूल"</string>
     <string name="temperature_unit_celsius_label" msgid="4698347100553808449">"सेल्सियस"</string>
@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"बंद आहे"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"तुम्ही ही सेटिंग्ज बदलता, तेव्हा Health Connect तुमची नवीन प्राधान्ये प्रतिबिंबित करण्यासाठी सद्य डेटा हटवते"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# महिन्यानंतर डेटा ऑटो-डिलीट करायचा का?}other{# महिन्यांनंतर डेटा ऑटो-डिलीट करायचा का?}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{यामुळे Health Connect वरून # महिन्याहून जुना डेटा देखील हटवला जातो.\n\nतुम्हाला तुमच्या कनेक्ट केलेल्या ॲप्समधील डेटा पूर्णपणे हटवायचा असल्यास, जिथे तुमचा डेटा सेव्ह केला जाऊ शकतो असे प्रत्येक ॲप तपासा.}other{यामुळे Health Connect वरून # महिन्यांहून जुना डेटा देखील हटवला जातो.\n\nतुम्हाला तुमच्या कनेक्ट केलेल्या ॲप्समधील डेटा पूर्णपणे हटवायचा असल्यास, जिथे तुमचा डेटा सेव्ह केला जाऊ शकतो असे प्रत्येक ॲप तपासा.}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{यामुळे Health Connect वरून # महिन्याहून जुना डेटादेखील हटवला जातो.\n\nतुम्हाला तुमच्या कनेक्ट केलेल्या ॲप्समधील डेटा पूर्णपणे हटवायचा असल्यास, जिथे तुमचा डेटा सेव्ह केला जाऊ शकतो असे प्रत्येक ॲप तपासा.}other{यामुळे Health Connect वरून # महिन्यांहून जुना डेटादेखील हटवला जातो.\n\nतुम्हाला तुमच्या कनेक्ट केलेल्या ॲप्समधील डेटा पूर्णपणे हटवायचा असल्यास, जिथे तुमचा डेटा सेव्ह केला जाऊ शकतो असे प्रत्येक ॲप तपासा.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"ऑटो-डिलीट सेट करा"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"सध्याचा डेटा हटवला जाईल"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect # महिन्यापेक्षा जुना असलेला सर्व डेटा हटवेल. तुमच्या कनेक्ट केलेल्या ॲप्समध्ये हे बदल दिसण्यासाठी कदाचित एक दिवस लागू शकतो.}other{Health Connect # महिन्यांपेक्षा जुना असलेला सर्व डेटा हटवेल. तुमच्या कनेक्ट केलेल्या ॲप्समध्ये हे बदल दिसण्यासाठी कदाचित एक दिवस लागू शकतो.}}"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect हे Android सिस्टीमसह इंटिग्रेट केले जात आहे, जेणेकरून तुम्ही ते तुमच्या सेटिंग्जमधून थेट ॲक्सेस करू शकता."</string>
     <string name="update_button" msgid="4544529019832009496">"अपडेट करा"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"हे अपडेट सुरू करा, जेणेकरून Health Connect हे तुमच्या सिस्टीम सेटिंग्जसह इंटिग्रेट करणे पुढे सुरू ठेवू शकते"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"सिस्टीम अपडेट करणे आवश्यक आहे"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"पुढे सुरू ठेवण्यापूर्वी, तुमच्या फोनची सिस्टीम अपडेट करा."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"तुम्ही तुमच्या फोनची सिस्टीम आधीच अपडेट केली असल्यास, इंटिग्रेशन पुढे सुरू ठेवण्यासाठी तुमचा फोन रीस्टार्ट करून पहा"</string>

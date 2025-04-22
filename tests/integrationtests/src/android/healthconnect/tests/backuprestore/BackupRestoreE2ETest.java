@@ -148,9 +148,6 @@ public class BackupRestoreE2ETest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_D2D_AND_EXPORT_IMPORT
-    })
     public void testBackupThenRestore_over5000MedicalResources_expectDataIsRestoredCorrectly()
             throws Exception {
         if (!DeviceSupportUtils.isHealthConnectFullySupported()) {

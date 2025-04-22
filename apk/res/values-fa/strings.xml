@@ -558,7 +558,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"رفتن به فروشگاه Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"شروع کار با Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"‏Health Connect داده‌های سلامتی و تناسب اندام شما را ذخیره می‌کند و روشی ساده برای همگام‌سازی برنامه‌های مختلف دستگاه دراختیارتان می‌گذارد"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"‫‫Health Connect داده‌های سلامتی و تناسب اندام شما را از برنامه‌های مختلف ذخیره و همگام‌سازی می‌کند.\n\n"<b>"داده‌های تناسب اندام و تندرستی،"</b>" ازجمله جلسه‌های تمرین، تعداد قدم‌ها، تغذیه، خواب، و غیره\n\n"<b>"سابقه سلامتی،"</b>" ازجمله واکسن‌ها، نتایج آزمایش، و غیره"</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"‫‫‫Health Connect داده‌های سلامتی و تناسب اندام شما را از برنامه‌های مختلف ذخیره و همگام‌سازی می‌کند.\n\n"<b>"داده‌های تناسب اندام و تندرستی،"</b>" ازجمله جلسه‌های تمرین، تعداد قدم‌ها، تغذیه، خواب، و غیره\n\n"<b>"سابقه سلامتی،"</b>" ازجمله واکسن‌ها، نتایج آزمایش، و غیره"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"با Health Connect می‌توانید کارهای زیر را انجام دهید"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"هم‌رسانی داده با برنامه‌ها"</b>\n"می‌توانید داده‌هایی را که هر برنامه اجازه دارد در Health Connect بخواند یا بنویسد انتخاب کنید"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"مدیریت تنظیمات و حریم خصوصی"</b>\n"می‌توانید در هر زمانی اجازه‌های برنامه را تغییر دهید و داده‌هایتان را مدیریت کنید"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"‫Health Connect درحال ادغام شدن با سیستم Android است تا بتوانید مستقیماً از تنظیمات به آن دسترسی داشته باشید."</string>
     <string name="update_button" msgid="4544529019832009496">"به‌روزرسانی"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"این به‌روزرسانی را آغاز کنید تا Health Connect بتواند یکپارچه‌سازی با تنظیمات سیستم را ادامه دهد"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"به‌روزرسانی سیستم لازم است"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"قبل‌از ادامه دادن، سیستم تلفنتان را به‌روز کنید."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"اگر قبلاً سیستم تلفن را به‌روز کرده‌اید، تلفن را برای ادامه یکپارچه‌سازی بازراه‌اندازی کنید"</string>

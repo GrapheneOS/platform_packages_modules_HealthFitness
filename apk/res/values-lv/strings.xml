@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Notiek Health Connect integrēšana Android sistēmā, lai jūs tai varētu piekļūt tieši no iestatījumiem."</string>
     <string name="update_button" msgid="4544529019832009496">"Atjaunināt"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Sāciet atjaunināšanu, lai varētu turpināt Health Connect integrēšanu jūsu sistēmas iestatījumos"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Nepieciešams atjaunināt sistēmu"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Pirms turpināt, atjauniniet tālruņa sistēmu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ja esat atjauninājis tālruņa sistēmu, restartējiet tālruni, lai turpinātu integrēšanu."</string>

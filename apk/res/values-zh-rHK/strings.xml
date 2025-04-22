@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect 正在與 Android 系統整合，因此可直接從設定頁面存取。"</string>
     <string name="update_button" msgid="4544529019832009496">"更新"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"開始執行更新，讓 Health Connect 可繼續與系統設定整合"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"需要安裝系統更新"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"繼續前，請更新手機系統。"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"如果你已更新手機系統，請嘗試重新啟動手機以繼續整合"</string>

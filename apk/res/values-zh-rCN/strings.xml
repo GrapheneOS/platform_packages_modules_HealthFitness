@@ -372,7 +372,7 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"尼古丁摄入数据"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"读取尼古丁摄入数据"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"写入尼古丁摄入数据"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”读取"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"允许 <xliff:g id="APP_NAME">%1$s</xliff:g> 读取"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”写入"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"允许"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"全部允许"</string>
@@ -384,9 +384,9 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"选择您希望允许此应用从“健康数据共享”读取的数据"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果您授予读取权限，该应用可以读取新数据和过去 30 天的数据"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果您授予读取权限，该应用可以读取新数据和过往数据"</string>
-    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问“健康数据共享”吗？"</string>
+    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允许 <xliff:g id="APP_NAME">%1$s</xliff:g> 访问“健康数据共享”吗？"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"要允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问健身与健康数据吗？"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"您可以参阅“<xliff:g id="APP_NAME">%1$s</xliff:g>”的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，了解该应用如何处理您的数据"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"您可以参阅 <xliff:g id="APP_NAME">%1$s</xliff:g> 的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，了解该应用如何处理您的数据"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"隐私权政策"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"要允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问您的健康记录吗？"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"如果您授予访问权限，此应用将可以读取和写入过敏反应、化验结果、疫苗接种等数据\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -558,9 +558,9 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"前往 Play 商店"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"开始使用“健康数据共享”"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"“健康数据共享”会存储您的健康与健身数据，让您可以轻松同步设备上各应用的数据"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"“健康数据共享”会存储和同步来自不同应用的健康和健身数据。\n\n"<b>"健身与健康数据，"</b>"包括锻炼时段、步数、营养、睡眠等\n\n"<b>"健康记录，"</b>"包括疫苗接种、化验结果等"</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"“健康数据共享”会存储和同步来自不同应用的健康和健身数据。\n\n"<b>"健身与健康数据"</b>"：包括锻炼时段、步数、营养、睡眠等\n\n"<b>"健康记录"</b>"：包括疫苗接种、化验结果等"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"借助“健康数据共享”，您可以"</string>
-    <string name="share_data_text" msgid="6898398345784931678"><b>"与您的应用分享数据"</b>\n"选择每个应用可以从“健康数据共享”读取或向其中写入的数据"</string>
+    <string name="share_data_text" msgid="6898398345784931678"><b>"与应用分享数据"</b>\n"选择每个应用可以从“健康数据共享”读取或向其中写入的数据"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"管理设置和隐私"</b>\n"随时更改应用权限并管理您的数据"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"返回"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"开始使用"</string>
@@ -1006,9 +1006,9 @@
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# 个月后}other{# 个月后}}"</string>
     <string name="range_never" msgid="4429478261788361233">"永不"</string>
     <string name="range_off" msgid="8178520557618184215">"已关闭"</string>
-    <string name="auto_delete_rationale" msgid="5255442126521464878">"如果您更改这些设置，“健康数据共享”即会删除现有数据以体现您的新偏好设置"</string>
+    <string name="auto_delete_rationale" msgid="5255442126521464878">"更改这些设置后，“健康数据共享”会根据您的新偏好设置删除现有数据"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{在 # 个月后自动删除数据？}other{在 # 个月后自动删除数据？}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{此设置也会从“健康数据共享”中删除保留时长超过 # 个月的数据。\n\n如果您要从关联的应用中彻底删除数据，请检查可能保存您的数据的每个应用。}other{此设置也会从“健康数据共享”中删除保留时长超过 # 个月的数据。\n\n如果您要从关联的应用中彻底删除数据，请检查可能保存您的数据的每个应用。}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{此设置也会从“健康数据共享”中删除 # 个月以前的数据。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}other{此设置也会从“健康数据共享”中删除 # 个月以前的数据。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"设置自动删除"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"现有数据将被删除"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{“健康数据共享”将会删除存储时长已超过 # 个月的所有数据。这些更改可能需要一天的时间才会体现在您已关联的应用内。}other{“健康数据共享”将会删除存储时长已超过 # 个月的所有数据。这些更改可能需要一天的时间才会体现在您已关联的应用内。}}"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"健康数据共享正在与 Android 系统集成，完成后您可以直接在设置中访问它。"</string>
     <string name="update_button" msgid="4544529019832009496">"更新"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"开始执行此更新操作，以便健康数据共享能继续与您的系统设置集成"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"需要更新系统"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"在继续集成之前，请更新您的手机系统。"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"如果您已更新手机系统，请尝试重启手机，继续进行集成"</string>
@@ -1114,7 +1116,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"立即更新"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"数据总值"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"应用来源"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"将应用来源添加到列表中，查看数据总值如何变化。从该列表中删除某应用后，相应应用的数据将不再计入总值，但该应用仍具有写入权限。"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"您可以将应用来源添加到列表中，看看数据总值会如何变化。从该列表中删除某个应用后，该应用的数据将不再计入总值，但该应用仍具有写入权限。"</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"没有任何应用来源"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"您为应用授予写入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>数据的权限后，系统就会在这里显示来源。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"来源和优先级的运作方式"</string>

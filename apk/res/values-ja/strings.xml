@@ -1067,6 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"設定から直接アクセスできるよう、ヘルスコネクトを Android システムと統合しています。"</string>
     <string name="update_button" msgid="4544529019832009496">"更新"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ヘルスコネクトとシステム設定との統合を続行できるよう、この更新を開始してください"</string>
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"設定から直接アクセスできるよう、ヘルスコネクトを Android システムと統合しています。\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"システム アップデートが必要です"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"続行する前に、電話システムを更新してください。"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"電話システムをすでに更新している場合は、スマートフォンを再起動して統合を続行してください"</string>

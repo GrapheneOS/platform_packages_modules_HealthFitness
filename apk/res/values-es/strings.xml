@@ -498,7 +498,7 @@
     <string name="import_version_mismatch_error_banner_summary" msgid="6165550114170534795">"Actualiza el sistema para que Salud conectada pueda restaurar tus datos e inténtalo de nuevo."</string>
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"Reintentar"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"Ha habido un problema al restaurar los datos de tu exportación."</string>
-    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"La función Exportar te permite guardar tus datos para que puedas transferirlos a un teléfono nuevo"</string>
+    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"La exportación te permite guardar tus datos para que puedas transferirlos a un teléfono nuevo"</string>
     <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"Sobre la copia de seguridad y restauración"</string>
     <string name="automatic_export_status" msgid="4407131306281440230">"<xliff:g id="EXPORT_ON_OR_OFF">%1$s</xliff:g> • <xliff:g id="EXPORT_FREQUENCY">%2$s</xliff:g>"</string>
     <string name="automatic_export_on" msgid="6972389773963624315">"Activada"</string>
@@ -1009,7 +1009,7 @@
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Si cambias estos ajustes, Salud conectada eliminará los datos existentes para reflejar tus nuevas preferencias"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{¿Eliminar automáticamente los datos después de # mes?}other{¿Eliminar automáticamente los datos después de # meses?}}"</string>
     <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Esta acción también elimina los datos de Salud conectada que tengan más de # mes.\n\nSi quieres eliminar por completo los datos de todas las aplicaciones conectadas, comprueba cada aplicación en la que puedan haberse guardado tus datos.}other{Esta acción también elimina los datos de Salud conectada que tengan más de # meses.\n\nSi quieres eliminar por completo los datos de todas las aplicaciones conectadas, comprueba cada aplicación en la que puedan haberse guardado tus datos.}}"</string>
-    <string name="set_auto_delete_button" msgid="268450418318199197">"Confirmar"</string>
+    <string name="set_auto_delete_button" msgid="268450418318199197">"Activar"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"Los datos almacenados se eliminarán"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Salud conectada eliminará todos los datos de hace más de # mes. Los cambios pueden tardar un día en aparecer en tus aplicaciones conectadas.}other{Salud conectada eliminará todos los datos de hace más de # meses. Los cambios pueden tardar un día en aparecer en tus aplicaciones conectadas.}}"</string>
     <string name="deletion_started_category_list_section" msgid="3052940611815658991">"Se eliminarán los datos de estas categorías"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Salud conectada se está integrando con el sistema Android para que puedas acceder a ella directamente desde tus ajustes."</string>
     <string name="update_button" msgid="4544529019832009496">"Actualizar"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Inicia esta actualización para que Salud conectada pueda seguir integrándose con los ajustes del sistema"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Es necesario actualizar el sistema"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Antes de continuar, actualiza el sistema de tu teléfono."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si ya has actualizado el sistema del teléfono, prueba a reiniciar el teléfono para continuar con la integración"</string>

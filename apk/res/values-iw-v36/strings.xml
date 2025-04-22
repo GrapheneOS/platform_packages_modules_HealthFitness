@@ -19,10 +19,10 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="permgrouplab_health" msgid="2189810208223060173">"בריאות, כושר ורווחה"</string>
     <string name="health_permission_header_description" msgid="1816010176505069704">"אפליקציות עם ההרשאה הזו יכולות לקרוא ולכתוב נתונים לגבי הבריאות, הכושר והרווחה שלך. הנתונים האלה כוללים מידע שנאסף מהמכשירים שלך ונתונים שמאוחסנים ב-Health Connect."</string>
-    <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> הרשאת גישה לנתוני הכושר והרווחה שלך?"</string>
-    <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"בוחרים לאילו נתוני כושר ורווחה האפליקציה הזו תוכל לגשת. הנתונים האלה כוללים מידע שנאסף ונשמר במכשיר הזה. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"בוחרים לאילו נתוני כושר ורווחה האפליקציה הזו תוכל לגשת. הנתונים האלה כוללים מידע שנאסף ונשמר במכשיר הזה. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"בוחרים לאילו נתוני כושר ורווחה האפליקציה הזו תוכל לגשת. הנתונים האלה כוללים מידע שנאסף ונשמר במכשיר הזה. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> הרשאת גישה לנתוני הכושר ואיכות החיים שלך?"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"בוחרים לאילו נתוני כושר ואיכות חיים האפליקציה הזו תוכל לגשת. הנתונים האלה כוללים מידע שנאסף ונשמר במכשיר הזה. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"בוחרים לאילו נתוני כושר ואיכות חיים האפליקציה הזו תוכל לגשת. הנתונים האלה כוללים מידע שנאסף ונשמר במכשיר הזה. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"בוחרים לאילו נתוני כושר ואיכות חיים האפליקציה הזו תוכל לגשת. הנתונים האלה כוללים מידע שנאסף ונשמר במכשיר הזה. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_learn_more" msgid="2665249156693144626">"מידע נוסף"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"בריאות, כושר ורווחה"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"בריאות, כושר ורווחה"</string>

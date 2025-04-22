@@ -19,7 +19,6 @@ package com.android.healthconnect.controller.permissions.request.wear
 
 import android.icu.text.ListFormatter
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,21 +29,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.foundation.expandableButton
-import androidx.wear.compose.foundation.expandableItems
-import androidx.wear.compose.foundation.rememberExpandableState
-import androidx.wear.compose.material.ChipDefaults
-import androidx.wear.compose.material.CompactChip
-import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material3.LocalTextStyle
 import androidx.wear.compose.material3.SwitchButton
 import androidx.wear.compose.material3.Text
@@ -98,7 +88,6 @@ fun GrantMultipleFitnessPermissions(
         remember(fitnessPermissions) { // Recalculate when fitness permissions change.
             mutableStateListOf(*(fitnessPermissions).map { true }.toTypedArray())
         }
-    val expandableState = rememberExpandableState()
 
     val lowercaseLabels =
         fitnessPermissions.map {
@@ -120,9 +109,8 @@ fun GrantMultipleFitnessPermissions(
             ),
     ) {
 
-        // Granular health data types. By default hidden, will show up once user clicks expand
-        // button.
-        expandableItems(expandableState, fitnessPermissions.size) { index ->
+        // Granular health data types.
+        items(fitnessPermissions.size) { index ->
             val uppercaseLabel =
                 stringResource(
                     FitnessPermissionStrings.fromPermissionType(
@@ -159,14 +147,13 @@ fun GrantMultipleFitnessPermissions(
         item {
             WearPermissionButton(
                 label =
-                    if (expandableState.expanded && checkedStates.any { !it }) {
+                    if (checkedStates.any { !it }) {
                         res.getString(R.string.request_permissions_allow_selected)
                     } else {
                         res.getString(R.string.request_permissions_allow_all)
                     },
                 onClick = {
-                    if (!expandableState.expanded) {
-                        // User hasn't toggle any chip, allow all.
+                    if (checkedStates.all { it }) {
                         viewModel.updateFitnessPermissions(true)
                     }
                     onButtonClicked()
@@ -188,33 +175,6 @@ fun GrantMultipleFitnessPermissions(
                 modifier = Modifier.fillMaxWidth(),
                 labelMaxLines = Integer.MAX_VALUE,
                 materialUIVersion = materialUIVersion,
-            )
-        }
-        // Expand granular control button. User clicks this to control each data type
-        // individually.
-        expandableButton(expandableState) {
-            CompactChip(
-                label = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_expand_more_24),
-                            contentDescription = "Expand more",
-                        )
-                    }
-                },
-                onClick = {
-                    expandableState.expanded = !expandableState.expanded
-                    // By default, all the data types are selected when user clicks expand
-                    // button.
-                    viewModel.updateFitnessPermissions(true)
-                },
-                border = ChipDefaults.chipBorder(),
-                colors =
-                    ChipDefaults.chipColors(
-                        backgroundColor = Color.Black,
-                        contentColor = Color.White,
-                    ),
-                contentPadding = PaddingValues(0.dp), // Remove Chip's default contentPadding
             )
         }
     }

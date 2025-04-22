@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect యాప్ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవుతోంది, తద్వారా మీరు దీన్ని నేరుగా మీ సెట్టింగ్‌ల నుండి యాక్సెస్ చేయవచ్చు."</string>
     <string name="update_button" msgid="4544529019832009496">"అప్‌డేట్ చేయండి"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ఈ ‌అప్‌డేట్‌ను ప్రారంభించండి, తద్వారా Health Connect మీ సిస్టమ్ సెట్టింగ్‌లతో ఇంటిగ్రేట్ అవ్వడం కొనసాగించగలదు"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"సిస్టమ్ అప్‌డేట్ అవసరం"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"కొనసాగించడానికి ముందు, మీ ఫోన్ సిస్టమ్‌ను అప్‌డేట్ చేయండి."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"మీరు ఇప్పటికే మీ ఫోన్ సిస్టమ్‌ను అప్‌డేట్ చేసి ఉంటే, ఇంటిగ్రేషన్‌ను కొనసాగించడానికి మీ ఫోన్‌ను రీస్టార్ట్ చేసి, ట్రై చేయండి"</string>

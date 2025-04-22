@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect Android ಸಿಸ್ಟಂನೊಂದಿಗೆ ಸಂಯೋಜನೆಯಾಗಲಿದೆ ಹಾಗಾಗಿ ನೀವು ನೇರವಾಗಿ ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಂದ ಅದಕ್ಕೆ ಆ್ಯಕ್ಸೆಸ್ ಪಡೆಯಬಹುದು."</string>
     <string name="update_button" msgid="4544529019832009496">"ಅಪ್‌ಡೇಟ್ ಮಾಡಿ"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ಈ ಅಪ್‌ಡೇಟ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸುವುದರಿಂದ Health Connect ನಿಮ್ಮ ಸಿಸ್ಟಂ ಸೆಟ್ಟಿಂಗ್‌ಗಳೊಂದಿಗೆ ಸಂಯೋಜನೆಯಾಗುವುದನ್ನು ಮುಂದುವರಿಸಬಹುದು"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ಸಿಸ್ಟಂ ಅಪ್‌ಡೇಟ್ ಅಗತ್ಯವಿದೆ"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ಮುಂದುವರಿಯುವ ಮೊದಲು, ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಂ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ನೀವು ಈಗಾಗಲೇ ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಂ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿದ್ದರೆ, ಇಂಟಿಗ್ರೇಶನ್ ಅನ್ನು ಮುಂದುವರಿಸಲು ನಿಮ್ಮ ಫೋನ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಲು ಪ್ರಯತ್ನಿಸಿ"</string>

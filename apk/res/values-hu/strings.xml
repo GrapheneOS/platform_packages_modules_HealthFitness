@@ -48,12 +48,12 @@
     <string name="settings_medical_permissions" msgid="4621535972501674863">"Health Connect"</string>
     <string name="backup_title" msgid="211503191266235085">"Biztonsági mentés"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Adatforrások és prioritás"</string>
-    <string name="set_units_title" msgid="2657822539603758029">"Egységek beállítása"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Mértékegységek beállítása"</string>
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"Beállítások"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"Adatok kezelése"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Adatok exportálása és importálása"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Legutóbbi hozzáférés"</string>
-    <string name="no_recent_access" msgid="4724297929902441784">"Egyetlen alkalmazás sem fért hozzá a Health Connect szolgáltatáshoz a közelmúltban"</string>
+    <string name="no_recent_access" msgid="4724297929902441784">"Egyetlen alkalmazás sem fért hozzá a Health Connect szolgáltatáshoz a közelmúltban."</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Az összes legutóbbi hozzáférés megtekintése"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Megtekintheti, hogy mely alkalmazások fértek hozzá az Ön adataihoz az elmúlt 24 órában"</string>
     <string name="today_header" msgid="1006837293203834373">"Ma"</string>
@@ -498,7 +498,7 @@
     <string name="import_version_mismatch_error_banner_summary" msgid="6165550114170534795">"Frissítse a rendszert, hogy a Health Connect vissza tudja állítani az adatokat, majd próbálkozzon újra."</string>
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"Újra"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"Probléma merült fel az exportálásból származó adatok visszaállításával kapcsolatban."</string>
-    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Az exportálással elmentheti adatait, hogy át tudja vinni őket egy új telefonra"</string>
+    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Az exportálással elmentheti adatait, hogy át tudja vinni őket egy új telefonra."</string>
     <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"Biztonsági mentés és visszaállítás"</string>
     <string name="automatic_export_status" msgid="4407131306281440230">"<xliff:g id="EXPORT_ON_OR_OFF">%1$s</xliff:g> • <xliff:g id="EXPORT_FREQUENCY">%2$s</xliff:g>"</string>
     <string name="automatic_export_on" msgid="6972389773963624315">"Be"</string>
@@ -554,14 +554,14 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"Mégse"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Kész"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Nem található alkalmazás. Telepítsen felhőtárhely-alkalmazásokat, hogy megjelenjenek itt."</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Ha további lehetőséget szeretne itt látni, telepítsen felhőtárhely-alkalmazásokat."</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Ha további lehetőségeket szeretne itt látni, telepítsen felhőtárhely-alkalmazásokat."</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"A Play Áruház megnyitása"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Kezdő lépések a Health Connect szolgáltatással"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"A Health Connect tárolja az egészségével és a fitnesztevékenységeivel kapcsolatos adatokat, így könnyedén szinkronizálhatja az eszközén lévő különböző alkalmazásokat."</string>
     <string name="onboarding_description_health_records" msgid="6586657048844511252">"A Health Connect tárolja és szinkronizálja az Ön különböző alkalmazásokból származó egészségügyi és fitneszadatait.\n\n"<b>"Fitnesszel és jólléttel kapcsolatos adatok,"</b>" például edzések, lépésszám, táplálkozás, alvás és egyebek\n\n"<b>"Egészségügyi nyilvántartások,"</b>" például oltások, laboratóriumi eredmények és egyebek"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"A Health Connect segítségével lehetősége van a következőkre:"</string>
-    <string name="share_data_text" msgid="6898398345784931678"><b>"Adatok megosztása az alkalmazásokkal"</b>\n"Beállíthatja, hogy az egyes alkalmazások milyen adatokat olvashatnak/írhatnak a Health Connectben"</string>
-    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"A beállítások és az adatvédelem kezelése"</b>\n"Az alkalmazásengedélyek módosítása és az adatok kezelése bármikor"</string>
+    <string name="share_data_text" msgid="6898398345784931678"><b>"Adatok megosztása az alkalmazásokkal"</b>\n"Beállíthatja, hogy az egyes alkalmazások milyen adatokat olvashatnak/írhatnak a Health Connectben."</string>
+    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"A beállítások és az adatvédelem kezelése"</b>\n"Az alkalmazásengedélyek módosítása és az adatok kezelése bármikor."</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Vissza"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Kezdő lépések"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Adatok törlése"</string>
@@ -992,7 +992,7 @@
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ha nem látja valamelyik telepített alkalmazást, előfordulhat, hogy az adott app még nem kompatibilis a Health Connecttel."</string>
     <string name="things_to_try" msgid="8200374691546152703">"Mit érdemes kipróbálni?"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Frissítések keresése"</string>
-    <string name="check_for_updates_description" msgid="1347667778199095160">"Győződjön meg arról, hogy a telepített alkalmazások naprakészek"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Győződjön meg arról, hogy a telepített alkalmazások naprakészek."</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Minden kompatibilis app megtekintése"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Alkalmazások keresése a Google Playen"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Visszajelzés küldése"</string>
@@ -1000,7 +1000,7 @@
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Áruház"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Automatikus törlés"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Automatikus törlés"</string>
-    <string name="auto_delete_header" msgid="4258649705159293715">"Az adatok adott idő utáni törlésének ütemezésével vezérelheti, hogy adatait mennyi ideig tárolja a Health Connect"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"Az adatok adott idő utáni törlésének ütemezésével vezérelheti, hogy adatait mennyi ideig tárolja a Health Connect."</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"További információ az automatikus törlésről"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Adatok automatikus törlése"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{# hónap elteltével}other{# hónap elteltével}}"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Folyamatban van a Health Connect integrációja az Android rendszerrel. A folyamat befejezése után közvetlenül a beállításokban férhet hozzá a szolgáltatáshoz."</string>
     <string name="update_button" msgid="4544529019832009496">"Frissítés"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Indítsa el ezt a frissítést most, hogy folytatódhasson a Health Connect integrációja a rendszerbeállításokkal"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Rendszerfrissítés szükséges"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"A folytatás előtt frissítse a telefon rendszerét."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ha már frissítette a telefon rendszerét, az integráció folytatásához próbálkozzon a telefon újraindításával."</string>
@@ -1126,7 +1128,7 @@
     <string name="remove" msgid="1340423400489007362">"Eltávolítás"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Alkalmazásadatok"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Itt jelennek majd meg a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> adatai"</string>
-    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Itt jelennek meg az adatok azokból az alkalmazásokból, amelyek hozzáférnek a Health Connecthez"</string>
+    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Itt jelennek meg az adatok azokból az alkalmazásokból, amelyek hozzáférnek a Health Connecthez."</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Nap"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Hét"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"Hónap"</string>
