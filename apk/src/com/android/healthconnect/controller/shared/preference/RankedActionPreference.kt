@@ -46,7 +46,7 @@ import java.util.Locale
  */
 class RankedActionPreference(
     context: Context,
-    private val appMetadata: AppMetadata,
+    private var appMetadata: AppMetadata,
     private val appUtils: AppUtils,
     private var position: Int,
     private val onActionClick: (View, Int) -> Unit,
@@ -73,11 +73,16 @@ class RankedActionPreference(
 
         rootView = holder.itemView as LinearLayout
         appPositionView = holder.findViewById(R.id.app_position) as TextView
-        val appNameView = holder.findViewById(R.id.app_name) as TextView
-        val appSummary = holder.findViewById(R.id.app_source_summary) as TextView
         actionView = holder.findViewById(R.id.action_icon) as FrameLayout
 
         setPositionString()
+        updatePreferenceContent()
+    }
+
+    fun updatePreferenceContent(appMetadata: AppMetadata = this.appMetadata) {
+        this.appMetadata = appMetadata
+        val appNameView: TextView = rootView.findViewById(R.id.app_name)
+        val appSummary: TextView = rootView.findViewById(R.id.app_source_summary)
         appNameView.text = appMetadata.appName
         setAppSummary(appSummary)
         setActionButton()

@@ -65,8 +65,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
         private const val DATA_TOTALS_PREFERENCE_LEGACY_KEY = "data_totals_preference_legacy"
         private const val DATA_TOTALS_PREFERENCE_ONE_KEY = "data_totals_preference_one"
         private const val DATA_TOTALS_PREFERENCE_TWO_KEY = "data_totals_preference_two"
-        private const val APP_SOURCES_PREFERENCE_GROUP = "app_sources_group"
-        private const val APP_SOURCES_PREFERENCE_KEY = "app_sources"
+        private const val APP_SOURCES_CATEGORY_KEY = "app_sources_category"
         private const val ZERO_STATE_PREFERENCE_KEY = "zero_state"
         private const val ADD_AN_APP_PREFERENCE_KEY = "add_an_app"
         private const val NON_EMPTY_FOOTER_PREFERENCE_KEY = "data_sources_footer"
@@ -83,12 +82,12 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
     @Inject lateinit var appUtils: AppUtils
+    @Inject lateinit var timeSource: TimeSource
 
     private val dataSourcesViewModel: DataSourcesViewModel by activityViewModels()
     private lateinit var spinnerPreference: SettingsSpinnerPreference
     private lateinit var dataSourcesCategoriesStrings: List<String>
     private var currentCategorySelection: @HealthDataCategoryInt Int = HealthDataCategory.ACTIVITY
-    @Inject lateinit var timeSource: TimeSource
 
     private val dataTypeSpinnerPreferenceGroup: PreferenceGroup by
         pref(DATA_TYPE_SPINNER_PREFERENCE_GROUP)
@@ -97,7 +96,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
 
     private val zeroStatePreference: ZeroStatePreference by pref(ZERO_STATE_PREFERENCE_KEY)
 
-    private val appSourcesPreferenceGroup: PreferenceGroup by pref(APP_SOURCES_PREFERENCE_GROUP)
+    private val appSourcesCategory: AppSourcesPreferenceCategory by pref(APP_SOURCES_CATEGORY_KEY)
 
     private val nonEmptyFooterPreference: FooterPreference by pref(NON_EMPTY_FOOTER_PREFERENCE_KEY)
 
@@ -184,19 +183,17 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
     /** Updates the priority list preference. */
     private fun updateAppSourcesSection(potentialAppSources: List<AppMetadata>) {
         removeEmptyState()
-        appSourcesPreferenceGroup.isVisible = true
-        appSourcesPreferenceGroup.removePreferenceRecursively(APP_SOURCES_PREFERENCE_KEY)
-
-        appSourcesPreferenceGroup.addPreference(
-            AppSourcesPreferenceCategory(
-                    requireContext(),
-                    logger,
-                    appUtils,
-                    dataSourcesViewModel,
-                    currentCategorySelection,
-                )
-                .also { it.key = APP_SOURCES_PREFERENCE_KEY }
+        appSourcesCategory.initialize(
+            logger,
+            appUtils,
+            dataSourcesViewModel,
+            currentCategorySelection,
         )
+        appSourcesCategory.updateApps()
+        appSourcesCategory.also {
+            it.isVisible = true
+            it.order = 4
+        }
 
         updateAddApp(potentialAppSources.isNotEmpty())
         nonEmptyFooterPreference.isVisible = true
@@ -208,27 +205,26 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
      * <p> Hides the button when there are no other potential apps for the priority list.
      */
     private fun updateAddApp(shouldShow: Boolean) {
-        val button = appSourcesPreferenceGroup.findPreference<Preference>(ADD_AN_APP_PREFERENCE_KEY)
+        val button = preferenceScreen.findPreference<Preference>(ADD_AN_APP_PREFERENCE_KEY)
         val currentVisibility = button?.isVisible ?: false
         if (currentVisibility == shouldShow) {
             return
         }
 
-        appSourcesPreferenceGroup.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
+        preferenceScreen.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
 
         if (!shouldShow) {
             return
         }
 
-        appSourcesPreferenceGroup.addPreference(
+        preferenceScreen.addPreference(
             buttonPreference(
                 context = requireContext(),
                 icon = AttributeResolver.getDrawable(requireContext(), R.attr.addIcon),
                 title = getString(R.string.data_sources_add_app),
                 logName = DataSourcesElement.ADD_AN_APP_BUTTON,
                 key = ADD_AN_APP_PREFERENCE_KEY,
-                order =
-                    100 /* Arbitrary number to ensure the button is added at the end of the priority list */,
+                order = 5,
                 listener = {
                     findNavController()
                         .navigate(
@@ -247,7 +243,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
         dataTotalsPreferenceGroup.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_ONE_KEY)
         dataTotalsPreferenceGroup.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_TWO_KEY)
         // Do not show data cards when there are no apps on the priority list
-        if (!appSourcesPreferenceGroup.isVisible) {
+        if (!appSourcesCategory.isVisible) {
             dataTotalsPreferenceGroup.isVisible = false
         }
 
@@ -383,16 +379,14 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
     private fun removeEmptyState() {
         preferenceScreen.removePreferenceRecursively(EMPTY_STATE_HEADER_PREFERENCE_KEY)
         preferenceScreen.removePreferenceRecursively(EMPTY_STATE_FOOTER_PREFERENCE_KEY)
-        zeroStatePreference.isVisible = false
     }
 
     private fun removeNonEmptyState() {
-        preferenceScreen.removePreferenceRecursively(APP_SOURCES_PREFERENCE_KEY)
         preferenceScreen.removePreferenceRecursively(ADD_AN_APP_PREFERENCE_KEY)
         preferenceScreen.removePreferenceRecursively(DATA_TOTALS_PREFERENCE_LEGACY_KEY)
 
         // We hide the preference group headers and footer instead of removing them
-        appSourcesPreferenceGroup.isVisible = false
+        appSourcesCategory.isVisible = false
         dataTotalsPreferenceGroup.isVisible = false
         nonEmptyFooterPreference.isVisible = false
     }
