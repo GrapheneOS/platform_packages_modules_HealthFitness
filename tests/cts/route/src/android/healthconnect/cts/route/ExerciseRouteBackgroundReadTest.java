@@ -24,15 +24,8 @@ import static android.healthconnect.cts.utils.DataFactory.getEmptyMetadata;
 import static android.healthconnect.cts.utils.TestUtils.connectAppsWithGrantedPermissions;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 
-import static com.android.compatibility.common.util.SystemUtil.eventually;
-
 import static com.google.common.truth.Truth.assertThat;
 
-import static java.util.Objects.requireNonNull;
-
-import android.app.AppOpsManager;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.changelog.ChangeLogTokenRequest;
@@ -40,10 +33,9 @@ import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.healthconnect.cts.lib.TestAppProxy;
+import android.healthconnect.cts.lib.TestAppRule;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
-
-import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.After;
 import org.junit.Before;
@@ -56,33 +48,23 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ExerciseRouteBackgroundReadTest {
-    private static final TestAppProxy ROUTES_READER_WRITER_BACKGROUND_APP =
-            TestAppProxy.forPackageNameInBackground(ROUTES_READER_WRITER_APP.getPackageName());
 
-    @Rule
-    public AssumptionCheckerRule mSupportedHardwareRule =
+    @Rule(order = 0)
+    public final AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
+    @Rule(order = 1)
+    public final TestAppRule mBackgroundTestAppRule =
+            new TestAppRule.Builder(ROUTES_READER_WRITER_APP.getPackageName())
+                    .setInBackground(true)
+                    .build();
+
+    private final TestAppProxy mBackgroundTestApp = mBackgroundTestAppRule.getProxy();
+
     @Before
     public void setUp() throws Exception {
-        // Ensure that App Ops considers the test app to be in the background. This may take a few
-        // seconds if another test has recently launched it in the foreground.
-        Context context = ApplicationProvider.getApplicationContext();
-        PackageManager packageManager = context.getPackageManager();
-        AppOpsManager appOpsManager = requireNonNull(context.getSystemService(AppOpsManager.class));
-        String packageName = ROUTES_READER_WRITER_BACKGROUND_APP.getPackageName();
-        int uid = packageManager.getPackageUid(packageName, /* flags= */ 0);
-        eventually(
-                () ->
-                        assertThat(
-                                        appOpsManager.unsafeCheckOp(
-                                                AppOpsManager.OPSTR_FINE_LOCATION,
-                                                uid,
-                                                packageName))
-                                .isEqualTo(AppOpsManager.MODE_IGNORED));
-
         assertCorrectHealthPermissions();
         connectAppsWithGrantedPermissions();
 
@@ -100,7 +82,7 @@ public class ExerciseRouteBackgroundReadTest {
         ROUTE_WRITER_APP.insertRecords(sessionWithRoute);
 
         List<ExerciseSessionRecord> records =
-                ROUTES_READER_WRITER_BACKGROUND_APP.readRecords(
+                mBackgroundTestApp.readRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
                                 .build());
 
@@ -112,10 +94,10 @@ public class ExerciseRouteBackgroundReadTest {
     @Test
     public void readRecords_usingFilters_canAccessOwnRoute() throws Exception {
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
-        ROUTES_READER_WRITER_BACKGROUND_APP.insertRecords(sessionWithRoute);
+        mBackgroundTestApp.insertRecords(sessionWithRoute);
 
         List<ExerciseSessionRecord> records =
-                ROUTES_READER_WRITER_BACKGROUND_APP.readRecords(
+                mBackgroundTestApp.readRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
                                 .build());
 
@@ -129,11 +111,10 @@ public class ExerciseRouteBackgroundReadTest {
         ExerciseSessionRecord otherAppSession = getExerciseSessionWithRoute(getEmptyMetadata());
         String otherAppSessionId = ROUTE_WRITER_APP.insertRecords(otherAppSession).get(0);
         ExerciseSessionRecord ownSession = getExerciseSessionWithRoute(getEmptyMetadata());
-        String ownSessionId =
-                ROUTES_READER_WRITER_BACKGROUND_APP.insertRecords(List.of(ownSession)).get(0);
+        String ownSessionId = mBackgroundTestApp.insertRecords(List.of(ownSession)).get(0);
 
         List<ExerciseSessionRecord> records =
-                ROUTES_READER_WRITER_BACKGROUND_APP.readRecords(
+                mBackgroundTestApp.readRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
                                 .build());
 
@@ -156,7 +137,7 @@ public class ExerciseRouteBackgroundReadTest {
         String sessionId = ROUTE_WRITER_APP.insertRecords(otherAppSession).get(0);
 
         List<ExerciseSessionRecord> records =
-                ROUTES_READER_WRITER_BACKGROUND_APP.readRecords(
+                mBackgroundTestApp.readRecords(
                         new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
                                 .addId(sessionId)
                                 .build());
@@ -169,11 +150,10 @@ public class ExerciseRouteBackgroundReadTest {
     @Test
     public void readRecords_usingIds_canAccessOwnRoute() throws Exception {
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
-        String sessionId =
-                ROUTES_READER_WRITER_BACKGROUND_APP.insertRecords(sessionWithRoute).get(0);
+        String sessionId = mBackgroundTestApp.insertRecords(sessionWithRoute).get(0);
 
         List<ExerciseSessionRecord> records =
-                ROUTES_READER_WRITER_BACKGROUND_APP.readRecords(
+                mBackgroundTestApp.readRecords(
                         new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
                                 .addId(sessionId)
                                 .build());
@@ -188,10 +168,10 @@ public class ExerciseRouteBackgroundReadTest {
         ExerciseSessionRecord otherAppSession = getExerciseSessionWithRoute(getEmptyMetadata());
         String otherAppSessionId = ROUTE_WRITER_APP.insertRecords(otherAppSession).get(0);
         ExerciseSessionRecord ownSession = getExerciseSessionWithRoute(getEmptyMetadata());
-        String ownSessionId = ROUTES_READER_WRITER_BACKGROUND_APP.insertRecords(ownSession).get(0);
+        String ownSessionId = mBackgroundTestApp.insertRecords(ownSession).get(0);
 
         List<ExerciseSessionRecord> records =
-                ROUTES_READER_WRITER_BACKGROUND_APP.readRecords(
+                mBackgroundTestApp.readRecords(
                         new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
                                 .addId(otherAppSessionId)
                                 .addId(ownSessionId)
@@ -213,7 +193,7 @@ public class ExerciseRouteBackgroundReadTest {
     @Test
     public void getChangelogs_cannotAccessOtherAppRoute() throws Exception {
         String token =
-                ROUTES_READER_WRITER_BACKGROUND_APP.getChangeLogToken(
+                mBackgroundTestApp.getChangeLogToken(
                         new ChangeLogTokenRequest.Builder()
                                 .addRecordType(ExerciseSessionRecord.class)
                                 .build());
@@ -221,8 +201,7 @@ public class ExerciseRouteBackgroundReadTest {
         ROUTE_WRITER_APP.insertRecords(List.of(otherAppSession));
 
         ChangeLogsResponse response =
-                ROUTES_READER_WRITER_BACKGROUND_APP.getChangeLogs(
-                        new ChangeLogsRequest.Builder(token).build());
+                mBackgroundTestApp.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
 
         List<ExerciseSessionRecord> records =
                 response.getUpsertedRecords().stream()
@@ -236,16 +215,15 @@ public class ExerciseRouteBackgroundReadTest {
     @Test
     public void getChangelogs_canAccessOwnRoute() throws Exception {
         String token =
-                ROUTES_READER_WRITER_BACKGROUND_APP.getChangeLogToken(
+                mBackgroundTestApp.getChangeLogToken(
                         new ChangeLogTokenRequest.Builder()
                                 .addRecordType(ExerciseSessionRecord.class)
                                 .build());
         ExerciseSessionRecord sessionWithRoute = getExerciseSessionWithRoute(getEmptyMetadata());
-        ROUTES_READER_WRITER_BACKGROUND_APP.insertRecords(sessionWithRoute);
+        mBackgroundTestApp.insertRecords(sessionWithRoute);
 
         ChangeLogsResponse response =
-                ROUTES_READER_WRITER_BACKGROUND_APP.getChangeLogs(
-                        new ChangeLogsRequest.Builder(token).build());
+                mBackgroundTestApp.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
 
         List<ExerciseSessionRecord> records =
                 response.getUpsertedRecords().stream()
@@ -259,18 +237,17 @@ public class ExerciseRouteBackgroundReadTest {
     @Test
     public void getChangelogs_mixedOwnAndOtherAppSession() throws Exception {
         String token =
-                ROUTES_READER_WRITER_BACKGROUND_APP.getChangeLogToken(
+                mBackgroundTestApp.getChangeLogToken(
                         new ChangeLogTokenRequest.Builder()
                                 .addRecordType(ExerciseSessionRecord.class)
                                 .build());
         ExerciseSessionRecord otherAppSession = getExerciseSessionWithRoute(getEmptyMetadata());
         String otherAppSessionId = ROUTE_WRITER_APP.insertRecords(otherAppSession).get(0);
         ExerciseSessionRecord ownSession = getExerciseSessionWithRoute(getEmptyMetadata());
-        String ownSessionId = ROUTES_READER_WRITER_BACKGROUND_APP.insertRecords(ownSession).get(0);
+        String ownSessionId = mBackgroundTestApp.insertRecords(ownSession).get(0);
 
         ChangeLogsResponse response =
-                ROUTES_READER_WRITER_BACKGROUND_APP.getChangeLogs(
-                        new ChangeLogsRequest.Builder(token).build());
+                mBackgroundTestApp.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
 
         Map<String, ExerciseSessionRecord> idToRecordMap =
                 response.getUpsertedRecords().stream()
