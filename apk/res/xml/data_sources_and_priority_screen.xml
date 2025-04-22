@@ -30,14 +30,15 @@
         android:title="@string/data_totals_header"
         android:order="3"
         app:isPreferenceVisible="false"/>
-    <PreferenceCategory
-        android:key="app_sources_group"
+    <com.android.healthconnect.controller.datasources.appsources.AppSourcesPreferenceCategory
+        android:key="app_sources_category"
         android:title="@string/app_sources_header"
         android:order="4"
         app:isPreferenceVisible="false"/>
     <com.android.settingslib.widget.FooterPreference
         android:key="data_sources_footer"
         android:title="@string/data_sources_footer"
+        android:order="6"
         app:isPreferenceVisible="false"/>
 
 </PreferenceScreen>

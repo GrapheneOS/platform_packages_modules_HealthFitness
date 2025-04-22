@@ -14,6 +14,8 @@
 package com.android.healthconnect.controller.datasources.appsources
 
 import android.content.Context
+import android.health.connect.HealthDataCategory
+import android.util.AttributeSet
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.view.ContextThemeWrapper
@@ -28,22 +30,43 @@ import com.android.healthconnect.controller.shared.preference.RankedActionPrefer
 import com.android.healthconnect.controller.utils.logging.DataSourcesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 
-class AppSourcesPreferenceCategory(
-    context: Context,
-    private val logger: HealthConnectLogger,
-    private val appUtils: AppUtils,
-    private val viewModel: DataSourcesViewModel,
-    private val category: @HealthDataCategoryInt Int,
-) : PreferenceCategory(context, null) {
+class AppSourcesPreferenceCategory(context: Context, attrs: AttributeSet?) :
+    PreferenceCategory(context, attrs) {
 
-    override fun onAttached() {
-        super.onAttached()
-        updatePreferences()
-    }
+    private lateinit var logger: HealthConnectLogger
+    private lateinit var appUtils: AppUtils
+    private lateinit var viewModel: DataSourcesViewModel
+    private var category: @HealthDataCategoryInt Int = HealthDataCategory.ACTIVITY
+
+    private var isInitialized = false
 
     private var priorityList: List<AppMetadata> = emptyList()
 
-    private fun updatePreferences() {
+    /**
+     * Initializes the preference category with its required dependencies. This MUST be called after
+     * the preference is inflated or created and before it's used.
+     */
+    fun initialize(
+        logger: HealthConnectLogger,
+        appUtils: AppUtils,
+        viewModel: DataSourcesViewModel,
+        category: @HealthDataCategoryInt Int,
+    ) {
+        this.logger = logger
+        this.appUtils = appUtils
+        this.viewModel = viewModel
+        this.category = category
+        this.isInitialized = true
+    }
+
+    override fun onAttached() {
+        super.onAttached()
+        if (isInitialized) {
+            updateApps()
+        }
+    }
+
+    fun updateApps() {
         removeAll()
 
         priorityList = viewModel.getPriorityList()
@@ -118,19 +141,12 @@ class AppSourcesPreferenceCategory(
     }
 
     private fun swapPreferences(firstPosition: Int, secondPosition: Int) {
-        // Simply setting new order for the preferences does not update the expressive background,
-        // hence we need to remove and re-add them.
-        val firstPreference = this.getPreference(firstPosition)
-        val secondPreference = this.getPreference(secondPosition)
+        val firstPreference = this.getPreference(firstPosition) as RankedActionPreference
+        val secondPreference = this.getPreference(secondPosition) as RankedActionPreference
         val firstAppMetaData = priorityList[firstPosition]
         val secondAppMetadata = priorityList[secondPosition]
-        val newFirstPreference = rankedActionPreference(firstPosition, secondAppMetadata)
-        val newSecondPreference = rankedActionPreference(secondPosition, firstAppMetaData)
-
-        this.removePreference(firstPreference)
-        this.removePreference(secondPreference)
-        this.addPreference(newFirstPreference)
-        this.addPreference(newSecondPreference)
+        firstPreference.updatePreferenceContent(secondAppMetadata)
+        secondPreference.updatePreferenceContent(firstAppMetaData)
     }
 
     private fun removeListItem(position: Int) {
