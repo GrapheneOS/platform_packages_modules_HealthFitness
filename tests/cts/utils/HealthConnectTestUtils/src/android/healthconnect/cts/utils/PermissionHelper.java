@@ -198,18 +198,6 @@ public final class PermissionHelper {
         }
     }
 
-    /** Revokes all granted Health permissions and re-grants them back. */
-    public static void revokeAndThenGrantHealthPermissions(String packageName)
-            throws PackageManager.NameNotFoundException {
-        List<String> healthPerms = getGrantedHealthPermissions(packageName);
-
-        revokeHealthPermissions(packageName);
-
-        for (String perm : healthPerms) {
-            grantHealthPermission(packageName, perm);
-        }
-    }
-
     /** Revokes all granted Health permissions from the specified package. */
     @SuppressLint("MissingPermission")
     public static void revokeHealthPermissions(String packageName)
