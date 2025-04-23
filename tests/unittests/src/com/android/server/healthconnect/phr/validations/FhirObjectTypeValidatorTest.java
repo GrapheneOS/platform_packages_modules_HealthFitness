@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_A
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_R4;
 
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
@@ -41,6 +42,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -602,6 +604,64 @@ public class FhirObjectTypeValidatorTest {
                                         """));
 
         validator.validate(immunizationJson, FHIR_RESOURCE_TYPE_IMMUNIZATION, FHIR_VERSION_R4);
+    }
+
+    @EnableFlags(FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS)
+    @Test
+    public void testValidate_primitiveTypeValueArray_canContainNull()
+            throws JSONException {
+        FhirResourceSpec fhirSpec =
+                FhirResourceSpec.newBuilder()
+                        .putResourceTypeToConfig(
+                                FHIR_RESOURCE_TYPE_IMMUNIZATION,
+                                DEFAULT_IMMUNIZATION_COMPLEX_TYPE_CONFIG.toBuilder()
+                                        .putAllowedFieldNamesToConfig(
+                                                "primitiveArrayField",
+                                                createFhirFieldConfig(true, R4_FHIR_TYPE_STRING))
+                                        .build())
+                        .addAllFhirDataTypeConfigs(DEFAULT_IMMUNIZATION_DATA_TYPE_CONFIGS)
+                        .build();
+        FhirObjectTypeValidator validator =
+                new FhirObjectTypeValidator(new FhirSpecProvider(fhirSpec));
+        JSONObject immunizationJson =
+                new JSONObject(DEFAULT_IMMUNIZATION_JSON)
+                        .put(
+                                "primitiveArrayField",
+                                new JSONArray("[\"value1\", null, \"value3\"]"));
+
+        validator.validate(immunizationJson, FHIR_RESOURCE_TYPE_IMMUNIZATION, FHIR_VERSION_R4);
+    }
+
+    @DisableFlags(FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS)
+    @Test
+    public void testValidate_allowNullsInPrimitiveValueArraysDisabled_canNotContainNull()
+            throws JSONException {
+        FhirResourceSpec fhirSpec =
+                FhirResourceSpec.newBuilder()
+                        .putResourceTypeToConfig(
+                                FHIR_RESOURCE_TYPE_IMMUNIZATION,
+                                DEFAULT_IMMUNIZATION_COMPLEX_TYPE_CONFIG.toBuilder()
+                                        .putAllowedFieldNamesToConfig(
+                                                "primitiveArrayField",
+                                                createFhirFieldConfig(true, R4_FHIR_TYPE_STRING))
+                                        .build())
+                        .addAllFhirDataTypeConfigs(DEFAULT_IMMUNIZATION_DATA_TYPE_CONFIGS)
+                        .build();
+        FhirObjectTypeValidator validator =
+                new FhirObjectTypeValidator(new FhirSpecProvider(fhirSpec));
+        JSONObject immunizationJson =
+                new JSONObject(DEFAULT_IMMUNIZATION_JSON)
+                        .put(
+                                "primitiveArrayField",
+                                new JSONArray("[\"value1\", null, \"value3\"]"));
+
+        assertThrows(
+            IllegalArgumentException.class,
+            () ->
+                    validator.validate(
+                            immunizationJson,
+                            FHIR_RESOURCE_TYPE_IMMUNIZATION,
+                            FHIR_VERSION_R4));
     }
 
     @EnableFlags(FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION)

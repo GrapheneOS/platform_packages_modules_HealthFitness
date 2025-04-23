@@ -26,7 +26,6 @@ import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteDat
 import static android.healthconnect.cts.utils.TestUtils.getRecordIds;
 import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
 
-import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -37,7 +36,6 @@ import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.Objects.requireNonNull;
 
-import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectException;
@@ -52,6 +50,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.lib.TestAppProxy;
+import android.healthconnect.cts.lib.TestAppRule;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
@@ -78,32 +77,22 @@ public class BackgroundReadTest {
     private HealthConnectManager mManager;
     private TestAppProxy mTestApp;
 
-    @Rule
+    @Rule(order = 0)
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
+
+    @Rule(order = 1)
+    public final TestAppRule mTestAppRule =
+            new TestAppRule.Builder(PKG_TEST_APP).setInBackground(true).build();
 
     @Before
     public void setUp() throws Exception {
         mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         mPackageManager = mContext.getPackageManager();
         mManager = requireNonNull(mContext.getSystemService(HealthConnectManager.class));
-        mTestApp = TestAppProxy.forPackageNameInBackground(PKG_TEST_APP);
-
-        // Ensure that App Ops considers the test app to be in the background. This may take a few
-        // seconds if another test has recently launched it in the foreground.
-        AppOpsManager appOpsManager =
-                requireNonNull(mContext.getSystemService(AppOpsManager.class));
-        int uid = mPackageManager.getPackageUid(PKG_TEST_APP, /* flags= */ 0);
-        eventually(
-                () ->
-                        assertThat(
-                                        appOpsManager.unsafeCheckOp(
-                                                AppOpsManager.OPSTR_FINE_LOCATION,
-                                                uid,
-                                                PKG_TEST_APP))
-                                .isEqualTo(AppOpsManager.MODE_IGNORED));
+        mTestApp = mTestAppRule.getProxy();
 
         deleteAllStagedRemoteData();
     }

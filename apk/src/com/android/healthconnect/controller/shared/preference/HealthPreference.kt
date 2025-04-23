@@ -22,6 +22,7 @@ import com.android.healthconnect.controller.permissions.connectedapps.Comparable
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
+import com.android.settingslib.widget.GroupSectionDividerMixin
 
 /** A [Preference] that allows logging. */
 open class HealthPreference
@@ -55,3 +56,7 @@ constructor(context: Context, attrs: AttributeSet? = null) :
     override fun hasSameContents(preference: Preference): Boolean =
         HealthPreferenceUtils.hasSameContents(preference, this)
 }
+
+/** A [HealthPreference] without an expressive background. */
+class HealthPreferenceNoBg(context: Context, attrs: AttributeSet? = null) :
+    HealthPreference(context, attrs), GroupSectionDividerMixin

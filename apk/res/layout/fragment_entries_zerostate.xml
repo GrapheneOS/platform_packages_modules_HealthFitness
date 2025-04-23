@@ -20,6 +20,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingTop="@dimen/spacing_xlarge"
     android:orientation="vertical">
 
@@ -35,20 +37,22 @@
 
         <ImageView
             android:id="@android:id/icon"
-            android:layout_width="@dimen/settingslib_expressive_space_large3"
-            android:layout_height="@dimen/settingslib_expressive_space_large3"
+            android:layout_width="@dimen/settingslib_expressive_space_large2"
+            android:layout_height="@dimen/settingslib_expressive_space_large2"
             android:src="?attr/databaseIcon"
-            android:tint="@color/settingslib_materialColorOnSecondaryContainer"
+            android:tint="@color/settingslib_materialColorOnSurface"
             android:layout_gravity="center"/>
 
     </FrameLayout>
     <TextView
         android:id="@android:id/title"
-        android:layout_width="@dimen/settingslib_expressive_zero_state_title_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceListItem"
         android:text="@string/no_data"
         tools:text="@string/no_data"
-        android:layout_marginTop="@dimen/settingslib_expressive_space_small4"/>
+        android:layout_marginStart="@dimen/settingslib_expressive_space_medium1"
+        android:layout_marginEnd="@dimen/settingslib_expressive_space_medium1"
+        android:layout_marginBottom="@dimen/settingslib_expressive_space_small1"/>
 </LinearLayout>

@@ -249,7 +249,8 @@ public class FhirObjectTypeValidator {
      * <p>This method validates that each field in the {@code fhirJsonObject} is an allowed field
      * and that the type of this field is as expected.
      *
-     * <p>Null values are not allowed, except in the case of primitive type extension arrays.
+     * <p>Null values are not allowed, except in the case of primitive type extension or value
+     *  arrays.
      *
      * @param fhirJsonObject The JSONObject to validate
      * @param fieldToConfig The map of allowed field to field config for this object
@@ -305,8 +306,14 @@ public class FhirObjectTypeValidator {
                                 : List.of(fieldObject);
                 boolean fieldIsPrimitiveTypeExtension =
                         fieldIsPrimitiveType && fieldStartsWithUnderscore;
-                // Primitive type extension arrays are allowed to have NULL values
-                boolean jsonNullAllowed = fieldIsPrimitiveTypeExtension && fieldConfig.getIsArray();
+                // Primitive type extension arrays and value arrays are allowed to have
+                // NULL values. See https://build.fhir.org/json.html#primitive.
+                boolean jsonNullAllowed;
+                if (Flags.phrAllowNullsInPrimitiveValueArrays()) {
+                  jsonNullAllowed = fieldIsPrimitiveType && fieldConfig.getIsArray();
+                } else {
+                    jsonNullAllowed = fieldIsPrimitiveTypeExtension && fieldConfig.getIsArray();
+                }
 
                 for (Object object : objectsToValidate) {
                     if (object.equals(JSONObject.NULL) && jsonNullAllowed) {
