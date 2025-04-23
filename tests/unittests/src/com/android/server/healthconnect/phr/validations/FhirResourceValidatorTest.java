@@ -24,6 +24,7 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUN
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_R4;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_R4B;
 
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
@@ -37,6 +38,7 @@ import android.healthconnect.cts.phr.utils.AllergyBuilder;
 import android.healthconnect.cts.phr.utils.ImmunizationBuilder;
 import android.healthconnect.cts.phr.utils.MedicationsBuilder;
 import android.healthconnect.cts.phr.utils.ObservationBuilder;
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -512,8 +514,9 @@ public class FhirResourceValidatorTest {
     }
 
     @EnableFlags({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
+    @DisableFlags({FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS})
     @Test
-    public void testValidateFhirResource_primitiveTypeArrayFieldContainsNull_throws()
+    public void testValidateFhirResource_flagDisabled_primitiveTypeArrayFieldContainsNull_throws()
             throws JSONException {
         FhirResourceValidator validator = new FhirResourceValidator();
         // The "category" field is an array of primitive type "code"
@@ -532,6 +535,24 @@ public class FhirResourceValidatorTest {
                                         FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE,
                                         FHIR_VERSION_R4));
         assertThat(thrown).hasMessageThat().contains("Found null value in field: category");
+    }
+
+    @EnableFlags({
+      FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
+      FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS})
+    @Test
+    public void testValidateFhirResource_primitiveTypeArrayFieldContainsNull_suceeds()
+            throws JSONException {
+        FhirResourceValidator validator = new FhirResourceValidator();
+        // The "category" field is an array of primitive type "code"
+        JSONObject allergyJson =
+                new JSONObject(
+                        new AllergyBuilder()
+                                .set("category", new JSONArray("[\"value\", null, null]"))
+                                .toJson());
+
+        validator.validateFhirResource(
+                allergyJson, FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE, FHIR_VERSION_R4);
     }
 
     @EnableFlags({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
