@@ -21,7 +21,6 @@ import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_I
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_R4;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS;
@@ -461,7 +460,6 @@ public class FhirObjectTypeValidatorTest {
         assertThat(exception).hasMessageThat().contains("Found unexpected field unknown_field");
     }
 
-    @EnableFlags(FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION)
     @Test
     public void testValidate_complexTypeFieldNotJsonObject_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -490,7 +488,6 @@ public class FhirObjectTypeValidatorTest {
                 .contains("Invalid resource structure. Expected object in field: statusReason");
     }
 
-    @EnableFlags(FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION)
     @Test
     public void testValidate_complexTypeFieldIsNull_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -517,7 +514,6 @@ public class FhirObjectTypeValidatorTest {
         assertThat(exception).hasMessageThat().contains("Found null value in field: statusReason");
     }
 
-    @EnableFlags(FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION)
     @Test
     public void testValidate_primitiveTypeExtensionNotJsonObject_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -664,7 +660,6 @@ public class FhirObjectTypeValidatorTest {
                             FHIR_VERSION_R4));
     }
 
-    @EnableFlags(FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION)
     @Test
     public void testValidate_arrayFieldIsNotArray_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -702,7 +697,6 @@ public class FhirObjectTypeValidatorTest {
                 .contains("Invalid resource structure. Expected array for field: identifier");
     }
 
-    @EnableFlags(FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION)
     @Test
     public void testValidate_complexTypeArrayItemNotJsonObject_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -741,7 +735,6 @@ public class FhirObjectTypeValidatorTest {
                 .contains("Invalid resource structure. Expected object in field: identifier");
     }
 
-    @EnableFlags({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     @Test
     public void testValidate_primitiveTypeFieldIsJsonObject_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -773,7 +766,6 @@ public class FhirObjectTypeValidatorTest {
                                 + " in field: primarySource");
     }
 
-    @EnableFlags({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     @Test
     public void testValidate_primitiveTypeFieldIsNull_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -800,7 +792,6 @@ public class FhirObjectTypeValidatorTest {
         assertThat(exception).hasMessageThat().contains("Found null value in field: primarySource");
     }
 
-    @EnableFlags({FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION})
     @Test
     public void testValidate_primitiveTypeFieldIsArray_throws() throws JSONException {
         FhirResourceSpec fhirSpec =
@@ -833,7 +824,6 @@ public class FhirObjectTypeValidatorTest {
     }
 
     @EnableFlags({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION
     })
     @Test
@@ -867,7 +857,6 @@ public class FhirObjectTypeValidatorTest {
     }
 
     @EnableFlags({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION
     })
     @Test
@@ -911,7 +900,6 @@ public class FhirObjectTypeValidatorTest {
     }
 
     @EnableFlags({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION
     })
     @Test
@@ -993,7 +981,6 @@ public class FhirObjectTypeValidatorTest {
     }
 
     @EnableFlags({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS
     })
     @Test
@@ -1025,7 +1012,6 @@ public class FhirObjectTypeValidatorTest {
     }
 
     @EnableFlags({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS
     })
     @Test
@@ -1055,7 +1041,6 @@ public class FhirObjectTypeValidatorTest {
     }
 
     @EnableFlags({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS
     })
@@ -1100,7 +1085,6 @@ public class FhirObjectTypeValidatorTest {
     }
 
     @EnableFlags({
-        FLAG_PHR_FHIR_BASIC_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION,
         FLAG_PHR_FHIR_VALIDATION_DISALLOW_EMPTY_OBJECTS_ARRAYS
     })
