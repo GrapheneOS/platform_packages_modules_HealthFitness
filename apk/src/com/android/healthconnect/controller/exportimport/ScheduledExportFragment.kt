@@ -21,7 +21,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
-import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.ExportSettings
@@ -32,6 +31,7 @@ import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiSt
 import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceNoBg
 import com.android.healthconnect.controller.shared.preference.RadioButtonPreferenceCategory
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.TimeSource
@@ -53,7 +53,6 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
 
     companion object {
         const val SCHEDULED_EXPORT_CONTROL_PREFERENCE_KEY = "scheduled_export_control_preference"
-        const val CHOOSE_FREQUENCY_PREFERENCE_KEY = "choose_frequency"
         const val EXPORT_STATUS_PREFERENCE_ORDER = 1
         const val EXPORT_FREQ_KEY = "EXPORT_FREQUENCY_GROUP"
     }
@@ -69,9 +68,6 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
 
     private val scheduledExportControlPreference: HealthMainSwitchPreference by
         pref(SCHEDULED_EXPORT_CONTROL_PREFERENCE_KEY)
-
-    private val chooseFrequencyPreferenceGroup: PreferenceGroup by
-        pref(CHOOSE_FREQUENCY_PREFERENCE_KEY)
 
     private val dateFormatter: LocalDateTimeFormatter by lazy {
         LocalDateTimeFormatter(requireContext())
@@ -106,20 +102,24 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
                 is ExportSettings.WithData -> {
                     if (exportSettings.frequency != ExportFrequency.EXPORT_FREQUENCY_NEVER) {
                         scheduledExportControlPreference.isChecked = true
-                        chooseFrequencyPreferenceGroup.setVisible(true)
+                        preferenceScreen
+                            .findPreference<RadioButtonPreferenceCategory>(EXPORT_FREQ_KEY)
+                            ?.isVisible = true
                         preferenceScreen
                             .findPreference<Preference>(
                                 ExportStatusPreference.EXPORT_STATUS_PREFERENCE
                             )
-                            ?.setVisible(true)
+                            ?.isVisible = true
                     } else {
                         scheduledExportControlPreference.isChecked = false
-                        chooseFrequencyPreferenceGroup.setVisible(false)
+                        preferenceScreen
+                            .findPreference<RadioButtonPreferenceCategory>(EXPORT_FREQ_KEY)
+                            ?.isVisible = false
                         preferenceScreen
                             .findPreference<Preference>(
                                 ExportStatusPreference.EXPORT_STATUS_PREFERENCE
                             )
-                            ?.setVisible(false)
+                            ?.isVisible = false
                     }
                     exportSettingsViewModel.updatePreviousExportFrequency(exportSettings.frequency)
                     setupRadioButtons(exportSettings.frequency)
@@ -188,6 +188,7 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
                 RadioButtonPreferenceCategory(
                     context = requireContext(),
                     childFragmentManager = childFragmentManager,
+                    preferenceTitleResId = R.string.choose_frequency_category,
                     options = options,
                     logger = logger,
                     preferenceKey = EXPORT_FREQ_KEY,
@@ -210,22 +211,21 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
     private fun maybeShowNextExportStatus(scheduledExportUiState: ScheduledExportUiState) {
         val lastSuccessfulExportTime = scheduledExportUiState.lastSuccessfulExportTime
         val periodInDays = scheduledExportUiState.periodInDays
-        var nextExportText: String
-        if (lastSuccessfulExportTime != null) {
-            val scheduledExportTime =
-                lastSuccessfulExportTime.plus(periodInDays.toLong(), ChronoUnit.DAYS)
-            if (scheduledExportTime.isBefore(timeSource.currentTimeMillis().toInstant())) {
-                nextExportText = getString(R.string.next_export_text)
-            } else {
-                nextExportText =
+        val nextExportText: String =
+            if (lastSuccessfulExportTime != null) {
+                val scheduledExportTime =
+                    lastSuccessfulExportTime.plus(periodInDays.toLong(), ChronoUnit.DAYS)
+                if (scheduledExportTime.isBefore(timeSource.currentTimeMillis().toInstant())) {
+                    getString(R.string.next_export_text)
+                } else {
                     getString(
                         R.string.next_export_time,
                         dateFormatter.formatLongDate(scheduledExportTime),
                     )
+                }
+            } else {
+                getString(R.string.next_export_text)
             }
-        } else {
-            nextExportText = getString(R.string.next_export_text)
-        }
         val nextExportLocation = getNextExportLocationString(scheduledExportUiState)
         preferenceScreen.addPreference(
             getExportStatusPreference(nextExportText, nextExportLocation)
@@ -238,7 +238,7 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
     ): HealthPreference {
         val preference =
             if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
-                HealthPreference(requireContext()).also {
+                HealthPreferenceNoBg(requireContext()).also {
                     it.title = nextExportText
                     it.summary = nextExportLocation
                 }

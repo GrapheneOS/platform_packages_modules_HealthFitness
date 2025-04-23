@@ -30,7 +30,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.exportimport.ExportSetupActivity
 import com.android.healthconnect.controller.exportimport.ExportStatusPreference
@@ -49,6 +48,7 @@ import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiSt
 import com.android.healthconnect.controller.shared.preference.HealthBannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.shared.preference.HealthPreferenceNoBg
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
@@ -62,8 +62,8 @@ import com.android.healthconnect.controller.utils.withinOneDayAfter
 import com.android.healthconnect.controller.utils.withinOneHourAfter
 import com.android.healthconnect.controller.utils.withinOneMinuteAfter
 import com.android.healthconnect.controller.utils.withinOneYearAfter
-import com.android.healthfitness.flags.Flags.exportImportFastFollow
 import com.android.healthfitness.flags.Flags.cloudBackupAndRestoreHcUi
+import com.android.healthfitness.flags.Flags.exportImportFastFollow
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -81,9 +81,8 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
         const val SCHEDULED_EXPORT_PREFERENCE_KEY = "scheduled_export"
         const val IMPORT_DATA_PREFERENCE_KEY = "import_data"
         const val CLOUD_BACKUP_PREFERENCE_KEY = "cloud_backup"
-        const val EXPORT_IMPORT_SETTINGS_CATEGORY_PREFERENCE_KEY = "settings_category"
         const val IMPORT_ERROR_BANNER_KEY = "import_error_banner"
-        const val PREVIOUS_EXPORT_STATUS_ORDER = 2
+        const val PREVIOUS_EXPORT_STATUS_ORDER = 1
         const val IMPORT_FILE_URI_KEY = "selectedUri"
         const val BANNER_GROUP = "banner_group"
         const val TAG = "BackupAndRestoreSettingsFragment"
@@ -113,8 +112,6 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     private val importDataPreference: HealthPreference by pref(IMPORT_DATA_PREFERENCE_KEY)
     private val backupDataPreference: HealthPreference by pref(CLOUD_BACKUP_PREFERENCE_KEY)
     private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
-    private val settingsCategory: PreferenceGroup by
-        pref(EXPORT_IMPORT_SETTINGS_CATEGORY_PREFERENCE_KEY)
 
     private val dateFormatter: LocalDateTimeFormatter by lazy {
         LocalDateTimeFormatter(requireContext())
@@ -140,7 +137,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
         }
 
         if (cloudBackupAndRestoreHcUi()) {
-            backupDataPreference.setOnPreferenceClickListener() {
+            backupDataPreference.setOnPreferenceClickListener {
                 openBackupRestoreSettings()
                 true
             }
@@ -240,12 +237,12 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
     }
 
     private fun maybeShowPreviousExportStatus(scheduledExportUiState: ScheduledExportUiState) {
-        settingsCategory.removePreferenceRecursively(EXPORT_STATUS_PREFERENCE)
+        preferenceScreen.removePreferenceRecursively(EXPORT_STATUS_PREFERENCE)
         val lastSuccessfulExportTime = scheduledExportUiState.lastSuccessfulExportTime
         if (lastSuccessfulExportTime != null) {
             val lastExportTime = getLastExportTime(lastSuccessfulExportTime)
             val exportLocation = getExportLocationString(scheduledExportUiState)
-            settingsCategory.addPreference(
+            preferenceScreen.addPreference(
                 getExportStatusPreference(lastExportTime, exportLocation)
             )
         } else if (
@@ -255,17 +252,17 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
                     ExportFrequency.EXPORT_FREQUENCY_NEVER.periodInDays
         ) {
             val lastExportMessage = getString(R.string.no_last_export_message)
-            settingsCategory.addPreference(getExportStatusPreference(lastExportMessage, null))
+            preferenceScreen.addPreference(getExportStatusPreference(lastExportMessage, null))
         }
     }
 
     private fun getExportStatusPreference(
         lastExportTime: String,
         exportLocation: String?,
-    ): HealthPreference {
+    ): Preference {
         val preference =
             if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
-                HealthPreference(requireContext()).also {
+                HealthPreferenceNoBg(requireContext()).also {
                     it.title = lastExportTime
                     it.summary = exportLocation
                 }
