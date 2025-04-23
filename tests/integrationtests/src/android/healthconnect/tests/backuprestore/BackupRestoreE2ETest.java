@@ -16,11 +16,10 @@
 
 package android.healthconnect.tests.backuprestore;
 
+import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest;
-import static android.healthconnect.cts.utils.PermissionHelper.getHealthDataHistoricalAccessStartDate;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
-import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissionsWithDelay;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.getHealthConnectDataRestoreState;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
@@ -31,15 +30,18 @@ import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
 import static com.android.compatibility.common.util.BackupUtils.LOCAL_TRANSPORT_TOKEN;
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.compatibility.common.util.SystemUtil.getEventually;
+import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static java.time.temporal.ChronoUnit.HOURS;
+import static java.util.Objects.requireNonNull;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.DataOrigin;
@@ -56,11 +58,9 @@ import android.health.connect.datatypes.units.Energy;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.cts.utils.DataFactory;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
-import android.healthconnect.cts.utils.TestUtils;
 import android.os.ParcelFileDescriptor;
 import android.os.UserHandle;
 import android.platform.test.annotations.AppModeFull;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.provider.Settings;
@@ -69,7 +69,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.compatibility.common.util.BackupUtils;
-import com.android.healthfitness.flags.Flags;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -117,6 +116,8 @@ public class BackupRestoreE2ETest {
             };
     private final Context mContext =
             InstrumentationRegistry.getInstrumentation().getTargetContext();
+    private final HealthConnectManager mHealthConnectManager =
+            requireNonNull(mContext.getSystemService(HealthConnectManager.class));
     private PhrCtsTestUtils mPhrTestUtil;
 
     private String mBackupRestoreApkPackageName;
@@ -144,7 +145,7 @@ public class BackupRestoreE2ETest {
 
         deleteAllStagedRemoteData();
         verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
-        mPhrTestUtil = new PhrCtsTestUtils(TestUtils.getHealthConnectManager());
+        mPhrTestUtil = new PhrCtsTestUtils(mHealthConnectManager);
     }
 
     @Test
@@ -290,8 +291,8 @@ public class BackupRestoreE2ETest {
     public void testPermissionRestoredBeforeHCRestore_expectGrantTimeIsRestoredCorrectly()
             throws Exception {
         // revoke all permissions for both test apps to remove all stored grant time as setup step
-        revokeAllHealthPermissionsWithDelay(TEST_APP_1_PACKAGE_NAME, "");
-        revokeAllHealthPermissionsWithDelay(TEST_APP_2_PACKAGE_NAME, "");
+        revokeAllHealthPermissionsAndWait(TEST_APP_1_PACKAGE_NAME);
+        revokeAllHealthPermissionsAndWait(TEST_APP_2_PACKAGE_NAME);
 
         // grant a permission to test app 1 to create grant time
         grantHealthPermission(TEST_APP_1_PACKAGE_NAME, TEST_APP_DECLARED_PERMISSION);
@@ -354,7 +355,7 @@ public class BackupRestoreE2ETest {
     public void testPermissionsRestoredAfterHCRestore_expectGrantTimeIsRestoredCorrectly()
             throws Exception {
         // revoke all permissions for the test app to remove all stored grant time as setup step
-        revokeAllHealthPermissionsWithDelay(TEST_APP_1_PACKAGE_NAME, "");
+        revokeAllHealthPermissionsAndWait(TEST_APP_1_PACKAGE_NAME);
 
         // grant a permission to test app to create grant time
         grantHealthPermission(TEST_APP_1_PACKAGE_NAME, TEST_APP_DECLARED_PERMISSION);
@@ -506,6 +507,18 @@ public class BackupRestoreE2ETest {
         }
 
         return insertedRecords;
+    }
+
+    private Instant getHealthDataHistoricalAccessStartDate(String packageName) {
+        return runWithShellPermissionIdentity(
+                () -> mHealthConnectManager.getHealthDataHistoricalAccessStartDate(packageName),
+                MANAGE_HEALTH_PERMISSIONS);
+    }
+
+    private void revokeAllHealthPermissionsAndWait(String packageName) throws Exception {
+        revokeAllHealthPermissions(packageName, "BackupRestoreE2ETest");
+        // Wait for grant time to be cleared.
+        eventually(() -> assertThat(getHealthDataHistoricalAccessStartDate(packageName)).isNull());
     }
 
     private interface RecordCreator {
