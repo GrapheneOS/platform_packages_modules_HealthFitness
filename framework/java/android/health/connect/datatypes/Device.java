@@ -18,14 +18,21 @@ package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
 
+import static com.android.healthfitness.flags.Flags.FLAG_NEW_DEVICE_TYPES;
+
+import android.annotation.FlaggedApi;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+
+import com.android.healthfitness.flags.Flags;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A physical device (such as phone, watch, scale, or chest strap) which captured associated health
@@ -73,15 +80,111 @@ public final class Device {
         }
     }
 
+    /**
+     * A device whose specific type is not identified, not yet supported in the Health Connect list,
+     * or where the originating device type could not be determined by the data writer.
+     */
     public static final int DEVICE_TYPE_UNKNOWN = 0;
+
+    /**
+     * A wearable computing device designed to be worn on the wrist, typically featuring an
+     * interactive display and offering a broad range of functionalities including, but not limited
+     * to, health and fitness tracking, app integration, and communication.
+     */
     public static final int DEVICE_TYPE_WATCH = 1;
+
+    /**
+     * A handheld mobile computing and communication device, equipped with various sensors (e.g.,
+     * accelerometer, GPS) that can collect health and fitness data, or serve as a primary interface
+     * for manual data entry or managing data from connected peripherals.
+     */
     public static final int DEVICE_TYPE_PHONE = 2;
+
+    /** Devices designed to measure body weight and often other body composition metrics. */
     public static final int DEVICE_TYPE_SCALE = 3;
+
+    /**
+     * Wearable devices worn on a finger, typically designed for discreet tracking of sleep,
+     * activity, and potentially other physiological data.
+     */
     public static final int DEVICE_TYPE_RING = 4;
+
+    /**
+     * Devices worn on the head, beyond glasses, designed for specific health or fitness
+     * applications, often involving sensing or stimulation.
+     *
+     * <p>For example: VR/MR Headsets, ECG Head Bands
+     */
     public static final int DEVICE_TYPE_HEAD_MOUNTED = 5;
+
+    /**
+     * Wearable devices, typically worn on the wrist or arm, primarily focused on tracking physical
+     * activity and basic health metrics.
+     */
     public static final int DEVICE_TYPE_FITNESS_BAND = 6;
+
+    /**
+     * Wearable straps worn around the chest, primarily used for highly accurate heart rate
+     * monitoring during exercise.
+     */
     public static final int DEVICE_TYPE_CHEST_STRAP = 7;
+
+    /**
+     * Stationary devices with a screen and connectivity, often used in homes or gyms to provide
+     * guided workouts, track progress, and offer health-related information.
+     *
+     * <p>For example: Home Smart Displays, Interactive Fitness Mirrors
+     */
     public static final int DEVICE_TYPE_SMART_DISPLAY = 8;
+
+    /**
+     * Over-the-counter Medical devices.
+     *
+     * <p>For example: CGM / Glucometers, Blood Pressure Cuff
+     */
+    @FlaggedApi(FLAG_NEW_DEVICE_TYPES)
+    public static final int DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE = 9;
+
+    /** Wearable glasses with integrated technology and computing capabilities. */
+    @FlaggedApi(FLAG_NEW_DEVICE_TYPES)
+    public static final int DEVICE_TYPE_GLASSES = 10;
+
+    /** Electronic devices worn in or around the ears, often with audio capabilities. */
+    @FlaggedApi(FLAG_NEW_DEVICE_TYPES)
+    public static final int DEVICE_TYPE_HEARABLES = 11;
+
+    /**
+     * Stationary or mobile equipment designed for physical exercise.
+     *
+     * <p>For example: Treadmill, Indoor Cycles, Rowing Machines, Outdoor Bicycle. Outdoor Scooter
+     */
+    @FlaggedApi(FLAG_NEW_DEVICE_TYPES)
+    public static final int DEVICE_TYPE_FITNESS_MACHINE = 12;
+
+    /**
+     * Tools and accessories designed for use during physical exercise.
+     *
+     * <p>For example: Dumbbells, Jump Ropes
+     */
+    @FlaggedApi(FLAG_NEW_DEVICE_TYPES)
+    public static final int DEVICE_TYPE_FITNESS_EQUIPMENT = 13;
+
+    /**
+     * A portable computer usually with GPS and performance tracking capabilities that is either
+     * handheld or attached to a device.
+     *
+     * <p>For example: Handheld GPS, Cycling Computer, Rowing Computer
+     */
+    @FlaggedApi(FLAG_NEW_DEVICE_TYPES)
+    public static final int DEVICE_TYPE_PORTABLE_COMPUTERS = 14;
+
+    /**
+     * Equipment attachments that measure a specific metric.
+     *
+     * <p>For example: Pedal Meters, Insole Meters
+     */
+    @FlaggedApi(FLAG_NEW_DEVICE_TYPES)
+    public static final int DEVICE_TYPE_METER = 15;
 
     // Instant records
     @Nullable private final String mManufacturer;
@@ -158,16 +261,28 @@ public final class Device {
      * @hide
      */
     public static final Set<Integer> VALID_TYPES =
-            Set.of(
-                    DEVICE_TYPE_UNKNOWN,
-                    DEVICE_TYPE_WATCH,
-                    DEVICE_TYPE_PHONE,
-                    DEVICE_TYPE_SCALE,
-                    DEVICE_TYPE_RING,
-                    DEVICE_TYPE_HEAD_MOUNTED,
-                    DEVICE_TYPE_FITNESS_BAND,
-                    DEVICE_TYPE_CHEST_STRAP,
-                    DEVICE_TYPE_SMART_DISPLAY);
+            Stream.concat(
+                            Stream.of(
+                                    DEVICE_TYPE_UNKNOWN,
+                                    DEVICE_TYPE_WATCH,
+                                    DEVICE_TYPE_PHONE,
+                                    DEVICE_TYPE_SCALE,
+                                    DEVICE_TYPE_RING,
+                                    DEVICE_TYPE_HEAD_MOUNTED,
+                                    DEVICE_TYPE_FITNESS_BAND,
+                                    DEVICE_TYPE_CHEST_STRAP,
+                                    DEVICE_TYPE_SMART_DISPLAY),
+                            Flags.newDeviceTypes()
+                                    ? Stream.of(
+                                            DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE,
+                                            DEVICE_TYPE_GLASSES,
+                                            DEVICE_TYPE_HEARABLES,
+                                            DEVICE_TYPE_FITNESS_MACHINE,
+                                            DEVICE_TYPE_FITNESS_EQUIPMENT,
+                                            DEVICE_TYPE_PORTABLE_COMPUTERS,
+                                            DEVICE_TYPE_METER)
+                                    : Stream.empty())
+                    .collect(Collectors.toUnmodifiableSet());
 
     /** @hide */
     @IntDef({
@@ -180,6 +295,13 @@ public final class Device {
         DEVICE_TYPE_FITNESS_BAND,
         DEVICE_TYPE_CHEST_STRAP,
         DEVICE_TYPE_SMART_DISPLAY,
+        DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE,
+        DEVICE_TYPE_GLASSES,
+        DEVICE_TYPE_HEARABLES,
+        DEVICE_TYPE_FITNESS_MACHINE,
+        DEVICE_TYPE_FITNESS_EQUIPMENT,
+        DEVICE_TYPE_PORTABLE_COMPUTERS,
+        DEVICE_TYPE_METER,
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface DeviceType {}

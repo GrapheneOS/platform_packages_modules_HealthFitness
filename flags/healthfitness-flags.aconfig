@@ -485,5 +485,5 @@ flag {
     description: "Flag for adding new device types to metadata."
     bug: "403200835"
     is_fixed_read_only: true
-    is_exported: false
+    is_exported: true
 }
