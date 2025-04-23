@@ -192,8 +192,7 @@ public class ExportManager {
                 return false;
             }
 
-            if (!Flags.personalHealthRecordEnableExportImport()
-                    && Flags.personalHealthRecordDisableExportImport()) {
+            if (!Flags.personalHealthRecordEnableExportImport()) {
                 try {
                     deletePhrTablesContent(dbContext);
                 } catch (Exception e) {
