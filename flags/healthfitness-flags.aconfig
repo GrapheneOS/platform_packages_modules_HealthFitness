@@ -92,15 +92,6 @@ flag {
 }
 
 flag {
-    name: "phr_fhir_oneof_validation"
-    namespace: "health_fitness_aconfig"
-    description: "UNUSED."
-    bug: "376673951"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "phr_fhir_primitive_type_validation"
     namespace: "health_fitness_aconfig"
     description: "Flag for validating FHIR primitive data types when upserting medical data."
