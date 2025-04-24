@@ -19,8 +19,8 @@ package android.health.connect.internal.datatypes;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.Record;
-import android.health.connect.datatypes.testing.RecordFactory;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
+import android.health.connect.testing.RecordFactory;
 import android.os.Parcel;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
