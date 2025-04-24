@@ -66,6 +66,8 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
@@ -73,8 +75,6 @@ import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse
 import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.TransactionManager.RunnableWithReturn;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.request.CreateIndexRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.metadata;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 

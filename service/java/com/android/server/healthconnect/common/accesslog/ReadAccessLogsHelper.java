@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.accesslog;
 
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
@@ -38,6 +38,7 @@ import android.util.Slog;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.storage;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 

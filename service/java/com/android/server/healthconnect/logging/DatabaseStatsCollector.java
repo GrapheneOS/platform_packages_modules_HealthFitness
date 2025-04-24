@@ -20,13 +20,13 @@ import android.annotation.Nullable;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.InstantRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SeriesRecordHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 
 import java.util.Collection;
 

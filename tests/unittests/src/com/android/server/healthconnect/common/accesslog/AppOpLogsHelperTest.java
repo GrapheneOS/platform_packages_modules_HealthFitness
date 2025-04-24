@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.accesslog;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -63,13 +63,13 @@ public class AppOpLogsHelperTest {
     @Mock private AppOpsManager mAppOpsManager;
     @Mock private PackageManager mPackageManager;
 
-    private final Context context = ApplicationProvider.getApplicationContext();
-    private final Set<String> healthPermissions =
-            HealthConnectManager.getHealthPermissions(context);
+    private final Context mContext = ApplicationProvider.getApplicationContext();
+    private final Set<String> mHealthPermissions =
+            HealthConnectManager.getHealthPermissions(mContext);
 
     @Test
     public void opNameToRecordType_everyGranularOpHasKnownRecordType() {
-        for (String healthPermission : healthPermissions) {
+        for (String healthPermission : mHealthPermissions) {
             // Skip non-granular permissions.
             String appOp = AppOpsManager.permissionToOp(healthPermission);
             if (appOp.equals(AppOpsManager.OPSTR_READ_WRITE_HEALTH_DATA)) {
@@ -87,7 +87,7 @@ public class AppOpLogsHelperTest {
     @RequiresFlagsEnabled({Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED})
     public void getRecordsWithSystemAppOps_returnsRecordsWithSystemAppOps() {
         AppOpLogsHelper appOpLogsHelper =
-                new AppOpLogsHelper(mAppOpsManager, mPackageManager, healthPermissions);
+                new AppOpLogsHelper(mAppOpsManager, mPackageManager, mHealthPermissions);
         Set<Integer> recordsWithSystemAppOps = appOpLogsHelper.getRecordsWithSystemAppOps();
 
         assertThat(recordsWithSystemAppOps)
@@ -121,7 +121,7 @@ public class AppOpLogsHelperTest {
         UserHandle userHandle = UserHandle.getUserHandleForUid(10);
 
         AppOpLogsHelper appOpLogsHelper =
-                new AppOpLogsHelper(mAppOpsManager, mPackageManager, healthPermissions);
+                new AppOpLogsHelper(mAppOpsManager, mPackageManager, mHealthPermissions);
         List<AccessLog> accessLogs = appOpLogsHelper.getAccessLogsFromAppOps(userHandle);
 
         assertThat(accessLogs.size()).isEqualTo(1);
@@ -166,7 +166,7 @@ public class AppOpLogsHelperTest {
         UserHandle userHandle = UserHandle.getUserHandleForUid(10);
 
         AppOpLogsHelper appOpLogsHelper =
-                new AppOpLogsHelper(mAppOpsManager, mPackageManager, healthPermissions);
+                new AppOpLogsHelper(mAppOpsManager, mPackageManager, mHealthPermissions);
         List<AccessLog> accessLogs = appOpLogsHelper.getAccessLogsFromAppOps(userHandle);
 
         assertThat(accessLogs.size()).isEqualTo(1);

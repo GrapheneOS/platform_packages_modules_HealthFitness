@@ -76,7 +76,7 @@ android_robolectric_test {
         "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/TestOutcomeReceiver.java",
     ],
     exclude_srcs: [
-        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
+        "unittests/src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",
         ":robo-tests-sources-exclude",
     ],
     test_suites: [
@@ -123,7 +123,7 @@ android_test {
         "unittests/src/**/*.java",
     ],
     exclude_srcs: [
-        "unittests/src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
+        "unittests/src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",
         ":robo-tests-sources-exclude",
     ],
     defaults: [

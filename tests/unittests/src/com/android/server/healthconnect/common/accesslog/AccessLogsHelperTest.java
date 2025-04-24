@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.accesslog;
 
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
@@ -31,10 +31,10 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_PACKAGE_NAME;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper.MEDICAL_DATA_SOURCE_ACCESSED_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper.getAlterTableRequestForPhrAccessLogs;
-import static com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper.populateCommonColumns;
+import static com.android.server.healthconnect.common.accesslog.AccessLogsHelper.MEDICAL_DATA_SOURCE_ACCESSED_COLUMN_NAME;
+import static com.android.server.healthconnect.common.accesslog.AccessLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME;
+import static com.android.server.healthconnect.common.accesslog.AccessLogsHelper.getAlterTableRequestForPhrAccessLogs;
+import static com.android.server.healthconnect.common.accesslog.AccessLogsHelper.populateCommonColumns;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 

@@ -37,8 +37,8 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 
 import java.time.Instant;
 import java.time.Period;
