@@ -41,7 +41,6 @@ import static android.health.connect.HealthPermissions.READ_STEPS;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -218,28 +217,7 @@ public class DailyLoggingServiceTest {
     }
 
     @Test
-    @DisableFlags(FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY)
-    public void phrStats_flagDisabled_expectNoLogs() {
-        when(mUsageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect()).thenReturn(1);
-
-        DailyLoggingService.logDailyMetrics(
-                mUsageStatsCollector,
-                mDatabaseStatsCollector,
-                mEcosystemStatsCollector,
-                mHealthFitnessStatsLog);
-
-        verify(mHealthFitnessStatsLog, never())
-                .write(eq(HEALTH_CONNECT_PHR_USAGE_STATS), anyInt(), anyInt(), anyInt(), anyInt());
-
-        verify(mHealthFitnessStatsLog, never())
-                .write(eq(HEALTH_CONNECT_PHR_STORAGE_STATS), anyInt());
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
-    public void phrStats_flagEnabledAndIsMonthlyActiveUser_expectCorrectLogs() {
+    public void phrStats_isMonthlyActiveUser_expectCorrectLogs() {
         when(mUsageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect()).thenReturn(1);
         when(mUsageStatsCollector.isPhrMonthlyActiveUser()).thenReturn(true);
         when(mUsageStatsCollector.getMedicalDataSourcesCount()).thenReturn(101);
@@ -262,10 +240,7 @@ public class DailyLoggingServiceTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
-    public void phrStats_flagEnabledAndIsNotMonthlyActiveUser_expectCorrectLogs() {
+    public void phrStats_isNotMonthlyActiveUser_expectCorrectLogs() {
         when(mUsageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect()).thenReturn(1);
         when(mUsageStatsCollector.isPhrMonthlyActiveUser()).thenReturn(false);
         when(mUsageStatsCollector.getMedicalDataSourcesCount()).thenReturn(101);
@@ -288,10 +263,7 @@ public class DailyLoggingServiceTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
-    public void phrStats_flagEnabled_phrDataExists_expectCorrectPhrDbStatsLogs() {
+    public void phrStats_phrDataExists_expectCorrectPhrDbStatsLogs() {
         when(mDatabaseStatsCollector.getFileBytes(
                         eq(
                                 Set.of(
@@ -311,10 +283,7 @@ public class DailyLoggingServiceTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
-    public void phrStats_flagEnabled_noPhRdata_expectNoPhrDbStatsLogs() {
+    public void phrStats_noPhRdata_expectNoPhrDbStatsLogs() {
         when(mDatabaseStatsCollector.getFileBytes(mStringListCaptor.capture())).thenReturn(101L);
         when(mUsageStatsCollector.getMedicalResourcesCount()).thenReturn(0);
         when(mUsageStatsCollector.getMedicalDataSourcesCount()).thenReturn(0);

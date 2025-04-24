@@ -187,8 +187,6 @@ import static android.health.connect.ratelimiter.RateLimiter.QuotaBucket.QUOTA_B
 import static android.health.connect.ratelimiter.RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_BACKGROUND;
 import static android.health.connect.ratelimiter.RateLimiter.QuotaBucket.QUOTA_BUCKET_WRITES_PER_24H_FOREGROUND;
 
-import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetry;
-import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetryPrivateWw;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_RESOURCES_BY_IDS;
@@ -816,26 +814,24 @@ public class HealthConnectServiceLogger {
     }
 
     private void writePhrLogs() {
-        if (personalHealthRecordTelemetry()) { // normal WW
-            mStatsLog.write(
-                    HEALTH_CONNECT_API_CALLED,
-                    mHealthDataServiceApiMethod,
-                    mHealthDataServiceApiStatus,
-                    mErrorCode,
-                    mDuration,
-                    mNumberOfRecords,
-                    mRateLimit,
-                    mCallerForegroundState,
-                    mPackageName);
-        }
+        // normal WW
+        mStatsLog.write(
+                HEALTH_CONNECT_API_CALLED,
+                mHealthDataServiceApiMethod,
+                mHealthDataServiceApiStatus,
+                mErrorCode,
+                mDuration,
+                mNumberOfRecords,
+                mRateLimit,
+                mCallerForegroundState,
+                mPackageName);
 
-        if (personalHealthRecordTelemetryPrivateWw()) { // private WW
-            if (mMedicalResourceTypes.isEmpty()) {
-                writePhrApiInvoked(MEDICAL_RESOURCE_TYPE_NOT_ASSIGNED_DEFAULT_VALUE);
-            } else {
-                for (int medicalResourceType : mMedicalResourceTypes) {
-                    writePhrApiInvoked(getMedicalResourceTypeLoggingEnum(medicalResourceType));
-                }
+        // private WW
+        if (mMedicalResourceTypes.isEmpty()) {
+            writePhrApiInvoked(MEDICAL_RESOURCE_TYPE_NOT_ASSIGNED_DEFAULT_VALUE);
+        } else {
+            for (int medicalResourceType : mMedicalResourceTypes) {
+                writePhrApiInvoked(getMedicalResourceTypeLoggingEnum(medicalResourceType));
             }
         }
     }

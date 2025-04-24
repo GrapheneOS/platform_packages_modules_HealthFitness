@@ -18,8 +18,6 @@ package android.healthconnect.cts.logging;
 
 import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
 
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import android.cts.statsdatom.lib.AtomTestUtils;
@@ -147,9 +145,6 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         assertThat(atom.getChangelogCount()).isGreaterThan(2);
     }
 
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrUsageStats() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -175,9 +170,6 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         assertThat(atom.getGrantedPhrAppsCount()).isEqualTo(1);
     }
 
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrStorageStats() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;

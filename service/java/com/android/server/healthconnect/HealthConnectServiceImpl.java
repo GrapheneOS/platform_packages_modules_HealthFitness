@@ -36,7 +36,6 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.datatypes.MedicalDataSource.validateMedicalDataSourceIds;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
-import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetry;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
@@ -2576,12 +2575,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (personalHealthRecordTelemetry()) {
-                        // Stores the timestamp for calls made by ANY client, including the
-                        // controller
-                        mPreferencesManager.setLastPhrReadMedicalResourcesApiTimeStamp(
-                                mTimeSource.getInstantNow());
-                    }
+                    // Stores the timestamp for calls made by ANY client, including the
+                    // controller
+                    mPreferencesManager.setLastPhrReadMedicalResourcesApiTimeStamp(
+                            mTimeSource.getInstantNow());
 
                     if (medicalResourceIds.isEmpty()) {
                         callback.onResult(new ReadMedicalResourcesResponse(List.of(), null, 0));
@@ -2690,12 +2687,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (personalHealthRecordTelemetry()) {
-                        // Stores the timestamp for calls made by ANY client, including the
-                        // controller
-                        mPreferencesManager.setLastPhrReadMedicalResourcesApiTimeStamp(
-                                mTimeSource.getInstantNow());
-                    }
+                    // Stores the timestamp for calls made by ANY client, including the
+                    // controller
+                    mPreferencesManager.setLastPhrReadMedicalResourcesApiTimeStamp(
+                            mTimeSource.getInstantNow());
 
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);

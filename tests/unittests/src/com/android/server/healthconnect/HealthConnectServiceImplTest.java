@@ -57,8 +57,6 @@ import static android.healthconnect.cts.utils.DataFactory.NOW;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE;
 import static com.android.healthfitness.flags.Flags.FLAG_REPLACE_BODY_SENSOR_PERMISSION_ENABLED;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
@@ -769,30 +767,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testGetMedicalDataSourcesByIds_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-
-        mHealthConnectService.getMedicalDataSourcesByIds(
-                mAttributionSource,
-                List.of(UUID.randomUUID().toString()),
-                mMedicalDataSourcesResponseCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testGetMedicalDataSourcesByIds_telemetryFlagOn_expectCorrectLogs()
+    public void testGetMedicalDataSourcesByIds_expectCorrectLogs()
             throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
@@ -1033,30 +1008,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testGetMedicalDataSourcesByRequests_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-
-        mHealthConnectService.getMedicalDataSourcesByRequest(
-                mAttributionSource,
-                getGetMedicalDataSourceRequest(Set.of("com.abc")),
-                mMedicalDataSourcesResponseCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testGetMedicalDataSourcesByRequests_telemetryFlagOn_expectCorrectLogs()
+    public void testGetMedicalDataSourcesByRequests_expectCorrectLogs()
             throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
@@ -1333,36 +1285,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testUpsertMedicalResourcesFromRequestsParcel_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-
-        mHealthConnectService.upsertMedicalResourcesFromRequestsParcel(
-                mAttributionSource,
-                new UpsertMedicalResourceRequestsParcel(
-                        List.of(
-                                new UpsertMedicalResourceRequest.Builder(
-                                                DATA_SOURCE_ID,
-                                                FHIR_VERSION_R4,
-                                                FHIR_DATA_IMMUNIZATION)
-                                        .build())),
-                mMedicalResourceListParcelResponseCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testUpsertMedicalResourcesFromRequestsParcel_telemetryFlagOn_expectCorrectLogs()
+    public void testUpsertMedicalResourcesFromRequestsParcel_expectCorrectLogs()
             throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
@@ -1390,34 +1313,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testReadMedicalResourcesByRequests_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
-
-        mHealthConnectService.readMedicalResourcesByRequest(
-                mAttributionSource,
-                new ReadMedicalResourcesInitialRequest.Builder(MEDICAL_RESOURCE_TYPE_VACCINES)
-                        .build()
-                        .toParcel(),
-                mReadMedicalResourcesResponseCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        verify(mPreferencesManager, never()).setLastPhrReadMedicalResourcesApiTimeStamp(any());
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testReadMedicalResourcesByRequests_telemetryFlagOn_expectCorrectLogs()
+    public void testReadMedicalResourcesByRequests_expectCorrectLogs()
             throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
         mFakeTimeSource.setInstant(NOW);
@@ -1444,12 +1340,8 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
     public void
-            testReadMedicalResourcesByRequests_telemetryFlagOnAndHasDataManagementPermission_expectMonthlyTimeStamp()
+            testReadMedicalResourcesByRequests_hasDataManagementPermission_expectMonthlyTimeStamp()
                     throws InterruptedException {
         setUpSuccessfulMocksForPhrTelemetry();
         mFakeTimeSource.setInstant(NOW);
@@ -1468,32 +1360,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testReadMedicalResourcesByIds_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-        mFakeTimeSource.setInstant(NOW);
-
-        mHealthConnectService.readMedicalResourcesByIds(
-                mAttributionSource,
-                List.of(getMedicalResourceId()),
-                mReadMedicalResourcesResponseCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        verify(mPreferencesManager, never()).setLastPhrReadMedicalResourcesApiTimeStamp(any());
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testReadMedicalResourcesByIds_telemetryFlagOn_expectCorrectLogs()
+    public void testReadMedicalResourcesByIds_expectCorrectLogs()
             throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
         mFakeTimeSource.setInstant(NOW);
@@ -1517,12 +1384,8 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
     public void
-            testReadMedicalResourcesByIds_telemetryFlagOnAndHasDataManagementPermission_expectMonthlyTimeStamp() {
+            testReadMedicalResourcesByIds_hasDataManagementPermission_expectMonthlyTimeStamp() {
         setUpSuccessfulMocksForPhrTelemetry();
         mFakeTimeSource.setInstant(NOW);
         setDataManagementPermission(PERMISSION_GRANTED);
@@ -2030,30 +1893,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testCreateMedicalDataSource_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-
-        mHealthConnectService.createMedicalDataSource(
-                mAttributionSource,
-                getCreateMedicalDataSourceRequest(),
-                mMedicalDataSourceCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testCreateMedicalDataSource_telemetryFlagOn_expectCorrectLogs()
+    public void testCreateMedicalDataSource_expectCorrectLogs()
             throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
@@ -2090,28 +1930,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testDeleteMedicalDataSourceWithData_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-
-        mHealthConnectService.deleteMedicalDataSourceWithData(
-                mAttributionSource, UUID.randomUUID().toString(), mEmptyResponseCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testDeleteMedicalDataSourceWithData_telemetryFlagOn_expectCorrectLogs()
+    public void testDeleteMedicalDataSourceWithData_expectCorrectLogs()
             throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
@@ -2237,28 +2056,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testDeleteMedicalResourcesByIds_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-
-        mHealthConnectService.deleteMedicalResourcesByIds(
-                mAttributionSource, List.of(getMedicalResourceId()), mEmptyResponseCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testDeleteMedicalResourcesByIds_telemetryFlagOn_expectCorrectLogs()
+    public void testDeleteMedicalResourcesByIds_expectCorrectLogs()
             throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
@@ -2333,32 +2131,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testDeleteMedicalResourcesByRequests_telemetryFlagOff_expectNoLogs()
-            throws InterruptedException {
-        setUpSuccessfulMocksForPhrTelemetry();
-        DeleteMedicalResourcesRequest request =
-                new DeleteMedicalResourcesRequest.Builder()
-                        .addDataSourceId(UUID.randomUUID().toString())
-                        .build();
-
-        mHealthConnectService.deleteMedicalResourcesByRequest(
-                mAttributionSource, request, mEmptyResponseCallback);
-
-        awaitAllExecutorsIdle();
-        assertPhrApiWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-        assertPhrApiPrivateWestWorldWrites(ArgumentMatchers::anyInt, ArgumentMatchers::anyInt, 0);
-    }
-
-    @Test
-    @EnableFlags({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY,
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY_PRIVATE_WW
-    })
-    public void testDeleteMedicalResourcesByRequests_telemetryFlagOn_expectCorrectLogs()
+    public void testDeleteMedicalResourcesByRequests_expectCorrectLogs()
             throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
         DeleteMedicalResourcesRequest request =

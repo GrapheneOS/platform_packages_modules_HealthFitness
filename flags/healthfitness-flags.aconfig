@@ -26,24 +26,6 @@ flag {
 }
 
 flag {
-    name: "personal_health_record_telemetry"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for guarding telemetry for PHR MVP APIs. This is for normal WW"
-    bug: "361796560"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "personal_health_record_telemetry_private_ww"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for guarding telemetry for PHR MVP APIs. This is for private WW"
-    bug: "375157800"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "personal_health_record_ui_telemetry"
     namespace: "health_fitness_aconfig"
     description: "Flag for guarding telemetry for PHR MVP UI."
