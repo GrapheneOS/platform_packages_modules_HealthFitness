@@ -62,15 +62,6 @@ flag {
 }
 
 flag {
-    name: "personal_health_record_lock_screen_banner"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for guarding the home screen banner that recommends setting up a device lock."
-    bug: "375384825"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "personal_health_record_enable_export_import"
     namespace: "health_fitness_aconfig"
     description: "Flag for including PHR tables from export/import flow. Because personal_health_record_disable_export_import flag has already been rolled out to mainline for M-02 2025, so it won't be rolled back. Instead, this flag is added to override that flag."

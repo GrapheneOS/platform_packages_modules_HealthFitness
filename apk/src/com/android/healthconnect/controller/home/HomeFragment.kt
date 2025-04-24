@@ -72,7 +72,6 @@ import com.android.healthconnect.controller.utils.logging.UnknownGenericElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.Flags.onboarding
-import com.android.healthfitness.flags.Flags.personalHealthRecordLockScreenBanner
 import com.android.settingslib.widget.BannerMessagePreference
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -136,8 +135,7 @@ class HomeFragment : Hilt_HomeFragment() {
     }
 
     private val isLockScreenBannerAvailable: Boolean by lazy {
-        personalHealthRecordLockScreenBanner() &&
-            deviceInfoUtils.isIntentHandlerAvailable(requireContext(), securitySettingsIntent)
+        deviceInfoUtils.isIntentHandlerAvailable(requireContext(), securitySettingsIntent)
     }
 
     private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
