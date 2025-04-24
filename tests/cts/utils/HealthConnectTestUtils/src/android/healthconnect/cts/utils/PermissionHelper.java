@@ -40,7 +40,6 @@ import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectManager;
 import android.os.UserHandle;
 
-import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.compatibility.common.util.SystemUtil;
@@ -146,61 +145,39 @@ public final class PermissionHelper {
     /**
      * Revokes the specified health permission from the app specified by {@code packageName}.
      *
-     * @see HealthConnectManager#revokeHealthPermission(String, String, String)
+     * <p>Permissions are revoked via {@link PackageManager#revokeRuntimePermission}, as {@link
+     * HealthConnectManager#revokeHealthPermission} is hidden and so can't be used by CTS. Unlike
+     * the {@code HealthConnectManager} method, this does not modify any permission flags.
      */
     @SuppressLint("MissingPermission")
     public static void revokeHealthPermission(String packageName, String permission)
             throws PackageManager.NameNotFoundException {
-        boolean wasGranted = getGrantedHealthPermissions(packageName).contains(permission);
-
-        // Call API even if permission isn't granted, as it also updates permission flags.
-        HealthConnectManager service = getHealthConnectManager();
-        runWithShellPermissionIdentity(
-                () ->
-                        service.getClass()
-                                .getMethod(
-                                        "revokeHealthPermission",
-                                        String.class,
-                                        String.class,
-                                        String.class)
-                                .invoke(service, packageName, permission, null),
-                MANAGE_HEALTH_PERMISSIONS);
-
-        if (wasGranted) {
-            // Apps are killed following a revoke. Wait for this to ensure that it doesn't interfere
-            // with subsequent interactions with the app.
-            waitForNoRunningProcesses(packageName);
+        if (!getGrantedHealthPermissions(packageName).contains(permission)) {
+            return;
         }
+
+        Context context = ApplicationProvider.getApplicationContext();
+        PackageManager packageManager = context.getPackageManager();
+        UserHandle user = context.getUser();
+
+        runWithShellPermissionIdentity(
+                () -> packageManager.revokeRuntimePermission(packageName, permission, user),
+                REVOKE_RUNTIME_PERMISSIONS);
+
+        // Apps are killed following a revoke. Wait for this to ensure that it doesn't interfere
+        // with subsequent interactions with the app.
+        waitForNoRunningProcesses(packageName);
     }
 
     /**
-     * Utility method to call {@link HealthConnectManager#revokeAllHealthPermissions(String,
-     * String)}.
+     * Revokes all health permissions from the app specified by {@code packageName}.
+     *
+     * <p>Permissions are revoked via {@link PackageManager#revokeRuntimePermission}, as {@link
+     * HealthConnectManager#revokeAllHealthPermissions} is hidden and so can't be used by CTS.
+     * Unlike the {@code HealthConnectManager} method, this does not modify any permission flags.
      */
     @SuppressLint("MissingPermission")
-    public static void revokeAllHealthPermissions(String packageName, @Nullable String reason)
-            throws PackageManager.NameNotFoundException {
-        boolean wasAnyGranted = !getGrantedHealthPermissions(packageName).isEmpty();
-
-        // Call API even if no permissions are granted, as it also updates permission flags.
-        HealthConnectManager service = getHealthConnectManager();
-        runWithShellPermissionIdentity(
-                () ->
-                        service.getClass()
-                                .getMethod("revokeAllHealthPermissions", String.class, String.class)
-                                .invoke(service, packageName, reason),
-                MANAGE_HEALTH_PERMISSIONS);
-
-        if (wasAnyGranted) {
-            // Apps are killed following a revoke. Wait for this to ensure that it doesn't interfere
-            // with subsequent interactions with the app.
-            waitForNoRunningProcesses(packageName);
-        }
-    }
-
-    /** Revokes all granted Health permissions from the specified package. */
-    @SuppressLint("MissingPermission")
-    public static void revokeHealthPermissions(String packageName)
+    public static void revokeAllHealthPermissions(String packageName, String reason)
             throws PackageManager.NameNotFoundException {
         List<String> permissions = getGrantedHealthPermissions(packageName);
         if (permissions.isEmpty()) {
@@ -214,7 +191,8 @@ public final class PermissionHelper {
         runWithShellPermissionIdentity(
                 () -> {
                     for (String permission : permissions) {
-                        packageManager.revokeRuntimePermission(packageName, permission, user);
+                        packageManager.revokeRuntimePermission(
+                                packageName, permission, user, reason);
                     }
                 },
                 REVOKE_RUNTIME_PERMISSIONS);
