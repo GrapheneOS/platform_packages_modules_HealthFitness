@@ -89,15 +89,6 @@ flag {
 }
 
 flag {
-    name: "phr_fhir_basic_complex_type_validation"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for basic validation of FHIR complex types when upserting medical data."
-    bug: "376283237"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "phr_fhir_complex_type_validation"
     namespace: "health_fitness_aconfig"
     description: "Flag for full validation of FHIR complex types when upserting medical data."
