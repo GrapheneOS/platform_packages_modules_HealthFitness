@@ -581,8 +581,16 @@ class PhrOptionsFragment : Fragment(R.layout.fragment_phr_options) {
     }
 
     private suspend fun readImmunization(view: View): String {
-        return readImmunization()
-            .joinToString(separator = "\n", transform = MedicalResource::toString)
+        val immunizations = readImmunization()
+        var resultString = "Read ${immunizations.size} immunization resources."
+        if (!immunizations.isEmpty()) {
+            resultString +=
+                "\n\n Displaying up to 10: \n\n${
+                    immunizations.take(10)
+                        .joinToString(separator = "\n", transform = MedicalResource::toString)
+                }"
+        }
+        return resultString
     }
 
     private suspend fun readImmunization(): List<MedicalResource> {
