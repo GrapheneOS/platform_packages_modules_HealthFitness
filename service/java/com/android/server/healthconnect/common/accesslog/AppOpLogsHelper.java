@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.accesslog;
 
 import static android.app.AppOpsManager.HISTORY_FLAG_GET_ATTRIBUTION_CHAINS;
 import static android.app.AppOpsManager.OP_FLAG_SELF;
 import static android.app.AppOpsManager.OP_FLAG_TRUSTED_PROXIED;
 import static android.app.AppOpsManager.OP_FLAG_TRUSTED_PROXY;
 
-import android.annotation.NonNull;
 import android.app.AppOpsManager;
 import android.app.AppOpsManager.AttributedOpEntry;
 import android.app.AppOpsManager.HistoricalOp;
@@ -38,14 +37,12 @@ import android.util.Slog;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.time.Instant;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -108,9 +105,10 @@ public final class AppOpLogsHelper {
         final AppOpsManager.HistoricalOpsRequest request =
                 new HistoricalOpsRequest.Builder(beginTimeMillis, endTimeMillis)
                         .setOpNames(opNamesToQuery)
-                        .setFlags(AppOpsManager.OP_FLAG_SELF
-                            | AppOpsManager.OP_FLAG_TRUSTED_PROXIED
-                            | OP_FLAG_TRUSTED_PROXY)
+                        .setFlags(
+                                AppOpsManager.OP_FLAG_SELF
+                                        | AppOpsManager.OP_FLAG_TRUSTED_PROXIED
+                                        | OP_FLAG_TRUSTED_PROXY)
                         .setHistoryFlags(
                                 AppOpsManager.HISTORY_FLAG_DISCRETE
                                         | HISTORY_FLAG_GET_ATTRIBUTION_CHAINS)

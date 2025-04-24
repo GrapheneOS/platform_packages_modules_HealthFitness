@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.accesslog;
 
-import static com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper.PAGE_SIZE;
-import static com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper.ReadAccessLog;
+import static com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.PAGE_SIZE;
+import static com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.ReadAccessLog;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
 
@@ -36,6 +36,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;

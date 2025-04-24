@@ -58,9 +58,9 @@ import android.net.Uri;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.request.CreateIndexRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;

@@ -17,10 +17,10 @@
 package com.android.server.healthconnect.logging;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper.ReadAccessLog;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper.ReadAccessLogsResponse;
+import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
+import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.ReadAccessLog;
+import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper.ReadAccessLogsResponse;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -141,9 +141,7 @@ public class EcosystemStatsCollector {
         return mReaderPackageToWriterPackages;
     }
 
-    /**
-     * Returns the number of directional app pairings.
-     */
+    /** Returns the number of directional app pairings. */
     public int getNumberOfAppPairings() {
         int count = 0;
         for (Set<String> writingPackages : mReaderPackageToWriterPackages.values()) {

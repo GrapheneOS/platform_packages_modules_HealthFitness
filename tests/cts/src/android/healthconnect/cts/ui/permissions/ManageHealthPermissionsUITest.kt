@@ -19,11 +19,13 @@ package android.healthconnect.cts.ui.permissions
 import android.content.Context
 import android.content.pm.PackageManager.FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED
 import android.content.pm.PackageManager.FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED
+import android.content.pm.PackageManager.PERMISSION_DENIED
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.health.connect.HealthPermissions
 import android.healthconnect.cts.lib.ActivityLauncher.launchMainActivity
 import android.healthconnect.cts.lib.ActivityLauncher.launchManageHealthPermissionActivity
-import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_2_NAME
-import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_2_PACKAGE_NAME
+import android.healthconnect.cts.lib.UiTestUtils.SYSTEM_TEST_APP_NAME
+import android.healthconnect.cts.lib.UiTestUtils.SYSTEM_TEST_APP_PACKAGE_NAME
 import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_NAME
 import android.healthconnect.cts.lib.UiTestUtils.TEST_APP_PACKAGE_NAME
 import android.healthconnect.cts.lib.UiTestUtils.clickOnDescAndWaitForNewWindow
@@ -31,6 +33,7 @@ import android.healthconnect.cts.lib.UiTestUtils.clickOnTextAndWaitForNewWindow
 import android.healthconnect.cts.lib.UiTestUtils.findActionButtonAndClick
 import android.healthconnect.cts.lib.UiTestUtils.findText
 import android.healthconnect.cts.lib.UiTestUtils.findTextAndClick
+import android.healthconnect.cts.lib.UiTestUtils.findTextPatternAndClick
 import android.healthconnect.cts.lib.UiTestUtils.grantPermissionViaPackageManager
 import android.healthconnect.cts.lib.UiTestUtils.hasUserFixedPermissions
 import android.healthconnect.cts.lib.UiTestUtils.revokeAllPermissionsViaPackageManager
@@ -47,13 +50,20 @@ import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity
 import com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY
 import com.google.common.truth.Truth.assertThat
+import java.util.regex.Pattern
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
 
     @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+
+    @Before
+    fun setup() {
+        enableSystemApp()
+    }
 
     @Test
     fun showsListOfHealthConnectApps() {
@@ -100,87 +110,119 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
 
     @Test
     fun showsShowHideSystemAppsButton() {
-        // Update TEST_APP_2 all health permission flags so that it can be considered a system app.
-        clearPermissionFlag(
-            context,
-            TEST_APP_2_PACKAGE_NAME,
-            listOf(
-                HealthPermissions.READ_HEIGHT,
-                HealthPermissions.WRITE_HEIGHT,
-                HealthPermissions.READ_HEALTH_DATA_HISTORY,
-                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
-                HealthPermissions.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES,
-                HealthPermissions.READ_MEDICAL_DATA_CONDITIONS,
-                HealthPermissions.WRITE_MEDICAL_DATA,
-            ),
-            FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED,
-        )
-        clearPermissionFlag(
-            context,
-            TEST_APP_2_PACKAGE_NAME,
-            listOf(
-                HealthPermissions.READ_HEIGHT,
-                HealthPermissions.WRITE_HEIGHT,
-                HealthPermissions.READ_HEALTH_DATA_HISTORY,
-                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
-                HealthPermissions.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES,
-                HealthPermissions.READ_MEDICAL_DATA_CONDITIONS,
-                HealthPermissions.WRITE_MEDICAL_DATA,
-            ),
-            FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED,
-        )
-
         context.launchManageHealthPermissionActivity {
             // By default, system apps are hidden
             findText(TEST_APP_NAME)
-            verifyTextNotFound(TEST_APP_2_NAME)
+            verifyTextNotFound(SYSTEM_TEST_APP_NAME)
             scrollToEnd()
-            verifyTextNotFound(TEST_APP_2_NAME)
+            verifyTextNotFound(SYSTEM_TEST_APP_NAME)
 
             // Click "Show system". Verify both system and non-system apps are shown.
             findActionButtonAndClick()
             findTextAndClick("Show system")
             scrollUpToAndFindText(TEST_APP_NAME)
-            scrollDownToAndFindText(TEST_APP_2_NAME)
+            scrollDownToAndFindText(SYSTEM_TEST_APP_NAME)
 
             // Click "Hide system". Verify system apps are hidden, non-system apps still display.
             findActionButtonAndClick()
             findTextAndClick("Hide system")
             scrollUpToAndFindText(TEST_APP_NAME)
-            verifyTextNotFound(TEST_APP_2_NAME)
+            verifyTextNotFound(SYSTEM_TEST_APP_NAME)
             scrollToEnd()
-            verifyTextNotFound(TEST_APP_2_NAME)
+            verifyTextNotFound(SYSTEM_TEST_APP_NAME)
         }
-        // Reset TEST_APP_2 all health permission flags so that it can be considered a non-system
-        // app.
-        setPermissionFlag(
+    }
+
+    @Test
+    fun revokeSystemAppHealthPermission_showWarning_dontAllowAnyway() {
+        grantPermissionViaPackageManager(
             context,
-            TEST_APP_2_PACKAGE_NAME,
-            listOf(
-                HealthPermissions.READ_HEIGHT,
-                HealthPermissions.WRITE_HEIGHT,
-                HealthPermissions.READ_HEALTH_DATA_HISTORY,
-                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
-                HealthPermissions.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES,
-                HealthPermissions.READ_MEDICAL_DATA_CONDITIONS,
-                HealthPermissions.WRITE_MEDICAL_DATA,
-            ),
-            FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED,
+            SYSTEM_TEST_APP_PACKAGE_NAME,
+            HealthPermissions.READ_HEART_RATE,
         )
-        setPermissionFlag(
+
+        context.launchManageHealthPermissionActivity {
+            // Click "Show system", so that we can manage system app permission.
+            findActionButtonAndClick()
+            findTextAndClick("Show system")
+            // Assert Heart rate permission is granted.
+            scrollDownToAndFindText(SYSTEM_TEST_APP_NAME)
+            findTextAndClick(SYSTEM_TEST_APP_NAME)
+            assertThat(
+                context.packageManager.checkPermission(
+                    HealthPermissions.READ_HEART_RATE,
+                    SYSTEM_TEST_APP_PACKAGE_NAME,
+                ) == PERMISSION_GRANTED
+            )
+
+            // Attempt to revoke Heart rate permission from system app.
+            findTextAndClick("Heart rate")
+            // Assert permissipn not revoked.
+            assertThat(
+                context.packageManager.checkPermission(
+                    HealthPermissions.READ_HEART_RATE,
+                    SYSTEM_TEST_APP_PACKAGE_NAME,
+                ) == PERMISSION_GRANTED
+            )
+
+            // Assert there's a warning dialog, and click "Don't allow anyway".
+            findText(
+                "If you deny this permission, basic features of your device may no longer function as intended."
+            )
+            findTextPatternAndClick(Pattern.compile("Don’t allow anyway", Pattern.CASE_INSENSITIVE))
+            assertThat(
+                context.packageManager.checkPermission(
+                    HealthPermissions.READ_HEART_RATE,
+                    SYSTEM_TEST_APP_PACKAGE_NAME,
+                ) == PERMISSION_DENIED
+            )
+        }
+    }
+
+    @Test
+    fun revokeSystemAppHealthPermission_showWarning_cancel() {
+        grantPermissionViaPackageManager(
             context,
-            TEST_APP_2_PACKAGE_NAME,
-            listOf(
-                HealthPermissions.READ_HEIGHT,
-                HealthPermissions.WRITE_HEIGHT,
-                HealthPermissions.READ_HEALTH_DATA_HISTORY,
-                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
-                HealthPermissions.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES,
-                HealthPermissions.READ_MEDICAL_DATA_CONDITIONS,
-                HealthPermissions.WRITE_MEDICAL_DATA,
-            ),
-            FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED,
+            SYSTEM_TEST_APP_PACKAGE_NAME,
+            HealthPermissions.READ_HEART_RATE,
         )
+
+        context.launchManageHealthPermissionActivity {
+            // Click "Show system", so that we can manage system app permission.
+            findActionButtonAndClick()
+            findTextAndClick("Show system")
+            // Assert Heart rate permission is granted.
+            scrollDownToAndFindText(SYSTEM_TEST_APP_NAME)
+            findTextAndClick(SYSTEM_TEST_APP_NAME)
+            assertThat(
+                context.packageManager.checkPermission(
+                    HealthPermissions.READ_HEART_RATE,
+                    SYSTEM_TEST_APP_PACKAGE_NAME,
+                ) == PERMISSION_GRANTED
+            )
+
+            // Attempt to revoke Heart rate permission from system app.
+            findTextAndClick("Heart rate")
+            // Assert permissipn not revoked.
+            assertThat(
+                context.packageManager.checkPermission(
+                    HealthPermissions.READ_HEART_RATE,
+                    SYSTEM_TEST_APP_PACKAGE_NAME,
+                ) == PERMISSION_GRANTED
+            )
+
+            // Assert there's a warning dialog, and click "Cancel".
+            findText(
+                "If you deny this permission, basic features of your device may no longer function as intended."
+            )
+            findTextPatternAndClick(Pattern.compile("Cancel", Pattern.CASE_INSENSITIVE))
+            assertThat(
+                context.packageManager.checkPermission(
+                    HealthPermissions.READ_HEART_RATE,
+                    SYSTEM_TEST_APP_PACKAGE_NAME,
+                ) == PERMISSION_GRANTED
+            )
+        }
     }
 
     @Test
@@ -272,5 +314,26 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
                 )
             }
         }
+    }
+
+    private fun enableSystemApp() {
+        clearPermissionFlag(
+            context,
+            SYSTEM_TEST_APP_PACKAGE_NAME,
+            listOf(
+                HealthPermissions.READ_HEART_RATE,
+                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+            ),
+            FLAG_PERMISSION_USER_SENSITIVE_WHEN_DENIED,
+        )
+        clearPermissionFlag(
+            context,
+            SYSTEM_TEST_APP_PACKAGE_NAME,
+            listOf(
+                HealthPermissions.READ_HEART_RATE,
+                HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+            ),
+            FLAG_PERMISSION_USER_SENSITIVE_WHEN_GRANTED,
+        )
     }
 }

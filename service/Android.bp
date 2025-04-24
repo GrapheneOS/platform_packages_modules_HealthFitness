@@ -59,6 +59,10 @@ java_sdk_library {
     jarjar_rules: "jarjar-rules.txt",
     installable: true,
     optimize: {
+        optimize: select(release_flag("RELEASE_HC_MODULE_SERVICE_OPTIMIZATION"), {
+            true: true,
+            default: false,
+        }),
         proguard_flags_files: ["proguard.flags"],
     },
     visibility: [

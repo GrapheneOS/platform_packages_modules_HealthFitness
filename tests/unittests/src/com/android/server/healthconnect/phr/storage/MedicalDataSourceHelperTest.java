@@ -84,15 +84,15 @@ import android.util.Pair;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppOpLogsHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;

@@ -28,7 +28,6 @@ import static android.health.connect.HealthPermissionCategory.HEART_RATE;
 import static android.health.connect.HealthPermissionCategory.PLANNED_EXERCISE;
 import static android.health.connect.HealthPermissionCategory.STEPS;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
-import static android.healthconnect.cts.utils.DataFactory.NOW;
 import static android.healthconnect.cts.utils.DataFactory.getDataOrigin;
 import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 
@@ -916,28 +915,14 @@ public final class TestUtils {
     /** Sets up the priority list for aggregation tests. */
     public static void setupAggregation(String packageName, int dataCategory) {
         try {
-            setupAggregation(
-                    record -> insertRecords(Collections.singletonList(record)),
-                    packageName,
-                    dataCategory);
+            setupAggregation(List.of(packageName), dataCategory);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    /** Sets up the priority list for aggregation tests. */
-    public static void setupAggregation(
-            ThrowingConsumer<Record> inserter, String packageName, int dataCategory)
-            throws Exception {
-        inserter.acceptOrThrow(getAnUnaggregatableRecord(packageName));
-        setupAggregation(List.of(packageName), dataCategory);
-    }
-
     /**
      * Sets up the priority list for aggregation tests.
-     *
-     * <p>In order for this method to work, eac of the {@code packageNames} needs to have at least
-     * one record of any type in the HC DB before this method is called.
      *
      * <p>This is mainly used to setup priority list for a test app, so a test can read aggregation
      * of data inserted by a test app. It would be nicer if this method take an instance of a test
@@ -958,26 +943,6 @@ public final class TestUtils {
                         .map(DataOrigin::getPackageName)
                         .toList();
         assertThat(newPriorityString).isEqualTo(packageNames);
-    }
-
-    /** Inserts a record that does not support aggregation to enable the priority list. */
-    public static void insertRecordsForPriority(String packageName) throws InterruptedException {
-        // Insert records that do not support aggregation so that the AppInfoTable is initialised
-        insertRecords(List.of(getAnUnaggregatableRecord(packageName)));
-    }
-
-    /** Returns a {@link Record} that does not support aggregation. */
-    private static Record getAnUnaggregatableRecord(String packageName) {
-        return new MenstruationPeriodRecord.Builder(
-                        new Metadata.Builder()
-                                .setDataOrigin(
-                                        new DataOrigin.Builder()
-                                                .setPackageName(packageName)
-                                                .build())
-                                .build(),
-                        NOW,
-                        NOW.plusMillis(1000))
-                .build();
     }
 
     /** Updates the priority list after getting the MANAGE_HEALTH_DATA permission. */

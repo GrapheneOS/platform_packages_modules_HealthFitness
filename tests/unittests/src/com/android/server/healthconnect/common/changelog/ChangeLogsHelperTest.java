@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.changelog;
 
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.Constants.DELETE;
@@ -26,11 +26,11 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_ECOSYSTEM_METRICS_DB_CHANGES;
-import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.APP_ID_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.TIME_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.UUIDS_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.APP_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.TIME_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.UUIDS_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.bytesToUuids;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createBloodPressureRecord;
 import static com.android.server.healthconnect.testing.storage.TransactionTestUtils.createStepsRecord;
@@ -55,12 +55,13 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper.ChangeLogsTableRequests;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper.ChangeLogsTableRequests;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;

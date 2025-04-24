@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.changelog;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 
+import static com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper.getChangeLogRetentionDuration;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
-import static com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper.getChangeLogRetentionDuration;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_NON_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY_AUTOINCREMENT;
@@ -40,6 +40,7 @@ import android.util.ArrayMap;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;

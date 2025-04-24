@@ -86,6 +86,8 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -94,8 +96,6 @@ import com.android.server.healthconnect.phr.PhrPageTokenWrapper;
 import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse;
 import com.android.server.healthconnect.phr.UpsertMedicalResourceInternalRequest;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppOpLogsHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
@@ -373,9 +373,7 @@ public class MedicalResourceHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_PHR_READ_MEDICAL_RESOURCES_FIX_QUERY_LIMIT
-    })
+    @EnableFlags({Flags.FLAG_PHR_READ_MEDICAL_RESOURCES_FIX_QUERY_LIMIT})
     public void getReadTableRequest_usingRequestWithDataSourceIds_correctQuery() {
         MedicalDataSource dataSource1 =
                 mUtil.insertR4MedicalDataSource("id1", DATA_SOURCE_PACKAGE_NAME);

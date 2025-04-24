@@ -30,8 +30,6 @@ import static android.healthfitness.api.ApiMethod.UPSERT_MEDICAL_RESOURCES;
 import static android.healthfitness.api.ApiStatus.ERROR;
 import static android.healthfitness.api.ApiStatus.SUCCESS;
 
-import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY;
-
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -124,9 +122,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testCreateMedicalDataSourceSuccess() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -138,9 +133,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testCreateMedicalDataSourceError() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -152,9 +144,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testGetMedicalDataSourcesByIdsSuccess() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -166,9 +155,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testGetMedicalDataSourcesByIdsError() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -180,9 +166,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testGetMedicalDataSourcesByRequestSuccess()
             throws Exception {
         if (!isHardwareSupported(getDevice())) {
@@ -195,9 +178,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testGetMedicalDataSourcesByRequestError() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -209,9 +189,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testDeleteMedicalDataSourceWithDataSuccess()
             throws Exception {
         if (!isHardwareSupported(getDevice())) {
@@ -224,9 +201,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testDeleteMedicalDataSourceWithDataError()
             throws Exception {
         if (!isHardwareSupported(getDevice())) {
@@ -239,9 +213,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testUpsertMedicalResourcesSuccess() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -253,9 +224,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testUpsertMedicalResourcesError() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -267,9 +235,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testReadMedicalResourcesByIdsSuccess() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -281,9 +246,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testReadMedicalResourcesByIdsError() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -295,9 +257,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testReadMedicalResourcesByRequestsSuccess()
             throws Exception {
         if (!isHardwareSupported(getDevice())) {
@@ -310,9 +269,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testReadMedicalResourcesByRequestsError() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -324,9 +280,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testDeleteMedicalResourcesByIdsSuccess() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -338,9 +291,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testDeleteMedicalResourcesByIdsError() throws Exception {
         if (!isHardwareSupported(getDevice())) {
             return;
@@ -352,9 +302,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testDeleteMedicalResourcesByRequestSuccess()
             throws Exception {
         if (!isHardwareSupported(getDevice())) {
@@ -367,9 +314,6 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PERSONAL_HEALTH_RECORD_TELEMETRY
-    })
     public void testPhrApiAndStatusLogs_testDeleteMedicalResourcesByRequestError()
             throws Exception {
         if (!isHardwareSupported(getDevice())) {

@@ -18,8 +18,6 @@ package com.android.server.healthconnect.logging;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PERMISSION_STATS;
 
-import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetry;
-
 import android.health.HealthFitnessStatsLog;
 
 import java.util.List;
@@ -67,10 +65,6 @@ final class UsageStatsLogger {
     }
 
     private void logPhrStats(UsageStatsCollector usageStatsCollector) {
-        if (!personalHealthRecordTelemetry()) {
-            return;
-        }
-
         int medicalDataSourcesCount = usageStatsCollector.getMedicalDataSourcesCount();
         int medicalResourcesCount = usageStatsCollector.getMedicalResourcesCount();
         mStatsLog.write(

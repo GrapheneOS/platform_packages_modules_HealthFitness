@@ -17,6 +17,7 @@
  */
 package com.android.healthconnect.controller.permissions.app
 
+import android.app.AlertDialog
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
@@ -78,6 +79,7 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
     @Inject lateinit var navigationUtils: NavigationUtils
 
     private lateinit var packageName: String
+    private var isSystemApp: Boolean = false
     private var appName: String = ""
     private var showManageAppSection = true
 
@@ -120,6 +122,9 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                 requireArguments().getString(EXTRA_PACKAGE_NAME) != null
         ) {
             packageName = requireArguments().getString(EXTRA_PACKAGE_NAME)!!
+        }
+        if (requireArguments().containsKey(EXTRA_IS_SYSTEM_APP)) {
+            isSystemApp = requireArguments().getBoolean(EXTRA_IS_SYSTEM_APP)!!
         }
         if (requireArguments().containsKey(Constants.SHOW_MANAGE_APP_SECTION)) {
             showManageAppSection = requireArguments().getBoolean(Constants.SHOW_MANAGE_APP_SECTION)
@@ -313,17 +318,28 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                         it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
                         it.setOnPreferenceChangeListener { _, newValue ->
                             val checked = newValue as Boolean
-                            val permissionUpdated =
-                                viewModel.updatePermission(packageName, permission, checked)
-                            if (!permissionUpdated) {
-                                Toast.makeText(
-                                        requireContext(),
-                                        R.string.default_error,
-                                        Toast.LENGTH_SHORT,
-                                    )
-                                    .show()
+                            // Shown warning when revoking permission from system apps.
+                            if (!checked && isSystemApp) {
+                                showConfirmRevokingSystemAppPermissionDialog(
+                                    packageName,
+                                    permission,
+                                )
+                                // Return false IMMEDIATELY to prevent the switch from visually
+                                // changing until the user confirms in the dialog.
+                                false
+                            } else {
+                                val permissionUpdated =
+                                    viewModel.updatePermission(packageName, permission, checked)
+                                if (!permissionUpdated) {
+                                    Toast.makeText(
+                                            requireContext(),
+                                            R.string.default_error,
+                                            Toast.LENGTH_SHORT,
+                                        )
+                                        .show()
+                                }
+                                permissionUpdated
                             }
-                            permissionUpdated
                         }
                     }
                 permissionMap[permission] = switchPreference
@@ -365,6 +381,31 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
         }
     }
 
+    fun showConfirmRevokingSystemAppPermissionDialog(
+        packageName: String,
+        permission: FitnessPermission,
+    ) {
+        val builder: AlertDialog.Builder =
+            AlertDialog.Builder(requireContext())
+                .setMessage(R.string.system_warning)
+                .setNegativeButton(R.string.import_confirmation_dialog_cancel_button) {
+                    dialog,
+                    which ->
+                    dialog.cancel()
+                }
+                .setPositiveButton(R.string.grant_dialog_button_deny_anyway) { dialog, which ->
+                    val permissionUpdated =
+                        viewModel.updatePermission(packageName, permission, false)
+                    if (!permissionUpdated) {
+                        Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
+    }
+
     companion object {
         private const val ALLOW_ALL_PREFERENCE = "allow_all_preference"
         private const val READ_CATEGORY = "read_permission_category"
@@ -374,5 +415,7 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
         private const val DISABLE_EXERCISE_ROUTE_DIALOG_TAG = "disable_exercise_route_dialog"
         private const val FOOTER = "manage_app_permission_footer"
         private const val PARAGRAPH_SEPARATOR = "\n\n"
+
+        const val EXTRA_IS_SYSTEM_APP = "is_system_app_extra"
     }
 }

@@ -41,13 +41,13 @@ import androidx.annotation.Nullable;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -296,7 +296,8 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      * needs to be sanitised before applying the operation.
      */
     public void setPriorityOrder(int dataCategory, List<String> packagePriorityOrder) {
-        List<Long> newPriorityOrder = mAppInfoHelper.getAppInfoIds(packagePriorityOrder);
+        List<Long> newPriorityOrder =
+                packagePriorityOrder.stream().map(mAppInfoHelper::getOrInsertAppInfoId).toList();
         safelyUpdateDBAndUpdateCache(
                 new UpsertTableRequest(
                         PRIORITY_TABLE_NAME,

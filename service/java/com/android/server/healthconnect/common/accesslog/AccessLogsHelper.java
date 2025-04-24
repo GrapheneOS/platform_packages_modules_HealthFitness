@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.storage.datatypehelpers;
+package com.android.server.healthconnect.common.accesslog;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
@@ -49,6 +49,7 @@ import android.util.Pair;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;

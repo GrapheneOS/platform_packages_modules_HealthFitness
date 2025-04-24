@@ -58,6 +58,8 @@ import android.util.Slog;
 import androidx.annotation.Nullable;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
 import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
@@ -67,8 +69,6 @@ import com.android.server.healthconnect.fitness.aggregation.TimeSplits;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;

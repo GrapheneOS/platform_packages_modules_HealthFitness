@@ -36,7 +36,6 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.datatypes.MedicalDataSource.validateMedicalDataSourceIds;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
-import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetry;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
 import static com.android.server.healthconnect.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
@@ -180,6 +179,11 @@ import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.backuprestore.CloudBackupManager;
 import com.android.server.healthconnect.backuprestore.CloudRestoreManager;
 import com.android.server.healthconnect.common.RequestContext;
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
@@ -220,11 +224,6 @@ import com.android.server.healthconnect.phr.validations.FhirResourceValidator;
 import com.android.server.healthconnect.phr.validations.MedicalResourceValidator;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.utils.TimeSource;
 
@@ -2576,12 +2575,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (personalHealthRecordTelemetry()) {
-                        // Stores the timestamp for calls made by ANY client, including the
-                        // controller
-                        mPreferencesManager.setLastPhrReadMedicalResourcesApiTimeStamp(
-                                mTimeSource.getInstantNow());
-                    }
+                    // Stores the timestamp for calls made by ANY client, including the
+                    // controller
+                    mPreferencesManager.setLastPhrReadMedicalResourcesApiTimeStamp(
+                            mTimeSource.getInstantNow());
 
                     if (medicalResourceIds.isEmpty()) {
                         callback.onResult(new ReadMedicalResourcesResponse(List.of(), null, 0));
@@ -2690,12 +2687,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (personalHealthRecordTelemetry()) {
-                        // Stores the timestamp for calls made by ANY client, including the
-                        // controller
-                        mPreferencesManager.setLastPhrReadMedicalResourcesApiTimeStamp(
-                                mTimeSource.getInstantNow());
-                    }
+                    // Stores the timestamp for calls made by ANY client, including the
+                    // controller
+                    mPreferencesManager.setLastPhrReadMedicalResourcesApiTimeStamp(
+                            mTimeSource.getInstantNow());
 
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);

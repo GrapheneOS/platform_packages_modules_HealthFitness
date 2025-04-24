@@ -47,6 +47,7 @@
     <queries>
         <package android:name="android.healthconnect.cts.app"/>
         <package android:name="android.healthconnect.cts.app2"/>
+        <package android:name="android.healthconnect.cts.systemtestapp"/>
         <package android:name="android.healthconnect.cts.testapp.readWritePerms.A"/>
     </queries>
 

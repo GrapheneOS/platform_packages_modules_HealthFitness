@@ -25,7 +25,7 @@ android_test {
     manifest: "AndroidManifest.xml",
     test_config: "AndroidTest_testSdk.xml",
     srcs: [
-        "src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
+        "src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",
     ],
     test_suites: [
         "mts-healthfitness",
@@ -76,7 +76,7 @@ android_test {
         ":healthfitness-framework-test-src",
     ],
     exclude_srcs: [
-        "src/com/android/server/healthconnect/storage/datatypehelpers/AppOpLogsHelperTest.java",
+        "src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",
     ],
     test_suites: [
         "mts-healthfitness",

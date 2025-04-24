@@ -23,7 +23,6 @@ import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.cts.utils.DataFactory.buildExerciseSessionWithEmptyMetadata;
 import static android.healthconnect.cts.utils.DataFactory.buildSleepSessionWithEmptyMetadata;
 import static android.healthconnect.cts.utils.DataFactory.getDataOrigin;
-import static android.healthconnect.cts.utils.DataFactory.getDataOrigins;
 import static android.healthconnect.cts.utils.DataFactory.getDistanceRecordWithEmptyMetadata;
 import static android.healthconnect.cts.utils.DataFactory.getEmptyMetadata;
 import static android.healthconnect.cts.utils.DataFactory.getHeartRateRecordWithEmptyMetadata;
@@ -35,7 +34,6 @@ import static android.healthconnect.cts.utils.DataFactory.getTotalCaloriesBurned
 import static android.healthconnect.cts.utils.PermissionHelper.getGrantedHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.grantAllHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
-import static android.healthconnect.cts.utils.PermissionHelper.revokeAndThenGrantHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.createReadRecordsRequestUsingFilters;
@@ -46,9 +44,9 @@ import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getApplicationInfo;
 import static android.healthconnect.cts.utils.TestUtils.getRecordIdFilters;
 import static android.healthconnect.cts.utils.TestUtils.getRecordIds;
-import static android.healthconnect.cts.utils.TestUtils.insertRecordsForPriority;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.updateDataOriginPriorityOrder;
+import static android.healthconnect.cts.utils.TestUtils.updatePriorityWithManageHealthDataPermission;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.yesterdayAt;
 
@@ -450,7 +448,6 @@ public class HealthConnectDeviceTest {
     @Test
     public void testAggregateRecords_onlyWritePermissions_requestsOwnDataOnly_succeeds()
             throws Exception {
-        insertRecordsForPriority(mContext.getPackageName());
         List<DataOrigin> dataOriginPrioOrder =
                 List.of(new DataOrigin.Builder().setPackageName(mContext.getPackageName()).build());
 
@@ -902,24 +899,11 @@ public class HealthConnectDeviceTest {
     @Test
     public void testAggregationOutputForTotalStepsCountWithDataFromTwoAppsHavingDifferentPriority()
             throws Exception {
-        revokeAndThenGrantHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-        revokeAndThenGrantHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
-
-        List<String> priorityList =
-                runWithShellPermissionIdentity(
-                        () ->
-                                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
-                                        .getDataOriginsPriorityOrder()
-                                        .stream()
-                                        .map(DataOrigin::getPackageName)
-                                        .toList(),
-                        MANAGE_HEALTH_DATA);
-
-        assertThat(priorityList)
-                .containsExactly(
+        updatePriorityWithManageHealthDataPermission(
+                HealthDataCategory.ACTIVITY,
+                List.of(
                         APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
-                        APP_B_WITH_READ_WRITE_PERMS.getPackageName())
-                .inOrder();
+                        APP_B_WITH_READ_WRITE_PERMS.getPackageName()));
 
         StepsRecord stepsRecordA =
                 new StepsRecord.Builder(
@@ -956,32 +940,11 @@ public class HealthConnectDeviceTest {
         assertThat(oldResponse.get(STEPS_COUNT_TOTAL)).isNotNull();
         assertThat(oldResponse.get(STEPS_COUNT_TOTAL)).isEqualTo(2000);
 
-        List<DataOrigin> dataOriginPrioOrder =
-                getDataOrigins(
+        updatePriorityWithManageHealthDataPermission(
+                HealthDataCategory.ACTIVITY,
+                List.of(
                         APP_B_WITH_READ_WRITE_PERMS.getPackageName(),
-                        APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-
-        priorityList =
-                runWithShellPermissionIdentity(
-                        () -> {
-                            updateDataOriginPriorityOrder(
-                                    new UpdateDataOriginPriorityOrderRequest(
-                                            dataOriginPrioOrder, HealthDataCategory.ACTIVITY));
-
-                            return fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
-                                    .getDataOriginsPriorityOrder()
-                                    .stream()
-                                    .map(DataOrigin::getPackageName)
-                                    .collect(Collectors.toList());
-                        },
-                        MANAGE_HEALTH_DATA);
-
-        assertThat(priorityList)
-                .containsExactlyElementsIn(
-                        dataOriginPrioOrder.stream()
-                                .map(DataOrigin::getPackageName)
-                                .collect(Collectors.toList()))
-                .inOrder();
+                        APP_A_WITH_READ_WRITE_PERMS.getPackageName()));
 
         AggregateRecordsResponse<Long> newResponse =
                 runWithShellPermissionIdentity(
@@ -993,24 +956,11 @@ public class HealthConnectDeviceTest {
     @Test
     public void testAggregationOutputForExerciseSessionWithDataFromTwoAppsHavingDifferentPriority()
             throws Exception {
-        revokeAndThenGrantHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-        revokeAndThenGrantHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
-
-        List<String> priorityList =
-                runWithShellPermissionIdentity(
-                        () ->
-                                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
-                                        .getDataOriginsPriorityOrder()
-                                        .stream()
-                                        .map(DataOrigin::getPackageName)
-                                        .toList(),
-                        MANAGE_HEALTH_DATA);
-
-        assertThat(priorityList)
-                .containsExactly(
+        updatePriorityWithManageHealthDataPermission(
+                HealthDataCategory.ACTIVITY,
+                List.of(
                         APP_A_WITH_READ_WRITE_PERMS.getPackageName(),
-                        APP_B_WITH_READ_WRITE_PERMS.getPackageName())
-                .inOrder();
+                        APP_B_WITH_READ_WRITE_PERMS.getPackageName()));
 
         ExerciseSessionRecord sessionRecordA =
                 new ExerciseSessionRecord.Builder(
@@ -1057,30 +1007,11 @@ public class HealthConnectDeviceTest {
                                 .minus(Duration.between(yesterdayAt("14:00"), yesterdayAt("15:00")))
                                 .toMillis());
 
-        List<DataOrigin> dataOriginPrioOrder =
-                getDataOrigins(
+        updatePriorityWithManageHealthDataPermission(
+                HealthDataCategory.ACTIVITY,
+                List.of(
                         APP_B_WITH_READ_WRITE_PERMS.getPackageName(),
-                        APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-
-        priorityList =
-                runWithShellPermissionIdentity(
-                        () -> {
-                            updateDataOriginPriorityOrder(
-                                    new UpdateDataOriginPriorityOrderRequest(
-                                            dataOriginPrioOrder, HealthDataCategory.ACTIVITY));
-
-                            return fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
-                                    .getDataOriginsPriorityOrder()
-                                    .stream()
-                                    .map(DataOrigin::getPackageName)
-                                    .toList();
-                        },
-                        MANAGE_HEALTH_DATA);
-
-        assertThat(priorityList)
-                .containsExactlyElementsIn(
-                        dataOriginPrioOrder.stream().map(DataOrigin::getPackageName).toList())
-                .inOrder();
+                        APP_A_WITH_READ_WRITE_PERMS.getPackageName()));
 
         AggregateRecordsResponse<Long> newResponse = getAggregateResponse(aggregateRecordsRequest);
         assertThat(newResponse.get(EXERCISE_DURATION_TOTAL)).isNotNull();

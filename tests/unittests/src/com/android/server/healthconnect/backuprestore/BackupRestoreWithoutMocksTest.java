@@ -35,8 +35,6 @@ import android.healthconnect.cts.phr.utils.PhrDataFactory;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.os.ParcelFileDescriptor;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.ArrayMap;
 import android.util.Pair;
@@ -44,7 +42,7 @@ import android.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -54,7 +52,6 @@ import com.android.server.healthconnect.permission.UserGrantTimeState;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 import com.android.server.healthconnect.testing.storage.PhrTestUtils;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
@@ -181,7 +178,7 @@ public class BackupRestoreWithoutMocksTest {
 
         // Ensure the backed up database does not contain PHR data but includes everything else.
         try (HealthConnectDatabase backupDatabase =
-                new HealthConnectDatabase(dbContext, dbFileBacked.getName())) {
+                     new HealthConnectDatabase(dbContext, dbFileBacked.getName())) {
             assertThat(queryNumEntries(backupDatabase, "medical_data_source_table")).isEqualTo(1);
             assertThat(queryNumEntries(backupDatabase, "medical_resource_table")).isEqualTo(1);
             assertThat(queryNumEntries(backupDatabase, "steps_record_table")).isEqualTo(1);
