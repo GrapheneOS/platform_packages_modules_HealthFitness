@@ -992,7 +992,7 @@
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ако не можете да видите инсталирана апликација, можеби уште не е компатибилна со Health Connect"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Работи што може да ги испробате"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Проверете дали има ажурирања"</string>
-    <string name="check_for_updates_description" msgid="1347667778199095160">"Проверете дали инсталираните апликации се ажурирани"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Погрижете се инсталираните апликации да бидат ажурирани"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Видете ги сите компатибилни апликации"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Најдете апликации на Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Испратете повратни информации"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect се интегрира со системот Android за да можете да пристапите директно од вашите поставки."</string>
     <string name="update_button" msgid="4544529019832009496">"Ажурирај"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Започнете со ова ажурирање за да може Health Connect да продолжи со интегрирање со поставките на системот"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect се интегрира со системот Android за да може да пристапувате до неа директно од вашите поставки.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Потребно е ажурирање на системот"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Пред да продолжите, ажурирајте го системот на телефонот."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ако веќе сте го ажурирале системот на телефонот, обидете се да го рестартирате телефонот за да продолжите со интеграцијата"</string>
@@ -1114,9 +1113,9 @@
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Потребно е ажурирање"</string>
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Пред да продолжите со враќањето на податоците, ажурирајте го телефонскиот систем."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Ажурирај сега"</string>
-    <string name="data_totals_header" msgid="8316977153276216025">"Вкупни податоци"</string>
-    <string name="app_sources_header" msgid="6343062519512947665">"Извори за апликацијата"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Додајте извори за апликацијата во списокот за да видите како може да се променат вкупните податоци. Ако ја отстраните апликацијата од списоков, веќе нема да придонесува во вкупните податоци, но сѐ уште ќе има дозволи за пишување."</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"Вкупни вредности на податоците"</string>
+    <string name="app_sources_header" msgid="6343062519512947665">"Апликации"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Додајте апликации во списокот за да видите како може да се менуваат вкупните вредности на податоците. Ако отстраните апликација од списоков, таа веќе нема да придонесува за вкупните вредности, но и понатаму ќе има дозволи за запишување."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Нема апликации"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Откако ќе им дозволите на апликациите да запишуваат податоци за <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, изворите ќе се прикажат тука."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Како функционираат изворите и приоритизацијата"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Да се избришат трајно податоците за <xliff:g id="DATA_TYPE">%1$s</xliff:g> за <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Прикажи го системот"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Скриј го системот"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Вклучено"</string>
     <string name="off" msgid="6996623844428550649">"Исклучено"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Пристапено: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

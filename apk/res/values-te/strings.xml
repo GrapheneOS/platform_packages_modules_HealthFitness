@@ -517,7 +517,7 @@
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
     <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"ఈ ఫైల్‌ను దిగుమతి చేయాలా?"</string>
-    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g>, Health Connectకు దిగుమతి అవుతుంది"</string>
+    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g>, Health Connectలోకి దిగుమతి అవుతుంది"</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"రద్దు చేయండి"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"దిగుమతి చేయండి"</string>
     <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"Health Connect రీస్టోర్ ప్రోగ్రెస్‌లో ఉంది"</string>
@@ -554,13 +554,13 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"రద్దు చేయండి"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"పూర్తయింది"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"యాప్‌లు ఏవీ లేవు. క్లౌడ్ స్టోరేజ్ యాప్‌లను ఇక్కడ చూడటానికి వాటిని ఇన్‌స్టాల్ చేయండి"</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"మరిన్ని ఆప్షన్‌ల కోసం, క్లౌడ్ స్టోరేజ్ యాప్‌లను ఇక్కడ చూడటానికి వాటిని ఇన్‌స్టాల్ చేయండి"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"మరిన్ని ఆప్షన్‌ల కోసం క్లౌడ్ స్టోరేజ్ యాప్‌లను ఇన్‌స్టాల్ చేయండి, అవి ఇక్కడ కనిపిస్తాయి"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Storeకు వెళ్లండి"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connectను ప్రారంభించండి"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను స్టోర్ చేస్తుంది, మీ ఫోన్‌లోని విభిన్న యాప్‌లను సింక్ చేయడానికి మీకు సులభమైన మార్గాన్ని ఇది అందిస్తుంది"</string>
     <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect వేర్వేరు యాప్‌ల నుండి మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను స్టోర్ చేస్తుంది, సింక్ చేస్తుంది.\n\nవ్యాయామ సెషన్‌లు, అడుగులు, నిద్ర, ఇంకా మరిన్నింటితో కూడిన"<b>" ఫిట్‌నెస్, సంరక్షణకు సంబంధించిన డేటా"</b>\n\n"వ్యాక్సిన్‌లు, ల్యాబ్ ఫలితాలు, ఇంకా మరిన్నింటితో కూడిన"<b>" ఆరోగ్య సమాచారాలు"</b></string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connectతో మీరు వీటిని చేయవచ్చు"</string>
-    <string name="share_data_text" msgid="6898398345784931678"><b>"మీ యాప్‌లతో డేటాను షేర్ చేయండి"</b>\n"Health Connect కోసం ప్రతి యాప్ చదవగలిగే లేదా రాయగలిగేలా డేటాను ఎంచుకోండి"</string>
+    <string name="share_data_text" msgid="6898398345784931678"><b>"మీ యాప్స్‌కు డేటాను షేర్ చేయండి"</b>\n"Health Connectలో ఒక్కో యాప్ రీడ్ లేదా రైట్ చేయ‌గలిగే డేటాను ఎంచుకోండి"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"మీ సెట్టింగ్‌లను, గోప్యతను మేనేజ్ చేయండి"</b>\n"యాప్ అనుమతులను మార్చి, మీ డేటాను ఎప్పుడైనా మేనేజ్ చేయవచ్చు"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"వెనుకకు వెళ్లండి"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"ప్రారంభించండి"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect యాప్ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవుతోంది, తద్వారా మీరు దీన్ని నేరుగా మీ సెట్టింగ్‌ల నుండి యాక్సెస్ చేయవచ్చు."</string>
     <string name="update_button" msgid="4544529019832009496">"అప్‌డేట్ చేయండి"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ఈ ‌అప్‌డేట్‌ను ప్రారంభించండి, తద్వారా Health Connect మీ సిస్టమ్ సెట్టింగ్‌లతో ఇంటిగ్రేట్ అవ్వడం కొనసాగించగలదు"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect యాప్ Android సిస్టమ్‌తో ఇంటిగ్రేట్ అవుతోంది, తద్వారా మీరు దీన్ని నేరుగా మీ సెట్టింగ్‌ల నుండి యాక్సెస్ చేయవచ్చు.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"సిస్టమ్ అప్‌డేట్ అవసరం"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"కొనసాగించడానికి ముందు, మీ ఫోన్ సిస్టమ్‌ను అప్‌డేట్ చేయండి."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"మీరు ఇప్పటికే మీ ఫోన్ సిస్టమ్‌ను అప్‌డేట్ చేసి ఉంటే, ఇంటిగ్రేషన్‌ను కొనసాగించడానికి మీ ఫోన్‌ను రీస్టార్ట్ చేసి, ట్రై చేయండి"</string>
@@ -1122,7 +1121,7 @@
     <string name="data_sources_help_link" msgid="7740264923634947915">"సోర్స్‌లు &amp; ప్రాధాన్యత ఎలా పని చేస్తాయి"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"యాప్‌ను జోడించండి"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"యాప్ సోర్స్‌లను ఎడిట్ చేయండి"</string>
-    <string name="default_app_summary" msgid="6183876151011837062">"పరికరంలో ఆటోమేటిక్‌గా సెట్ చేయబడి ఉన్న యాప్"</string>
+    <string name="default_app_summary" msgid="6183876151011837062">"డివైజ్‌లో ఆటోమేటిక్‌గా సెట్ చేయబడి ఉన్న యాప్"</string>
     <string name="move_up" msgid="9136155291380319606">"పైకి జరపండి"</string>
     <string name="move_down" msgid="4404970288236170693">"కిందికి జరపండి"</string>
     <string name="remove" msgid="1340423400489007362">"తీసివేయండి"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g>‌కు సంబంధించిన <xliff:g id="DATA_TYPE">%1$s</xliff:g> డేటాను శాశ్వతంగా తొలగించాలా?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"సిస్టమ్ ప్రాసెస్‌లను చూపించండి"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"సిస్టమ్‌ను దాచండి"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"ఆన్‌లో ఉంది"</string>
     <string name="off" msgid="6996623844428550649">"ఆఫ్‌లో ఉంది"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>‌కు యాక్సెస్ చేశారు"</string>

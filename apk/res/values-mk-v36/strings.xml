@@ -17,8 +17,8 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="permgrouplab_health" msgid="2189810208223060173">"Здравје, фитнес и благосост."</string>
-    <string name="health_permission_header_description" msgid="1816010176505069704">"Апликациите со оваа дозвола може да ги читаат и пишуваат податоците за вашето здравје, фитнес и благосостојба. Ова опфаќа податоци што се следат од вашите уреди и податоци складирани во Health Connect"</string>
+    <string name="permgrouplab_health" msgid="2189810208223060173">"Здравје, фитнес и благосостојба"</string>
+    <string name="health_permission_header_description" msgid="1816010176505069704">"Апликациите со оваа дозвола може да читаат и да запишуваат податоци за вашето здравје, фитнес и благосостојба. Тука спаѓаат и податоците следени од вашите уреди и податоците складирани во Health Connect"</string>
     <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"Да се дозволи <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до податоците за фитнес и благосостојба?"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Изберете до кои податоци за фитнес и благосостојба да пристапува апликацијава. Ова ги опфаќа податоците што се следат и се складираат на овој уред, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Изберете до кои податоци за фитнес и благосостојба да пристапува апликацијава. Ова ги опфаќа податоците што се следат и се складираат на овој уред, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>

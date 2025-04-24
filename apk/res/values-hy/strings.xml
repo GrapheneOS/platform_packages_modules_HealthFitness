@@ -547,7 +547,7 @@
     <string name="export_cancel_button" msgid="1952360582645412410">"Չեղարկել"</string>
     <string name="import_cancel_button" msgid="2191598074422096715">"Չեղարկել"</string>
     <string name="import_next_button" msgid="5706322508691854289">"Առաջ"</string>
-    <string name="import_source_location_title" msgid="4444467438013749461">"Որտեղից ներմուծել՝"</string>
+    <string name="import_source_location_title" msgid="4444467438013749461">"Որտեղից ներմուծել"</string>
     <string name="import_invalid_storage" msgid="341798262315495399">"Ընտրեք ամպային տարածքով հավելված՝ ձեր տվյալները ներմուծելու համար"</string>
     <string name="export_import_tap_to_choose_account" msgid="5016799636886709580">"Հպեք՝ հաշիվ ընտրելու համար"</string>
     <string name="export_import_choose_account_title" msgid="1047021319012735232">"Ընտրեք հաշիվ"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect-ն ինտեգրվում է Android համակարգի հետ, այնպես որ դուք կկարողանաք բացել հավելվածն անմիջապես ձեր կարգավորումներից։"</string>
     <string name="update_button" msgid="4544529019832009496">"Թարմացնել"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Սկսեք այս թարմացումը, որպեսզի Health Connect-ը կարողանա շարունակել ինտեգրումը ձեր համակարգի կարգավորումների հետ"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect-ն ինտեգրվում է Android համակարգի հետ, այնպես որ դուք կկարողանաք բացել հավելվածն անմիջապես ձեր կարգավորումներից։\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Պահանջվում է համակարգի թարմացում"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Շարունակելուց առաջ թարմացրեք ձեր հեռախոսի համակարգը։"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Եթե արդեն թարմացրել եք հեռախոսի համակարգը, վերագործարկեք հեռախոսը, որպեսզի շարունակեք ինտեգրումը"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Ընդմիշտ ջնջե՞լ ընտրված տվյալները (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) <xliff:g id="APP_NAME">%2$s</xliff:g> հավելվածի համար"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Ցույց տալ համակարգային գործընթացները"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Թաքցնել համակարգային գործընթացները"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Միացված է"</string>
     <string name="off" msgid="6996623844428550649">"Անջատված է"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Բացվել է <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

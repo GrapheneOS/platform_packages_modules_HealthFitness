@@ -554,7 +554,7 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"Otkaži"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Gotovo"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Nema dostupnih aplikacija. Da ih vidite ovdje, instalirajte aplikacije za pohranu u oblaku"</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Za više opcija instalirajte aplikacije za pohranu u oblaku"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Instalirajte aplikacije za pohranu u oblaku da vidite više opcija ovdje"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Idite u Play trgovinu"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Počnite koristiti Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect pohranjuje vaše podatke o zdravlju i fitnesu i pruža vam jednostavan način da sinhronizirate različite aplikacije na uređaju"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect se integrira s Android sistemom da mu možete pristupiti direktno iz postavki."</string>
     <string name="update_button" msgid="4544529019832009496">"Ažuriraj"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Pokrenite ovo ažuriranje da Health Connect može nastaviti s integracijom s postavkama sistema"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect se integrira s Android sistemom da mu možete pristupiti direktno iz postavki.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebno je ažuriranje sistema"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prije nego što nastavite, ažurirajte sistem telefona."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ako ste već ažurirali sistem telefona, pokušajte s ponovnim pokretanjem telefona da nastavite s integracijom"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Trajno izbrisati podatke \"<xliff:g id="DATA_TYPE">%1$s</xliff:g>\" za aplikaciju <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Prikaži sistemske aplikacije"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Sakrij sistemske aplikacije"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Uključeno"</string>
     <string name="off" msgid="6996623844428550649">"Isključeno"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Pristupljeno je u <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

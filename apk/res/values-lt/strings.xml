@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"„Health Connect“ integruojama su „Android“ sistema, kad galėtumėte ją pasiekti tiesiai iš nustatymų."</string>
     <string name="update_button" msgid="4544529019832009496">"Atnaujinti"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Pradėkite šį atnaujinimą, kad būtų galima ir toliau integruoti „Health Connect“ su jūsų sistemos nustatymais"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"„Health Connect“ integruojama su „Android“ sistema, kad galėtumėte ją pasiekti tiesiai iš nustatymų.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Reikalingas sistemos naujinys"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prieš tęsdami atnaujinkite telefono sistemą."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jei jau atnaujinote telefono sistemą, pabandykite iš naujo paleisti telefoną, kad būtų tęsiamas integravimas"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Visam laikui ištrinti „<xliff:g id="APP_NAME">%2$s</xliff:g>“ <xliff:g id="DATA_TYPE">%1$s</xliff:g> duomenis?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Rodyti sistemą"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Slėpti sistemą"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Įjungta"</string>
     <string name="off" msgid="6996623844428550649">"Išjungta"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Pasiekta <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

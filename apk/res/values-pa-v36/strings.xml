@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="permgrouplab_health" msgid="2189810208223060173">"ਸਿਹਤ, ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ"</string>
-    <string name="health_permission_header_description" msgid="1816010176505069704">"ਇਸ ਇਜਾਜ਼ਤ ਵਾਲੀਆਂ ਐਪਾਂ ਤੁਹਾਡੀ ਸਿਹਤ, ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਅਤੇ ਉਸ ਵਿੱਚ ਤਬਦੀਲੀ ਕਰ ਸਕਦੀਆਂ ਹਨ। ਇਸ ਵਿੱਚ ਤੁਹਾਡੇ ਡੀਵਾਈਸਾਂ ਤੋਂ ਟਰੈਕ ਕੀਤਾ ਗਿਆ ਡਾਟਾ ਅਤੇ Health Connect ਵਿੱਚ ਸਟੋਰ ਕੀਤਾ ਗਿਆ ਡਾਟਾ ਸ਼ਾਮਲ ਹੈ"</string>
+    <string name="health_permission_header_description" msgid="1816010176505069704">"ਇਸ ਇਜਾਜ਼ਤ ਵਾਲੀਆਂ ਐਪਾਂ ਤੁਹਾਡੇ ਸਿਹਤ, ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਅਤੇ ਉਸ ਵਿੱਚ ਤਬਦੀਲੀ ਕਰ ਸਕਦੀਆਂ ਹਨ। ਇਸ ਵਿੱਚ ਤੁਹਾਡੇ ਡੀਵਾਈਸਾਂ ਤੋਂ ਟਰੈਕ ਕੀਤਾ ਗਿਆ ਡਾਟਾ ਅਤੇ Health Connect ਵਿੱਚ ਸਟੋਰ ਕੀਤਾ ਗਿਆ ਡਾਟਾ ਸ਼ਾਮਲ ਹੈ"</string>
     <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"ਕੀ <xliff:g id="APP_NAME">%1$s</xliff:g> ਨੂੰ ਫਿਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਆਪਣੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੇਣੀ ਹੈ?"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"ਚੁਣੋ ਕਿ ਇਹ ਐਪ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਕਿਹੜੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ। ਇਸ ਵਿੱਚ ਇਸ ਡੀਵਾਈਸ \'ਤੇ ਟਰੈਕ ਅਤੇ ਸਟੋਰ ਕੀਤਾ ਗਿਆ ਡਾਟਾ ਸ਼ਾਮਲ ਹੈ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"ਚੁਣੋ ਕਿ ਇਹ ਐਪ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਕਿਹੜੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ। ਇਸ ਵਿੱਚ ਇਸ ਡੀਵਾਈਸ \'ਤੇ ਟਰੈਕ ਅਤੇ ਸਟੋਰ ਕੀਤਾ ਗਿਆ ਡਾਟਾ ਸ਼ਾਮਲ ਹੈ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>

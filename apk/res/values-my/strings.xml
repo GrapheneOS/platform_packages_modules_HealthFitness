@@ -431,8 +431,8 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"အသေးစိတ် ရင်းမြစ်ကုဒ်- <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"ဤခွင့်ပြုချက်ရှိသောအက်ပ်များသည် သင်၏ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို ဖတ်ပြီး ရေးနိုင်သည်။"</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Health Connect တွင် သိမ်းထားသောဒေတာကို မည်သည့်အက်ပ်က သုံးနိုင်ကြောင်း သတ်မှတ်နိုင်သည်။ အက်ပ်ကဖတ်နိုင် (သို့) ရေးနိုင်သော ဒေတာများ ပြန်ကြည့်ရန် ၎င်းကိုတို့ပါ။"</string>
-    <string name="connected_apps_section_title" msgid="2415288099612126258">"ခွင့်ပြုထားသည်များ"</string>
-    <string name="not_connected_apps_section_title" msgid="452718769894103039">"သုံးခွင့်မပေးထားသည်များ"</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"သုံးခွင့်ပြုထားသည်များ"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"သုံးခွင့်ပြုမထားသည်များ"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"အပ်ဒိတ်လုပ်ရန် လိုသည်"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"ဆက်တင်များနှင့် အကူအညီ"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"အက်ပ်အားလုံးအတွက် သုံးခွင့် ဖယ်ရှားရန်"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect ကို သင်၏ဆက်တင်များမှ တိုက်ရိုက်သုံးနိုင်ရန်အတွက် ၎င်းကို Android စနစ်နှင့် ပေါင်းစည်းနေသည်။"</string>
     <string name="update_button" msgid="4544529019832009496">"အပ်ဒိတ်လုပ်ရန်"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Health Connect သည် သင်၏စနစ်ဆက်တင်များနှင့် ပေါင်းစည်းခြင်းကို ဆက်လုပ်နိုင်ရန်အတွက် ဤအပ်ဒိတ်ကို စတင်ပါ"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect ကို သင်၏ဆက်တင်များမှ တိုက်ရိုက်သုံးနိုင်ရန်အတွက် ၎င်းကို Android စနစ်နှင့် ပေါင်းစည်းနေသည်။\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"စနစ်အပ်ဒိတ်လုပ်ခြင်း လိုသည်"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ရှေ့မဆက်မီ ဖုန်းစနစ်ကို အပ်ဒိတ်လုပ်ပါ။"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ဖုန်းစနစ်ကို အပ်ဒိတ်လုပ်ထားပြီးပါက ပေါင်းစည်းမှုဆက်လုပ်ရန် ဖုန်းကို ပြန်စကြည့်ပါ"</string>
@@ -1116,7 +1115,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ယခု အပ်ဒိတ်လုပ်ရန်"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ဒေတာစုစုပေါင်း"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"အက်ပ်ရင်းမြစ်များ"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"ဒေတာစုစုပေါင်း မည်သို့ပြောင်းလဲနိုင်ကြောင်း မြင်ရရန် အက်ပ်ရင်းမြစ်များကို စာရင်းတွင် ထည့်နိုင်သည်။ အက်ပ်ကို စာရင်းမှဖယ်ရှားခြင်းသည် စုစုပေါင်းတွင် ၎င်းပံ့ပိုးပါဝင်နေသည်ကို ရပ်လိုက်မည်ဖြစ်သော်လည်း ရေးခွင့်များရှိပါဦးမည်။"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"ဒေတာစုစုပေါင်း မည်သို့ပြောင်းလဲနိုင်ကြောင်း မြင်ရရန် အက်ပ်ရင်းမြစ်များကို စာရင်းတွင် ထည့်နိုင်သည်။ အက်ပ်တစ်ခုကို စာရင်းမှဖယ်ရှားခြင်းသည် စုစုပေါင်းတွင် ၎င်းပံ့ပိုးပါဝင်နေသည်ကို ရပ်လိုက်မည်ဖြစ်သော်လည်း ရေးခွင့်များရှိပါဦးမည်။"</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"အက်ပ်ရင်းမြစ်များ မရှိပါ"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"<xliff:g id="CATEGORY_NAME">%1$s</xliff:g> ဒေတာရေးရန် အက်ပ်ခွင့်ပြုချက်များ ပေးလိုက်ပါက ရင်းမြစ်များကို ဤနေရာတွင် ပြမည်။"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"ရင်းမြစ်များနှင့် ဦးစားပေးခြင်း အလုပ်လုပ်ပုံ"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> အတွက် <xliff:g id="DATA_TYPE">%1$s</xliff:g> ဒေတာကို အပြီးဖျက်မလား။"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"စနစ်ကို ပြပါ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"စနစ်ကို ဖျောက်ပါ"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"ဖွင့်"</string>
     <string name="off" msgid="6996623844428550649">"ပိတ်"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> တွင် သုံးထားသည်"</string>

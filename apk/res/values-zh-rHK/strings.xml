@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"已關閉"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"變更這些設定後，Health Connect 會根據新的偏好設定刪除現有資料"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{要在 # 個月後自動刪除資料嗎？}other{要在 # 個月後自動刪除資料嗎？}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{這亦會從「健康資料同步」刪除 # 個月前的資料。\n\n如果你想從已連接應用程式徹底刪除資料，請檢查每個可能有儲存資料的應用程式。}other{這亦會從「健康資料同步」刪除 # 個月前的資料。\n\n如果你想從已連接應用程式徹底刪除資料，請檢查每個可能有儲存資料的應用程式。}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{這樣做亦會從「健康資料同步」刪除 # 個月前的資料。\n\n如果你想從已連接應用程式徹底刪除資料，請檢查每個可能有儲存資料的應用程式。}other{這樣做亦會從「健康資料同步」刪除 # 個月前的資料。\n\n如果你想從已連接應用程式徹底刪除資料，請檢查每個可能有儲存資料的應用程式。}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"設定自動刪除功能"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"系統將刪除現有資料"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect 將刪除 # 個月前的所有資料。這些變更可能一天後才會在已連結的應用程式上顯示。}other{Health Connect 將刪除 # 個月前的所有資料。這些變更可能一天後才會在已連結的應用程式上顯示。}}"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect 正在與 Android 系統整合，因此可直接從設定頁面存取。"</string>
     <string name="update_button" msgid="4544529019832009496">"更新"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"開始執行更新，讓 Health Connect 可繼續與系統設定整合"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"「健康資料同步」正在與 Android 系統整合，方便你直接從設定中存取。\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"需要安裝系統更新"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"繼續前，請更新手機系統。"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"如果你已更新手機系統，請嘗試重新啟動手機以繼續整合"</string>
@@ -1116,7 +1115,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"立即更新"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"資料總數"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"應用程式來源"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"在清單中新增應用程式來源，即可查看資料總數的變化。從此清單中移除某個應用程式後，相關資料就不會計入總數，但應用程式仍具有寫入權限。"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"將應用程式來源加入此清單，即可查看資料總數的變化。從此清單中移除某個應用程式後，相關資料就不會計入總數，但應用程式仍具有寫入權限。"</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"沒有任何應用程式來源"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"當你授予應用程式寫入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>資料的權限後，系統就會在這裡顯示來源。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"來源和優先次序的運作方式"</string>
@@ -1166,22 +1165,26 @@
     <string name="all_app_data_selected_deletion_confirmation_dialog" msgid="1077157006579195958">"要永久刪除所有「<xliff:g id="APP_NAME">%s</xliff:g>」資料嗎？"</string>
     <string name="some_app_data_selected_deletion_confirmation_dialog" msgid="5378172524112070270">"要永久刪除所選的「<xliff:g id="APP_NAME">%s</xliff:g>」資料嗎？"</string>
     <string name="all_entries_selected_day_deletion_confirmation_dialog" msgid="2887646600541520444">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所有項目嗎？"</string>
-    <string name="all_entries_selected_week_deletion_confirmation_dialog" msgid="6759608395185369048">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>該星期的所有項目嗎？"</string>
+    <string name="all_entries_selected_week_deletion_confirmation_dialog" msgid="6759608395185369048">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>一星期的所有項目嗎？"</string>
     <string name="all_entries_selected_month_deletion_confirmation_dialog" msgid="6030161837387559132">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所有項目嗎？"</string>
     <string name="some_entries_selected_day_deletion_confirmation_dialog" msgid="3481363886097542565">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所選項目嗎？"</string>
-    <string name="some_entries_selected_week_deletion_confirmation_dialog" msgid="7150217982297131340">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>該星期的所選項目嗎？"</string>
+    <string name="some_entries_selected_week_deletion_confirmation_dialog" msgid="7150217982297131340">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>一星期的所選項目嗎？"</string>
     <string name="some_entries_selected_month_deletion_confirmation_dialog" msgid="3712014725077445591">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所選項目嗎？"</string>
     <string name="one_entry_selected_deletion_confirmation_dialog" msgid="4642573082594021789">"要永久刪除此項目嗎？"</string>
     <string name="all_app_entries_selected_day_deletion_confirmation_dialog" msgid="2342034541791960151">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>的所有「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
-    <string name="all_app_entries_selected_week_deletion_confirmation_dialog" msgid="24289763841770386">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>該星期的所有「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
+    <string name="all_app_entries_selected_week_deletion_confirmation_dialog" msgid="24289763841770386">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>一星期的所有「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
     <string name="all_app_entries_selected_month_deletion_confirmation_dialog" msgid="3240581815583269052">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>的所有「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
     <string name="some_app_entries_selected_day_deletion_confirmation_dialog" msgid="1030347169774815676">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>的所選「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
-    <string name="some_app_entries_selected_week_deletion_confirmation_dialog" msgid="8009352719322914060">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>該星期的所選「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
+    <string name="some_app_entries_selected_week_deletion_confirmation_dialog" msgid="8009352719322914060">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>一星期的所選「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
     <string name="some_app_entries_selected_month_deletion_confirmation_dialog" msgid="6617805533334875710">"要永久刪除<xliff:g id="SELECTED_DATE_RANGE">%2$s</xliff:g>的所選「<xliff:g id="APP_NAME">%1$s</xliff:g>」項目嗎？"</string>
     <string name="one_app_entry_selected_deletion_confirmation_dialog" msgid="7101939753210640660">"要永久刪除此「<xliff:g id="APP_NAME">%s</xliff:g>」項目嗎？"</string>
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"要永久刪除「<xliff:g id="APP_NAME">%2$s</xliff:g>」的<xliff:g id="DATA_TYPE">%1$s</xliff:g>資料嗎？"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"顯示系統"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"隱藏系統"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"開啟"</string>
     <string name="off" msgid="6996623844428550649">"關閉"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"上次存取時間：<xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

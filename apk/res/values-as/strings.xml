@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connectক Android ছিষ্টেমৰ সৈতে একত্ৰিত কৰি থকা হৈছে গতিকে আপুনি নিজৰ ছেটিঙৰ পৰা এইটো পোনপটীয়াকৈ এক্সেছ কৰিব পাৰে।"</string>
     <string name="update_button" msgid="4544529019832009496">"আপডে’ট কৰক"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"এই আপডে’টটো আৰম্ভ কৰক যাতে Health Connectএ আপোনাৰ ছিষ্টেমৰ সৈতে একত্ৰিত কৰাটো অব্যাহত ৰাখিব পাৰে"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connectক Android ছিষ্টেমৰ সৈতে একত্ৰিত কৰি থকা হৈছে যাতে আপুনি নিজৰ ছেটিঙৰ পৰা এইটো পোনপটীয়াকৈ এক্সেছ কৰিব পাৰে।\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ছিষ্টেম আপডে’টৰ প্ৰয়োজন"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"অব্যাহত ৰখাৰ পূৰ্বে, আপোনাৰ ফ’নৰ ছিষ্টেমটো আপডে’ট কৰক।"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"যদি আপুনি আপোনাৰ ফ’নৰ ছিষ্টেমটো ইতিমধ্যে আপডে’ট কৰিছে, একত্ৰিত কৰাটো অব্যাহত ৰাখিবলৈ আপোনাৰ ফ’নটো ৰিষ্টাৰ্ট কৰি চাওক"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g>ৰ বাবে আটাইবোৰ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ডেটা স্থায়ীভাৱে মচিবনে?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"ছিষ্টেম দেখুৱাওক"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"ছিষ্টেম লুকুৱাওক"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"অন আছে"</string>
     <string name="off" msgid="6996623844428550649">"অফ আছে"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>ত এক্সেছ কৰিছিল"</string>

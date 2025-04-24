@@ -431,8 +431,8 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"ਵੇਰਵੇ ਸਹਿਤ ਸਰੋਤ ਕੋਡ: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"ਇਸ ਇਜਾਜ਼ਤ ਵਾਲੀਆਂ ਐਪਾਂ ਤੁਹਾਡੇ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਸੰਬੰਧੀ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਅਤੇ ਲਿੱਖ ਸਕਦੀਆਂ ਹਨ।"</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"ਕੰਟਰੋਲ ਕਰੋ ਕਿ ਕਿਹੜੀਆਂ ਐਪਾਂ Health Connect ਵਿੱਚ ਸਟੋਰ ਕੀਤੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀਆਂ ਹਨ। ਐਪ ਵੱਲੋਂ ਪੜ੍ਹੇ ਅਤੇ ਸੰਪਾਦਨ ਕੀਤੇ ਜਾਣ ਵਾਲੇ ਡਾਟੇ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਇਸ \'ਤੇ ਟੈਪ ਕਰੋ।"</string>
-    <string name="connected_apps_section_title" msgid="2415288099612126258">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ"</string>
-    <string name="not_connected_apps_section_title" msgid="452718769894103039">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਨਹੀਂ"</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਹੈ"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਨਹੀਂ ਹੈ"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"ਅੱਪਡੇਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"ਸੈਟਿੰਗਾਂ ਅਤੇ ਮਦਦ"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"ਸਾਰੀਆਂ ਐਪਾਂ ਲਈ ਪਹੁੰਚ ਹਟਾਓ"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect ਦਾ Android ਸਿਸਟਮ ਨਾਲ ਏਕੀਕਰਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ, ਇਸ ਲਈ ਤੁਸੀਂ ਇਸ ਤੱਕ ਸਿੱਧਾ ਆਪਣੀਆਂ ਸੈਟਿੰਗਾਂ ਤੋਂ ਪਹੁੰਚ ਕਰ ਸਕਦੇ ਹੋ।"</string>
     <string name="update_button" msgid="4544529019832009496">"ਅੱਪਡੇਟ ਕਰੋ"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"ਅੱਪਡੇਟ ਸ਼ੁਰੂ ਕਰੋ, ਤਾਂ ਜੋ Health Connect ਤੁਹਾਡੀਆਂ ਸਿਸਟਮ ਸੈਟਿੰਗਾਂ ਨਾਲ ਏਕੀਕਰਨ ਕਰਨਾ ਜਾਰੀ ਰੱਖ ਸਕੇ"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect ਦਾ Android ਸਿਸਟਮ ਨਾਲ ਏਕੀਕਰਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ, ਇਸ ਲਈ ਤੁਸੀਂ ਇਸ ਤੱਕ ਸਿੱਧਾ ਆਪਣੀਆਂ ਸੈਟਿੰਗਾਂ ਤੋਂ ਪਹੁੰਚ ਕਰ ਸਕਦੇ ਹੋ।\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"ਸਿਸਟਮ ਅੱਪਡੇਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ਅੱਗੇ ਵਧਣ ਤੋਂ ਪਹਿਲਾਂ, ਆਪਣੇ ਫ਼ੋਨ ਸਿਸਟਮ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ।"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ਜੇ ਤੁਸੀਂ ਆਪਣੇ ਫ਼ੋਨ ਸਿਸਟਮ ਨੂੰ ਅੱਪਡੇਟ ਕਰ ਲਿਆ ਹੈ, ਤਾਂ ਏਕੀਕਰਨ ਨੂੰ ਜਾਰੀ ਰੱਖਣ ਲਈ ਆਪਣੇ ਫ਼ੋਨ ਨੂੰ ਮੁੜ-ਸ਼ੁਰੂ ਕਰ ਕੇ ਦੇਖੋ"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"ਕੀ <xliff:g id="APP_NAME">%2$s</xliff:g> ਲਈ <xliff:g id="DATA_TYPE">%1$s</xliff:g> ਡਾਟੇ ਨੂੰ ਪੱਕੇ ਤੌਰ \'ਤੇ ਮਿਟਾਉਣਾ ਹੈ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"ਸਿਸਟਮ ਦਿਖਾਓ"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"ਸਿਸਟਮ ਲੁਕਾਓ"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"ਚਾਲੂ"</string>
     <string name="off" msgid="6996623844428550649">"ਬੰਦ"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> ਵਜੇ ਪਹੁੰਚ ਕੀਤੀ ਗਈ"</string>

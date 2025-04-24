@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Santé Connect est en cours d\'intégration au système Android afin que vous puissiez y accéder directement depuis les paramètres."</string>
     <string name="update_button" msgid="4544529019832009496">"Mettre à jour"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Lancez cette mise à jour pour continuer l\'intégration de Santé Connect à vos paramètres système"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Santé Connect est en cours d\'intégration au système Android afin que vous puissiez y accéder directement depuis les paramètres.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Mise à jour du système nécessaire"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Mettez à jour le système de votre téléphone avant de continuer."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si vous avez déjà mis à jour le système du téléphone, essayez de le redémarrer pour continuer l\'intégration"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Supprimer définitivement les données de type <xliff:g id="DATA_TYPE">%1$s</xliff:g> pour l\'appli <xliff:g id="APP_NAME">%2$s</xliff:g> ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Afficher le système"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Masquer le système"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Activé"</string>
     <string name="off" msgid="6996623844428550649">"Désactivé"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Dernière consultation : <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
