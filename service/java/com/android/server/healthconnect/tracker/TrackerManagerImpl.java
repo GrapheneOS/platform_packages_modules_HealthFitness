@@ -16,7 +16,17 @@
 
 package com.android.server.healthconnect.tracker;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.health.connect.HealthPermissions;
+import android.util.Slog;
+
 import com.android.healthfitness.flags.Flags;
+import com.android.internal.annotations.VisibleForTesting;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Tracker that subscribes to SensorManager pedometer.
@@ -24,6 +34,9 @@ import com.android.healthfitness.flags.Flags;
  * @hide
  */
 public class TrackerManagerImpl implements TrackerManager {
+
+    private static final String TAG = "HealthConnectTrackerManagerImpl";
+
     @Override
     public void initialize() {
         if (Flags.stepTrackingEnabled()) {
@@ -36,5 +49,36 @@ public class TrackerManagerImpl implements TrackerManager {
         if (Flags.stepTrackingEnabled()) {
             // Implementation goes here. Do nothing for now.
         }
+    }
+
+    /**
+     * Returns the package names of applications which hold permission {@link
+     * HealthPermissions.READ_STEPS}.
+     *
+     * @return List of app package names which hold the {@link HealthPermissions.READ_STEPS}
+     *     permission.
+     */
+    @VisibleForTesting
+    static List<String> packagesEligibleForStepTracking(Context context) {
+        if (android.health.connect.Constants.DEBUG) {
+            Slog.d(TAG, "Calling packagesEligibleForStepTracking()");
+        }
+
+        String[] permissions = new String[] {HealthPermissions.READ_STEPS};
+        List<PackageInfo> packageInfos =
+                context.getPackageManager()
+                        .getPackagesHoldingPermissions(
+                                permissions, PackageManager.PackageInfoFlags.of(0));
+
+        // TODO(b/412626578): Filter out any preinstalled apps holding the steps permission and
+        // handle them separately.
+        List<String> permissionFilteredPackages =
+                packageInfos.stream().map(info -> info.packageName).collect(Collectors.toList());
+
+        if (android.health.connect.Constants.DEBUG) {
+            Slog.d(TAG, "permissionFilteredPackages : " + permissionFilteredPackages);
+        }
+
+        return permissionFilteredPackages;
     }
 }
