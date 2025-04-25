@@ -76,21 +76,21 @@ public class TrackerManagerImplTest {
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingEnabled_initialize_doesNotThrow() {
-        TrackerManager manager = new TrackerManagerImpl(mPermissionHelper);
+        TrackerManager manager = new TrackerManagerImpl(mContext, mPermissionHelper);
         manager.initialize();
     }
 
     @Test
     @DisableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingDisabled_initialize_doesNotThrow() {
-        TrackerManager manager = new TrackerManagerImpl(mPermissionHelper);
+        TrackerManager manager = new TrackerManagerImpl(mContext, mPermissionHelper);
         manager.initialize();
     }
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingEnabled_setStepTrackingEnabled_doesNotThrow() {
-        TrackerManager manager = new TrackerManagerImpl(mPermissionHelper);
+        TrackerManager manager = new TrackerManagerImpl(mContext, mPermissionHelper);
         manager.setStepTrackingEnabled(true);
         manager.setStepTrackingEnabled(false);
     }
@@ -98,7 +98,7 @@ public class TrackerManagerImplTest {
     @Test
     @DisableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingDisabled_setStepTrackingEnabled_doesNotThrow() {
-        TrackerManager manager = new TrackerManagerImpl(mPermissionHelper);
+        TrackerManager manager = new TrackerManagerImpl(mContext, mPermissionHelper);
         manager.setStepTrackingEnabled(true);
         manager.setStepTrackingEnabled(false);
     }
