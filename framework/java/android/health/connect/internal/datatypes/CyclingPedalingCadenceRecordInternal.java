@@ -23,12 +23,16 @@ import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @see CyclingPedalingCadenceRecord
@@ -39,19 +43,28 @@ public class CyclingPedalingCadenceRecordInternal
         extends SeriesRecordInternal<
                 CyclingPedalingCadenceRecord,
                 CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample> {
-    private Set<CyclingPedalingCadenceRecordSample> mCyclingPedalingCadenceRecordSamples;
+    private Set<CyclingPedalingCadenceRecordSample> mSamples =
+            new TreeSet<>(
+                    Comparator.comparingLong(CyclingPedalingCadenceRecordSample::getEpochMillis));
 
     public CyclingPedalingCadenceRecordInternal(Set<CyclingPedalingCadenceRecordSample> samples) {
         super();
-        this.mCyclingPedalingCadenceRecordSamples = samples;
+        if (Flags.sampleTimeOrdering()) {
+            mSamples.addAll(samples);
+        } else {
+            mSamples = samples;
+        }
     }
 
+    @SuppressWarnings("unused") // used by reflection in parcel flow
     public CyclingPedalingCadenceRecordInternal(Parcel parcel) {
         super(parcel);
         int size = parcel.readInt();
-        mCyclingPedalingCadenceRecordSamples = new HashSet<>(size);
+        if (!Flags.sampleTimeOrdering()) {
+            mSamples = new HashSet<>(size);
+        }
         for (int i = 0; i < size; i++) {
-            mCyclingPedalingCadenceRecordSamples.add(
+            mSamples.add(
                     new CyclingPedalingCadenceRecordSample(parcel.readDouble(), parcel.readLong()));
         }
     }
@@ -59,16 +72,7 @@ public class CyclingPedalingCadenceRecordInternal
     @Override
     @NonNull
     public Set<CyclingPedalingCadenceRecordSample> getSamples() {
-        return mCyclingPedalingCadenceRecordSamples;
-    }
-
-    @NonNull
-    @Override
-    public CyclingPedalingCadenceRecordInternal setSamples(Set<? extends Sample> samples) {
-        Objects.requireNonNull(samples);
-        this.mCyclingPedalingCadenceRecordSamples =
-                (Set<CyclingPedalingCadenceRecordSample>) samples;
-        return this;
+        return mSamples;
     }
 
     @Override
@@ -83,9 +87,8 @@ public class CyclingPedalingCadenceRecordInternal
 
     @Override
     void populateIntervalRecordTo(@NonNull Parcel parcel) {
-        parcel.writeInt(mCyclingPedalingCadenceRecordSamples.size());
-        for (CyclingPedalingCadenceRecordSample cyclingPedalingCadenceRecordSample :
-                mCyclingPedalingCadenceRecordSamples) {
+        parcel.writeInt(mSamples.size());
+        for (CyclingPedalingCadenceRecordSample cyclingPedalingCadenceRecordSample : mSamples) {
             parcel.writeDouble(cyclingPedalingCadenceRecordSample.getRevolutionsPerMinute());
             parcel.writeLong(cyclingPedalingCadenceRecordSample.getEpochMillis());
         }
@@ -94,15 +97,12 @@ public class CyclingPedalingCadenceRecordInternal
     private List<CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>
             getExternalSamples() {
         List<CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample>
-                cyclingPedalingCadenceRecords =
-                        new ArrayList<>(mCyclingPedalingCadenceRecordSamples.size());
-        for (CyclingPedalingCadenceRecordSample cyclingPedalingCadenceRecordSample :
-                mCyclingPedalingCadenceRecordSamples) {
+                cyclingPedalingCadenceRecords = new ArrayList<>(mSamples.size());
+        for (CyclingPedalingCadenceRecordSample sample : mSamples) {
             cyclingPedalingCadenceRecords.add(
                     new CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample(
-                            cyclingPedalingCadenceRecordSample.getRevolutionsPerMinute(),
-                            Instant.ofEpochMilli(
-                                    cyclingPedalingCadenceRecordSample.getEpochMillis()),
+                            sample.getRevolutionsPerMinute(),
+                            Instant.ofEpochMilli(sample.getEpochMillis()),
                             true));
         }
         return cyclingPedalingCadenceRecords;
@@ -130,22 +130,28 @@ public class CyclingPedalingCadenceRecordInternal
 
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object)
-                    && object
-                            instanceof
-                            CyclingPedalingCadenceRecordInternal
-                                    .CyclingPedalingCadenceRecordSample) {
-                CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample other =
-                        (CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample)
-                                object;
-                return getEpochMillis() == other.getEpochMillis();
+            if (Flags.sampleTimeOrdering()) {
+                if (object instanceof CyclingPedalingCadenceRecordSample other) {
+                    return mEpochMillis == other.mEpochMillis
+                            && mRevolutionsPerMinute == other.mRevolutionsPerMinute;
+                }
+                return false;
+            } else {
+                if (super.equals(object)
+                        && object instanceof CyclingPedalingCadenceRecordSample other) {
+                    return getEpochMillis() == other.getEpochMillis();
+                }
+                return false;
             }
-            return false;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getEpochMillis());
+            if (Flags.sampleTimeOrdering()) {
+                return Objects.hash(mEpochMillis, mRevolutionsPerMinute);
+            } else {
+                return Objects.hash(mEpochMillis);
+            }
         }
     }
 }

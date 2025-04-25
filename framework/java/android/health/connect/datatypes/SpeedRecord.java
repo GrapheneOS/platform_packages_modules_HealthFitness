@@ -22,12 +22,16 @@ import android.health.connect.datatypes.units.Velocity;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /** Captures the user's speed, e.g. during running or cycling. */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
@@ -69,7 +73,7 @@ public final class SpeedRecord extends IntervalRecord {
                     RecordTypeIdentifier.RECORD_TYPE_SPEED,
                     Velocity.class);
 
-    private final List<SpeedRecordSample> mSpeedRecordSamples;
+    private final List<SpeedRecordSample> mSamples;
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -77,7 +81,7 @@ public final class SpeedRecord extends IntervalRecord {
      * @param startZoneOffset Zone offset of the user when the activity started
      * @param endTime End time of this activity
      * @param endZoneOffset Zone offset of the user when the activity finished
-     * @param speedRecordSamples Samples of recorded SpeedRecord
+     * @param samples Samples of recorded SpeedRecord, sorted by time
      * @param skipValidation Boolean flag to skip validation of record values.
      */
     private SpeedRecord(
@@ -86,7 +90,7 @@ public final class SpeedRecord extends IntervalRecord {
             @NonNull ZoneOffset startZoneOffset,
             @NonNull Instant endTime,
             @NonNull ZoneOffset endZoneOffset,
-            @NonNull List<SpeedRecordSample> speedRecordSamples,
+            @NonNull List<SpeedRecordSample> samples,
             boolean skipValidation) {
         super(
                 metadata,
@@ -96,24 +100,22 @@ public final class SpeedRecord extends IntervalRecord {
                 endZoneOffset,
                 skipValidation,
                 /* enforceFutureTimeRestrictions= */ true);
-        Objects.requireNonNull(speedRecordSamples);
+        Objects.requireNonNull(samples);
         if (!skipValidation) {
             ValidationUtils.validateSampleStartAndEndTime(
                     startTime,
                     endTime,
-                    speedRecordSamples.stream()
-                            .map(SpeedRecord.SpeedRecordSample::getTime)
-                            .toList());
+                    samples.stream().map(SpeedRecord.SpeedRecordSample::getTime).toList());
         }
-        mSpeedRecordSamples = speedRecordSamples;
+        mSamples = samples;
     }
 
     /**
-     * @return SpeedRecord samples corresponding to this record
+     * @return SpeedRecord samples corresponding to this record, in ascending time order
      */
     @NonNull
     public List<SpeedRecordSample> getSamples() {
-        return mSpeedRecordSamples;
+        return mSamples;
     }
 
     /** Represents a single measurement of the speed, a scalar magnitude. */
@@ -197,7 +199,7 @@ public final class SpeedRecord extends IntervalRecord {
         private final Metadata mMetadata;
         private final Instant mStartTime;
         private final Instant mEndTime;
-        private final List<SpeedRecordSample> mSpeedRecordSamples;
+        private final List<SpeedRecordSample> mSamples;
         private ZoneOffset mStartZoneOffset;
         private ZoneOffset mEndZoneOffset;
 
@@ -205,21 +207,30 @@ public final class SpeedRecord extends IntervalRecord {
          * @param metadata Metadata to be associated with the record. See {@link Metadata}.
          * @param startTime Start time of this activity
          * @param endTime End time of this activity
-         * @param speedRecordSamples Samples of recorded SpeedRecord
+         * @param samples Samples of recorded SpeedRecord. Only a single sample with a given time is
+         *     accepted and samples with duplicate times will be silently dropped.
          */
         public Builder(
                 @NonNull Metadata metadata,
                 @NonNull Instant startTime,
                 @NonNull Instant endTime,
-                @NonNull List<SpeedRecordSample> speedRecordSamples) {
+                @NonNull List<SpeedRecordSample> samples) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(startTime);
             Objects.requireNonNull(endTime);
-            Objects.requireNonNull(speedRecordSamples);
+            Objects.requireNonNull(samples);
             mMetadata = metadata;
             mStartTime = startTime;
             mEndTime = endTime;
-            mSpeedRecordSamples = speedRecordSamples;
+            if (Flags.sampleTimeOrdering()) {
+                TreeSet<SpeedRecordSample> sampleSet =
+                        new TreeSet<>(Comparator.comparing(SpeedRecordSample::getTime));
+                sampleSet.addAll(samples);
+                mSamples = sampleSet.stream().toList();
+            } else {
+                mSamples = samples;
+            }
+
             mStartZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(startTime);
             mEndZoneOffset = ZoneOffset.systemDefault().getRules().getOffset(endTime);
         }
@@ -266,7 +277,7 @@ public final class SpeedRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mSpeedRecordSamples,
+                    mSamples,
                     true);
         }
 
@@ -281,7 +292,7 @@ public final class SpeedRecord extends IntervalRecord {
                     mStartZoneOffset,
                     mEndTime,
                     mEndZoneOffset,
-                    mSpeedRecordSamples,
+                    mSamples,
                     false);
         }
     }

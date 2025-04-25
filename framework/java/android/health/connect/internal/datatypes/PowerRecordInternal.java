@@ -24,12 +24,16 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.units.Power;
 import android.os.Parcel;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @see PowerRecord
@@ -38,17 +42,24 @@ import java.util.Set;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_POWER)
 public class PowerRecordInternal
         extends SeriesRecordInternal<PowerRecord, PowerRecord.PowerRecordSample> {
-    private Set<PowerRecordSample> mPowerRecordSamples;
+    private Set<PowerRecordSample> mPowerRecordSamples =
+            new TreeSet<>(Comparator.comparingLong(PowerRecordSample::getEpochMillis));
 
     public PowerRecordInternal(Set<PowerRecordSample> powerRecordSamples) {
         super();
-        this.mPowerRecordSamples = powerRecordSamples;
+        if (Flags.sampleTimeOrdering()) {
+            mPowerRecordSamples.addAll(powerRecordSamples);
+        } else {
+            mPowerRecordSamples = powerRecordSamples;
+        }
     }
 
     public PowerRecordInternal(Parcel parcel) {
         super(parcel);
         int size = parcel.readInt();
-        mPowerRecordSamples = new HashSet<>(size);
+        if (!Flags.sampleTimeOrdering()) {
+            mPowerRecordSamples = new HashSet<>(size);
+        }
         for (int i = 0; i < size; i++) {
             mPowerRecordSamples.add(new PowerRecordSample(parcel.readDouble(), parcel.readLong()));
         }
@@ -58,14 +69,6 @@ public class PowerRecordInternal
     @NonNull
     public Set<PowerRecordSample> getSamples() {
         return mPowerRecordSamples;
-    }
-
-    @NonNull
-    @Override
-    public PowerRecordInternal setSamples(Set<? extends Sample> samples) {
-        Objects.requireNonNull(samples);
-        this.mPowerRecordSamples = (Set<PowerRecordSample>) samples;
-        return this;
     }
 
     @Override
@@ -122,17 +125,23 @@ public class PowerRecordInternal
 
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object) && object instanceof PowerRecordInternal.PowerRecordSample) {
-                PowerRecordInternal.PowerRecordSample other =
-                        (PowerRecordInternal.PowerRecordSample) object;
-                return getEpochMillis() == other.getEpochMillis();
+            if (object instanceof PowerRecordInternal.PowerRecordSample other) {
+                if (Flags.sampleTimeOrdering()) {
+                    return mPower == other.mPower && mEpochMillis == other.mEpochMillis;
+                } else {
+                    return super.equals(other) && getEpochMillis() == other.getEpochMillis();
+                }
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getEpochMillis());
+            if (Flags.sampleTimeOrdering()) {
+                return Objects.hash(mEpochMillis, mPower);
+            } else {
+                return Objects.hash(getEpochMillis());
+            }
         }
     }
 }

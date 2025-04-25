@@ -32,6 +32,8 @@ import android.health.connect.datatypes.units.TemperatureDelta;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.SkinTemperatureRecordInternal;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
@@ -42,6 +44,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -101,7 +104,7 @@ public final class SkinTemperatureRecord extends IntervalRecord {
 
     @Nullable private final Temperature mBaseline;
     @NonNull private final List<Delta> mDeltas;
-    private @SkinTemperatureMeasurementLocation int mMeasurementLocation;
+    private final @SkinTemperatureMeasurementLocation int mMeasurementLocation;
 
     /**
      * @param metadata Metadata to be associated with the record. See {@link Metadata}.
@@ -185,9 +188,8 @@ public final class SkinTemperatureRecord extends IntervalRecord {
     @Override
     public boolean equals(@Nullable Object object) {
         if (this == object) return true;
-        if (!(object instanceof SkinTemperatureRecord)) return false;
+        if (!(object instanceof SkinTemperatureRecord that)) return false;
         if (!super.equals(object)) return false;
-        SkinTemperatureRecord that = (SkinTemperatureRecord) object;
         if (!Objects.equals(getBaseline(), that.getBaseline())
                 || getMeasurementLocation() != that.getMeasurementLocation()) return false;
         return Objects.equals(getDeltas(), that.getDeltas());
@@ -277,17 +279,10 @@ public final class SkinTemperatureRecord extends IntervalRecord {
             return mTime;
         }
 
-        /**
-         * Indicates whether some other object is "equal to" this one.
-         *
-         * @param object the reference object with which to compare.
-         * @return {@code true} if this object is the same as the object.
-         */
         @Override
         public boolean equals(@Nullable Object object) {
             if (this == object) return true;
-            if (!(object instanceof Delta)) return false;
-            Delta that = (Delta) object;
+            if (!(object instanceof Delta that)) return false;
             return Objects.equals(getDelta(), that.getDelta())
                     && getTime().toEpochMilli() == that.getTime().toEpochMilli();
         }
@@ -297,7 +292,7 @@ public final class SkinTemperatureRecord extends IntervalRecord {
          */
         @Override
         public int hashCode() {
-            return Objects.hash(super.hashCode(), getDelta(), getTime());
+            return Objects.hash(getDelta(), getTime());
         }
     }
 
@@ -396,7 +391,13 @@ public final class SkinTemperatureRecord extends IntervalRecord {
         public Builder setDeltas(@NonNull List<Delta> deltas) {
             requireNonNull(deltas);
             mDeltas.clear();
-            mDeltas.addAll(deltas);
+            if (Flags.sampleTimeOrdering()) {
+                TreeSet<Delta> deltaSet = new TreeSet<>(Comparator.comparing(Delta::getTime));
+                deltaSet.addAll(deltas);
+                mDeltas.addAll(deltaSet);
+            } else {
+                mDeltas.addAll(deltas);
+            }
             return this;
         }
 

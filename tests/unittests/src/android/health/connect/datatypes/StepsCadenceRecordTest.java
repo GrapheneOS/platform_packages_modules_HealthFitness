@@ -19,20 +19,33 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_ENTRY;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import android.health.connect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.android.healthfitness.flags.Flags;
 
 import com.google.common.testing.EqualsTester;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class StepsCadenceRecordTest {
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     @Test
     public void testEqualsHashcode() {
         Metadata emptyMetadata = new Metadata.Builder().build();
@@ -60,8 +73,8 @@ public class StepsCadenceRecordTest {
         // Use strange offsets so they don't match the local offset for the test runner by accident.
         ZoneOffset startOffset = ZoneOffset.ofHoursMinutes(1, 23);
         ZoneOffset endOffset = ZoneOffset.ofHoursMinutes(-2, -49);
-        List<StepsCadenceRecord.StepsCadenceRecordSample> oneSample =
-                List.of(new StepsCadenceRecord.StepsCadenceRecordSample(60.1, midTime));
+        List<StepsCadenceRecordSample> oneSample =
+                List.of(new StepsCadenceRecordSample(60.1, midTime));
         new EqualsTester()
                 .addEqualityGroup(
                         new StepsCadenceRecord.Builder(emptyMetadata, start, end, oneSample)
@@ -102,17 +115,13 @@ public class StepsCadenceRecordTest {
                                         fullMetadata,
                                         start,
                                         end,
-                                        List.of(
-                                                new StepsCadenceRecord.StepsCadenceRecordSample(
-                                                        70.1, midTime)))
+                                        List.of(new StepsCadenceRecordSample(70.1, midTime)))
                                 .build(),
                         new StepsCadenceRecord.Builder(
                                         fullMetadata,
                                         start,
                                         end,
-                                        List.of(
-                                                new StepsCadenceRecord.StepsCadenceRecordSample(
-                                                        70.1, midTime)))
+                                        List.of(new StepsCadenceRecordSample(70.1, midTime)))
                                 .build())
                 .addEqualityGroup(
                         new StepsCadenceRecord.Builder(
@@ -120,20 +129,16 @@ public class StepsCadenceRecordTest {
                                         start,
                                         end,
                                         List.of(
-                                                new StepsCadenceRecord.StepsCadenceRecordSample(
-                                                        70.1, start),
-                                                new StepsCadenceRecord.StepsCadenceRecordSample(
-                                                        80.1, midTime)))
+                                                new StepsCadenceRecordSample(70.1, start),
+                                                new StepsCadenceRecordSample(80.1, midTime)))
                                 .build(),
                         new StepsCadenceRecord.Builder(
                                         fullMetadata,
                                         start,
                                         end,
                                         List.of(
-                                                new StepsCadenceRecord.StepsCadenceRecordSample(
-                                                        70.1, start),
-                                                new StepsCadenceRecord.StepsCadenceRecordSample(
-                                                        80.1, midTime)))
+                                                new StepsCadenceRecordSample(70.1, start),
+                                                new StepsCadenceRecordSample(80.1, midTime)))
                                 .build())
                 .testEquals();
     }
@@ -144,14 +149,62 @@ public class StepsCadenceRecordTest {
         Instant time2 = Instant.ofEpochMilli(1_500_000_000);
         new EqualsTester()
                 .addEqualityGroup(
-                        new StepsCadenceRecord.StepsCadenceRecordSample(60.1, time1),
-                        new StepsCadenceRecord.StepsCadenceRecordSample(60.1, time1))
+                        new StepsCadenceRecordSample(60.1, time1),
+                        new StepsCadenceRecordSample(60.1, time1))
                 .addEqualityGroup(
-                        new StepsCadenceRecord.StepsCadenceRecordSample(60.1, time2),
-                        new StepsCadenceRecord.StepsCadenceRecordSample(60.1, time2))
+                        new StepsCadenceRecordSample(60.1, time2),
+                        new StepsCadenceRecordSample(60.1, time2))
                 .addEqualityGroup(
-                        new StepsCadenceRecord.StepsCadenceRecordSample(70.1, time1),
-                        new StepsCadenceRecord.StepsCadenceRecordSample(70.1, time1))
+                        new StepsCadenceRecordSample(70.1, time1),
+                        new StepsCadenceRecordSample(70.1, time1))
                 .testEquals();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
+    public void testSamplesConstructedInTimeOrder() {
+        // Construct a set of samples such that they are unlikely to be sorted by chance.
+        ArrayList<StepsCadenceRecordSample> samples = new ArrayList<>();
+        double rate = 61.2;
+        for (long i = 20L; i < 25L; i++) {
+            samples.add(new StepsCadenceRecordSample(rate, Instant.ofEpochMilli(i)));
+        }
+        for (long i = 0L; i < 5L; i++) {
+            samples.add(new StepsCadenceRecordSample(rate, Instant.ofEpochMilli(i)));
+        }
+        for (long i = 1000L; i < 1005L; i++) {
+            samples.add(new StepsCadenceRecordSample(rate, Instant.ofEpochMilli(i)));
+        }
+        Metadata emptyMetadata = new Metadata.Builder().build();
+        Instant start = Instant.ofEpochMilli(0);
+        Instant end = Instant.ofEpochMilli(2_000_000_000);
+
+        StepsCadenceRecord record =
+                new StepsCadenceRecord.Builder(emptyMetadata, start, end, samples).build();
+        List<StepsCadenceRecordSample> resultSamples = record.getSamples();
+
+        List<StepsCadenceRecordSample> expected =
+                samples.stream()
+                        .sorted(Comparator.comparing(StepsCadenceRecordSample::getTime))
+                        .toList();
+        assertThat(resultSamples).isEqualTo(expected);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
+    public void testSamplesWithDuplicateTimes_dropsDuplicates() {
+        // Construct a set of samples such that they are unlikely to be sorted by chance.
+        List<StepsCadenceRecordSample> samples = new ArrayList<>();
+        for (int rate = 70; rate < 100; rate++) {
+            samples.add(new StepsCadenceRecordSample(rate, Instant.ofEpochMilli(20)));
+        }
+        Metadata emptyMetadata = new Metadata.Builder().build();
+        Instant start = Instant.ofEpochMilli(0);
+        Instant end = Instant.ofEpochMilli(2_000_000_000);
+        StepsCadenceRecord record =
+                new StepsCadenceRecord.Builder(emptyMetadata, start, end, samples).build();
+        List<StepsCadenceRecordSample> resultSamples = record.getSamples();
+
+        assertThat(resultSamples).hasSize(1);
     }
 }
