@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.tracker;
+package com.android.server.healthconnect.device.tracker;
 
 import static com.android.healthfitness.flags.Flags.FLAG_STEP_TRACKING_ENABLED;
 

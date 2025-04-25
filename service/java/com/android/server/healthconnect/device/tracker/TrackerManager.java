@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.server.healthconnect.tracker;
+package com.android.server.healthconnect.device.tracker;
 
 /**
  * Provides functionality for native tracking of data types within Health Connect.

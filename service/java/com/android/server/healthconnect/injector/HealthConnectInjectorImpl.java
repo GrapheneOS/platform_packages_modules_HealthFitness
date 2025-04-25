@@ -42,6 +42,9 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.device.tracker.TrackerManager;
+import com.android.server.healthconnect.device.tracker.TrackerManagerImpl;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationSender;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
@@ -80,8 +83,6 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.tracker.TrackerManager;
-import com.android.server.healthconnect.tracker.TrackerManagerImpl;
 import com.android.server.healthconnect.utils.TimeSource;
 import com.android.server.healthconnect.utils.TimeSourceImpl;
 
@@ -146,6 +147,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final GrantTimeXmlHelper mGrantTimeXmlHelper;
     private final BackupRestoreLogger mBackupRestoreLogger;
     private final FirstGrantTimeDatastore mFirstGrantTimeDatastore;
+    private final DeviceRecordHelper mDeviceRecordHelper;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -450,6 +452,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mOnboardingStateManager == null && Flags.onboarding()
                         ? new OnboardingStateManager(getPreferenceHelper(), userHandle)
                         : builder.mOnboardingStateManager;
+        mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
     }
 
     @Override
@@ -596,6 +599,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public MedicalDataSourceHelper getMedicalDataSourceHelper() {
         return mMedicalDataSourceHelper;
+    }
+
+    @Override
+    public DeviceRecordHelper getDeviceRecordHelper() {
+        return mDeviceRecordHelper;
     }
 
     @Override

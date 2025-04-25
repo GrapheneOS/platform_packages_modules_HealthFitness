@@ -210,15 +210,27 @@ public class DeviceInfoHelper extends DatabaseHelper {
         return columnInfo;
     }
 
-    private static final class DeviceInfo {
+    public static final class DeviceInfo {
         private final String mManufacturer;
         private final String mModel;
         @DeviceType private final int mDeviceType;
 
-        DeviceInfo(String manufacturer, String model, @DeviceType int deviceType) {
+        public DeviceInfo(String manufacturer, String model, @DeviceType int deviceType) {
             mManufacturer = manufacturer;
             mModel = model;
             mDeviceType = deviceType;
+        }
+
+        public String getManufacturer() {
+            return mManufacturer;
+        }
+
+        public String getModel() {
+            return mModel;
+        }
+
+        public int getDeviceType() {
+            return mDeviceType;
         }
 
         @Override
