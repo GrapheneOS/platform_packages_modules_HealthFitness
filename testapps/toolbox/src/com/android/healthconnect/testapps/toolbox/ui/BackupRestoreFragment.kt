@@ -43,6 +43,12 @@ class BackupRestoreFragment : Fragment(R.layout.fragment_backup_restore) {
         view.findViewById<Button>(R.id.write_restore_data).setOnClickListener {
             backupRestoreFragmentViewModel.restore(manager, ::showMessage)
         }
+        view.findViewById<Button>(R.id.read_backup_metadata).setOnClickListener {
+            backupRestoreFragmentViewModel.storeBackupMetadataResponse(manager, ::showMessage)
+        }
+        view.findViewById<Button>(R.id.write_restore_metadata).setOnClickListener {
+            backupRestoreFragmentViewModel.restoreMetadata(manager, ::showMessage)
+        }
     }
 
     private fun showMessage(message: String) {
