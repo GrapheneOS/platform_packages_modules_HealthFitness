@@ -35,7 +35,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
             android:minWidth="250dp"
-            android:text="Read backup data" />
+            android:text="@string/read_backup_data" />
 
         <Button
             android:id="@+id/write_restore_data"
@@ -44,7 +44,25 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
             android:minWidth="250dp"
-            android:text="Write restore data" />
+            android:text="@string/write_restore_data" />
+
+        <Button
+            android:id="@+id/read_backup_metadata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:minWidth="250dp"
+            android:text="@string/read_backup_metadata" />
+
+        <Button
+            android:id="@+id/write_restore_metadata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:minWidth="250dp"
+            android:text="@string/write_restore_metadata" />
 
     </LinearLayout>
 </ScrollView>
