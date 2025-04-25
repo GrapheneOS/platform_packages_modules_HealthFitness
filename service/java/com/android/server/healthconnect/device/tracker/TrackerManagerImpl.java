@@ -19,6 +19,8 @@ package com.android.server.healthconnect.device.tracker;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.health.connect.HealthPermissions;
 import android.util.Slog;
 
@@ -38,17 +40,28 @@ public class TrackerManagerImpl implements TrackerManager {
 
     private static final String TAG = "HealthConnectTrackerManagerImpl";
 
+    private static final int SAMPLING_PERIOD_US = 60_000_000; // 60 seconds in microseconds
+    private static final int MAX_REPORT_LATENCY_US = 60_000_000; // 60 seconds in microseconds
+
+    private final Context mContext;
     private final HealthConnectPermissionHelper mPermissionHelper;
 
-    public TrackerManagerImpl(HealthConnectPermissionHelper permissionHelper) {
+    public TrackerManagerImpl(Context context, HealthConnectPermissionHelper permissionHelper) {
+        mContext = context;
         mPermissionHelper = permissionHelper;
     }
 
     @Override
     public void initialize() {
-        if (Flags.stepTrackingEnabled()) {
-            // Implementation goes here. Do nothing for now.
+        if (!Flags.stepTrackingEnabled()) {
+            return;
         }
+
+        if (packagesEligibleForStepTracking(mContext, mPermissionHelper).isEmpty()) {
+            return;
+        }
+
+        subscribeToSensorManager();
     }
 
     @Override
@@ -117,5 +130,30 @@ public class TrackerManagerImpl implements TrackerManager {
         }
 
         return !isPregrantedPermission;
+    }
+
+    private void subscribeToSensorManager() {
+        if (android.health.connect.Constants.DEBUG) {
+            Slog.d(TAG, "Calling subscribeToSensorManager()");
+        }
+
+        // TODO(b/413703946): Check that the sensor service is always initialised before this call.
+        SensorManager sensorManager = mContext.getSystemService(SensorManager.class);
+        if (sensorManager == null) {
+            Slog.e(TAG, "SensorManager is null");
+            return;
+        }
+
+        Sensor stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if (stepCounterSensor == null) {
+            Slog.e(TAG, "No step sensor found.");
+            return;
+        }
+
+        sensorManager.registerListener(
+                new StepSensorEventListener(),
+                stepCounterSensor,
+                SAMPLING_PERIOD_US,
+                MAX_REPORT_LATENCY_US);
     }
 }
