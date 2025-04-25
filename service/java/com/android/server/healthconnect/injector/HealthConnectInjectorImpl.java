@@ -446,7 +446,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mAppOpsManagerLocal;
         mTrackerManager =
                 builder.mTrackerManager == null
-                        ? new TrackerManagerImpl()
+                        ? new TrackerManagerImpl(mHealthConnectPermissionHelper)
                         : builder.mTrackerManager;
         mOnboardingStateManager =
                 builder.mOnboardingStateManager == null && Flags.onboarding()

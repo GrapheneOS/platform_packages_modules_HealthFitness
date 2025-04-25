@@ -24,6 +24,7 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +37,12 @@ import java.util.stream.Collectors;
 public class TrackerManagerImpl implements TrackerManager {
 
     private static final String TAG = "HealthConnectTrackerManagerImpl";
+
+    private final HealthConnectPermissionHelper mPermissionHelper;
+
+    public TrackerManagerImpl(HealthConnectPermissionHelper permissionHelper) {
+        mPermissionHelper = permissionHelper;
+    }
 
     @Override
     public void initialize() {
@@ -59,7 +66,8 @@ public class TrackerManagerImpl implements TrackerManager {
      *     permission.
      */
     @VisibleForTesting
-    static List<String> packagesEligibleForStepTracking(Context context) {
+    static List<String> packagesEligibleForStepTracking(
+            Context context, HealthConnectPermissionHelper mPermissionHelper) {
         if (android.health.connect.Constants.DEBUG) {
             Slog.d(TAG, "Calling packagesEligibleForStepTracking()");
         }
@@ -70,15 +78,44 @@ public class TrackerManagerImpl implements TrackerManager {
                         .getPackagesHoldingPermissions(
                                 permissions, PackageManager.PackageInfoFlags.of(0));
 
-        // TODO(b/412626578): Filter out any preinstalled apps holding the steps permission and
-        // handle them separately.
+        // Get app package names and filter out any system apps pre-granted READ_STEPS as step
+        // tracking is initialized for them separately.
         List<String> permissionFilteredPackages =
-                packageInfos.stream().map(info -> info.packageName).collect(Collectors.toList());
+                packageInfos.stream()
+                        .map(info -> info.packageName)
+                        .filter(
+                                packageName ->
+                                        hasUserGrantedStepsPermission(
+                                                context, mPermissionHelper, packageName))
+                        .collect(Collectors.toList());
 
         if (android.health.connect.Constants.DEBUG) {
             Slog.d(TAG, "permissionFilteredPackages : " + permissionFilteredPackages);
         }
 
         return permissionFilteredPackages;
+    }
+
+    /**
+     * Checks that the {@link HealthPermissions.READ_STEPS} permission is not pre-granted by the
+     * system for the specified package.
+     *
+     * <p>The flag {@link PackageManager.FLAG_PERMISSION_GRANTED_BY_DEFAULT} is set for
+     * pre-installed apps pre-granted with the permission so if this flag is set, the method will
+     * return false.
+     */
+    private static boolean hasUserGrantedStepsPermission(
+            Context context, HealthConnectPermissionHelper mPermissionHelper, String packageName) {
+        int flag =
+                mPermissionHelper.getHealthPermissionFlags(
+                        packageName, context.getUser(), HealthPermissions.READ_STEPS);
+        boolean isPregrantedPermission =
+                (flag & PackageManager.FLAG_PERMISSION_GRANTED_BY_DEFAULT) != 0;
+
+        if (android.health.connect.Constants.DEBUG && isPregrantedPermission) {
+            Slog.d(TAG, "Filtering out pre-granted package : " + packageName);
+        }
+
+        return !isPregrantedPermission;
     }
 }

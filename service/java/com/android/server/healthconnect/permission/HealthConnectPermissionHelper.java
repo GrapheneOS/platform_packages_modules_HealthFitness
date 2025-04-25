@@ -243,6 +243,22 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
+    /** See {@link HealthConnectManager#getHealthPermissionsFlags(String, List)}. */
+    public int getHealthPermissionFlags(String packageName, UserHandle user, String permission) {
+        enforceManageHealthPermissions(/* message= */ "getHealthPermissionFlags");
+        UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
+        enforceValidPackage(packageName, checkedUser);
+        final long token = Binder.clearCallingIdentity();
+        int flag;
+        try {
+            enforceValidHealthPermissions(packageName, user, List.of(permission));
+            flag = mPackageManager.getPermissionFlags(permission, packageName, user);
+        } finally {
+            Binder.restoreCallingIdentity(token);
+        }
+        return flag;
+    }
+
     /** See {@link HealthConnectManager#setHealthPermissionsUserFixedFlagValue(String, List)}. */
     public void setHealthPermissionsUserFixedFlagValue(
             String packageName, UserHandle user, List<String> permissions, boolean value) {
