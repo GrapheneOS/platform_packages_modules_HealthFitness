@@ -51,6 +51,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -62,11 +67,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 import com.android.server.healthconnect.testing.TestUtils;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;

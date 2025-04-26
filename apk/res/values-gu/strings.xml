@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connectનું Android સિસ્ટમ સાથે એકીકરણ કરવામાં આવી રહ્યું છે જેથી તમે સીધા તમારા સેટિંગમાંથી તેને ઍક્સેસ કરી શકશો."</string>
     <string name="update_button" msgid="4544529019832009496">"અપડેટ કરો"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"આ અપડેટ કરવાનું શરૂ કરો કે જેથી Health Connect તમારી સિસ્ટમના સેટિંગ સાથે એકીકરણ ચાલુ રાખી શકે"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"સિસ્ટમ અપડેટ જરૂરી છે"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ચાલુ રાખતા પહેલાં, તમારા ફોનની સિસ્ટમ અપડેટ કરો."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"જો તમે પહેલેથી તમારી ફોન સિસ્ટમ અપડેટ કરેલી હોય, તો એકીકરણ ચાલુ રાખવા માટે તમારો ફોન ફરી શરૂ કરવાનો પ્રયાસ કરો"</string>

@@ -49,7 +49,6 @@ import com.android.compatibility.common.util.ThrowingSupplier;
 
 import com.google.common.collect.Sets;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -199,30 +198,6 @@ public final class PermissionHelper {
         }
     }
 
-    /**
-     * Same as {@link #revokeAllHealthPermissions(String, String)} but with a delay to wait for
-     * grant time to be updated.
-     */
-    public static void revokeAllHealthPermissionsWithDelay(
-            String packageName, @Nullable String reason)
-            throws InterruptedException, PackageManager.NameNotFoundException {
-        revokeAllHealthPermissions(packageName, reason);
-        // TODO(b/381409385): Replace with wait for grant time update.
-        Thread.sleep(500);
-    }
-
-    /** Revokes all granted Health permissions and re-grants them back. */
-    public static void revokeAndThenGrantHealthPermissions(String packageName)
-            throws PackageManager.NameNotFoundException {
-        List<String> healthPerms = getGrantedHealthPermissions(packageName);
-
-        revokeHealthPermissions(packageName);
-
-        for (String perm : healthPerms) {
-            grantHealthPermission(packageName, perm);
-        }
-    }
-
     /** Revokes all granted Health permissions from the specified package. */
     @SuppressLint("MissingPermission")
     public static void revokeHealthPermissions(String packageName)
@@ -247,24 +222,6 @@ public final class PermissionHelper {
         // Apps are killed following a revoke. Wait for this to ensure that it doesn't interfere
         // with subsequent interactions with the app.
         waitForNoRunningProcesses(packageName);
-    }
-
-    /**
-     * Utility method to call {@link
-     * HealthConnectManager#getHealthDataHistoricalAccessStartDate(String)}.
-     */
-    @SuppressLint("MissingPermission")
-    public static Instant getHealthDataHistoricalAccessStartDate(String packageName) {
-        HealthConnectManager service = getHealthConnectManager();
-        return (Instant)
-                runWithShellPermissionIdentity(
-                        () ->
-                                service.getClass()
-                                        .getMethod(
-                                                "getHealthDataHistoricalAccessStartDate",
-                                                String.class)
-                                        .invoke(service, packageName),
-                        MANAGE_HEALTH_PERMISSIONS);
     }
 
     /** Revokes permission for the package for the duration of the runnable. */

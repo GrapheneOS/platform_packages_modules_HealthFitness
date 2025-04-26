@@ -58,13 +58,13 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.fitness.RecordUpsertTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger;
 import com.android.server.healthconnect.logging.ExerciseRoutesLogger.Operations;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;

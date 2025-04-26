@@ -893,16 +893,11 @@ public class StepsRecordTest {
         Instant end = Instant.now();
         for (int i = 0; i < 10; i++) {
             Instant st = start.plus(i, HOURS);
-            List<Record> records =
-                    Arrays.asList(
-                            new StepsRecord.Builder(
-                                            new Metadata.Builder().build(),
-                                            st,
-                                            st.plus(1, HOURS),
-                                            1000)
-                                    .build());
-            TestUtils.insertRecords(records);
-            Thread.sleep(100);
+            Record record =
+                    new StepsRecord.Builder(
+                                    new Metadata.Builder().build(), st, st.plus(1, HOURS), 1000)
+                            .build();
+            TestUtils.insertRecords(record);
         }
 
         start = start.plus(30, ChronoUnit.MINUTES);

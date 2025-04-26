@@ -33,6 +33,7 @@ import com.android.compatibility.common.util.UiDumpUtils
 import java.time.Duration
 import java.time.Instant
 import java.util.concurrent.TimeoutException
+import java.util.regex.Pattern
 
 /** UI testing helper. */
 object UiTestUtils {
@@ -57,9 +58,13 @@ object UiTestUtils {
 
     const val TEST_APP_2_PACKAGE_NAME = "android.healthconnect.cts.app2"
 
+    const val SYSTEM_TEST_APP_PACKAGE_NAME = "android.healthconnect.cts.systemtestapp"
+
     const val TEST_APP_NAME = "Health Connect cts test app"
 
     const val TEST_APP_2_NAME = "Health Connect cts test app 2"
+
+    const val SYSTEM_TEST_APP_NAME = "Health Connect cts system test app"
 
     private const val MASK_PERMISSION_FLAGS =
         (PackageManager.FLAG_PERMISSION_USER_SET or
@@ -165,6 +170,15 @@ object UiTestUtils {
      */
     fun findTextAndClick(text: String) {
         findObjectAndClick(By.text(text))
+    }
+
+    /**
+     * Clicks on a text label by text pattern if it's visible on the screen or throws otherwise.
+     *
+     * Use this if the text pattern is expected to be visible on the screen without scrolling.
+     */
+    fun findTextPatternAndClick(regex: Pattern) {
+        findObjectAndClick(By.text(regex))
     }
 
     /**

@@ -18,8 +18,6 @@ package com.android.server.healthconnect.logging;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_STORAGE_STATS;
 
-import static com.android.healthfitness.flags.Flags.personalHealthRecordTelemetry;
-
 import android.health.HealthFitnessStatsLog;
 
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
@@ -77,9 +75,8 @@ class DatabaseStatsLogger {
     private void logPhrDatabaseStats(
             DatabaseStatsCollector databaseStatsCollector,
             UsageStatsCollector usageStatsCollector) {
-        if (!personalHealthRecordTelemetry()
-                || (usageStatsCollector.getMedicalResourcesCount() == 0
-                        && usageStatsCollector.getMedicalDataSourcesCount() == 0)) {
+        if (usageStatsCollector.getMedicalResourcesCount() == 0
+                && usageStatsCollector.getMedicalDataSourcesCount() == 0) {
             return;
         }
 

@@ -19,6 +19,7 @@ package com.android.server.healthconnect.fitness.helpers;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -29,8 +30,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.health.connect.Constants;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -38,16 +42,15 @@ import android.os.UserManager;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 import com.android.server.healthconnect.testing.HealthPermissionsMocker;
 import com.android.server.healthconnect.testing.TestUtils;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
@@ -59,7 +62,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -75,6 +77,7 @@ public class HealthDataCategoryPriorityHelperTest {
     private static final String APP_PACKAGE_NAME_2 = "android.healthconnect.mocked.app2";
     private static final String APP_PACKAGE_NAME_3 = "android.healthconnect.mocked.app3";
     private static final String APP_PACKAGE_NAME_4 = "android.healthconnect.mocked.app4";
+    private static final String APP_PACKAGE_NAME_5 = "android.healthconnect.mocked.app5";
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
@@ -101,12 +104,19 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @Before
     public void setUp() throws Exception {
-        mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
-        Context applicationContext = spy(ApplicationProvider.getApplicationContext());
-        doReturn(mPackageManager).when(applicationContext).getPackageManager();
-        doReturn(applicationContext).when(mContext).getApplicationContext();
+        Context applicationContext = ApplicationProvider.getApplicationContext();
+        mContext = spy(applicationContext);
+        doReturn(mContext).when(mContext).getApplicationContext();
+        doReturn(mContext).when(mContext).createContextAsUser(any(), anyInt());
+        doReturn(mPackageManager).when(mContext).getPackageManager();
         when(mUserManager.isUserUnlocked(any())).thenReturn(true);
         HealthPermissionsMocker.mockPackageManagerPermissions(mPackageManager);
+
+        Drawable defaultActivityIcon =
+                applicationContext.getPackageManager().getDefaultActivityIcon();
+        when(mPackageManager.getApplicationIcon(any(String.class))).thenReturn(defaultActivityIcon);
+        when(mPackageManager.getApplicationIcon(any(ApplicationInfo.class)))
+                .thenReturn(defaultActivityIcon);
 
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
@@ -159,7 +169,7 @@ public class HealthDataCategoryPriorityHelperTest {
                 HealthDataCategory.BODY_MEASUREMENTS,
                 List.of(APP_PACKAGE_NAME, APP_PACKAGE_NAME_2));
 
-        HealthDataCategoryPriorityHelper spy = Mockito.spy(mHealthDataCategoryPriorityHelper);
+        HealthDataCategoryPriorityHelper spy = spy(mHealthDataCategoryPriorityHelper);
         doReturn(true).when(spy).isDefaultApp(APP_PACKAGE_NAME_4);
         spy.appendToPriorityList(APP_PACKAGE_NAME_4, HealthDataCategory.BODY_MEASUREMENTS, false);
 
@@ -190,7 +200,7 @@ public class HealthDataCategoryPriorityHelperTest {
                 HealthDataCategory.BODY_MEASUREMENTS,
                 List.of(APP_PACKAGE_NAME, APP_PACKAGE_NAME_2));
 
-        HealthDataCategoryPriorityHelper spy = Mockito.spy(mHealthDataCategoryPriorityHelper);
+        HealthDataCategoryPriorityHelper spy = spy(mHealthDataCategoryPriorityHelper);
         doReturn(true).when(spy).isDefaultApp(APP_PACKAGE_NAME_4);
         spy.appendToPriorityList(APP_PACKAGE_NAME_4, HealthDataCategory.BODY_MEASUREMENTS, true);
 
@@ -352,7 +362,7 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @Test
     public void testGetPriorityOrder_callsReSyncPriority() {
-        HealthDataCategoryPriorityHelper spy = Mockito.spy(mHealthDataCategoryPriorityHelper);
+        HealthDataCategoryPriorityHelper spy = spy(mHealthDataCategoryPriorityHelper);
         doNothing().when(spy).reSyncHealthDataPriorityTable();
 
         spy.syncAndGetPriorityOrder(HealthDataCategory.ACTIVITY);
@@ -417,6 +427,30 @@ public class HealthDataCategoryPriorityHelperTest {
         assertAppIdPriorityOrderIsEqualTo(
                 HealthDataCategory.BODY_MEASUREMENTS,
                 List.of(mAppPackageId3, mAppPackageId2, mAppPackageId, mAppPackageId4));
+    }
+
+    @Test
+    public void testSetPriority_appWithoutAppInfoId_insertsAppInfoId() throws Exception {
+        ApplicationInfo applicationInfo = new ApplicationInfo();
+        applicationInfo.packageName = APP_PACKAGE_NAME_5;
+
+        when(mPackageManager.getApplicationInfo(eq(APP_PACKAGE_NAME_5), any()))
+                .thenReturn(applicationInfo);
+        when(mPackageManager.getApplicationLabel(applicationInfo)).thenReturn("Test app 5");
+
+        assertThat(mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME_5))
+                .isEqualTo(Constants.DEFAULT_LONG);
+
+        mHealthDataCategoryPriorityHelper.setPriorityOrder(
+                HealthDataCategory.BODY_MEASUREMENTS,
+                List.of(APP_PACKAGE_NAME, APP_PACKAGE_NAME_5, APP_PACKAGE_NAME_2));
+
+        long appPackageId5 = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME_5);
+        assertThat(appPackageId5).isNotEqualTo(Constants.DEFAULT_LONG);
+
+        assertAppIdPriorityOrderIsEqualTo(
+                HealthDataCategory.BODY_MEASUREMENTS,
+                List.of(mAppPackageId, appPackageId5, mAppPackageId2));
     }
 
     @Test

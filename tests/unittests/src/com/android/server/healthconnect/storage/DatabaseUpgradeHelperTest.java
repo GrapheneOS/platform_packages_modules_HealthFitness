@@ -33,11 +33,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
 
 import org.junit.After;
 import org.junit.Before;

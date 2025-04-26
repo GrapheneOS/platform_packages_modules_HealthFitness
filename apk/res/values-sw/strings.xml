@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Programu ya Health Connect inajumuishwa na mfumo wa Android ili uweze kuifikia moja kwa moja kupitia mipangilio yako."</string>
     <string name="update_button" msgid="4544529019832009496">"Sasisha"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Anzisha sasisho hili ili programu ya Health Connect iweze kuendelee kujumuishwa na mipangilio ya mfumo wako"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Inahitaji sasisho la mfumo"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Kabla ya kuendelea, sasisha mfumo wa simu yako."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ikiwa tayari umesasisha mfumo wa simu yako, jaribu kuzima kisha uwashe simu yako ili uendelee na shughuli ya ujumuishaji"</string>

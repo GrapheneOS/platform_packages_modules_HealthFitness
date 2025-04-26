@@ -558,7 +558,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Gaan na die Play Winkel"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Kom aan die gang met Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect stoor jou gesondheid- en fiksheiddata en bied só ’n eenvoudige manier om die verskillende apps op jou toestel te sinkroniseer"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect stoor en sinkroniseer jou data van verskillende apps af.\n\n"<b>"Fiksheid- en welstanddata,"</b>" insluitend oefensessies, treë, voeding, slaap en meer\n\n"<b>"Gesondheidsrekords,"</b>" insluitend entstowwe, laboratoriumuitslae en meer"</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect stoor en sinkroniseer jou gesondheid- en fiksheiddata van verskillende apps af.\n\n"<b>"Fiksheid- en welstanddata,"</b>" insluitend oefensessies, treë, voeding, slaap en meer\n\n"<b>"Gesondheidsrekords,"</b>" insluitend entstowwe, laboratoriumuitslae en meer"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Doen die volgende met Health Connect"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Deel data met jou apps"</b>\n"Kies die data wat elke app in Health Connect kan lees of skryf"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Bestuur jou instellings en privaatheid"</b>\n"Verander apptoestemmings en bestuur jou data enige tyd"</string>
@@ -1001,7 +1001,7 @@
     <string name="auto_delete_button" msgid="8536451792268513619">"Vee outomaties uit"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Vee outomaties uit"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"Jy kan beheer hoe lank jou data in Health Connect geberg word deur te skeduleer dat dit ná ’n vasgestelde tyd uitgevee word"</string>
-    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Kom meer te wete oor Vee Outomaties Uit"</string>
+    <string name="auto_delete_learn_more" msgid="7416469042791307994">"Kry meer inligting oor Vee Outomaties Uit"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Vee data outomaties uit"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Ná # maand}other{Ná # maande}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Nooit"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect word met die Android-stelsel geïntegreer sodat jy direk van jou instellings af toegang daartoe kan kry."</string>
     <string name="update_button" msgid="4544529019832009496">"Dateer op"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Begin hierdie opdatering sodat Health Connect kan voortgaan om met jou stelselinstellings te integreer"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Stelselopdatering is nodig"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Dateer jou foonstelsel op voordat jy voortgaan."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"As jy reeds jou foonstelsel opgedateer het, kan jy probeer om jou foon te herbegin sodat jy met die integrasie kan voortgaan"</string>

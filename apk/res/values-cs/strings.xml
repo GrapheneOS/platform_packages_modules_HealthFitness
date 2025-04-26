@@ -386,7 +386,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Pokud aplikaci udělíte přístup pro čtení, bude moct číst nová i dřívější data"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup ke službě Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k údajům o kondici a kvalitě života?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Informace o tom, jak aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> nakládá s vašimi daty, najdete v jejím dokumentu <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Informace o tom, jak aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> nakládá s vašimi daty, najdete v jejích <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"zásadách ochrany soukromí"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k vašim zdravotním záznamům?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Pokud aplikaci udělíte přístup, bude moct číst a zapisovat data, jako jsou alergie, laboratorní výsledky, vakcíny a podobně\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -431,15 +431,15 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Podrobný zdrojový kód: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Aplikace s tímto oprávněním mohou číst a zapisovat vaše data o zdraví a fitness."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Určete, které aplikace mají přístup k datům uloženým ve službě Health Connect. Klepnutím na aplikaci zobrazíte data, která může číst nebo zapisovat."</string>
-    <string name="connected_apps_section_title" msgid="2415288099612126258">"Povolený přístup"</string>
-    <string name="not_connected_apps_section_title" msgid="452718769894103039">"Nepovolený přístup"</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"Přístup povolen"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"Přístup zakázán"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Je potřeba aktualizace"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"Nastavení a nápověda"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"Odebrat přístup všem aplikacím"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"Smí číst"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"Smí zapisovat"</string>
-    <string name="no_apps_allowed" msgid="5794833581324128108">"Žádné povolené aplikace"</string>
-    <string name="no_apps_denied" msgid="743327680286446017">"Žádné zakázané aplikace"</string>
+    <string name="no_apps_allowed" msgid="5794833581324128108">"Přístup není povolen žádným aplikacím"</string>
+    <string name="no_apps_denied" msgid="743327680286446017">"Přístup není zakázán žádným aplikacím"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Odebrat přístup všem aplikacím?"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Žádné z vašich aplikací nebudou mít přístup k datům služby Health Connect a nebudou moci přidávat nová. Touto akcí nesmažete žádná existující data.\n\nTato akce nebude mít vliv na ostatní oprávnění, která aplikace má, jako je přístup k poloze, fotoaparátu nebo mikrofonu."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Odstranit vše"</string>
@@ -461,7 +461,7 @@
     <string name="additional_access_summary" msgid="1076197455435130191">"Dřívější data, data na pozadí"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Této aplikaci byla odebrána další oprávnění"</string>
     <string name="permissions_header" msgid="6519976063360071569">"Oprávnění"</string>
-    <string name="fitness_permissions" msgid="586264186537460254">"Fitness a wellness"</string>
+    <string name="fitness_permissions" msgid="586264186537460254">"Kondice a kvalita života"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Cvičení, spánek, výživa a další"</string>
     <string name="medical_permissions" msgid="1224097151249321566">"Zdravotní záznamy"</string>
     <string name="medical_permissions_lowercase" msgid="3969792205103436491">"zdravotní záznamy"</string>
@@ -498,7 +498,7 @@
     <string name="import_version_mismatch_error_banner_summary" msgid="6165550114170534795">"Aktualizujte systém, aby aplikace Health Connect mohla obnovit vaše data, a zkuste to znovu."</string>
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"Zkusit znovu"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"Při obnovování dat z exportu se vyskytl problém."</string>
-    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Pomocí exportu můžete uložit svá data, abyste je mohli přenést do nového telefonu"</string>
+    <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Pomocí exportu můžete uložit svá data, abyste je mohli přenést do nového telefonu."</string>
     <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"O zálohování a obnovení"</string>
     <string name="automatic_export_status" msgid="4407131306281440230">"<xliff:g id="EXPORT_ON_OR_OFF">%1$s</xliff:g> • <xliff:g id="EXPORT_FREQUENCY">%2$s</xliff:g>"</string>
     <string name="automatic_export_on" msgid="6972389773963624315">"Zapnuto"</string>
@@ -508,7 +508,7 @@
     <string name="choose_frequency_category" msgid="9094154407387676553">"Změnit frekvenci"</string>
     <string name="scheduled_export_settings_footer_text" msgid="8488483803782086291">"Vypnutím naplánovaného exportu nesmažete dříve exportovaná data z místa, kam byla uložena"</string>
     <string name="choose_frequency" msgid="8119085390857180221">"Nastavení naplánovaného exportu"</string>
-    <string name="choose_frequency_description" msgid="7698155810053504157">"Vyberte, jak často chcete data exportovat"</string>
+    <string name="choose_frequency_description" msgid="7698155810053504157">"Vyberte, jak často chcete data exportovat."</string>
     <string name="frequency_daily" msgid="3596412357416125727">"Každý den"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"Každý týden"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"Každý měsíc"</string>
@@ -554,14 +554,14 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"Zrušit"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Hotovo"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Nejsou k dispozici žádné aplikace. Na tomto místě uvidíte nainstalované aplikace cloudového úložiště"</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Pokud chcete získat další možnosti, nainstalujte aplikace cloudového úložiště. Zobrazí se zde"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Pokud chcete získat další možnosti, nainstalujte aplikace cloudového úložiště. Zobrazí se zde."</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Přejít do obchodu Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Začínáme se službou Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect bezpečně ukládá údaje o zdraví a kondici, což umožňuje jednoduše synchronizovat různé aplikace v zařízení"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect ukládá a synchronizuje údaje o zdraví a kondici z různých aplikací.\n\n"<b>"Údaje o zdraví a kondici,"</b>" včetně záznamů cvičení, počtu kroků, výživy, spánku atd.\n\n"<b>"Zdravotní záznamy,"</b>" včetně očkování, laboratorních výsledků atd."</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect ukládá a synchronizuje údaje o zdraví a kondici z různých aplikací.\n\n"<b>"Údaje o kondici a kvalitě života,"</b>" včetně záznamů cvičení, počtu kroků, výživy, spánku atd.\n\n"<b>"Zdravotní záznamy,"</b>" včetně očkování, laboratorních výsledků atd."</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect umožňuje"</string>
-    <string name="share_data_text" msgid="6898398345784931678"><b>"Sdílejte data se svými aplikacemi"</b>\n"Vyberte, která data mohou jednotlivé aplikace číst nebo zapisovat ve službě Health Connect"</string>
-    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Spravujte nastavení a ochranu soukromí"</b>\n"Kdykoli změňte oprávnění aplikací a spravujte data"</string>
+    <string name="share_data_text" msgid="6898398345784931678"><b>"Sdílet data s aplikacemi"</b>\n"Zvolte si, která data mohou jednotlivé aplikace ve službě Health Connect číst nebo zapisovat"</string>
+    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Spravovat nastavení a ochranu soukromí"</b>\n"Kdykoliv můžete měnit oprávnění aplikací a spravovat data"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Zpět"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Začít"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Smazat data"</string>
@@ -1000,7 +1000,7 @@
     <string name="playstore_app_title" msgid="4138464328693481809">"Obchod Play"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Automatické mazání"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Automatické mazání"</string>
-    <string name="auto_delete_header" msgid="4258649705159293715">"Můžete naplánovat, jak dlouho mají být data ve službě Health Connect uložena a tím určit, po jaké době se mají smazat"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"Můžete naplánovat, jak dlouho mají být data ve službě Health Connect uložena, a tím určit, po jaké době se mají smazat."</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"Další informace o automatickém mazání"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Automatické mazání dat"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Po # měsíci}few{Po # měsících}many{Po # měsíce}other{Po # měsících}}"</string>
@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"Vypnuto"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Když tato nastavení změníte, Health Connect odpovídajícím způsobem smaže stávající data."</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Automaticky mazat data po # měsíci?}few{Automaticky mazat data po # měsících?}many{Automaticky mazat data po # měsíce?}other{Automaticky mazat data po # měsících?}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Budou smazána také data starší než # měsíc ze služby Health Connect.\n\nPokud chcete úplně smazat data z připojených aplikací, zaškrtněte všechny aplikace, ve kterých mohou být vaše data uložena.}few{Budou smazána také data starší než # měsíce ze služby Health Connect.\n\nPokud chcete úplně smazat data z připojených aplikací, zaškrtněte všechny aplikace, ve kterých mohou být vaše data uložena.}many{Budou smazána také data starší než # měsíce ze služby Health Connect.\n\nPokud chcete úplně smazat data z připojených aplikací, zaškrtněte všechny aplikace, ve kterých mohou být vaše data uložena.}other{Budou smazána také data starší než # měsíců ze služby Health Connect.\n\nPokud chcete úplně smazat data z připojených aplikací, zaškrtněte všechny aplikace, ve kterých mohou být vaše data uložena.}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Ze služby Health Connect budou také smazána data starší než # měsíc.\n\nPokud chcete úplně smazat data z připojených aplikací, zkontrolujte všechny aplikace, ve kterých mohou být vaše data uložena.}few{Ze služby Health Connect budou také smazána data starší než # měsíce.\n\nPokud chcete úplně smazat data z připojených aplikací, zkontrolujte všechny aplikace, ve kterých mohou být vaše data uložena.}many{Ze služby Health Connect budou také smazána data starší než # měsíce.\n\nPokud chcete úplně smazat data z připojených aplikací, zkontrolujte všechny aplikace, ve kterých mohou být vaše data uložena.}other{Ze služby Health Connect budou také smazána data starší než # měsíců.\n\nPokud chcete úplně smazat data z připojených aplikací, zkontrolujte všechny aplikace, ve kterých mohou být vaše data uložena.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"Nastavit automatické mazání"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"Stávající data budou vymazána"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect smaže všechna data starší než # měsíc. V připojených aplikacích se změny projeví do jednoho dne.}few{Health Connect smaže všechna data starší než # měsíce. V připojených aplikacích se změny projeví do jednoho dne.}many{Health Connect smaže všechna data starší než # měsíce. V připojených aplikacích se změny projeví do jednoho dne.}other{Health Connect smaže všechna data starší než # měsíců. V připojených aplikacích se změny projeví do jednoho dne.}}"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Služba Health Connect se integruje se systémem Android, abyste k ní měli přístup přímo z nastavení."</string>
     <string name="update_button" msgid="4544529019832009496">"Aktualizovat"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Zahajte aktualizaci, aby služba Health Connect mohla pokračovat v integraci s nastavením systému"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Je potřeba aktualizace systému"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Než budete pokračovat, aktualizujte systém telefonu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Pokud jste systém telefonu už aktualizovali, restartujte telefon, aby integrace pokračovala"</string>
@@ -1114,8 +1116,8 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Aktualizovat"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Celková data"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Zdrojové aplikace"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Přidejte na seznam zdrojové aplikace, abyste zjistili, jak se mohou měnit celková data. Když aplikaci odstraníte ze seznamu, přestane přispívat k celkovým údajům, ale nadále bude mít oprávnění k zápisu."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"Žádné aplikace"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Přidejte na seznam zdrojové aplikace, abyste zjistili, jak se mohou měnit celková data. Když aplikaci ze seznamu odstraníte, přestane přispívat k celkovým údajům, ale nadále bude mít oprávnění k zápisu."</string>
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Žádné zdrojové aplikace"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Jakmile aplikacím udělíte oprávnění k zápisu dat z kategorie <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, zdroje se zobrazí tady."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Jak fungují zdroje a určování priorit"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Přidat aplikaci"</string>
@@ -1126,7 +1128,7 @@
     <string name="remove" msgid="1340423400489007362">"Odstranit"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Data aplikace"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Tady se budou zobrazovat data z aplikace <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Tady se budou zobrazovat data z aplikací s přístupem na platformu Health Connect"</string>
+    <string name="all_data_no_data_footer" msgid="2553443887019153340">"Tady se budou zobrazovat data z aplikací s přístupem na platformu Health Connect."</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Den"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Týden"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"Měsíc"</string>
@@ -1192,11 +1194,11 @@
     <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k údajům o kondici a kvalitě života?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> požaduje přístup k těmto datům: <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nPovolte vše, nebo přístup nastavte jednotlivě."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k těmto datům: <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
-    <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness a wellness"</string>
+    <string name="fitness_and_wellness" msgid="2002316898861559748">"Kondice a kvalita života"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Neustále"</string>
     <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Při používání aplikace"</string>
-    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má trvalý přístup ke všem vašim datům o fitness a wellness"</string>
-    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má přístup ke všem vašim datům o fitness a wellness, když ji používáte"</string>
+    <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má trvalý přístup ke všem vašim datům o kondici a kvalitě života"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má přístup ke všem vašim datům o kondici a kvalitě života, když ji používáte"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Přístup povolen"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"Smí číst"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Tato oprávnění dávají aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k datům ze senzorů vašeho zařízení."</string>
@@ -1208,11 +1210,11 @@
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Odebrat všem aplikacím v hodinkách přístup k datům typu <xliff:g id="DATA_TYPE">%s</xliff:g>?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Značka zaškrtnutí"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Křížek"</string>
-    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má trvalý přístup ke všem vašim datům o fitness a wellness"</string>
-    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má přístup ke všem vašim datům o fitness a wellness, když ji používáte"</string>
-    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Vyberte, kdy bude mít aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k údajům o fitness a wellness"</string>
+    <string name="current_allow_mode_all_the_time" msgid="3329625277933258855">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má trvalý přístup ke všem vašim datům o kondici a kvalitě života"</string>
+    <string name="current_allow_mode_while_in_use" msgid="6358053330935305061">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má přístup ke všem vašim datům o kondici a kvalitě života, když ji používáte"</string>
+    <string name="allow_all_the_time_prompt" msgid="3749806575200677882">"Vyberte, kdy bude mít aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k údajům o kondici a kvalitě života"</string>
     <string name="current_access" msgid="1457167070428176139">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> má přístup k těmto datům: <xliff:g id="DATA_TYPES">%2$s</xliff:g>."</string>
-    <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Spravovat oprávnění pro fitness a wellness"</string>
+    <string name="manage_fitness_and_wellness_permissions" msgid="6198936108436598267">"Spravovat oprávnění pro údaje o kondici a kvalitě života"</string>
     <string name="used_by_apps_count" msgid="1384912521974773617">"{count,plural, =1{Využíváno 1 aplikací}few{Využíváno # aplikacemi}many{Využíváno # aplikace}other{Využíváno # aplikacemi}}"</string>
     <string name="not_used_in_past_24_hours" msgid="7918784815693928054">"Během uplynulých 24 hodin nepoužito"</string>
     <string name="accessed" msgid="4424701457530587176">"Poslední přístup: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>

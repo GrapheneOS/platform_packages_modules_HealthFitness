@@ -26,68 +26,11 @@ flag {
 }
 
 flag {
-    name: "personal_health_record_telemetry"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for guarding telemetry for PHR MVP APIs. This is for normal WW"
-    bug: "361796560"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "personal_health_record_telemetry_private_ww"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for guarding telemetry for PHR MVP APIs. This is for private WW"
-    bug: "375157800"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "personal_health_record_ui_telemetry"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for guarding telemetry for PHR MVP UI."
-    bug: "342159144"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "personal_health_record_entries_screen"
     namespace: "health_fitness_aconfig"
     description: "Flag for guarding the improved Health Record Entries screen."
     bug: "362672526"
     is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "personal_health_record_lock_screen_banner"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for guarding the home screen banner that recommends setting up a device lock."
-    bug: "375384825"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "personal_health_record_enable_d2d_and_export_import"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for merging PHR data in both device to device transfer and export/import flows."
-    bug: "369809932"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "personal_health_record_disable_export_import"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for excluding PHR tables from export/import flow."
-    bug: "369809932"
-    is_fixed_read_only: true
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
     is_exported: true
 }
 
@@ -101,28 +44,10 @@ flag {
 }
 
 flag {
-    name: "phr_fhir_oneof_validation"
-    namespace: "health_fitness_aconfig"
-    description: "UNUSED."
-    bug: "376673951"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "phr_fhir_primitive_type_validation"
     namespace: "health_fitness_aconfig"
     description: "Flag for validating FHIR primitive data types when upserting medical data."
     bug: "361775172"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "phr_fhir_basic_complex_type_validation"
-    namespace: "health_fitness_aconfig"
-    description: "Flag for basic validation of FHIR complex types when upserting medical data."
-    bug: "376283237"
     is_fixed_read_only: true
     is_exported: true
 }
@@ -299,6 +224,14 @@ flag {
 
 flag {
     name: "cloud_backup_and_restore_hc_ui"
+    namespace: "health_fitness_aconfig"
+    description: "Enables the UI for cloud B&R in Health Connect settings."
+    bug: "400640806"
+    is_fixed_read_only: true
+}
+
+flag {
+    name: "cloud_backup_and_restore_intent_api"
     namespace: "health_fitness_aconfig"
     description: "Enables the UI for cloud B&R in Health Connect settings."
     bug: "400640806"
@@ -523,4 +456,16 @@ flag {
     description: "Enables forced ordering by time for samples in some records"
     bug: "411069279"
     is_fixed_read_only: true
+}
+
+flag {
+    name: "phr_allow_nulls_in_primitive_value_arrays"
+    namespace: "health_fitness_aconfig"
+    description: "Allows null values in FHIR primitive type value arrays in addition to primitive type extension arrays."
+    bug: "411366808"
+    is_fixed_read_only: true
+    is_exported: false
+    metadata {
+        purpose: PURPOSE_BUGFIX
+    }
 }

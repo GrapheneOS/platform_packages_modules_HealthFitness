@@ -44,6 +44,10 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -55,10 +59,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.B
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 

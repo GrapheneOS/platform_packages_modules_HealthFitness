@@ -1067,6 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"A Saúde Connect está a ser integrada com o sistema Android para que possa aceder a esta diretamente nas definições."</string>
     <string name="update_button" msgid="4544529019832009496">"Atualizar"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Inicie esta atualização para que a Saúde Connect possa continuar a integração com as definições do seu sistema"</string>
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"A Saúde Connect está a ser integrada com o sistema Android para que possa aceder a esta diretamente nas definições.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Atualização do sistema necessária"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Antes de continuar, atualize o sistema do seu telemóvel."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Se já atualizou o sistema do seu telemóvel, tente reiniciar o telemóvel para continuar a integração"</string>

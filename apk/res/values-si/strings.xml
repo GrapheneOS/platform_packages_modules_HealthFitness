@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect, Android පද්ධතිය සමග ඒකාබද්ධ වෙමින් පවතින බැවින් ඔබට ඔබේ සැකසීම් වෙතින් එයට සෘජුවම ප්‍රවේශ විය හැක."</string>
     <string name="update_button" msgid="4544529019832009496">"යාවත්කාලීන කරන්න"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Health Connect හට ඔබේ පද්ධති සැකසීම් සමග දිගටම ඒකාබද්ධ කළ හැකි පරිදි මෙම යාවත්කාලීනය ආරම්භ කරන්න"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"පද්ධති යාවත්කාලීනය අවශ්‍යයි"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ඉදිරියට යාමට පෙර, ඔබේ දුරකථන පද්ධතිය යාවත්කාලීන කරන්න."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ඔබ දැනටමත් ඔබේ දුරකථන පද්ධතිය යාවත්කාලීන කර ඇති නම්, දිගටම ඒකාබද්ධ කිරීමට ඔබේ දුරකථනය යළි ඇරඹීමට උත්සාහ කරන්න"</string>

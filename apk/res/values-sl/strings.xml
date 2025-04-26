@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Aplikacijo Health Connect integriramo s sistemom Android, da boste do nje lahko dostopali neposredno v nastavitvah."</string>
     <string name="update_button" msgid="4544529019832009496">"Posodobi"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Začnite to posodobitev, da bo aplikacija Health Connect lahko nadaljevala integracijo s sistemskimi nastavitvami."</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebna je posodobitev sistema"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Pred nadaljevanjem posodobite sistem telefona."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Če ste že posodobili sistem telefona, poskusite znova zagnati telefon, da boste nadaljevali integracijo."</string>

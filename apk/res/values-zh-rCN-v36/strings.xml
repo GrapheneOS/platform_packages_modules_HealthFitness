@@ -19,7 +19,7 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="permgrouplab_health" msgid="2189810208223060173">"健康、健身和身心状态"</string>
     <string name="health_permission_header_description" msgid="1816010176505069704">"具有此权限的应用可以读写您的健康、健身和身心状态数据，包括通过您的设备跟踪的数据和存储在“健康数据共享”中的数据"</string>
-    <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"要允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问您的健身和身心状态数据吗？"</string>
+    <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"要允许 <xliff:g id="APP_NAME">%1$s</xliff:g> 访问您的健身和身心状态数据吗？"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"选择此应用可以访问的健身和身心状态数据，包括在此设备上跟踪和存储的数据，<xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"选择此应用可以访问的健身和身心状态数据，包括在此设备上跟踪和存储的数据，<xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"选择此应用可以访问的健身和身心状态数据，包括在此设备上跟踪和存储的数据，<xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>

@@ -386,7 +386,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ako date pristup za čitanje, aplikacija može čitati nove i prijašnje podatke"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Želite li dopustiti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Health Connectu?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Želite li dopustiti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa podacima o fitnessu i općem stanju?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Više o tome kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> postupa s vašim podacima možete saznati u odjeljku <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> te aplikacije"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Više o tome kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> postupa s vašim podacima možete saznati u njezinim <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"pravilima o privatnosti"</string>
     <string name="medical_request_header" msgid="2300521519021510027">"Želite li dopustiti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa vašim podacima o zdravstvenom stanju?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ako omogućite pristup, aplikacija može čitati i pisati podatke o alergijama, laboratorijskim nalazima, cjepivima i druge podatke\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Aplikacija Health Connect integrira se sa sustavom Android kako biste joj mogli pristupiti izravno putem postavki."</string>
     <string name="update_button" msgid="4544529019832009496">"Ažuriraj"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Pokrenite ažuriranje kako bi aplikacija Health Connect mogla nastaviti integraciju s postavkama sustava"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebno je ažuriranje sustava"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prije nastavka ažurirajte sustav telefona."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ako ste već ažurirali sustav telefona, pokušajte ponovo pokrenuti telefon da biste nastavili integraciju"</string>

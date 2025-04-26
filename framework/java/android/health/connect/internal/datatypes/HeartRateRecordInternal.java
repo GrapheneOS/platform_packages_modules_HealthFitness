@@ -23,12 +23,16 @@ import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @see HeartRateRecord
@@ -56,31 +60,46 @@ public class HeartRateRecordInternal
 
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object) && object instanceof HeartRateRecordInternal.HeartRateSample) {
-                HeartRateRecordInternal.HeartRateSample other =
-                        (HeartRateRecordInternal.HeartRateSample) object;
-                return getEpochMillis() == other.getEpochMillis();
+            if (object instanceof HeartRateRecordInternal.HeartRateSample other) {
+                if (Flags.sampleTimeOrdering()) {
+                    return mEpochMillis == other.mEpochMillis
+                            && mBeatsPerMinute == other.mBeatsPerMinute;
+                } else {
+                    return super.equals(other) && getEpochMillis() == other.getEpochMillis();
+                }
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getEpochMillis());
+            if (Flags.sampleTimeOrdering()) {
+                return Objects.hash(mEpochMillis, mBeatsPerMinute);
+            } else {
+                return Objects.hash(getEpochMillis());
+            }
         }
     }
 
-    private Set<HeartRateSample> mHeartRateHeartRateSamples;
+    private Set<HeartRateSample> mHeartRateHeartRateSamples =
+            new TreeSet<>(Comparator.comparingLong(HeartRateSample::getEpochMillis));
 
     public HeartRateRecordInternal(Set<HeartRateSample> heartRateHeartRateSamples) {
         super();
-        this.mHeartRateHeartRateSamples = heartRateHeartRateSamples;
+        if (Flags.sampleTimeOrdering()) {
+            mHeartRateHeartRateSamples.addAll(heartRateHeartRateSamples);
+        } else {
+            mHeartRateHeartRateSamples = heartRateHeartRateSamples;
+        }
     }
 
+    @SuppressWarnings("unused") // used via reflection
     public HeartRateRecordInternal(Parcel parcel) {
         super(parcel);
         int size = parcel.readInt();
-        mHeartRateHeartRateSamples = new HashSet<>(size);
+        if (!Flags.sampleTimeOrdering()) {
+            mHeartRateHeartRateSamples = new HashSet<>();
+        }
         for (int i = 0; i < size; i++) {
             mHeartRateHeartRateSamples.add(
                     new HeartRateSample(parcel.readInt(), parcel.readLong()));
@@ -90,12 +109,6 @@ public class HeartRateRecordInternal
     @Override
     public Set<HeartRateSample> getSamples() {
         return mHeartRateHeartRateSamples;
-    }
-
-    @Override
-    public HeartRateRecordInternal setSamples(Set<? extends Sample> samples) {
-        this.mHeartRateHeartRateSamples = (Set<HeartRateSample>) samples;
-        return this;
     }
 
     @Override

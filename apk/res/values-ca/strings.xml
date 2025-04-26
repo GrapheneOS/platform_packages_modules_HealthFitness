@@ -554,14 +554,14 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"Cancel·la"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Fet"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"No hi ha cap aplicació disponible. Instal·la aplicacions d\'emmagatzematge al núvol per veure-les aquí."</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Per a més opcions, instal·la aplicacions d\'emmagatzematge al núvol per veure-les aquí"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Si vols més opcions, instal·la aplicacions d\'emmagatzematge al núvol per veure-les aquí"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Ves a Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Comença amb Salut connectada"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Salut connectada emmagatzema les teves dades de salut i fitnes, i t\'ofereix una manera senzilla de sincronitzar les diverses aplicacions del dispositiu"</string>
     <string name="onboarding_description_health_records" msgid="6586657048844511252">"Salut connectada emmagatzema i sincronitza les teves dades de salut i fitnes de diverses aplicacions.\n\n"<b>"Dades de salut i benestar"</b>", com ara sessions d\'exercici, passos, nutrició, son i més\n\n"<b>"Registres de salut"</b>", com ara vacunes, analítiques i més"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Amb Salut connectada"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Comparteix dades amb les teves aplicacions"</b>\n"Tria les dades que cada aplicació pot llegir o escriure a Salut connectada"</string>
-    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gestiona la teva configuració i la teva privadesa"</b>\n"Canvia els permisos de l\'aplicació i gestiona les teves dades en qualsevol moment"</string>
+    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gestiona la configuració i la privadesa"</b>\n"Canvia els permisos de les aplicacions i gestiona les teves dades en qualsevol moment"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Torna"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Comença"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Suprimeix les dades"</string>
@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"Desactivat"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Si canvies aquesta configuració, Salut connectada suprimirà les dades existents per reflectir les preferències noves"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Vols suprimir automàticament les dades passat # mes?}other{Vols suprimir automàticament les dades passats # mesos?}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Aquest procés també suprimeix dades de Salut connectada amb una antiguitat superior a # mes.\n\nSi vols suprimir completament les dades de les aplicacions connectades, comprova totes les aplicacions en què es puguin haver desat les teves dades.}other{Aquest procés també suprimeix dades de Salut connectada amb una antiguitat superior a # mesos.\n\nSi vols suprimir completament les dades de les aplicacions connectades, comprova totes les aplicacions en què es puguin haver desat les teves dades.}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Aquest procés també suprimeix les dades de Salut connectada amb una antiguitat superior a # mes.\n\nSi vols suprimir completament les dades de les aplicacions connectades, comprova totes les aplicacions en què es puguin haver desat les teves dades.}other{Aquest procés també suprimeix les dades de Salut connectada amb una antiguitat superior a # mesos.\n\nSi vols suprimir completament les dades de les aplicacions connectades, comprova totes les aplicacions en què es puguin haver desat les teves dades.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"Estableix la supressió automàtica"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"Les dades existents se suprimiran"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Salut connectada suprimirà totes les dades amb una antiguitat superior a # mes. Pot ser que aquests canvis tardin un dia a aparèixer a les teves aplicacions connectades.}other{Salut connectada suprimirà totes les dades amb una antiguitat superior a # mesos. Pot ser que aquests canvis tardin un dia a aparèixer a les teves aplicacions connectades.}}"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Salut connectada s\'està integrant amb el sistema Android perquè hi puguis accedir directament des de la configuració."</string>
     <string name="update_button" msgid="4544529019832009496">"Actualitza"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Inicia l\'actualització perquè Salut connectada pugui continuar integrant-se amb la configuració del sistema"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Actualització del sistema necessària"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Abans de continuar, actualitza el sistema del telèfon."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Si ja has actualitzat el sistema del telèfon, prova de reiniciar-lo per continuar la integració"</string>
@@ -1114,7 +1116,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Actualitza ara"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Totals de dades"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Fonts d\'aplicacions"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Afegeix fonts d\'aplicacions a la llista per veure com canvien els totals de dades. Si suprimeixes una aplicació de la llista, deixarà de contribuir als totals, però continuarà tenint permisos d\'escriptura."</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Afegeix fonts d\'aplicacions a la llista per veure com poden canviar els totals de dades. Si suprimeixes una aplicació de la llista, deixarà de contribuir als totals, però continuarà tenint permisos d\'escriptura."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"No hi ha cap font d\'aplicacions"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Quan concedeixis permisos a les aplicacions per escriure dades d\'aquest tipus (<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>), les fonts es mostraran aquí."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Com funcionen les fonts i la priorització"</string>

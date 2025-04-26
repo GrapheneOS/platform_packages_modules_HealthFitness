@@ -30,14 +30,14 @@ import android.util.ArrayMap;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppOpLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.testing.storage.TransactionTestUtils;
 
@@ -90,12 +90,25 @@ public class FitnessRecordUpsertHelperTest {
         mFitnessRecordUpsertHelper.insertRecords(
                 TEST_PACKAGE_NAME,
                 List.of(createStepsRecord(500, 750, 100).setPackageName(TEST_PACKAGE_NAME)),
-                new ArrayMap<>());
+                new ArrayMap<>(),
+                /* shouldGenerateAccessLogs= */ true);
 
         assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
                 .isEqualTo(1);
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         assertThat(result).isNotEmpty();
+    }
+
+    @Test
+    public void insertRecords_insertAccessLogsFalse_noAccessLogsInserted() {
+        mFitnessRecordUpsertHelper.insertRecords(
+                TEST_PACKAGE_NAME,
+                List.of(createStepsRecord(500, 750, 100).setPackageName(TEST_PACKAGE_NAME)),
+                new ArrayMap<>(),
+                /* shouldGenerateAccessLogs= */ false);
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
+        assertThat(result).isEmpty();
     }
 
     @Test

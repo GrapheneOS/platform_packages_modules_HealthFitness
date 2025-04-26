@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect sedang disepadukan dengan sistem Android agar anda dapat mengakses Health Connect terus daripada tetapan anda."</string>
     <string name="update_button" msgid="4544529019832009496">"Kemas kinikan"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Mulakan kemaskinian ini agar Health Connect boleh meneruskan proses penyepaduan dengan tetapan sistem anda"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Kemaskinian keselamatan diperlukan"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Sebelum meneruskan proses, kemas kinikan sistem telefon anda."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jika anda telah mengemaskinikan sistem telefon anda, cuba mulakan semula telefon anda untuk meneruskan proses penyepaduan"</string>

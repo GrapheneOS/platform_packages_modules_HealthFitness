@@ -18,6 +18,7 @@ package com.android.healthconnect.testapps.toolbox.viewmodels
 
 import android.health.connect.HealthConnectManager
 import android.health.connect.backuprestore.GetChangesForBackupResponse
+import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse
 import android.health.connect.backuprestore.RestoreChange
 import androidx.core.os.asOutcomeReceiver
 import androidx.lifecycle.LiveData
@@ -29,9 +30,17 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 class BackupRestoreFragmentViewModel : ViewModel() {
 
+    companion object {
+        private const val TAG = "BackupRestoreFragmentViewModel"
+    }
+
     private val _backupResponse = MutableLiveData<GetChangesForBackupResponse>()
+    private val _backupMetadataResponse = MutableLiveData<GetLatestMetadataForBackupResponse>()
     val backupResponse: LiveData<GetChangesForBackupResponse>
         get() = _backupResponse
+
+    val backupMetadataResponse: LiveData<GetLatestMetadataForBackupResponse>
+        get() = _backupMetadataResponse
 
     fun storeBackupResponse(manager: HealthConnectManager, callback: (message: String) -> Unit) {
         viewModelScope.launch {
@@ -71,6 +80,48 @@ class BackupRestoreFragmentViewModel : ViewModel() {
                     }
                 }
                 callback("Restore is successful")
+            } catch (ex: Exception) {
+                callback(ex.toString())
+            }
+        }
+    }
+
+    fun storeBackupMetadataResponse(
+        manager: HealthConnectManager,
+        callback: (message: String) -> Unit,
+    ) {
+        viewModelScope.launch {
+            try {
+                val response =
+                    suspendCancellableCoroutine<GetLatestMetadataForBackupResponse> { continuation
+                        ->
+                        manager.getLatestMetadataForBackup(
+                            Runnable::run,
+                            continuation.asOutcomeReceiver(),
+                        )
+                    }
+                _backupMetadataResponse.postValue(response)
+                callback("Metadata backup is successful")
+            } catch (ex: Exception) {
+                callback(ex.toString())
+            }
+        }
+    }
+
+    fun restoreMetadata(manager: HealthConnectManager, callback: (message: String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val previousResponse = backupMetadataResponse.value
+                if (previousResponse != null) {
+                    suspendCancellableCoroutine<Void> { continuation ->
+                        manager.restoreLatestMetadata(
+                            previousResponse.metadata,
+                            Runnable::run,
+                            continuation.asOutcomeReceiver(),
+                        )
+                    }
+                }
+                callback("Metadata restore is successful")
             } catch (ex: Exception) {
                 callback(ex.toString())
             }

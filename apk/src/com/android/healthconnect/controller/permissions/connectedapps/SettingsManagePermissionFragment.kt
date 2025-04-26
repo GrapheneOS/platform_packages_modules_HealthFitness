@@ -49,6 +49,7 @@ import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
+import com.android.healthconnect.controller.permissions.app.SettingsFitnessAppFragment.Companion.EXTRA_IS_SYSTEM_APP
 import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
@@ -234,6 +235,7 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
                 bundleOf(
                     EXTRA_PACKAGE_NAME to app.appMetadata.packageName,
                     EXTRA_APP_NAME to app.appMetadata.appName,
+                    EXTRA_IS_SYSTEM_APP to app.appMetadata.isSystem,
                 ),
         )
     }

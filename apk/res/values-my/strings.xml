@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect ကို သင်၏ဆက်တင်များမှ တိုက်ရိုက်သုံးနိုင်ရန်အတွက် ၎င်းကို Android စနစ်နှင့် ပေါင်းစည်းနေသည်။"</string>
     <string name="update_button" msgid="4544529019832009496">"အပ်ဒိတ်လုပ်ရန်"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Health Connect သည် သင်၏စနစ်ဆက်တင်များနှင့် ပေါင်းစည်းခြင်းကို ဆက်လုပ်နိုင်ရန်အတွက် ဤအပ်ဒိတ်ကို စတင်ပါ"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"စနစ်အပ်ဒိတ်လုပ်ခြင်း လိုသည်"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ရှေ့မဆက်မီ ဖုန်းစနစ်ကို အပ်ဒိတ်လုပ်ပါ။"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"ဖုန်းစနစ်ကို အပ်ဒိတ်လုပ်ထားပြီးပါက ပေါင်းစည်းမှုဆက်လုပ်ရန် ဖုန်းကို ပြန်စကြည့်ပါ"</string>

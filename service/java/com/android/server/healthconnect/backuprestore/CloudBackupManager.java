@@ -28,16 +28,16 @@ import android.health.connect.backuprestore.GetLatestMetadataForBackupResponse;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Slog;
 
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.logging.BackupRestoreLogger;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
 
 import java.time.Clock;
 

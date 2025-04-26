@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Dáta o zdraví sa integrujú so systémom Android, aby ste k nim mali prístup priamo z nastavení."</string>
     <string name="update_button" msgid="4544529019832009496">"Aktualizovať"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Spustite túto aktualizáciu, aby mohla pokračovať integrácia Dát o zdraví s nastaveniami systému"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Vyžaduje sa aktualizácia systému"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Než budete pokračovať, aktualizujte systém telefónu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ak ste systém telefónu už aktualizovali, skúste telefón reštartovať a pokračujte v integrácii"</string>

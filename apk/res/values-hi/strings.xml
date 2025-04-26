@@ -382,7 +382,7 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"चुनें कि इस ऐप्लिकेशन को, Health Connect में कौनसा डेटा सेव करने की अनुमति देनी है"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"चुनें कि इस ऐप्लिकेशन को, Health Connect में मौजूद कौनसा डेटा पढ़ने या सेव करने की अनुमति देनी है"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"चुनें कि इस ऐप्लिकेशन को, Health Connect में कौनसा डेटा देखने की अनुमति देनी है"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"अगर आपने इस ऐप्लिकेशन को पढ़ने का ऐक्सेस दिया है, तो यह नया और पिछले 30 दिनों का डेटा पढ़ सकता है"</string>
+    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"अगर आपने इस ऐप्लिकेशन को डेटा देखने का ऐक्सेस दिया है, तो यह नया और पिछले 30 दिनों का डेटा देख सकता है"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"अगर आपने इस ऐप्लिकेशन को पढ़ने का ऐक्सेस दिया है, तो यह नया और पुराना डेटा पढ़ सकता है"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"क्या आपको <xliff:g id="APP_NAME">%1$s</xliff:g> को Health Connect का डेटा ऐक्सेस करने की अनुमति देनी है?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"क्या <xliff:g id="APP_NAME">%1$s</xliff:g> को फ़िटनेस और तंदुरुस्ती का डेटा ऐक्सेस करने की अनुमति देनी है?"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect को Android सिस्टम के साथ इंटिग्रेट किया जा रहा है, ताकि इसे सीधे आपके डिवाइस की सेटिंग से ऐक्सेस किया जा सके."</string>
     <string name="update_button" msgid="4544529019832009496">"अपडेट करें"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"इसे अपडेट करें, ताकि Health Connect आपके डिवाइस की सिस्टम सेटिंग से इंटिग्रेट करने की प्रोसेस जारी रख सके"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"सिस्टम अपडेट करना ज़रूरी है"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"आगे बढ़ने से पहले, अपने फ़ोन का सिस्टम अपडेट करें."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"अगर आपने अपने फ़ोन का सिस्टम पहले ही अपडेट कर दिया है, तो इंटिग्रेशन की प्रोसेस को जारी रखने के लिए फ़ोन को रीस्टार्ट करें"</string>

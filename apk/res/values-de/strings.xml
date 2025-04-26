@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect wird in das Android-System integriert, damit du direkt über deine Einstellungen darauf zugreifen kannst."</string>
     <string name="update_button" msgid="4544529019832009496">"Aktualisieren"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Starte dieses Update, damit Health Connect weiter in deine Systemeinstellungen integriert werden kann"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Systemupdate erforderlich"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Damit du fortfahren kannst, musst du das Betriebssystem deines Smartphones aktualisieren."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Wenn du das Betriebssystem deines Smartphones bereits aktualisiert hast, starte dein Smartphone neu, um mit der Integration fortzufahren"</string>

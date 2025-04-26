@@ -32,9 +32,19 @@ import com.android.server.LocalManagerRegistry;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
+import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.device.tracker.TrackerManager;
+import com.android.server.healthconnect.device.tracker.TrackerManagerImpl;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationSender;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
@@ -73,15 +83,6 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppOpLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.tracker.TrackerManager;
-import com.android.server.healthconnect.tracker.TrackerManagerImpl;
 import com.android.server.healthconnect.utils.TimeSource;
 import com.android.server.healthconnect.utils.TimeSourceImpl;
 
@@ -146,6 +147,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final GrantTimeXmlHelper mGrantTimeXmlHelper;
     private final BackupRestoreLogger mBackupRestoreLogger;
     private final FirstGrantTimeDatastore mFirstGrantTimeDatastore;
+    private final DeviceRecordHelper mDeviceRecordHelper;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -444,12 +446,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mAppOpsManagerLocal;
         mTrackerManager =
                 builder.mTrackerManager == null
-                        ? new TrackerManagerImpl()
+                        ? new TrackerManagerImpl(context, mHealthConnectPermissionHelper)
                         : builder.mTrackerManager;
         mOnboardingStateManager =
                 builder.mOnboardingStateManager == null && Flags.onboarding()
                         ? new OnboardingStateManager(getPreferenceHelper(), userHandle)
                         : builder.mOnboardingStateManager;
+        mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
     }
 
     @Override
@@ -596,6 +599,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public MedicalDataSourceHelper getMedicalDataSourceHelper() {
         return mMedicalDataSourceHelper;
+    }
+
+    @Override
+    public DeviceRecordHelper getDeviceRecordHelper() {
+        return mDeviceRecordHelper;
     }
 
     @Override

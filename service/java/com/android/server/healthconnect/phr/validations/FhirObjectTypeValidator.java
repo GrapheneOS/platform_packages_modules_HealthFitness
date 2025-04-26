@@ -249,7 +249,8 @@ public class FhirObjectTypeValidator {
      * <p>This method validates that each field in the {@code fhirJsonObject} is an allowed field
      * and that the type of this field is as expected.
      *
-     * <p>Null values are not allowed, except in the case of primitive type extension arrays.
+     * <p>Null values are not allowed, except in the case of primitive type extension or value
+     *  arrays.
      *
      * @param fhirJsonObject The JSONObject to validate
      * @param fieldToConfig The map of allowed field to field config for this object
@@ -290,45 +291,49 @@ public class FhirObjectTypeValidator {
                 throw new IllegalArgumentException("Found unexpected field " + fullFieldName);
             }
 
-            if (Flags.phrFhirBasicComplexTypeValidation()) {
-                Object fieldObject;
-                try {
-                    fieldObject = fhirJsonObject.get(fieldName);
-                } catch (JSONException exception) {
-                    throw new IllegalStateException(
-                            "Expected field to be present in json object: " + fullFieldName);
+            Object fieldObject;
+            try {
+                fieldObject = fhirJsonObject.get(fieldName);
+            } catch (JSONException exception) {
+                throw new IllegalStateException(
+                        "Expected field to be present in json object: " + fullFieldName);
+            }
+
+            List<Object> objectsToValidate =
+                    fieldConfig.getIsArray()
+                            ? validateIsNonEmptyArrayAndGetContents(fieldObject, fullFieldName)
+                            : List.of(fieldObject);
+            boolean fieldIsPrimitiveTypeExtension =
+                    fieldIsPrimitiveType && fieldStartsWithUnderscore;
+            // Primitive type extension arrays and value arrays are allowed to have
+            // NULL values. See https://build.fhir.org/json.html#primitive.
+            boolean jsonNullAllowed;
+            if (Flags.phrAllowNullsInPrimitiveValueArrays()) {
+                jsonNullAllowed = fieldIsPrimitiveType && fieldConfig.getIsArray();
+            } else {
+                jsonNullAllowed = fieldIsPrimitiveTypeExtension && fieldConfig.getIsArray();
+            }
+
+            for (Object object : objectsToValidate) {
+                if (object.equals(JSONObject.NULL) && jsonNullAllowed) {
+                    continue;
                 }
-
-                List<Object> objectsToValidate =
-                        fieldConfig.getIsArray()
-                                ? validateIsNonEmptyArrayAndGetContents(fieldObject, fullFieldName)
-                                : List.of(fieldObject);
-                boolean fieldIsPrimitiveTypeExtension =
-                        fieldIsPrimitiveType && fieldStartsWithUnderscore;
-                // Primitive type extension arrays are allowed to have NULL values
-                boolean jsonNullAllowed = fieldIsPrimitiveTypeExtension && fieldConfig.getIsArray();
-
-                for (Object object : objectsToValidate) {
-                    if (object.equals(JSONObject.NULL) && jsonNullAllowed) {
-                        continue;
-                    }
-                    if (fieldIsPrimitiveType && !fieldIsPrimitiveTypeExtension) {
-                        // If the field is a primitive type extension (starts with "_"), then it
-                        // will be an object of type "Element" with fields "id" and/or "extension"
-                        // fields.
-                        validatePrimitiveTypeField(object, fullFieldName, fieldType);
-                    } else {
-                        JSONObject jsonObject =
-                                validateObjectIsNonEmptyJSONObject(object, fullFieldName);
-                        nestedObjectsToValidate.add(
-                                new FhirComplexTypeJsonObject(
-                                        fullFieldName,
-                                        objectNestingLevel + 1,
-                                        fieldIsPrimitiveTypeExtension
-                                                ? FHIR_TYPE_PRIMITIVE_EXTENSION
-                                                : fieldType,
-                                        jsonObject));
-                    }
+                if (fieldIsPrimitiveType && !fieldIsPrimitiveTypeExtension) {
+                    // If the field is a primitive type extension (starts with "_"), then it
+                    // will be an object of type "Element" with fields "id" and/or "extension"
+                    // fields.
+                    validatePrimitiveTypeField(object, fullFieldName, fieldType);
+                } else {
+                    JSONObject jsonObject =
+                            validateObjectIsNonEmptyJSONObject(object, fullFieldName);
+                    nestedObjectsToValidate.add(
+                            new FhirComplexTypeJsonObject(
+                                    fullFieldName,
+                                    objectNestingLevel + 1,
+                                    fieldIsPrimitiveTypeExtension
+                                            ? FHIR_TYPE_PRIMITIVE_EXTENSION
+                                            : fieldType,
+                                    jsonObject));
                 }
             }
         }

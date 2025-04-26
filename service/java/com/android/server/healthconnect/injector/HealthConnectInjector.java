@@ -25,9 +25,17 @@ import androidx.annotation.VisibleForTesting;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
+import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
+import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.jobs.DailyCleanupJob;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
@@ -61,13 +69,6 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.storage.datatypehelpers.AccessLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ChangeLogsRequestHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.DeviceInfoHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.ReadAccessLogsHelper;
-import com.android.server.healthconnect.tracker.TrackerManager;
 import com.android.server.healthconnect.utils.TimeSource;
 
 import java.io.File;
@@ -224,6 +225,11 @@ public abstract class HealthConnectInjector {
      * Injector.
      */
     public abstract MedicalDataSourceHelper getMedicalDataSourceHelper();
+
+    /**
+     * Getter for {@link DeviceRecordHelper} instance initialised by the Health Connect Injector.
+     */
+    public abstract DeviceRecordHelper getDeviceRecordHelper();
 
     /** Getter for {@link TimeSource} instance initialised by the Health Connect Injector. */
     public abstract TimeSource getTimeSource();

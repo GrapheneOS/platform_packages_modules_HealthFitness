@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect po integrohet me sistemin Android, në mënyrë që të mund të qasesh drejtpërdrejt nga cilësimet e tua."</string>
     <string name="update_button" msgid="4544529019832009496">"Përditëso"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Nise këtë përditësim në mënyrë që Health Connect të vazhdojë të integrohet me cilësimet e sistemit"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Nevojitet përditësimi i sistemit"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Përpara se të vazhdosh, përditëso sistemin e telefonit."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Nëse e ke përditësuar tashmë sistemin e telefonit, provo ta rindezësh për të vazhduar integrimin"</string>

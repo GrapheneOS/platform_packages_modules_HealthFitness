@@ -37,8 +37,8 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
-import com.android.server.healthconnect.storage.datatypehelpers.AppInfoHelper;
 
 import java.time.Instant;
 import java.time.Period;
@@ -241,6 +241,22 @@ public final class HealthConnectPermissionHelper {
         } finally {
             Binder.restoreCallingIdentity(token);
         }
+    }
+
+    /** See {@link HealthConnectManager#getHealthPermissionsFlags(String, List)}. */
+    public int getHealthPermissionFlags(String packageName, UserHandle user, String permission) {
+        enforceManageHealthPermissions(/* message= */ "getHealthPermissionFlags");
+        UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
+        enforceValidPackage(packageName, checkedUser);
+        final long token = Binder.clearCallingIdentity();
+        int flag;
+        try {
+            enforceValidHealthPermissions(packageName, user, List.of(permission));
+            flag = mPackageManager.getPermissionFlags(permission, packageName, user);
+        } finally {
+            Binder.restoreCallingIdentity(token);
+        }
+        return flag;
     }
 
     /** See {@link HealthConnectManager#setHealthPermissionsUserFixedFlagValue(String, List)}. */

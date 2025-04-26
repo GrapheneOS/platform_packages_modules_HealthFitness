@@ -48,7 +48,7 @@
     <string name="settings_medical_permissions" msgid="4621535972501674863">"Health Connect"</string>
     <string name="backup_title" msgid="211503191266235085">"Pencadangan"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Prioritas dan sumber data"</string>
-    <string name="set_units_title" msgid="2657822539603758029">"Tetapkan unit"</string>
+    <string name="set_units_title" msgid="2657822539603758029">"Tetapkan satuan"</string>
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"Preferensi"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"Kelola data"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Ekspor dan impor data"</string>
@@ -554,7 +554,7 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"Batal"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"Selesai"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Tidak ada aplikasi yang tersedia. Instal aplikasi penyimpanan cloud untuk melihatnya di sini"</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Untuk opsi lainnya, instal aplikasi penyimpanan cloud untuk melihatnya di sini"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"Agar memiliki opsi lain, instal aplikasi penyimpanan cloud yang kemudian akan muncul di sini"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Buka Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Mulai menggunakan Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect menyimpan data kesehatan dan kebugaran Anda, yang memberi Anda cara sederhana untuk menyinkronkan berbagai aplikasi di perangkat"</string>
@@ -1067,6 +1067,8 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect sedang diintegrasikan dengan sistem Android sehingga Anda dapat mengaksesnya langsung dari setelan."</string>
     <string name="update_button" msgid="4544529019832009496">"Update"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Mulai update ini agar Health Connect dapat melanjutkan integrasi dengan setelan sistem Anda"</string>
+    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
+    <skip />
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Update sistem diperlukan"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Sebelum melanjutkan, update sistem ponsel Anda."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jika sistem ponsel telah diupdate, coba mulai ulang ponsel Anda untuk melanjutkan integrasi"</string>
@@ -1114,7 +1116,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Update sekarang"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Total data"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Sumber aplikasi"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Tambahkan sumber aplikasi ke daftar ini untuk melihat bagaimana total data dapat berubah. Menghapus aplikasi dari daftar ini akan membuatnya berhenti berkontribusi pada total, tetapi aplikasi tersebut masih akan memiliki izin tulis."</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Tambahkan sumber aplikasi ke daftar ini untuk melihat perubahan total data. Aplikasi yang dihapus dari daftar ini akan berhenti berkontribusi pada total data, tetapi tetap memiliki izin tulis."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Tidak ada sumber aplikasi"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Setelah Anda memberi aplikasi izin untuk menulis data <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, sumber akan muncul di sini."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cara kerja sumber &amp; prioritas"</string>
