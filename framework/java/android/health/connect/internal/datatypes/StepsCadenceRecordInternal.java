@@ -23,12 +23,16 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.StepsCadenceRecord;
 import android.os.Parcel;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @see StepsCadenceRecord
@@ -38,17 +42,24 @@ import java.util.Set;
 public class StepsCadenceRecordInternal
         extends SeriesRecordInternal<
                 StepsCadenceRecord, StepsCadenceRecord.StepsCadenceRecordSample> {
-    private Set<StepsCadenceRecordSample> mStepsCadenceRecordSamples;
+    private Set<StepsCadenceRecordSample> mStepsCadenceRecordSamples =
+            new TreeSet<>(Comparator.comparingLong(StepsCadenceRecordSample::getEpochMillis));
 
-    public StepsCadenceRecordInternal(Set<StepsCadenceRecordSample> mStepsCadenceRecordSamples) {
+    public StepsCadenceRecordInternal(Set<StepsCadenceRecordSample> stepsCadenceRecordSamples) {
         super();
-        this.mStepsCadenceRecordSamples = mStepsCadenceRecordSamples;
+        if (Flags.sampleTimeOrdering()) {
+            mStepsCadenceRecordSamples.addAll(stepsCadenceRecordSamples);
+        } else {
+            mStepsCadenceRecordSamples = stepsCadenceRecordSamples;
+        }
     }
 
     public StepsCadenceRecordInternal(Parcel parcel) {
         super(parcel);
         int size = parcel.readInt();
-        mStepsCadenceRecordSamples = new HashSet<>(size);
+        if (!Flags.sampleTimeOrdering()) {
+            mStepsCadenceRecordSamples = new HashSet<>(size);
+        }
         for (int i = 0; i < size; i++) {
             mStepsCadenceRecordSamples.add(
                     new StepsCadenceRecordSample(parcel.readDouble(), parcel.readLong()));
@@ -59,14 +70,6 @@ public class StepsCadenceRecordInternal
     @NonNull
     public Set<StepsCadenceRecordSample> getSamples() {
         return mStepsCadenceRecordSamples;
-    }
-
-    @NonNull
-    @Override
-    public StepsCadenceRecordInternal setSamples(Set<? extends Sample> samples) {
-        Objects.requireNonNull(samples);
-        this.mStepsCadenceRecordSamples = (Set<StepsCadenceRecordSample>) samples;
-        return this;
     }
 
     @Override
@@ -123,18 +126,25 @@ public class StepsCadenceRecordInternal
 
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object)
-                    && object instanceof StepsCadenceRecordInternal.StepsCadenceRecordSample) {
-                StepsCadenceRecordInternal.StepsCadenceRecordSample other =
-                        (StepsCadenceRecordInternal.StepsCadenceRecordSample) object;
-                return getEpochMillis() == other.getEpochMillis();
+            if (object instanceof StepsCadenceRecordInternal.StepsCadenceRecordSample other) {
+                if (Flags.sampleTimeOrdering()) {
+                    return getEpochMillis() == other.getEpochMillis() && mRate == other.mRate;
+                } else {
+                    // This is known buggy but was existed historically.
+                    // super.equals(other) will essentially always be false.
+                    return super.equals(other) && getEpochMillis() == other.getEpochMillis();
+                }
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getEpochMillis());
+            if (Flags.sampleTimeOrdering()) {
+                return Objects.hash(mEpochMillis, mRate);
+            } else {
+                return Objects.hash(mEpochMillis);
+            }
         }
     }
 }

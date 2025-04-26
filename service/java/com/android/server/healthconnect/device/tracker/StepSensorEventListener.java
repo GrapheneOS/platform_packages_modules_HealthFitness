@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.android.server.healthconnect.device.tracker;
 
-package com.android.server.healthconnect.tracker;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 
 /**
- * Provides functionality for native tracking of data types within Health Connect.
+ * Listener that receives SensorManager pedometer events.
  *
  * @hide
  */
-public interface TrackerManager {
-    /**
-     * Called at startup. This will start continuous trackers e.g. step tracking if requirements are
-     * met.
-     */
-    void initialize();
+class StepSensorEventListener implements SensorEventListener {
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        // Implementation goes here. Do nothing for now.
+    }
 
-    /**
-     * Explicitly enable/disable step tracking. This should be done when a connected app has been
-     * granted {@code android.permission.health.READ_STEPS}.
-     */
-    void setStepTrackingEnabled(boolean enabled);
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Accuracy ignored.
+    }
 }

@@ -24,12 +24,16 @@ import android.health.connect.datatypes.SpeedRecord;
 import android.health.connect.datatypes.units.Velocity;
 import android.os.Parcel;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @see SpeedRecord
@@ -38,11 +42,16 @@ import java.util.Set;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
 public class SpeedRecordInternal
         extends SeriesRecordInternal<SpeedRecord, SpeedRecord.SpeedRecordSample> {
-    private Set<SpeedRecordSample> mSpeedRecordSamples;
+    private Set<SpeedRecordSample> mSpeedRecordSamples =
+            new TreeSet<>(Comparator.comparingLong(SpeedRecordSample::getEpochMillis));
 
-    public SpeedRecordInternal(Set<SpeedRecordSample> mSpeedRecordSamples) {
+    public SpeedRecordInternal(Set<SpeedRecordSample> speedRecordSamples) {
         super();
-        this.mSpeedRecordSamples = mSpeedRecordSamples;
+        if (Flags.sampleTimeOrdering()) {
+            mSpeedRecordSamples.addAll(speedRecordSamples);
+        } else {
+            mSpeedRecordSamples = speedRecordSamples;
+        }
     }
 
     public SpeedRecordInternal(Parcel parcel) {
@@ -58,14 +67,6 @@ public class SpeedRecordInternal
     @NonNull
     public Set<SpeedRecordSample> getSamples() {
         return mSpeedRecordSamples;
-    }
-
-    @NonNull
-    @Override
-    public SpeedRecordInternal setSamples(Set<? extends Sample> samples) {
-        Objects.requireNonNull(samples);
-        this.mSpeedRecordSamples = (Set<SpeedRecordSample>) samples;
-        return this;
     }
 
     @Override
@@ -122,17 +123,23 @@ public class SpeedRecordInternal
 
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object) && object instanceof SpeedRecordInternal.SpeedRecordSample) {
-                SpeedRecordInternal.SpeedRecordSample other =
-                        (SpeedRecordInternal.SpeedRecordSample) object;
-                return getEpochMillis() == other.getEpochMillis();
+            if (object instanceof SpeedRecordInternal.SpeedRecordSample other) {
+                if (Flags.sampleTimeOrdering()) {
+                    return mSpeed == other.mSpeed && mEpochMillis == other.mEpochMillis;
+                } else {
+                    return super.equals(other) && getEpochMillis() == other.getEpochMillis();
+                }
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getEpochMillis());
+            if (Flags.sampleTimeOrdering()) {
+                return Objects.hash(mEpochMillis, mSpeed);
+            } else {
+                return Objects.hash(getEpochMillis());
+            }
         }
     }
 }

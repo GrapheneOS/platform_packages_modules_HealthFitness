@@ -90,12 +90,25 @@ public class FitnessRecordUpsertHelperTest {
         mFitnessRecordUpsertHelper.insertRecords(
                 TEST_PACKAGE_NAME,
                 List.of(createStepsRecord(500, 750, 100).setPackageName(TEST_PACKAGE_NAME)),
-                new ArrayMap<>());
+                new ArrayMap<>(),
+                /* shouldGenerateAccessLogs= */ true);
 
         assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
                 .isEqualTo(1);
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         assertThat(result).isNotEmpty();
+    }
+
+    @Test
+    public void insertRecords_insertAccessLogsFalse_noAccessLogsInserted() {
+        mFitnessRecordUpsertHelper.insertRecords(
+                TEST_PACKAGE_NAME,
+                List.of(createStepsRecord(500, 750, 100).setPackageName(TEST_PACKAGE_NAME)),
+                new ArrayMap<>(),
+                /* shouldGenerateAccessLogs= */ false);
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
+        assertThat(result).isEmpty();
     }
 
     @Test

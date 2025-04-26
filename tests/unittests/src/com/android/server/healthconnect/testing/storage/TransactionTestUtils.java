@@ -33,11 +33,14 @@ import static java.time.Duration.ofMinutes;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.RecordIdFilter;
+import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.ExerciseSegmentType;
+import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.BloodPressureRecordInternal;
 import android.health.connect.internal.datatypes.ExerciseRouteInternal;
@@ -117,7 +120,7 @@ public final class TransactionTestUtils {
     /** Inserts records attributed to the given package. */
     public List<String> insertRecords(String packageName, List<RecordInternal<?>> records) {
         return mFitnessRecordUpsertHelper.insertRecords(
-                packageName, records, /* extraPermsStateMap= */ new ArrayMap<>());
+                packageName, records, /* extraPermsStateMap= */ new ArrayMap<>(), true);
     }
 
     /** Inserts records attributed to the given package. */
@@ -171,6 +174,32 @@ public final class TransactionTestUtils {
                 0,
                 /* isInForeground= */ true,
                 shouldRecordAccessLogs);
+    }
+
+    /** Fetches all records of a given time from epoch until the current time. */
+    public <T extends Record> List<RecordInternal<?>> readAllRecordsOfType(
+            String packageName, Class<T> recordClass) {
+        ReadRecordsRequestUsingFilters<T> request =
+                new ReadRecordsRequestUsingFilters.Builder<T>(recordClass)
+                        .setTimeRangeFilter(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(Instant.EPOCH)
+                                        .setEndTime(
+                                                Instant.ofEpochMilli(System.currentTimeMillis()))
+                                        .build())
+                        .build();
+
+        return mFitnessRecordReadHelper.readRecords(
+                        mTransactionManager,
+                        packageName,
+                        request.toReadRecordsRequestParcel(),
+                        /* grantedExtraReadPermissions= */ Set.of(),
+                        /* startDateAccessMillis= */ 0,
+                        /* isInForeground= */ true,
+                        /* shouldRecordAccessLogs= */ false,
+                        /* enforceSelfRead */ false,
+                        /* packageNamesByAppIds= */ null)
+                .first;
     }
 
     public static RecordInternal<StepsRecord> createStepsRecord(

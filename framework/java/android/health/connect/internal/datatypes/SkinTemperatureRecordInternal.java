@@ -27,6 +27,8 @@ import android.health.connect.datatypes.units.Temperature;
 import android.health.connect.datatypes.units.TemperatureDelta;
 import android.os.Parcel;
 
+import com.android.healthfitness.flags.Flags;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -96,17 +98,6 @@ public final class SkinTemperatureRecordInternal
         return mDeltaSamples;
     }
 
-    /**
-     * @return this object with specified skin temperature delta samples.
-     */
-    @NonNull
-    @Override
-    public SeriesRecordInternal setSamples(Set<? extends Sample> samples) {
-        Objects.requireNonNull(samples);
-        mDeltaSamples = (Set<SkinTemperatureDeltaSample>) samples;
-        return this;
-    }
-
     public Temperature getBaseline() {
         return mBaseline;
     }
@@ -155,18 +146,24 @@ public final class SkinTemperatureRecordInternal
 
         @Override
         public boolean equals(@Nullable Object object) {
-            if (super.equals(object)
-                    && object instanceof SkinTemperatureRecordInternal.SkinTemperatureDeltaSample) {
-                SkinTemperatureRecordInternal.SkinTemperatureDeltaSample other =
-                        (SkinTemperatureRecordInternal.SkinTemperatureDeltaSample) object;
-                return mEpochMillis() == other.mEpochMillis();
+            if (object instanceof SkinTemperatureRecordInternal.SkinTemperatureDeltaSample other) {
+                if (Flags.sampleTimeOrdering()) {
+                    return mEpochMillis == other.mEpochMillis
+                            && mTemperatureDeltaInCelsius == other.mTemperatureDeltaInCelsius;
+                } else {
+                    return super.equals(other) && mEpochMillis() == other.mEpochMillis();
+                }
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(mEpochMillis());
+            if (Flags.sampleTimeOrdering()) {
+                return Objects.hash(mEpochMillis, mTemperatureDeltaInCelsius);
+            } else {
+                return Objects.hash(mEpochMillis);
+            }
         }
     }
 

@@ -110,7 +110,15 @@ public class TestOutcomeReceiver<T, E extends RuntimeException> implements Outco
     @Override
     public void onResult(T result) {
         mResponse.set(result);
-        Log.d(TAG, mCaller + " => onResult: " + result);
+
+        String resultString = result == null ? "null" : result.toString();
+        // limit the output to 100 characters then remove line breaks
+        resultString =
+                resultString
+                        .substring(0, Math.min(100, resultString.length()))
+                        .replaceAll("\\r\\n|\\r|\\n", " ");
+        Log.d(TAG, mCaller + " => onResult: " + resultString);
+
         mLatch.countDown();
     }
 

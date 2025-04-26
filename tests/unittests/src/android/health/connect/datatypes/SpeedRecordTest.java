@@ -18,22 +18,34 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_ENTRY;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import android.health.connect.datatypes.SpeedRecord.SpeedRecordSample;
 import android.health.connect.datatypes.units.Velocity;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
+
 import com.google.common.testing.EqualsTester;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class SpeedRecordTest {
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
     @Test
     public void testEqualsHashcode() {
         Metadata emptyMetadata = new Metadata.Builder().build();
@@ -61,10 +73,8 @@ public class SpeedRecordTest {
         // Use strange offsets so they don't match the local offset for the test runner by accident.
         ZoneOffset startOffset = ZoneOffset.ofHoursMinutes(1, 23);
         ZoneOffset endOffset = ZoneOffset.ofHoursMinutes(-2, -49);
-        List<SpeedRecord.SpeedRecordSample> oneSample =
-                List.of(
-                        new SpeedRecord.SpeedRecordSample(
-                                Velocity.fromMetersPerSecond(9.2), midTime));
+        List<SpeedRecordSample> oneSample =
+                List.of(new SpeedRecordSample(Velocity.fromMetersPerSecond(9.2), midTime));
         new EqualsTester()
                 .addEqualityGroup(
                         new SpeedRecord.Builder(emptyMetadata, start, end, oneSample).build(),
@@ -100,7 +110,7 @@ public class SpeedRecordTest {
                                         start,
                                         end,
                                         List.of(
-                                                new SpeedRecord.SpeedRecordSample(
+                                                new SpeedRecordSample(
                                                         Velocity.fromMetersPerSecond(10.1),
                                                         midTime)))
                                 .build(),
@@ -109,7 +119,7 @@ public class SpeedRecordTest {
                                         start,
                                         end,
                                         List.of(
-                                                new SpeedRecord.SpeedRecordSample(
+                                                new SpeedRecordSample(
                                                         Velocity.fromMetersPerSecond(10.1),
                                                         midTime)))
                                 .build())
@@ -119,9 +129,9 @@ public class SpeedRecordTest {
                                         start,
                                         end,
                                         List.of(
-                                                new SpeedRecord.SpeedRecordSample(
+                                                new SpeedRecordSample(
                                                         Velocity.fromMetersPerSecond(10.1), start),
-                                                new SpeedRecord.SpeedRecordSample(
+                                                new SpeedRecordSample(
                                                         Velocity.fromMetersPerSecond(9.1),
                                                         midTime)))
                                 .build(),
@@ -130,9 +140,9 @@ public class SpeedRecordTest {
                                         start,
                                         end,
                                         List.of(
-                                                new SpeedRecord.SpeedRecordSample(
+                                                new SpeedRecordSample(
                                                         Velocity.fromMetersPerSecond(10.1), start),
-                                                new SpeedRecord.SpeedRecordSample(
+                                                new SpeedRecordSample(
                                                         Velocity.fromMetersPerSecond(9.1),
                                                         midTime)))
                                 .build())
@@ -145,18 +155,60 @@ public class SpeedRecordTest {
         Instant time2 = Instant.ofEpochMilli(1_500_000_000);
         new EqualsTester()
                 .addEqualityGroup(
-                        new SpeedRecord.SpeedRecordSample(
-                                Velocity.fromMetersPerSecond(10.1), time1),
-                        new SpeedRecord.SpeedRecordSample(
-                                Velocity.fromMetersPerSecond(10.1), time1))
+                        new SpeedRecordSample(Velocity.fromMetersPerSecond(10.1), time1),
+                        new SpeedRecordSample(Velocity.fromMetersPerSecond(10.1), time1))
                 .addEqualityGroup(
-                        new SpeedRecord.SpeedRecordSample(
-                                Velocity.fromMetersPerSecond(10.1), time2),
-                        new SpeedRecord.SpeedRecordSample(
-                                Velocity.fromMetersPerSecond(10.1), time2))
+                        new SpeedRecordSample(Velocity.fromMetersPerSecond(10.1), time2),
+                        new SpeedRecordSample(Velocity.fromMetersPerSecond(10.1), time2))
                 .addEqualityGroup(
-                        new SpeedRecord.SpeedRecordSample(Velocity.fromMetersPerSecond(9.1), time1),
-                        new SpeedRecord.SpeedRecordSample(Velocity.fromMetersPerSecond(9.1), time1))
+                        new SpeedRecordSample(Velocity.fromMetersPerSecond(9.1), time1),
+                        new SpeedRecordSample(Velocity.fromMetersPerSecond(9.1), time1))
                 .testEquals();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
+    public void testSamplesConstructedInTimeOrder() {
+        // Construct a set of samples such that they are unlikely to be sorted by chance.
+        ArrayList<SpeedRecordSample> samples = new ArrayList<>();
+        Velocity velocity = Velocity.fromMetersPerSecond(10);
+        for (long i = 20L; i < 25L; i++) {
+            samples.add(new SpeedRecordSample(velocity, Instant.ofEpochMilli(i)));
+        }
+        for (long i = 0L; i < 5L; i++) {
+            samples.add(new SpeedRecordSample(velocity, Instant.ofEpochMilli(i)));
+        }
+        for (long i = 1000L; i < 1005L; i++) {
+            samples.add(new SpeedRecordSample(velocity, Instant.ofEpochMilli(i)));
+        }
+        Metadata emptyMetadata = new Metadata.Builder().build();
+        Instant start = Instant.ofEpochMilli(0);
+        Instant end = Instant.ofEpochMilli(2_000_000_000);
+
+        SpeedRecord record = new SpeedRecord.Builder(emptyMetadata, start, end, samples).build();
+        List<SpeedRecordSample> resultSamples = record.getSamples();
+
+        List<SpeedRecordSample> expected =
+                samples.stream().sorted(Comparator.comparing(SpeedRecordSample::getTime)).toList();
+        assertThat(resultSamples).isEqualTo(expected);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
+    public void testSamplesWithDuplicateTimes_dropsDuplicates() {
+        // Construct a set of samples such that they are unlikely to be sorted by chance.
+        List<SpeedRecordSample> samples = new ArrayList<>();
+        for (int velocity = 1; velocity < 11; velocity++) {
+            samples.add(
+                    new SpeedRecordSample(
+                            Velocity.fromMetersPerSecond(velocity), Instant.ofEpochMilli(20)));
+        }
+        Metadata emptyMetadata = new Metadata.Builder().build();
+        Instant start = Instant.ofEpochMilli(0);
+        Instant end = Instant.ofEpochMilli(2_000_000_000);
+        SpeedRecord record = new SpeedRecord.Builder(emptyMetadata, start, end, samples).build();
+        List<SpeedRecordSample> resultSamples = record.getSamples();
+
+        assertThat(resultSamples).hasSize(1);
     }
 }

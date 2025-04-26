@@ -1217,17 +1217,6 @@ class HomeFragmentTest {
 
     // region lock screen banner
     @Test
-    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER)
-    fun lockScreenBanner_bannerFlagOff_bannerNotShown() {
-        launchFragment<HomeFragment>(Bundle())
-
-        onView(withText("Set a screen lock")).check(doesNotExist())
-    }
-
-    @Test
-    @EnableFlags(
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
-    )
     fun lockScreenBanner_shouldNotShowBanner_bannerNotShown() {
         whenever(homeViewModel.showLockScreenBanner).then {
             MediatorLiveData(HomeViewModel.LockScreenBannerState.NoBanner)
@@ -1239,9 +1228,6 @@ class HomeFragmentTest {
     }
 
     @Test
-    @EnableFlags(
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
-    )
     fun lockScreenBanner_securityIntentNotHandled_bannerNotShown() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setIntentHandlerAvailability(false)
         whenever(homeViewModel.showLockScreenBanner).then {
@@ -1254,9 +1240,6 @@ class HomeFragmentTest {
     }
 
     @Test
-    @EnableFlags(
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
-    )
     fun lockScreenBanner_bannerShown() {
         whenever(homeViewModel.showLockScreenBanner).then {
             MediatorLiveData(HomeViewModel.LockScreenBannerState.ShowBanner())
@@ -1279,9 +1262,6 @@ class HomeFragmentTest {
     }
 
     @Test
-    @EnableFlags(
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
-    )
     fun lockScreenBanner_whenMedicalAndFitnessData_bannerShown() {
         whenever(homeViewModel.showLockScreenBanner).then {
             MediatorLiveData(
@@ -1300,9 +1280,6 @@ class HomeFragmentTest {
 
     @Test
     @DisableFlags(Flags.FLAG_ONBOARDING)
-    @EnableFlags(
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
-    )
     fun lockScreenBanner_startsNewPasswordIntent() {
         whenever(homeViewModel.showLockScreenBanner).then {
             MediatorLiveData(HomeViewModel.LockScreenBannerState.ShowBanner())
@@ -1317,9 +1294,6 @@ class HomeFragmentTest {
 
     @Test
     @DisableFlags(Flags.FLAG_ONBOARDING)
-    @EnableFlags(
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
-    )
     fun lockScreenBanner_dismissBanner_bannerDisappears() {
         whenever(homeViewModel.showLockScreenBanner).then {
             MediatorLiveData(HomeViewModel.LockScreenBannerState.ShowBanner())
@@ -1341,9 +1315,6 @@ class HomeFragmentTest {
 
     // region BannerGroup
     @Test
-    @EnableFlags(
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_LOCK_SCREEN_BANNER,
-    )
     fun multipleBanners_canExpand_andCollapseGroup() {
         // Export and Lock Screen banners
         whenever(homeViewModel.showLockScreenBanner).then {
