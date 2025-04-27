@@ -430,7 +430,7 @@
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>。"</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"詳細なソースコード: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"この権限があるアプリは、健康とフィットネスに関するデータの読み取り / 書き込みを行えます。"</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"ヘルスコネクトに保存されているデータにアクセスできるアプリの管理を行えます。アプリをタップすると、そのアプリが読み取り / 書き込みを行えるデータが表示されます。"</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"ヘルスコネクトに保存されているデータにアクセスできるアプリを管理できます。アプリをタップすると、そのアプリが読み取り / 書き込みを行えるデータが表示されます。"</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"アクセスが許可されているアプリ"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"アクセスが許可されていないアプリ"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"更新が必要"</string>
@@ -507,12 +507,12 @@
     <string name="next_export_file_location" msgid="2117071837862240540">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
     <string name="choose_frequency_category" msgid="9094154407387676553">"間隔の変更"</string>
     <string name="scheduled_export_settings_footer_text" msgid="8488483803782086291">"スケジュール設定されたエクスポートを OFF にしても、エクスポート済みのデータは保存場所から削除されません。"</string>
-    <string name="choose_frequency" msgid="8119085390857180221">"スケジュール設定されたエクスポートをセットアップする"</string>
+    <string name="choose_frequency" msgid="8119085390857180221">"スケジュール設定されたエクスポートをセットアップ"</string>
     <string name="choose_frequency_description" msgid="7698155810053504157">"データをエクスポートする頻度を選択してください"</string>
     <string name="frequency_daily" msgid="3596412357416125727">"毎日"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"毎週"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"毎月"</string>
-    <string name="export_destination_title" msgid="8352929396306002479">"スケジュール設定されたエクスポートの保存先を選択する"</string>
+    <string name="export_destination_title" msgid="8352929396306002479">"スケジュール設定されたエクスポートの保存先を選択"</string>
     <string name="export_invalid_storage" msgid="1459055934301871321">"データをエクスポートするためのクラウド ストレージ アプリを選択してください"</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"ヘルスコネクト"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"ヘルスコネクト（<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>）"</string>
@@ -547,14 +547,14 @@
     <string name="export_cancel_button" msgid="1952360582645412410">"キャンセル"</string>
     <string name="import_cancel_button" msgid="2191598074422096715">"キャンセル"</string>
     <string name="import_next_button" msgid="5706322508691854289">"次へ"</string>
-    <string name="import_source_location_title" msgid="4444467438013749461">"インポート元の選択"</string>
+    <string name="import_source_location_title" msgid="4444467438013749461">"インポート元を選択"</string>
     <string name="import_invalid_storage" msgid="341798262315495399">"データをインポートするためのクラウド ストレージ アプリを選択してください"</string>
     <string name="export_import_tap_to_choose_account" msgid="5016799636886709580">"アカウントを選択するにはタップしてください"</string>
     <string name="export_import_choose_account_title" msgid="1047021319012735232">"アカウントの選択"</string>
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"キャンセル"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"完了"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"利用できるアプリはありません。クラウド ストレージ アプリをインストールすると、ここに表示されます"</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"その他のオプションとして、クラウド ストレージ アプリをインストールすると、ここに表示されます"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"クラウド ストレージ アプリをインストールすると、その他のオプションとしてここに表示されます"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Google Play ストアにアクセス"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"ヘルスコネクトを使ってみる"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"ヘルスコネクトを利用すると、健康とフィットネスに関するデータを保存し、デバイス上のさまざまなアプリを簡単に同期することができます"</string>
@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"OFF"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"これらの設定を変更すると、ヘルスコネクトから既存のデータが削除され、新しい設定が反映されます"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# か月後にデータを自動削除しますか？}other{# か月後にデータを自動削除しますか？}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{ヘルスコネクトからも # か月を過ぎたデータが削除されます。\n\n接続されているアプリからデータを完全に削除するには、データが保存されている可能性があるアプリをそれぞれ確認してください。}other{ヘルスコネクトからも # か月を過ぎたデータが削除されます。\n\n接続されているアプリからデータを完全に削除するには、データが保存されている可能性があるアプリをそれぞれ確認してください。}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{# か月を過ぎたデータもヘルスコネクトから削除されます。\n\n接続されているアプリからデータを完全に削除するには、データが保存されている可能性があるアプリをそれぞれ確認してください。}other{# か月を過ぎたデータもヘルスコネクトから削除されます。\n\n接続されているアプリからデータを完全に削除するには、データが保存されている可能性があるアプリをそれぞれ確認してください。}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"自動削除を ON にする"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"既存のデータが削除されます"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{保存期間が # か月を超えるすべてのデータがヘルスコネクトから削除されます。接続されているアプリにこれらの変更が反映されるまで 1 日ほどかかることがあります。}other{保存期間が # か月を超えるすべてのデータがヘルスコネクトから削除されます。接続されているアプリにこれらの変更が反映されるまで 1 日ほどかかることがあります。}}"</string>
@@ -1181,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> の <xliff:g id="DATA_TYPE">%1$s</xliff:g> のデータを完全に削除しますか？"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"システムアプリを表示"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"システムアプリを表示しない"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"ON"</string>
     <string name="off" msgid="6996623844428550649">"OFF"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>にアクセス"</string>

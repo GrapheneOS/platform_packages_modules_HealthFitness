@@ -55,7 +55,7 @@
     <string name="recent_access_header" msgid="7623497371790225888">"Legutóbbi hozzáférés"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Egyetlen alkalmazás sem fért hozzá a Health Connect szolgáltatáshoz a közelmúltban."</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Az összes legutóbbi hozzáférés megtekintése"</string>
-    <string name="recent_access_screen_description" msgid="331101209889185402">"Megtekintheti, hogy mely alkalmazások fértek hozzá az Ön adataihoz az elmúlt 24 órában"</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"Megtekintheti, hogy mely alkalmazások fértek hozzá az Ön adataihoz az elmúlt 24 órában."</string>
     <string name="today_header" msgid="1006837293203834373">"Ma"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Tegnap"</string>
     <string name="read_data_access_label" msgid="8968758932021241976">"Olvasás: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
@@ -450,7 +450,7 @@
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Inaktív alkalmazások"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Ezeknek az alkalmazásoknak már nincs hozzáférésük, de továbbra is tárolnak adatokat a Health Connect szolgáltatásban."</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"A(z) <xliff:g id="APP_NAME">%1$s</xliff:g> olvashatja a következő dátum után hozzáadott adatokat: <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
-    <string name="other_android_permissions" msgid="8051485761573324702">"Olyan egyéb Android-engedélyek kezeléséhez, amelyekhez ez az alkalmazás hozzáférhet, lépjen a Beállítások &gt; Alkalmazások menüpontba"</string>
+    <string name="other_android_permissions" msgid="8051485761573324702">"Olyan egyéb Android-engedélyek kezeléséhez, amelyekhez ez az alkalmazás hozzáférhet, lépjen a Beállítások &gt; Alkalmazások menüpontba."</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"A fejlesztő adatvédelmi irányelveiből tájékozódhat arról, hogy a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> hogyan kezeli az adatokat."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Olyan egyéb Android-engedélyek kezeléséhez, amelyekhez ez az alkalmazás hozzáférhet, lépjen a Beállításokba, majd koppintson az Alkalmazások menüpontra."</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Az adatvédelmi irányelvek elolvasása"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Folyamatban van a Health Connect integrációja az Android rendszerrel. A folyamat befejezése után közvetlenül a beállításokban férhet hozzá a szolgáltatáshoz."</string>
     <string name="update_button" msgid="4544529019832009496">"Frissítés"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Indítsa el ezt a frissítést most, hogy folytatódhasson a Health Connect integrációja a rendszerbeállításokkal"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Folyamatban van a Health Connect integrációja az Android rendszerrel. A folyamat befejezése után közvetlenül a beállításokban férhet hozzá a szolgáltatáshoz.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Rendszerfrissítés szükséges"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"A folytatás előtt frissítse a telefon rendszerét."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ha már frissítette a telefon rendszerét, az integráció folytatásához próbálkozzon a telefon újraindításával."</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Véglegesen törli a következőhöz tartozó <xliff:g id="DATA_TYPE">%1$s</xliff:g> típusú adatokat: <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Rendszeralkalmazások megjelenítése"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Rendszeralkalmazások elrejtése"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Be"</string>
     <string name="off" msgid="6996623844428550649">"Ki"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Hozzáférés: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

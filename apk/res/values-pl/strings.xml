@@ -451,7 +451,7 @@
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Te aplikacje nie mają już dostępu, ale ich dane wciąż są przechowywane w Health Connect"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"Aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> może odczytywać dane dodane po <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>."</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Aby zarządzać innymi uprawnieniami urządzeń z Androidem, do których ta aplikacja ma dostęp, otwórz Ustawienia &gt; Aplikacje."</string>
-    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Informacje o tym, jak aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> przetwarza Twoje dane, znajdziesz w polityce prywatności ustalonej przez jej dewelopera"</string>
+    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Informacje o tym, jak aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> przetwarza Twoje dane, znajdziesz w polityce prywatności ustalonej przez jej dewelopera."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Aby zarządzać innymi uprawnieniami systemu Android, do których ta aplikacja ma dostęp, otwórz Ustawienia, a potem Aplikacje"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Przeczytaj politykę prywatności"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Dostęp w ciągu ostatnich 24 godzin"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Trwa integracja Health Connect z systemem Android, więc możesz korzystać z tej aplikacji bezpośrednio przez ustawienia."</string>
     <string name="update_button" msgid="4544529019832009496">"Zaktualizuj"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Rozpocznij aktualizację, aby kontynuować integrowanie Health Connect z ustawieniami systemu"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Trwa integracja aplikacji Health Connect z systemem Android. Możesz uzyskać do niej dostęp bezpośrednio w ustawieniach.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Wymagana aktualizacja systemu"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Zanim przejdziesz dalej, zaktualizuj system telefonu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jeśli system telefonu został już zaktualizowany, uruchom telefon ponownie, aby kontynuować integrację"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Trwale usunąć te dane (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) w przypadku aplikacji <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Pokaż systemowe"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Ukryj systemowe"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Włączony"</string>
     <string name="off" msgid="6996623844428550649">"Wyłączony"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Ostatni dostęp: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

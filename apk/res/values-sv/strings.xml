@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect integreras med Android-systemet så att du kan komma åt det direkt från inställningarna."</string>
     <string name="update_button" msgid="4544529019832009496">"Uppdatera"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Starta den här uppdateringen så att Health Connect kan fortsätta att integreras med dina systeminställningar"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect integreras med Android-systemet så att du kan komma åt det direkt från inställningarna.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"En systemuppdatering krävs"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Uppdatera telefonens system innan du fortsätter"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Om du redan har uppdaterat telefonens system kan du testa att starta om telefonen för att fortsätta med integreringen"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vill du radera <xliff:g id="DATA_TYPE">%1$s</xliff:g>-data för <xliff:g id="APP_NAME">%2$s</xliff:g> permanent?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Visa systemet"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Dölj systemet"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"På"</string>
     <string name="off" msgid="6996623844428550649">"Av"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Öppnades <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

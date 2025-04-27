@@ -993,9 +993,9 @@
     <string name="things_to_try" msgid="8200374691546152703">"Probajte sledeće"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Proverite da li ima ažuriranja"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Proverite da li su instalirane aplikacije ažurirane"</string>
-    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Prikaži sve kompatibilne aplikacije"</string>
+    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Pogledajte sve kompatibilne aplikacije"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Pronađite aplikacije na Google Play-u"</string>
-    <string name="send_feedback" msgid="7756927746070096780">"Pošalji povratne informacije"</string>
+    <string name="send_feedback" msgid="7756927746070096780">"Pošaljite povratne informacije"</string>
     <string name="send_feedback_description" msgid="2887207112856240778">"Recite nam koje aplikacije za zdravlje i fitnes želite da povežete sa Povezivanjem zdravlja"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play prodavnica"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Automatsko brisanje"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Povezivanje zdravlja se integriše sa Android sistemom da biste mogli direktno da mu pristupate iz podešavanja."</string>
     <string name="update_button" msgid="4544529019832009496">"Ažuriraj"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Započnite ovo ažuriranje da bi Povezivanje zdravlja moglo da nastavi integraciju sa podešavanjima sistema"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Povezivanje zdravlja se integriše sa Android sistemom da biste mogli direktno da mu pristupate iz podešavanja.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Potrebno je ažuriranje sistema"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Pre nego što nastavite, ažurirajte sistem telefona."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ako ste već ažurirali sistem telefona, probajte da restartujete telefon kako biste nastavili integraciju"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Želite trajno da izbrišete podatke tipa <xliff:g id="DATA_TYPE">%1$s</xliff:g> za <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Prikaži sistemske"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Sakrij sistemske"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Uključeno"</string>
     <string name="off" msgid="6996623844428550649">"Isključeno"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Pristupljeno: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

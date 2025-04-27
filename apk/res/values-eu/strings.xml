@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect Android sisteman integratzen ari da, ezarpenetatik zuzenean erabili ahal izan dezazun."</string>
     <string name="update_button" msgid="4544529019832009496">"Eguneratu"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Hasi eguneratzen, Health Connect-ek zure sistemaren ezarpenekin integratzen jarrai dezan"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect Android sisteman integratzen ari da, ezarpenetatik zuzenean erabili ahal izan dezazun.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Sistema eguneratu egin behar da"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Aurrera egin aurretik, eguneratu telefonoak darabilen sistema."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Telefonoak darabilen sistema dagoeneko eguneratu baduzu, berrabiarazi telefonoa integrazio-prozesuari berrekiteko"</string>
@@ -1119,7 +1118,7 @@
     <string name="data_sources_footer" msgid="6414387142919741183">"Gehitu aplikazio-iturburuak zerrendan, guztizko datuak nola alda daitezkeen ikusteko. Zerrenda horretatik aplikazio bat kenduz gero, aplikazioa ez da izango guztizko datuen parte, baina idazteko baimenak izaten jarraituko du."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Ez dago aplikazio-iturbururik"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Datuak (<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>) idazteko aplikazio-baimenak ematen dituzunean, hemen agertuko dira iturburuak."</string>
-    <string name="data_sources_help_link" msgid="7740264923634947915">"Nola funtzionatzen dute iturburuek eta lehenespenak?"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"Nola funtzionatzen dute iturburuek eta lehentasunak?"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Gehitu aplikazio bat"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Editatu aplikazioen iturburuak"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"Gailuko aplikazio lehenetsia"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> aplikazioak honi buruz dituen datuak (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) ezabatu nahi dituzu?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Erakutsi sistemaren aplikazioak"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Ezkutatu sistemaren aplikazioak"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Aktibatuta"</string>
     <string name="off" msgid="6996623844428550649">"Desaktibatuta"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Atzitze-data: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

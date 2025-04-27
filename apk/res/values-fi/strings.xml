@@ -68,8 +68,8 @@
     <string name="recent_access_view_all_button" msgid="825946958049641541">"Näytä kaikki"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"Viimeaikaisen pääsyn lataaminen epäonnistui"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"Tämä sovellus ei ole enää käytettävissä"</string>
-    <string name="activity_category_uppercase" msgid="136628843341377088">"Treeni"</string>
-    <string name="activity_category_lowercase" msgid="3007220578865400601">"treeni"</string>
+    <string name="activity_category_uppercase" msgid="136628843341377088">"Toiminta"</string>
+    <string name="activity_category_lowercase" msgid="3007220578865400601">"toiminta"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"Kehon mittaustulokset"</string>
     <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"kehon mittaustulokset"</string>
     <string name="sleep_category_uppercase" msgid="3422452674899706786">"Uni"</string>
@@ -401,7 +401,7 @@
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> ei voi enää lukea tai kirjoittaa mitään Health Connectin dataa, mukaan lukien taustatietoja.\n\nTämä ei vaikuta sovelluksen muihin lupiin, kuten sijainti-, kamera- tai mikrofonilupaan."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> ei voi enää lukea tai kirjoittaa mitään Health Connectin dataa, mukaan lukien aiempaa dataa.\n\nTämä ei vaikuta sovelluksen muihin lupiin, kuten sijainti-, kamera- tai mikrofonilupaan."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> ei voi enää lukea tai kirjoittaa mitään Health Connectin dataa, mukaan lukien taustatietoja ja aiempaa data.\n\nTämä ei vaikuta sovelluksen muihin lupiin, kuten sijainti-, kamera- tai mikrofonilupaan."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Poista Health Connectista myös tämä data: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Poista Health Connectista myös tämä <xliff:g id="APP_NAME">%1$s</xliff:g>-data"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Poistetaanko kaikki liikunta‑ ja hyvinvointiluvat?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Poista Health Connectista myös kuntodata, joka on peräisin täältä: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Poistetaanko kaikki terveystietoluvat?"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connectia integroidaan Android-järjestelmään, jotta saat pääsyn siihen suoraan asetuksista."</string>
     <string name="update_button" msgid="4544529019832009496">"Päivitä"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Aloita päivitys, jotta Health Connect voi jatkaa integrointia järjestelmäasetuksiin"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connectia integroidaan Android-järjestelmään, jotta saat pääsyn siihen suoraan asetuksista.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Järjestelmä täytyy päivittää"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Ennen kuin jatkat, päivitä puhelinjärjestelmä."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jos olet jo päivittänyt puhelinjärjestelmän, kokeile uudelleenkäynnistää puhelin, jotta integrointia voidaan jatkaa"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Poistetaanko <xliff:g id="DATA_TYPE">%1$s</xliff:g> ‑data pysyvästi (<xliff:g id="APP_NAME">%2$s</xliff:g>)?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Näytä järjestelmä"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Piilota järjestelmä"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Päällä"</string>
     <string name="off" msgid="6996623844428550649">"Pois päältä"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Avattu <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

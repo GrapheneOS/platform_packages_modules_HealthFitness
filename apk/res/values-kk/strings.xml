@@ -512,7 +512,7 @@
     <string name="frequency_daily" msgid="3596412357416125727">"Күн сайын"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"Апта сайын"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"Ай сайын"</string>
-    <string name="export_destination_title" msgid="8352929396306002479">"Жоспарланған экспортты сақтау орнын таңдаңыз."</string>
+    <string name="export_destination_title" msgid="8352929396306002479">"Жоспарланған экспортты сақтау орнын таңдаңыз"</string>
     <string name="export_invalid_storage" msgid="1459055934301871321">"Деректеріңізді экспорттау үшін бұлт жады қолданбасын таңдаңыз."</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect қолданбасы Android жүйесімен біріктіріліп жатыр, сондықтан қолданбаны тікелей параметрлерден пайдалана аласыз."</string>
     <string name="update_button" msgid="4544529019832009496">"Жаңарту"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Жаңартуды бастасаңыз, Health Connect қолданбасын жүйе параметрлерімен біріктіру процесін жалғастыра аласыз."</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect қолданбасы Android жүйесімен біріктіріліп жатыр, сондықтан қолданбаны тікелей параметрлерден пайдалана аласыз.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Жүйені жаңарту қажет"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Жалғастырмас бұрын, телефондағы операциялық жүйені жаңартыңыз."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Телефондағы операциялық жүйені жаңартып қойсаңыз, біріктіру процесін жалғастыру үшін телефонды өшіріп, сосын қосып көріңіз."</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> қолданбасындағы <xliff:g id="DATA_TYPE">%1$s</xliff:g> деректерін біржола жою керек пе?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Жүйені көрсету"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Жүйені жасыру"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Қосулы"</string>
     <string name="off" msgid="6996623844428550649">"Өшірулі"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Пайдаланылған уақыты: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

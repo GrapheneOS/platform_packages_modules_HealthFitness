@@ -163,7 +163,7 @@
     <string name="exercise_lowercase_label" msgid="7210988327804427943">"कसरत से जुड़ी जानकारी"</string>
     <string name="exercise_read_content_description" msgid="2079728018078185556">"कसरत का डेटा पढ़ने की अनुमति दें"</string>
     <string name="exercise_write_content_description" msgid="3267630937895011886">"कसरत का डेटा सेव करने की अनुमति दें"</string>
-    <string name="exercise_route_uppercase_label" msgid="6678863538041931754">"कसरत का रूट"</string>
+    <string name="exercise_route_uppercase_label" msgid="6678863538041931754">"कसरत के रूट की जानकारी"</string>
     <string name="exercise_route_lowercase_label" msgid="1691912731748211252">"कसरत का रूट"</string>
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"कसरत का रूट बनाएं"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"कसरत का रूट पढ़ें"</string>
@@ -172,11 +172,11 @@
     <string name="planned_exercise_lowercase_label" msgid="7642993032791009809">"ट्रेनिंग के प्लान"</string>
     <string name="planned_exercise_read_content_description" msgid="3240286968325192534">"ट्रेनिंग के प्लान देखें"</string>
     <string name="planned_exercise_write_content_description" msgid="8146488636094126823">"ट्रेनिंग के प्लान में बदलाव करने की अनुमति दें"</string>
-    <string name="distance_uppercase_label" msgid="1420705424462077174">"दूरी"</string>
+    <string name="distance_uppercase_label" msgid="1420705424462077174">"दूरी का डेटा"</string>
     <string name="distance_lowercase_label" msgid="2287154001209381379">"दूरी"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"तय की गई दूरी का डेटा पढ़ने की अनुमति दें"</string>
     <string name="distance_write_content_description" msgid="494549494589487562">"तय की गई दूरी का डेटा सेव करने की अनुमति दें"</string>
-    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"तय की गई ऊंचाई का डेटा"</string>
+    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"ऊंचाई पर चढ़ने का डेटा"</string>
     <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"तय की गई ऊंचाई का डेटा"</string>
     <string name="elevation_gained_read_content_description" msgid="6018756385903843355">"तय की गई ऊंचाई का डेटा देखने की अनुमति दें"</string>
     <string name="elevation_gained_write_content_description" msgid="6790199544670231367">"तय की गई ऊंचाई का डेटा सेव करने की अनुमति दें"</string>
@@ -288,7 +288,7 @@
     <string name="basal_body_temperature_lowercase_label" msgid="3363829208971016662">"आराम करते समय शरीर के तापमान का डेटा"</string>
     <string name="basal_body_temperature_read_content_description" msgid="3342604362011725500">"आराम करते समय शरीर के तापमान का डेटा देखने की अनुमति दें"</string>
     <string name="basal_body_temperature_write_content_description" msgid="1081636817359407622">"आराम करते समय शरीर के तापमान का डेटा सेव करने की अनुमति दें"</string>
-    <string name="blood_glucose_uppercase_label" msgid="7462421849184720721">"ब्लड शुगर"</string>
+    <string name="blood_glucose_uppercase_label" msgid="7462421849184720721">"ब्लड शुगर का डेटा"</string>
     <string name="blood_glucose_lowercase_label" msgid="5036157221577793772">"ब्लड शुगर का डेटा"</string>
     <string name="blood_glucose_read_content_description" msgid="563393834563809318">"ब्लड शुगर का डेटा पढ़ने की अनुमति दें"</string>
     <string name="blood_glucose_write_content_description" msgid="7688360165458091174">"ब्लड शुगर का डेटा सेव करने की अनुमति दें"</string>
@@ -397,7 +397,7 @@
     <string name="medical_request_footer" msgid="6533749932770903089">"अलग-अलग ऐप्लिकेशन और सोर्स में मौजूद अपने सेहत का डेटा सिंक करें, ताकि वह एक ही जगह पर सेव रहे"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"क्या आपको सभी अनुमतियां हटानी हैं?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"सभी अनुमतियां हटाएं"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को पढ़ने या उसमें बदलाव करने की अनुमति नहीं होगी.\n\nइससे, इस ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को देखने, सेव करने या उसमें बदलाव करने की अनुमति नहीं होगी.\n\nइससे, इस ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को पढ़ने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें बैकग्राउंड डेटा ऐक्सेस करने की अनुमति भी शामिल है.\n\nऐसा करके, इस ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को पढ़ने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें पहले से मौजूद डेटा को ऐक्सेस करने की अनुमति भी शामिल है.\n\nऐसा करके, इस ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के किसी भी डेटा को पढ़ने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें जेनरेट हो रहा नया डेटा और पहले से मौजूद डेटा, दोनों शामिल हैं.\n\nहालांकि, इस ऐप्लिकेशन को मिली दूसरी अनुमतियों पर कोई असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
@@ -411,7 +411,7 @@
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के इस डेटा को देखने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें पुराने डेटा को ऐक्सेस करने की अनुमति भी शामिल है.\n\nइससे ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="disconnect_all_fitness_or_medical_and_additional_permissions_dialog_message" msgid="5147728456578218902">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के इस डेटा को देखने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें बैकग्राउंड और पुराने डेटा को ऐक्सेस करने की अनुमति भी शामिल है.\n\nइससे ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="disconnect_all_health_permissions_title" msgid="3995410660376966233">"क्या आपको सभी अनुमतियां हटानी हैं?"</string>
-    <string name="disconnect_all_health_no_additional_permissions_dialog_message" msgid="211728516196974197">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के डेटा को देखने या उसमें बदलाव करने की अनुमति नहीं होगी.\n\nइससे ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
+    <string name="disconnect_all_health_no_additional_permissions_dialog_message" msgid="211728516196974197">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के डेटा को देखने, सेव करने या उसमें बदलाव करने की अनुमति नहीं होगी.\n\nइससे ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के डेटा को देखने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें बैकग्राउंड डेटा को ऐक्सेस करने की अनुमति भी शामिल है.\n\nइससे ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के डेटा को देखने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें पुराने डेटा को ऐक्सेस करने की अनुमति भी शामिल है.\n\nइससे ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> के पास Health Connect के डेटा को देखने या उसमें बदलाव करने की अनुमति नहीं होगी. इसमें बैकग्राउंड और पुराने डेटा को ऐक्सेस करने की अनुमति भी शामिल है.\n\nइससे ऐप्लिकेशन की दूसरी अनुमतियों पर असर नहीं पड़ेगा. जैसे, जगह की जानकारी, कैमरे या माइक्रोफ़ोन के इस्तेमाल से जुड़ी अनुमतियां."</string>
@@ -430,7 +430,7 @@
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"पूरी जानकारी देने वाला सोर्स कोड: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"जिन ऐप्लिकेशन के पास यह अनुमति है वे स्वास्थ्य और फ़िटनेस से जुड़े डेटा को देख और उसमें बदलाव कर सकते हैं."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"कंट्रोल करें कि कौनसे ऐप्लिकेशन, Health Connect में सेव किए गए डेटा को ऐक्सेस कर सकते हैं. कोई ऐप्लिकेशन कौनसा डेटा पढ़ सकता है या बदलाव कर सकता है, यह देखने के लिए उस टैप करें."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"कंट्रोल करें कि कौनसे ऐप्लिकेशन, Health Connect में सेव किए गए डेटा को ऐक्सेस कर सकते हैं. किसी ऐप्लिकेशन को कौनसा डेटा देखने, सेव करने या उसमें बदलाव करने की अनुमति है, यह देखने के लिए उस पर टैप करें."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"ऐक्सेस करने की अनुमति है"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"ऐक्सेस की अनुमति नहीं है"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"अपडेट करने की ज़रूरत है"</string>
@@ -558,9 +558,9 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Store पर जाएं"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect का इस्तेमाल शुरू करें"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect में, आपकी सेहत और फ़िटनेस से जुड़ा डेटा सेव किया जाता है. इससे अपने डिवाइस में अलग-अलग ऐप्लिकेशन को आसानी से सिंक करने में मदद मिलती है"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect, अलग-अलग ऐप्लिकेशन से सेहत और फ़िटनेस से जुड़ा आपका डेटा सेव और सिंक करता है.\n\n"<b>"फ़िटनेस और तंदुरुस्ती का डेटा"</b>"  कसरत के सेशन, कदमों की संख्या, पोषण, नींद वगैरह का डेटा शामिल है\n\n"<b>"सेहत का डेटा"</b>" जिसमें टीकाकरण की जानकारी, लैब टेस्ट की रिपोर्ट वगैरह शामिल हैं"</string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect, अलग-अलग ऐप्लिकेशन से सेहत और फ़िटनेस से जुड़ा आपका डेटा सेव और सिंक करता है.\n\n"<b>"फ़िटनेस और तंदुरुस्ती का डेटा"</b>"  जिसमें कसरत के सेशन, कदमों की संख्या, पोषण, नींद वगैरह का डेटा शामिल है\n\n"<b>"सेहत का डेटा"</b>" जिसमें टीकाकरण की जानकारी, लैब टेस्ट की रिपोर्ट वगैरह शामिल हैं"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect की मदद से ये काम करें"</string>
-    <string name="share_data_text" msgid="6898398345784931678"><b>"ऐप्लिकेशन के साथ डेटा शेयर करें"</b>\n"ऐप्लिकेशन के लिए, यह चुनें कि Health Connect में मौजूद कौनसा डेटा पढ़ने या सेव करने की अनुमति देनी है"</string>
+    <string name="share_data_text" msgid="6898398345784931678"><b>"ऐप्लिकेशन के साथ डेटा शेयर करें"</b>\n"Health Connect में मौजूद उस डेटा को चुनें जिसे देखने, सेव करने या उसमें बदलाव करने की अनुमति सभी ऐप्लिकेशन को देनी है"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"सेटिंग और निजता को मैनेज करें"</b>\n" किसी भी समय, ऐप्लिकेशन को दी गई अनुमतियों में बदलाव करें और अपना डेटा मैनेज करें"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"वापस जाएं"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"शुरू करें"</string>
@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"बंद है"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"इन सेटिंग में बदलाव करने पर, Health Connect आपकी नई सेटिंग के हिसाब से डेटा दिखाने के लिए, मौजूदा डेटा को मिटा देता है"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{क्या # महीने के बाद, डेटा अपने-आप मिट जाए?}one{क्या # महीने के बाद, डेटा अपने-आप मिट जाए?}other{क्या # महीनों के बाद, डेटा अपने-आप मिट जाए?}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{अगर यह सुविधा चालू की जाती है, तो Health Connect का # महीने से पुराना डेटा भी मिट जाएगा.\n\nअगर आपको कनेक्ट किए गए अपने ऐप्लिकेशन से सारा डेटा मिटाना है, तो उन सभी ऐप्लिकेशन की जांच करें जिनमें डेटा सेव हो सकता है.}one{अगर यह सुविधा चालू की जाती है, तो Health Connect का # महीने से पुराना डेटा भी मिट जाएगा.\n\nअगर आपको कनेक्ट किए गए अपने ऐप्लिकेशन से सारा डेटा मिटाना है, तो उन सभी ऐप्लिकेशन की जांच करें जिनमें डेटा सेव हो सकता है.}other{अगर यह सुविधा चालू की जाती है, तो Health Connect का # महीनों से पुराना डेटा भी मिट जाएगा.\n\nअगर आपको कनेक्ट किए गए अपने ऐप्लिकेशन से सारा डेटा मिटाना है, तो उन सभी ऐप्लिकेशन की जांच करें जिनमें डेटा सेव हो सकता है.}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{अगर यह सुविधा चालू की जाती है, तो Health Connect पर मौजूदा आपका # महीने से पुराना डेटा भी मिट जाएगा.\n\nअगर आपको कनेक्ट किए गए अपने ऐप्लिकेशन से सारा डेटा मिटाना है, तो उन सभी ऐप्लिकेशन की जांच करें जिनमें डेटा सेव हो सकता है.}one{अगर यह सुविधा चालू की जाती है, तो Health Connect पर मौजूद आपका # महीने से पुराना डेटा भी मिट जाएगा.\n\nअगर आपको कनेक्ट किए गए अपने ऐप्लिकेशन से सारा डेटा मिटाना है, तो उन सभी ऐप्लिकेशन की जांच करें जिनमें डेटा सेव हो सकता है.}other{अगर यह सुविधा चालू की जाती है, तो Health Connect पर मौजूद आपका # महीनों से पुराना डेटा भी मिट जाएगा.\n\nअगर आपको कनेक्ट किए गए अपने ऐप्लिकेशन से सारा डेटा मिटाना है, तो उन सभी ऐप्लिकेशन की जांच करें जिनमें डेटा सेव हो सकता है.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"अपने-आप मिटने की सुविधा को सेट करें"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"मौजूदा डेटा मिटा दिया जाएगा"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect, # महीने से पहले का सारा डेटा मिटा देगा. इन बदलावों को, आपके कनेक्ट किए गए ऐप्लिकेशन में दिखने में एक दिन लग सकता है.}one{Health Connect, # महीने से पहले का सारा डेटा मिटा देगा. इन बदलावों को, आपके कनेक्ट किए गए ऐप्लिकेशन में दिखने में एक दिन लग सकता है.}other{Health Connect, # महीने से पहले का सारा डेटा मिटा देगा. इन बदलावों को, आपके कनेक्ट किए गए ऐप्लिकेशन में दिखने में एक दिन लग सकता है.}}"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect को Android सिस्टम के साथ इंटिग्रेट किया जा रहा है, ताकि इसे सीधे आपके डिवाइस की सेटिंग से ऐक्सेस किया जा सके."</string>
     <string name="update_button" msgid="4544529019832009496">"अपडेट करें"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"इसे अपडेट करें, ताकि Health Connect आपके डिवाइस की सिस्टम सेटिंग से इंटिग्रेट करने की प्रोसेस जारी रख सके"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect को Android सिस्टम के साथ इंटिग्रेट किया जा रहा है, ताकि इसे सीधे आपके डिवाइस की सेटिंग से ऐक्सेस किया जा सके.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"सिस्टम अपडेट करना ज़रूरी है"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"आगे बढ़ने से पहले, अपने फ़ोन का सिस्टम अपडेट करें."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"अगर आपने अपने फ़ोन का सिस्टम पहले ही अपडेट कर दिया है, तो इंटिग्रेशन की प्रोसेस को जारी रखने के लिए फ़ोन को रीस्टार्ट करें"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"क्या आपको <xliff:g id="APP_NAME">%2$s</xliff:g> के लिए, <xliff:g id="DATA_TYPE">%1$s</xliff:g> का डेटा हमेशा के लिए मिटाना है?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"सिस्टम के ऐप्लिकेशन दिखाएं"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"सिस्टम के ऐप्लिकेशन छिपाएं"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"चालू है"</string>
     <string name="off" msgid="6996623844428550649">"बंद है"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g> को ऐक्सेस किया गया"</string>

@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Notiek Health Connect integrēšana Android sistēmā, lai jūs tai varētu piekļūt tieši no iestatījumiem."</string>
     <string name="update_button" msgid="4544529019832009496">"Atjaunināt"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Sāciet atjaunināšanu, lai varētu turpināt Health Connect integrēšanu jūsu sistēmas iestatījumos"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Notiek Health Connect integrēšana Android sistēmā, lai jūs tai varētu piekļūt tieši no iestatījumiem.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Nepieciešams atjaunināt sistēmu"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Pirms turpināt, atjauniniet tālruņa sistēmu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ja esat atjauninājis tālruņa sistēmu, restartējiet tālruni, lai turpinātu integrēšanu."</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Vai neatgriezeniski dzēst datus (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) lietotnei <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Rādīt sistēmas lietotnes"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Paslēpt sistēmas lietotnes"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Ieslēgts"</string>
     <string name="off" msgid="6996623844428550649">"Izslēgts"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Pēdējā piekļuves reize: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Aplicația Health Connect se integrează cu sistemul Android ca să o poți accesa direct din setări."</string>
     <string name="update_button" msgid="4544529019832009496">"Actualizează"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Inițiază actualizarea pentru ca Health Connect să poată continua integrarea cu setările sistemului"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Aplicația Health Connect se integrează cu sistemul Android ca să o poți accesa direct din setări.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Este necesară o actualizare de sistem"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Înainte de a continua, actualizează sistemul telefonului."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Dacă ai actualizat deja sistemul telefonului, repornește telefonul pentru a continua integrarea"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Ștergi definitiv datele despre <xliff:g id="DATA_TYPE">%1$s</xliff:g> pentru <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Afișează aplicațiile de sistem"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Ascunde aplicațiile de sistem"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Activat"</string>
     <string name="off" msgid="6996623844428550649">"Dezactivat"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Data ultimei accesări: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
