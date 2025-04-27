@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect നിങ്ങളുടെ ക്രമീകരണത്തിൽ നിന്ന് നേരിട്ട് ആക്സസ് ചെയ്യുന്നതിനായി അത് Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കുകയാണ്."</string>
     <string name="update_button" msgid="4544529019832009496">"അപ്ഡേറ്റ് ചെയ്യുക"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Health Connect നിങ്ങളുടെ സിസ്റ്റം ക്രമീകരണവുമായി സംയോജിപ്പിക്കുന്നത് തുടരാൻ ഈ അപ്ഡേറ്റ് ആരംഭിക്കുക"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect നിങ്ങളുടെ ക്രമീകരണത്തിൽ നിന്ന് നേരിട്ട് ആക്സസ് ചെയ്യുന്നതിനായി അത് Android സിസ്റ്റവുമായി സംയോജിപ്പിക്കുകയാണ്.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"സിസ്‌റ്റം അപ്‌ഡേറ്റ് ആവശ്യമാണ്"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"തുടരുന്നതിന് മുമ്പ്, ഫോൺ സിസ്റ്റം അപ്ഡേറ്റ് ചെയ്യുക."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"നിങ്ങൾ ഇതിനകം ഫോൺ സിസ്റ്റം അപ്ഡേറ്റ് ചെയ്തിട്ടുണ്ടെങ്കിൽ, സംയോജനം തുടരാൻ ഫോൺ റീസ്റ്റാർട്ട് ചെയ്തു നോക്കുക"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> എന്നതിനുള്ള <xliff:g id="DATA_TYPE">%1$s</xliff:g> ഡാറ്റ ശാശ്വതമായി നീക്കം ചെയ്യണോ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"സിസ്‌റ്റം കാണിക്കുക"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"സിസ്‌റ്റം മറയ്ക്കുക"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"ഓണാണ്"</string>
     <string name="off" msgid="6996623844428550649">"ഓഫാണ്"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"<xliff:g id="TIME_DATE">%1$s</xliff:g>-ന് ആക്‌സസ് ചെയ്തു"</string>

@@ -300,7 +300,7 @@
     <string name="body_temperature_lowercase_label" msgid="324124730971992259">"telesná teplota"</string>
     <string name="body_temperature_read_content_description" msgid="5966765249024688738">"Čítanie údajov o telesnej teplote"</string>
     <string name="body_temperature_write_content_description" msgid="5498016171067859369">"Zapisovanie údajov o telesnej teplote"</string>
-    <string name="heart_rate_uppercase_label" msgid="4990167215137642430">"Pulz"</string>
+    <string name="heart_rate_uppercase_label" msgid="4990167215137642430">"Tep"</string>
     <string name="heart_rate_lowercase_label" msgid="693492686337628283">"pulz"</string>
     <string name="heart_rate_read_content_description" msgid="4165867166260001259">"Čítanie údajov o pulze"</string>
     <string name="heart_rate_write_content_description" msgid="2876667918366409170">"Zapisovanie údajov o pulze"</string>
@@ -795,7 +795,7 @@
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"bdenie"</string>
     <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"v posteli v bdelom stave"</string>
-    <string name="sleep_stage_sleeping" msgid="5122840110107303518">"spanie"</string>
+    <string name="sleep_stage_sleeping" msgid="5122840110107303518">"spánok"</string>
     <string name="sleep_stage_out_of_bed" msgid="522297068981578046">"mimo posteľ"</string>
     <string name="sleep_stage_rem" msgid="1694477904067543104">"REM spánok"</string>
     <string name="sleep_stage_light" msgid="1070117964678317880">"ľahký spánok"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Dáta o zdraví sa integrujú so systémom Android, aby ste k nim mali prístup priamo z nastavení."</string>
     <string name="update_button" msgid="4544529019832009496">"Aktualizovať"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Spustite túto aktualizáciu, aby mohla pokračovať integrácia Dát o zdraví s nastaveniami systému"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Dáta o zdraví sa integrujú so systémom Android, aby ste k nim mali prístup priamo z nastavení.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Vyžaduje sa aktualizácia systému"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Než budete pokračovať, aktualizujte systém telefónu."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Ak ste systém telefónu už aktualizovali, skúste telefón reštartovať a pokračujte v integrácii"</string>
@@ -1117,8 +1116,8 @@
     <string name="data_totals_header" msgid="8316977153276216025">"Celkové hodnoty údajov"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Zdrojové aplikácie"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"Pridajte zdrojové aplikácie do zoznamu a zistite, ako sa celkové hodnoty údajov môžu meniť. Ak aplikáciu odstránite z tohto zoznamu, už nebude prispievať k celkovým hodnotám, ale stále bude mať povolenia na zápis."</string>
-    <string name="data_sources_empty_state" msgid="1899652759274805556">"Žiadne zdroje týkajúce sa aplikácií"</string>
-    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Tu sa budú zobrazovať zdroje, keď udelíte povolenia aplikácie zapisovať údaje v kategórii <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>."</string>
+    <string name="data_sources_empty_state" msgid="1899652759274805556">"Žiadne zdrojové aplikácie"</string>
+    <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Keď aplikáciám udelíte povolenia zapisovať údaje v kategórii <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, zdroje sa zobrazia tu."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Ako fungujú zdroje a priorizácia"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"Pridať aplikáciu"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"Upraviť zdroje aplikácií"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Chcete natrvalo odstrániť údaje (<xliff:g id="DATA_TYPE">%1$s</xliff:g>) aplikácie <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Zobraziť systémové aplikácie"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Skryť systémové aplikácie"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Zapnuté"</string>
     <string name="off" msgid="6996623844428550649">"Vypnuté"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Posledný prístup: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -558,7 +558,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Store\'a git"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect\'i kullanmaya başlama"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect, sağlık ve fitness verilerinizi depolayarak cihazınızdaki farklı uygulamaları senkronize etmek için basit bir yol sunar"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect, farklı uygulamalardan sağlık ve fitness verilerinizi saklayıp senkronize eder.\n\nEgzersiz oturumu, adım sayıları, beslenme, uyku ve diğer veriler de dahil olmak üzere "<b>"fitness ve sağlıklı yaşam verileri"</b>";\n\nAşılar, tahlil sonuçları ve diğer veriler de dahil olmak üzere "<b>"sağlık kayıtları"</b></string>
+    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect, farklı uygulamalardan sağlık ve fitness verilerinizi saklayıp senkronize eder.\n\nEgzersiz oturumu, adım sayıları, beslenme, uyku ve diğer veriler de dahil olmak üzere "<b>"fitness ve sağlıklı yaşam verileri"</b>\n\n"Aşılar, tahlil sonuçları ve diğer veriler de dahil olmak üzere "<b>"sağlık kayıtları"</b></string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect ile şunları yapabilirsiniz:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Verileri uygulamalarınızla paylaşın"</b>\n"Her uygulamanın Health Connect\'ten okuyabileceği veya Health Connect\'e yazabileceği verileri seçin"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Ayarlarınızı ve gizliliğinizi yönetin"</b>\n"İstediğiniz zaman uygulama izinlerini değiştirin ve verilerinizi yönetin"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect, Android sistemiyle entegre edildiği için bu uygulamaya doğrudan ayarlarınızdan erişebilirsiniz."</string>
     <string name="update_button" msgid="4544529019832009496">"Güncelle"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Health Connect\'in sistem ayarlarınızla entegre edilmeye devam etmesi için bu güncellemeyi başlatın"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect, Android sistemiyle entegre edildiği için bu uygulamaya doğrudan ayarlarınızdan erişebilirsiniz.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Sistem güncellemesi gerekli"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Devam etmeden önce telefon sisteminizi güncelleyin."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Telefon sisteminizi daha önce güncellediyseniz entegrasyona devam etmek için telefonunuzu yeniden başlatmayı deneyin"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> için <xliff:g id="DATA_TYPE">%1$s</xliff:g> verileri kalıcı olarak silinsin mi?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Sistemi göster"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Sistemi gizle"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Açık"</string>
     <string name="off" msgid="6996623844428550649">"Kapalı"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Erişim zamanı: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

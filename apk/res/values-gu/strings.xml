@@ -69,7 +69,7 @@
     <string name="recent_access_error" msgid="2258399573560888960">"તાજેતરનો ઍક્સેસ લોડ કરી શકાયો નથી"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"આ ઍપ હવે ઉપલબ્ધ નથી"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"ઍક્ટિવિટી"</string>
-    <string name="activity_category_lowercase" msgid="3007220578865400601">"પ્રવૃત્તિ"</string>
+    <string name="activity_category_lowercase" msgid="3007220578865400601">"ઍક્ટિવિટી"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"શરીરના માપ"</string>
     <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"શરીરના માપ"</string>
     <string name="sleep_category_uppercase" msgid="3422452674899706786">"ઊંઘ"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connectનું Android સિસ્ટમ સાથે એકીકરણ કરવામાં આવી રહ્યું છે જેથી તમે સીધા તમારા સેટિંગમાંથી તેને ઍક્સેસ કરી શકશો."</string>
     <string name="update_button" msgid="4544529019832009496">"અપડેટ કરો"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"આ અપડેટ કરવાનું શરૂ કરો કે જેથી Health Connect તમારી સિસ્ટમના સેટિંગ સાથે એકીકરણ ચાલુ રાખી શકે"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connectનું Android સિસ્ટમ સાથે એકીકરણ કરવામાં આવી રહ્યું છે જેથી તમે સીધા તમારા સેટિંગમાંથી તેને ઍક્સેસ કરી શકશો.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"સિસ્ટમ અપડેટ જરૂરી છે"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"ચાલુ રાખતા પહેલાં, તમારા ફોનની સિસ્ટમ અપડેટ કરો."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"જો તમે પહેલેથી તમારી ફોન સિસ્ટમ અપડેટ કરેલી હોય, તો એકીકરણ ચાલુ રાખવા માટે તમારો ફોન ફરી શરૂ કરવાનો પ્રયાસ કરો"</string>
@@ -1119,7 +1118,7 @@
     <string name="data_sources_footer" msgid="6414387142919741183">"ડેટાની કુલ સંખ્યામાં કેવી રીતે ફેરફાર થઈ શકે છે તે જોવા માટે સૂચિમાં ઍપ સૉર્સ ઉમેરો. આ સૂચિમાંથી કોઈ ઍપ કાઢી નાખવાથી, તે ઍપ કુલ સંખ્યામાં યોગદાન આપતી અટકી જશે, પરંતુ તે હજી પણ રાઇટ પરવાનગી ધરાવશે."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"કોઈ ઍપ સૉર્સ નથી"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"એકવાર તમે ઍપને <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>નો ડેટા લખવાની પરવાનગીઓ આપો, ત્યાર બાદ સૉર્સ અહીં દેખાશે."</string>
-    <string name="data_sources_help_link" msgid="7740264923634947915">"સૉર્સના &amp; પ્રાધાન્યતા આપવાના સેટિંગની કાર્ય કરવાની રીત"</string>
+    <string name="data_sources_help_link" msgid="7740264923634947915">"સૉર્સના અને પ્રાધાન્યતા આપવાના સેટિંગની કાર્ય કરવાની રીત"</string>
     <string name="data_sources_add_app" msgid="319926596123692514">"કોઈ ઍપ ઉમેરો"</string>
     <string name="edit_data_sources" msgid="79641360876849547">"ઍપના સૉર્સમાં ફેરફાર કરો"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ડિવાઇસ પર ડિફૉલ્ટ"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> માટે <xliff:g id="DATA_TYPE">%1$s</xliff:g> ડેટા કાયમી રીતે ડિલીટ કરીએ?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"સિસ્ટમ બતાવો"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"સિસ્ટમ છુપાવો"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"ચાલુ છે"</string>
     <string name="off" msgid="6996623844428550649">"બંધ છે"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"છેલ્લે <xliff:g id="TIME_DATE">%1$s</xliff:g> વાગ્યે ઍક્સેસ કરી"</string>

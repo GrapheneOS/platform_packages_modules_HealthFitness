@@ -451,7 +451,7 @@
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Diese Apps haben keinen Zugriff mehr, aber es sind noch Daten von ihnen in Health Connect gespeichert"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> kann Daten lesen, die nach dem <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> hinzugefügt wurden."</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Weitere Android-Berechtigungen, die diese App hat, kannst du in den Einstellungen unter „Apps“ verwalten."</string>
-    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Wie „<xliff:g id="APP_NAME">%1$s</xliff:g>“ mit deinen Daten umgeht, erfährst du in der Datenschutzerklärung des Entwicklers"</string>
+    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Wie die App „<xliff:g id="APP_NAME">%1$s</xliff:g>“ mit deinen Daten umgeht, erfährst du in der Datenschutzerklärung des Entwicklers."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Weitere Android-Berechtigungen, die diese App hat, kannst du in den Einstellungen unter „Apps“ verwalten."</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Datenschutzerklärung lesen"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Zugriff in den letzten 24 Stunden"</string>
@@ -499,7 +499,7 @@
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"Noch mal versuchen"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"Beim Wiederherstellen der Daten aus deinem Bericht ist ein Fehler aufgetreten."</string>
     <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"Über den Export können Daten gespeichert und dann auf ein neues Smartphone übertragen werden"</string>
-    <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"Infos zu Back-up und Wiederherstellung"</string>
+    <string name="backup_and_restore_footer_link_text" msgid="9075133737244288876">"Infos zu Backup und Wiederherstellung"</string>
     <string name="automatic_export_status" msgid="4407131306281440230">"<xliff:g id="EXPORT_ON_OR_OFF">%1$s</xliff:g> • <xliff:g id="EXPORT_FREQUENCY">%2$s</xliff:g>"</string>
     <string name="automatic_export_on" msgid="6972389773963624315">"An"</string>
     <string name="automatic_export_off" msgid="3270255845008880841">"Aus"</string>
@@ -608,7 +608,7 @@
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Fertig"</string>
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"Schließen"</string>
     <string name="delete_dialog_success_title" msgid="900884533930984889">"Daten wurden aus Health Connect gelöscht"</string>
-    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Wenn du Daten vollständig aus deinen verbundenen Apps löschen möchtest, sieh in den einzelnen Apps nach, in denen deine Daten möglicherweise gespeichert sind."</string>
+    <string name="delete_dialog_success_message" msgid="7454086333205881294">"Wenn du Daten aus deinen verbundenen Apps vollständig löschen möchtest, sieh in den einzelnen Apps nach, in denen deine Daten möglicherweise gespeichert sind."</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"Fertig"</string>
     <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Verbundene Apps ansehen"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"Daten werden gelöscht"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect wird in das Android-System integriert, damit du direkt über deine Einstellungen darauf zugreifen kannst."</string>
     <string name="update_button" msgid="4544529019832009496">"Aktualisieren"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Starte dieses Update, damit Health Connect weiter in deine Systemeinstellungen integriert werden kann"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect wird in das Android-System integriert, damit du direkt über deine Einstellungen darauf zugreifen kannst.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Systemupdate erforderlich"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Damit du fortfahren kannst, musst du das Betriebssystem deines Smartphones aktualisieren."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Wenn du das Betriebssystem deines Smartphones bereits aktualisiert hast, starte dein Smartphone neu, um mit der Integration fortzufahren"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Daten vom Typ „<xliff:g id="DATA_TYPE">%1$s</xliff:g>“ für <xliff:g id="APP_NAME">%2$s</xliff:g> endgültig löschen?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"System-Apps einblenden"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"System-Apps ausblenden"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"An"</string>
     <string name="off" msgid="6996623844428550649">"Aus"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Zugriff: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

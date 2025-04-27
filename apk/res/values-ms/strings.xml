@@ -431,7 +431,7 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Kod sumber terperinci: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Apl dengan kebenaran ini boleh membaca dan menulis data kesihatan dan kecergasan anda."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Kawal jenis apl yang boleh mengakses data yang disimpan dalam Health Connect. Ketik apl untuk menyemak data yang boleh dibaca atau ditulis oleh apl itu."</string>
-    <string name="connected_apps_section_title" msgid="2415288099612126258">"Akses yang dibenarkan"</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"Akses dibenarkan"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Akses yang tidak dibenarkan"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Perlu dikemaskinikan"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"Tetapan &amp; bantuan"</string>
@@ -517,7 +517,7 @@
     <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
     <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"Import fail ini?"</string>
-    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> akan diimport dalam Health Connect"</string>
+    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> akan diimport kepada Health Connect"</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"Batal"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"Import"</string>
     <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"Pemulihan Health Connect dalam proses"</string>
@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"Mati"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"Apabila anda mengubah tetapan ini, Health Connect memadamkan data sedia ada untuk mencerminkan pilihan baharu"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Autopadam data selepas # bulan?}other{Autopadam data selepas # bulan?}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Ciri ini juga memadamkan data yang lebih lama daripada # bulan daripada Health Connect.\n\nJika anda mahu memadamkan sepenuhnya data daripada apl disambungkan anda, semak setiap apl yang mungkin menyimpan data anda.}other{Ciri ini juga memadamkan data yang lebih lama daripada # bulan daripada Health Connect.\n\nJika anda mahu memadamkan sepenuhnya data daripada apl disambungkan anda, semak setiap apl yang mungkin menyimpan data anda.}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Ciri ini juga memadamkan data yang lebih lama daripada # bulan daripada Health Connect.\n\nJika anda mahu memadamkan data sepenuhnya daripada apl disambungkan, semak setiap apl yang mungkin menyimpan data anda.}other{Ciri ini juga memadamkan data yang lebih lama daripada # bulan daripada Health Connect.\n\nJika anda mahu memadamkan data sepenuhnya daripada apl disambungkan, semak setiap apl yang mungkin menyimpan data anda.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"Tetapkan autopadam"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"Data sedia ada akan dipadamkan"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect akan memadamkan semua data yang melebihi # bulan. Perubahan ini mungkin mengambil masa sehari untuk dipaparkan dalam apl anda yang disambungkan.}other{Health Connect akan memadamkan semua data yang melebihi # bulan. Perubahan ini mungkin mengambil masa sehari untuk dipaparkan dalam apl anda yang disambungkan.}}"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"Health Connect sedang disepadukan dengan sistem Android agar anda dapat mengakses Health Connect terus daripada tetapan anda."</string>
     <string name="update_button" msgid="4544529019832009496">"Kemas kinikan"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Mulakan kemaskinian ini agar Health Connect boleh meneruskan proses penyepaduan dengan tetapan sistem anda"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"Health Connect sedang disepadukan dengan sistem Android agar anda dapat mengakses Health Connect terus daripada tetapan anda.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Kemaskinian keselamatan diperlukan"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Sebelum meneruskan proses, kemas kinikan sistem telefon anda."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Jika anda telah mengemaskinikan sistem telefon anda, cuba mulakan semula telefon anda untuk meneruskan proses penyepaduan"</string>
@@ -1116,7 +1115,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Kemas kinikan sekarang"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Jumlah data"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"Sumber apl"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"Tambahkan sumber apl pada senarai tersebut untuk melihat cara jumlah data berubah. Pengalihan keluar apl daripada senarai ini akan menghentikan apl daripada menyumbang kepada jumlah tersebut tetapi apl masih memiliki kebenaran tulis."</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"Tambahkan sumber apl pada senarai untuk melihat perubahan jumlah data. Apl yang dialih keluar daripada senarai ini akan berhenti menyumbang kepada jumlah data tetapi apl masih memiliki kebenaran tulis."</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"Tiada sumber apl"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"Sebaik sahaja anda memberi apl kebenaran untuk menulis data <xliff:g id="CATEGORY_NAME">%1$s</xliff:g>, sumber akan dipaparkan di sini."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Cara sumber &amp; keutamaan berfungsi"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Padamkan data <xliff:g id="DATA_TYPE">%1$s</xliff:g> untuk <xliff:g id="APP_NAME">%2$s</xliff:g> secara kekal?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Tunjukkan sistem"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Sembunyikan sistem"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"Hidup"</string>
     <string name="off" msgid="6996623844428550649">"Mati"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Diakses <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

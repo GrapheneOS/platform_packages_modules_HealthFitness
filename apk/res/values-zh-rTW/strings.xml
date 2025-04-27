@@ -30,7 +30,7 @@
     <string name="no_data" msgid="1906986019249068659">"沒有資料"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"應用程式權限"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"管理應用程式和權限"</string>
-    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式有存取權 (共 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> 個應用程式)"</string>
+    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式 (共 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> 個) 有存取權"</string>
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取 (共有 <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> 個應用程式)"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"有 <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> 個應用程式可存取"</string>
@@ -488,7 +488,7 @@
     <string name="last_export_time_hours_ago" msgid="3174986640795245343">"{count,plural, =1{上次匯出時間：1 小時前}other{上次匯出時間：# 小時前}}"</string>
     <string name="no_last_export_message" msgid="8138900854579872667">"上次匯出：無"</string>
     <string name="last_export_file_location" msgid="4069435932524304633">"<xliff:g id="EXPORT_APP_NAME">%1$s</xliff:g> • <xliff:g id="EXPORT_FILE_NAME">%2$s</xliff:g>"</string>
-    <string name="scheduled_export" msgid="8737660963687364370">"已排定匯出時間"</string>
+    <string name="scheduled_export" msgid="8737660963687364370">"定期匯出"</string>
     <string name="import_data" msgid="404502315533233094">"匯入資料"</string>
     <string name="import_data_description" msgid="4040178599441724296">"從先前匯出的檔案還原資料"</string>
     <string name="import_error_banner_title" msgid="1480977889067027790">"無法還原資料"</string>
@@ -512,12 +512,12 @@
     <string name="frequency_daily" msgid="3596412357416125727">"每天"</string>
     <string name="frequency_weekly" msgid="7302587625019573393">"每週"</string>
     <string name="frequency_monthly" msgid="729674398053825938">"每月"</string>
-    <string name="export_destination_title" msgid="8352929396306002479">"選取所排定匯出作業的資料儲存位置"</string>
+    <string name="export_destination_title" msgid="8352929396306002479">"選取排定匯出作業的資料儲存位置"</string>
     <string name="export_invalid_storage" msgid="1459055934301871321">"請選擇要用來匯出資料的雲端儲存空間應用程式"</string>
     <string name="export_default_file_name" msgid="1146984404965754445">"健康資料同步"</string>
     <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"健康資料同步 (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
     <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"要匯入這個檔案嗎？"</string>
-    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"「<xliff:g id="FILE_NAME">%1$s</xliff:g>」將匯出至「健康資料同步」"</string>
+    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"「<xliff:g id="FILE_NAME">%1$s</xliff:g>」將匯入「健康資料同步」中"</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"取消"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"匯入"</string>
     <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"正在還原「健康資料同步」資料"</string>
@@ -554,7 +554,7 @@
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"取消"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"完成"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"沒有可用的應用程式。安裝雲端儲存空間應用程式，即可在此查看資料"</string>
-    <string name="export_import_install_apps_text" msgid="5026922993254770904">"如要新增選項，請安裝要使用的雲端儲存空間應用程式"</string>
+    <string name="export_import_install_apps_text" msgid="5026922993254770904">"如需其他選項，請安裝你想使用的雲端儲存應用程式"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"前往 Play 商店"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"開始使用「健康資料同步」"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"「健康資料同步」會儲存健康與健身資料，方便你在裝置上同步不同應用程式的資料"</string>
@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"已關閉"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"如果變更設定，「健康資料同步」將根據新的偏好設定刪除現有資料"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{# 個月後自動刪除資料？}other{# 個月後自動刪除資料？}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{這也會刪除 # 個月前的「健康資料同步」資料。\n\n如要徹底刪除連結應用程式中的資料，請檢查每個可能會儲存資料的應用程式。}other{這也會刪除 # 個月前的「健康資料同步」資料。\n\n如要徹底刪除連結應用程式中的資料，請檢查每個可能會儲存資料的應用程式。}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{儲存超過 # 個月的「健康資料同步」資料也會刪除。\n\n如果想徹底刪除連結應用程式中的資料，請檢查每個可能會儲存資料的應用程式。}other{儲存超過 # 個月的「健康資料同步」資料也會刪除。\n\n如果想徹底刪除連結應用程式中的資料，請檢查每個可能會儲存資料的應用程式。}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"設定自動刪除"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"系統將刪除現有資料"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{「健康資料同步」會刪除儲存超過 # 個月的所有資料。可能要到一天後，連結的應用程式才會反映這些變更。}other{「健康資料同步」會刪除儲存超過 # 個月的所有資料。可能要到一天後，連結的應用程式才會反映這些變更。}}"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"「健康資料同步」正在與 Android 系統整合，方便你直接從設定頁面存取。"</string>
     <string name="update_button" msgid="4544529019832009496">"更新"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"開始執行這項更新作業，讓「健康資料同步」能夠繼續與系統設定整合"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"「健康資料同步」正在與 Android 系統整合，方便你直接從設定頁面存取。\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"需要完成系統更新"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"繼續操作前，請更新你的手機系統。"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"如果你已更新手機系統，請嘗試重新啟動手機，繼續進行整合"</string>
@@ -1116,7 +1115,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"立即更新"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"資料總覽"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"應用程式來源"</string>
-    <string name="data_sources_footer" msgid="6414387142919741183">"在清單中新增應用程式來源，即可查看資料總數的變化情形。從這份清單中移除某個應用程式後，相關資料就不會計入總數，但應用程式仍具有寫入權限。"</string>
+    <string name="data_sources_footer" msgid="6414387142919741183">"你可以將應用程式來源加入此處的清單，查看資料總數的變化。如果從清單移除應用程式，該應用程式仍會具有寫入權限，但其資料就不會再計入總數。"</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"沒有應用程式來源"</string>
     <string name="data_sources_empty_state_footer" msgid="8933950342291569638">"你將寫入<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>資料的權限授予應用程式後，這裡就會顯示來源。"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"來源與優先順序的運作方式"</string>
@@ -1166,7 +1165,7 @@
     <string name="all_app_data_selected_deletion_confirmation_dialog" msgid="1077157006579195958">"要永久刪除所有「<xliff:g id="APP_NAME">%s</xliff:g>」資料嗎？"</string>
     <string name="some_app_data_selected_deletion_confirmation_dialog" msgid="5378172524112070270">"要永久刪除所選的「<xliff:g id="APP_NAME">%s</xliff:g>」資料嗎？"</string>
     <string name="all_entries_selected_day_deletion_confirmation_dialog" msgid="2887646600541520444">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所有項目嗎？"</string>
-    <string name="all_entries_selected_week_deletion_confirmation_dialog" msgid="6759608395185369048">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>該週的所有項目嗎？"</string>
+    <string name="all_entries_selected_week_deletion_confirmation_dialog" msgid="6759608395185369048">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>一週的所有項目嗎？"</string>
     <string name="all_entries_selected_month_deletion_confirmation_dialog" msgid="6030161837387559132">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所有項目嗎？"</string>
     <string name="some_entries_selected_day_deletion_confirmation_dialog" msgid="3481363886097542565">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>的所選項目嗎？"</string>
     <string name="some_entries_selected_week_deletion_confirmation_dialog" msgid="7150217982297131340">"要永久刪除 <xliff:g id="SELECTED_DATE_RANGE">%1$s</xliff:g>該週的所選項目嗎？"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"要永久刪除「<xliff:g id="APP_NAME">%2$s</xliff:g>」的<xliff:g id="DATA_TYPE">%1$s</xliff:g>資料嗎？"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"顯示系統應用程式"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"隱藏系統應用程式"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"開啟"</string>
     <string name="off" msgid="6996623844428550649">"關閉"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"上次存取時間：<xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

@@ -1008,7 +1008,7 @@
     <string name="range_off" msgid="8178520557618184215">"已关闭"</string>
     <string name="auto_delete_rationale" msgid="5255442126521464878">"更改这些设置后，“健康数据共享”会根据您的新偏好设置删除现有数据"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{在 # 个月后自动删除数据？}other{在 # 个月后自动删除数据？}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{此设置也会从“健康数据共享”中删除 # 个月以前的数据。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}other{此设置也会从“健康数据共享”中删除 # 个月以前的数据。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{“健康数据共享”中保留时长超过 # 个月的数据也会被删除。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}other{“健康数据共享”中保留时长超过 # 个月的数据也会被删除。\n\n如要从关联的应用中彻底删除数据，请检查每个可能保存您数据的应用。}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"设置自动删除"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"现有数据将被删除"</string>
     <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{“健康数据共享”将会删除存储时长已超过 # 个月的所有数据。这些更改可能需要一天的时间才会体现在您已关联的应用内。}other{“健康数据共享”将会删除存储时长已超过 # 个月的所有数据。这些更改可能需要一天的时间才会体现在您已关联的应用内。}}"</string>
@@ -1067,8 +1067,7 @@
     <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"健康数据共享正在与 Android 系统集成，完成后您可以直接在设置中访问它。"</string>
     <string name="update_button" msgid="4544529019832009496">"更新"</string>
     <string name="migration_update_needed_notification_content" msgid="478899618719297517">"开始执行此更新操作，以便健康数据共享能继续与您的系统设置集成"</string>
-    <!-- no translation found for migration_update_needed_header (2530273034135305057) -->
-    <skip />
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"“健康数据共享”正在与 Android 系统集成，以便您能直接从设置中访问它。\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"需要更新系统"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"在继续集成之前，请更新您的手机系统。"</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"如果您已更新手机系统，请尝试重启手机，继续进行集成"</string>
@@ -1182,6 +1181,10 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"要永久删除“<xliff:g id="APP_NAME">%2$s</xliff:g>”的<xliff:g id="DATA_TYPE">%1$s</xliff:g>数据吗？"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"显示系统应用"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"隐藏系统应用"</string>
+    <!-- no translation found for system_warning (5593850900577682512) -->
+    <skip />
+    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
+    <skip />
     <string name="on" msgid="8266542510798355807">"开"</string>
     <string name="off" msgid="6996623844428550649">"关"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"上次访问时间：<xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
