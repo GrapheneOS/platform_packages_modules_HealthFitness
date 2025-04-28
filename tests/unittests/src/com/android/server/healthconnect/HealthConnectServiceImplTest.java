@@ -139,8 +139,6 @@ import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.health.connect.restore.StageRemoteDataRequest;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
@@ -187,7 +185,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -346,12 +343,6 @@ public class HealthConnectServiceImplTest {
     private ThreadPoolExecutor mInternalTaskScheduler;
     private String mTestPackageName;
     private HealthConnectThreadScheduler mThreadScheduler;
-
-    @Rule
-    public AssumptionCheckerRule mSupportedHardwareRule =
-            new AssumptionCheckerRule(
-                    DeviceSupportUtils::isHealthConnectFullySupported,
-                    "Tests should run on supported hardware only.");
 
     @Before
     public void setUp() throws Exception {
