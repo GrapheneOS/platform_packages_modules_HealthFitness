@@ -18,6 +18,8 @@ package com.android.server.healthconnect;
 
 import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.BACKUP_RESTORE_JOBS_NAMESPACE;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -38,24 +40,21 @@ import android.os.UserManager;
 import android.permission.PermissionManager;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.modules.utils.testing.ExtendedMockitoRule;
 import com.android.server.SystemService;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
+import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateChangeJob;
-import com.android.server.healthconnect.testing.fixtures.EnvironmentFixture;
-import com.android.server.healthconnect.testing.fixtures.SQLiteDatabaseFixture;
-
-import com.google.common.truth.Truth;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectManagerServiceTest {
@@ -65,12 +64,8 @@ public class HealthConnectManagerServiceTest {
             "HEALTH_CONNECT_IMPORT_EXPORT_JOBS";
     private static final String ANDROID_SERVER_PACKAGE_NAME = "com.android.server";
 
-    @Rule
-    public final ExtendedMockitoRule mExtendedMockitoRule =
-            new ExtendedMockitoRule.Builder(this)
-                    .addStaticMockFixtures(EnvironmentFixture::new, SQLiteDatabaseFixture::new)
-                    .setStrictness(Strictness.LENIENT)
-                    .build();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
     @Mock Context mContext;
     @Mock private SystemService.TargetUser mMockTargetUser;
@@ -83,11 +78,9 @@ public class HealthConnectManagerServiceTest {
     @Mock private PackageManager mPackageManager;
     @Mock private PermissionManager mPermissionManager;
     @Mock private AppOpsManagerLocal mAppOpsManagerLocal;
-    private HealthConnectManagerService mHealthConnectManagerService;
 
     @Before
     public void setUp() throws PackageManager.NameNotFoundException {
-        HealthConnectInjector.resetInstanceForTest();
         when(mMainJobScheduler.forNamespace(HEALTH_CONNECT_DAILY_JOB_NAMESPACE))
                 .thenReturn(mDailyJobScheduler);
         when(mMainJobScheduler.forNamespace(MigrationStateChangeJob.class.toString()))
@@ -118,44 +111,59 @@ public class HealthConnectManagerServiceTest {
         when(mContext.getSystemService(AppOpsManagerLocal.class)).thenReturn(mAppOpsManagerLocal);
         when(mContext.getUser()).thenReturn(UserHandle.CURRENT);
         when(mContext.getPackageName()).thenReturn(ANDROID_SERVER_PACKAGE_NAME);
-        when(mContext.getDatabasePath(anyString()))
-                .thenReturn(
-                        InstrumentationRegistry.getInstrumentation()
-                                .getContext()
-                                .getDatabasePath("mock"));
+        when(mContext.getDatabasePath(anyString())).thenReturn(mEnvironmentDataDir.getRoot());
         when(mContext.createContextAsUser(any(), anyInt())).thenReturn(mContext);
         when(mMockTargetUser.getUserHandle()).thenReturn(UserHandle.CURRENT);
         when(mContext.getApplicationContext()).thenReturn(mContext);
-        mHealthConnectManagerService = new HealthConnectManagerService(mContext);
+        HealthConnectInjector.resetInstanceForTest();
     }
 
     @Test
     public void testCreateService() {
-        Truth.assertThat(mHealthConnectManagerService).isNotNull();
+        // Deliberately don't use injector for this test to check that the path where the
+        // default constructor is called succeeds.
+        HealthConnectManagerService service = new HealthConnectManagerService(mContext);
+        assertThat(service).isNotNull();
     }
 
     @Test
     public void testUserSupport() {
+        HealthConnectManagerService service = makeServiceWithTemporaryDir();
+
         when(mUserManager.isProfile()).thenReturn(true);
-        Truth.assertThat(mHealthConnectManagerService.isUserSupported(mMockTargetUser)).isFalse();
+        assertThat(service.isUserSupported(mMockTargetUser)).isFalse();
         when(mUserManager.isProfile()).thenReturn(false);
-        Truth.assertThat(mHealthConnectManagerService.isUserSupported(mMockTargetUser)).isTrue();
+        assertThat(service.isUserSupported(mMockTargetUser)).isTrue();
     }
 
     @Test
     public void testUserSwitch_userLocked() {
+        HealthConnectManagerService service = makeServiceWithTemporaryDir();
         when(mUserManager.isUserUnlocked(any())).thenReturn(false);
-        mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
+
+        service.onUserSwitching(mMockTargetUser, mMockTargetUser);
+
         verify(mDailyJobScheduler, times(1)).cancelAll();
         verify(mMigrationJobScheduler, times(1)).cancelAll();
     }
 
     @Test
     public void testUserSwitch_userUnlocked() {
+        HealthConnectManagerService service = makeServiceWithTemporaryDir();
         when(mUserManager.isUserUnlocked(any())).thenReturn(true);
-        mHealthConnectManagerService.onUserSwitching(mMockTargetUser, mMockTargetUser);
+
+        service.onUserSwitching(mMockTargetUser, mMockTargetUser);
+
         verify(mDailyJobScheduler, times(1)).cancelAll();
         verify(mDailyJobScheduler, timeout(5000).times(1)).schedule(any());
         verify(mBackupRestoreJobScheduler, times(1)).cancelAll();
+    }
+
+    private HealthConnectManagerService makeServiceWithTemporaryDir() {
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        return new HealthConnectManagerService(mContext, injector);
     }
 }
