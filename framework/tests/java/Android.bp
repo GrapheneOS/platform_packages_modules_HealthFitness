@@ -26,3 +26,16 @@ filegroup {
         "//packages/modules/HealthFitness:__subpackages__",
     ],
 }
+
+filegroup {
+    name: "healthfitness-framework-test-robo-tests-src-exclude",
+    srcs: [
+        // This test could be made to work by mocking out the package manager.
+        // However, at the moment it is working more as an integration test on the real platform.
+        // It is safer leaving the test as is.
+        "android/health/connect/HealthPermissionsTest.java",
+    ],
+    visibility: [
+        "//packages/modules/HealthFitness:__subpackages__",
+    ],
+}

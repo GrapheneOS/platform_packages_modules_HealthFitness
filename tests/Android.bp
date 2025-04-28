@@ -7,27 +7,14 @@ package {
 filegroup {
     name: "robo-tests-sources-exclude",
     srcs: [
-        // This test could be made to work by mocking out the package manager.
-        // However, at the moment it is working more as an integration test on the real platform.
-        // It is safer leaving the test as is.
-        "unittests/src/android/health/connect/HealthPermissionsTest.java",
         // Still uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/HealthConnectManagerServiceTest.java",
         // Uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreTest.java",
         // Uses CTS TestUtils
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreWithoutMocksTest.java",
-        // These fail because the Robolectric mocks for package manager return null rather
-        // than application icon or throw exception for getApplicationIcon() when not set.
-        // Should be fixed when android gets latest robolectric update.
-        "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupRestoreTest.java",
-        "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupSettingsHelperTest.java",
-        "unittests/src/com/android/server/healthconnect/backuprestore/CloudRestoreManagerTest.java",
         // Fails due to attempts to reference an inaccessible file don't fail with Robolectric.
         "unittests/src/com/android/server/healthconnect/exportimport/ExportManagerTest.java",
-        // Failing because of getIntrinicWidth, Robolectric application icon.
-        // Should be fixed when android gets latest robolectric update.
-        "unittests/src/com/android/server/healthconnect/exportimport/ImportManagerTest.java",
         // Explicit tests that needed resources are present in the controller APK.
         // Not expected to be bivalent.
         "unittests/src/com/android/server/healthconnect/migration/notification/HealthConnectResourcesContextTest.java",
@@ -56,6 +43,7 @@ android_robolectric_test {
     sdk_version: "module_current",
     srcs: [
         "unittests/src/**/*.java",
+        ":healthfitness-framework-test-src",
         // At the moment depending directly on some CTS targets gives dexcache==null errors when
         // mocking, so I am depending on a limited subset.
         "cts/phr/src/android/healthconnect/cts/phr/utils/FhirResourceBuilder.java",
@@ -78,6 +66,7 @@ android_robolectric_test {
     exclude_srcs: [
         "unittests/src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",
         ":robo-tests-sources-exclude",
+        ":healthfitness-framework-test-robo-tests-src-exclude",
     ],
     test_suites: [
         "general-tests",
@@ -121,10 +110,12 @@ android_test {
     test_config: "AndroidTest_testOnDevice.xml",
     srcs: [
         "unittests/src/**/*.java",
+        ":healthfitness-framework-test-src",
     ],
     exclude_srcs: [
         "unittests/src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",
         ":robo-tests-sources-exclude",
+        ":healthfitness-framework-test-robo-tests-src-exclude",
     ],
     defaults: [
         "mts-target-sdk-version-current",

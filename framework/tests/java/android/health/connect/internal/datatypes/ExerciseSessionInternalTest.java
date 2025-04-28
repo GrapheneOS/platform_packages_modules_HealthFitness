@@ -22,6 +22,8 @@ import android.health.connect.datatypes.ExerciseLap;
 import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.datatypes.ExerciseSegment;
 import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.testing.RecordInternalFactory;
+import android.health.connect.testing.StringUtil;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -35,7 +37,8 @@ import java.util.List;
 public class ExerciseSessionInternalTest {
     @Test
     public void testSessionConvertToExternal_convertToExternal_fieldsIsEqual() {
-        ExerciseSessionRecordInternal session = TestUtils.buildExerciseSessionInternal();
+        ExerciseSessionRecordInternal session =
+                RecordInternalFactory.buildExerciseSessionInternal();
         ExerciseSessionRecord externalSession = session.toExternalRecord();
         assertFieldsAreEqual(externalSession, session);
     }
@@ -43,14 +46,15 @@ public class ExerciseSessionInternalTest {
     @Test
     public void testSessionConvertToExternal_convertToExternalNoExtra_fieldsIsEqual() {
         ExerciseSessionRecordInternal session =
-                TestUtils.buildExerciseSessionInternalNoExtraFields();
+                RecordInternalFactory.buildExerciseSessionInternalNoExtraFields();
         ExerciseSessionRecord externalSession = session.toExternalRecord();
         assertFieldsAreEqual(externalSession, session);
     }
 
     @Test
     public void testSessionWriteToParcel_populateToParcelAndFrom_restoredFieldsAreIdentical() {
-        ExerciseSessionRecordInternal session = TestUtils.buildExerciseSessionInternal();
+        ExerciseSessionRecordInternal session =
+                RecordInternalFactory.buildExerciseSessionInternal();
         ExerciseSessionRecordInternal restoredSession = writeAndRestoreFromParcel(session);
 
         assertFieldsAreEqual(session, restoredSession);
@@ -60,7 +64,7 @@ public class ExerciseSessionInternalTest {
     public void
             testSessionWriteToParcel_populateToParcelAndFromNoExtra_restoredFieldsAreIdentical() {
         ExerciseSessionRecordInternal session =
-                TestUtils.buildExerciseSessionInternalNoExtraFields();
+                RecordInternalFactory.buildExerciseSessionInternalNoExtraFields();
         ExerciseSessionRecordInternal restoredSession = writeAndRestoreFromParcel(session);
 
         assertFieldsAreEqual(session, restoredSession);
@@ -68,7 +72,8 @@ public class ExerciseSessionInternalTest {
 
     @Test
     public void testSessionHashCode_getHashCode_noExceptions() {
-        int unused = TestUtils.buildExerciseSessionInternal().toExternalRecord().hashCode();
+        int unused =
+                RecordInternalFactory.buildExerciseSessionInternal().toExternalRecord().hashCode();
     }
 
     private ExerciseSessionRecordInternal writeAndRestoreFromParcel(
@@ -98,9 +103,9 @@ public class ExerciseSessionInternalTest {
                     .isEqualTo(convertedRoute.getRouteLocations());
             assertThat(external.getRoute()).isEqualTo(convertedRoute);
         }
-        TestUtils.assertCharSequencesEqualToStringWithNull(
+        StringUtil.assertCharSequencesEqualToStringWithNull(
                 internal.getTitle(), external.getTitle());
-        TestUtils.assertCharSequencesEqualToStringWithNull(
+        StringUtil.assertCharSequencesEqualToStringWithNull(
                 internal.getNotes(), external.getNotes());
         assertLapsAreEqual(internal.getLaps(), external.getLaps());
         assertSegmentsAreEqual(internal.getSegments(), external.getSegments());
@@ -157,9 +162,9 @@ public class ExerciseSessionInternalTest {
                 .isEqualTo(internal2.getEndZoneOffsetInSeconds());
         assertThat(internal.getRoute()).isEqualTo(internal2.getRoute());
         assertThat(internal.getExerciseType()).isEqualTo(internal2.getExerciseType());
-        TestUtils.assertCharSequencesEqualToStringWithNull(
+        StringUtil.assertCharSequencesEqualToStringWithNull(
                 internal.getNotes(), internal2.getNotes());
-        TestUtils.assertCharSequencesEqualToStringWithNull(
+        StringUtil.assertCharSequencesEqualToStringWithNull(
                 internal.getTitle(), internal2.getTitle());
     }
 }

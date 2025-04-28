@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.health.connect.datatypes.testing;
+package android.health.connect.testing;
 
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_MODERATE;
 import static android.health.connect.datatypes.BloodGlucoseRecord.RelationToMealType.RELATION_TO_MEAL_FASTING;
