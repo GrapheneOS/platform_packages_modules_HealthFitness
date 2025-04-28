@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package android.health.connect.internal.datatypes;
-
-import static com.google.common.truth.Truth.assertThat;
+package android.health.connect.testing;
 
 import android.health.connect.datatypes.ExerciseSegmentType;
 import android.health.connect.datatypes.ExerciseSessionType;
@@ -24,6 +22,17 @@ import android.health.connect.datatypes.PlannedExerciseStep;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Power;
+import android.health.connect.internal.datatypes.ExerciseCompletionGoalInternal;
+import android.health.connect.internal.datatypes.ExerciseLapInternal;
+import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal;
+import android.health.connect.internal.datatypes.ExerciseRouteInternal;
+import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
+import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
+import android.health.connect.internal.datatypes.PlannedExerciseBlockInternal;
+import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
+import android.health.connect.internal.datatypes.PlannedExerciseStepInternal;
+import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
+import android.health.connect.internal.datatypes.SleepStageInternal;
 
 import java.time.Instant;
 import java.time.Period;
@@ -31,7 +40,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class TestUtils {
+public class RecordInternalFactory {
 
     public static long START_TIME = Instant.now().minus(Period.ofDays(1)).toEpochMilli();
     public static long END_TIME = Instant.now().toEpochMilli();
@@ -181,14 +190,5 @@ public class TestUtils {
                         .setEndTime((long) 1e10)
                         .setUuid(UUID.randomUUID())
                         .setPackageName("android.healthconnect.unittests");
-    }
-
-    public static void assertCharSequencesEqualToStringWithNull(String str, CharSequence sequence) {
-        if (str == null) {
-            assertThat(sequence).isNull();
-        } else {
-            assertThat(sequence).isNotNull();
-            assertThat(sequence.toString()).isEqualTo(str);
-        }
     }
 }

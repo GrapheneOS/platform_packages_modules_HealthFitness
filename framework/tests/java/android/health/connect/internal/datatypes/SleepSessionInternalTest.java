@@ -19,6 +19,8 @@ package android.health.connect.internal.datatypes;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.SleepSessionRecord;
+import android.health.connect.testing.RecordInternalFactory;
+import android.health.connect.testing.StringUtil;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -32,21 +34,22 @@ import java.util.List;
 public class SleepSessionInternalTest {
     @Test
     public void testSessionConvertToExternal_convertToExternal_fieldsIsEqual() {
-        SleepSessionRecordInternal session = TestUtils.buildSleepSessionInternal();
+        SleepSessionRecordInternal session = RecordInternalFactory.buildSleepSessionInternal();
         SleepSessionRecord externalSession = session.toExternalRecord();
         assertFieldsAreEqual(externalSession, session);
     }
 
     @Test
     public void testSessionConvertToExternal_convertToExternalNoExtra_fieldsIsEqual() {
-        SleepSessionRecordInternal session = TestUtils.buildSleepSessionInternalNoExtraFields();
+        SleepSessionRecordInternal session =
+                RecordInternalFactory.buildSleepSessionInternalNoExtraFields();
         SleepSessionRecord externalSession = session.toExternalRecord();
         assertFieldsAreEqual(externalSession, session);
     }
 
     @Test
     public void testSessionWriteToParcel_populateToParcelAndFrom_restoredFieldsAreIdentical() {
-        SleepSessionRecordInternal session = TestUtils.buildSleepSessionInternal();
+        SleepSessionRecordInternal session = RecordInternalFactory.buildSleepSessionInternal();
         SleepSessionRecordInternal restoredSession = writeAndRestoreFromParcel(session);
         assertFieldsAreEqual(session, restoredSession);
     }
@@ -54,7 +57,8 @@ public class SleepSessionInternalTest {
     @Test
     public void
             testSessionWriteToParcel_populateToParcelAndFromNoExtra_restoredFieldsAreIdentical() {
-        SleepSessionRecordInternal session = TestUtils.buildSleepSessionInternalNoExtraFields();
+        SleepSessionRecordInternal session =
+                RecordInternalFactory.buildSleepSessionInternalNoExtraFields();
         SleepSessionRecordInternal restoredSession = writeAndRestoreFromParcel(session);
         assertFieldsAreEqual(session, restoredSession);
     }
@@ -79,9 +83,9 @@ public class SleepSessionInternalTest {
         assertThat(internal.getEndZoneOffsetInSeconds())
                 .isEqualTo(external.getEndZoneOffset().getTotalSeconds());
 
-        TestUtils.assertCharSequencesEqualToStringWithNull(
+        StringUtil.assertCharSequencesEqualToStringWithNull(
                 internal.getTitle(), external.getTitle());
-        TestUtils.assertCharSequencesEqualToStringWithNull(
+        StringUtil.assertCharSequencesEqualToStringWithNull(
                 internal.getNotes(), external.getNotes());
         assertStagesAreEqual(internal.getSleepStages(), external.getStages());
     }
@@ -94,9 +98,9 @@ public class SleepSessionInternalTest {
                 .isEqualTo(internal2.getStartZoneOffsetInSeconds());
         assertThat(internal.getEndZoneOffsetInSeconds())
                 .isEqualTo(internal2.getEndZoneOffsetInSeconds());
-        TestUtils.assertCharSequencesEqualToStringWithNull(
+        StringUtil.assertCharSequencesEqualToStringWithNull(
                 internal.getTitle(), internal2.getTitle());
-        TestUtils.assertCharSequencesEqualToStringWithNull(
+        StringUtil.assertCharSequencesEqualToStringWithNull(
                 internal.getNotes(), internal2.getNotes());
         assertStagesAreEqualInternal(internal.getSleepStages(), internal2.getSleepStages());
     }

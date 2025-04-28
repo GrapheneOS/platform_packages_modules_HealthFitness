@@ -18,6 +18,7 @@ package android.health.connect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.health.connect.testing.RecordInternalFactory;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -31,7 +32,7 @@ public class ExerciseRouteInternalTest {
     @Test
     public void testLocation_convertToExternalAndBack_isIdentical() {
         ExerciseRouteInternal.LocationInternal location =
-                TestUtils.buildInternalLocationAllFields();
+                RecordInternalFactory.buildInternalLocationAllFields();
         ExerciseRouteInternal.LocationInternal convertedLocation =
                 location.toExternalExerciseRouteLocation().toExerciseRouteLocationInternal();
         assertThat(convertedLocation).isEqualTo(location);
@@ -39,7 +40,8 @@ public class ExerciseRouteInternalTest {
 
     @Test
     public void testLocationNoOptionalFields_convertToExternalAndBack_isIdentical() {
-        ExerciseRouteInternal.LocationInternal location = TestUtils.buildInternalLocation();
+        ExerciseRouteInternal.LocationInternal location =
+                RecordInternalFactory.buildInternalLocation();
         ExerciseRouteInternal.LocationInternal convertedLocation =
                 location.toExternalExerciseRouteLocation().toExerciseRouteLocationInternal();
         assertThat(convertedLocation).isEqualTo(location);
@@ -47,14 +49,14 @@ public class ExerciseRouteInternalTest {
 
     @Test
     public void testRouteConvertToExternal_convertToExternalAndBack_isIdentical() {
-        ExerciseRouteInternal mRoute = TestUtils.buildExerciseRouteInternal();
+        ExerciseRouteInternal mRoute = RecordInternalFactory.buildExerciseRouteInternal();
         ExerciseRouteInternal convertedRoute = mRoute.toExternalRoute().toRouteInternal();
         assertThat(convertedRoute).isEqualTo(mRoute);
     }
 
     @Test
     public void testRouteWriteToParcel_writeReadFromParcel_isIdentical() {
-        ExerciseRouteInternal mRoute = TestUtils.buildExerciseRouteInternal();
+        ExerciseRouteInternal mRoute = RecordInternalFactory.buildExerciseRouteInternal();
         Parcel parcel = Parcel.obtain();
         ExerciseRouteInternal.writeToParcel(mRoute, parcel);
         parcel.setDataPosition(0);

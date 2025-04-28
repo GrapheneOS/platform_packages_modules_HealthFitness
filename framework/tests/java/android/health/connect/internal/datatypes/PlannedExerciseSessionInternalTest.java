@@ -18,6 +18,7 @@ package android.health.connect.internal.datatypes;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.units.Power;
+import android.health.connect.testing.RecordInternalFactory;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -32,10 +33,11 @@ import java.util.Collections;
 public class PlannedExerciseSessionInternalTest {
     @Test
     public void testPlanWriteToParcel_populateToParcelAndFrom_restoredFieldsAreIdentical() {
-        PlannedExerciseSessionRecordInternal plan = TestUtils.buildPlannedExerciseSessionInternal();
-        PlannedExerciseBlockInternal block1 = TestUtils.buildExerciseBlockInternal();
-        PlannedExerciseBlockInternal block2 = TestUtils.buildExerciseBlockInternal();
-        PlannedExerciseStepInternal step1 = TestUtils.buildExerciseStepInternal();
+        PlannedExerciseSessionRecordInternal plan =
+                RecordInternalFactory.buildPlannedExerciseSessionInternal();
+        PlannedExerciseBlockInternal block1 = RecordInternalFactory.buildExerciseBlockInternal();
+        PlannedExerciseBlockInternal block2 = RecordInternalFactory.buildExerciseBlockInternal();
+        PlannedExerciseStepInternal step1 = RecordInternalFactory.buildExerciseStepInternal();
         step1.setPerformanceGoals(
                 Arrays.asList(
                         new ExercisePerformanceGoalInternal.PowerGoalInternal(
@@ -43,7 +45,7 @@ public class PlannedExerciseSessionInternalTest {
                         ExercisePerformanceGoalInternal.UnknownGoalInternal.INSTANCE,
                         new ExercisePerformanceGoalInternal.PowerGoalInternal(
                                 Power.fromWatts(180), Power.fromWatts(200))));
-        PlannedExerciseStepInternal step2 = TestUtils.buildExerciseStepInternal();
+        PlannedExerciseStepInternal step2 = RecordInternalFactory.buildExerciseStepInternal();
         step2.setPerformanceGoals(
                 Collections.singletonList(
                         new ExercisePerformanceGoalInternal.PowerGoalInternal(
