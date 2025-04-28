@@ -13,17 +13,8 @@ filegroup {
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreTest.java",
         // Uses CTS TestUtils
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreWithoutMocksTest.java",
-        // These fail because the Robolectric mocks for package manager return null rather
-        // than application icon or throw exception for getApplicationIcon() when not set.
-        // Should be fixed when android gets latest robolectric update.
-        "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupRestoreTest.java",
-        "unittests/src/com/android/server/healthconnect/backuprestore/CloudBackupSettingsHelperTest.java",
-        "unittests/src/com/android/server/healthconnect/backuprestore/CloudRestoreManagerTest.java",
         // Fails due to attempts to reference an inaccessible file don't fail with Robolectric.
         "unittests/src/com/android/server/healthconnect/exportimport/ExportManagerTest.java",
-        // Failing because of getIntrinicWidth, Robolectric application icon.
-        // Should be fixed when android gets latest robolectric update.
-        "unittests/src/com/android/server/healthconnect/exportimport/ImportManagerTest.java",
         // Explicit tests that needed resources are present in the controller APK.
         // Not expected to be bivalent.
         "unittests/src/com/android/server/healthconnect/migration/notification/HealthConnectResourcesContextTest.java",

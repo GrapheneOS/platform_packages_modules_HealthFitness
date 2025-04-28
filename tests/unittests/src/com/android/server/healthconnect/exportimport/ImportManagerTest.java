@@ -136,6 +136,26 @@ public class ImportManagerTest {
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private ExportImportLogger mExportImportLogger;
 
+    private String mPreviousRobolectricProperty;
+
+    @Before
+    public void robolectricProperties() {
+        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
+        mPreviousRobolectricProperty =
+                System.setProperty("/robolectric.useValidGetApplicationIcon", "true");
+    }
+
+    @After
+    public void robolectricPropertiesClear() {
+        // TODO: b/403334845 - remove this when test infrastructure supports setting this property
+        if (mPreviousRobolectricProperty == null) {
+            System.clearProperty("robolectric.useValidGetApplicationIcon");
+        } else {
+            System.setProperty(
+                    "robolectric.useValidGetApplicationIcon", mPreviousRobolectricProperty);
+        }
+    }
+
     @Before
     public void setUp() throws Exception {
         mContext = ApplicationProvider.getApplicationContext();
