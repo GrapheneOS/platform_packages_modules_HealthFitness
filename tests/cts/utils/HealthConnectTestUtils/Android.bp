@@ -16,7 +16,7 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-java_library {
+android_library {
     name: "cts-healthconnect-utils",
     srcs: [
         "src/**/*.java",
@@ -31,4 +31,5 @@ java_library {
         "healthfitness-aconfig-flags-helper",
     ],
     sdk_version: "test_current",
+    min_sdk_version: "34",
 }
