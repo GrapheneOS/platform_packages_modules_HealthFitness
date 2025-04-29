@@ -468,6 +468,8 @@ public class DeleteMedicalResourcesByIdsCtsTest {
         MedicalResource backgroundAppVaccine =
                 PHR_BACKGROUND_APP.upsertMedicalResource(
                         backgroundAppDataSource.getId(), FHIR_DATA_IMMUNIZATION);
+        // Delete fails if there's no app id, insert some data to ensure there is one.
+        PHR_FOREGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest());
 
         PHR_FOREGROUND_APP.deleteMedicalResources(List.of(backgroundAppVaccine.getId()));
 

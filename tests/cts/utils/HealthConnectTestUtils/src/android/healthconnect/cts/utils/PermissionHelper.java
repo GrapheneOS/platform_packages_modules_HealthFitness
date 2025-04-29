@@ -16,12 +16,11 @@
 
 package android.healthconnect.cts.utils;
 
+import static android.Manifest.permission.GRANT_RUNTIME_PERMISSIONS;
 import static android.Manifest.permission.PACKAGE_USAGE_STATS;
 import static android.Manifest.permission.REVOKE_RUNTIME_PERMISSIONS;
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_GONE;
 import static android.content.pm.PackageManager.GET_PERMISSIONS;
-import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
-import static android.healthconnect.cts.utils.TestUtils.getHealthConnectManager;
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
@@ -118,17 +117,19 @@ public final class PermissionHelper {
     /**
      * Grants the specified health permission to the app specified by {@code packageName}.
      *
-     * @see HealthConnectManager#grantHealthPermission(String, String)
+     * <p>Permissions are granted via {@link PackageManager#grantRuntimePermission}, as {@link
+     * HealthConnectManager#grantHealthPermission} is hidden and so can't be used by CTS. Unlike the
+     * {@code HealthConnectManager} method, this does not modify any permission flags.
      */
     @SuppressLint("MissingPermission")
     public static void grantHealthPermission(String packageName, String permission) {
-        HealthConnectManager service = getHealthConnectManager();
+        Context context = ApplicationProvider.getApplicationContext();
+        PackageManager packageManager = context.getPackageManager();
+        UserHandle user = context.getUser();
+
         runWithShellPermissionIdentity(
-                () ->
-                        service.getClass()
-                                .getMethod("grantHealthPermission", String.class, String.class)
-                                .invoke(service, packageName, permission),
-                MANAGE_HEALTH_PERMISSIONS);
+                () -> packageManager.grantRuntimePermission(packageName, permission, user),
+                GRANT_RUNTIME_PERMISSIONS);
     }
 
     /**

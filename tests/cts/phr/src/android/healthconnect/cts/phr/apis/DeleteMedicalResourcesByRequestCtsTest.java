@@ -607,11 +607,13 @@ public class DeleteMedicalResourcesByRequestCtsTest {
         MedicalResource backgroundAppVaccine =
                 PHR_BACKGROUND_APP.upsertMedicalResource(
                         backgroundAppDataSource.getId(), FHIR_DATA_IMMUNIZATION);
+        // Delete fails if there's no app id, insert some data to ensure there is one.
+        PHR_FOREGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest());
+
         DeleteMedicalResourcesRequest deleteBackgroundAppResourcesRequest =
                 new DeleteMedicalResourcesRequest.Builder()
                         .addDataSourceId(backgroundAppDataSource.getId())
                         .build();
-
         PHR_FOREGROUND_APP.deleteMedicalResources(deleteBackgroundAppResourcesRequest);
 
         HealthConnectReceiver<List<MedicalResource>> readReceiver = new HealthConnectReceiver<>();
@@ -636,11 +638,13 @@ public class DeleteMedicalResourcesByRequestCtsTest {
         MedicalResource backgroundAppVaccine =
                 PHR_BACKGROUND_APP.upsertMedicalResource(
                         backgroundAppDataSource.getId(), FHIR_DATA_IMMUNIZATION);
+        // Delete fails if there's no app id, insert some data to ensure there is one.
+        PHR_FOREGROUND_APP.createMedicalDataSource(getCreateMedicalDataSourceRequest());
+
         DeleteMedicalResourcesRequest deleteVaccinesRequest =
                 new DeleteMedicalResourcesRequest.Builder()
                         .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_VACCINES)
                         .build();
-
         PHR_FOREGROUND_APP.deleteMedicalResources(deleteVaccinesRequest);
 
         HealthConnectReceiver<List<MedicalResource>> readReceiver = new HealthConnectReceiver<>();
