@@ -1146,9 +1146,9 @@
     <string name="see_compatible_apps_banner_title" msgid="5217106184748241727">"Tingnan ang mga compatible na app"</string>
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Maghanap ng higit pang app na isi-sync sa <xliff:g id="APP_NAME">%s</xliff:g> sa pamamagitan ng Health Connect"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Tingnan sa app store"</string>
-    <string name="lock_screen_banner_title" msgid="5384381892985739755">"Magtakda ng lock ng screen"</string>
+    <string name="lock_screen_banner_title" msgid="5384381892985739755">"Magtakda ng screen lock"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Para sa karagdagang seguridad ng data ng kalusugan mo, magtakda ng PIN, pattern, o password para sa device na ito"</string>
-    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Magtakda ng lock ng screen"</string>
+    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Magtakda ng screen lock"</string>
     <string name="select_all" msgid="837499881590001166">"Piliin lahat"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Hindi na mare-read ng mga nakakonektang app ang data na ito mula sa Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"May check"</string>

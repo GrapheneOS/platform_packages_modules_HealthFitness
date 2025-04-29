@@ -54,6 +54,7 @@ import android.healthconnect.cts.lib.TestAppRule;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
+import android.healthconnect.cts.utils.PermissionHelper;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -291,13 +292,7 @@ public class BackgroundReadTest {
                                 PKG_TEST_APP, READ_HEALTH_DATA_IN_BACKGROUND, mContext.getUser()));
     }
 
-    private void revokeBackgroundReadPermissionForTestApp() throws InterruptedException {
-        runWithShellPermissionIdentity(
-                () ->
-                        mPackageManager.revokeRuntimePermission(
-                                PKG_TEST_APP, READ_HEALTH_DATA_IN_BACKGROUND, mContext.getUser()));
-
-        // Wait a bit for the process to be killed
-        Thread.sleep(500);
+    private void revokeBackgroundReadPermissionForTestApp() throws Exception {
+        PermissionHelper.revokeHealthPermission(PKG_TEST_APP, READ_HEALTH_DATA_IN_BACKGROUND);
     }
 }

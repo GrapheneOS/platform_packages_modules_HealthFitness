@@ -19,8 +19,10 @@ package com.android.server.healthconnect.storage;
 import static android.database.DatabaseUtils.queryNumEntries;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertNumberOfTables;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.clearDatabase;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.createEmptyDatabase;
@@ -30,11 +32,13 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.platform.test.annotations.EnableFlags;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceIndicesHelper;
@@ -99,6 +103,29 @@ public class DatabaseUpgradeHelperTest {
     public void onUpgrade_newVersionSpecified_upgradeUntilNewVersionReached() {
         onUpgrade(mSQLiteDatabase, 0, MIN_SUPPORTED_DB_VERSION);
         assertNumberOfTables(mSQLiteDatabase, NUM_OF_TABLES_AT_MIN_SUPPORTED_VERSION);
+    }
+
+    @Test
+    @EnableFlags(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB)
+    public void onUpgrade_addingNewColumn_calledMultipleTimes() {
+        onUpgrade(mSQLiteDatabase, 0, DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS);
+        assertColumnsExist(
+                mSQLiteDatabase,
+                ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RECORD_TABLE_NAME,
+                List.of(
+                        ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_WEIGHT_GRAMS,
+                        ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_SET_INDEX,
+                        ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION));
+
+        onUpgrade(mSQLiteDatabase, 0, DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS);
+        assertColumnsExist(
+                mSQLiteDatabase,
+                ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RECORD_TABLE_NAME,
+                List.of(
+                        ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_WEIGHT_GRAMS,
+                        ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_SET_INDEX,
+                        ExerciseSegmentRecordHelper.EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION));
+        assertDbSchemaUpToDate();
     }
 
     /**

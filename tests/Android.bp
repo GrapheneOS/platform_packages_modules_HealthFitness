@@ -7,8 +7,6 @@ package {
 filegroup {
     name: "robo-tests-sources-exclude",
     srcs: [
-        // Still uses ExtendedMockito
-        "unittests/src/com/android/server/healthconnect/HealthConnectManagerServiceTest.java",
         // Uses ExtendedMockito
         "unittests/src/com/android/server/healthconnect/backuprestore/BackupRestoreTest.java",
         // Uses CTS TestUtils
@@ -22,9 +20,6 @@ filegroup {
         // SDK versions for some tests.
         // These are not represented well by Robolectric
         "unittests/src/com/android/server/healthconnect/permission/HealthConnectPermissionHelperTest.java",
-        // ExtendedMockito cannot be used in Robolectric tests so these fixtures aren't used.
-        "unittests/src/com/android/server/healthconnect/testing/fixtures/EnvironmentFixture.java",
-        "unittests/src/com/android/server/healthconnect/testing/fixtures/SQLiteDatabaseFixture.java",
     ],
     path: "unittests/src",
 }
@@ -57,11 +52,7 @@ android_robolectric_test {
         "cts/phr/src/android/healthconnect/cts/phr/utils/PractitionerBuilder.java",
         "cts/phr/src/android/healthconnect/cts/phr/utils/ProcedureBuilder.java",
         "cts/phr/src/android/healthconnect/cts/phr/utils/PhrDataFactory.java",
-        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/AssumptionCheckerRule.java",
         "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/DataFactory.java",
-        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/DeviceSupportUtils.java",
-        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/HealthConnectReceiver.java",
-        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/TestOutcomeReceiver.java",
     ],
     exclude_srcs: [
         "unittests/src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",

@@ -34,6 +34,7 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
@@ -297,6 +298,12 @@ public abstract class HealthConnectInjector {
      * Injector.
      */
     public abstract HealthConnectThreadScheduler getThreadScheduler();
+
+    /**
+     * Getter for {@link DeviceDataSourcesHelper} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract DeviceDataSourcesHelper getDeviceDataSourcesHelper();
 
     /**
      * Getter for {@link File} instance representing root directory where Health Connect data should

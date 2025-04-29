@@ -196,8 +196,8 @@
     <string name="steps_lowercase_label" msgid="706153549312838582">"чекори"</string>
     <string name="steps_read_content_description" msgid="7839297670092769964">"Читање чекори"</string>
     <string name="steps_write_content_description" msgid="6360223825799711659">"Запишување чекори"</string>
-    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"Вкупно потрошени калории"</string>
-    <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"вкупно потрошени калории"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"Вкупно согорени калории"</string>
+    <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"вкупно согорени калории"</string>
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Читање вкупно потрошени калории"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Запишување вкупно потрошени калории"</string>
     <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"Максимална потрошувачка на кислород"</string>
@@ -268,8 +268,8 @@
     <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"сексуална активност"</string>
     <string name="sexual_activity_read_content_description" msgid="4937721417714312007">"Читање сексуална активност"</string>
     <string name="sexual_activity_write_content_description" msgid="3063448245882840534">"Запишување сексуална активност"</string>
-    <string name="spotting_uppercase_label" msgid="5106739829390033240">"Дамки крв"</string>
-    <string name="spotting_lowercase_label" msgid="4361141146039580583">"дамки крв"</string>
+    <string name="spotting_uppercase_label" msgid="5106739829390033240">"Точкесто крвавење"</string>
+    <string name="spotting_lowercase_label" msgid="4361141146039580583">"точкесто крвавење"</string>
     <string name="spotting_read_content_description" msgid="5422420770022357631">"Читање податоци за дамки крв"</string>
     <string name="spotting_write_content_description" msgid="9049462631184362964">"Пишување податоци за дамки крв"</string>
     <string name="hydration_uppercase_label" msgid="1196083392597480565">"Хидратација"</string>
@@ -441,7 +441,7 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"Нема апликации со дозвола"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Нема апликации без дозвола"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Да се отстрани пристапот за сите апликации?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Ниту една од апликациите нема да има пристап или да додава нови податоци во Health Connect. Ова нема да ги избрише постојните податоци.\n\nОва не влијае на другите дозволи што може да ги има апликацијава, како локација, камера или микрофон."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Ниту една од апликациите нема да може да пристапува до податоците во Health Connect, ниту да додава нови податоци во Health Connect. Ова нема да ги избрише постојните податоци.\n\nОва не влијае на другите дозволи што може да ги имаат апликациите, на пр. за пристап до локацијата, камерата или микрофонот."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Отстрани ги сите"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Управувајте со апликацијата"</string>
     <string name="see_app_data" msgid="3951030076195119476">"Прикажи податоци од апликацијата"</string>
@@ -450,7 +450,7 @@
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"Неактивни апликации"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Апликацииве веќе немаат пристап, но уште имаат зачувани податоци во Health Connect"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> може да чита податоци додадени по <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
-    <string name="other_android_permissions" msgid="8051485761573324702">"За да управувате со другите дозволи за Android до кои може да пристапува апликацијава, појдете во „Поставки &gt; Апликации“"</string>
+    <string name="other_android_permissions" msgid="8051485761573324702">"За да управувате со другите дозволи за Android до кои може да пристапува апликацијава, одете во „Поставки &gt; Апликации“"</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"Може да дознаете како <xliff:g id="APP_NAME">%1$s</xliff:g> постапува со вашите податоци во политиката за приватност на програмерот"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"За да управувате со другите дозволи за Android до кои може да пристапува апликацијава, појдете во „Поставки“, а потоа допрете „Апликации“"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Прочитајте ја политиката за приватност"</string>
@@ -653,7 +653,7 @@
     <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"од <xliff:g id="MIN">%1$s</xliff:g> до <xliff:g id="MAX">%2$s</xliff:g>"</string>
     <string name="sexual_activity_protected" msgid="4259473257597274326">"Заштитно"</string>
     <string name="sexual_activity_unprotected" msgid="2250981470537379807">"Незаштитено"</string>
-    <string name="spotting" msgid="1637175837078770520">"Дамки крв"</string>
+    <string name="spotting" msgid="1637175837078770520">"Точкесто крвавење"</string>
     <string name="flow_spotting" msgid="832418664953780156">"Точкесто крвавење"</string>
     <string name="flow_light" msgid="1937543318146228793">"Слабо крвавење"</string>
     <string name="flow_medium" msgid="3783688724668943154">"Умерено крвавење"</string>
@@ -989,7 +989,7 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Фаренхајт"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Келвин"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Помош и повратни информации"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ако не можете да видите инсталирана апликација, можеби уште не е компатибилна со Health Connect"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ако инсталирана апликација не се прикажува, можеби сѐ уште не е компатибилна со Health Connect"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Работи што може да ги испробате"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Проверете дали има ажурирања"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Погрижете се инсталираните апликации да бидат ажурирани"</string>

@@ -32,8 +32,6 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.restore.StageRemoteDataRequest;
 import android.healthconnect.cts.phr.utils.PhrDataFactory;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.os.ParcelFileDescriptor;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.ArrayMap;
@@ -82,12 +80,6 @@ public class BackupRestoreWithoutMocksTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-
-    @Rule
-    public AssumptionCheckerRule mSupportedHardwareRule =
-            new AssumptionCheckerRule(
-                    DeviceSupportUtils::isHealthConnectFullySupported,
-                    "Tests should run on supported hardware only.");
 
     private Context mContext;
     private TransactionTestUtils mTransactionTestUtils;

@@ -36,7 +36,7 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> қолданбаға рұқсат берілген."</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 қолданбаға рұқсат берілген.}other{# қолданбаға рұқсат берілген.}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ешқандай"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Енгізілген дерек мәліметтері"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Жазба мәліметтері"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Деректерді шолу"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Деректерді және оларды пайдалана алатын қолданбаларды көру"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Автоматты түрде жою, деректер көзі, сақтық көшірме жасау және қалпына келтіру"</string>
@@ -401,7 +401,7 @@
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасы бұдан былай Health Connect-тегі деректерді, соның ішінде фондық деректі оқи немесе жаза алмайды.\n\nБұл локацияны, камераны немесе микрофонды пайдалану сияқты осы қолданбадағы басқа рұқсаттарға әсер етпейді."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасы бұдан былай Health Connect-тегі деректерді, соның ішінде бұрынғы деректі оқи немесе жаза алмайды.\n\nБұл локацияны, камераны немесе микрофонды пайдалану сияқты осы қолданбадағы басқа рұқсаттарға әсер етпейді."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасы бұдан былай Health Connect-тегі деректерді, соның ішінде фондық және бұрынғы деректі оқи немесе жаза алмайды.\n\nБұл локацияны, камераны немесе микрофонды пайдалану сияқты осы қолданбадағы басқа рұқсаттарға әсер етпейді."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect-тен <xliff:g id="APP_NAME">%1$s</xliff:g> деректері де жойылсын."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect-тен <xliff:g id="APP_NAME">%1$s</xliff:g> деректерін де жою"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Барлық фитнес және сауықтыру рұқсатын өшіру керек пе?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасынан алынған фитнес дерегі де Health Connect-тен жойылсын"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Барлық денсаулық туралы ақпарат рұқсатын өшіру керек пе?"</string>
@@ -791,7 +791,7 @@
     <string name="pause" msgid="5161459047750335691">"Кідірту"</string>
     <string name="activity_type_australian_football" msgid="431838050917315084">"Австралия футболы"</string>
     <string name="unknown_type" msgid="4506151971125161053">"Белгісіз түр"</string>
-    <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> ұйқы"</string>
+    <string name="sleep_session_default" msgid="7376764686701487196">"Ұйқы: <xliff:g id="DURATION"> %1$s</xliff:g>"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"ояу"</string>
     <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"төсекте ояу жату"</string>

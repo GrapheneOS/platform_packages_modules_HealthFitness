@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.device;
 
+import android.content.Context;
+
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceInfo;
 
 /**
@@ -38,6 +40,11 @@ public class DeviceDataSource {
         return mDeviceInfo;
     }
 
+    /**
+     * Note: this ID may be sensitive, particularly in the case of the current device.
+     *
+     * <p>See {@link DeviceDataSourcesHelper#getCurrentDevice(Context)}.
+     */
     public String getDeviceId() {
         return mDeviceId;
     }

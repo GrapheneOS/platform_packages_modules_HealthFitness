@@ -36,7 +36,7 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"Programų, kurioms suteikta prieiga: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 programa, kuriai suteikta prieiga}one{# programa, kuriai suteikta prieiga}few{# programos, kurioms suteikta prieiga}many{# programos, kurioms suteikta prieiga}other{# programų, kurioms suteikta prieiga}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Nėra"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Išsami įvedimo informacija"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Išsami įrašo informacija"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Naršyti duomenis"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Žr. duomenis ir kurios programos gali juos pasiekti"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatinis ištrynimas, duomenų šaltiniai, atsarginė kopija ir atkūrimas"</string>

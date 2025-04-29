@@ -17,6 +17,7 @@
 package android.healthconnect.cts.utils;
 
 import static android.healthconnect.cts.utils.PermissionHelper.getGrantedHealthPermissions;
+import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermission;
 
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
@@ -41,9 +42,7 @@ public class RevokedHealthPermissionRule extends ExternalResource {
         mIsPermissionGranted = grantedPermissions.contains(mPermission);
 
         if (mIsPermissionGranted) {
-            getInstrumentation()
-                    .getUiAutomation()
-                    .revokeRuntimePermission(mPackageName, mPermission);
+            revokeHealthPermission(mPackageName, mPermission);
         }
     }
 

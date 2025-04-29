@@ -34,8 +34,8 @@ import static android.healthconnect.cts.utils.DataFactory.getTotalCaloriesBurned
 import static android.healthconnect.cts.utils.PermissionHelper.getGrantedHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.grantAllHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
+import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermission;
-import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.createReadRecordsRequestUsingFilters;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.deleteTestData;
@@ -696,7 +696,8 @@ public class HealthConnectDeviceTest {
                                         .toList(),
                         MANAGE_HEALTH_DATA);
 
-        revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+        revokeAllHealthPermissions(
+                APP_A_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
         grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
 
         List<String> newPriorityList =
@@ -716,7 +717,8 @@ public class HealthConnectDeviceTest {
     @Test
     public void testRevokingOnlyOneCorrectPermissionDoesntRemoveAppFromPriorityList()
             throws Exception {
-        revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+        revokeAllHealthPermissions(
+                APP_A_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
         grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
 
         List<String> oldPriorityList =
@@ -749,7 +751,8 @@ public class HealthConnectDeviceTest {
 
     @Test
     public void testRevokingAllCorrectPermissionsRemovesAppFromPriorityList() throws Exception {
-        revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+        revokeAllHealthPermissions(
+                APP_A_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
         grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
 
         List<String> oldPriorityList =
@@ -805,8 +808,10 @@ public class HealthConnectDeviceTest {
 
     @Test
     public void testAppWithManageHealthDataPermissionCanUpdatePriority() throws Exception {
-        revokeHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-        revokeHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
+        revokeAllHealthPermissions(
+                APP_A_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
+        revokeAllHealthPermissions(
+                APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
 
         grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
         grantAllHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
@@ -1032,7 +1037,8 @@ public class HealthConnectDeviceTest {
 
         APP_A_WITH_READ_WRITE_PERMS.insertRecords(TEST_RECORDS);
 
-        revokeHealthPermissions(APP_B_WITH_READ_WRITE_PERMS.getPackageName());
+        revokeAllHealthPermissions(
+                APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
 
         HealthConnectException e =
                 assertThrows(

@@ -26,6 +26,7 @@ import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.datatypes.units.Length.fromMeters;
 import static android.health.connect.datatypes.units.Power.fromWatts;
 import static android.healthconnect.cts.utils.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
+import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 
@@ -37,7 +38,6 @@ import static org.junit.Assert.fail;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.HealthConnectDataState;
@@ -74,7 +74,6 @@ import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.TestUtils;
 import android.os.Build;
-import android.os.UserHandle;
 import android.os.ext.SdkExtensions;
 
 import androidx.test.InstrumentationRegistry;
@@ -539,9 +538,8 @@ public class DataMigrationTest {
     }
 
     @Test
-    public void migratePermissions_hasValidPermissions_validPermissionsGranted()
-            throws InterruptedException {
-        revokeHealthPermissions(APP_PACKAGE_NAME);
+    public void migratePermissions_hasValidPermissions_validPermissionsGranted() throws Exception {
+        revokeAllHealthPermissions(APP_PACKAGE_NAME, "DataMigrationTest");
 
         final String entityId = "permissions";
 
@@ -562,8 +560,8 @@ public class DataMigrationTest {
 
     @Test
     public void migratePermissions_allInvalidPermissions_throwsMigrationException()
-            throws InterruptedException {
-        revokeHealthPermissions(APP_PACKAGE_NAME);
+            throws Exception {
+        revokeAllHealthPermissions(APP_PACKAGE_NAME, "DataMigrationTest");
 
         final String entityId = "permissions";
 
@@ -606,10 +604,9 @@ public class DataMigrationTest {
 
     /** Test priority migration where migration payload have additional apps. */
     @Test
-    public void migratePriority_additionalAppsInMigrationPayload_prioritySaved()
-            throws InterruptedException {
-        revokeHealthPermissions(APP_PACKAGE_NAME);
-        revokeHealthPermissions(APP_PACKAGE_NAME_2);
+    public void migratePriority_additionalAppsInMigrationPayload_prioritySaved() throws Exception {
+        revokeAllHealthPermissions(APP_PACKAGE_NAME, "DataMigrationTest");
+        revokeAllHealthPermissions(APP_PACKAGE_NAME_2, "DataMigrationTest");
 
         String permissionMigrationEntityId1 = "permissionMigration1";
         String permissionMigrationEntityId2 = "permissionMigration2";
@@ -910,32 +907,6 @@ public class DataMigrationTest {
                         (executor, receiver) -> mManager.readRecords(request, executor, receiver),
                         HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
         return response.getRecords().stream().findFirst().orElse(null);
-    }
-
-    private void revokeHealthPermissions(String packageName) {
-        runWithShellPermissionIdentity(() -> revokeHealthPermissionsPrivileged(packageName));
-    }
-
-    private void revokeHealthPermissionsPrivileged(String packageName)
-            throws PackageManager.NameNotFoundException {
-        final PackageManager packageManager = mTargetContext.getPackageManager();
-        final UserHandle user = mTargetContext.getUser();
-
-        final PackageInfo packageInfo =
-                packageManager.getPackageInfo(
-                        packageName,
-                        PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS));
-
-        final String[] permissions = packageInfo.requestedPermissions;
-        if (permissions == null) {
-            return;
-        }
-
-        for (String permission : permissions) {
-            if (permission.startsWith(HEALTH_PERMISSION_PREFIX)) {
-                packageManager.revokeRuntimePermission(packageName, permission, user);
-            }
-        }
     }
 
     private List<String> getGrantedAppPermissions() {

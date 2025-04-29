@@ -25,6 +25,7 @@ import android.os.UserManager;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.SystemService;
 import com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
@@ -51,13 +52,18 @@ public class HealthConnectManagerService extends SystemService {
     private UserHandle mCurrentForegroundUser;
 
     public HealthConnectManagerService(Context context) {
+        this(context, new HealthConnectInjectorImpl(context));
+    }
+
+    @VisibleForTesting
+    HealthConnectManagerService(Context context, HealthConnectInjector healthConnectInjector) {
         super(context);
         mRateLimiter = new RateLimiter();
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mUserManager = context.getSystemService(UserManager.class);
 
-        HealthConnectInjector.setInstance(new HealthConnectInjectorImpl(context));
+        HealthConnectInjector.setInstance(healthConnectInjector);
         mHealthConnectInjector = HealthConnectInjector.getInstance();
         mHealthConnectService =
                 new HealthConnectServiceImpl(

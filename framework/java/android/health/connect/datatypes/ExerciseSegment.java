@@ -16,10 +16,20 @@
 
 package android.health.connect.datatypes;
 
+import static android.health.connect.Constants.DEFAULT_FLOAT;
+import static android.health.connect.Constants.DEFAULT_INT;
+
+import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
+
+import android.annotation.FlaggedApi;
 import android.annotation.IntRange;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
+import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.validation.ValidationUtils;
 import android.health.connect.internal.datatypes.ExerciseSegmentInternal;
+
+import com.android.healthfitness.flags.Flags;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -28,7 +38,7 @@ import java.util.Objects;
  * Represents particular exercise within exercise session (see {@link ExerciseSessionRecord}).
  *
  * <p>Each record contains start and end time of the exercise, exercise type and optional number of
- * repetitions.
+ * repetitions, weight, set index and rate of perceived exertion.
  */
 public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
     private final TimeInterval mInterval;
@@ -37,10 +47,19 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
 
     private final int mRepetitionsCount;
 
+    @Nullable private final Mass mWeight;
+
+    private final int mSetIndex;
+
+    private final float mRateOfPerceivedExertion;
+
     private ExerciseSegment(
             @NonNull TimeInterval interval,
             @ExerciseSegmentType.ExerciseSegmentTypes int segmentType,
             @IntRange(from = 0) int repetitionsCount,
+            @Nullable Mass weight,
+            int setIndex,
+            float rateOfPerceivedExertion,
             boolean skipValidation) {
         Objects.requireNonNull(interval);
         mInterval = interval;
@@ -51,6 +70,9 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
             ValidationUtils.requireNonNegative(repetitionsCount, "repetitionsCount");
         }
         mRepetitionsCount = repetitionsCount;
+        mWeight = weight;
+        mSetIndex = setIndex;
+        mRateOfPerceivedExertion = rateOfPerceivedExertion;
     }
 
     /*
@@ -67,6 +89,97 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
     @IntRange(from = 0)
     public int getRepetitionsCount() {
         return mRepetitionsCount;
+    }
+
+    /**
+     * Gets the weight associated with this exercise segment.
+     *
+     * <p>Returns {@code null} if weight is not set.
+     *
+     * @hide
+     */
+    @Nullable
+    @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    public Mass getWeight() {
+        return mWeight;
+    }
+
+    /**
+     * Gets the set index for this exercise segment.
+     *
+     * <p>The set index is a non-negative integer starting at zero.
+     *
+     * <p>A set is a group of consecutive repetitions (reps) of a specific exercise performed
+     * without a break, e.g. 10 push-ups in a row without stopping.
+     *
+     * <p>A set index represents the position of this set relative to other sets in the session. For
+     * instance, if an exercise has three sets, they will have setIndex values of 0, 1, and 2
+     * respectively.
+     *
+     * <p>Multiple segments may be part of a single set, for example if a collection of activities
+     * are considered to be a single set, in which case those segments would have the same set
+     * index.
+     *
+     * <p>The set index is may also go back to zero in a single {@code ExerciseSession}. For
+     * example, if three sets of one activity are completed followed by three sets of another,
+     * setIndex values of 0, 1, 2, 0, 1, 2 would be expected for those segments.
+     *
+     * <p>Use {@link #hasSetIndex} to check whether a set index exists for this segment. Multiple
+     * segments can share the same set index.
+     *
+     * @throws IllegalStateException if set index is not set.
+     * @hide
+     */
+    @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    public int getSetIndex() {
+        if (mSetIndex == DEFAULT_INT) {
+            throw new IllegalStateException(
+                    "Set index is not set. Use `hasSetIndex` to check whether set index exists for"
+                            + " this segment.");
+        }
+        return mSetIndex;
+    }
+
+    /**
+     * Returns true if this segment has an associated set index.
+     *
+     * @hide
+     */
+    @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    public boolean hasSetIndex() {
+        return mSetIndex != DEFAULT_INT;
+    }
+
+    /**
+     * Gets the rate of perceived exertion (RPE) for this exercise segment.
+     *
+     * <p>Values correspond to the Borg CR10 RPE scale and must be in the range 0 to 10 inclusive.
+     * 0: No exertion (at rest) 1: Very light 2-3: Light 4-5: Moderate 6-7: Hard 8-9: Very hard 10:
+     * Maximum effort
+     *
+     * <p>Use {@link #hasRateOfPerceivedExertion} to check whether RPE exists for this segment.
+     *
+     * @throws IllegalStateException if rate of perceived exertion is not set.
+     * @hide
+     */
+    @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    public float getRateOfPerceivedExertion() {
+        if (mRateOfPerceivedExertion == DEFAULT_FLOAT) {
+            throw new IllegalStateException(
+                    "Rate of perceived exertion is not set. Use `hasRateOfPerceivedExertion` to"
+                            + " check whether RPE exists for this segment.");
+        }
+        return mRateOfPerceivedExertion;
+    }
+
+    /**
+     * Returns true if this segment has an associated rate of perceived exertion.
+     *
+     * @hide
+     */
+    @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+    public boolean hasRateOfPerceivedExertion() {
+        return mRateOfPerceivedExertion != DEFAULT_FLOAT;
     }
 
     /*
@@ -98,21 +211,43 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
         ExerciseSegment that = (ExerciseSegment) o;
         return mSegmentType == that.mSegmentType
                 && mRepetitionsCount == that.mRepetitionsCount
+                && Objects.equals(mWeight, that.mWeight)
+                && mSetIndex == that.mSetIndex
+                && mRateOfPerceivedExertion == that.mRateOfPerceivedExertion
                 && Objects.equals(mInterval, that.mInterval);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mSegmentType, mRepetitionsCount, mInterval);
+        return Objects.hash(
+                mSegmentType,
+                mRepetitionsCount,
+                mWeight,
+                mSetIndex,
+                mRateOfPerceivedExertion,
+                mInterval);
     }
 
     /** @hide */
     public ExerciseSegmentInternal toSegmentInternal() {
-        return new ExerciseSegmentInternal()
-                .setStartTime(getStartTime().toEpochMilli())
-                .setEndTime(getEndTime().toEpochMilli())
-                .setSegmentType(getSegmentType())
-                .setRepetitionsCount(getRepetitionsCount());
+        ExerciseSegmentInternal segment =
+                new ExerciseSegmentInternal()
+                        .setStartTime(getStartTime().toEpochMilli())
+                        .setEndTime(getEndTime().toEpochMilli())
+                        .setSegmentType(getSegmentType())
+                        .setRepetitionsCount(getRepetitionsCount());
+        if (Flags.exerciseSegmentImprovements()) {
+            if (getWeight() != null) {
+                segment.setWeightGrams(getWeight().getInGrams());
+            }
+            if (hasSetIndex()) {
+                segment.setSetIndex(getSetIndex());
+            }
+            if (hasRateOfPerceivedExertion()) {
+                segment.setRateOfPerceivedExertion(getRateOfPerceivedExertion());
+            }
+        }
+        return segment;
     }
 
     /** Builder class for {@link ExerciseSegment} */
@@ -122,6 +257,12 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
         @ExerciseSegmentType.ExerciseSegmentTypes private final int mSegmentType;
 
         private int mRepetitionsCount = 0;
+
+        @Nullable private Mass mWeight;
+
+        private int mSetIndex = DEFAULT_INT;
+
+        private float mRateOfPerceivedExertion = DEFAULT_FLOAT;
 
         public Builder(
                 @NonNull Instant startTime,
@@ -147,12 +288,136 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
         }
 
         /**
+         * Sets the weight associated with this exercise segment.
+         *
+         * <p>Weight must be at least zero and not more than 2500kg.
+         *
+         * <p>Returns builder instance with weight set.
+         *
+         * @hide
+         */
+        @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+        @NonNull
+        public Builder setWeight(@NonNull Mass weight) {
+            if (weight.getInGrams() < 0) {
+                throw new IllegalArgumentException("Weight must be non negative.");
+            }
+            if (weight.getInGrams() > 2_500_000) {
+                throw new IllegalArgumentException("Weight must not exceed 2500kg.");
+            }
+            this.mWeight = weight;
+            return this;
+        }
+
+        /**
+         * Clears the weight for this exercise segment.
+         *
+         * <p>Returns builder instance with weight set.
+         *
+         * @hide
+         */
+        @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+        @NonNull
+        public Builder clearWeight() {
+            this.mWeight = null;
+            return this;
+        }
+
+        /**
+         * Sets the set index for this exercise segment.
+         *
+         * <p>The set index must be a non-negative integer, and should start at zero.
+         *
+         * <p>Set index represents the position of this set relative to other sets in the session.
+         * For instance, if an exercise has three sets, they will have setIndex values of 0, 1, and
+         * 2 respectively.
+         *
+         * <p>Multiple segments may be part of a single set, for example if a collection of
+         * activities are considered to be a single set, in which case those segments would have the
+         * same set index.
+         *
+         * <p>The set index is may also go back to zero in a single {@code ExerciseSession}. For
+         * example, if three sets of one activity are completed followed by three sets of another,
+         * setIndex values of 0, 1, 2, 0, 1, 2 would be expected for those segments.
+         *
+         * <p>Returns builder instance with set index set.
+         *
+         * @hide
+         */
+        @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+        @NonNull
+        public Builder setSetIndex(int setIndex) {
+            if (setIndex < 0) {
+                throw new IllegalArgumentException("Set index must be non-negative");
+            }
+            this.mSetIndex = setIndex;
+            return this;
+        }
+
+        /**
+         * Clears the set index for this exercise segment.
+         *
+         * <p>Returns builder instance without set index set.
+         *
+         * @hide
+         */
+        @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+        @NonNull
+        public Builder clearSetIndex() {
+            this.mSetIndex = DEFAULT_INT;
+            return this;
+        }
+
+        /**
+         * Sets rate of perceived exertion (RPE) used during the exercise segment.
+         *
+         * <p>Values correspond to the Borg CR10 RPE scale and must be in the range 0 to 10
+         * inclusive. 0: No exertion (at rest) 1: Very light 2-3: Light 4-5: Moderate 6-7: Hard 8-9:
+         * Very hard 10: Maximum effort
+         *
+         * <p>Returns builder instance with rate of perceived exertion set.
+         *
+         * @hide
+         */
+        @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+        @NonNull
+        public Builder setRateOfPerceivedExertion(float rateOfPerceivedExertion) {
+            if ((rateOfPerceivedExertion < 0 || rateOfPerceivedExertion > 10)) {
+                throw new IllegalArgumentException(
+                        "Rate of perceived exertion must be in the range 0 to 10 inclusive");
+            }
+            this.mRateOfPerceivedExertion = rateOfPerceivedExertion;
+            return this;
+        }
+
+        /**
+         * Clears the rate of perceived exertion for this exercise segment.
+         *
+         * <p>Returns builder instance without rate of perceived exertion.
+         *
+         * @hide
+         */
+        @FlaggedApi(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
+        @NonNull
+        public Builder clearRateOfPerceivedExertion() {
+            this.mRateOfPerceivedExertion = DEFAULT_FLOAT;
+            return this;
+        }
+
+        /**
          * @return Object of {@link ExerciseSegment} without validating the values.
          * @hide
          */
         @NonNull
         public ExerciseSegment buildWithoutValidation() {
-            return new ExerciseSegment(mInterval, mSegmentType, mRepetitionsCount, true);
+            return new ExerciseSegment(
+                    mInterval,
+                    mSegmentType,
+                    mRepetitionsCount,
+                    mWeight,
+                    mSetIndex,
+                    mRateOfPerceivedExertion,
+                    true);
         }
 
         /**
@@ -161,7 +426,14 @@ public final class ExerciseSegment implements TimeInterval.TimeIntervalHolder {
          */
         @NonNull
         public ExerciseSegment build() {
-            return new ExerciseSegment(mInterval, mSegmentType, mRepetitionsCount, false);
+            return new ExerciseSegment(
+                    mInterval,
+                    mSegmentType,
+                    mRepetitionsCount,
+                    mWeight,
+                    mSetIndex,
+                    mRateOfPerceivedExertion,
+                    false);
         }
     }
 }

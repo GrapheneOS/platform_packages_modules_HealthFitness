@@ -1150,7 +1150,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Az egészségügyi adatok fokozottabb biztonsága érdekében állítson be PIN-kódot, mintát vagy jelszót ezen az eszközön"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Képernyőzár beállítása"</string>
     <string name="select_all" msgid="837499881590001166">"Összes kijelölése"</string>
-    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"A társított alkalmazások a továbbiakban nem tudják majd írni a Health Connect szolgáltatásból származó adatokat"</string>
+    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"A társított alkalmazások a továbbiakban nem tudják majd írni a Health Connect szolgáltatásból származó adatokat."</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Bejelölve"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nincs bejelölve"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"Rendelkezésre áll edzési térképes útvonal"</string>

@@ -1113,7 +1113,7 @@
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"আপডে’টৰ প্ৰয়োজন"</string>
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"আপোনাৰ ডেটা পুনঃস্থাপন কৰাটো অব্যাহত ৰখাৰ আগতে, আপোনাৰ ফ’নৰ ছিষ্টেমটো আপডে’ট কৰক।"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"এতিয়াই আপডে’ট কৰক"</string>
-    <string name="data_totals_header" msgid="8316977153276216025">"মুঠত ডেটা"</string>
+    <string name="data_totals_header" msgid="8316977153276216025">"মুঠ ডেটাৰ ধৰণ"</string>
     <string name="app_sources_header" msgid="6343062519512947665">"এপৰ উৎস"</string>
     <string name="data_sources_footer" msgid="6414387142919741183">"তথ্যৰ মুঠ কেনেকৈ সলনি হ’ব পাৰে সেয়া চাবলৈ তালিকাত এপৰ উৎস যোগ দিয়ক। এই সূচীৰ পৰা এটা এপ্‌ আঁতৰাই দিলে ই মুঠত অৱদান যোগোৱা বন্ধ কৰিব, কিন্তু তথাপি ইয়াৰ লিখাৰ অনুমতি থাকিব।"</string>
     <string name="data_sources_empty_state" msgid="1899652759274805556">"এপৰ কোনো উৎস নাই"</string>

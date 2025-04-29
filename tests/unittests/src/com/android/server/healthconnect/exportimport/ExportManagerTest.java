@@ -48,8 +48,6 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
 import android.healthconnect.cts.phr.utils.PhrDataFactory;
-import android.healthconnect.cts.utils.AssumptionCheckerRule;
-import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.net.Uri;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -105,12 +103,6 @@ public class ExportManagerTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDirectory = new TemporaryFolder();
-
-    @Rule
-    public final AssumptionCheckerRule mSupportedHardwareRule =
-            new AssumptionCheckerRule(
-                    DeviceSupportUtils::isHealthConnectFullySupported,
-                    "Tests should run on supported hardware only.");
 
     private Context mContext;
     private HealthConnectInjector mHealthConnectInjector;
