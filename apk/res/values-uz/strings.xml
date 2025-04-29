@@ -455,7 +455,7 @@
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Bu ilova olishi mumkin boʻlgan boshqa Android ruxsatlarini boshqarish uchun Sozlamalar &gt; Ilovalar rukniga kiring"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Maxfiylik siyosatini oʻqish"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Oxirgi 24 soat ichida kirilgan"</string>
-    <string name="app_access_title" msgid="7137018424885371763">"Ilovaga ruxsat"</string>
+    <string name="app_access_title" msgid="7137018424885371763">"Ilova uchun ruxsat"</string>
     <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Mos ilovalar oʻrnatilmagan"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Kengaytirilgan ruxsat"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Saqlangan maʼlumotlar, fon rejimi"</string>

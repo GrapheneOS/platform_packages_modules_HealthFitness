@@ -38,7 +38,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Batek ere ez"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Sarreraren xehetasunak"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Arakatu datuak"</string>
-    <string name="browse_data_subtitle" msgid="7025164374898103993">"Ikusi datuak eta zer aplikaziok erabil ditzaketen"</string>
+    <string name="browse_data_subtitle" msgid="7025164374898103993">"Ikusi datuak eta zein aplikaziok erabil ditzaketen"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Ezabatze automatikoa, datu-iturburuak, babeskopiak eta leheneratzea"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Elementu gehiago"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Elementu gutxiago"</string>
