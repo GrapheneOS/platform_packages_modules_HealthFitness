@@ -989,10 +989,10 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Farenhaiti"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvin"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Usaidizi na maoni"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ikiwa huoni programu iliyosakinishwa, huenda haifanyi kazi na programu ya Health Connect kwa sasa"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Ikiwa huoni programu uliyoweka, huenda haifanyi kazi na programu ya Health Connect kwa sasa"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Mambo unayoweza kujaribu"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Angalia masasisho"</string>
-    <string name="check_for_updates_description" msgid="1347667778199095160">"Hakikisha kuwa programu ulizosakinisha zimesasishwa"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Hakikisha kuwa programu ulizoweka zimesasishwa"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Angalia programu zote oanifu"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Tafuta programu kwenye Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Tuma maoni"</string>

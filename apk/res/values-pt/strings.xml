@@ -36,7 +36,7 @@
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> app tem acesso"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 app tem acesso}one{# app tem acesso}other{# apps têm acesso}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Nenhuma"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Detalhes da entrada"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Detalhes de entradas"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Procurar dados"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Ver os dados e quais apps podem ter acesso a eles"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Exclusão automática, fontes de dados, backup e restauração"</string>
@@ -441,7 +441,7 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"Nenhum app permitido"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Nenhum app negado"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Remover o acesso para todos os apps?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Nenhum dos seus apps vai poder acessar ou adicionar novos dados ao app Conexão Saúde. Os dados já existentes não serão excluídos.\n\nIsso não afeta outras permissões que o app possa ter, como de localização, câmera ou microfone."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Nenhum dos seus apps vai poder acessar ou adicionar novos dados à plataforma Conexão Saúde. Os dados já existentes não serão excluídos.\n\nIsso não afeta outras permissões que o app possa ter, como de localização, câmera ou microfone."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Remover para todos"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Gerenciar o app"</string>
     <string name="see_app_data" msgid="3951030076195119476">"Mostrar dados do app"</string>
@@ -989,7 +989,7 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Fahrenheit"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvin"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Ajuda e feedback"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Se um app instalado não aparecer, talvez ele ainda não seja compatível com o app Conexão Saúde"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Se um app instalado não aparecer, talvez ele ainda não seja compatível com a plataforma Conexão Saúde"</string>
     <string name="things_to_try" msgid="8200374691546152703">"O que você pode tentar fazer"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Verificar se há atualizações"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Confira se os apps instalados estão atualizados"</string>

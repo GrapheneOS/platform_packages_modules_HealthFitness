@@ -58,8 +58,8 @@
     <string name="recent_access_screen_description" msgid="331101209889185402">"గత 24 గంటల్లో మీ డేటాను ఏయే యాప్‌లు యాక్సెస్ చేశాయో చూడండి"</string>
     <string name="today_header" msgid="1006837293203834373">"నేడు"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"నిన్న"</string>
-    <string name="read_data_access_label" msgid="8968758932021241976">"చదివింది: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
-    <string name="write_data_access_label" msgid="105976369853871061">"రాసింది: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
+    <string name="read_data_access_label" msgid="8968758932021241976">"రీడ్ చేసింది: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
+    <string name="write_data_access_label" msgid="105976369853871061">"రైట్ చేసింది: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
     <string name="separator" msgid="5521285473288943819">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"అనుమతులను మేనేజ్ చేయండి"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"సమయం: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
@@ -397,11 +397,11 @@
     <string name="medical_request_footer" msgid="6533749932770903089">"మీ ఆరోగ్య సమాచారాలన్నింటిని ఒకేచోట ఉంచడానికి, మీ విభిన్న యాప్‌లు, సోర్స్‌ల నుండి మీ ఆరోగ్య సమాచారాలను సింక్ చేయండి"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"అన్ని అనుమతులను తీసివేయాలా?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"అన్నీ తీసివేయండి"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై Health Connect నుండి ఎలాంటి డేటాను చదవలేరు లేదా రాయలేరు.\n\nఇది ఈ యాప్ కలిగి ఉండే కెమెరా, మైక్రోఫోన్, లేదా లొకేషన్ వంటి ఇతర అనుమతులపై ప్రభావం చూపదు."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై Health Connectలో ఎలాంటి డేటాను రీడ్ గానీ, రైట్ గానీ చేయలేదు.\n\nదీనివల్ల ఈ యాప్‌కు ఉండే ఇతర కెమెరా, మైక్రోఫోన్, లొకేషన్ వంటి అనుమతులపై ప్రభావం పడదు."</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై బ్యాక్‌గ్రౌండ్ డేటాతో సహా Health Connect నుండి ఏ డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న లొకేషన్, కెమెరా, లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై గతంలోని డేటాతో సహా Health Connect నుండి ఏ డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న లొకేషన్, కెమెరా, లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై బ్యాక్‌గ్రౌండ్, గతంలోని డేటతో సహా Health Connect నుండి ఏ డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న లొకేషన్, కెమెరా, లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect నుండి <xliff:g id="APP_NAME">%1$s</xliff:g> డేటాను కూడా తొలగించండి"</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connectలో <xliff:g id="APP_NAME">%1$s</xliff:g> డేటాను కూడా తొలగించండి"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"ఫిట్‌నెస్, వెల్‌నెస్ అనుమతులు అన్నిటినీ తీసివేయాలా?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"<xliff:g id="APP_NAME">%1$s</xliff:g>‌లోని Health Connect నుండి ఫిట్‌నెస్ డేటాను కూడా తొలగించండి"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"ఆరోగ్య సమాచారం అనుమతులన్నింటినీ తీసివేయాలా?"</string>
@@ -791,7 +791,7 @@
     <string name="pause" msgid="5161459047750335691">"పాజ్ చేయండి"</string>
     <string name="activity_type_australian_football" msgid="431838050917315084">"ఆస్ట్రేలియన్ ఫుట్‌బాల్"</string>
     <string name="unknown_type" msgid="4506151971125161053">"తెలియని రకం"</string>
-    <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> స్లీపింగ్"</string>
+    <string name="sleep_session_default" msgid="7376764686701487196">"<xliff:g id="DURATION"> %1$s</xliff:g> నిద్రపోవడం"</string>
     <string name="sleep_stage_default" msgid="1539043695578480733">"<xliff:g id="DURATION">%1$s</xliff:g> <xliff:g id="NAME">%2$s</xliff:g>⁠"</string>
     <string name="sleep_stage_awake" msgid="4526767634444460862">"మేల్కొని ఉన్న సమయం"</string>
     <string name="sleep_stage_awake_in_bed" msgid="5533385496857888503">"బెడ్ మీద సమయం పాటు మెలుకువగా"</string>
@@ -989,14 +989,14 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"ఫారెన్‌హీట్"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"కెల్విన్"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"సహాయం &amp; ఫీడ్‌బ్యాక్"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"ఇన్‌స్టాల్ చేసిన యాప్ మీకు కనిపించకపోతే, అది ఇంకా Health Connect యాప్‌నకు అనుకూలంగా ఉండకపోవచ్చని అర్ధం"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"ఇన్‌స్టాల్ అయిన యాప్ మీకు కనిపించకపోతే, అది ఇంకా Health Connectతో కంపాటిబుల్‌గా (అనుకూలంగా) ఉండకపోవచ్చని అర్థం"</string>
     <string name="things_to_try" msgid="8200374691546152703">"ట్రై చేయాల్సిన అంశాలు"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"అప్‌డేట్‌ల కోసం చెక్ చేయండి"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"ఇన్‌స్టాల్ చేసిన యాప్‌లు అప్‌డేట్ అయ్యి ఉన్నాయని నిర్ధారించుకోండి"</string>
-    <string name="see_all_compatible_apps" msgid="6791146164535475726">"అన్ని అనుకూల యాప్‌లను చూడండి"</string>
+    <string name="see_all_compatible_apps" msgid="6791146164535475726">"అన్ని అనుకూల (కంపాటిబుల్) యాప్‌లను చూడండి"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Google Playలో యాప్‌లను కనుగొనండి"</string>
     <string name="send_feedback" msgid="7756927746070096780">"ఫీడ్‌బ్యాక్‌ను పంపండి"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"ఏ ఆరోగ్యం &amp; ఫిట్‌నెస్ యాప్‌లు Health Connectతో పని చేయాలని మీరు అనుకుంటున్నారో మాకు తెలియజేయండి"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"ఏ హెల్త్ &amp; ఫిట్‌నెస్ యాప్‌లు, Health Connectతో కలిసి పని చేయాలని మీరు భావిస్తున్నారో మాకు చెప్పండి"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"ఆటోమేటిక్ తొలగింపు"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"ఆటోమేటిక్ తొలగింపు"</string>
@@ -1150,7 +1150,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"మీ ఆరోగ్య డేటాకు అదనపు సెక్యూరిటీని అందించడానికి, ఈ పరికరానికి PINను, ఆకృతిని, లేదా పాస్‌వర్డ్‌ను సెట్ చేయండి"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"స్క్రీన్ లాక్‌ను సెట్ చేయండి"</string>
     <string name="select_all" msgid="837499881590001166">"అన్నింటినీ ఎంచుకోండి"</string>
-    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"కనెక్ట్ అయి ఉన్న యాప్‌లు ఇకపై Health Connect నుండి ఈ డేటాను చదవలేవు"</string>
+    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"కనెక్ట్ అయి ఉన్న యాప్‌లు ఇకపై Health Connectలో ఈ డేటాను రీడ్ చేయలేవు"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ఎంచుకోబడింది"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ఎంచుకోలేదు"</string>
     <string name="a11y_map_description" msgid="4992907698581164434">"వ్యాయామం మ్యాప్ మార్గం అందుబాటులో ఉంది"</string>
@@ -1203,7 +1203,7 @@
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"మీ వెల్‌నెస్ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఎల్లప్పుడూ యాక్సెస్ చేయగలదు"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"మీ వెల్‌నెస్ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఉపయోగంలో ఉన్నప్పుడు మాత్రమే యాక్సెస్ చేయగలదు"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"యాక్సెస్ చేయడానికి అనుమతించబడ్డాయి"</string>
-    <string name="allowed_to_read" msgid="2775365229411407406">"చదవడానికి అనుమతించబడింది"</string>
+    <string name="allowed_to_read" msgid="2775365229411407406">"రీడ్ చేయడానికి అనుమతించబడినవి"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"ఈ అనుమతులు, మీ పరికర సెన్సర్‌ల నుండి <xliff:g id="APP_NAME">%1$s</xliff:g>కు  డేటా యాక్సెస్‌ను ఇస్తాయి."</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>‌లో <xliff:g id="NUMBER_0">%1$d</xliff:g> యాప్‌లు అనుమతించబడ్డాయి"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"యాప్‌లు ఏవీ రిక్వెస్ట్ చేయట్లేదు"</string>
