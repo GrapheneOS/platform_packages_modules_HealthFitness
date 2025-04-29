@@ -22,11 +22,11 @@ import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.HeartRateRecord.BPM_MIN;
 import static android.health.connect.datatypes.HeartRateRecord.HEART_MEASUREMENTS_COUNT;
 import static android.healthconnect.cts.lib.TestAppProxy.APP_WRITE_PERMS_ONLY;
-import static android.healthconnect.cts.utils.DataFactory.getCompleteStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getHeartRateRecord;
 import static android.healthconnect.cts.utils.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.cts.utils.TestUtils.getHealthConnectManager;
 import static android.healthconnect.cts.utils.TestUtils.readRecordsWithPagination;
+import static android.healthconnect.testing.shared.DataFactory.getCompleteStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 
 import static com.google.common.truth.Truth.assertThat;
 

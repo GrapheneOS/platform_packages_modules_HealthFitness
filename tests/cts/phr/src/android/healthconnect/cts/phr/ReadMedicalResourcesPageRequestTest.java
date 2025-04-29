@@ -17,9 +17,9 @@
 package android.healthconnect.cts.phr;
 
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.PAGE_TOKEN;
-import static android.healthconnect.cts.utils.DataFactory.DEFAULT_PAGE_SIZE;
-import static android.healthconnect.cts.utils.DataFactory.MAXIMUM_PAGE_SIZE;
-import static android.healthconnect.cts.utils.DataFactory.MINIMUM_PAGE_SIZE;
+import static android.healthconnect.testing.shared.DataFactory.DEFAULT_PAGE_SIZE;
+import static android.healthconnect.testing.shared.DataFactory.MAXIMUM_PAGE_SIZE;
+import static android.healthconnect.testing.shared.DataFactory.MINIMUM_PAGE_SIZE;
 
 import static com.google.common.truth.Truth.assertThat;
 

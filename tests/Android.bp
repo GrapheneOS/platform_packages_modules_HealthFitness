@@ -39,6 +39,7 @@ android_robolectric_test {
     srcs: [
         "unittests/src/**/*.java",
         ":healthfitness-framework-test-src",
+        // TODO(b/409549484): Remove from here by moving to a target without any cts dependencies.
         // At the moment depending directly on some CTS targets gives dexcache==null errors when
         // mocking, so I am depending on a limited subset.
         "cts/phr/src/android/healthconnect/cts/phr/utils/FhirResourceBuilder.java",
@@ -52,7 +53,6 @@ android_robolectric_test {
         "cts/phr/src/android/healthconnect/cts/phr/utils/PractitionerBuilder.java",
         "cts/phr/src/android/healthconnect/cts/phr/utils/ProcedureBuilder.java",
         "cts/phr/src/android/healthconnect/cts/phr/utils/PhrDataFactory.java",
-        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/DataFactory.java",
     ],
     exclude_srcs: [
         "unittests/src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",
@@ -75,6 +75,7 @@ android_robolectric_test {
         "flag-junit",
         "framework-annotations-lib",
         "healthfitness-aconfig-flags-lib",
+        "healthfitness-testing-shared",
         // This is needed give us AppOpsManagerLocal
         "services.core",
         "platform-parametric-runner-lib",
@@ -124,6 +125,7 @@ android_test {
         "framework-healthfitness.impl",
         "healthfitness-aconfig-flags-lib",
         "healthfitness-aconfig-flags-helper",
+        "healthfitness-testing-shared",
         "flag-junit",
         "androidx.test.runner",
         "mockito-target-extended-minus-junit4",

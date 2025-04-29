@@ -20,13 +20,6 @@ import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
-import static android.healthconnect.cts.utils.DataFactory.getBasalMetabolicRateRecord;
-import static android.healthconnect.cts.utils.DataFactory.getDataOrigin;
-import static android.healthconnect.cts.utils.DataFactory.getDistanceRecord;
-import static android.healthconnect.cts.utils.DataFactory.getHeartRateRecord;
-import static android.healthconnect.cts.utils.DataFactory.getStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getTestRecords;
-import static android.healthconnect.cts.utils.DataFactory.getUpdatedStepsRecord;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecordsByIdFilter;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseWithManagePermission;
@@ -38,6 +31,13 @@ import static android.healthconnect.cts.utils.TestUtils.queryAccessLogs;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecordsWithManagePermission;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.DataFactory.getBasalMetabolicRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getTestRecords;
+import static android.healthconnect.testing.shared.DataFactory.getUpdatedStepsRecord;
 
 import static com.android.compatibility.common.util.SystemUtil.getEventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;

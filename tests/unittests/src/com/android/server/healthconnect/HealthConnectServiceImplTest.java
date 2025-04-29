@@ -51,8 +51,8 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.getGetMedicalDa
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getMedicalDataSourceRequiredFieldsOnly;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getMedicalResourceId;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getUpsertMedicalResourceRequest;
-import static android.healthconnect.cts.utils.DataFactory.MAXIMUM_PAGE_SIZE;
-import static android.healthconnect.cts.utils.DataFactory.NOW;
+import static android.healthconnect.testing.shared.DataFactory.MAXIMUM_PAGE_SIZE;
+import static android.healthconnect.testing.shared.DataFactory.NOW;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
@@ -758,8 +758,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testGetMedicalDataSourcesByIds_expectCorrectLogs()
-            throws RemoteException {
+    public void testGetMedicalDataSourcesByIds_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
         mHealthConnectService.getMedicalDataSourcesByIds(
@@ -999,8 +998,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testGetMedicalDataSourcesByRequests_expectCorrectLogs()
-            throws RemoteException {
+    public void testGetMedicalDataSourcesByRequests_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
         mHealthConnectService.getMedicalDataSourcesByRequest(
@@ -1304,8 +1302,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testReadMedicalResourcesByRequests_expectCorrectLogs()
-            throws RemoteException {
+    public void testReadMedicalResourcesByRequests_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
         mFakeTimeSource.setInstant(NOW);
 
@@ -1351,8 +1348,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testReadMedicalResourcesByIds_expectCorrectLogs()
-            throws RemoteException {
+    public void testReadMedicalResourcesByIds_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
         mFakeTimeSource.setInstant(NOW);
 
@@ -1375,8 +1371,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void
-            testReadMedicalResourcesByIds_hasDataManagementPermission_expectMonthlyTimeStamp() {
+    public void testReadMedicalResourcesByIds_hasDataManagementPermission_expectMonthlyTimeStamp() {
         setUpSuccessfulMocksForPhrTelemetry();
         mFakeTimeSource.setInstant(NOW);
         setDataManagementPermission(PERMISSION_GRANTED);
@@ -1884,8 +1879,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testCreateMedicalDataSource_expectCorrectLogs()
-            throws RemoteException {
+    public void testCreateMedicalDataSource_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
         mHealthConnectService.createMedicalDataSource(
@@ -1921,8 +1915,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testDeleteMedicalDataSourceWithData_expectCorrectLogs()
-            throws RemoteException {
+    public void testDeleteMedicalDataSourceWithData_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
         mHealthConnectService.deleteMedicalDataSourceWithData(
@@ -2047,8 +2040,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testDeleteMedicalResourcesByIds_expectCorrectLogs()
-            throws RemoteException {
+    public void testDeleteMedicalResourcesByIds_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
 
         mHealthConnectService.deleteMedicalResourcesByIds(
@@ -2122,8 +2114,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    public void testDeleteMedicalResourcesByRequests_expectCorrectLogs()
-            throws RemoteException {
+    public void testDeleteMedicalResourcesByRequests_expectCorrectLogs() throws RemoteException {
         setUpSuccessfulMocksForPhrTelemetry();
         DeleteMedicalResourcesRequest request =
                 new DeleteMedicalResourcesRequest.Builder()

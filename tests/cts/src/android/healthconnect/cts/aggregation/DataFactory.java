@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts.aggregation;
 
-import static android.healthconnect.cts.utils.DataFactory.getEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 
 import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.TimeInstantRangeFilter;

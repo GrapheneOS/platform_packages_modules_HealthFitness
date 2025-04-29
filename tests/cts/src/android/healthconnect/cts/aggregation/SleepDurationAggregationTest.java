@@ -17,14 +17,14 @@
 package android.healthconnect.cts.aggregation;
 
 import static android.health.connect.datatypes.SleepSessionRecord.SLEEP_DURATION_TOTAL;
-import static android.healthconnect.cts.utils.DataFactory.SESSION_END_TIME;
-import static android.healthconnect.cts.utils.DataFactory.SESSION_START_TIME;
-import static android.healthconnect.cts.utils.DataFactory.generateMetadata;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseGroupByDuration;
 import static android.healthconnect.cts.utils.TestUtils.insertRecord;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
+import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
+import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
 

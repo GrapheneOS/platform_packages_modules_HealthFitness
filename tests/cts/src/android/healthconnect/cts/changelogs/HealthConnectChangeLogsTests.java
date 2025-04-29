@@ -16,16 +16,6 @@
 
 package android.healthconnect.cts.changelogs;
 
-import static android.healthconnect.cts.utils.DataFactory.buildExerciseSession;
-import static android.healthconnect.cts.utils.DataFactory.generateMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getBasalMetabolicRateRecord;
-import static android.healthconnect.cts.utils.DataFactory.getChangeLogTokenRequestForTestRecordTypes;
-import static android.healthconnect.cts.utils.DataFactory.getDataOrigin;
-import static android.healthconnect.cts.utils.DataFactory.getDistanceRecord;
-import static android.healthconnect.cts.utils.DataFactory.getHeartRateRecord;
-import static android.healthconnect.cts.utils.DataFactory.getMetadataForId;
-import static android.healthconnect.cts.utils.DataFactory.getStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getTestRecords;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecordsByIdFilter;
@@ -37,6 +27,16 @@ import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.updateRecords;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
+import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getBasalMetabolicRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getChangeLogTokenRequestForTestRecordTypes;
+import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getMetadataForId;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getTestRecords;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -389,7 +389,7 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsRequest changeLogsRequest =
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
 
-        StepsRecord stepsRecord = getStepsRecord(/* steps = */ 10, "stepsId");
+        StepsRecord stepsRecord = getStepsRecord(/* steps= */ 10, "stepsId");
         Record insertedRecord = insertRecord(stepsRecord);
         deleteRecordsByIdFilter(
                 ImmutableList.of(RecordIdFilter.fromClientRecordId(StepsRecord.class, "stepsId")));
