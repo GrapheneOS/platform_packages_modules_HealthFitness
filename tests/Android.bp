@@ -52,11 +52,7 @@ android_robolectric_test {
         "cts/phr/src/android/healthconnect/cts/phr/utils/PractitionerBuilder.java",
         "cts/phr/src/android/healthconnect/cts/phr/utils/ProcedureBuilder.java",
         "cts/phr/src/android/healthconnect/cts/phr/utils/PhrDataFactory.java",
-        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/AssumptionCheckerRule.java",
         "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/DataFactory.java",
-        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/DeviceSupportUtils.java",
-        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/HealthConnectReceiver.java",
-        "cts/utils/HealthConnectTestUtils/src/android/healthconnect/cts/utils/TestOutcomeReceiver.java",
     ],
     exclude_srcs: [
         "unittests/src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",
