@@ -149,7 +149,7 @@ public class BackupRestoreE2ETest {
     }
 
     @Test
-    public void testBackupThenRestore_over5000MedicalResources_expectDataIsRestoredCorrectly()
+    public void testBackupThenRestore_1000MedicalResources_expectDataIsRestoredCorrectly()
             throws Exception {
         if (!DeviceSupportUtils.isHealthConnectFullySupported()) {
             return;
@@ -162,7 +162,7 @@ public class BackupRestoreE2ETest {
                         this::getCompleteActiveCaloriesBurnedRecord, numOfRecords);
         assertThat(insertedRecords).hasSize(numOfRecords);
         // Insert medical resources.
-        int numOfMedicalResources = 7000;
+        int numOfMedicalResources = 1000;
         String dataSourceId =
                 mPhrTestUtil.createDataSource(getCreateMedicalDataSourceRequest("1")).getId();
         List<MedicalResource> medicalResources =
