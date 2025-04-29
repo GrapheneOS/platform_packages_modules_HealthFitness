@@ -240,6 +240,10 @@ final class DatabaseUpgradeHelper {
                 db,
                 ExerciseSegmentRecordHelper.getAlterTableRequestForExerciseSegmentImprovements()
                         .getAddColumnsCommands());
+        executeSqlStatements(
+                db,
+                ExerciseSessionRecordHelper.getAlterTableRequestForRateOfPerceivedExertion()
+                        .getAddColumnsCommands());
     }
 
     private static void applyPersonalHealthRecordDatabaseUpgrade(SQLiteDatabase db) {
