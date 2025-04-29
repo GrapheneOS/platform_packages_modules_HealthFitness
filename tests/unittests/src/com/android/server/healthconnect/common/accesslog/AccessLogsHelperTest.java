@@ -40,10 +40,17 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_N
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.BloodPressureRecord;
 import android.health.connect.datatypes.BodyFatRecord;
@@ -98,10 +105,14 @@ public class AccessLogsHelperTest {
     // TODO(b/373322447): Remove the mock HealthPermissionIntentAppsTracker
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
+    @Mock private PackageManager mPackageManager;
 
     @Before
     public void setup() {
-        Context context = ApplicationProvider.getApplicationContext();
+        Context context = spy(ApplicationProvider.getApplicationContext());
+        doReturn(context).when(context).createContextAsUser(any(), anyInt());
+        when(context.getPackageManager()).thenReturn(mPackageManager);
+
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setPreferenceHelper(new FakePreferenceHelper())
@@ -271,12 +282,16 @@ public class AccessLogsHelperTest {
 
     @Test
     public void queryAccessLogs_invalidAppId_skipped() {
+        ContentValues contentValues =
+                populateCommonColumns(-2, List.of(RECORD_TYPE_BLOOD_PRESSURE), OPERATION_TYPE_READ);
+        UpsertTableRequest request =
+                new UpsertTableRequest(AccessLogsHelper.TABLE_NAME, contentValues);
+        mTransactionManager.insertOrThrowOnConflict(request);
+
         mTransactionManager.runAsTransaction(
                 db -> {
                     mAccessLogsHelper.recordDeleteAccessLog(
                             db, DATA_SOURCE_PACKAGE_NAME, Set.of(RECORD_TYPE_BLOOD_PRESSURE));
-                    mAccessLogsHelper.recordReadAccessLog(
-                            db, "invalid.package", Set.of(RECORD_TYPE_STEPS_CADENCE));
                     mAccessLogsHelper.recordDeleteAccessLog(
                             db, DATA_SOURCE_PACKAGE_NAME, Set.of(RECORD_TYPE_HEIGHT));
                 });
@@ -285,18 +300,6 @@ public class AccessLogsHelperTest {
         assertThat(result).hasSize(2);
         assertThat(result.get(0).getRecordTypes()).containsExactly(BloodPressureRecord.class);
         assertThat(result.get(1).getRecordTypes()).containsExactly(HeightRecord.class);
-    }
-
-    @Test
-    public void queryAccessLogs_invalidAppId_excluded() {
-        ContentValues contentValues =
-                populateCommonColumns(-2, List.of(RECORD_TYPE_BLOOD_PRESSURE), OPERATION_TYPE_READ);
-        UpsertTableRequest request =
-                new UpsertTableRequest(AccessLogsHelper.TABLE_NAME, contentValues);
-        mTransactionManager.insertOrThrowOnConflict(request);
-
-        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
-        assertThat(result).isEmpty();
     }
 
     @Test
@@ -366,11 +369,15 @@ public class AccessLogsHelperTest {
     }
 
     @Test
-    public void recordDeleteAccessLog_packageNameNotFound_noOp() {
+    public void recordDeleteAccessLog_packageNameNotFound_noOp() throws Exception {
+        String packageName = "unknown.app";
+        when(mPackageManager.getApplicationInfo(eq(packageName), any()))
+                .thenThrow(new PackageManager.NameNotFoundException());
+
         Set<Integer> recordTypeIds = Set.of(RECORD_TYPE_STEPS_CADENCE);
         mTransactionManager.runAsTransaction(
                 db -> {
-                    mAccessLogsHelper.recordDeleteAccessLog(db, "unknown.app", recordTypeIds);
+                    mAccessLogsHelper.recordDeleteAccessLog(db, packageName, recordTypeIds);
                 });
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
@@ -433,15 +440,49 @@ public class AccessLogsHelperTest {
     }
 
     @Test
-    public void recordReadAccessLog_packageNameNotFound_noOp() {
+    public void recordReadAccessLog_packageNameNotFound_noOp() throws Exception {
+        String packageName = "unknown.app";
+        when(mPackageManager.getApplicationInfo(eq(packageName), any()))
+                .thenThrow(new PackageManager.NameNotFoundException());
+
         Set<Integer> recordTypeIds = Set.of(RECORD_TYPE_DISTANCE, RECORD_TYPE_SKIN_TEMPERATURE);
         mTransactionManager.runAsTransaction(
                 db -> {
-                    mAccessLogsHelper.recordReadAccessLog(db, "unknown.app", recordTypeIds);
+                    mAccessLogsHelper.recordReadAccessLog(db, packageName, recordTypeIds);
                 });
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void recordReadAccessLog_noAppInfo_success() throws Exception {
+        String packageName = "never.seen.before.app";
+        ApplicationInfo applicationInfo = new ApplicationInfo();
+        applicationInfo.packageName = packageName;
+
+        when(mPackageManager.getApplicationInfo(eq(packageName), any()))
+                .thenReturn(applicationInfo);
+        when(mPackageManager.getApplicationLabel(applicationInfo)).thenReturn("Never seen before");
+        when(mPackageManager.getApplicationIcon(applicationInfo))
+                .thenReturn(
+                        ApplicationProvider.getApplicationContext()
+                                .getPackageManager()
+                                .getDefaultActivityIcon());
+
+        Set<Integer> recordTypeIds = Set.of(RECORD_TYPE_DISTANCE, RECORD_TYPE_SKIN_TEMPERATURE);
+        mTransactionManager.runAsTransaction(
+                db -> {
+                    mAccessLogsHelper.recordReadAccessLog(db, packageName, recordTypeIds);
+                });
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
+        assertThat(result).hasSize(1);
+        AccessLog log = result.get(0);
+        assertThat(log.getPackageName()).isEqualTo(packageName);
+        assertThat(log.getRecordTypes())
+                .containsExactly(DistanceRecord.class, SkinTemperatureRecord.class);
+        assertThat(log.getOperationType()).isEqualTo(OPERATION_TYPE_READ);
     }
 
     @Test
@@ -462,11 +503,15 @@ public class AccessLogsHelperTest {
     }
 
     @Test
-    public void recordUpsertAccessLog_packageNameNotFound_noOp() {
+    public void recordUpsertAccessLog_packageNameNotFound_noOp() throws Exception {
+        String packageName = "unknown.app";
+        when(mPackageManager.getApplicationInfo(eq(packageName), any()))
+                .thenThrow(new PackageManager.NameNotFoundException());
+
         Set<Integer> recordTypeIds = Set.of(RECORD_TYPE_BODY_FAT, RECORD_TYPE_HEIGHT);
         mTransactionManager.runAsTransaction(
                 db -> {
-                    mAccessLogsHelper.recordUpsertAccessLog(db, "unknown.app", recordTypeIds);
+                    mAccessLogsHelper.recordUpsertAccessLog(db, packageName, recordTypeIds);
                 });
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);

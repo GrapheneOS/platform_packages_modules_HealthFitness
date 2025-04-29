@@ -16,11 +16,6 @@
 
 package android.healthconnect.cts;
 
-import static android.health.connect.HealthPermissions.READ_STEPS;
-import static android.health.connect.HealthPermissions.WRITE_DISTANCE;
-import static android.health.connect.HealthPermissions.WRITE_HEART_RATE;
-import static android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE;
-import static android.health.connect.HealthPermissions.WRITE_STEPS;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_DELETE;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_UPSERT;
@@ -32,8 +27,6 @@ import static android.healthconnect.cts.utils.DataFactory.getHeartRateRecord;
 import static android.healthconnect.cts.utils.DataFactory.getStepsRecord;
 import static android.healthconnect.cts.utils.DataFactory.getTestRecords;
 import static android.healthconnect.cts.utils.DataFactory.getUpdatedStepsRecord;
-import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
-import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecordsByIdFilter;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponse;
 import static android.healthconnect.cts.utils.TestUtils.getAggregateResponseWithManagePermission;
@@ -395,8 +388,6 @@ public class HealthConnectAccessLogsTest {
     @Test
     @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_deleteByInvalidId_expectDeleteLogs() throws Exception {
-        grantHealthPermissions(
-                SELF_PACKAGE_NAME, List.of(WRITE_HEART_RATE, WRITE_SKIN_TEMPERATURE));
         deleteRecordsByIdFilter(
                 List.of(
                         RecordIdFilter.fromId(HeartRateRecord.class, UUID.randomUUID().toString()),
@@ -416,7 +407,6 @@ public class HealthConnectAccessLogsTest {
     @Test
     @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_deleteByFilter_expectDeleteLogs() throws Exception {
-        grantHealthPermission(SELF_PACKAGE_NAME, WRITE_STEPS);
         TimeInstantRangeFilter timeFilter =
                 new TimeInstantRangeFilter.Builder()
                         .setStartTime(EPOCH)
@@ -470,7 +460,6 @@ public class HealthConnectAccessLogsTest {
 
     @Test
     public void testAccessLogs_readRecords_readAccessLogCreated() throws Exception {
-        grantHealthPermission(SELF_PACKAGE_NAME, READ_STEPS);
         readRecords(new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
 
         List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
@@ -483,7 +472,6 @@ public class HealthConnectAccessLogsTest {
 
     @Test
     public void testAccessLogs_insertRecord_writeAccessLogCreated() throws Exception {
-        grantHealthPermission(SELF_PACKAGE_NAME, WRITE_HEART_RATE);
         insertRecord(getHeartRateRecord());
 
         List<AccessLog> accessLogs = TestUtils.queryAccessLogs();
@@ -497,7 +485,6 @@ public class HealthConnectAccessLogsTest {
     @Test
     @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_deleteRecords_deleteAccessLogCreated() throws Exception {
-        grantHealthPermission(SELF_PACKAGE_NAME, WRITE_DISTANCE);
         TimeInstantRangeFilter timeFilter =
                 new TimeInstantRangeFilter.Builder()
                         .setStartTime(Instant.EPOCH)
