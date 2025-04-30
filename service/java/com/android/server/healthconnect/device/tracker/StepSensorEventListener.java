@@ -19,12 +19,21 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
+
 /**
  * Listener that receives SensorManager pedometer events.
  *
  * @hide
  */
 class StepSensorEventListener implements SensorEventListener {
+
+    private final HealthConnectThreadScheduler mThreadScheduler;
+
+    StepSensorEventListener(HealthConnectThreadScheduler mThreadScheduler) {
+        this.mThreadScheduler = mThreadScheduler;
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         // Implementation goes here. Do nothing for now.

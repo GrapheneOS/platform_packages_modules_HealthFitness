@@ -24,9 +24,12 @@ import com.android.internal.annotations.VisibleForTesting;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +49,7 @@ public final class HealthConnectThreadScheduler {
     private static final long KEEP_ALIVE_TIME_SHARED = 60L;
     private static final int NUM_EXECUTOR_THREADS_CONTROLLER = 2;
     private static final long KEEP_ALIVE_TIME_CONTROLLER = 60L;
+    private static final int NUM_EXECUTOR_THREADS_PASSIVE_TRACKER = 1;
 
     private static final String TAG = "HealthConnectScheduler";
 
@@ -70,12 +74,18 @@ public final class HealthConnectThreadScheduler {
     @VisibleForTesting
     public volatile ThreadPoolExecutor mControllerExecutor = createControllerExecutor();
 
+    // Executor to process and schedule HC passive tracker events
+    @VisibleForTesting
+    public volatile ScheduledThreadPoolExecutor mPassiveTrackerExecutor =
+            createPassiveTrackerExecutor();
+
     /** Reset all the executor thread pools in this executor */
     public void resetThreadPools() {
         mInternalBackgroundExecutor = createInternalBackgroundExecutor();
         mBackgroundThreadExecutor = createBackgroundExecutor();
         mForegroundExecutor = createForegroundExecutor();
         mControllerExecutor = createControllerExecutor();
+        mPassiveTrackerExecutor = createPassiveTrackerExecutor();
 
         mRoundRobinScheduler.resume();
     }
@@ -120,6 +130,11 @@ public final class HealthConnectThreadScheduler {
                 new NamedThreadFactory("hc-ctrl-"));
     }
 
+    private static ScheduledThreadPoolExecutor createPassiveTrackerExecutor() {
+        return new ScheduledThreadPoolExecutor(
+                NUM_EXECUTOR_THREADS_PASSIVE_TRACKER, new NamedThreadFactory("hc-pt-"));
+    }
+
     void shutdownThreadPools() {
         mRoundRobinScheduler.killTasksAndPauseScheduler();
 
@@ -127,6 +142,7 @@ public final class HealthConnectThreadScheduler {
         mBackgroundThreadExecutor.shutdownNow();
         mForegroundExecutor.shutdownNow();
         mControllerExecutor.shutdownNow();
+        mPassiveTrackerExecutor.shutdownNow();
     }
 
     /** Schedules the task on the executor dedicated for performing internal tasks */
@@ -137,6 +153,20 @@ public final class HealthConnectThreadScheduler {
     /** Schedules the task on the executor dedicated for performing controller tasks */
     void scheduleControllerTask(Runnable task) {
         safeExecute(mControllerExecutor, getSafeRunnable(task));
+    }
+
+    /** Schedules the task on the executor dedicated for performing passive tracker tasks. */
+    public void schedulePassiveTrackerTask(Runnable task) {
+        safeExecute(mPassiveTrackerExecutor, getSafeRunnable(task));
+    }
+
+    /**
+     * Schedules the task with a delay on the executor dedicated for performing passive tracker
+     * tasks.
+     */
+    public Optional<ScheduledFuture<?>> schedulePassiveTrackerTask(
+            Runnable task, long delayMillis) {
+        return safeSchedule(mPassiveTrackerExecutor, getSafeRunnable(task), delayMillis);
     }
 
     /** Schedules the task on the best possible executor based on the parameters */
@@ -199,6 +229,19 @@ public final class HealthConnectThreadScheduler {
             // this is to prevent unexpected crashes, see b/325746130
             Slog.e(TAG, executor + " is shutting down or already terminated!", ex);
         }
+    }
+
+    private static Optional<ScheduledFuture<?>> safeSchedule(
+            ScheduledThreadPoolExecutor executor, Runnable task, long delayMillis) {
+        try {
+            return Optional.of(executor.schedule(task, delayMillis, TimeUnit.MILLISECONDS));
+        } catch (RejectedExecutionException ex) {
+            // this is to prevent unexpected crashes, see b/325746130
+            Slog.e(TAG, executor + " is shutting down or already terminated!", ex);
+        } catch (NullPointerException e) {
+            Slog.e(TAG, executor + " threw a NullPointerException", e);
+        }
+        return Optional.empty();
     }
 
     // Makes sure that any exceptions don't end up in system_server.

@@ -35,8 +35,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @RunWith(AndroidJUnit4.class)
@@ -45,10 +48,12 @@ public class HealthConnectThreadSchedulerTest {
     private ThreadPoolExecutor mControllerTaskScheduler;
     private ThreadPoolExecutor mForegroundTaskScheduler;
     private ThreadPoolExecutor mBackgroundTaskScheduler;
+    private ThreadPoolExecutor mPassiveTrackerTaskScheduler;
     private long mInternalTaskSchedulerCompletedJobs;
     private long mControllerTaskSchedulerCompletedJobs;
     private long mForegroundTaskSchedulerCompletedJobs;
     private long mBackgroundTaskSchedulerCompletedJobs;
+    private long mPassiveTrackerTaskSchedulerCompletedJobs;
     private Context mContext;
     private HealthConnectThreadScheduler mHealthConnectThreadScheduler;
 
@@ -70,6 +75,9 @@ public class HealthConnectThreadSchedulerTest {
         mForegroundTaskSchedulerCompletedJobs = mForegroundTaskScheduler.getCompletedTaskCount();
         mBackgroundTaskScheduler = mHealthConnectThreadScheduler.mBackgroundThreadExecutor;
         mBackgroundTaskSchedulerCompletedJobs = mBackgroundTaskScheduler.getCompletedTaskCount();
+        mPassiveTrackerTaskScheduler = mHealthConnectThreadScheduler.mPassiveTrackerExecutor;
+        mPassiveTrackerTaskSchedulerCompletedJobs =
+                mPassiveTrackerTaskScheduler.getCompletedTaskCount();
         mContext = InstrumentationRegistry.getInstrumentation().getContext();
     }
 
@@ -126,6 +134,37 @@ public class HealthConnectThreadSchedulerTest {
     }
 
     @Test
+    public void testSchedulePassiveTrackerTask() throws Exception {
+        mHealthConnectThreadScheduler.schedulePassiveTrackerTask(() -> {});
+        TestUtils.waitForTaskToFinishSuccessfully(
+                () -> {
+                    if (mPassiveTrackerTaskScheduler.getCompletedTaskCount()
+                            != mPassiveTrackerTaskSchedulerCompletedJobs + 1) {
+                        throw new RuntimeException();
+                    }
+                });
+    }
+
+    @Test
+    public void testSchedulePassiveTrackerTaskWithDelay() throws Exception {
+        long delayMillis = 30000;
+        Instant startTime = Instant.now();
+
+        ScheduledFuture<?> future =
+                mHealthConnectThreadScheduler
+                        .schedulePassiveTrackerTask(() -> {}, delayMillis)
+                        .get();
+        future.get(); // Wait for the task to run and complete
+
+        long durationMillis = ChronoUnit.MILLIS.between(startTime, Instant.now());
+        assertThat(durationMillis).isGreaterThan(delayMillis); // Task should start after the delay
+        assertThat(durationMillis)
+                .isLessThan(
+                        delayMillis
+                                + 3000); // Task shouldn't take too long to finish after the delay
+    }
+
+    @Test
     public void testHealthConnectScheduler_runningAppProcessNull() throws Exception {
         when(mMockContext.getSystemService(ActivityManager.class)).thenReturn(mActivityManager);
         when(mActivityManager.getRunningAppProcesses()).thenReturn(null);
@@ -146,6 +185,7 @@ public class HealthConnectThreadSchedulerTest {
         assertThat(mControllerTaskSchedulerCompletedJobs).isEqualTo(0);
         assertThat(mForegroundTaskSchedulerCompletedJobs).isEqualTo(0);
         assertThat(mBackgroundTaskSchedulerCompletedJobs).isEqualTo(0);
+        assertThat(mPassiveTrackerTaskSchedulerCompletedJobs).isEqualTo(0);
     }
 
     @Test
@@ -183,6 +223,13 @@ public class HealthConnectThreadSchedulerTest {
         Future<String> name =
                 mBackgroundTaskScheduler.submit(() -> Thread.currentThread().getName());
         assertThat(name.get()).isEqualTo("hc-bg-0");
+    }
+
+    @Test
+    public void testPassiveTrackerSchedulerThreadName() throws Exception {
+        Future<String> name =
+                mPassiveTrackerTaskScheduler.submit(() -> Thread.currentThread().getName());
+        assertThat(name.get()).startsWith("hc-pt-");
     }
 
     private void mockCurrentProcessImportance(int importance) {
