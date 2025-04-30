@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.common.metadata;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
+
 import static com.android.server.healthconnect.testing.TestUtils.TEST_USER;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -194,6 +196,21 @@ public class AppInfoHelperTest {
         verify(mPackageManager, times(0)).getApplicationIcon(TEST_PACKAGE_NAME);
     }
 
+    @Test
+    public void testGetOrInsertAppInfoIdNoThrow_appInstalled_returnsAppInfoId() throws Exception {
+        setAppAsInstalled();
+        assertThat(mAppInfoHelper.getOrInsertAppInfoIdNoThrow(TEST_PACKAGE_NAME))
+                .isNotEqualTo(DEFAULT_LONG);
+    }
+
+    @Test
+    public void testGetOrInsertAppInfoIdNoThrow_appNotInstalled_returnsDefaultLong()
+            throws Exception {
+        setAppAsNotInstalled();
+        assertThat(mAppInfoHelper.getOrInsertAppInfoIdNoThrow(TEST_PACKAGE_NAME))
+                .isEqualTo(DEFAULT_LONG);
+    }
+
     private void setAppAsNotInstalled() throws PackageManager.NameNotFoundException {
         when(mPackageManager.getApplicationInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenThrow(new PackageManager.NameNotFoundException());
@@ -208,6 +225,8 @@ public class AppInfoHelperTest {
 
         when(mPackageManager.getApplicationInfo(eq(TEST_PACKAGE_NAME), any()))
                 .thenReturn(expectedAppInfo);
+        when(mPackageManager.getApplicationLabel(expectedAppInfo)).thenReturn("Test package");
+        when(mPackageManager.getApplicationIcon(expectedAppInfo)).thenReturn(mDrawable);
         when(mPackageManager.getApplicationIcon(TEST_PACKAGE_NAME)).thenReturn(mDrawable);
     }
 

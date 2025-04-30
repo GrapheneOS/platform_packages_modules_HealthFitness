@@ -200,7 +200,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
             String packageName,
             @RecordTypeIdentifier.RecordType List<Integer> recordTypeList,
             @OperationType.OperationTypes int operationType) {
-        long appInfoId = mAppInfoHelper.getAppInfoId(packageName);
+        long appInfoId = mAppInfoHelper.getOrInsertAppInfoIdNoThrow(packageName);
         if (appInfoId == DEFAULT_LONG) {
             // TODO(b/371210803): Add server side log for this error
             Slog.w(TAG, "invalid package name " + packageName + " used for access log");
@@ -221,7 +221,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
             @MedicalResourceType Set<Integer> medicalResourceTypes,
             @OperationType.OperationTypes int operationType,
             boolean accessedMedicalDataSource) {
-        long appInfoId = mAppInfoHelper.getAppInfoId(packageName);
+        long appInfoId = mAppInfoHelper.getOrInsertAppInfoIdNoThrow(packageName);
         if (appInfoId == DEFAULT_LONG) {
             // TODO(b/371210803): Add server side log for this error
             Slog.w(TAG, "invalid package name " + packageName + " used for access log");
@@ -284,7 +284,7 @@ public final class AccessLogsHelper extends DatabaseHelper {
             String packageName,
             Set<Integer> recordTypeIds,
             @OperationType.OperationTypes int operationType) {
-        long appInfoId = mAppInfoHelper.getAppInfoId(packageName);
+        long appInfoId = mAppInfoHelper.getOrInsertAppInfoIdNoThrow(packageName);
         if (appInfoId == DEFAULT_LONG) {
             // TODO(b/371210803): Add server side log for this error
             Slog.w(TAG, "invalid package name " + packageName + " used for access log");
