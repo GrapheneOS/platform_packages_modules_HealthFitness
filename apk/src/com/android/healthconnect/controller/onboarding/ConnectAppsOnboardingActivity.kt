@@ -21,6 +21,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import com.android.healthconnect.controller.R
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,5 +43,21 @@ class ConnectAppsOnboardingActivity : Hilt_ConnectAppsOnboardingActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_onboarding)
+    }
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (!navController.popBackStack()) {
+            finish()
+        }
+    }
+
+    override fun onNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (!navController.popBackStack()) {
+            finish()
+        }
+
+        return true
     }
 }

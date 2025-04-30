@@ -87,4 +87,4 @@ interface ILoadFitnessPermissionAppsUseCase {
     suspend fun invoke(): List<ConnectedFitnessAppMetadata>
 }
 
-data class ConnectedFitnessAppMetadata(val appMetadata: AppMetadata, val isConnected: Boolean)
+data class ConnectedFitnessAppMetadata(val appMetadata: AppMetadata, var isConnected: Boolean)

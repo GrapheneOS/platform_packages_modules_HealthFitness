@@ -20,8 +20,8 @@
     android:id="@+id/onboarding_nav_graph">
 
     <fragment
-        android:name="com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingFragment"
-        android:id="@+id/connectAppsOnboardingFragment">
+        android:id="@+id/connectAppsOnboardingFragment"
+        android:name="com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingFragment">
         <action
             android:id="@+id/action_connectAppsOnboardingFragment_to_fitnessAppOnboardingFragment"
             app:destination="@id/fitnessAppOnboardingFragment"/>
