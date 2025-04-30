@@ -31,8 +31,10 @@ import android.health.connect.MedicalResourceId;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Set;
 
 /**
@@ -97,6 +99,7 @@ public final class MedicalResource implements Parcelable {
     public static final int MEDICAL_RESOURCE_TYPE_VISITS = 12;
 
     /** @hide */
+    @Target(ElementType.TYPE_USE)
     @IntDef({
         MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
         MEDICAL_RESOURCE_TYPE_CONDITIONS,

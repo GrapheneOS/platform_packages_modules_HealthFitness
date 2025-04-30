@@ -19,12 +19,6 @@ package android.healthconnect.cts.datatypes;
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.RecordIdFilter.fromId;
 import static android.healthconnect.cts.lib.TestAppProxy.APP_WRITE_PERMS_ONLY;
-import static android.healthconnect.cts.utils.DataFactory.SESSION_END_TIME;
-import static android.healthconnect.cts.utils.DataFactory.SESSION_START_TIME;
-import static android.healthconnect.cts.utils.DataFactory.buildExerciseRoute;
-import static android.healthconnect.cts.utils.DataFactory.buildExerciseSession;
-import static android.healthconnect.cts.utils.DataFactory.buildLocationTimePoint;
-import static android.healthconnect.cts.utils.DataFactory.generateMetadata;
 import static android.healthconnect.cts.utils.TestUtils.copyRecordIdsViaReflection;
 import static android.healthconnect.cts.utils.TestUtils.distinctByUuid;
 import static android.healthconnect.cts.utils.TestUtils.getRecordIds;
@@ -32,6 +26,12 @@ import static android.healthconnect.cts.utils.TestUtils.insertRecordAndGetId;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.updateRecords;
+import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
+import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
+import static android.healthconnect.testing.shared.DataFactory.buildExerciseRoute;
+import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
+import static android.healthconnect.testing.shared.DataFactory.buildLocationTimePoint;
+import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
 

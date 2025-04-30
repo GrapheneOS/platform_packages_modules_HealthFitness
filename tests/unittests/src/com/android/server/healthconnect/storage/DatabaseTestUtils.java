@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.storage;
 
+import static android.database.DatabaseUtils.queryNumEntries;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.database.Cursor;
@@ -25,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import java.io.File;
+import java.util.List;
 
 public final class DatabaseTestUtils {
     // The number of table we released to the public. This number can only increase, as we are not
@@ -45,11 +48,14 @@ public final class DatabaseTestUtils {
         assertThat(cursor.getInt(0)).isEqualTo(expected);
     }
 
-    static @NonNull SQLiteDatabase createEmptyDatabase() {
+    /** Creates a database with no tables and no data. */
+    @NonNull
+    public static SQLiteDatabase createEmptyDatabase() {
         return createEmptyDatabase(MOCK_DATABASE_PATH);
     }
 
-    static @NonNull SQLiteDatabase createEmptyDatabase(File databasePath) {
+    @NonNull
+    static SQLiteDatabase createEmptyDatabase(File databasePath) {
         clearDatabase(databasePath);
         return SQLiteDatabase.openOrCreateDatabase(databasePath, /* cursorFactory= */ null);
     }
@@ -61,6 +67,29 @@ public final class DatabaseTestUtils {
     static void clearDatabase(File databasePath) {
         if (databasePath.exists()) {
             assertThat(databasePath.delete()).isTrue();
+        }
+    }
+
+    /** Asserts that a list of {@code columns} exist in the specified {@code table}. */
+    static void assertColumnsExist(SQLiteDatabase db, String table, List<String> columns) {
+        try (Cursor cursor =
+                db.rawQuery("SELECT * FROM " + table + " LIMIT 1", /* selectArgs */ null)) {
+            for (String column : columns) {
+                assertThat(cursor.getColumnIndex(column)).isNotEqualTo(-1);
+            }
+        }
+    }
+
+    /** Asserts that a list of {@code tables} exist. */
+    static void assertTablesExists(SQLiteDatabase db, List<String> tables) {
+        for (String table : tables) {
+            long numEntries =
+                    queryNumEntries(
+                            db,
+                            "sqlite_master",
+                            /* selection= */ "type = 'table' AND name == '" + table + "'",
+                            /* selectionArgs= */ null);
+            assertThat(numEntries).isGreaterThan(0);
         }
     }
 }

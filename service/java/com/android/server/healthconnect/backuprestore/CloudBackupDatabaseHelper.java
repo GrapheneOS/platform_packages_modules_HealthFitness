@@ -224,8 +224,9 @@ public class CloudBackupDatabaseHelper {
         long rowId = mChangeLogsHelper.getLatestRowId();
         ChangeLogsRequestHelper.TokenRequest tokenRequest =
                 new ChangeLogsRequestHelper.TokenRequest(
-                        List.of(),
+                        /* packageNamesToFilter= */ List.of(),
                         mRecordTypes,
+                        /* medicalResourceTypes= */ List.of(),
                         // Pass empty string to avoid package filters.
                         /* requestingPackageName= */ "",
                         rowId);

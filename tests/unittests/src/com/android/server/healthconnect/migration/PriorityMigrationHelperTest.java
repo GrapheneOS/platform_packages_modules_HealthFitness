@@ -141,8 +141,8 @@ public class PriorityMigrationHelperTest {
     public void testGetPreMigrationPriority_priorityReadFromDatabased() {
         when(mTransactionManager.read(any())).thenReturn(mCursor);
         when(mCursor.moveToNext()).thenReturn(true, true, false);
-        when(mCursor.getColumnIndex(CATEGORY_COLUMN_NAME)).thenReturn(CATEGORY_COLUMN_INDEX);
-        when(mCursor.getColumnIndex(PRIORITY_ORDER_COLUMN_NAME))
+        when(mCursor.getColumnIndexOrThrow(CATEGORY_COLUMN_NAME)).thenReturn(CATEGORY_COLUMN_INDEX);
+        when(mCursor.getColumnIndexOrThrow(PRIORITY_ORDER_COLUMN_NAME))
                 .thenReturn(PRIORITY_ORDER_COLUMN_INDEX);
         when(mCursor.getInt(CATEGORY_COLUMN_INDEX))
                 .thenReturn(HealthDataCategory.BODY_MEASUREMENTS, HealthDataCategory.ACTIVITY);

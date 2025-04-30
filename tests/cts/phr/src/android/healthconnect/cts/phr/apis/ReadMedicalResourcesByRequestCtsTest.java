@@ -32,7 +32,6 @@ import static android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_FHIR_
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_ALLERGY;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest;
-import static android.healthconnect.cts.utils.DataFactory.MAXIMUM_PAGE_SIZE;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
@@ -40,6 +39,7 @@ import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermi
 import static android.healthconnect.cts.utils.TestUtils.finishMigrationWithShellPermissionIdentity;
 import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflection;
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
+import static android.healthconnect.testing.shared.DataFactory.MAXIMUM_PAGE_SIZE;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_READ_MEDICAL_RESOURCES_FIX_QUERY_LIMIT;

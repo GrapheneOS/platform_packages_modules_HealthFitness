@@ -19,12 +19,12 @@ package android.healthconnect.cts.backgroundread;
 import static android.health.connect.HealthConnectException.ERROR_SECURITY;
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
-import static android.healthconnect.cts.utils.DataFactory.NOW;
-import static android.healthconnect.cts.utils.DataFactory.getStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getStepsRecordWithEmptyMetaData;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.getRecordIds;
 import static android.healthconnect.cts.utils.TestUtils.setupAggregation;
+import static android.healthconnect.testing.shared.DataFactory.NOW;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecordWithEmptyMetaData;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 

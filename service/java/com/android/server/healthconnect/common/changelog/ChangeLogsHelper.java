@@ -43,6 +43,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -70,6 +71,13 @@ public final class ChangeLogsHelper extends DatabaseHelper {
     public static final String TABLE_NAME = "change_logs_table";
     @VisibleForTesting public static final String RECORD_TYPE_COLUMN_NAME = "record_type";
     @VisibleForTesting public static final String APP_ID_COLUMN_NAME = "app_id";
+
+    @VisibleForTesting
+    public static final String MEDICAL_RESOURCE_TYPE_COLUMN_NAME = "medical_resource_type";
+
+    @VisibleForTesting
+    public static final String MEDICAL_DATA_SOURCE_ID_COLUMN_NAME = "medical_data_source_id";
+
     @VisibleForTesting public static final String UUIDS_COLUMN_NAME = "uuids";
     @VisibleForTesting public static final String OPERATION_TYPE_COLUMN_NAME = "operation_type";
     @VisibleForTesting public static final String TIME_COLUMN_NAME = "time";
@@ -102,6 +110,17 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         return new CreateTableRequest(TABLE_NAME, columns)
                 .createIndexOn(RECORD_TYPE_COLUMN_NAME)
                 .createIndexOn(APP_ID_COLUMN_NAME);
+    }
+
+    /** Adds the required columns for the PHR change logs feature. */
+    public static AlterTableRequest getAlterTableRequestForPhrChangeLogs() {
+        var columns =
+                List.of(
+                        new Pair<>(MEDICAL_RESOURCE_TYPE_COLUMN_NAME, INTEGER),
+                        new Pair<>(MEDICAL_DATA_SOURCE_ID_COLUMN_NAME, INTEGER));
+        return new AlterTableRequest(TABLE_NAME, columns)
+                .createIndexOn(MEDICAL_RESOURCE_TYPE_COLUMN_NAME)
+                .createIndexOn(MEDICAL_DATA_SOURCE_ID_COLUMN_NAME);
     }
 
     /** Returns datatypes being written/updates in past 30 days. */
@@ -297,8 +316,7 @@ public final class ChangeLogsHelper extends DatabaseHelper {
                                                     recordId ->
                                                             new DeletedLog(
                                                                     recordId.toString(),
-                                                                    row.timeStamp()
-                                                                            .toEpochMilli())))
+                                                                    row.timeStamp())))
                     .toList();
         }
 

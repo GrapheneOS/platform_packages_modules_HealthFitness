@@ -29,15 +29,6 @@ import static android.health.connect.datatypes.SleepSessionRecord.SLEEP_DURATION
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.TotalCaloriesBurnedRecord.ENERGY_TOTAL;
 import static android.healthconnect.cts.lib.RecordFactory.newEmptyMetadataWithClientId;
-import static android.healthconnect.cts.utils.DataFactory.NOW;
-import static android.healthconnect.cts.utils.DataFactory.buildExerciseSession;
-import static android.healthconnect.cts.utils.DataFactory.buildSleepSession;
-import static android.healthconnect.cts.utils.DataFactory.getDistanceRecord;
-import static android.healthconnect.cts.utils.DataFactory.getDistanceRecordWithNonEmptyId;
-import static android.healthconnect.cts.utils.DataFactory.getHeartRateRecord;
-import static android.healthconnect.cts.utils.DataFactory.getStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getTotalCaloriesBurnedRecord;
-import static android.healthconnect.cts.utils.DataFactory.getTotalCaloriesBurnedRecordWithEmptyMetadata;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
@@ -49,6 +40,15 @@ import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.updateRecords;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.DataFactory.NOW;
+import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
+import static android.healthconnect.testing.shared.DataFactory.buildSleepSession;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecordWithNonEmptyId;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecord;
+import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecordWithEmptyMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
 

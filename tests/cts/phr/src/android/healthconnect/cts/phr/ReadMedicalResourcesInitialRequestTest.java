@@ -20,9 +20,9 @@ import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_ID;
 import static android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_DATA_SOURCE_ID;
-import static android.healthconnect.cts.utils.DataFactory.DEFAULT_PAGE_SIZE;
-import static android.healthconnect.cts.utils.DataFactory.MAXIMUM_PAGE_SIZE;
-import static android.healthconnect.cts.utils.DataFactory.MINIMUM_PAGE_SIZE;
+import static android.healthconnect.testing.shared.DataFactory.DEFAULT_PAGE_SIZE;
+import static android.healthconnect.testing.shared.DataFactory.MAXIMUM_PAGE_SIZE;
+import static android.healthconnect.testing.shared.DataFactory.MINIMUM_PAGE_SIZE;
 
 import static com.google.common.truth.Truth.assertThat;
 

@@ -19,7 +19,7 @@ package com.android.server.healthconnect.fitness;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE_ROUTE;
 import static android.health.connect.accesslog.AccessLog.OperationType.OPERATION_TYPE_READ;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
-import static android.healthconnect.cts.utils.DataFactory.getDataOrigin;
+import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;

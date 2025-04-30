@@ -16,8 +16,11 @@
 
 package com.android.server.healthconnect.storage;
 
+import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.server.healthconnect.storage.DatabaseTestUtils.assertColumnsExist;
 import static com.android.server.healthconnect.storage.DatabaseTestUtils.createEmptyDatabase;
+import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -30,6 +33,9 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
+import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
+
 import com.google.common.base.Preconditions;
 
 import org.junit.Before;
@@ -39,6 +45,7 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
 import java.io.File;
+import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class DevelopmentDatabaseHelperTest {
@@ -172,6 +179,9 @@ public class DevelopmentDatabaseHelperTest {
     public void testOnOpen_isDevelopmentHasDevelopmentTables_noChange() {
         // GIVEN we have some current development database settings, and the flags are enabled
         try (SQLiteDatabase db = createEmptyDatabase()) {
+            // Apply production upgrades first
+            onUpgrade(db, 0, LAST_ROLLED_OUT_DB_VERSION);
+
             DevelopmentDatabaseHelper.dropAndCreateDevelopmentSettingsTable(
                     db, DevelopmentDatabaseHelper.CURRENT_VERSION);
 
@@ -188,6 +198,9 @@ public class DevelopmentDatabaseHelperTest {
     @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
     public void testOnOpen_oldDevelopmentSettingsTable_createsNew() {
         try (SQLiteDatabase db = createEmptyDatabase()) {
+            // Apply production upgrades first
+            onUpgrade(db, 0, LAST_ROLLED_OUT_DB_VERSION);
+
             DevelopmentDatabaseHelper.dropAndCreateDevelopmentSettingsTable(
                     db, DevelopmentDatabaseHelper.CURRENT_VERSION - 1);
 
@@ -195,6 +208,25 @@ public class DevelopmentDatabaseHelperTest {
 
             assertThat(DevelopmentDatabaseHelper.getOldVersionIfExists(db))
                     .isEqualTo(DevelopmentDatabaseHelper.CURRENT_VERSION);
+        }
+    }
+
+    @Test
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    public void onUpgrade_phrChangeLogs_schemaUpToDate() {
+        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+
+            assertColumnsExist(
+                    db,
+                    ChangeLogsRequestHelper.TABLE_NAME,
+                    List.of(ChangeLogsRequestHelper.MEDICAL_RESOURCE_TYPES_COLUMN_NAME));
+            assertColumnsExist(
+                    db,
+                    ChangeLogsHelper.TABLE_NAME,
+                    List.of(
+                            ChangeLogsHelper.MEDICAL_RESOURCE_TYPE_COLUMN_NAME,
+                            ChangeLogsHelper.MEDICAL_DATA_SOURCE_ID_COLUMN_NAME));
         }
     }
 }

@@ -16,7 +16,7 @@
 
 package android.healthconnect.cts.datatypes;
 
-import static android.healthconnect.cts.utils.DataFactory.generateMetadata;
+import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
 

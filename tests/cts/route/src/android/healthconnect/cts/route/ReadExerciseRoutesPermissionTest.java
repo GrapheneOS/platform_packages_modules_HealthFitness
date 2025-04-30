@@ -20,9 +20,9 @@ import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTES_REA
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.ROUTE_WRITER_APP;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.assertCorrectHealthPermissions;
 import static android.healthconnect.cts.route.ExerciseRouteTestHelper.getExerciseSessionWithRoute;
-import static android.healthconnect.cts.utils.DataFactory.getEmptyMetadata;
 import static android.healthconnect.cts.utils.TestUtils.connectAppsWithGrantedPermissions;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
+import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
 

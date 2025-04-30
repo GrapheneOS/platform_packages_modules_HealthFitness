@@ -16,16 +16,10 @@
 
 package android.healthconnect.cts.changelogs;
 
-import static android.healthconnect.cts.utils.DataFactory.buildExerciseSession;
-import static android.healthconnect.cts.utils.DataFactory.generateMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getBasalMetabolicRateRecord;
-import static android.healthconnect.cts.utils.DataFactory.getChangeLogTokenRequestForTestRecordTypes;
-import static android.healthconnect.cts.utils.DataFactory.getDataOrigin;
-import static android.healthconnect.cts.utils.DataFactory.getDistanceRecord;
-import static android.healthconnect.cts.utils.DataFactory.getHeartRateRecord;
-import static android.healthconnect.cts.utils.DataFactory.getMetadataForId;
-import static android.healthconnect.cts.utils.DataFactory.getStepsRecord;
-import static android.healthconnect.cts.utils.DataFactory.getTestRecords;
+import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
+import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_MEDICATIONS;
+import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_ID;
+import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_RESOURCE_ID_IMMUNIZATION;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.deleteRecordsByIdFilter;
@@ -37,6 +31,19 @@ import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.updateRecords;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
+import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getBasalMetabolicRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getChangeLogTokenRequestForTestRecordTypes;
+import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
+import static android.healthconnect.testing.shared.DataFactory.getMetadataForId;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
+import static android.healthconnect.testing.shared.DataFactory.getTestRecords;
+
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
+import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -49,6 +56,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import android.content.Context;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
@@ -66,6 +74,10 @@ import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.platform.test.annotations.AppModeFull;
+import android.platform.test.annotations.RequiresFlagsDisabled;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -82,12 +94,16 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /** CTS test for API provided by HealthConnectManager. */
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectChangeLogsTests {
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private final String mPackageName = mContext.getPackageName();
 
@@ -134,21 +150,85 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
-    public void testGetChangeLogToken_hasFieldsSet() {
+    public void testGetChangeLogToken_forRecord_hasFieldsSet() {
+        var dataOriginFilter = new DataOrigin.Builder().setPackageName("package.name").build();
         ChangeLogTokenRequest changeLogTokenRequest =
-                new ChangeLogTokenRequest.Builder().addRecordType(StepsRecord.class).build();
+                new ChangeLogTokenRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .addDataOriginFilter(dataOriginFilter)
+                        .build();
 
         assertThat(changeLogTokenRequest.getRecordTypes()).containsExactly(StepsRecord.class);
-        assertThat(changeLogTokenRequest.getDataOriginFilters()).isEmpty();
+        assertThat(changeLogTokenRequest.getMedicalResourceTypes()).isEmpty();
+        assertThat(changeLogTokenRequest.getDataOriginFilters()).containsExactly(dataOriginFilter);
     }
 
     @Test
+    @RequiresFlagsEnabled({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+    })
+    public void testGetChangeLogToken_forMedicalResource_hasFieldsSet() {
+        var dataOriginFilter = new DataOrigin.Builder().setPackageName("package.name").build();
+        ChangeLogTokenRequest changeLogTokenRequest =
+                new ChangeLogTokenRequest.Builder()
+                        .addMedicalResourceType(MEDICAL_RESOURCE_TYPE_MEDICATIONS)
+                        .addDataOriginFilter(dataOriginFilter)
+                        .build();
+
+        assertThat(changeLogTokenRequest.getRecordTypes()).isEmpty();
+        assertThat(changeLogTokenRequest.getMedicalResourceTypes())
+                .containsExactly(MEDICAL_RESOURCE_TYPE_MEDICATIONS);
+        assertThat(changeLogTokenRequest.getDataOriginFilters()).containsExactly(dataOriginFilter);
+    }
+
+    @Test
+    @RequiresFlagsDisabled({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+    })
     public void testGetChangeLogToken_emptyRecordTypes_throwsException() {
         Throwable thrown =
                 assertThrows(
-                        IllegalArgumentException.class,
+                        IllegalStateException.class,
                         () -> getChangeLogToken(new ChangeLogTokenRequest.Builder().build()));
         assertThat(thrown).hasMessageThat().contains("Requested record types must not be empty");
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+    })
+    public void testGetChangeLogToken_emptyBothTypes_throwsException() {
+        Throwable thrown =
+                assertThrows(
+                        IllegalStateException.class,
+                        () -> getChangeLogToken(new ChangeLogTokenRequest.Builder().build()));
+        assertThat(thrown)
+                .hasMessageThat()
+                .contains("At least one Record type or Medical Resource type must be set");
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+    })
+    public void testGetChangeLogToken_setBothTypes_throwsException() {
+        Throwable thrown =
+                assertThrows(
+                        IllegalStateException.class,
+                        () ->
+                                getChangeLogToken(
+                                        new ChangeLogTokenRequest.Builder()
+                                                .addRecordType(StepsRecord.class)
+                                                .addMedicalResourceType(
+                                                        MEDICAL_RESOURCE_TYPE_MEDICATIONS)
+                                                .build()));
+        assertThat(thrown)
+                .hasMessageThat()
+                .contains("Record type or Medical Resource types can't both be set");
     }
 
     @Test
@@ -156,7 +236,7 @@ public class HealthConnectChangeLogsTests {
         String errorMessage = "Requested record types must not contain any of ";
         Throwable thrown =
                 assertThrows(
-                        IllegalArgumentException.class,
+                        IllegalStateException.class,
                         () ->
                                 getChangeLogToken(
                                         new ChangeLogTokenRequest.Builder()
@@ -168,7 +248,7 @@ public class HealthConnectChangeLogsTests {
 
         thrown =
                 assertThrows(
-                        IllegalArgumentException.class,
+                        IllegalStateException.class,
                         () ->
                                 getChangeLogToken(
                                         new ChangeLogTokenRequest.Builder()
@@ -285,6 +365,8 @@ public class HealthConnectChangeLogsTests {
 
         assertThat(response.getUpsertedRecords()).isEmpty();
         assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -299,6 +381,8 @@ public class HealthConnectChangeLogsTests {
 
         assertThat(response.getUpsertedRecords()).containsExactlyElementsIn(testRecords);
         assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -317,6 +401,8 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
 
         assertThat(response.getUpsertedRecords()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -338,6 +424,8 @@ public class HealthConnectChangeLogsTests {
 
         assertThat(response.getUpsertedRecords()).isEmpty();
         assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -361,6 +449,8 @@ public class HealthConnectChangeLogsTests {
 
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords()).containsExactly(stepsRecord);
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -379,6 +469,8 @@ public class HealthConnectChangeLogsTests {
                 .comparingElementsUsing(DELETED_LOG_TO_RECORD_CORRESPONDENCE)
                 .containsExactlyElementsIn(testRecords);
         assertThat(response.getUpsertedRecords()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -389,7 +481,7 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsRequest changeLogsRequest =
                 new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
 
-        StepsRecord stepsRecord = getStepsRecord(/* steps = */ 10, "stepsId");
+        StepsRecord stepsRecord = getStepsRecord(/* steps= */ 10, "stepsId");
         Record insertedRecord = insertRecord(stepsRecord);
         deleteRecordsByIdFilter(
                 ImmutableList.of(RecordIdFilter.fromClientRecordId(StepsRecord.class, "stepsId")));
@@ -399,6 +491,8 @@ public class HealthConnectChangeLogsTests {
                 .comparingElementsUsing(DELETED_LOG_TO_RECORD_CORRESPONDENCE)
                 .containsExactly(insertedRecord);
         assertThat(response.getUpsertedRecords()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -425,6 +519,8 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
 
         assertThat(response.getUpsertedRecords()).containsExactlyElementsIn(expectedRecords);
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -447,6 +543,8 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getDeletedLogs())
                 .comparingElementsUsing(DELETED_LOG_TO_RECORD_CORRESPONDENCE)
                 .containsExactlyElementsIn(testRecords);
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -467,6 +565,8 @@ public class HealthConnectChangeLogsTests {
 
         assertThat(response.getUpsertedRecords()).isEmpty();
         assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -495,6 +595,8 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getDeletedLogs())
                 .comparingElementsUsing(DELETED_LOG_TO_RECORD_CORRESPONDENCE)
                 .containsExactly(stepsRecord);
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -520,6 +622,8 @@ public class HealthConnectChangeLogsTests {
                 .comparingElementsUsing(STEPS_RECORD_CORRESPONDENCE)
                 .containsExactly(getStepsRecord(/* steps= */ 123, insertedRecordMetadata));
         assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -541,6 +645,8 @@ public class HealthConnectChangeLogsTests {
                 .comparingElementsUsing(STEPS_RECORD_CORRESPONDENCE)
                 .containsExactly(getStepsRecord(/* steps= */ 123, insertedRecordMetadata));
         assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -567,6 +673,8 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getDeletedLogs())
                 .comparingElementsUsing(DELETED_LOG_TO_STRING_ID_CORRESPONDENCE)
                 .containsExactly(insertedRecordMetadata.getId());
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -587,6 +695,8 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getDeletedLogs())
                 .comparingElementsUsing(DELETED_LOG_TO_STRING_ID_CORRESPONDENCE)
                 .containsExactly(insertedRecordId);
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -600,6 +710,8 @@ public class HealthConnectChangeLogsTests {
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords()).isEmpty();
         assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -614,6 +726,8 @@ public class HealthConnectChangeLogsTests {
 
         ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
         assertThat(response.getUpsertedRecords()).containsExactly(testRecords.get(0));
+        assertThat(response.getUpsertedMedicalResources()).isEmpty();
+        assertThat(response.getDeletedMedicalResources()).isEmpty();
     }
 
     @Test
@@ -787,6 +901,33 @@ public class HealthConnectChangeLogsTests {
         assertThat(response.getUpsertedRecords()).doesNotContain(stepsRecordToUpdate);
         assertThat(response.getUpsertedRecords()).contains(updatedStepsRecord);
         assertThat(deletedIdsFromLog).containsExactlyElementsIn(expectedDeletedIds);
+    }
+
+    @Test
+    public void testDeletedLog_hasFieldsSet() {
+        var id = UUID.randomUUID().toString();
+        var time = Instant.ofEpochMilli(1234567890);
+
+        var deletedLog = new ChangeLogsResponse.DeletedLog(id, time);
+
+        assertThat(deletedLog.getDeletedRecordId()).isEqualTo(id);
+        assertThat(deletedLog.getDeletedTime()).isEqualTo(time);
+    }
+
+    @Test
+    public void testDeletedMedicalResource_hasFieldsSet() {
+        var id =
+                new MedicalResourceId(
+                        DATA_SOURCE_ID,
+                        FHIR_RESOURCE_TYPE_IMMUNIZATION,
+                        FHIR_RESOURCE_ID_IMMUNIZATION);
+        var time = Instant.ofEpochMilli(1234567890);
+
+        var deletedMedicalResource = new ChangeLogsResponse.DeletedMedicalResource(id, time);
+
+        assertThat(deletedMedicalResource.getDeletedMedicalResourceId()).isEqualTo(id);
+        assertThat(deletedMedicalResource.getDataSourceId()).isEqualTo(DATA_SOURCE_ID);
+        assertThat(deletedMedicalResource.getDeletedTime()).isEqualTo(time);
     }
 
     private static StepsRecord getStepsRecord_minusDays(int days) {

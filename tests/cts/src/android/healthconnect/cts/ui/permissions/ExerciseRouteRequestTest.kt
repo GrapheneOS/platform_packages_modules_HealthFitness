@@ -31,7 +31,6 @@ import android.healthconnect.cts.lib.TestAppProxy
 import android.healthconnect.cts.lib.UiTestUtils.clickOnText
 import android.healthconnect.cts.lib.UiTestUtils.waitDisplayed
 import android.healthconnect.cts.ui.HealthConnectBaseTest
-import android.healthconnect.cts.utils.DataFactory.getEmptyMetadata
 import android.healthconnect.cts.utils.DeviceSupportUtils
 import android.healthconnect.cts.utils.PermissionHelper.getDeclaredHealthPermissions
 import android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission
@@ -41,6 +40,7 @@ import android.healthconnect.cts.utils.ProxyActivity
 import android.healthconnect.cts.utils.RevokedHealthPermissionRule
 import android.healthconnect.cts.utils.TestUtils
 import android.healthconnect.cts.utils.TestUtils.insertRecordAndGetId
+import android.healthconnect.testing.shared.DataFactory.getEmptyMetadata
 import androidx.test.uiautomator.By
 import com.google.common.truth.Truth.assertThat
 import java.time.Duration

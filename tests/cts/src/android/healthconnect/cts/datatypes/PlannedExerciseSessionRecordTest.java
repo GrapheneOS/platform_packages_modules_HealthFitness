@@ -16,13 +16,13 @@
 
 package android.healthconnect.cts.datatypes;
 
-import static android.healthconnect.cts.utils.DataFactory.SESSION_END_TIME;
-import static android.healthconnect.cts.utils.DataFactory.SESSION_START_TIME;
 import static android.healthconnect.cts.utils.TestUtils.insertRecord;
 import static android.healthconnect.cts.utils.TestUtils.insertRecordAndGetId;
 import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.DataFactory.SESSION_END_TIME;
+import static android.healthconnect.testing.shared.DataFactory.SESSION_START_TIME;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;

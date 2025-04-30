@@ -20,17 +20,6 @@ import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGM
 import static android.health.connect.datatypes.ExerciseSessionRecord.EXERCISE_DURATION_TOTAL;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
-import static android.healthconnect.cts.utils.DataFactory.buildExerciseSessionWithEmptyMetadata;
-import static android.healthconnect.cts.utils.DataFactory.buildSleepSessionWithEmptyMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getDataOrigin;
-import static android.healthconnect.cts.utils.DataFactory.getDistanceRecordWithEmptyMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getEmptyMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getHeartRateRecordWithEmptyMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getMetadata;
-import static android.healthconnect.cts.utils.DataFactory.getMetadataForClientId;
-import static android.healthconnect.cts.utils.DataFactory.getMetadataForId;
-import static android.healthconnect.cts.utils.DataFactory.getStepsRecordWithEmptyMetaData;
-import static android.healthconnect.cts.utils.DataFactory.getTotalCaloriesBurnedRecordWithEmptyMetadata;
 import static android.healthconnect.cts.utils.PermissionHelper.getGrantedHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.grantAllHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
@@ -49,6 +38,17 @@ import static android.healthconnect.cts.utils.TestUtils.updateDataOriginPriority
 import static android.healthconnect.cts.utils.TestUtils.updatePriorityWithManageHealthDataPermission;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.cts.utils.TestUtils.yesterdayAt;
+import static android.healthconnect.testing.shared.DataFactory.buildExerciseSessionWithEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.buildSleepSessionWithEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecordWithEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecordWithEmptyMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getMetadata;
+import static android.healthconnect.testing.shared.DataFactory.getMetadataForClientId;
+import static android.healthconnect.testing.shared.DataFactory.getMetadataForId;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecordWithEmptyMetaData;
+import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecordWithEmptyMetadata;
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
