@@ -16,13 +16,17 @@
 
 package com.android.server.healthconnect.device.tracker;
 
+import static android.healthconnect.testing.unittest.TaskUtils.TEST_USER;
+
 import static com.android.healthfitness.flags.Flags.FLAG_STEP_TRACKING_ENABLED;
+import static com.android.server.healthconnect.device.DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
@@ -32,24 +36,28 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthPermissions;
+import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
+import android.os.UserManager;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.server.healthconnect.HealthConnectThreadScheduler;
-import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
-import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
+import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -64,26 +72,34 @@ public class TrackerManagerImplTest {
     private static final String TEST_PACKAGE_NAME = "com.test.app";
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Mock private Context mContext;
     @Mock private PackageManager mPackageManager;
     @Mock private HealthConnectPermissionHelper mPermissionHelper;
-
-    private HealthConnectThreadScheduler mThreadScheduler;
-    private DeviceRecordHelper mDeviceRecordHelper;
-    private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
+    @Mock private UserManager mUserManager;
+    private AppInfoHelper mAppInfoHelper;
+    private HealthConnectInjector mHealthConnectInjector;
 
     @Before
     public void setup() throws PackageManager.NameNotFoundException {
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
-        when(mContext.getPackageManager()).thenReturn(mPackageManager);
-        HealthConnectInjector healthConnectInjector =
+        AndroidPackageMocker.addToContext(mContext);
+        mPackageManager = mContext.getPackageManager();
+        doReturn(TEST_USER).when(mContext).getUser();
+        doReturn(true).when(mUserManager).isUserUnlocked();
+        doReturn(true).when(mUserManager).isUserUnlocked(TEST_USER);
+        mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                        .setHealthPermissionIntentAppsTracker(
+                                mock(HealthPermissionIntentAppsTracker.class))
+                        .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
+                        .setHealthConnectPermissionHelper(mPermissionHelper)
+                        .setUserManager(mUserManager)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
-        mThreadScheduler = healthConnectInjector.getThreadScheduler();
-        mDeviceRecordHelper = healthConnectInjector.getDeviceRecordHelper();
-        mDeviceDataSourcesHelper = healthConnectInjector.getDeviceDataSourcesHelper();
+        mAppInfoHelper = mHealthConnectInjector.getAppInfoHelper();
     }
 
     @After
@@ -94,39 +110,21 @@ public class TrackerManagerImplTest {
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingEnabled_initialize_doesNotThrow() {
-        TrackerManager manager =
-                new TrackerManagerImpl(
-                        mContext,
-                        mPermissionHelper,
-                        mThreadScheduler,
-                        mDeviceRecordHelper,
-                        mDeviceDataSourcesHelper);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         manager.initialize();
     }
 
     @Test
     @DisableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingDisabled_initialize_doesNotThrow() {
-        TrackerManager manager =
-                new TrackerManagerImpl(
-                        mContext,
-                        mPermissionHelper,
-                        mThreadScheduler,
-                        mDeviceRecordHelper,
-                        mDeviceDataSourcesHelper);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         manager.initialize();
     }
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingEnabled_setStepTrackingEnabled_doesNotThrow() {
-        TrackerManager manager =
-                new TrackerManagerImpl(
-                        mContext,
-                        mPermissionHelper,
-                        mThreadScheduler,
-                        mDeviceRecordHelper,
-                        mDeviceDataSourcesHelper);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         manager.setStepTrackingEnabled(true);
         manager.setStepTrackingEnabled(false);
     }
@@ -134,18 +132,13 @@ public class TrackerManagerImplTest {
     @Test
     @DisableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingDisabled_setStepTrackingEnabled_doesNotThrow() {
-        TrackerManager manager =
-                new TrackerManagerImpl(
-                        mContext,
-                        mPermissionHelper,
-                        mThreadScheduler,
-                        mDeviceRecordHelper,
-                        mDeviceDataSourcesHelper);
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         manager.setStepTrackingEnabled(true);
         manager.setStepTrackingEnabled(false);
     }
 
     @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void noAppsGrantedReadSteps_noPackagesReturned() {
         List<String> packages =
                 TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPermissionHelper);
@@ -155,6 +148,7 @@ public class TrackerManagerImplTest {
     }
 
     @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void appGrantedReadStepsPermission_isReturnedInList() {
         PackageInfo packageInfo = new PackageInfo();
         packageInfo.packageName = TEST_PACKAGE_NAME;
@@ -167,6 +161,7 @@ public class TrackerManagerImplTest {
     }
 
     @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void appPregrantedReadStepsPermission_notReturnedInList() {
         PackageInfo packageInfo = new PackageInfo();
         packageInfo.packageName = TEST_PACKAGE_NAME;
@@ -177,6 +172,32 @@ public class TrackerManagerImplTest {
                 TrackerManagerImpl.packagesEligibleForStepTracking(mContext, mPermissionHelper);
 
         assertThat(packages).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void duringInitialization_deviceDataPackageAddedToAppPriorityList() {
+        PackageInfo packageInfo = new PackageInfo();
+        packageInfo.packageName = TEST_PACKAGE_NAME;
+        mockInstallAndGrantPermissions(List.of(packageInfo));
+        assertThat(mAppInfoHelper.getAppInfoMap()).isEmpty();
+
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        manager.initialize();
+
+        assertThat(mAppInfoHelper.getAppInfoMap().get(DEVICE_DATA_PROVIDER_PACKAGE)).isNotNull();
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void userIsNotUnlocked_stepsTrackingNotStarted() {
+        assertThat(mAppInfoHelper.getAppInfoMap()).isEmpty();
+        doReturn(false).when(mUserManager).isUserUnlocked();
+
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        manager.initialize();
+
+        assertThat(mAppInfoHelper.getAppInfoMap()).isEmpty();
     }
 
     private void mockInstallAndGrantPermissions(List<PackageInfo> packageInfos) {

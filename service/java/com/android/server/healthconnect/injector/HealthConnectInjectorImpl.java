@@ -143,6 +143,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final ReadAccessLogsHelper mReadAccessLogsHelper;
     private final ExportImportNotificationFactory mExportImportNotificationFactory;
     private final HealthConnectNotificationSender mExportImportNotificationSender;
+    private final UserManager mUserManager;
     private final AppOpsManagerLocal mAppOpsManagerLocal;
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
@@ -191,6 +192,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         mDatabaseHelpers = new DatabaseHelpers();
         mInternalHealthConnectMappings = InternalHealthConnectMappings.getInstance();
         mHealthConnectMappings = HealthConnectMappings.getInstance();
+
+        mUserManager =
+                builder.mUserManager == null
+                        ? context.getSystemService(UserManager.class)
+                        : builder.mUserManager;
         mTimeSource = builder.mTimeSource == null ? new TimeSourceImpl() : builder.mTimeSource;
         mThreadScheduler =
                 builder.mThreadScheduler == null
@@ -240,9 +246,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectMappings,
                                 mDatabaseHelpers,
                                 mThreadScheduler,
-                                builder.mUserManager == null
-                                        ? hcContext.getSystemService(UserManager.class)
-                                        : builder.mUserManager)
+                                mUserManager)
                         : builder.mHealthDataCategoryPriorityHelper;
         mPriorityMigrationHelper =
                 builder.mPriorityMigrationHelper == null
@@ -476,7 +480,9 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectPermissionHelper,
                                 mThreadScheduler,
                                 mDeviceRecordHelper,
-                                mDeviceDataSourcesHelper)
+                                mDeviceDataSourcesHelper,
+                                mHealthDataCategoryPriorityHelper,
+                                mUserManager)
                         : builder.mTrackerManager;
     }
 
