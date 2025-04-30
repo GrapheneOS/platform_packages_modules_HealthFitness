@@ -27,6 +27,8 @@ import android.util.Slog;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 
 import java.util.List;
@@ -51,10 +53,14 @@ public class TrackerManagerImpl implements TrackerManager {
     public TrackerManagerImpl(
             Context context,
             HealthConnectPermissionHelper permissionHelper,
-            HealthConnectThreadScheduler threadScheduler) {
+            HealthConnectThreadScheduler threadScheduler,
+            DeviceRecordHelper deviceRecordHelper,
+            DeviceDataSourcesHelper deviceDataSourcesHelper) {
         mContext = context;
         mPermissionHelper = permissionHelper;
-        mListener = new StepSensorEventListener(threadScheduler);
+        mListener =
+                new StepSensorEventListener(
+                        threadScheduler, deviceRecordHelper, deviceDataSourcesHelper);
     }
 
     @Override

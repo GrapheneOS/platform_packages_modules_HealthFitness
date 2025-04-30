@@ -17,6 +17,7 @@ package com.android.server.healthconnect.device.tracker;
 
 import static org.mockito.Mockito.mock;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -26,6 +27,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -48,27 +51,35 @@ public class StepSensorEventListenerTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     private HealthConnectThreadScheduler mThreadScheduler;
+    private DeviceRecordHelper mDeviceRecordHelper;
+    private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
 
     @Before
     public void setup() throws PackageManager.NameNotFoundException {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         HealthConnectInjector healthConnectInjector =
-                HealthConnectInjectorImpl.newBuilderForTest(
-                                InstrumentationRegistry.getInstrumentation().getContext())
+                HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
+        mDeviceRecordHelper = healthConnectInjector.getDeviceRecordHelper();
+        mDeviceDataSourcesHelper = healthConnectInjector.getDeviceDataSourcesHelper();
     }
 
     @Test
     public void onSensorChanged_doesNotThrow() throws Exception {
-        StepSensorEventListener eventListener = new StepSensorEventListener(mThreadScheduler);
+        StepSensorEventListener eventListener =
+                new StepSensorEventListener(
+                        mThreadScheduler, mDeviceRecordHelper, mDeviceDataSourcesHelper);
         eventListener.onSensorChanged(
                 createStepSensorEvent(/* value= */ 1, /* timestamp= */ 1234567890));
     }
 
     @Test
     public void onAccuracyChanged_doesNotThrow() throws Exception {
-        StepSensorEventListener eventListener = new StepSensorEventListener(mThreadScheduler);
+        StepSensorEventListener eventListener =
+                new StepSensorEventListener(
+                        mThreadScheduler, mDeviceRecordHelper, mDeviceDataSourcesHelper);
         eventListener.onAccuracyChanged(createSensor(), SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
     }
 

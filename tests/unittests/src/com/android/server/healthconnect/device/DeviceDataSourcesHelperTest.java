@@ -16,24 +16,58 @@
 
 package com.android.server.healthconnect.device;
 
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
+
 import static com.android.server.healthconnect.device.DeviceDataSourcesHelper.DISPLAY_NAME_MAX_LENGTH;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.mockito.Mockito.when;
+
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.modules.utils.testing.ExtendedMockitoRule;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.quality.Strictness;
 
 @RunWith(AndroidJUnit4.class)
 public class DeviceDataSourcesHelperTest {
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Rule(order = 1)
+    public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Rule(order = 2)
+    public final ExtendedMockitoRule mExtendedMockitoRule =
+            new ExtendedMockitoRule.Builder(this)
+                    .mockStatic(Build.class)
+                    .setStrictness(Strictness.LENIENT)
+                    .build();
+
+    @Before
+    public void setup() throws PackageManager.NameNotFoundException {
+        when(Build.getSerial()).thenReturn("TEST_SERIAL_NUMBER");
+    }
+
+    @Test
+    public void getCurrentDevice() {
+        DeviceDataSource deviceDataSource =
+                new DeviceDataSourcesHelper()
+                        .getCurrentDevice(
+                                InstrumentationRegistry.getInstrumentation().getContext());
+        assertThat(deviceDataSource.getDeviceId()).isEqualTo("TEST_SERIAL_NUMBER");
+        assertThat(deviceDataSource.getDeviceInfo().getDeviceType()).isEqualTo(DEVICE_TYPE_PHONE);
+    }
 
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)

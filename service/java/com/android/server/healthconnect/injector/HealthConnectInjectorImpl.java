@@ -450,16 +450,20 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mAppOpsManagerLocal == null
                         ? LocalManagerRegistry.getManager(AppOpsManagerLocal.class)
                         : builder.mAppOpsManagerLocal;
-        mTrackerManager =
-                builder.mTrackerManager == null
-                        ? new TrackerManagerImpl(
-                                context, mHealthConnectPermissionHelper, mThreadScheduler)
-                        : builder.mTrackerManager;
         mOnboardingStateManager =
                 builder.mOnboardingStateManager == null && Flags.onboarding()
                         ? new OnboardingStateManager(getPreferenceHelper(), userHandle)
                         : builder.mOnboardingStateManager;
         mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
+        mTrackerManager =
+                builder.mTrackerManager == null
+                        ? new TrackerManagerImpl(
+                                context,
+                                mHealthConnectPermissionHelper,
+                                mThreadScheduler,
+                                mDeviceRecordHelper,
+                                mDeviceDataSourcesHelper)
+                        : builder.mTrackerManager;
     }
 
     @Override
