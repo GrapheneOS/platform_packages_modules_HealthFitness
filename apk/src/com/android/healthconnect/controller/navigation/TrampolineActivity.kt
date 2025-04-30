@@ -28,6 +28,7 @@ import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.MainActivity
 import com.android.healthconnect.controller.data.DataManagementActivity
+import com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingActivity
 import com.android.healthconnect.controller.onboarding.OnboardingActivity
 import com.android.healthconnect.controller.onboarding.OnboardingActivity.Companion.shouldRedirectToOnboardingActivity
 import com.android.healthconnect.controller.onboarding.SkipOnboardingActivity
@@ -119,6 +120,10 @@ class TrampolineActivity : Hilt_TrampolineActivity() {
                         putExtra(EXTRA_PACKAGE_NAME, extraPackageName)
                     }
                 }
+            }
+            // TODO (b/416731816) redirect to onboarding using new intent
+            "android.health.connect.action.SYNC_MORE_APPS" -> {
+                Intent(this, ConnectAppsOnboardingActivity::class.java)
             }
             else -> {
                 // Default to open Health Connect MainActivity
