@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.phr.utils;
+package android.healthconnect.testing.shared.phr;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -18,9 +18,9 @@ package android.health.connect.aidl;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 import static android.health.connect.Constants.MINIMUM_PAGE_SIZE;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_ID;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_DATA_SOURCE_ID;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.PAGE_TOKEN;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_DATA_SOURCE_ID;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.PAGE_TOKEN;
 
 import static com.google.common.truth.Truth.assertThat;
 

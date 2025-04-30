@@ -39,20 +39,6 @@ android_robolectric_test {
     srcs: [
         "unittests/src/**/*.java",
         ":healthfitness-framework-test-src",
-        // TODO(b/409549484): Remove from here by moving to a target without any cts dependencies.
-        // At the moment depending directly on some CTS targets gives dexcache==null errors when
-        // mocking, so I am depending on a limited subset.
-        "cts/phr/src/android/healthconnect/cts/phr/utils/FhirResourceBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/AllergyBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/ConditionBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/EncountersBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/ImmunizationBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/MedicationsBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/ObservationBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/PatientBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/PractitionerBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/ProcedureBuilder.java",
-        "cts/phr/src/android/healthconnect/cts/phr/utils/PhrDataFactory.java",
     ],
     exclude_srcs: [
         "unittests/src/com/android/server/healthconnect/common/accesslog/AppOpLogsHelperTest.java",

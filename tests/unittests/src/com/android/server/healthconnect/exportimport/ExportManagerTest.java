@@ -47,7 +47,7 @@ import android.graphics.drawable.Icon;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
-import android.healthconnect.cts.phr.utils.PhrDataFactory;
+import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.net.Uri;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -182,9 +182,7 @@ public class ExportManagerTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT
-    })
+    @EnableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT})
     public void testWhenPhrExportImportEnableFlagIsEnabled_tableContentIsExported()
             throws Exception {
         MedicalDataSource dataSource =
@@ -209,9 +207,7 @@ public class ExportManagerTest {
 
     @Test
     @DisableFlags({Flags.FLAG_PERSONAL_HEALTH_RECORD_ENABLE_EXPORT_IMPORT})
-    public void
-            testPhrExportImportEnableFlagIsDisabled_deletesPhrTablesContent()
-                    throws Exception {
+    public void testPhrExportImportEnableFlagIsDisabled_deletesPhrTablesContent() throws Exception {
         MedicalDataSource dataSource =
                 mPhrTestUtils.insertR4MedicalDataSource("ds", TEST_PACKAGE_NAME);
         mPhrTestUtils.upsertResource(PhrDataFactory::createVaccineMedicalResource, dataSource);

@@ -26,6 +26,7 @@ java_library {
         "androidx.appcompat_appcompat",
         "androidx.test.rules",
         "compatibility-device-util-axt",
+        "healthfitness-testing-shared",
         "platform-test-annotations",
         "cts-healthconnect-utils",
         "cts-healthconnect-lib",
