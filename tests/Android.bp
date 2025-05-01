@@ -51,7 +51,7 @@ android_robolectric_test {
     static_libs: [
         // This is required to get mocking of final classes
         "inline-mockito-robolectric-prebuilt",
-        "//packages/modules/HealthFitness/framework:framework-healthfitness.impl",
+        "framework-healthfitness.impl",
         "service-healthfitness.impl",
         "androidx.test.core",
         "androidx.test.ext.junit",
@@ -62,6 +62,7 @@ android_robolectric_test {
         "framework-annotations-lib",
         "healthfitness-aconfig-flags-lib",
         "healthfitness-testing-shared",
+        "healthfitness-testing-unittest",
         // This is needed give us AppOpsManagerLocal
         "services.core",
         "platform-parametric-runner-lib",
@@ -112,6 +113,7 @@ android_test {
         "healthfitness-aconfig-flags-lib",
         "healthfitness-aconfig-flags-helper",
         "healthfitness-testing-shared",
+        "healthfitness-testing-unittest",
         "flag-junit",
         "androidx.test.runner",
         "mockito-target-extended-minus-junit4",

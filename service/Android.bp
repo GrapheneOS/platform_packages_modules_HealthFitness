@@ -71,6 +71,7 @@ java_sdk_library {
     impl_library_visibility: [
         // Top level directory for bivalent tests
         "//packages/modules/HealthFitness/tests",
+        "//packages/modules/HealthFitness/tests/utils",
         "//packages/modules/HealthFitness/tests/unittests",
         "//packages/modules/HealthFitness/tests/integrationtests",
     ],
