@@ -17,23 +17,30 @@
 package android.healthconnect.cts.lib;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
 
 import android.app.AppOpsManager;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.healthconnect.cts.utils.PermissionHelper;
 
 import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.rules.ExternalResource;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /** Test rule that manages the state of a test app. */
 public class TestAppRule extends ExternalResource {
@@ -41,12 +48,20 @@ public class TestAppRule extends ExternalResource {
     private final Context mContext;
     private final String mPackageName;
     private final boolean mInBackground;
-    private List<String> mRequestedPermissions;
+    private final Set<String> mPermissionsToRevoke;
+    private String mTestName;
 
     private TestAppRule(Builder builder) {
         mContext = ApplicationProvider.getApplicationContext();
         mPackageName = builder.mPackageName;
         mInBackground = builder.mInBackground;
+        mPermissionsToRevoke = Set.copyOf(builder.mPermissionsToRevoke);
+    }
+
+    @Override
+    public Statement apply(Statement base, Description description) {
+        mTestName = description.getMethodName();
+        return super.apply(base, description);
     }
 
     /** Returns a proxy for performing operations via the test app. */
@@ -56,22 +71,50 @@ public class TestAppRule extends ExternalResource {
                 : TestAppProxy.forPackageName(mPackageName);
     }
 
+    /** Grants the specified permission to the test app via {@link PackageManager}. */
+    public void grantHealthPermission(String permission) {
+        PermissionHelper.grantHealthPermission(mPackageName, permission);
+    }
+
+    /** Grants all the specified permissions to the test app via {@link PackageManager}. */
+    public void grantHealthPermissions(Collection<String> permissions) {
+        PermissionHelper.grantHealthPermissions(mPackageName, permissions);
+    }
+
+    /** Revokes the specified permission from the test app via {@link PackageManager}. */
+    public void revokeHealthPermission(String permission) {
+        PermissionHelper.revokeHealthPermission(mPackageName, permission, /* reason= */ mTestName);
+    }
+
+    /** Revokes all health permissions from the test app via {@link PackageManager}. */
+    public void revokeAllHealthPermissions() {
+        PermissionHelper.revokeAllHealthPermissions(mPackageName, /* reason= */ mTestName);
+    }
+
     @Override
     protected void before() throws Throwable {
-        PackageManager packageManager = mContext.getPackageManager();
-        PackageInfo packageInfo =
-                packageManager.getPackageInfo(mPackageName, PackageManager.GET_PERMISSIONS);
+        List<String> declaredPermissions =
+                PermissionHelper.getDeclaredHealthPermissions(mPackageName);
+        assertThat(declaredPermissions).containsAtLeastElementsIn(mPermissionsToRevoke);
 
-        mRequestedPermissions =
-                packageInfo.requestedPermissions == null
-                        ? List.of()
-                        : List.of(packageInfo.requestedPermissions);
+        // Start from a consistent state; a previous test may have left permissions revoked.
+        List<String> permissionsToGrant =
+                declaredPermissions.stream().filter(not(mPermissionsToRevoke::contains)).toList();
+        PermissionHelper.grantHealthPermissions(mPackageName, permissionsToGrant);
+
+        for (String permission : mPermissionsToRevoke) {
+            PermissionHelper.revokeHealthPermission(
+                    mPackageName, permission, /* reason= */ mTestName);
+        }
 
         if (mInBackground) {
             // Ensure that App Ops considers the test app to be in the background. This may take a
             // few seconds if another test has recently launched it in the foreground. We rely on
             // the app being granted ACCESS_FINE_LOCATION to check this.
-            assertThat(mRequestedPermissions).contains(ACCESS_FINE_LOCATION);
+            PackageManager packageManager = mContext.getPackageManager();
+            assertThat(packageManager.checkPermission(ACCESS_FINE_LOCATION, mPackageName))
+                    .isEqualTo(PERMISSION_GRANTED);
+
             AppOpsManager appOpsManager =
                     requireNonNull(mContext.getSystemService(AppOpsManager.class));
             int uid = packageManager.getPackageUid(mPackageName, /* flags= */ 0);
@@ -86,10 +129,17 @@ public class TestAppRule extends ExternalResource {
         }
     }
 
+    @Override
+    protected void after() {
+        // Leave permissions in a consistent state.
+        PermissionHelper.grantAllHealthPermissions(mPackageName);
+    }
+
     /** Builder for the rule. */
     public static final class Builder {
         private final String mPackageName;
         private boolean mInBackground;
+        private final Set<String> mPermissionsToRevoke = new HashSet<>();
 
         /** Constructs a builder for the test app with the given package name. */
         public Builder(String packageName) {
@@ -103,6 +153,17 @@ public class TestAppRule extends ExternalResource {
          */
         public Builder setInBackground(boolean inBackground) {
             mInBackground = inBackground;
+            return this;
+        }
+
+        /**
+         * Adds a health permission that should be revoked before the tests. All other health
+         * permissions will be granted.
+         *
+         * <p>After the test, any revoked permissions will be re-granted to the test app.
+         */
+        public Builder revokeHealthPermission(String permission) {
+            mPermissionsToRevoke.add(permission);
             return this;
         }
 
