@@ -60,7 +60,7 @@ public class TrackerManagerImpl implements TrackerManager {
         mPermissionHelper = permissionHelper;
         mListener =
                 new StepSensorEventListener(
-                        threadScheduler, deviceRecordHelper, deviceDataSourcesHelper);
+                        mContext, threadScheduler, deviceRecordHelper, deviceDataSourcesHelper);
     }
 
     @Override
