@@ -23,6 +23,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -37,6 +38,10 @@ import android.platform.test.annotations.EnableFlags;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.injector.HealthConnectInjector;
+import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
+import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 
 import org.junit.After;
@@ -62,10 +67,17 @@ public class TrackerManagerImplTest {
     @Mock private PackageManager mPackageManager;
     @Mock private HealthConnectPermissionHelper mPermissionHelper;
 
+    private HealthConnectThreadScheduler mThreadScheduler;
+
     @Before
     public void setup() throws PackageManager.NameNotFoundException {
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                        .build();
+        mThreadScheduler = healthConnectInjector.getThreadScheduler();
     }
 
     @After
@@ -76,21 +88,24 @@ public class TrackerManagerImplTest {
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingEnabled_initialize_doesNotThrow() {
-        TrackerManager manager = new TrackerManagerImpl(mContext, mPermissionHelper);
+        TrackerManager manager =
+                new TrackerManagerImpl(mContext, mPermissionHelper, mThreadScheduler);
         manager.initialize();
     }
 
     @Test
     @DisableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingDisabled_initialize_doesNotThrow() {
-        TrackerManager manager = new TrackerManagerImpl(mContext, mPermissionHelper);
+        TrackerManager manager =
+                new TrackerManagerImpl(mContext, mPermissionHelper, mThreadScheduler);
         manager.initialize();
     }
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingEnabled_setStepTrackingEnabled_doesNotThrow() {
-        TrackerManager manager = new TrackerManagerImpl(mContext, mPermissionHelper);
+        TrackerManager manager =
+                new TrackerManagerImpl(mContext, mPermissionHelper, mThreadScheduler);
         manager.setStepTrackingEnabled(true);
         manager.setStepTrackingEnabled(false);
     }
@@ -98,7 +113,8 @@ public class TrackerManagerImplTest {
     @Test
     @DisableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void stepTrackingDisabled_setStepTrackingEnabled_doesNotThrow() {
-        TrackerManager manager = new TrackerManagerImpl(mContext, mPermissionHelper);
+        TrackerManager manager =
+                new TrackerManagerImpl(mContext, mPermissionHelper, mThreadScheduler);
         manager.setStepTrackingEnabled(true);
         manager.setStepTrackingEnabled(false);
     }
