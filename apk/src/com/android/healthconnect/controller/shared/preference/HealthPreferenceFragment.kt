@@ -67,6 +67,8 @@ abstract class HealthPreferenceFragment : SettingsBasePreferenceFragment() {
 
     override fun onResume() {
         super.onResume()
+        // Disable the animation of the preference list
+        listView.setItemAnimator(null)
         logger.setPageId(pageName)
         logger.logPageImpression()
     }
