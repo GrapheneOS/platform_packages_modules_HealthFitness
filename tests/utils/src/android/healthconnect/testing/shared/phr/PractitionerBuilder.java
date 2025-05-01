@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.phr.utils;
+package android.healthconnect.testing.shared.phr;
 
 /**
  * Test helper class for making practitioner related FHIR data, including <a

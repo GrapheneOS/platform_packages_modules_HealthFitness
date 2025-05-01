@@ -31,7 +31,7 @@ import android.content.Context;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.restore.StageRemoteDataRequest;
-import android.healthconnect.cts.phr.utils.PhrDataFactory;
+import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.os.ParcelFileDescriptor;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.ArrayMap;
@@ -128,8 +128,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    public void testGetAllDataForBackup_copiesAllDataIncludingPhr()
-            throws Exception {
+    public void testGetAllDataForBackup_copiesAllDataIncludingPhr() throws Exception {
         // Insert a MedicalDataSource and MedicalResource.
         MedicalDataSource dataSource =
                 mPhrTestUtils.insertR4MedicalDataSource("ds", TEST_PACKAGE_NAME);
@@ -170,7 +169,7 @@ public class BackupRestoreWithoutMocksTest {
 
         // Ensure the backed up database does not contain PHR data but includes everything else.
         try (HealthConnectDatabase backupDatabase =
-                     new HealthConnectDatabase(dbContext, dbFileBacked.getName())) {
+                new HealthConnectDatabase(dbContext, dbFileBacked.getName())) {
             assertThat(queryNumEntries(backupDatabase, "medical_data_source_table")).isEqualTo(1);
             assertThat(queryNumEntries(backupDatabase, "medical_resource_table")).isEqualTo(1);
             assertThat(queryNumEntries(backupDatabase, "steps_record_table")).isEqualTo(1);
@@ -180,8 +179,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    public void testMerge_over5000Resources_copiesAllPhrData()
-            throws Exception {
+    public void testMerge_over5000Resources_copiesAllPhrData() throws Exception {
         HealthConnectContext dbContext =
                 HealthConnectContext.create(
                         mContext,
@@ -289,8 +287,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    public void testMerge_doesNotCopyMedicalDataSourceDuplicates()
-            throws Exception {
+    public void testMerge_doesNotCopyMedicalDataSourceDuplicates() throws Exception {
         // TODO(b/376645901): Improve the test to assert on the exact data in the two databases
         // rather than just the database size.
         // Insert a dataSource with display name using DATA_SOURCE_SUFFIX and TEST_PACKAGE_NAME.
@@ -351,8 +348,7 @@ public class BackupRestoreWithoutMocksTest {
     }
 
     @Test
-    public void testMerge_doesNotCopyMedicalResourceDuplicates()
-            throws Exception {
+    public void testMerge_doesNotCopyMedicalResourceDuplicates() throws Exception {
         // Insert a dataSource with display name using DATA_SOURCE_SUFFIX and TEST_PACKAGE_NAME.
         MedicalDataSource dataSource =
                 mPhrTestUtils.insertR4MedicalDataSource(DATA_SOURCE_SUFFIX, TEST_PACKAGE_NAME);

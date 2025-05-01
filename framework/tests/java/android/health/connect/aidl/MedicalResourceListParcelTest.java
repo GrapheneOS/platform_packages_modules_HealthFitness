@@ -15,9 +15,9 @@
  */
 package android.health.connect.aidl;
 
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_ID;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.createAllergyMedicalResource;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.createVaccineMedicalResource;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAllergyMedicalResource;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 
 import static com.google.common.truth.Truth.assertThat;
 

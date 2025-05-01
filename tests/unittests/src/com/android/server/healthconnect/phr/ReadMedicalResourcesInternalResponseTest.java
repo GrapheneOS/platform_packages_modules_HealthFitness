@@ -16,7 +16,7 @@
 
 package com.android.server.healthconnect.phr;
 
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getMedicalResource;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getMedicalResource;
 
 import static com.google.common.truth.Truth.assertThat;
 
