@@ -26,6 +26,7 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 
 import java.util.List;
@@ -45,10 +46,15 @@ public class TrackerManagerImpl implements TrackerManager {
 
     private final Context mContext;
     private final HealthConnectPermissionHelper mPermissionHelper;
+    private final StepSensorEventListener mListener;
 
-    public TrackerManagerImpl(Context context, HealthConnectPermissionHelper permissionHelper) {
+    public TrackerManagerImpl(
+            Context context,
+            HealthConnectPermissionHelper permissionHelper,
+            HealthConnectThreadScheduler threadScheduler) {
         mContext = context;
         mPermissionHelper = permissionHelper;
+        mListener = new StepSensorEventListener(threadScheduler);
     }
 
     @Override
@@ -151,9 +157,6 @@ public class TrackerManagerImpl implements TrackerManager {
         }
 
         sensorManager.registerListener(
-                new StepSensorEventListener(),
-                stepCounterSensor,
-                SAMPLING_PERIOD_US,
-                MAX_REPORT_LATENCY_US);
+                mListener, stepCounterSensor, SAMPLING_PERIOD_US, MAX_REPORT_LATENCY_US);
     }
 }

@@ -21,11 +21,11 @@ import android.healthconnect.cts.lib.UiTestUtils.findObject
 import android.healthconnect.cts.lib.UiTestUtils.findText
 import android.healthconnect.cts.lib.UiTestUtils.navigateToNewPage
 import android.healthconnect.cts.lib.UiTestUtils.scrollDownToAndFindText
-import android.healthconnect.cts.phr.utils.PhrDataFactory.DIFFERENT_FHIR_DATA_IMMUNIZATION
-import android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION
-import android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.cts.utils.TestUtils
+import android.healthconnect.testing.shared.phr.PhrDataFactory.DIFFERENT_FHIR_DATA_IMMUNIZATION
+import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION
+import android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.uiautomator.By

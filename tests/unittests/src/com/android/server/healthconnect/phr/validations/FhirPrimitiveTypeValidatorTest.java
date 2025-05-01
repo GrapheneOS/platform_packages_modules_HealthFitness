@@ -37,12 +37,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
-import android.healthconnect.cts.phr.utils.EncountersBuilder;
-import android.healthconnect.cts.phr.utils.ImmunizationBuilder;
-import android.healthconnect.cts.phr.utils.MedicationsBuilder;
-import android.healthconnect.cts.phr.utils.ObservationBuilder;
-import android.healthconnect.cts.phr.utils.PractitionerBuilder;
-import android.healthconnect.cts.phr.utils.ProcedureBuilder;
+import android.healthconnect.testing.shared.phr.EncountersBuilder;
+import android.healthconnect.testing.shared.phr.ImmunizationBuilder;
+import android.healthconnect.testing.shared.phr.MedicationsBuilder;
+import android.healthconnect.testing.shared.phr.ObservationBuilder;
+import android.healthconnect.testing.shared.phr.PractitionerBuilder;
+import android.healthconnect.testing.shared.phr.ProcedureBuilder;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;

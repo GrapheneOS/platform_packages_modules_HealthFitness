@@ -24,28 +24,28 @@ import static android.healthconnect.cts.phr.utils.PhrCtsTestUtils.PHR_BACKGROUND
 import static android.healthconnect.cts.phr.utils.PhrCtsTestUtils.PHR_FOREGROUND_APP;
 import static android.healthconnect.cts.phr.utils.PhrCtsTestUtils.PHR_FOREGROUND_APP_PKG;
 import static android.healthconnect.cts.phr.utils.PhrCtsTestUtils.RECORD_SIZE_LIMIT_IN_BYTES;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_DISPLAY_NAME;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_FHIR_BASE_URI;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.DATA_SOURCE_ID;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION_FIELD_MISSING_INVALID;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION_ID_EMPTY;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION_ID_NOT_EXISTS;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION_RESOURCE_TYPE_NOT_EXISTS;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_DATA_IMMUNIZATION_UNSUPPORTED_RESOURCE_TYPE;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_R4;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_R4B;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_UNSUPPORTED;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.createUpdatedVaccineMedicalResource;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.createVaccineMedicalResource;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getUpsertMedicalResourceRequest;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeHealthPermission;
 import static android.healthconnect.cts.utils.TestUtils.finishMigrationWithShellPermissionIdentity;
 import static android.healthconnect.cts.utils.TestUtils.setFieldValueUsingReflection;
 import static android.healthconnect.cts.utils.TestUtils.startMigrationWithShellPermissionIdentity;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_DISPLAY_NAME;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_FHIR_BASE_URI;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION_FIELD_MISSING_INVALID;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION_ID_EMPTY;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION_ID_NOT_EXISTS;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION_RESOURCE_TYPE_NOT_EXISTS;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION_UNSUPPORTED_RESOURCE_TYPE;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4B;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_UNSUPPORTED;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createUpdatedVaccineMedicalResource;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getUpsertMedicalResourceRequest;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
@@ -65,14 +65,14 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
-import android.healthconnect.cts.phr.utils.AllergyBuilder;
-import android.healthconnect.cts.phr.utils.ImmunizationBuilder;
-import android.healthconnect.cts.phr.utils.MedicationsBuilder;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.shared.phr.AllergyBuilder;
+import android.healthconnect.testing.shared.phr.ImmunizationBuilder;
+import android.healthconnect.testing.shared.phr.MedicationsBuilder;
 import android.os.Parcel;
 import android.platform.test.annotations.RequiresFlagsDisabled;
 import android.platform.test.annotations.RequiresFlagsEnabled;
@@ -744,11 +744,8 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-      FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS
-    })
-    public void testUpsertMedicalResources_primitiveTypeArrayWithNulls_succeeds()
-            throws Exception {
+    @RequiresFlagsEnabled({FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS})
+    public void testUpsertMedicalResources_primitiveTypeArrayWithNulls_succeeds() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
         String allergyResource =

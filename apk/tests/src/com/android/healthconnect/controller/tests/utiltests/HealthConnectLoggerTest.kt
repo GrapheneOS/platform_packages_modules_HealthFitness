@@ -67,7 +67,18 @@ class HealthConnectLoggerTest {
         )
 
     @Test
-    fun logMedicalPageNames_actualPageNameLogged() {
+    @DisableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_UI_TELEMETRY)
+    fun logMedicalPageNames_flagOff_unknownPageNameLogged() {
+        phrPages.forEach {
+            healthConnectLogger.setPageId(it)
+
+            assertThat(healthConnectLogger.getPageId()).isEqualTo(PageName.UNKNOWN_PAGE)
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERSONAL_HEALTH_RECORD_UI_TELEMETRY)
+    fun logMedicalPageNames_flagOn_actualPageNameLogged() {
         phrPages.forEach {
             healthConnectLogger.setPageId(it)
 

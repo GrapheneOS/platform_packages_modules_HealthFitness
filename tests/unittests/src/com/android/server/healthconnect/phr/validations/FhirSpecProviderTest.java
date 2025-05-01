@@ -29,8 +29,8 @@ import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_P
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_PRACTITIONER;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_PRACTITIONER_ROLE;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_PROCEDURE;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_R4;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.FHIR_VERSION_R4B;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4B;
 
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
@@ -1003,10 +1003,7 @@ public class FhirSpecProviderTest {
     }
 
     private static FhirFieldConfig createFhirFieldConfig(boolean isArray, R4FhirType r4Type) {
-        return FhirFieldConfig.newBuilder()
-                .setIsArray(isArray)
-                .setR4Type(r4Type)
-                .build();
+        return FhirFieldConfig.newBuilder().setIsArray(isArray).setR4Type(r4Type).build();
     }
 
     /**

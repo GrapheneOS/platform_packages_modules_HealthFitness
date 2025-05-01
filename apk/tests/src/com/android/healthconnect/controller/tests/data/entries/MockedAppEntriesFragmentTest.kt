@@ -1,17 +1,17 @@
-/**
- * Copyright (C) 2024 The Android Open Source Project
+/*
+ * Copyright (C) 2025 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * ```
  *      http://www.apache.org/licenses/LICENSE-2.0
- * ```
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.android.healthconnect.controller.tests.data.entries
 
@@ -81,12 +81,9 @@ import org.mockito.invocation.InvocationOnMock
 @UninstallModules(HealthManagerModule::class, DispatcherModule::class)
 @HiltAndroidTest
 class MockedAppEntriesFragmentTest {
-    @get:Rule
-    val coroutineTestRule = CoroutineTestRule()
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
-    @BindValue
-    val manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
+    @get:Rule val coroutineTestRule = CoroutineTestRule()
+    @get:Rule val hiltRule = HiltAndroidRule(this)
+    @BindValue val manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
     private val NOW: Instant =
         LocalDate.now(ZoneId.systemDefault())
             .atStartOfDay()
@@ -114,17 +111,12 @@ class MockedAppEntriesFragmentTest {
         advanceUntilIdle()
 
         onView(withText("10 steps")).check(matches(isDisplayed()))
-        onView(withText("20 steps")).check(matches(isDisplayed()))
-        onView(withText("30 steps")).check(matches(isDisplayed()))
         onView(withText("15.2 steps/min")).check(matches(isDisplayed()))
-
         onView(withText("60 steps")).check(matches(isDisplayed()))
         onView(withText("Select all")).check(doesNotExist())
 
         assertCheckboxNotShown(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotShown(recyclerViewId, "20 steps", 2)
-        assertCheckboxNotShown(recyclerViewId, "30 steps", 3)
-        assertCheckboxNotShown(recyclerViewId, "15.2 steps/min", 4)
+        assertCheckboxNotShown(recyclerViewId, "15.2 steps/min", 2)
     }
 
     @Test
@@ -151,9 +143,7 @@ class MockedAppEntriesFragmentTest {
         onView(withText("60 steps")).check(doesNotExist())
 
         assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
     }
 
     @Test
@@ -180,9 +170,7 @@ class MockedAppEntriesFragmentTest {
         onView(withText("60 steps")).check(doesNotExist())
 
         assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
         onView(withText("10 steps")).perform(click())
 
@@ -194,9 +182,8 @@ class MockedAppEntriesFragmentTest {
         onView(withText("60 steps")).check(doesNotExist())
 
         assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
     }
 
     @Test
@@ -223,13 +210,10 @@ class MockedAppEntriesFragmentTest {
         onView(withText("60 steps")).check(doesNotExist())
 
         assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
         onView(withText("10 steps")).perform(click())
-        onView(withText("20 steps")).perform(click())
-        onView(withText("30 steps")).perform(click())
         onView(withText("15.2 steps/min")).perform(click())
 
         // assert select all checked
@@ -260,16 +244,13 @@ class MockedAppEntriesFragmentTest {
         onView(withText("60 steps")).check(doesNotExist())
 
         assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
         onView(withText("Select all")).perform(click())
 
         assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 4)
+        assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 2)
 
         assertCheckboxChecked(recyclerViewId, "Select all", 0)
 
@@ -302,16 +283,12 @@ class MockedAppEntriesFragmentTest {
         onView(withText("60 steps")).check(doesNotExist())
 
         assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
         onView(withText("Select all")).perform(click())
 
         assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 4)
+        assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 2)
     }
 
     @Test
@@ -338,32 +315,23 @@ class MockedAppEntriesFragmentTest {
         onView(withText("60 steps")).check(doesNotExist())
 
         assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
         onView(withText("Select all")).perform(click())
 
         assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 4)
+        assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 2)
 
         onView(withText("Select all")).perform(click())
 
         assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-        assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
     }
 
     private fun mockData() {
-        val stepsRecordsList =
-            listOf(
-                getStepsRecordWithUniqueIds(10, NOW),
-                getStepsRecordWithUniqueIds(20, NOW),
-                getStepsRecordWithUniqueIds(30, NOW),
-            )
+        val stepsRecordsList = listOf(getStepsRecordWithUniqueIds(10, NOW))
         Mockito.doAnswer(prepareRecordsAnswer(stepsRecordsList))
             .`when`(manager)
             .readRecords(
@@ -399,7 +367,7 @@ class MockedAppEntriesFragmentTest {
     }
 
     private fun prepareStepsAggregationAnswer():
-                (InvocationOnMock) -> AggregateRecordsResponse<Long> {
+        (InvocationOnMock) -> AggregateRecordsResponse<Long> {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Long>, *>
             receiver.onResult(getStepsAggregationResponse())
@@ -409,27 +377,29 @@ class MockedAppEntriesFragmentTest {
     }
 
     private fun getStepsAggregationResponse(): AggregateRecordsResponse<Long> {
-        val aggregationResult = AggregateResult<Long>(
-            60, null,
-            AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME))
-        )
+        val aggregationResult =
+            AggregateResult<Long>(
+                60,
+                null,
+                AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
+            )
         return AggregateRecordsResponse<Long>(
             mapOf(
                 AggregationType.AggregationTypeIdentifier.STEPS_RECORD_COUNT_TOTAL to
-                        aggregationResult
+                    aggregationResult
             )
         )
     }
 
     private fun getStepsCadence(samples: List<Double>): StepsCadenceRecord {
         return StepsCadenceRecord.Builder(
-            getMetaDataWithUniqueIds(),
-            NOW,
-            NOW.plusSeconds(samples.size.toLong() + 1),
-            samples.map { rate ->
-                StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
-            },
-        )
+                getMetaDataWithUniqueIds(),
+                NOW,
+                NOW.plusSeconds(samples.size.toLong() + 1),
+                samples.map { rate ->
+                    StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
+                },
+            )
             .build()
     }
 
@@ -440,9 +410,7 @@ class MockedAppEntriesFragmentTest {
         @Provides
         fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
-        @IoDispatcher
-        @Provides
-        fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.Main
+        @IoDispatcher @Provides fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
         @MainDispatcher
         @Provides

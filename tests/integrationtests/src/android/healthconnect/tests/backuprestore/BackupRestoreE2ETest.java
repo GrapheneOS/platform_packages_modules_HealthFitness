@@ -17,7 +17,6 @@
 package android.healthconnect.tests.backuprestore;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
 import static android.healthconnect.cts.utils.TestUtils.deleteAllStagedRemoteData;
@@ -26,6 +25,7 @@ import static android.healthconnect.cts.utils.TestUtils.insertRecords;
 import static android.healthconnect.cts.utils.TestUtils.readAllRecords;
 import static android.healthconnect.cts.utils.TestUtils.readRecords;
 import static android.healthconnect.cts.utils.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
 import static com.android.compatibility.common.util.BackupUtils.LOCAL_TRANSPORT_TOKEN;
 import static com.android.compatibility.common.util.SystemUtil.eventually;

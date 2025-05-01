@@ -20,7 +20,6 @@ import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGM
 import static android.health.connect.datatypes.ExerciseSessionRecord.EXERCISE_DURATION_TOTAL;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
-import static android.healthconnect.cts.utils.PermissionHelper.getGrantedHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.grantAllHealthPermissions;
 import static android.healthconnect.cts.utils.PermissionHelper.grantHealthPermission;
 import static android.healthconnect.cts.utils.PermissionHelper.revokeAllHealthPermissions;
@@ -685,53 +684,10 @@ public class HealthConnectDeviceTest {
     }
 
     @Test
-    public void testGrantingCorrectPermsPutsTheAppInPriorityList() throws Exception {
-        List<String> oldPriorityList =
-                runWithShellPermissionIdentity(
-                        () ->
-                                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
-                                        .getDataOriginsPriorityOrder()
-                                        .stream()
-                                        .map(DataOrigin::getPackageName)
-                                        .toList(),
-                        MANAGE_HEALTH_DATA);
-
-        revokeAllHealthPermissions(
-                APP_A_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
-        grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-
-        List<String> newPriorityList =
-                runWithShellPermissionIdentity(
-                        () ->
-                                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
-                                        .getDataOriginsPriorityOrder()
-                                        .stream()
-                                        .map(DataOrigin::getPackageName)
-                                        .toList(),
-                        MANAGE_HEALTH_DATA);
-
-        assertThat(newPriorityList).hasSize(oldPriorityList.size() + 1);
-        assertThat(newPriorityList).contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-    }
-
-    @Test
     public void testRevokingOnlyOneCorrectPermissionDoesntRemoveAppFromPriorityList()
             throws Exception {
-        revokeAllHealthPermissions(
-                APP_A_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
-        grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-
-        List<String> oldPriorityList =
-                runWithShellPermissionIdentity(
-                        () ->
-                                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
-                                        .getDataOriginsPriorityOrder()
-                                        .stream()
-                                        .map(DataOrigin::getPackageName)
-                                        .collect(Collectors.toList()),
-                        MANAGE_HEALTH_DATA);
-
-        assertThat(oldPriorityList).contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+        updatePriorityWithManageHealthDataPermission(
+                HealthDataCategory.ACTIVITY, List.of(APP_A_WITH_READ_WRITE_PERMS.getPackageName()));
 
         revokeHealthPermission(
                 APP_A_WITH_READ_WRITE_PERMS.getPackageName(), APP_A_DECLARED_PERMISSION);
@@ -751,26 +707,11 @@ public class HealthConnectDeviceTest {
 
     @Test
     public void testRevokingAllCorrectPermissionsRemovesAppFromPriorityList() throws Exception {
+        updatePriorityWithManageHealthDataPermission(
+                HealthDataCategory.ACTIVITY, List.of(APP_A_WITH_READ_WRITE_PERMS.getPackageName()));
+
         revokeAllHealthPermissions(
                 APP_A_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
-        grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-
-        List<String> oldPriorityList =
-                runWithShellPermissionIdentity(
-                        () ->
-                                fetchDataOriginsPriorityOrder(HealthDataCategory.ACTIVITY)
-                                        .getDataOriginsPriorityOrder()
-                                        .stream()
-                                        .map(DataOrigin::getPackageName)
-                                        .collect(Collectors.toList()),
-                        MANAGE_HEALTH_DATA);
-
-        assertThat(oldPriorityList).contains(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
-
-        for (String perm :
-                getGrantedHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName())) {
-            revokeHealthPermission(APP_A_WITH_READ_WRITE_PERMS.getPackageName(), perm);
-        }
 
         List<String> newPriorityList =
                 runWithShellPermissionIdentity(

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.phr.utils;
+package android.healthconnect.testing.shared.phr;
 
 /**
  * A helper class that supports making <a href="https://www.hl7.org/fhir/patient.html">FHIR

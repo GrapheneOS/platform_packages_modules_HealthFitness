@@ -25,8 +25,8 @@ import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_SOCIAL_HISTORY;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VISITS;
 import static android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VITAL_SIGNS;
-import static android.healthconnect.cts.phr.utils.ObservationBuilder.ObservationCategory.LABORATORY;
-import static android.healthconnect.cts.phr.utils.PhrDataFactory.getCreateMedicalDataSourceRequest;
+import static android.healthconnect.testing.shared.phr.ObservationBuilder.ObservationCategory.LABORATORY;
+import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -35,18 +35,18 @@ import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.ReadMedicalResourcesResponse;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
-import android.healthconnect.cts.phr.utils.ConditionBuilder;
-import android.healthconnect.cts.phr.utils.EncountersBuilder;
-import android.healthconnect.cts.phr.utils.MedicationsBuilder;
-import android.healthconnect.cts.phr.utils.ObservationBuilder;
-import android.healthconnect.cts.phr.utils.PatientBuilder;
 import android.healthconnect.cts.phr.utils.PhrCtsTestUtils;
-import android.healthconnect.cts.phr.utils.PractitionerBuilder;
-import android.healthconnect.cts.phr.utils.ProcedureBuilder;
 import android.healthconnect.cts.utils.AssumptionCheckerRule;
 import android.healthconnect.cts.utils.DeviceSupportUtils;
 import android.healthconnect.cts.utils.HealthConnectReceiver;
 import android.healthconnect.cts.utils.TestUtils;
+import android.healthconnect.testing.shared.phr.ConditionBuilder;
+import android.healthconnect.testing.shared.phr.EncountersBuilder;
+import android.healthconnect.testing.shared.phr.MedicationsBuilder;
+import android.healthconnect.testing.shared.phr.ObservationBuilder;
+import android.healthconnect.testing.shared.phr.PatientBuilder;
+import android.healthconnect.testing.shared.phr.PractitionerBuilder;
+import android.healthconnect.testing.shared.phr.ProcedureBuilder;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
