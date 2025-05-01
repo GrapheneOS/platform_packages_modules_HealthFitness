@@ -81,6 +81,7 @@ public class ImportManager {
     private final ExportImportLogger mExportImportLogger;
     @Nullable private final Clock mClock;
     private final Compressor mCompressor;
+    private final ExportImportNotificationFactory mNotificationFactory;
 
     public ImportManager(
             AppInfoHelper appInfoHelper,
@@ -94,7 +95,8 @@ public class ImportManager {
             @Nullable Clock clock,
             HealthConnectNotificationSender notificationSender,
             File environmentDataDirectory,
-            ExportImportLogger exportImportLogger) {
+            ExportImportLogger exportImportLogger,
+            ExportImportNotificationFactory notificationFactory) {
         this(
                 appInfoHelper,
                 context,
@@ -108,7 +110,8 @@ public class ImportManager {
                 notificationSender,
                 environmentDataDirectory,
                 exportImportLogger,
-                new Compressor());
+                new Compressor(),
+                notificationFactory);
     }
 
     @VisibleForTesting
@@ -125,7 +128,8 @@ public class ImportManager {
             HealthConnectNotificationSender notificationSender,
             File environmentDataDirectory,
             ExportImportLogger exportImportLogger,
-            Compressor compressor) {
+            Compressor compressor,
+            ExportImportNotificationFactory notificationFactory) {
         mContext = context;
         mDatabaseMerger =
                 new DatabaseMerger(
@@ -142,6 +146,7 @@ public class ImportManager {
         mEnvironmentDataDirectory = environmentDataDirectory;
         mExportImportLogger = exportImportLogger;
         mCompressor = compressor;
+        mNotificationFactory = notificationFactory;
     }
 
     /** Reads and merges the backup data from a local file. */
@@ -150,7 +155,8 @@ public class ImportManager {
         long startTimeMillis = mClock != null ? mClock.millis() : -1;
         mExportImportSettingsStorage.setImportState(DATA_IMPORT_STARTED);
         mNotificationSender.sendNotificationAsUser(
-                NOTIFICATION_TYPE_IMPORT_IN_PROGRESS, userHandle);
+                mNotificationFactory.createNotification(NOTIFICATION_TYPE_IMPORT_IN_PROGRESS),
+                userHandle);
 
         mExportImportLogger.logImportStatus(
                 DATA_IMPORT_STARTED,
@@ -373,7 +379,8 @@ public class ImportManager {
 
     private void sendNotificationAsUser(int notificationType, UserHandle userHandle) {
         mNotificationSender.clearNotificationsAsUser(userHandle);
-        mNotificationSender.sendNotificationAsUser(notificationType, userHandle);
+        mNotificationSender.sendNotificationAsUser(
+                mNotificationFactory.createNotification(notificationType), userHandle);
     }
 
     private void notifyAndLogUnknownError(

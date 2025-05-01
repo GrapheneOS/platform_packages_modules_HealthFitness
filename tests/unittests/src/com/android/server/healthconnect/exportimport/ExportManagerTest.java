@@ -171,7 +171,8 @@ public class ExportManagerTest {
                         mHealthConnectInjector.getEnvironmentDataDirectory(),
                         mExportImportLogger,
                         mErrorReporter,
-                        compressor);
+                        compressor,
+                        mHealthConnectInjector.getExportImportNotificationFactory());
     }
 
     @After

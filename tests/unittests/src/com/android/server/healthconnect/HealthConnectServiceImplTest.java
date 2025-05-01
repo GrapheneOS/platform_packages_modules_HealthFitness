@@ -431,7 +431,8 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getEnvironmentDataDirectory(),
                         healthConnectInjector.getExportImportLogger(),
                         healthConnectInjector.getHealthFitnessStatsLog(),
-                        healthConnectInjector.getBackupRestoreLogger());
+                        healthConnectInjector.getBackupRestoreLogger(),
+                        healthConnectInjector.getExportImportNotificationFactory());
         mBackupRestore = healthConnectInjector.getBackupRestore();
     }
 

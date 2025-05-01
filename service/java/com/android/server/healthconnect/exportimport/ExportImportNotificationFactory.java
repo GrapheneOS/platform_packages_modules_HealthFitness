@@ -25,7 +25,6 @@ import static com.android.server.healthconnect.exportimport.ExportImportNotifica
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_UNSUCCESSFUL_NOT_ENOUGH_SPACE;
 import static com.android.server.healthconnect.exportimport.ExportImportNotificationSender.NOTIFICATION_TYPE_IMPORT_UNSUCCESSFUL_VERSION_MISMATCH;
 
-import android.annotation.Nullable;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -124,10 +123,9 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
         mChannelId = channelId;
     }
 
-    @Nullable
     @Override
-    @ExportImportNotificationSender.ExportImportNotificationType
-    public Notification createNotification(int notificationType) {
+    public Notification createNotification(
+            @ExportImportNotificationSender.ExportImportNotificationType int notificationType) {
         return switch (notificationType) {
             case NOTIFICATION_TYPE_IMPORT_IN_PROGRESS -> {
                 Slog.i(TAG, "Creating 'import in progress' notification");
@@ -161,7 +159,9 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
                 Slog.i(TAG, "Creating 'more space needed error' export notification");
                 yield getExportUnsuccessfulMoreSpaceNeededNotification();
             }
-            default -> null;
+            default ->
+                    throw new IllegalArgumentException(
+                            "Invalid notification type " + notificationType);
         };
     }
 

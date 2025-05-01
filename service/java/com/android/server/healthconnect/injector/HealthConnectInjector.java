@@ -37,6 +37,7 @@ import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
+import com.android.server.healthconnect.exportimport.ExportImportNotificationFactory;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
@@ -333,6 +334,12 @@ public abstract class HealthConnectInjector {
      * Getter for {@link GrantTimeXmlHelper} instance initialised by the Health Connect Injector.
      */
     public abstract GrantTimeXmlHelper getGrantTimeXmlHelper();
+
+    /**
+     * Getter for {@link ExportImportNotificationFactory} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract ExportImportNotificationFactory getExportImportNotificationFactory();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {
