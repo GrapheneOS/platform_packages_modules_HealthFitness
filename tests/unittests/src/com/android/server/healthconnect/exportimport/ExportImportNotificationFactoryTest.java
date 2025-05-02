@@ -82,23 +82,14 @@ public class ExportImportNotificationFactoryTest {
                 new ExportImportNotificationFactory(
                         mContext, mResourcesContext, NOTIFICATION_CHANNEL_ID);
         // Return the requested name as the string resource
-        when(mResourcesContext.getStringByName(any()))
+        when(mResourcesContext.getStringByNameOrThrow(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
-        when(mResourcesContext.getStringByNameWithArgs(any(), any()))
+        when(mResourcesContext.getStringByNameWithArgsOrThrow(any(), any()))
                 .thenAnswer(
                         invocation -> invocation.getArgument(0) + "," + invocation.getArgument(1));
         when(mResourcesContext.getIconByDrawableName(
                         ExportImportNotificationFactory.APP_ICON_DRAWABLE_NAME))
                 .thenReturn(APP_ICON);
-    }
-
-    @Test
-    public void testAllNotificationStringsExist() {
-        String[] expectedStrings = mFactory.getNotificationStringResources();
-        for (String s : expectedStrings) {
-            String fetched = mFactory.getStringResource(s);
-            assertThat(fetched).isEqualTo(s);
-        }
     }
 
     @Test

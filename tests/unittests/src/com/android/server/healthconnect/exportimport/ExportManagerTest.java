@@ -126,9 +126,9 @@ public class ExportManagerTest {
     @Before
     public void setUp() throws Exception {
         // Return the requested name as the string resource
-        when(mResourcesContext.getStringByName(any()))
+        when(mResourcesContext.getStringByNameOrThrow(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
-        when(mResourcesContext.getStringByNameWithArgs(any(), any()))
+        when(mResourcesContext.getStringByNameWithArgsOrThrow(any(), any()))
                 .thenAnswer(
                         invocation -> invocation.getArgument(0) + "," + invocation.getArgument(1));
         when(mResourcesContext.getIconByDrawableName(

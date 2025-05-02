@@ -43,7 +43,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -165,29 +164,23 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
         };
     }
 
-    @Override
-    public String getStringResource(String name) {
-        return Objects.requireNonNull(mResContext.getStringByName(name));
-    }
-
-    private String getStringResource(String name, Object formatArg) {
-        return Objects.requireNonNull(mResContext.getStringByNameWithArgs(name, formatArg));
-    }
-
     private Notification getImportInProgressNotification() {
-        String notificationTitle = getStringResource(IMPORT_IN_PROGRESS_NOTIFICATION_TITLE);
+        String notificationTitle =
+                mResContext.getStringByNameOrThrow(IMPORT_IN_PROGRESS_NOTIFICATION_TITLE);
 
         return createNotificationOnlyTitle(notificationTitle).setProgress(0, 0, true).build();
     }
 
     private Notification getImportCompleteNotification() {
         PendingIntent pendingIntent = getImportCompletePendingIntent();
-        String notificationTitle = getStringResource(IMPORT_COMPLETE_NOTIFICATION_TITLE);
+        String notificationTitle =
+                mResContext.getStringByNameOrThrow(IMPORT_COMPLETE_NOTIFICATION_TITLE);
 
         Notification.Action openAction =
                 new Notification.Action.Builder(
                                 getAppIcon().get(),
-                                getStringResource(IMPORT_NOTIFICATION_COMPLETE_INTENT_BUTTON),
+                                mResContext.getStringByNameOrThrow(
+                                        IMPORT_NOTIFICATION_COMPLETE_INTENT_BUTTON),
                                 pendingIntent)
                         .build();
 
@@ -196,13 +189,16 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
 
     private Notification getImportUnsuccessfulInvalidFileNotification() {
         PendingIntent pendingIntent = getRestartImportFlowPendingIntent();
-        String notificationTitle = getStringResource(IMPORT_UNSUCCESSFUL_GENERIC_ERROR_TITLE);
-        String notificationTextBody = getStringResource(IMPORT_UNSUCCESSFUL_INVALID_FILE_TEXT);
+        String notificationTitle =
+                mResContext.getStringByNameOrThrow(IMPORT_UNSUCCESSFUL_GENERIC_ERROR_TITLE);
+        String notificationTextBody =
+                mResContext.getStringByNameOrThrow(IMPORT_UNSUCCESSFUL_INVALID_FILE_TEXT);
 
         Notification.Action restartAction =
                 new Notification.Action.Builder(
                                 getAppIcon().get(),
-                                getStringResource(IMPORT_NOTIFICATION_CHOOSE_FILE_INTENT_BUTTON),
+                                mResContext.getStringByNameOrThrow(
+                                        IMPORT_NOTIFICATION_CHOOSE_FILE_INTENT_BUTTON),
                                 pendingIntent)
                         .build();
 
@@ -212,21 +208,26 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
     }
 
     private Notification getImportUnsuccessfulMoreSpaceNeededNotification() {
-        String notificationTitle = getStringResource(IMPORT_UNSUCCESSFUL_MORE_SPACE_NEEDED_TITLE);
-        String notificationTextBody = getStringResource(IMPORT_UNSUCCESSFUL_MORE_SPACE_NEEDED_TEXT);
+        String notificationTitle =
+                mResContext.getStringByNameOrThrow(IMPORT_UNSUCCESSFUL_MORE_SPACE_NEEDED_TITLE);
+        String notificationTextBody =
+                mResContext.getStringByNameOrThrow(IMPORT_UNSUCCESSFUL_MORE_SPACE_NEEDED_TEXT);
 
         return createNotificationTitleAndBodyText(notificationTitle, notificationTextBody).build();
     }
 
     private Notification getImportUnsuccessfulGenericErrorNotification() {
         PendingIntent pendingIntent = getRestartImportFlowPendingIntent();
-        String notificationTitle = getStringResource(IMPORT_UNSUCCESSFUL_GENERIC_ERROR_TITLE);
-        String notificationTextBody = getStringResource(IMPORT_UNSUCCESSFUL_GENERIC_ERROR_TEXT);
+        String notificationTitle =
+                mResContext.getStringByNameOrThrow(IMPORT_UNSUCCESSFUL_GENERIC_ERROR_TITLE);
+        String notificationTextBody =
+                mResContext.getStringByNameOrThrow(IMPORT_UNSUCCESSFUL_GENERIC_ERROR_TEXT);
 
         Notification.Action restartAction =
                 new Notification.Action.Builder(
                                 getAppIcon().get(),
-                                getStringResource(IMPORT_NOTIFICATION_TRY_AGAIN_INTENT_BUTTON),
+                                mResContext.getStringByNameOrThrow(
+                                        IMPORT_NOTIFICATION_TRY_AGAIN_INTENT_BUTTON),
                                 pendingIntent)
                         .build();
 
@@ -237,13 +238,16 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
 
     private Notification getImportUnsuccessfulVersionMismatchNotification() {
         PendingIntent pendingIntent = getUpgradeVersionPendingIntent();
-        String notificationTitle = getStringResource(IMPORT_UNSUCCESSFUL_GENERIC_ERROR_TITLE);
-        String notificationTextBody = getStringResource(IMPORT_UNSUCCESSFUL_VERSION_MISMATCH_TEXT);
+        String notificationTitle =
+                mResContext.getStringByNameOrThrow(IMPORT_UNSUCCESSFUL_GENERIC_ERROR_TITLE);
+        String notificationTextBody =
+                mResContext.getStringByNameOrThrow(IMPORT_UNSUCCESSFUL_VERSION_MISMATCH_TEXT);
 
         Notification.Action updateNowAction =
                 new Notification.Action.Builder(
                                 getAppIcon().get(),
-                                getStringResource(IMPORT_NOTIFICATION_UPDATE_NOW_INTENT_BUTTON),
+                                mResContext.getStringByNameOrThrow(
+                                        IMPORT_NOTIFICATION_UPDATE_NOW_INTENT_BUTTON),
                                 pendingIntent)
                         .build();
 
@@ -257,14 +261,17 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
         String formattedExportDate =
                 DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)
                         .format(LocalDate.now(ZoneId.systemDefault()));
-        String notificationTitle = getStringResource(EXPORT_UNSUCCESSFUL_GENERIC_ERROR_TITLE);
+        String notificationTitle =
+                mResContext.getStringByNameOrThrow(EXPORT_UNSUCCESSFUL_GENERIC_ERROR_TITLE);
         String notificationTextBody =
-                getStringResource(EXPORT_UNSUCCESSFUL_GENERIC_ERROR_TEXT, formattedExportDate);
+                mResContext.getStringByNameWithArgsOrThrow(
+                        EXPORT_UNSUCCESSFUL_GENERIC_ERROR_TEXT, formattedExportDate);
 
         Notification.Action restartExportSetupAction =
                 new Notification.Action.Builder(
                                 getAppIcon().get(),
-                                getStringResource(EXPORT_NOTIFICATION_SET_UP_INTENT_BUTTON),
+                                mResContext.getStringByNameOrThrow(
+                                        EXPORT_NOTIFICATION_SET_UP_INTENT_BUTTON),
                                 pendingIntent)
                         .build();
 
@@ -274,7 +281,8 @@ public class ExportImportNotificationFactory implements HealthConnectNotificatio
     }
 
     private Notification getExportUnsuccessfulMoreSpaceNeededNotification() {
-        String notificationTitle = getStringResource(EXPORT_UNSUCCESSFUL_M0RE_SPACE_NEEDED_TITLE);
+        String notificationTitle =
+                mResContext.getStringByNameOrThrow(EXPORT_UNSUCCESSFUL_M0RE_SPACE_NEEDED_TITLE);
 
         Notification.Builder notificationBuilder = createNotificationOnlyTitle(notificationTitle);
 

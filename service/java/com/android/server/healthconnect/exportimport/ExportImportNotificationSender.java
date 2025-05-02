@@ -47,9 +47,7 @@ public class ExportImportNotificationSender {
             Context context, HealthConnectResourcesContext resourcesContext) {
         return new HealthConnectNotificationSender.Builder()
                 .setContext(context)
-                .setNotificationFactory(
-                        new ExportImportNotificationFactory(
-                                context, resourcesContext, NOTIFICATION_CHANNEL_ID))
+                .setResourcesContext(resourcesContext)
                 .setChannelGroupId(CHANNEL_GROUP_ID)
                 .setChannelNameResource(CHANNEL_NAME_RESOURCE)
                 .setChannelGroupNameResource(CHANNEL_GROUP_NAME_RESOURCE)
