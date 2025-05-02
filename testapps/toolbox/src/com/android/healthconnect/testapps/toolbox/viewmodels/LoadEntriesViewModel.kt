@@ -18,21 +18,39 @@ package com.android.healthconnect.testapps.toolbox.viewmodels
 import android.app.Application
 import android.content.Context
 import android.health.connect.HealthConnectManager
-import android.health.connect.datatypes.Record
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.android.healthconnect.testapps.toolbox.Constants.HealthPermissionType
 import com.android.healthconnect.testapps.toolbox.read.controller.DataEntriesLoader
+import com.android.healthconnect.testapps.toolbox.read.controller.ILoadAggregation
+import com.android.healthconnect.testapps.toolbox.read.controller.LoadAggregation
 import com.android.healthconnect.testapps.toolbox.read.controller.LoadDataEntries
 import com.android.healthconnect.testapps.toolbox.read.controller.LoadEntriesInput
+import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry
+import com.android.healthconnect.testapps.toolbox.read.dataentries.formatters.DataEntryFormatter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoadEntriesViewModel(private val loadDataEntries: DataEntriesLoader) : ViewModel() {
+val AGGREGATION_HEADERS =
+    listOf(
+        HealthPermissionType.STEPS,
+        HealthPermissionType.DISTANCE,
+        HealthPermissionType.TOTAL_CALORIES_BURNED,
+    )
+
+class LoadEntriesViewModel(
+    private val loadDataEntries: DataEntriesLoader,
+    private val healthConnectManager: HealthConnectManager,
+    private val loadAggregation: ILoadAggregation,
+    private val dataEntryFormatter: DataEntryFormatter,
+    private val context: Context,
+) : ViewModel() {
 
     private val _entriesState = MutableStateFlow<DataState>(DataState.Loading)
     val entriesState: StateFlow<DataState> = _entriesState
@@ -41,8 +59,22 @@ class LoadEntriesViewModel(private val loadDataEntries: DataEntriesLoader) : Vie
 
         viewModelScope.launch {
             try {
-                val response = loadDataEntries.load(input)
-                _entriesState.value = DataState.Success(response)
+
+                val entries = mutableListOf<FormattedEntry>()
+                // Load Data entries and format
+                val dataEntries = loadDataEntries.load(input)
+                val formattedDataEntries: List<FormattedEntry> =
+                    dataEntries.map { record -> dataEntryFormatter.format(record, context) }
+                entries.addAll(formattedDataEntries)
+
+                // Load Aggregation headers (if supported)
+                if (dataEntries.isNotEmpty() && input.dataType in AGGREGATION_HEADERS) {
+                    val aggregation = loadAggregation.invoke(input, healthConnectManager, context)
+                    entries.add(0, aggregation)
+                    Log.i("loadEntries", "Aggregation added")
+                }
+
+                _entriesState.value = DataState.Success(entries)
             } catch (e: Exception) {
                 _entriesState.value = DataState.Error(e)
             }
@@ -53,17 +85,24 @@ class LoadEntriesViewModel(private val loadDataEntries: DataEntriesLoader) : Vie
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = this[APPLICATION_KEY] as Application
+                val context = application.applicationContext
                 val healthConnectManager =
                     application.getSystemService(Context.HEALTHCONNECT_SERVICE)
                         as HealthConnectManager
-                LoadEntriesViewModel(loadDataEntries = LoadDataEntries(healthConnectManager))
+                LoadEntriesViewModel(
+                    healthConnectManager = healthConnectManager,
+                    loadDataEntries = LoadDataEntries(healthConnectManager),
+                    loadAggregation = LoadAggregation(),
+                    dataEntryFormatter = DataEntryFormatter(),
+                    context = context,
+                )
             }
         }
     }
 }
 
 sealed class DataState {
-    data class Success(val records: List<Record>) : DataState()
+    data class Success(val entries: List<FormattedEntry>) : DataState()
 
     data class Error(val exception: java.lang.Exception) : DataState()
 
