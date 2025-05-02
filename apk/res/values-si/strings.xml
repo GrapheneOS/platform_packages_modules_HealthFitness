@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"<xliff:g id="APP_NAME">%2$s</xliff:g> සඳහා <xliff:g id="DATA_TYPE">%1$s</xliff:g> දත්ත ස්ථිරවම මකන්න ද?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"පද්ධතිය පෙන්වන්න"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"පද්ධතිය සඟවන්න"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"ඔබ මෙම අවසරය ප්‍රතික්ෂේප කරන්නේ නම්, සමහර යෙදුම් බලාපොරොත්තු පරිදි ක්‍රියා නොකරනු ඇත."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"කෙසේ වෙතත් ඉඩ නොදෙන්න"</string>
     <string name="on" msgid="8266542510798355807">"ක්‍රියාත්මකයි"</string>
     <string name="off" msgid="6996623844428550649">"ක්‍රියාවිරහිතයි"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"ප්‍රවේශ වූයේ <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

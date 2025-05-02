@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Loka fyrir aðgang <xliff:g id="APP_NAME">%2$s</xliff:g> að <xliff:g id="DATA_TYPE">%1$s</xliff:g>-gögnum varanlega?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Sýna kerfi"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Fela kerfi"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"Ef þú veitir ekki þessa heimild getur verið að grunneiginleikar tækisins virki ekki lengur sem skyldi."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Ekki leyfa samt"</string>
     <string name="on" msgid="8266542510798355807">"Kveikt"</string>
     <string name="off" msgid="6996623844428550649">"Slökkt"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Opnað kl. <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>

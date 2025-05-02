@@ -1181,10 +1181,8 @@
     <string name="inactive_app_data_selected_deletion_confirmation_dialog" msgid="3192411589802497811">"Eliminare definitivamente i dati di <xliff:g id="DATA_TYPE">%1$s</xliff:g> per <xliff:g id="APP_NAME">%2$s</xliff:g>?"</string>
     <string name="menu_show_system" msgid="5608880605989914394">"Mostra sistema"</string>
     <string name="menu_hide_system" msgid="9218325603953186714">"Nascondi sistema"</string>
-    <!-- no translation found for system_warning (5593850900577682512) -->
-    <skip />
-    <!-- no translation found for grant_dialog_button_deny_anyway (8367692640054922761) -->
-    <skip />
+    <string name="system_warning" msgid="5593850900577682512">"Se rifiuti questa autorizzazione, le funzionalità di base del dispositivo potrebbero non funzionare più come previsto."</string>
+    <string name="grant_dialog_button_deny_anyway" msgid="8367692640054922761">"Non consentire comunque"</string>
     <string name="on" msgid="8266542510798355807">"On"</string>
     <string name="off" msgid="6996623844428550649">"Off"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Ultimo accesso: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
