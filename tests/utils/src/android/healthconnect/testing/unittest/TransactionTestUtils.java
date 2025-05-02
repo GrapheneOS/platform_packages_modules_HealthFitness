@@ -312,11 +312,6 @@ public final class TransactionTestUtils {
         }
     }
 
-    /** Returns the number of rows in the specified table. */
-    public long queryNumEntries(String tableName) {
-        return mTransactionManager.queryNumEntries(tableName);
-    }
-
     /** Returns a valid UUID string. */
     public static String getUUID() {
         return "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";

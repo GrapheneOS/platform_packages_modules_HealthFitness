@@ -44,6 +44,7 @@ android_library {
         "androidx.test.ext.truth",
         "androidx.test.rules",
         "framework-healthfitness.impl",
+        "healthfitness-testing-shared",
         "service-healthfitness.impl",
     ],
     min_sdk_version: "34",

@@ -71,6 +71,7 @@ import android.content.pm.Signature;
 import android.content.pm.SigningInfo;
 import android.content.res.Resources;
 import android.health.connect.HealthConnectDataState;
+import android.healthconnect.testing.unittest.TaskUtils;
 import android.os.Build;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
@@ -86,7 +87,6 @@ import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateManager.IllegalMigrationStateException;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
-import com.android.server.healthconnect.testing.TestUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -153,7 +153,7 @@ public class MigrationStateManagerTest {
 
     @After
     public void tearDown() throws TimeoutException {
-        TestUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
+        TaskUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
         clearInvocations(mPreferenceHelper);
     }
 

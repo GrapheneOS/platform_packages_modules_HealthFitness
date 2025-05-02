@@ -17,8 +17,7 @@
 package com.android.server.healthconnect.common.metadata;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
-
-import static com.android.server.healthconnect.testing.TestUtils.TEST_USER;
+import static android.healthconnect.testing.unittest.TaskUtils.TEST_USER;
 
 import static com.google.common.truth.Truth.assertThat;
 

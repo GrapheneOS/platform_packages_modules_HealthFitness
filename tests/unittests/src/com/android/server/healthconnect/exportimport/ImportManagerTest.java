@@ -46,6 +46,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.healthconnect.testing.unittest.StorageUtils;
+import android.healthconnect.testing.unittest.TaskUtils;
 import android.healthconnect.testing.unittest.TransactionTestUtils;
 import android.net.Uri;
 import android.os.UserHandle;
@@ -71,7 +73,6 @@ import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTra
 import com.android.server.healthconnect.storage.DatabaseHelper.DatabaseHelpers;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
-import com.android.server.healthconnect.testing.TestUtils;
 import com.android.server.healthconnect.testing.fakes.FakePreferenceHelper;
 
 import com.google.common.collect.ImmutableList;
@@ -121,6 +122,7 @@ public class ImportManagerTest {
 
     private Context mContext;
     private TransactionManager mTransactionManager;
+    private StorageUtils mStorageUtils;
     private TransactionTestUtils mTransactionTestUtils;
     private HealthDataCategoryPriorityHelper mPriorityHelper;
     private ExportImportSettingsStorage mExportImportSettingsStorage;
@@ -181,6 +183,7 @@ public class ImportManagerTest {
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mNotificationFactory = healthConnectInjector.getExportImportNotificationFactory();
 
+        mStorageUtils = new StorageUtils(healthConnectInjector);
         mTransactionTestUtils = new TransactionTestUtils(healthConnectInjector);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME);
         mTransactionTestUtils.insertApp(TEST_PACKAGE_NAME_2);
@@ -216,7 +219,7 @@ public class ImportManagerTest {
 
     @After
     public void tearDown() throws Exception {
-        TestUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
+        TaskUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
 
         File testDir = mContext.getDir(TEST_DIRECTORY_NAME, Context.MODE_PRIVATE);
         File[] allContents = testDir.listFiles();
@@ -630,7 +633,7 @@ public class ImportManagerTest {
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
-        assertThat(mTransactionTestUtils.queryNumEntries(ChangeLogsHelper.TABLE_NAME)).isEqualTo(1);
+        assertThat(mStorageUtils.queryNumEntries(ChangeLogsHelper.TABLE_NAME)).isEqualTo(1);
     }
 
     @Test
@@ -642,7 +645,7 @@ public class ImportManagerTest {
 
         mImportManagerSpy.runImport(mContext.getUser(), Uri.fromFile(zipToImport));
 
-        assertThat(mTransactionTestUtils.queryNumEntries(ChangeLogsHelper.TABLE_NAME)).isEqualTo(0);
+        assertThat(mStorageUtils.queryNumEntries(ChangeLogsHelper.TABLE_NAME)).isEqualTo(0);
     }
 
     private File exportCurrentDb() throws Exception {
